@@ -1,0 +1,85 @@
+"use strict";
+
+var _options_validator = require("./options_validator");
+var _validator = require("./validator");
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+let TestOptionsValidator = /*#__PURE__*/function (_OptionsValidator) {
+  _inheritsLoose(TestOptionsValidator, _OptionsValidator);
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+  function TestOptionsValidator(validators) {
+    return _OptionsValidator.call(this, validators) || this;
+  }
+  return TestOptionsValidator;
+}(_options_validator.OptionsValidator);
+const widgetOptions = {
+  A: 1,
+  B: '1',
+  C: true
+};
+describe('OptionsValidator', () => {
+  it('should call each validator\'s validate method', () => {
+    const validators = [new _validator.Validator(() => {}, []), new _validator.Validator(() => {}, []), new _validator.Validator(() => {}, [])];
+    const validateSpies = validators.map(validator => {
+      const validateSpy = jest.spyOn(validator, 'validate');
+      validateSpy.mockImplementation(() => true);
+      return validateSpy;
+    });
+    const optionsValidator = new TestOptionsValidator({
+      A: validators[0],
+      B: validators[1],
+      C: validators[2]
+    });
+    optionsValidator.validate(widgetOptions);
+    expect(validateSpies[0]).toHaveBeenCalledWith(widgetOptions);
+    expect(validateSpies[1]).toHaveBeenCalledWith(widgetOptions);
+    expect(validateSpies[2]).toHaveBeenCalledWith(widgetOptions);
+    validateSpies.forEach(spy => {
+      spy.mockReset();
+    });
+  });
+  it('should return true if all validators validates without errors', () => {
+    const validator = new _validator.Validator(() => {}, []);
+    const validateSpy = jest.spyOn(validator, 'validate');
+    validateSpy.mockImplementation(() => true);
+    const optionsValidator = new TestOptionsValidator({
+      A: validator,
+      B: validator,
+      C: validator
+    });
+    const result = optionsValidator.validate(widgetOptions);
+    expect(result).toBe(true);
+    validateSpy.mockReset();
+  });
+  it('should return object with errors if some validators validates with errors', () => {
+    const firstValidateResult = {
+      required: 'false',
+      isInteger: 'false'
+    };
+    const secondValidateResult = true;
+    const thirdValidateResult = {
+      someError: 'some message'
+    };
+    const expectedResult = {
+      A: firstValidateResult,
+      C: thirdValidateResult
+    };
+    const validators = [new _validator.Validator(() => {}, []), new _validator.Validator(() => {}, []), new _validator.Validator(() => {}, [])];
+    const firstValidateSpy = jest.spyOn(validators[0], 'validate');
+    const secondValidateSpy = jest.spyOn(validators[1], 'validate');
+    const thirdValidateSpy = jest.spyOn(validators[2], 'validate');
+    firstValidateSpy.mockImplementation(() => firstValidateResult);
+    secondValidateSpy.mockImplementation(() => secondValidateResult);
+    thirdValidateSpy.mockImplementation(() => thirdValidateResult);
+    const optionsValidator = new TestOptionsValidator({
+      A: validators[0],
+      B: validators[1],
+      C: validators[2]
+    });
+    const result = optionsValidator.validate(widgetOptions);
+    expect(result).toEqual(expectedResult);
+    firstValidateSpy.mockReset();
+    secondValidateSpy.mockReset();
+    thirdValidateSpy.mockReset();
+  });
+});

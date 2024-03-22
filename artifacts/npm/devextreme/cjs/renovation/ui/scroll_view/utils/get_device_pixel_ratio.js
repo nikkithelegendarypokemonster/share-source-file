@@ -1,0 +1,15 @@
+/**
+* DevExtreme (cjs/renovation/ui/scroll_view/utils/get_device_pixel_ratio.js)
+* Version: 24.1.0
+* Build date: Fri Mar 22 2024
+*
+* Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
+* Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
+*/
+"use strict";
+
+exports.getDevicePixelRatio = getDevicePixelRatio;
+var _window = require("../../../../core/utils/window");
+function getDevicePixelRatio() {
+  return (0, _window.hasWindow)() ? (0, _window.getWindow)().devicePixelRatio : 1;
+}
