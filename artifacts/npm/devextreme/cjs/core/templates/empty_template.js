@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/templates/empty_template.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,16 +12,9 @@ exports.EmptyTemplate = void 0;
 var _renderer = _interopRequireDefault(require("../renderer"));
 var _template_base = require("./template_base");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-let EmptyTemplate = exports.EmptyTemplate = /*#__PURE__*/function (_TemplateBase) {
-  _inheritsLoose(EmptyTemplate, _TemplateBase);
-  function EmptyTemplate() {
-    return _TemplateBase.apply(this, arguments) || this;
-  }
-  var _proto = EmptyTemplate.prototype;
-  _proto._renderCore = function _renderCore() {
+class EmptyTemplate extends _template_base.TemplateBase {
+  _renderCore() {
     return (0, _renderer.default)();
-  };
-  return EmptyTemplate;
-}(_template_base.TemplateBase);
+  }
+}
+exports.EmptyTemplate = EmptyTemplate;

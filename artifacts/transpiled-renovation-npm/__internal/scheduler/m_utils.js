@@ -56,12 +56,12 @@ const utils = exports.utils = {
           }
           dataAccessors.getter[name] = dateGetter || getter;
           dataAccessors.setter[name] = dateSetter || setter;
-          dataAccessors.expr["".concat(name, "Expr")] = expr;
+          dataAccessors.expr[`${name}Expr`] = expr;
         } else {
           /* eslint-disable @typescript-eslint/no-dynamic-delete */
           delete dataAccessors.getter[name];
           delete dataAccessors.setter[name];
-          delete dataAccessors.expr["".concat(name, "Expr")];
+          delete dataAccessors.expr[`${name}Expr`];
           /* eslint-enable @typescript-eslint/no-dynamic-delete */
         }
       });

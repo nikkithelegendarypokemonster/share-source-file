@@ -1,6 +1,6 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
 // !!! AUTO-GENERATED FILE, DO NOT EDIT
-export var enCldr = {
+export const enCldr = {
   "main": {
     "en": {
       "identity": {

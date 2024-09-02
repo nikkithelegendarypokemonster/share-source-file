@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/pivot_grid/remote_store/m_remote_store.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -23,7 +23,7 @@ var _utils = require("../../../../data/data_source/utils");
 var _m_widget_utils = _interopRequireWildcard(require("../m_widget_utils"));
 var _m_remote_store_utils = require("./m_remote_store_utils");
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function createGroupingOptions(dimensionOptions, useSortOrder) {
   const groupingOptions = [];
@@ -46,7 +46,7 @@ function getFieldFilterSelector(field) {
     if (groupInterval.toLowerCase() === 'quarter') {
       groupInterval = 'Month';
     }
-    selector = "".concat(selector, ".").concat((0, _m_widget_utils.capitalizeFirstLetter)(groupInterval));
+    selector = `${selector}.${(0, _m_widget_utils.capitalizeFirstLetter)(groupInterval)}`;
   }
   return selector;
 }
@@ -204,7 +204,7 @@ function parseResult(data, total, descriptions, result) {
     data.length = total.groupCount;
   }
   function getItem(dataItem, dimensionName, path, level, field) {
-    const dimensionHash = result["".concat(dimensionName, "Hash")];
+    const dimensionHash = result[`${dimensionName}Hash`];
     let parentItem;
     let parentItemChildren;
     let item;
@@ -216,7 +216,7 @@ function parseResult(data, total, descriptions, result) {
       item = {
         value: parseValue(dataItem.key, field),
         // eslint-disable-next-line no-plusplus
-        index: result["".concat(dimensionName, "Index")]++,
+        index: result[`${dimensionName}Index`]++,
         displayText: dataItem.displayText
       };
       parentPathValue = path.slice(0, level).join('/');
@@ -224,7 +224,7 @@ function parseResult(data, total, descriptions, result) {
         parentItem = dimensionHash[parentPathValue];
         parentItemChildren = parentItem.children = parentItem.children || [];
       } else {
-        parentItemChildren = result["".concat(dimensionName, "s")];
+        parentItemChildren = result[`${dimensionName}s`];
       }
       parentItemChildren.push(item);
       dimensionHash[pathValue] = item;
@@ -244,14 +244,14 @@ function parseResult(data, total, descriptions, result) {
     }
     if (level >= descriptions.rows.length) {
       if (item) {
-        columnPath[columnLevel] = "".concat(item.key);
+        columnPath[columnLevel] = `${item.key}`;
         columnItem = getItem(item, 'column', columnPath, columnLevel, descriptions.columns[columnLevel]);
         rowItem = rowHash[rowPath.slice(0, rowLevel + 1).join('/')];
       } else {
         result.columns.push({});
       }
     } else if (item) {
-      rowPath[rowLevel] = "".concat(item.key);
+      rowPath[rowLevel] = `${item.key}`;
       rowItem = getItem(item, 'row', rowPath, rowLevel, descriptions.rows[rowLevel]);
       columnItem = columnHash[columnPath.slice(0, columnLevel + 1).join('/')];
     } else {
@@ -400,6 +400,7 @@ const RemoteStore = exports.RemoteStore = _class.default.inherit(function () {
         skip: 0,
         take: 20
       }).done(data => {
+        // @ts-expect-error
         const normalizedArguments = (0, _utils.normalizeLoadResult)(data);
         d.resolve(_m_widget_utils.default.discoverObjectFields(normalizedArguments.data, fields));
       }).fail(d.reject);

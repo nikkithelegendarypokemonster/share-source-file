@@ -1,68 +1,68 @@
 /**
 * DevExtreme (esm/viz/gauges/circular_indicators.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { BaseIndicator, BaseTextCloudMarker, BaseRangeBar } from './base_indicators';
 import { getCosAndSin, convertAngleToRendererSpace, normalizeAngle } from '../core/utils';
-var _Number = Number;
-var _getCosAndSin = getCosAndSin;
-var _convertAngleToRendererSpace = convertAngleToRendererSpace;
+const _Number = Number;
+const _getCosAndSin = getCosAndSin;
+const _convertAngleToRendererSpace = convertAngleToRendererSpace;
 function correctRadius(layout, size) {
   if (layout && layout.radius - size <= 0) {
     layout.radius = size + 1;
   }
   return layout;
 }
-var SimpleIndicator = BaseIndicator.inherit({
-  _move: function _move() {
-    var that = this;
-    var options = that._options;
-    var angle = _convertAngleToRendererSpace(that._actualPosition);
+const SimpleIndicator = BaseIndicator.inherit({
+  _move: function () {
+    const that = this;
+    const options = that._options;
+    const angle = _convertAngleToRendererSpace(that._actualPosition);
     that._rootElement.rotate(angle, options.x, options.y);
     that._trackerElement && that._trackerElement.rotate(angle, options.x, options.y);
   },
-  _isEnabled: function _isEnabled() {
+  _isEnabled: function () {
     return this._options.width > 0;
   },
-  _isVisible: function _isVisible(layout) {
+  _isVisible: function (layout) {
     return layout.radius - _Number(this._options.indentFromCenter) > 0;
   },
-  _getTrackerSettings: function _getTrackerSettings() {
-    var options = this._options;
-    var radius = this._getRadius();
-    var indentFromCenter = this._getIndentFromCenter();
-    var x = options.x;
-    var y = options.y - (radius + indentFromCenter) / 2;
-    var width = options.width / 2;
-    var length = (radius - indentFromCenter) / 2;
+  _getTrackerSettings: function () {
+    const options = this._options;
+    const radius = this._getRadius();
+    const indentFromCenter = this._getIndentFromCenter();
+    const x = options.x;
+    const y = options.y - (radius + indentFromCenter) / 2;
+    let width = options.width / 2;
+    let length = (radius - indentFromCenter) / 2;
     width > 10 || (width = 10);
     length > 10 || (length = 10);
     return {
       points: [x - width, y - length, x - width, y + length, x + width, y + length, x + width, y - length]
     };
   },
-  _render: function _render() {
-    var that = this;
+  _render: function () {
+    const that = this;
     that._renderPointer();
   },
-  _clearPointer: function _clearPointer() {
+  _clearPointer: function () {
     delete this._element;
   },
-  _clear: function _clear() {
+  _clear: function () {
     this._clearPointer();
   },
-  _getIndentFromCenter: function _getIndentFromCenter(radius) {
+  _getIndentFromCenter: function (radius) {
     return Number(this._options.indentFromCenter) || 0;
   },
-  _getRadius: function _getRadius() {
+  _getRadius: function () {
     return 0;
   },
-  measure: function measure(layout) {
-    var result = {
+  measure: function (layout) {
+    const result = {
       max: layout.radius
     };
     if (this._options.indentFromCenter < 0) {
@@ -70,10 +70,10 @@ var SimpleIndicator = BaseIndicator.inherit({
     }
     return result;
   },
-  getTooltipParameters: function getTooltipParameters() {
-    var options = this._options;
-    var cosSin = _getCosAndSin(this._actualPosition);
-    var r = (this._getRadius() + this._getIndentFromCenter()) / 2;
+  getTooltipParameters: function () {
+    const options = this._options;
+    const cosSin = _getCosAndSin(this._actualPosition);
+    const r = (this._getRadius() + this._getIndentFromCenter()) / 2;
     return {
       x: options.x + cosSin.cos * r,
       y: options.y - cosSin.sin * r,
@@ -83,36 +83,36 @@ var SimpleIndicator = BaseIndicator.inherit({
     };
   }
 });
-var NeedleIndicator = SimpleIndicator.inherit({
-  _isVisible: function _isVisible(layout) {
-    var indentFromCenter = this._adjustOffset(Number(this._options.indentFromCenter), layout.radius);
-    var offset = this._adjustOffset(Number(this._options.offset), layout.radius);
+const NeedleIndicator = SimpleIndicator.inherit({
+  _isVisible: function (layout) {
+    const indentFromCenter = this._adjustOffset(Number(this._options.indentFromCenter), layout.radius);
+    const offset = this._adjustOffset(Number(this._options.offset), layout.radius);
     return layout.radius - indentFromCenter - offset > 0;
   },
-  getOffset: function getOffset() {
+  getOffset: function () {
     return 0;
   },
-  _adjustOffset: function _adjustOffset(value, radius) {
-    var minRadius = Number(this._options.beginAdaptingAtRadius);
-    var diff = radius / minRadius;
+  _adjustOffset: function (value, radius) {
+    const minRadius = Number(this._options.beginAdaptingAtRadius);
+    const diff = radius / minRadius;
     if (diff < 1) {
       value = Math.floor(value * diff);
     }
     return value || 0;
   },
-  _getIndentFromCenter: function _getIndentFromCenter(radius) {
+  _getIndentFromCenter: function (radius) {
     return this._adjustOffset(Number(this._options.indentFromCenter), this._options.radius);
   },
-  _getRadius: function _getRadius() {
-    var options = this._options;
+  _getRadius: function () {
+    const options = this._options;
     return options.radius - this._adjustOffset(Number(options.offset), options.radius);
   },
-  _renderSpindle: function _renderSpindle() {
-    var that = this;
-    var options = that._options;
-    var radius = options.radius;
-    var spindleSize = this._adjustOffset(_Number(options.spindleSize) / 2, radius) * 2;
-    var gapSize = this._adjustOffset(_Number(options.spindleGapSize) / 2, radius) * 2 || 0;
+  _renderSpindle: function () {
+    const that = this;
+    const options = that._options;
+    const radius = options.radius;
+    const spindleSize = this._adjustOffset(_Number(options.spindleSize) / 2, radius) * 2;
+    let gapSize = this._adjustOffset(_Number(options.spindleGapSize) / 2, radius) * 2 || 0;
     if (gapSize > 0) {
       gapSize = gapSize <= spindleSize ? gapSize : spindleSize;
     }
@@ -134,56 +134,56 @@ var NeedleIndicator = SimpleIndicator.inherit({
       });
     }
   },
-  _render: function _render() {
-    var that = this;
+  _render: function () {
+    const that = this;
     that.callBase();
     that._renderSpindle();
   },
-  _clear: function _clear() {
+  _clear: function () {
     this.callBase();
     delete this._spindleOuter;
     delete this._spindleInner;
   }
 });
-var rectangleNeedle = NeedleIndicator.inherit({
-  _renderPointer: function _renderPointer() {
-    var that = this;
-    var options = that._options;
-    var y2 = options.y - this._getRadius();
-    var y1 = options.y - this._getIndentFromCenter();
-    var x1 = options.x - options.width / 2;
-    var x2 = x1 + _Number(options.width);
+const rectangleNeedle = NeedleIndicator.inherit({
+  _renderPointer: function () {
+    const that = this;
+    const options = that._options;
+    const y2 = options.y - this._getRadius();
+    const y1 = options.y - this._getIndentFromCenter();
+    const x1 = options.x - options.width / 2;
+    const x2 = x1 + _Number(options.width);
     that._element = that._element || that._renderer.path([], 'area').append(that._rootElement);
     that._element.attr({
       points: [x1, y1, x1, y2, x2, y2, x2, y1]
     });
   }
 });
-var triangleNeedle = NeedleIndicator.inherit({
-  _renderPointer: function _renderPointer() {
-    var that = this;
-    var options = that._options;
-    var y2 = options.y - this._getRadius();
-    var y1 = options.y - this._getIndentFromCenter();
-    var x1 = options.x - options.width / 2;
-    var x2 = options.x + options.width / 2;
+const triangleNeedle = NeedleIndicator.inherit({
+  _renderPointer: function () {
+    const that = this;
+    const options = that._options;
+    const y2 = options.y - this._getRadius();
+    const y1 = options.y - this._getIndentFromCenter();
+    const x1 = options.x - options.width / 2;
+    const x2 = options.x + options.width / 2;
     that._element = that._element || that._renderer.path([], 'area').append(that._rootElement);
     that._element.attr({
       points: [x1, y1, options.x, y2, x2, y1]
     });
   }
 });
-var twoColorNeedle = NeedleIndicator.inherit({
-  _renderPointer: function _renderPointer() {
-    var that = this;
-    var options = that._options;
-    var x1 = options.x - options.width / 2;
-    var x2 = options.x + options.width / 2;
-    var y4 = options.y - this._getRadius();
-    var y1 = options.y - this._getIndentFromCenter();
-    var fraction = _Number(options.secondFraction) || 0;
-    var y2;
-    var y3;
+const twoColorNeedle = NeedleIndicator.inherit({
+  _renderPointer: function () {
+    const that = this;
+    const options = that._options;
+    const x1 = options.x - options.width / 2;
+    const x2 = options.x + options.width / 2;
+    const y4 = options.y - this._getRadius();
+    const y1 = options.y - this._getIndentFromCenter();
+    const fraction = _Number(options.secondFraction) || 0;
+    let y2;
+    let y3;
     //  B253863
     if (fraction >= 1) {
       y2 = y3 = y1;
@@ -210,7 +210,7 @@ var twoColorNeedle = NeedleIndicator.inherit({
       fill: options.secondColor
     });
   },
-  _clearPointer: function _clearPointer() {
+  _clearPointer: function () {
     delete this._firstElement;
     delete this._secondElement;
     delete this._spaceElement;
@@ -219,8 +219,8 @@ var twoColorNeedle = NeedleIndicator.inherit({
 
 // The following is from circularMarker.js
 
-var triangleMarker = SimpleIndicator.inherit({
-  _isEnabled: function _isEnabled() {
+const triangleMarker = SimpleIndicator.inherit({
+  _isEnabled: function () {
     return this._options.length > 0 && this._options.width > 0;
   },
   _isVisible(layout) {
@@ -229,15 +229,15 @@ var triangleMarker = SimpleIndicator.inherit({
   resize(layout) {
     return this.callBase(correctRadius(layout, 0));
   },
-  _render: function _render() {
-    var that = this;
-    var options = that._options;
-    var x = options.x;
-    var y1 = options.y - options.radius;
-    var dx = options.width / 2 || 0;
-    var y2 = y1 - _Number(options.length);
+  _render: function () {
+    const that = this;
+    const options = that._options;
+    const x = options.x;
+    const y1 = options.y - options.radius;
+    const dx = options.width / 2 || 0;
+    const y2 = y1 - _Number(options.length);
     that._element = that._element || that._renderer.path([], 'area').append(that._rootElement);
-    var settings = {
+    const settings = {
       points: [x, y1, x - dx, y2, x + dx, y2],
       stroke: 'none',
       'stroke-width': 0,
@@ -249,40 +249,40 @@ var triangleMarker = SimpleIndicator.inherit({
     }
     that._element.attr(settings).sharp();
   },
-  _clear: function _clear() {
+  _clear: function () {
     delete this._element;
   },
-  _getTrackerSettings: function _getTrackerSettings() {
-    var options = this._options;
-    var x = options.x;
-    var y = options.y - options.radius - options.length / 2;
-    var width = options.width / 2;
-    var length = options.length / 2;
+  _getTrackerSettings: function () {
+    const options = this._options;
+    const x = options.x;
+    const y = options.y - options.radius - options.length / 2;
+    let width = options.width / 2;
+    let length = options.length / 2;
     width > 10 || (width = 10);
     length > 10 || (length = 10);
     return {
       points: [x - width, y - length, x - width, y + length, x + width, y + length, x + width, y - length]
     };
   },
-  measure: function measure(layout) {
+  measure: function (layout) {
     return {
       min: layout.radius,
       max: layout.radius + _Number(this._options.length)
     };
   },
-  getTooltipParameters: function getTooltipParameters() {
-    var options = this._options;
-    var cosSin = _getCosAndSin(this._actualPosition);
-    var r = options.radius + options.length / 2;
-    var parameters = this.callBase();
+  getTooltipParameters: function () {
+    const options = this._options;
+    const cosSin = _getCosAndSin(this._actualPosition);
+    const r = options.radius + options.length / 2;
+    const parameters = this.callBase();
     parameters.x = options.x + cosSin.cos * r;
     parameters.y = options.y - cosSin.sin * r;
     parameters.offset = options.length / 2;
     return parameters;
   }
 });
-var textCloud = BaseTextCloudMarker.inherit({
-  _isEnabled: function _isEnabled() {
+const textCloud = BaseTextCloudMarker.inherit({
+  _isEnabled: function () {
     return true;
   },
   _isVisible(layout) {
@@ -291,22 +291,22 @@ var textCloud = BaseTextCloudMarker.inherit({
   resize(layout) {
     return this.callBase(correctRadius(layout, 0));
   },
-  _getTextCloudOptions: function _getTextCloudOptions() {
-    var that = this;
-    var cosSin = _getCosAndSin(that._actualPosition);
-    var nAngle = normalizeAngle(that._actualPosition);
+  _getTextCloudOptions: function () {
+    const that = this;
+    const cosSin = _getCosAndSin(that._actualPosition);
+    const nAngle = normalizeAngle(that._actualPosition);
     return {
       x: that._options.x + cosSin.cos * that._options.radius,
       y: that._options.y - cosSin.sin * that._options.radius,
       type: nAngle > 270 ? 'left-top' : nAngle > 180 ? 'top-right' : nAngle > 90 ? 'right-bottom' : 'bottom-left'
     };
   },
-  measure: function measure(layout) {
-    var that = this;
-    var arrowLength = _Number(that._options.arrowLength) || 0;
+  measure: function (layout) {
+    const that = this;
+    const arrowLength = _Number(that._options.arrowLength) || 0;
     that._measureText();
-    var verticalOffset = that._textFullHeight + arrowLength;
-    var horizontalOffset = that._textFullWidth + arrowLength;
+    const verticalOffset = that._textFullHeight + arrowLength;
+    const horizontalOffset = that._textFullWidth + arrowLength;
     return {
       min: layout.radius,
       max: layout.radius,
@@ -320,8 +320,8 @@ var textCloud = BaseTextCloudMarker.inherit({
 
 // The following is from circularRangeBar.js
 
-var rangeBar = BaseRangeBar.inherit({
-  _isEnabled: function _isEnabled() {
+const rangeBar = BaseRangeBar.inherit({
+  _isEnabled: function () {
     return this._options.size > 0;
   },
   _isVisible(layout) {
@@ -330,43 +330,43 @@ var rangeBar = BaseRangeBar.inherit({
   resize(layout) {
     return this.callBase(correctRadius(layout, _Number(this._options.size)));
   },
-  _createBarItem: function _createBarItem() {
+  _createBarItem: function () {
     return this._renderer.arc().attr({
       'stroke-linejoin': 'round'
     }).append(this._rootElement);
   },
-  _createTracker: function _createTracker() {
+  _createTracker: function () {
     return this._renderer.arc().attr({
       'stroke-linejoin': 'round'
     });
   },
-  _setBarSides: function _setBarSides() {
-    var that = this;
+  _setBarSides: function () {
+    const that = this;
     that._maxSide = that._options.radius;
     that._minSide = that._maxSide - _Number(that._options.size);
   },
-  _getSpace: function _getSpace() {
-    var options = this._options;
+  _getSpace: function () {
+    const options = this._options;
     return options.space > 0 ? options.space * 180 / options.radius / Math.PI : 0;
   },
-  _isTextVisible: function _isTextVisible() {
-    var options = this._options.text || {};
+  _isTextVisible: function () {
+    const options = this._options.text || {};
     return options.indent > 0;
   },
-  _setTextItemsSides: function _setTextItemsSides() {
-    var that = this;
-    var options = that._options;
-    var indent = _Number(options.text.indent);
+  _setTextItemsSides: function () {
+    const that = this;
+    const options = that._options;
+    const indent = _Number(options.text.indent);
     that._lineFrom = options.y - options.radius;
     that._lineTo = that._lineFrom - indent;
     that._textRadius = options.radius + indent;
   },
-  _getPositions: function _getPositions() {
-    var that = this;
-    var basePosition = that._basePosition;
-    var actualPosition = that._actualPosition;
-    var mainPosition1;
-    var mainPosition2;
+  _getPositions: function () {
+    const that = this;
+    const basePosition = that._basePosition;
+    const actualPosition = that._actualPosition;
+    let mainPosition1;
+    let mainPosition2;
     if (basePosition >= actualPosition) {
       mainPosition1 = basePosition;
       mainPosition2 = actualPosition;
@@ -383,8 +383,8 @@ var rangeBar = BaseRangeBar.inherit({
       back2: Math.max(mainPosition2 - that._space, that._endPosition)
     };
   },
-  _buildItemSettings: function _buildItemSettings(from, to) {
-    var that = this;
+  _buildItemSettings: function (from, to) {
+    const that = this;
     return {
       x: that._options.x,
       y: that._options.y,
@@ -394,11 +394,11 @@ var rangeBar = BaseRangeBar.inherit({
       endAngle: from
     };
   },
-  _updateTextPosition: function _updateTextPosition() {
-    var that = this;
-    var cosSin = _getCosAndSin(that._actualPosition);
-    var x = that._options.x + that._textRadius * cosSin.cos;
-    var y = that._options.y - that._textRadius * cosSin.sin;
+  _updateTextPosition: function () {
+    const that = this;
+    const cosSin = _getCosAndSin(that._actualPosition);
+    let x = that._options.x + that._textRadius * cosSin.cos;
+    let y = that._options.y - that._textRadius * cosSin.sin;
     x += cosSin.cos * that._textWidth * 0.6;
     y -= cosSin.sin * that._textHeight * 0.6;
     that._text.attr({
@@ -406,11 +406,11 @@ var rangeBar = BaseRangeBar.inherit({
       y: y + that._textVerticalOffset
     });
   },
-  _updateLinePosition: function _updateLinePosition() {
-    var that = this;
-    var x = that._options.x;
-    var x1;
-    var x2;
+  _updateLinePosition: function () {
+    const that = this;
+    const x = that._options.x;
+    let x1;
+    let x2;
     if (that._basePosition > that._actualPosition) {
       x1 = x - 2;
       x2 = x;
@@ -425,18 +425,18 @@ var rangeBar = BaseRangeBar.inherit({
       points: [x1, that._lineFrom, x1, that._lineTo, x2, that._lineTo, x2, that._lineFrom]
     }).rotate(_convertAngleToRendererSpace(that._actualPosition), x, that._options.y).sharp();
   },
-  _getTooltipPosition: function _getTooltipPosition() {
-    var that = this;
-    var cosSin = _getCosAndSin((that._basePosition + that._actualPosition) / 2);
-    var r = (that._minSide + that._maxSide) / 2;
+  _getTooltipPosition: function () {
+    const that = this;
+    const cosSin = _getCosAndSin((that._basePosition + that._actualPosition) / 2);
+    const r = (that._minSide + that._maxSide) / 2;
     return {
       x: that._options.x + cosSin.cos * r,
       y: that._options.y - cosSin.sin * r
     };
   },
-  measure: function measure(layout) {
-    var that = this;
-    var result = {
+  measure: function (layout) {
+    const that = this;
+    const result = {
       min: layout.radius - _Number(that._options.size),
       max: layout.radius
     };

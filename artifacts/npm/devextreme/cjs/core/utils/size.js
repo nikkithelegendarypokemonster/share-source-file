@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/utils/size.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -34,7 +34,7 @@ const getElementBoxParams = function (name, elementStyles) {
 exports.getElementBoxParams = getElementBoxParams;
 const getElementComputedStyle = function (element) {
   var _element$ownerDocumen;
-  const view = (element === null || element === void 0 ? void 0 : (_element$ownerDocumen = element.ownerDocument) === null || _element$ownerDocumen === void 0 ? void 0 : _element$ownerDocumen.defaultView) || window;
+  const view = (element === null || element === void 0 || (_element$ownerDocumen = element.ownerDocument) === null || _element$ownerDocumen === void 0 ? void 0 : _element$ownerDocumen.defaultView) || window;
   return view.getComputedStyle && view.getComputedStyle(element);
 };
 const getCSSProperty = function (element, styles, name, defaultValue) {
@@ -56,7 +56,7 @@ const dimensionComponents = {
 function getComponentThickness(elem, dimension, component, styles) {
   const get = (elem, styles, field) => parseFloat(getCSSProperty(elem, styles, field, '0')) || 0;
   const suffix = component === 'border' ? '-width' : '';
-  return get(elem, styles, "".concat(component, "-").concat(dimensionComponents[dimension][0]).concat(suffix)) + get(elem, styles, "".concat(component, "-").concat(dimensionComponents[dimension][1]).concat(suffix));
+  return get(elem, styles, `${component}-${dimensionComponents[dimension][0]}${suffix}`) + get(elem, styles, `${component}-${dimensionComponents[dimension][1]}${suffix}`);
 }
 const getSize = function (element, dimension, box) {
   const offsetFieldName = dimension === 'width' ? 'offsetWidth' : 'offsetHeight';

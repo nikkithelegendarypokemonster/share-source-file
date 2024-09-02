@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/core/annotations.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -16,18 +16,18 @@ import pointerEvents from '../../events/pointer';
 import { start as dragEventStart, move as dragEventMove, end as dragEventEnd } from '../../events/drag';
 import { addNamespace } from '../../events/utils/index';
 import eventsEngine from '../../events/core/events_engine';
-var getDocument = domAdapter.getDocument;
-var EVENT_NS = 'annotations';
-var DOT_EVENT_NS = '.' + EVENT_NS;
-var POINTER_ACTION = addNamespace([pointerEvents.down, pointerEvents.move], EVENT_NS);
-var POINTER_UP_EVENT_NAME = addNamespace(pointerEvents.up, EVENT_NS);
-var DRAG_START_EVENT_NAME = dragEventStart + DOT_EVENT_NS;
-var DRAG_EVENT_NAME = dragEventMove + DOT_EVENT_NS;
-var DRAG_END_EVENT_NAME = dragEventEnd + DOT_EVENT_NS;
+const getDocument = domAdapter.getDocument;
+const EVENT_NS = 'annotations';
+const DOT_EVENT_NS = '.' + EVENT_NS;
+const POINTER_ACTION = addNamespace([pointerEvents.down, pointerEvents.move], EVENT_NS);
+const POINTER_UP_EVENT_NAME = addNamespace(pointerEvents.up, EVENT_NS);
+const DRAG_START_EVENT_NAME = dragEventStart + DOT_EVENT_NS;
+const DRAG_EVENT_NAME = dragEventMove + DOT_EVENT_NS;
+const DRAG_END_EVENT_NAME = dragEventEnd + DOT_EVENT_NS;
 function coreAnnotation(options, contentTemplate) {
   return {
-    draw: function draw(widget, group) {
-      var annotationGroup = widget._renderer.g().append(group).css(patchFontOptions(options.font));
+    draw: function (widget, group) {
+      const annotationGroup = widget._renderer.g().append(group).css(patchFontOptions(options.font));
       if (this.plaque) {
         this.plaque.clear();
       }
@@ -53,15 +53,15 @@ function coreAnnotation(options, contentTemplate) {
       return this.plaque.hitTest(x, y);
     },
     showTooltip(tooltip, _ref) {
-      var {
+      let {
         x,
         y
       } = _ref;
-      var that = this;
-      var options = that.options;
+      const that = this;
+      const options = that.options;
       if (tooltip.annotation !== that) {
         tooltip.setTemplate(options.tooltipTemplate);
-        var callback = result => {
+        const callback = result => {
           result && (tooltip.annotation = that);
         };
         callback(tooltip.show(options, {
@@ -79,10 +79,10 @@ function coreAnnotation(options, contentTemplate) {
   };
 }
 function getTemplateFunction(options, widget) {
-  var template;
+  let template;
   if (options.type === 'text') {
-    template = function template(item, groupElement) {
-      var text = widget._renderer.text(item.text).attr({
+    template = function (item, groupElement) {
+      const text = widget._renderer.text(item.text).attr({
         'class': item.cssClass
       }).append({
         element: groupElement
@@ -95,19 +95,19 @@ function getTemplateFunction(options, widget) {
       }
     };
   } else if (options.type === 'image') {
-    template = function template(item, groupElement) {
-      var {
+    template = function (item, groupElement) {
+      const {
         width,
         height,
         url,
         location
       } = item.image || {};
-      var {
+      const {
         width: outerWidth,
         height: outerHeight
       } = item;
-      var imageWidth = outerWidth > 0 ? Math.min(width, outerWidth) : width;
-      var imageHeight = outerHeight > 0 ? Math.min(height, outerHeight) : height;
+      const imageWidth = outerWidth > 0 ? Math.min(width, outerWidth) : width;
+      const imageHeight = outerHeight > 0 ? Math.min(height, outerHeight) : height;
       widget._renderer.image(0, 0, imageWidth, imageHeight, url, location || 'center').append({
         element: groupElement
       });
@@ -122,46 +122,46 @@ function getImageObject(image) {
     url: image
   } : image;
 }
-export var createAnnotations = function createAnnotations(widget, items) {
-  var commonAnnotationSettings = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var customizeAnnotation = arguments.length > 3 ? arguments[3] : undefined;
-  var pullOptions = arguments.length > 4 ? arguments[4] : undefined;
-  var commonImageOptions = getImageObject(commonAnnotationSettings.image);
+export let createAnnotations = function (widget, items) {
+  let commonAnnotationSettings = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  let customizeAnnotation = arguments.length > 3 ? arguments[3] : undefined;
+  let pullOptions = arguments.length > 4 ? arguments[4] : undefined;
+  const commonImageOptions = getImageObject(commonAnnotationSettings.image);
   return items.reduce((arr, item) => {
-    var currentImageOptions = getImageObject(item.image);
-    var customizedItem = isFunction(customizeAnnotation) ? customizeAnnotation(item) : {};
+    const currentImageOptions = getImageObject(item.image);
+    const customizedItem = isFunction(customizeAnnotation) ? customizeAnnotation(item) : {};
     if (customizedItem) {
       customizedItem.image = getImageObject(customizedItem.image); // T881143
     }
-    var options = extend(true, {}, commonAnnotationSettings, item, {
+    const options = extend(true, {}, commonAnnotationSettings, item, {
       image: commonImageOptions
     }, {
       image: currentImageOptions
     }, customizedItem);
-    var templateFunction = getTemplateFunction(options, widget);
-    var annotation = templateFunction && extend(true, pullOptions(options), coreAnnotation(options, widget._getTemplate(templateFunction)));
+    const templateFunction = getTemplateFunction(options, widget);
+    const annotation = templateFunction && extend(true, pullOptions(options), coreAnnotation(options, widget._getTemplate(templateFunction)));
     annotation && arr.push(annotation);
     return arr;
   }, []);
 };
-var chartPlugin = {
+const chartPlugin = {
   name: 'annotations_chart',
   init() {},
   dispose() {},
   members: {
     _getAnnotationCoords(annotation) {
       var _axis, _axis2;
-      var coords = {
+      const coords = {
         offsetX: annotation.offsetX,
         offsetY: annotation.offsetY
       };
-      var argCoordName = this._options.silent('rotated') ? 'y' : 'x';
-      var valCoordName = this._options.silent('rotated') ? 'x' : 'y';
-      var argAxis = this.getArgumentAxis();
-      var argument = argAxis.validateUnit(annotation.argument);
-      var axis = this.getValueAxis(annotation.axis);
-      var series;
-      var pane = (_axis = axis) === null || _axis === void 0 ? void 0 : _axis.pane;
+      const argCoordName = this._options.silent('rotated') ? 'y' : 'x';
+      const valCoordName = this._options.silent('rotated') ? 'x' : 'y';
+      const argAxis = this.getArgumentAxis();
+      const argument = argAxis.validateUnit(annotation.argument);
+      let axis = this.getValueAxis(annotation.axis);
+      let series;
+      let pane = (_axis = axis) === null || _axis === void 0 ? void 0 : _axis.pane;
       if (annotation.series) {
         var _series;
         series = this.series.filter(s => s.name === annotation.series)[0];
@@ -170,14 +170,14 @@ var chartPlugin = {
       }
       if (isDefined(argument)) {
         if (series) {
-          var center = series.getPointCenterByArg(argument);
+          const center = series.getPointCenterByArg(argument);
           center && (coords[argCoordName] = center[argCoordName]);
         } else {
           coords[argCoordName] = argAxis.getTranslator().translate(argument);
         }
         !isDefined(pane) && (pane = argAxis.pane);
       }
-      var value = (_axis2 = axis) === null || _axis2 === void 0 ? void 0 : _axis2.validateUnit(annotation.value);
+      const value = (_axis2 = axis) === null || _axis2 === void 0 ? void 0 : _axis2.validateUnit(annotation.value);
       if (isDefined(value)) {
         var _axis3;
         coords[valCoordName] = (_axis3 = axis) === null || _axis3 === void 0 ? void 0 : _axis3.getTranslator().translate(value);
@@ -209,14 +209,14 @@ var chartPlugin = {
       if (this._disposed) {
         return;
       }
-      var originalEvent = event.originalEvent || {};
-      var touch = originalEvent.touches && originalEvent.touches[0] || {};
-      var rootOffset = this._renderer.getRootOffset();
-      var coords = {
+      const originalEvent = event.originalEvent || {};
+      const touch = originalEvent.touches && originalEvent.touches[0] || {};
+      const rootOffset = this._renderer.getRootOffset();
+      const coords = {
         x: touch.pageX || originalEvent.pageX || event.pageX,
         y: touch.pageY || originalEvent.pageY || event.pageY
       };
-      var annotation = this._annotations.items.filter(a => a.hitTest(coords.x - rootOffset.left, coords.y - rootOffset.top))[0];
+      const annotation = this._annotations.items.filter(a => a.hitTest(coords.x - rootOffset.left, coords.y - rootOffset.top))[0];
       if (!annotation || !annotation.options.tooltipEnabled) {
         this._annotations.hideTooltip();
         return;
@@ -257,24 +257,24 @@ var chartPlugin = {
     }
   }
 };
-var polarChartPlugin = {
+const polarChartPlugin = {
   name: 'annotations_polar_chart',
   init() {},
   dispose() {},
   members: {
     _getAnnotationCoords(annotation) {
-      var coords = {
+      const coords = {
         offsetX: annotation.offsetX,
         offsetY: annotation.offsetY,
         canvas: this._calcCanvas()
       };
-      var argAxis = this.getArgumentAxis();
-      var argument = argAxis.validateUnit(annotation.argument);
-      var value = this.getValueAxis().validateUnit(annotation.value);
-      var radius = annotation.radius;
-      var angle = annotation.angle;
-      var pointCoords;
-      var series;
+      const argAxis = this.getArgumentAxis();
+      let argument = argAxis.validateUnit(annotation.argument);
+      const value = this.getValueAxis().validateUnit(annotation.value);
+      const radius = annotation.radius;
+      const angle = annotation.angle;
+      let pointCoords;
+      let series;
       if (annotation.series) {
         series = this.series.filter(s => s.name === annotation.series)[0];
       }
@@ -306,7 +306,7 @@ var polarChartPlugin = {
     _annotationsPointerEventHandler: chartPlugin.members._annotationsPointerEventHandler,
     _isAnnotationBounded: chartPlugin.members._isAnnotationBounded,
     _pullOptions(options) {
-      var polarOptions = extend({}, {
+      const polarOptions = extend({}, {
         radius: options.radius,
         angle: options.angle
       }, chartPlugin.members._pullOptions(options));
@@ -317,7 +317,7 @@ var polarChartPlugin = {
     _clear: chartPlugin.members._clear
   }
 };
-var vectorMapPlugin = {
+const vectorMapPlugin = {
   name: 'annotations_vector_map',
   init() {},
   dispose() {
@@ -326,13 +326,13 @@ var vectorMapPlugin = {
   },
   members: {
     _getAnnotationCoords(annotation) {
-      var coords = {
+      const coords = {
         offsetX: annotation.offsetX,
         offsetY: annotation.offsetY
       };
       coords.canvas = this._projection.getCanvas();
       if (annotation.coordinates) {
-        var data = this._projection.toScreenPoint(annotation.coordinates);
+        const data = this._projection.toScreenPoint(annotation.coordinates);
         coords.x = data[0];
         coords.y = data[1];
       }
@@ -343,7 +343,7 @@ var vectorMapPlugin = {
       return isDefined(options.coordinates);
     },
     _pullOptions(options) {
-      var vectorMapOptions = extend({}, {
+      const vectorMapOptions = extend({}, {
         coordinates: options.coordinates
       }, chartPlugin.members._pullOptions(options));
       delete vectorMapOptions.axis;
@@ -364,8 +364,8 @@ var vectorMapPlugin = {
   },
   extenders: {
     _prepareExtraElements() {
-      var that = this;
-      var renderElements = () => {
+      const that = this;
+      const renderElements = () => {
         that._renderExtraElements();
       };
       that._annotations._offTracker = that._tracker.on({
@@ -376,14 +376,14 @@ var vectorMapPlugin = {
     }
   }
 };
-var pieChartPlugin = {
+const pieChartPlugin = {
   name: 'annotations_pie_chart',
   init() {},
   dispose() {},
   members: {
     _getAnnotationCoords(annotation) {
-      var series;
-      var coords = {
+      let series;
+      const coords = {
         offsetX: annotation.offsetX,
         offsetY: annotation.offsetY,
         canvas: this._canvas
@@ -394,8 +394,8 @@ var pieChartPlugin = {
         } else {
           series = this.series[0];
         }
-        var argument = series.getPointsByArg(annotation.argument)[0];
-        var {
+        const argument = series.getPointsByArg(annotation.argument)[0];
+        const {
           x,
           y
         } = argument.getAnnotationCoords(annotation.location);
@@ -409,7 +409,7 @@ var pieChartPlugin = {
     },
     _annotationsPointerEventHandler: chartPlugin.members._annotationsPointerEventHandler,
     _pullOptions(options) {
-      var pieChartOptions = extend({}, {
+      const pieChartOptions = extend({}, {
         location: options.location
       }, chartPlugin.members._pullOptions(options));
       delete pieChartOptions.axis;
@@ -419,14 +419,14 @@ var pieChartPlugin = {
     _forceAnnotationRender: chartPlugin.members._forceAnnotationRender
   }
 };
-var corePlugin = {
+const corePlugin = {
   name: 'annotations_core',
   init() {
     this._annotations = {
       items: [],
       _hideToolTipForDrag: false,
       tooltip: new Tooltip({
-        cssClass: "".concat(this._rootClassPrefix, "-annotation-tooltip"),
+        cssClass: `${this._rootClassPrefix}-annotation-tooltip`,
         eventTrigger: this._eventTrigger,
         widgetRoot: this.element(),
         widget: this
@@ -451,7 +451,7 @@ var corePlugin = {
   extenders: {
     _createHtmlStructure() {
       this._annotationsGroup = this._renderer.g().attr({
-        'class': "".concat(this._rootClassPrefix, "-annotations")
+        'class': `${this._rootClassPrefix}-annotations`
       }).css(this._getAnnotationStyles()).linkOn(this._renderer.root, 'annotations').linkAppend();
       eventsEngine.on(getDocument(), POINTER_ACTION, e => {
         if (this._disposed) {
@@ -478,14 +478,14 @@ var corePlugin = {
   members: {
     _buildAnnotations() {
       this._annotations.clearItems();
-      var items = this._getOption('annotations', true);
+      const items = this._getOption('annotations', true);
       if (!(items !== null && items !== void 0 && items.length)) {
         return;
       }
       this._annotations.items = createAnnotations(this, items, this._getOption('commonAnnotationSettings'), this._getOption('customizeAnnotation', true), this._pullOptions);
     },
     _setAnnotationTooltipOptions() {
-      var tooltipOptions = extend({}, this._getOption('tooltip'));
+      const tooltipOptions = extend({}, this._getOption('tooltip'));
       tooltipOptions.contentTemplate = tooltipOptions.customizeTooltip = undefined;
       this._annotations.tooltip.update(tooltipOptions);
     },
@@ -529,7 +529,7 @@ var corePlugin = {
   },
   fontFields: ['commonAnnotationSettings.font']
 };
-export var plugins = {
+export const plugins = {
   core: corePlugin,
   chart: chartPlugin,
   polarChart: polarChartPlugin,

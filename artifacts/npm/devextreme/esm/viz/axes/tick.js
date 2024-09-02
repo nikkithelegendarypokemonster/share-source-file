@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/axes/tick.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -18,18 +18,18 @@ function getPathStyle(options) {
   };
 }
 function createTick(axis, renderer, tickOptions, gridOptions, skippedCategory, skipLabels, offset) {
-  var tickOffset = offset || axis._tickOffset;
-  var lineGroup = axis._axisLineGroup;
-  var elementsGroup = axis._axisElementsGroup;
-  var tickStyle = getPathStyle(tickOptions);
-  var gridStyle = getPathStyle(gridOptions);
-  var emptyStrRegExp = /^\s+$/;
-  var axisOptions = axis.getOptions();
-  var labelOptions = axisOptions.label;
-  var labelStyle = axis._textOptions;
+  const tickOffset = offset || axis._tickOffset;
+  const lineGroup = axis._axisLineGroup;
+  const elementsGroup = axis._axisElementsGroup;
+  const tickStyle = getPathStyle(tickOptions);
+  const gridStyle = getPathStyle(gridOptions);
+  const emptyStrRegExp = /^\s+$/;
+  const axisOptions = axis.getOptions();
+  const labelOptions = axisOptions.label;
+  const labelStyle = axis._textOptions;
   function getLabelFontStyle(tick) {
-    var fontStyle = axis._textFontStyles;
-    var customizeColor = labelOptions.customizeColor;
+    let fontStyle = axis._textFontStyles;
+    const customizeColor = labelOptions.customizeColor;
     if (customizeColor && customizeColor.call) {
       fontStyle = extend({}, axis._textFontStyles, {
         fill: customizeColor.call(tick, tick)
@@ -38,18 +38,18 @@ function createTick(axis, renderer, tickOptions, gridOptions, skippedCategory, s
     return fontStyle;
   }
   function createLabelHint(tick, range) {
-    var labelHint = axis.formatHint(tick.value, labelOptions, range);
+    const labelHint = axis.formatHint(tick.value, labelOptions, range);
     if (isDefined(labelHint) && labelHint !== '') {
       tick.getContentContainer().setTitle(labelHint);
     }
   }
   return function (value) {
-    var tick = {
+    const tick = {
       value: value,
       updateValue(newValue) {
         this.value = value = newValue;
       },
-      initCoords: function initCoords() {
+      initCoords: function () {
         this.coords = axis._getTranslatedValue(value, tickOffset);
         this.labelCoords = axis._getTranslatedValue(value);
       },
@@ -110,27 +110,27 @@ function createTick(axis, renderer, tickOptions, gridOptions, skippedCategory, s
         }
         this.coords.angle && axis._rotateTick(lineElement, this.coords, isGridLine);
       },
-      updateTickPosition: function updateTickPosition(options, animate) {
+      updateTickPosition: function (options, animate) {
         this._updateLine(this.mark, {
           points: axis._getTickMarkPoints(tick.coords, tickOptions.length, options)
         }, this._storedCoords && {
           points: axis._getTickMarkPoints(tick._storedCoords, tickOptions.length, options)
         }, animate, false);
       },
-      drawLabel: function drawLabel(range, template) {
+      drawLabel: function (range, template) {
         if (this.templateContainer && axis.isRendered()) {
           this.updateLabelPosition();
           return;
         }
-        var labelIsVisible = labelOptions.visible && !skipLabels && !axis.getTranslator().getBusinessRange().isEmpty() && !axis.areCoordsOutsideAxis(this.labelCoords);
+        const labelIsVisible = labelOptions.visible && !skipLabels && !axis.getTranslator().getBusinessRange().isEmpty() && !axis.areCoordsOutsideAxis(this.labelCoords);
         if (!labelIsVisible) {
           if (this.label) {
             this.removeLabel();
           }
           return;
         }
-        var templateOption = labelOptions.template;
-        var text = axis.formatLabel(value, labelOptions, range);
+        const templateOption = labelOptions.template;
+        const text = axis.formatLabel(value, labelOptions, range);
         if (this.label) {
           this.label.attr({
             text,
@@ -164,7 +164,7 @@ function createTick(axis, renderer, tickOptions, gridOptions, skippedCategory, s
             createLabelHint(this, range);
           }
         }
-        var containerForData = this.getContentContainer();
+        const containerForData = this.getContentContainer();
         containerForData && containerForData.data('chart-data-argument', this.value);
         this.templateContainer && createLabelHint(this, range);
       },
@@ -175,13 +175,13 @@ function createTick(axis, renderer, tickOptions, gridOptions, skippedCategory, s
         return this.templateContainer || this.label;
       },
       fadeOutElements() {
-        var startSettings = {
+        const startSettings = {
           opacity: 1
         };
-        var endSettings = {
+        const endSettings = {
           opacity: 0
         };
-        var animationSettings = {
+        const animationSettings = {
           partitionDuration: 0.5
         };
         if (this.getContentContainer()) {
@@ -195,7 +195,7 @@ function createTick(axis, renderer, tickOptions, gridOptions, skippedCategory, s
         }
       },
       _fadeInLabel() {
-        var group = axis._renderer.g().attr({
+        const group = axis._renderer.g().attr({
           opacity: 0
         }).append(axis._axisElementsGroup).animate({
           opacity: 1
@@ -206,7 +206,7 @@ function createTick(axis, renderer, tickOptions, gridOptions, skippedCategory, s
         this.getContentContainer().append(group);
       },
       _fadeOutLabel() {
-        var group = axis._renderer.g().attr({
+        const group = axis._renderer.g().attr({
           opacity: 1
         }).animate({
           opacity: 0
@@ -218,15 +218,15 @@ function createTick(axis, renderer, tickOptions, gridOptions, skippedCategory, s
       _getTemplateCoords() {
         return axis._getLabelAdjustedCoord(this, (axis._constantLabelOffset || 0) + (tick.labelOffset || 0));
       },
-      updateLabelPosition: function updateLabelPosition(animate) {
-        var templateContainer = this.templateContainer;
+      updateLabelPosition: function (animate) {
+        const templateContainer = this.templateContainer;
         if (!this.getContentContainer()) {
           return;
         }
         if (animate && this._storedLabelsCoords) {
           if (templateContainer) {
             templateContainer.attr(this._storedLabelsCoords);
-            var lCoords = this._getTemplateCoords();
+            const lCoords = this._getTemplateCoords();
             templateContainer.animate(lCoords);
           } else {
             this.label.attr({
@@ -240,8 +240,8 @@ function createTick(axis, renderer, tickOptions, gridOptions, skippedCategory, s
           }
         } else {
           if (templateContainer) {
-            var _lCoords = this._getTemplateCoords();
-            templateContainer.attr(_lCoords);
+            const lCoords = this._getTemplateCoords();
+            templateContainer.attr(lCoords);
           } else {
             this.label.attr({
               x: this.labelCoords.x,
@@ -261,7 +261,7 @@ function createTick(axis, renderer, tickOptions, gridOptions, skippedCategory, s
           textsAlignment: this.labelAlignment || axis.getOptions().label.alignment
         });
       },
-      drawGrid: function drawGrid(drawLine) {
+      drawGrid: function (drawLine) {
         if (gridOptions.visible && skippedCategory !== this.value) {
           if (this.grid) {
             this.grid.append(axis._axisGridGroup);
@@ -273,11 +273,11 @@ function createTick(axis, renderer, tickOptions, gridOptions, skippedCategory, s
           }
         }
       },
-      updateGridPosition: function updateGridPosition(animate) {
+      updateGridPosition: function (animate) {
         this._updateLine(this.grid, axis._getGridPoints(tick.coords), this._storedCoords && axis._getGridPoints(this._storedCoords), animate, true);
       },
       removeLabel() {
-        var contentContainer = this.getContentContainer();
+        const contentContainer = this.getContentContainer();
         contentContainer && contentContainer.remove();
         this._templateDef && this._templateDef.reject();
         this._templateDef = this.templateContainer = this.label = null;

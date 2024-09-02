@@ -49,7 +49,7 @@ function getDefaultTemplate(_ref3, textAlign) {
     lineSpacing,
     size
   } = _ref3;
-  const lineHeight = "".concat((lineSpacing !== null && lineSpacing !== void 0 ? lineSpacing : DEFAULT_LINE_SPACING) + size, "px");
+  const lineHeight = `${(lineSpacing ?? DEFAULT_LINE_SPACING) + size}px`;
   return function (_ref4, container) {
     let {
       valueText
@@ -274,10 +274,9 @@ BaseSparkline.prototype._getDefaultTooltipTemplate = function (options) {
   let defaultTemplateNeeded = true;
   const textAlign = this.option('rtlEnabled') ? 'left' : 'right';
   if ((0, _type.isFunction)(options.customizeTooltip)) {
-    var _options$customizeToo;
     this._tooltip.update(options);
     const formatObject = this._getTooltipData();
-    const customizeResult = (_options$customizeToo = options.customizeTooltip.call(formatObject, formatObject)) !== null && _options$customizeToo !== void 0 ? _options$customizeToo : {};
+    const customizeResult = options.customizeTooltip.call(formatObject, formatObject) ?? {};
     defaultTemplateNeeded = !('html' in customizeResult) && !('text' in customizeResult);
   }
   return defaultTemplateNeeded && getDefaultTemplate(options.font, textAlign);

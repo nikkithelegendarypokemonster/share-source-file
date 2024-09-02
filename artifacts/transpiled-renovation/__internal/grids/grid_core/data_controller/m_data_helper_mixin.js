@@ -7,10 +7,8 @@ exports.DataHelperMixin = void 0;
 var _extend = require("../../../../core/utils/extend");
 var _data_source = require("../../../../data/data_source/data_source");
 var _utils = require("../../../../data/data_source/utils");
-var _data_controller = _interopRequireDefault(require("../../../../ui/collection/data_controller"));
+var _m_data_controller = _interopRequireDefault(require("../../../ui/collection/m_data_controller"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const DATA_SOURCE_OPTIONS_METHOD = '_dataSourceOptions';
 const DATA_SOURCE_CHANGED_METHOD = '_dataSourceChangedHandler';
 const DATA_SOURCE_LOAD_ERROR_METHOD = '_dataSourceLoadErrorHandler';
@@ -19,25 +17,20 @@ const DATA_SOURCE_FROM_URL_LOAD_MODE_METHOD = '_dataSourceFromUrlLoadMode';
 const SPECIFIC_DATA_SOURCE_OPTION = '_getSpecificDataSourceOption';
 const NORMALIZE_DATA_SOURCE = '_normalizeDataSource';
 // TODO Get rid of this mixin
-const DataHelperMixin = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(DataHelperMixin, _Base);
-  function DataHelperMixin() {
-    return _Base.apply(this, arguments) || this;
-  }
-  var _proto = DataHelperMixin.prototype;
-  _proto.postCtor = function postCtor() {
+const DataHelperMixin = Base => class DataHelperMixin extends Base {
+  postCtor() {
     this.on('disposing', () => {
       this._disposeDataSource();
     });
   }
   /**
    * @extended: state_storing, virtual_scrolling
-   */;
-  _proto._refreshDataSource = function _refreshDataSource() {
+   */
+  _refreshDataSource() {
     this._initDataSource();
     this._loadDataSource();
-  };
-  _proto._initDataSource = function _initDataSource() {
+  }
+  _initDataSource() {
     let dataSourceOptions = SPECIFIC_DATA_SOURCE_OPTION in this ? this[SPECIFIC_DATA_SOURCE_OPTION]() : this.option('dataSource');
     let widgetDataSourceOptions;
     let dataSourceType;
@@ -61,18 +54,18 @@ const DataHelperMixin = Base => /*#__PURE__*/function (_Base) {
       this._addDataSourceHandlers();
       this._initDataController();
     }
-  };
-  _proto._initDataController = function _initDataController() {
-    var _a;
-    const dataController = (_a = this.option) === null || _a === void 0 ? void 0 : _a.call(this, '_dataController');
+  }
+  _initDataController() {
+    var _this$option;
+    const dataController = (_this$option = this.option) === null || _this$option === void 0 ? void 0 : _this$option.call(this, '_dataController');
     const dataSource = this._dataSource;
     if (dataController) {
       this._dataController = dataController;
     } else {
-      this._dataController = new _data_controller.default(dataSource);
+      this._dataController = new _m_data_controller.default(dataSource);
     }
-  };
-  _proto._addDataSourceHandlers = function _addDataSourceHandlers() {
+  }
+  _addDataSourceHandlers() {
     if (DATA_SOURCE_CHANGED_METHOD in this) {
       this._addDataSourceChangeHandler();
     }
@@ -83,29 +76,29 @@ const DataHelperMixin = Base => /*#__PURE__*/function (_Base) {
       this._addDataSourceLoadingChangedHandler();
     }
     this._addReadyWatcher();
-  };
-  _proto._addReadyWatcher = function _addReadyWatcher() {
+  }
+  _addReadyWatcher() {
     this.readyWatcher = function (isLoading) {
       this._ready && this._ready(!isLoading);
     }.bind(this);
     this._dataSource.on('loadingChanged', this.readyWatcher);
-  };
-  _proto._addDataSourceChangeHandler = function _addDataSourceChangeHandler() {
+  }
+  _addDataSourceChangeHandler() {
     const dataSource = this._dataSource;
     this._proxiedDataSourceChangedHandler = function (e) {
       this[DATA_SOURCE_CHANGED_METHOD](dataSource.items(), e);
     }.bind(this);
     dataSource.on('changed', this._proxiedDataSourceChangedHandler);
-  };
-  _proto._addDataSourceLoadErrorHandler = function _addDataSourceLoadErrorHandler() {
+  }
+  _addDataSourceLoadErrorHandler() {
     this._proxiedDataSourceLoadErrorHandler = this[DATA_SOURCE_LOAD_ERROR_METHOD].bind(this);
     this._dataSource.on('loadError', this._proxiedDataSourceLoadErrorHandler);
-  };
-  _proto._addDataSourceLoadingChangedHandler = function _addDataSourceLoadingChangedHandler() {
+  }
+  _addDataSourceLoadingChangedHandler() {
     this._proxiedDataSourceLoadingChangedHandler = this[DATA_SOURCE_LOADING_CHANGED_METHOD].bind(this);
     this._dataSource.on('loadingChanged', this._proxiedDataSourceLoadingChangedHandler);
-  };
-  _proto._loadDataSource = function _loadDataSource() {
+  }
+  _loadDataSource() {
     const dataSource = this._dataSource;
     if (dataSource) {
       if (dataSource.isLoaded()) {
@@ -114,18 +107,18 @@ const DataHelperMixin = Base => /*#__PURE__*/function (_Base) {
         dataSource.load();
       }
     }
-  };
-  _proto._loadSingle = function _loadSingle(key, value) {
+  }
+  _loadSingle(key, value) {
     key = key === 'this' ? this._dataSource.key() || 'this' : key;
     return this._dataSource.loadSingle(key, value);
-  };
-  _proto._isLastPage = function _isLastPage() {
+  }
+  _isLastPage() {
     return !this._dataSource || this._dataSource.isLastPage() || !this._dataSource._pageSize;
-  };
-  _proto._isDataSourceLoading = function _isDataSourceLoading() {
+  }
+  _isDataSourceLoading() {
     return this._dataSource && this._dataSource.isLoading();
-  };
-  _proto._disposeDataSource = function _disposeDataSource() {
+  }
+  _disposeDataSource() {
     if (this._dataSource) {
       if (this._isSharedDataSource) {
         delete this._isSharedDataSource;
@@ -143,10 +136,9 @@ const DataHelperMixin = Base => /*#__PURE__*/function (_Base) {
       delete this._proxiedDataSourceLoadErrorHandler;
       delete this._proxiedDataSourceLoadingChangedHandler;
     }
-  };
-  _proto.getDataSource = function getDataSource() {
+  }
+  getDataSource() {
     return this._dataSource || null;
-  };
-  return DataHelperMixin;
-}(Base);
+  }
+};
 exports.DataHelperMixin = DataHelperMixin;

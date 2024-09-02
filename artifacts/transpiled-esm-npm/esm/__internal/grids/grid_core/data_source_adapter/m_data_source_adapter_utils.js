@@ -4,11 +4,11 @@ import { executeAsync } from '../../../../core/utils/common';
 import { extend } from '../../../../core/utils/extend';
 import { isDefined } from '../../../../core/utils/type';
 import gridCoreUtils from '../m_utils';
-export var cloneItems = function cloneItems(items, groupCount) {
+export const cloneItems = function (items, groupCount) {
   if (items) {
     items = items.slice(0);
     if (groupCount) {
-      for (var i = 0; i < items.length; i++) {
+      for (let i = 0; i < items.length; i++) {
         items[i] = extend({
           key: items[i].key
         }, items[i]);
@@ -18,8 +18,8 @@ export var cloneItems = function cloneItems(items, groupCount) {
   }
   return items;
 };
-export var calculateOperationTypes = function calculateOperationTypes(loadOptions, lastLoadOptions, isFullReload) {
-  var operationTypes = {
+export const calculateOperationTypes = function (loadOptions, lastLoadOptions, isFullReload) {
+  let operationTypes = {
     reload: true,
     fullReload: true
   };
@@ -42,21 +42,21 @@ export var calculateOperationTypes = function calculateOperationTypes(loadOption
   }
   return operationTypes;
 };
-export var executeTask = function executeTask(action, timeout) {
+export const executeTask = function (action, timeout) {
   if (isDefined(timeout)) {
     executeAsync(action, timeout);
   } else {
     action();
   }
 };
-export var createEmptyCachedData = function createEmptyCachedData() {
+export const createEmptyCachedData = function () {
   return {
     items: {}
   };
 };
-export var getPageDataFromCache = function getPageDataFromCache(options, updatePaging) {
-  var groupCount = gridCoreUtils.normalizeSortingInfo(options.group || options.storeLoadOptions.group || options.loadOptions.group).length;
-  var items = [];
+export const getPageDataFromCache = function (options, updatePaging) {
+  const groupCount = gridCoreUtils.normalizeSortingInfo(options.group || options.storeLoadOptions.group || options.loadOptions.group).length;
+  const items = [];
   if (fillItemsFromCache(items, options, groupCount)) {
     return items;
   }
@@ -64,23 +64,23 @@ export var getPageDataFromCache = function getPageDataFromCache(options, updateP
     updatePagingOptionsByCache(items, options, groupCount);
   }
 };
-export var fillItemsFromCache = function fillItemsFromCache(items, options, groupCount, fromEnd) {
-  var _a, _b, _c, _d, _e;
-  var {
+export const fillItemsFromCache = function (items, options, groupCount, fromEnd) {
+  var _options$cachedData;
+  const {
     storeLoadOptions
   } = options;
-  var take = (_b = (_a = options.take) !== null && _a !== void 0 ? _a : storeLoadOptions.take) !== null && _b !== void 0 ? _b : 0;
-  var cachedItems = (_c = options.cachedData) === null || _c === void 0 ? void 0 : _c.items;
+  const take = options.take ?? storeLoadOptions.take ?? 0;
+  const cachedItems = (_options$cachedData = options.cachedData) === null || _options$cachedData === void 0 ? void 0 : _options$cachedData.items;
   if (take && cachedItems) {
-    var skip = (_e = (_d = options.skip) !== null && _d !== void 0 ? _d : storeLoadOptions.skip) !== null && _e !== void 0 ? _e : 0;
-    for (var i = 0; i < take; i += 1) {
-      var localIndex = fromEnd ? take - 1 - i : i;
-      var cacheItemIndex = localIndex + skip;
-      var cacheItem = cachedItems[cacheItemIndex];
+    const skip = options.skip ?? storeLoadOptions.skip ?? 0;
+    for (let i = 0; i < take; i += 1) {
+      const localIndex = fromEnd ? take - 1 - i : i;
+      const cacheItemIndex = localIndex + skip;
+      const cacheItem = cachedItems[cacheItemIndex];
       if (cacheItem === undefined && cacheItemIndex in cachedItems) {
         return true;
       }
-      var item = getItemFromCache(options, cacheItem, groupCount, localIndex, take);
+      const item = getItemFromCache(options, cacheItem, groupCount, localIndex, take);
       if (item) {
         items.push(item);
       } else {
@@ -91,20 +91,20 @@ export var fillItemsFromCache = function fillItemsFromCache(items, options, grou
   }
   return false;
 };
-export var getItemFromCache = function getItemFromCache(options, cacheItem, groupCount, index, take) {
+export const getItemFromCache = function (options, cacheItem, groupCount, index, take) {
   if (groupCount && cacheItem) {
-    var skips = index === 0 && options.skips || [];
-    var takes = index === take - 1 && options.takes || [];
+    const skips = index === 0 && options.skips || [];
+    const takes = index === take - 1 && options.takes || [];
     return getGroupItemFromCache(cacheItem, groupCount, skips, takes);
   }
   return cacheItem;
 };
-export var getGroupItemFromCache = function getGroupItemFromCache(cacheItem, groupCount, skips, takes) {
+export const getGroupItemFromCache = function (cacheItem, groupCount, skips, takes) {
   if (groupCount && cacheItem) {
-    var result = _extends({}, cacheItem);
-    var skip = skips[0] || 0;
-    var take = takes[0];
-    var {
+    const result = _extends({}, cacheItem);
+    const skip = skips[0] || 0;
+    const take = takes[0];
+    const {
       items
     } = cacheItem;
     if (items) {
@@ -118,10 +118,10 @@ export var getGroupItemFromCache = function getGroupItemFromCache(cacheItem, gro
       if (take) {
         result.isContinuationOnNextPage = cacheItem.count > take;
       }
-      for (var i = 0; take === undefined ? items[i + skip] : i < take; i += 1) {
-        var childCacheItem = items[i + skip];
-        var isLast = i + 1 === take;
-        var item = getGroupItemFromCache(childCacheItem, groupCount - 1, i === 0 ? skips.slice(1) : [], isLast ? takes.slice(1) : []);
+      for (let i = 0; take === undefined ? items[i + skip] : i < take; i += 1) {
+        const childCacheItem = items[i + skip];
+        const isLast = i + 1 === take;
+        const item = getGroupItemFromCache(childCacheItem, groupCount - 1, i === 0 ? skips.slice(1) : [], isLast ? takes.slice(1) : []);
         if (item !== undefined) {
           result.items.push(item);
         } else {
@@ -133,19 +133,18 @@ export var getGroupItemFromCache = function getGroupItemFromCache(cacheItem, gro
   }
   return cacheItem;
 };
-export var updatePagingOptionsByCache = function updatePagingOptionsByCache(cacheItemsFromBegin, options, groupCount) {
-  var _a, _b;
-  var cacheItemBeginCount = cacheItemsFromBegin.length;
-  var {
+export const updatePagingOptionsByCache = function (cacheItemsFromBegin, options, groupCount) {
+  const cacheItemBeginCount = cacheItemsFromBegin.length;
+  const {
     storeLoadOptions
   } = options;
   if (storeLoadOptions.skip !== undefined && storeLoadOptions.take && !groupCount) {
-    var cacheItemsFromEnd = [];
+    const cacheItemsFromEnd = [];
     fillItemsFromCache(cacheItemsFromEnd, options, groupCount, true);
-    var cacheItemEndCount = cacheItemsFromEnd.length;
+    const cacheItemEndCount = cacheItemsFromEnd.length;
     if (cacheItemBeginCount || cacheItemEndCount) {
-      options.skip = (_a = options.skip) !== null && _a !== void 0 ? _a : storeLoadOptions.skip;
-      options.take = (_b = options.take) !== null && _b !== void 0 ? _b : storeLoadOptions.take;
+      options.skip = options.skip ?? storeLoadOptions.skip;
+      options.take = options.take ?? storeLoadOptions.take;
     }
     if (cacheItemBeginCount) {
       storeLoadOptions.skip += cacheItemBeginCount;
@@ -158,31 +157,30 @@ export var updatePagingOptionsByCache = function updatePagingOptionsByCache(cach
     }
   }
 };
-export var setPageDataToCache = function setPageDataToCache(options, data, groupCount) {
-  var _a, _b, _c, _d;
-  var {
+export const setPageDataToCache = function (options, data, groupCount) {
+  const {
     storeLoadOptions
   } = options;
-  var skip = (_b = (_a = options.skip) !== null && _a !== void 0 ? _a : storeLoadOptions.skip) !== null && _b !== void 0 ? _b : 0;
-  var take = (_d = (_c = options.take) !== null && _c !== void 0 ? _c : storeLoadOptions.take) !== null && _d !== void 0 ? _d : 0;
-  for (var i = 0; i < take; i += 1) {
-    var globalIndex = i + skip;
-    var cacheItems = options.cachedData.items;
-    var skips = i === 0 && options.skips || [];
+  const skip = options.skip ?? storeLoadOptions.skip ?? 0;
+  const take = options.take ?? storeLoadOptions.take ?? 0;
+  for (let i = 0; i < take; i += 1) {
+    const globalIndex = i + skip;
+    const cacheItems = options.cachedData.items;
+    const skips = i === 0 && options.skips || [];
     cacheItems[globalIndex] = getCacheItem(cacheItems[globalIndex], data[i], groupCount, skips);
   }
 };
-export var getCacheItem = function getCacheItem(cacheItem, loadedItem, groupCount, skips) {
+export const getCacheItem = function (cacheItem, loadedItem, groupCount, skips) {
   if (groupCount && loadedItem) {
-    var result = _extends({}, loadedItem);
+    const result = _extends({}, loadedItem);
     delete result.isContinuation;
     delete result.isContinuationOnNextPage;
-    var skip = skips[0] || 0;
+    const skip = skips[0] || 0;
     if (loadedItem.items) {
       result.items = (cacheItem === null || cacheItem === void 0 ? void 0 : cacheItem.items) || {};
       loadedItem.items.forEach((item, index) => {
-        var globalIndex = index + skip;
-        var childSkips = index === 0 ? skips.slice(1) : [];
+        const globalIndex = index + skip;
+        const childSkips = index === 0 ? skips.slice(1) : [];
         result.items[globalIndex] = getCacheItem(result.items[globalIndex], item, groupCount - 1, childSkips);
       });
     }

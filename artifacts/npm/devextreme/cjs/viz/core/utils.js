@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/viz/core/utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -302,7 +302,7 @@ const patchFontOptions = function (options) {
       key = 'fill';
       if ('opacity' in options) {
         const color = new _color.default(value);
-        value = "rgba(".concat(color.r, ",").concat(color.g, ",").concat(color.b, ",").concat(options.opacity, ")");
+        value = `rgba(${color.r},${color.g},${color.b},${options.opacity})`;
       }
     } else {
       key = 'font-' + key;
@@ -648,7 +648,7 @@ function pointInCanvas(canvas, x, y) {
   return x >= canvas.left && x <= canvas.right && y >= canvas.top && y <= canvas.bottom;
 }
 const getNextDefsSvgId = () => {
-  return "DevExpress_".concat(numDefsSvgElements++);
+  return `DevExpress_${numDefsSvgElements++}`;
 };
 exports.getNextDefsSvgId = getNextDefsSvgId;
 function extractColor(color, isBase) {

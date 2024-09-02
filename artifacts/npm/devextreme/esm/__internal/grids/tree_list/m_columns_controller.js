@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/tree_list/m_columns_controller.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,10 +14,10 @@ class TreeListColumnsController extends ColumnsController {
     return super._getFirstItems(dataSourceAdapter).map(node => node.data);
   }
   getFirstDataColumnIndex() {
-    var visibleColumns = this.getVisibleColumns();
-    var visibleColumnsLength = visibleColumns.length;
-    var firstDataColumnIndex = 0;
-    for (var i = 0; i <= visibleColumnsLength - 1; i++) {
+    const visibleColumns = this.getVisibleColumns();
+    const visibleColumnsLength = visibleColumns.length;
+    let firstDataColumnIndex = 0;
+    for (let i = 0; i <= visibleColumnsLength - 1; i++) {
       if (!isDefined(visibleColumns[i].command)) {
         firstDataColumnIndex = visibleColumns[i].index;
         break;

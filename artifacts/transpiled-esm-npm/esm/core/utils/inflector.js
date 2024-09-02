@@ -1,25 +1,25 @@
 import { map } from './iterator';
-var _normalize = function _normalize(text) {
+const _normalize = function (text) {
   if (text === undefined || text === null) {
     return '';
   }
   return String(text);
 };
-var _upperCaseFirst = function _upperCaseFirst(text) {
+const _upperCaseFirst = function (text) {
   return _normalize(text).charAt(0).toUpperCase() + text.substr(1);
 };
-var _chop = function _chop(text) {
+const _chop = function (text) {
   return _normalize(text).replace(/([a-z\d])([A-Z])/g, '$1 $2').split(/[\s_-]+/);
 };
-export var dasherize = function dasherize(text) {
+export const dasherize = function (text) {
   return map(_chop(text), function (p) {
     return p.toLowerCase();
   }).join('-');
 };
-export var underscore = function underscore(text) {
+export const underscore = function (text) {
   return dasherize(text).replace(/-/g, '_');
 };
-export var camelize = function camelize(text, upperFirst) {
+export const camelize = function (text, upperFirst) {
   return map(_chop(text), function (p, i) {
     p = p.toLowerCase();
     if (upperFirst || i > 0) {
@@ -28,21 +28,21 @@ export var camelize = function camelize(text, upperFirst) {
     return p;
   }).join('');
 };
-export var humanize = function humanize(text) {
+export const humanize = function (text) {
   return _upperCaseFirst(dasherize(text).replace(/-/g, ' '));
 };
-export var titleize = function titleize(text) {
+export const titleize = function (text) {
   return map(_chop(text), function (p) {
     return _upperCaseFirst(p.toLowerCase());
   }).join(' ');
 };
-var DIGIT_CHARS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-export var captionize = function captionize(name) {
-  var captionList = [];
-  var i;
-  var char;
-  var isPrevCharNewWord = false;
-  var isNewWord = false;
+const DIGIT_CHARS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+export const captionize = function (name) {
+  const captionList = [];
+  let i;
+  let char;
+  let isPrevCharNewWord = false;
+  let isNewWord = false;
   for (i = 0; i < name.length; i++) {
     char = name.charAt(i);
     isNewWord = char === char.toUpperCase() && char !== '-' && char !== ')' && char !== '/' || char in DIGIT_CHARS;

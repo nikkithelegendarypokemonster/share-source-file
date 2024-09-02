@@ -1,22 +1,22 @@
 /**
 * DevExtreme (esm/core/utils/browser.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { extend } from './extend';
 import { getNavigator } from './window';
-var navigator = getNavigator();
-var webkitRegExp = /(webkit)[ /]([\w.]+)/;
-var mozillaRegExp = /(mozilla)(?:.*? rv:([\w.]+))/;
-var browserFromUA = ua => {
+const navigator = getNavigator();
+const webkitRegExp = /(webkit)[ /]([\w.]+)/;
+const mozillaRegExp = /(mozilla)(?:.*? rv:([\w.]+))/;
+const browserFromUA = ua => {
   ua = ua.toLowerCase();
-  var result = {};
-  var matches = webkitRegExp.exec(ua) || ua.indexOf('compatible') < 0 && mozillaRegExp.exec(ua) || [];
-  var browserName = matches[1];
-  var browserVersion = matches[2];
+  const result = {};
+  const matches = webkitRegExp.exec(ua) || ua.indexOf('compatible') < 0 && mozillaRegExp.exec(ua) || [];
+  let browserName = matches[1];
+  let browserVersion = matches[2];
   if (browserName === 'webkit') {
     result['webkit'] = true;
     if (ua.indexOf('chrome') >= 0 || ua.indexOf('crios') >= 0) {

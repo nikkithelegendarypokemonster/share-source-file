@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.lt.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -200,7 +200,9 @@
             "dxDataGrid-filterPanelCreateFilter": "Sukurti filtrą",
             "dxDataGrid-filterPanelClearFilter": "Išvalyti",
             "dxDataGrid-filterPanelFilterEnabledHint": "Aktyvuoti filtrą",
+            "dxDataGrid-masterDetail": "Cell with details",
             "dxTreeList-ariaTreeList": "Tree list with {0} rows and {1} columns",
+            "dxTreeList-ariaExpandableInstruction": "Press Ctrl + right arrow to expand the focused node and Ctrl + left arrow to collapse it",
             "dxTreeList-ariaSearchInGrid": "Ieškoti duomenų medyje",
             "dxTreeList-ariaToolbar": "Duomenų medžio įrankių juosta",
             "dxTreeList-editingAddRowToNode": "Pridėti",
@@ -233,6 +235,7 @@
             "dxPivotGrid-dataFieldArea": "Numeskite duomenų laukus čia",
             "dxPivotGrid-rowFieldArea": "Numeskite eilučių laukus čia",
             "dxPivotGrid-filterFieldArea": "Numeskite filtrų laukus čia",
+            "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
             "dxScheduler-editorLabelTitle": "Tema",
             "dxScheduler-editorLabelStartDate": "Pradžios data",
             "dxScheduler-editorLabelEndDate": "Pabaigos data",
@@ -279,6 +282,10 @@
             "dxScheduler-confirmRecurrenceDeleteOccurrence": "Ištrinti paskyrimą",
             "dxScheduler-noTimezoneTitle": "Nepasirinkta laiko zona",
             "dxScheduler-moreAppointments": "dar {0}",
+            "dxCalendar-currentDay": "Today",
+            "dxCalendar-currentMonth": "Current month",
+            "dxCalendar-currentYear": "Current year",
+            "dxCalendar-currentYearRange": "Current year range",
             "dxCalendar-todayButtonText": "Šiandien",
             "dxCalendar-ariaWidgetName": "Kalendorius",
             "dxCalendar-previousMonthButtonLabel": "Previous month",
@@ -293,6 +300,9 @@
             "dxCalendar-captionYearLabel": "Year selection",
             "dxCalendar-captionDecadeLabel": "Decade selection",
             "dxCalendar-captionCenturyLabel": "Century selection",
+            "dxCalendar-selectedDate": "The selected date is {0}",
+            "dxCalendar-selectedDateRange": "The selected date range is from {0} to {1}",
+            "dxCalendar-readOnlyLabel": "Read-only calendar",
             "dxColorView-ariaRed": "Raudona",
             "dxColorView-ariaGreen": "Žalia",
             "dxColorView-ariaBlue": "Mėlyna",
@@ -686,7 +696,8 @@
             "dxMultiView-elementAriaRoleDescription": "MultiView",
             "dxMultiView-elementAriaLabel": "Use the arrow keys or swipe to navigate between views",
             "dxMultiView-itemAriaRoleDescription": "View",
-            "dxMultiView-itemAriaLabel": "{0} of {1}"
+            "dxMultiView-itemAriaLabel": "{0} of {1}",
+            "dxSplitter-resizeHandleAriaLabel": "Split bar"
         }
     });
 }));

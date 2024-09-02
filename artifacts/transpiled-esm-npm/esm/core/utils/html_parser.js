@@ -1,6 +1,6 @@
 import domAdapter from '../dom_adapter';
-var isTagName = /<([a-z][^/\0>\x20\t\r\n\f]+)/i;
-var tagWrappers = {
+const isTagName = /<([a-z][^/\0>\x20\t\r\n\f]+)/i;
+const tagWrappers = {
   default: {
     tagsCount: 0,
     startTags: '',
@@ -29,22 +29,22 @@ var tagWrappers = {
 };
 tagWrappers.tbody = tagWrappers.colgroup = tagWrappers.caption = tagWrappers.tfoot = tagWrappers.thead;
 tagWrappers.th = tagWrappers.td;
-export var parseHTML = function parseHTML(html) {
+export const parseHTML = function (html) {
   if (typeof html !== 'string') {
     return null;
   }
-  var fragment = domAdapter.createDocumentFragment();
-  var container = fragment.appendChild(domAdapter.createElement('div'));
-  var tags = isTagName.exec(html);
-  var firstRootTag = tags && tags[1].toLowerCase();
-  var tagWrapper = tagWrappers[firstRootTag] || tagWrappers.default;
+  const fragment = domAdapter.createDocumentFragment();
+  let container = fragment.appendChild(domAdapter.createElement('div'));
+  const tags = isTagName.exec(html);
+  const firstRootTag = tags && tags[1].toLowerCase();
+  const tagWrapper = tagWrappers[firstRootTag] || tagWrappers.default;
   container.innerHTML = tagWrapper.startTags + html + tagWrapper.endTags;
-  for (var i = 0; i < tagWrapper.tagsCount; i++) {
+  for (let i = 0; i < tagWrapper.tagsCount; i++) {
     container = container.lastChild;
   }
   return [...container.childNodes];
 };
-export var isTablePart = function isTablePart(html) {
-  var tags = isTagName.exec(html);
+export const isTablePart = function (html) {
+  const tags = isTagName.exec(html);
   return tags && tags[1] in tagWrappers;
 };

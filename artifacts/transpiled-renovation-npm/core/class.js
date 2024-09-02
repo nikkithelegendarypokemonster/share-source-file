@@ -85,17 +85,6 @@ const subclassOf = function (parentClass) {
 const abstract = function () {
   throw _errors.default.Error('E0001');
 };
-const copyStatic = function () {
-  const hasOwn = Object.prototype.hasOwnProperty;
-  return function (source, destination) {
-    for (const key in source) {
-      if (!hasOwn.call(source, key)) {
-        return;
-      }
-      destination[key] = source[key];
-    }
-  };
-}();
 const classImpl = function () {};
 classImpl.inherit = function (members) {
   const inheritor = function () {
@@ -118,7 +107,7 @@ classImpl.inherit = function (members) {
     }
   };
   inheritor.prototype = clonePrototype(this);
-  copyStatic(this, inheritor);
+  Object.setPrototypeOf(inheritor, this);
   inheritor.inherit = this.inherit;
   inheritor.abstract = abstract;
   inheritor.redefine = redefine;

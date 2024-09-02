@@ -1,7 +1,7 @@
 /**
 * DevExtreme (file_management/object_provider.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,29 +10,37 @@ import FileSystemProviderBase, {
     FileSystemProviderBaseOptions,
 } from './provider_base';
 
+/** @public */
 export type Options = ObjectFileSystemProviderOptions;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated Use Options instead
+ * @namespace DevExpress.fileManagement
+ * @docid
  */
 export interface ObjectFileSystemProviderOptions extends FileSystemProviderBaseOptions<ObjectFileSystemProvider> {
     /**
-     * Specifies which data field provides information about files content.
+     * @docid
+     * @public
      */
     contentExpr?: string | Function;
     /**
-     * Specifies an array of data objects that represent files and directories.
+     * @docid
+     * @public
      */
     data?: Array<any>;
     /**
-     * Specifies which data field provides information about nested files and directories.
+     * @docid
+     * @public
      */
     itemsExpr?: string | Function;
 }
 /**
- * The Object file system provider works with a file system represented by an in-memory array of JSON objects.
+ * @docid
+ * @inherits FileSystemProviderBase
+ * @namespace DevExpress.fileManagement
+ * @public
+ * @options ObjectFileSystemProviderOptions
  */
 export default class ObjectFileSystemProvider extends FileSystemProviderBase {
     constructor(options?: Options);

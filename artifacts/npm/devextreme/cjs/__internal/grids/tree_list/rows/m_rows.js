@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/tree_list/rows/m_rows.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,8 +15,6 @@ var _remove = require("../../../../events/remove");
 var _m_rows_view = require("../../../grids/grid_core/views/m_rows_view");
 var _m_core = _interopRequireDefault(require("../m_core"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const TREELIST_TEXT_CONTENT = 'dx-treelist-text-content';
 const TREELIST_EXPAND_ICON_CONTAINER_CLASS = 'dx-treelist-icon-container';
 const TREELIST_CELL_EXPANDABLE_CLASS = 'dx-treelist-cell-expandable';
@@ -33,13 +31,8 @@ const createIcon = function (hasIcon, isExpanded) {
   }
   return $iconElement;
 };
-let TreeListRowsView = /*#__PURE__*/function (_RowsView) {
-  _inheritsLoose(TreeListRowsView, _RowsView);
-  function TreeListRowsView() {
-    return _RowsView.apply(this, arguments) || this;
-  }
-  var _proto = TreeListRowsView.prototype;
-  _proto._renderIconContainer = function _renderIconContainer($container, options) {
+class TreeListRowsView extends _m_rows_view.RowsView {
+  _renderIconContainer($container, options) {
     const $iconContainer = (0, _renderer.default)('<div>').addClass(TREELIST_EXPAND_ICON_CONTAINER_CLASS).appendTo($container);
     if (options.watch) {
       const dispose = options.watch(() => [options.row.level, options.row.isExpanded, options.row.node.hasChildren], () => {
@@ -50,8 +43,8 @@ let TreeListRowsView = /*#__PURE__*/function (_RowsView) {
     }
     $container.addClass(TREELIST_CELL_EXPANDABLE_CLASS);
     return this._renderIcons($iconContainer, options);
-  };
-  _proto._renderIcons = function _renderIcons($iconContainer, options) {
+  }
+  _renderIcons($iconContainer, options) {
     const {
       row
     } = options;
@@ -62,19 +55,19 @@ let TreeListRowsView = /*#__PURE__*/function (_RowsView) {
       $iconContainer.append(createIcon(i === level && row.node.hasChildren, row.isExpanded));
     }
     return $iconContainer;
-  };
-  _proto._renderCellCommandContent = function _renderCellCommandContent(container, model) {
+  }
+  _renderCellCommandContent(container, model) {
     this._renderIconContainer(container, model);
     return true;
-  };
-  _proto._processTemplate = function _processTemplate(template, options) {
-    var _a;
+  }
+  _processTemplate(template, options) {
+    var _options$column;
     const that = this;
     let resultTemplate;
-    const renderingTemplate = _RowsView.prototype._processTemplate.call(this, template);
+    const renderingTemplate = super._processTemplate(template);
     // @ts-expect-error
     const firstDataColumnIndex = that._columnsController.getFirstDataColumnIndex();
-    if (renderingTemplate && ((_a = options.column) === null || _a === void 0 ? void 0 : _a.index) === firstDataColumnIndex) {
+    if (renderingTemplate && ((_options$column = options.column) === null || _options$column === void 0 ? void 0 : _options$column.index) === firstDataColumnIndex) {
       resultTemplate = {
         render(options) {
           const $container = options.container;
@@ -88,12 +81,12 @@ let TreeListRowsView = /*#__PURE__*/function (_RowsView) {
       resultTemplate = renderingTemplate;
     }
     return resultTemplate;
-  };
-  _proto._updateCell = function _updateCell($cell, options) {
+  }
+  _updateCell($cell, options) {
     $cell = $cell.hasClass(TREELIST_TEXT_CONTENT) ? $cell.parent() : $cell;
-    _RowsView.prototype._updateCell.call(this, $cell, options);
-  };
-  _proto._rowClick = function _rowClick(e) {
+    super._updateCell($cell, options);
+  }
+  _rowClick(e) {
     const dataController = this._dataController;
     const $targetElement = (0, _renderer.default)(e.event.target);
     const isExpandIcon = this.isExpandIcon($targetElement);
@@ -102,31 +95,30 @@ let TreeListRowsView = /*#__PURE__*/function (_RowsView) {
       // @ts-expect-error
       dataController.changeRowExpand(item.key);
     }
-    _RowsView.prototype._rowClick.call(this, e);
-  };
-  _proto._createRow = function _createRow(row) {
+    super._rowClick(e);
+  }
+  _createRow(row) {
     const node = row && row.node;
-    const $rowElement = _RowsView.prototype._createRow.apply(this, arguments);
+    const $rowElement = super._createRow.apply(this, arguments);
     if (node) {
       this.setAria('level', row.level + 1, $rowElement);
       if (node.hasChildren) {
-        this.setAria('expanded', row.isExpanded, $rowElement);
+        this.setAriaExpandedAttribute($rowElement, row);
       }
     }
     return $rowElement;
-  };
-  _proto._getGridRoleName = function _getGridRoleName() {
+  }
+  _getGridRoleName() {
     return 'treegrid';
-  };
-  _proto.isExpandIcon = function isExpandIcon($targetElement) {
-    return !!$targetElement.closest(".".concat(TREELIST_EXPANDED_CLASS, ", .").concat(TREELIST_COLLAPSED_CLASS)).length;
-  };
-  _proto.setAriaExpandedAttribute = function setAriaExpandedAttribute($row, row) {
+  }
+  isExpandIcon($targetElement) {
+    return !!$targetElement.closest(`.${TREELIST_EXPANDED_CLASS}, .${TREELIST_COLLAPSED_CLASS}`).length;
+  }
+  setAriaExpandedAttribute($row, row) {
     const isRowExpanded = row.isExpanded;
     this.setAria('expanded', (0, _type.isDefined)(isRowExpanded) && isRowExpanded.toString(), $row);
-  };
-  return TreeListRowsView;
-}(_m_rows_view.RowsView);
+  }
+}
 _m_core.default.registerModule('rows', {
   defaultOptions: _m_rows_view.rowsModule.defaultOptions,
   views: {

@@ -7,9 +7,9 @@ import { ViewDataGeneratorMonth } from './m_view_data_generator_month';
 import { ViewDataGeneratorTimelineMonth } from './m_view_data_generator_timeline_month';
 import { ViewDataGeneratorWeek } from './m_view_data_generator_week';
 import { ViewDataGeneratorWorkWeek } from './m_view_data_generator_work_week';
-var DAYS_IN_WEEK = 7;
-var MS_IN_DAY = 24 * 60 * 60 * 1000;
-export var getViewDataGeneratorByViewType = viewType => {
+const DAYS_IN_WEEK = 7;
+const MS_IN_DAY = 24 * 60 * 60 * 1000;
+export const getViewDataGeneratorByViewType = viewType => {
   switch (viewType) {
     case VIEWS.MONTH:
       return new ViewDataGeneratorMonth();
@@ -29,8 +29,8 @@ export var getViewDataGeneratorByViewType = viewType => {
   }
 };
 export function alignToFirstDayOfWeek(date, firstDayOfWeek) {
-  var newDate = new Date(date);
-  var dayDiff = newDate.getDay() - firstDayOfWeek;
+  const newDate = new Date(date);
+  let dayDiff = newDate.getDay() - firstDayOfWeek;
   if (dayDiff < 0) {
     dayDiff += DAYS_IN_WEEK;
   }
@@ -38,17 +38,17 @@ export function alignToFirstDayOfWeek(date, firstDayOfWeek) {
   return newDate;
 }
 export function alignToLastDayOfWeek(date, firstDayOfWeek) {
-  var newDate = alignToFirstDayOfWeek(date, firstDayOfWeek);
+  const newDate = alignToFirstDayOfWeek(date, firstDayOfWeek);
   newDate.setDate(newDate.getDate() + DAYS_IN_WEEK - 1);
   return newDate;
 }
 export function calculateDaysBetweenDates(fromDate, toDate) {
-  var msDiff = dateUtils.trimTime(toDate).getTime() - dateUtils.trimTime(fromDate).getTime();
+  const msDiff = dateUtils.trimTime(toDate).getTime() - dateUtils.trimTime(fromDate).getTime();
   return Math.round(msDiff / MS_IN_DAY) + 1;
 }
 export function calculateAlignedWeeksBetweenDates(fromDate, toDate, firstDayOfWeek) {
-  var alignedFromDate = alignToFirstDayOfWeek(fromDate, firstDayOfWeek);
-  var alignedToDate = alignToLastDayOfWeek(toDate, firstDayOfWeek);
-  var weekCount = calculateDaysBetweenDates(alignedFromDate, alignedToDate) / DAYS_IN_WEEK;
+  const alignedFromDate = alignToFirstDayOfWeek(fromDate, firstDayOfWeek);
+  const alignedToDate = alignToLastDayOfWeek(toDate, firstDayOfWeek);
+  const weekCount = calculateDaysBetweenDates(alignedFromDate, alignedToDate) / DAYS_IN_WEEK;
   return Math.max(weekCount, 6);
 }

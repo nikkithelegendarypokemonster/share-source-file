@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/viz/components/chart_theme_manager.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -128,7 +128,7 @@ const ThemeManager = exports.ThemeManager = _base_theme_manager.BaseThemeManager
         mainSeriesColor = (0, _utils.extractColor)(settings.color, true) || palette.getNextColor(seriesCount);
       } else {
         mainSeriesColor = function (argument, index, count) {
-          const cat = "".concat(argument, "-").concat(index);
+          const cat = `${argument}-${index}`;
           if (!that._multiPieColors[cat]) {
             that._multiPieColors[cat] = palette.getNextColor(count);
           }

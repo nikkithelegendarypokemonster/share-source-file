@@ -1,14 +1,14 @@
 import { extend } from './extend';
 import { getNavigator } from './window';
-var navigator = getNavigator();
-var webkitRegExp = /(webkit)[ /]([\w.]+)/;
-var mozillaRegExp = /(mozilla)(?:.*? rv:([\w.]+))/;
-var browserFromUA = ua => {
+const navigator = getNavigator();
+const webkitRegExp = /(webkit)[ /]([\w.]+)/;
+const mozillaRegExp = /(mozilla)(?:.*? rv:([\w.]+))/;
+const browserFromUA = ua => {
   ua = ua.toLowerCase();
-  var result = {};
-  var matches = webkitRegExp.exec(ua) || ua.indexOf('compatible') < 0 && mozillaRegExp.exec(ua) || [];
-  var browserName = matches[1];
-  var browserVersion = matches[2];
+  const result = {};
+  const matches = webkitRegExp.exec(ua) || ua.indexOf('compatible') < 0 && mozillaRegExp.exec(ua) || [];
+  let browserName = matches[1];
+  let browserVersion = matches[2];
   if (browserName === 'webkit') {
     result['webkit'] = true;
     if (ua.indexOf('chrome') >= 0 || ua.indexOf('crios') >= 0) {

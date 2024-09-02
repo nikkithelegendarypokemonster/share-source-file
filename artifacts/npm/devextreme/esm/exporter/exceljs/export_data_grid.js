@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/exporter/exceljs/export_data_grid.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -28,7 +28,7 @@ class DataGridHelpers {
   _trySetAutoFilter(cellRange) {
     if (this.autoFilterEnabled) {
       if (!isDefined(this.worksheet.autoFilter) && this.dataProvider.getRowsCount() > 0) {
-        var dataRange = {
+        const dataRange = {
           from: {
             row: cellRange.from.row + this.dataProvider.getHeaderRowCount() - 1,
             column: cellRange.from.column

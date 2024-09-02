@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/gantt/ui.gantt.task.area.container.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -26,7 +26,7 @@ export class TaskAreaContainer {
     return this._scrollView.scrollTop();
   }
   set scrollTop(value) {
-    var diff = value - this._scrollView.scrollTop();
+    const diff = value - this._scrollView.scrollTop();
     if (diff !== 0) {
       this._scrollView.scrollBy({
         left: 0,
@@ -38,7 +38,7 @@ export class TaskAreaContainer {
     return this._scrollView.scrollLeft();
   }
   set scrollLeft(value) {
-    var diff = value - this._scrollView.scrollLeft();
+    const diff = value - this._scrollView.scrollLeft();
     if (diff !== 0) {
       this._scrollView.scrollBy({
         left: diff,

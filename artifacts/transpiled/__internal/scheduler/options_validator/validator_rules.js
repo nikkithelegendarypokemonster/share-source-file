@@ -11,7 +11,7 @@ const endDayHourMustBeGreaterThanStartDayHour = exports.endDayHourMustBeGreaterT
     startDayHour,
     endDayHour
   } = _ref;
-  return (0, _index.greaterThan)(endDayHour, startDayHour) || "endDayHour: ".concat(endDayHour, " must be greater that startDayHour: ").concat(startDayHour, ".");
+  return (0, _index.greaterThan)(endDayHour, startDayHour) || `endDayHour: ${endDayHour} must be greater that startDayHour: ${startDayHour}.`;
 });
 const visibleIntervalMustBeDivisibleByCellDuration = exports.visibleIntervalMustBeDivisibleByCellDuration = (0, _index2.createValidatorRule)('visibleIntervalMustBeDivisibleByCellDuration', _ref2 => {
   let {
@@ -20,7 +20,7 @@ const visibleIntervalMustBeDivisibleByCellDuration = exports.visibleIntervalMust
     endDayHour
   } = _ref2;
   const visibleInterval = (endDayHour - startDayHour) * 60;
-  return (0, _index.divisibleBy)(visibleInterval, cellDuration) || "endDayHour - startDayHour: ".concat(visibleInterval, " (minutes), must be divisible by cellDuration: ").concat(cellDuration, " (minutes).");
+  return (0, _index.divisibleBy)(visibleInterval, cellDuration) || `endDayHour - startDayHour: ${visibleInterval} (minutes), must be divisible by cellDuration: ${cellDuration} (minutes).`;
 });
 const cellDurationMustBeLessThanVisibleInterval = exports.cellDurationMustBeLessThanVisibleInterval = (0, _index2.createValidatorRule)('cellDurationMustBeLessThanVisibleInterval', _ref3 => {
   let {
@@ -29,5 +29,5 @@ const cellDurationMustBeLessThanVisibleInterval = exports.cellDurationMustBeLess
     endDayHour
   } = _ref3;
   const visibleInterval = (endDayHour - startDayHour) * 60;
-  return (0, _index.lessThan)(cellDuration, visibleInterval, false) || "endDayHour - startDayHour: ".concat(visibleInterval, " (minutes), must be greater or equal the cellDuration: ").concat(cellDuration, " (minutes).");
+  return (0, _index.lessThan)(cellDuration, visibleInterval, false) || `endDayHour - startDayHour: ${visibleInterval} (minutes), must be greater or equal the cellDuration: ${cellDuration} (minutes).`;
 });

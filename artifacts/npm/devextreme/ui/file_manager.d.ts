@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/file_manager.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -50,20 +50,17 @@ import {
 } from '../common';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @hidden
  */
 export interface ActionEventInfo {
-    /**
-     * 
-     */
+    /** @docid */
     errorCode?: number;
-    /**
-     * 
-     */
+    /** @docid */
     errorText: string;
     /**
-     * 
+     * @docid
+     * @type boolean|Promise<void>
      */
     cancel: boolean | PromiseLike<void>;
 }
@@ -76,746 +73,938 @@ export {
     ToolbarItemLocation,
 };
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type FileManagerItemViewMode = 'details' | 'thumbnails';
+/** @public */
 export type FileManagerPredefinedContextMenuItem = 'create' | 'upload' | 'refresh' | 'download' | 'move' | 'copy' | 'rename' | 'delete';
+/** @public */
 export type FileManagerPredefinedToolbarItem = 'showNavPane' | 'create' | 'upload' | 'refresh' | 'switchView' | 'download' | 'move' | 'copy' | 'rename' | 'delete' | 'clearSelection' | 'separator';
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type FileManagerViewArea = 'navPane' | 'itemView';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_file_manager_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxFileManager>;
 
 /**
- * The type of the contextMenuItemClick event handler&apos;s argument.
+ * @docid _ui_file_manager_ContextMenuItemClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ContextMenuItemClickEvent = NativeEventInfo<dxFileManager, KeyboardEvent | PointerEvent | MouseEvent> & {
     /**
-     * 
+     * @docid _ui_file_manager_ContextMenuItemClickEvent.itemData
+     * @type object
      */
     readonly itemData: any;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ContextMenuItemClickEvent.itemElement */
     readonly itemElement: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ContextMenuItemClickEvent.itemIndex */
     readonly itemIndex: number;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ContextMenuItemClickEvent.fileSystemItem */
     readonly fileSystemItem?: FileSystemItem;
     /**
-     * 
+     * @docid _ui_file_manager_ContextMenuItemClickEvent.viewArea
+     * @type Enums.FileManagerViewArea
      */
     readonly viewArea: FileManagerViewArea;
 };
 
 /**
- * The type of the contextMenuShowing event handler&apos;s argument.
+ * @docid _ui_file_manager_ContextMenuShowingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,NativeEventInfo
  */
 export type ContextMenuShowingEvent = Cancelable & NativeEventInfo<dxFileManager, KeyboardEvent | PointerEvent | MouseEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ContextMenuShowingEvent.fileSystemItem */
     readonly fileSystemItem?: FileSystemItem;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ContextMenuShowingEvent.targetElement */
     readonly targetElement?: DxElement;
     /**
-     * 
+     * @docid _ui_file_manager_ContextMenuShowingEvent.viewArea
+     * @type Enums.FileManagerViewArea
      */
     readonly viewArea: FileManagerViewArea;
 };
 
 /**
- * The type of the currentDirectoryChanged event handler&apos;s argument.
+ * @docid _ui_file_manager_CurrentDirectoryChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type CurrentDirectoryChangedEvent = EventInfo<dxFileManager> & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_CurrentDirectoryChangedEvent.directory */
     readonly directory: FileSystemItem;
 };
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_file_manager_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxFileManager>;
 
 /**
- * The type of the errorOccurred event handler&apos;s argument.
+ * @docid _ui_file_manager_ErrorOccurredEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ErrorOccurredEvent = EventInfo<dxFileManager> & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ErrorOccurredEvent.errorCode */
     readonly errorCode?: number;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ErrorOccurredEvent.errorText */
     errorText?: string;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ErrorOccurredEvent.fileSystemItem */
     readonly fileSystemItem?: FileSystemItem;
 };
 
 /**
- * The type of the focusedItemChanged event handler&apos;s argument.
+ * @docid _ui_file_manager_FocusedItemChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type FocusedItemChangedEvent = EventInfo<dxFileManager> & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_FocusedItemChangedEvent.item */
     readonly item?: FileSystemItem;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_FocusedItemChangedEvent.itemElement */
     readonly itemElement?: DxElement;
 };
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_file_manager_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxFileManager>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_file_manager_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxFileManager> & ChangedOptionInfo;
 
 /**
- * The type of the selectedFileOpened event handler&apos;s argument.
+ * @docid _ui_file_manager_SelectedFileOpenedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type SelectedFileOpenedEvent = EventInfo<dxFileManager> & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_SelectedFileOpenedEvent.file */
     readonly file: FileSystemItem;
 };
 
 /**
- * The type of the selectionChanged event handler&apos;s argument.
+ * @docid _ui_file_manager_SelectionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type SelectionChangedEvent = EventInfo<dxFileManager> & {
     /**
-     * 
+     * @docid _ui_file_manager_SelectionChangedEvent.currentSelectedItemKeys
+     * @type Array<string>
      */
     readonly currentSelectedItemKeys: Array<string>;
     /**
-     * 
+     * @docid _ui_file_manager_SelectionChangedEvent.currentDeselectedItemKeys
+     * @type Array<string>
      */
     readonly currentDeselectedItemKeys: Array<string>;
     /**
-     * 
+     * @docid _ui_file_manager_SelectionChangedEvent.selectedItems
+     * @type Array<FileSystemItem>
      */
     readonly selectedItems: Array<FileSystemItem>;
     /**
-     * 
+     * @docid _ui_file_manager_SelectionChangedEvent.selectedItemKeys
+     * @type Array<string>
      */
     readonly selectedItemKeys: Array<string>;
 };
 
 /**
- * The type of the toolbarItemClick event handler&apos;s argument.
+ * @docid _ui_file_manager_ToolbarItemClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ToolbarItemClickEvent = NativeEventInfo<dxFileManager, PointerEvent | MouseEvent> & {
     /**
-     * 
+     * @docid _ui_file_manager_ToolbarItemClickEvent.itemData
+     * @type object
      */
     readonly itemData: any;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ToolbarItemClickEvent.itemElement */
     readonly itemElement: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ToolbarItemClickEvent.itemIndex */
     readonly itemIndex: number;
 };
 
 /**
- * The type of the directoryCreating event handler&apos;s argument.
+ * @docid _ui_file_manager_DirectoryCreatingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ActionEventInfo
  */
 export type DirectoryCreatingEvent = EventInfo<dxFileManager> & ActionEventInfo & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_DirectoryCreatingEvent.parentDirectory */
     readonly parentDirectory: FileSystemItem;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_DirectoryCreatingEvent.name */
     readonly name: string;
 };
 
 /**
- * The type of the directoryCreated event handler&apos;s argument.
+ * @docid _ui_file_manager_DirectoryCreatedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DirectoryCreatedEvent = EventInfo<dxFileManager> & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_DirectoryCreatedEvent.parentDirectory */
     readonly parentDirectory: FileSystemItem;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_DirectoryCreatedEvent.name */
     readonly name: string;
 };
 
 /**
- * The type of the itemRenaming event handler&apos;s argument.
+ * @docid _ui_file_manager_ItemRenamingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ActionEventInfo
  */
 export type ItemRenamingEvent = EventInfo<dxFileManager> & ActionEventInfo & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemRenamingEvent.item */
     readonly item: FileSystemItem;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemRenamingEvent.newName */
     readonly newName: string;
 };
 
 /**
- * The type of the itemRenamed event handler&apos;s argument.
+ * @docid _ui_file_manager_ItemRenamedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ItemRenamedEvent = EventInfo<dxFileManager> & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemRenamedEvent.sourceItem */
     readonly sourceItem: FileSystemItem;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemRenamedEvent.itemName */
     readonly itemName: string;
 };
 
 /**
- * The type of the itemMoving event handler&apos;s argument.
+ * @docid _ui_file_manager_ItemMovingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ActionEventInfo
  */
 export type ItemMovingEvent = EventInfo<dxFileManager> & ActionEventInfo & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemMovingEvent.item */
     readonly item: FileSystemItem;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemMovingEvent.destinationDirectory */
     readonly destinationDirectory: FileSystemItem;
 };
 
 /**
- * The type of the itemMoved event handler&apos;s argument.
+ * @docid _ui_file_manager_ItemMovedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ItemMovedEvent = EventInfo<dxFileManager> & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemMovedEvent.sourceItem */
     readonly sourceItem: FileSystemItem;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemMovedEvent.parentDirectory */
     readonly parentDirectory: FileSystemItem;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemMovedEvent.itemName */
     readonly itemName: string;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemMovedEvent.itemPath */
     readonly itemPath: string;
 };
 
 /**
- * The type of the itemCopying event handler&apos;s argument.
+ * @docid _ui_file_manager_ItemCopyingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ActionEventInfo
  */
 export type ItemCopyingEvent = EventInfo<dxFileManager> & ActionEventInfo & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemCopyingEvent.item */
     readonly item: FileSystemItem;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemCopyingEvent.destinationDirectory */
     readonly destinationDirectory: FileSystemItem;
 };
 
 /**
- * The type of the itemCopied event handler&apos;s argument.
+ * @docid _ui_file_manager_ItemCopiedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ItemCopiedEvent = EventInfo<dxFileManager> & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemCopiedEvent.sourceItem */
     readonly sourceItem: FileSystemItem;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemCopiedEvent.parentDirectory */
     readonly parentDirectory: FileSystemItem;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemCopiedEvent.itemName */
     readonly itemName: string;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemCopiedEvent.itemPath */
     readonly itemPath: string;
 };
 
 /**
- * The type of the itemDeleting event handler&apos;s argument.
+ * @docid _ui_file_manager_ItemDeletingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ActionEventInfo
  */
 export type ItemDeletingEvent = EventInfo<dxFileManager> & ActionEventInfo & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemDeletingEvent.item */
     readonly item: FileSystemItem;
 };
 
 /**
- * The type of the itemDeleted event handler&apos;s argument.
+ * @docid _ui_file_manager_ItemDeletedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ItemDeletedEvent = EventInfo<dxFileManager> & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemDeletedEvent.item */
     readonly item: FileSystemItem;
 };
 
 /**
- * The type of the fileUploading event handler&apos;s argument.
+ * @docid _ui_file_manager_FileUploadingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ActionEventInfo
  */
 export type FileUploadingEvent = EventInfo<dxFileManager> & ActionEventInfo & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_FileUploadingEvent.fileData */
     readonly fileData: File;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_FileUploadingEvent.destinationDirectory */
     readonly destinationDirectory: FileSystemItem;
 };
 
 /**
- * The type of the fileUploaded event handler&apos;s argument.
+ * @docid _ui_file_manager_FileUploadedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type FileUploadedEvent = EventInfo<dxFileManager> & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_FileUploadedEvent.fileData */
     readonly fileData: File;
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_FileUploadedEvent.parentDirectory */
     readonly parentDirectory: FileSystemItem;
 };
 
 /**
- * The type of the itemDownloading event handler&apos;s argument.
+ * @docid _ui_file_manager_ItemDownloadingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ActionEventInfo
  */
 export type ItemDownloadingEvent = EventInfo<dxFileManager> & ActionEventInfo & {
-    /**
-     * 
-     */
+    /** @docid _ui_file_manager_ItemDownloadingEvent.item */
     readonly item: FileSystemItem;
 };
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxFileManagerOptions extends WidgetOptions<dxFileManager> {
     /**
-     * Specifies the allowed upload file extensions.
+     * @docid
+     * @default []
+     * @public
      */
     allowedFileExtensions?: Array<string>;
     /**
-     * Configures the context menu settings.
+     * @docid
+     * @public
      */
     contextMenu?: dxFileManagerContextMenu;
     /**
-     * Specifies the path that is used when the FileManager is initialized.
+     * @docid
+     * @default ""
+     * @public
      */
     currentPath?: string;
     /**
-     * Specifies an array of path keys to the current location.
+     * @docid
+     * @default []
+     * @public
      */
     currentPathKeys?: Array<string>;
     /**
-     * Customizes columns in details view. Applies only if itemView.mode is &apos;details&apos;.
+     * @docid
+     * @public
      */
     customizeDetailColumns?: ((columns: Array<dxFileManagerDetailsColumn>) => Array<dxFileManagerDetailsColumn>);
     /**
-     * Allows you to provide custom icons to be used as thumbnails.
+     * @docid
+     * @public
      */
     customizeThumbnail?: ((fileSystemItem: FileSystemItem) => string);
     /**
-     * Specifies the file system provider.
+     * @docid
+     * @default null
+     * @public
      */
     fileSystemProvider?: any;
     /**
-     * Configures the file and directory view.
+     * @docid
+     * @default null
+     * @public
      */
     itemView?: {
       /**
-       * Configures the &apos;Details&apos; file system representation mode.
+       * @docid
        */
       details?: {
         /**
-         * Configures the columns.
+         * @docid
+         * @default ["thumbnail", "name", "dateModified", "size"]
          */
         columns?: Array<dxFileManagerDetailsColumn | string>;
       };
       /**
-       * Specifies the file system representation mode.
+       * @docid
+       * @default "details"
        */
       mode?: FileManagerItemViewMode;
       /**
-       * Specifies whether to display folders in the view. When this property is false, folders are displayed in the navigation pane only.
+       * @docid
+       * @default true
        */
       showFolders?: boolean;
       /**
-       * Specifies whether to display the parent directory in the view.
+       * @docid
+       * @default true
        */
       showParentFolder?: boolean;
     };
     /**
-     * Configures notification settings.
+     * @docid
+     * @public
      */
     notifications?: {
       /**
-       * Specifies whether to show the progress panel.
+       * @docid
+       * @default true
        */
       showPanel?: boolean;
       /**
-       * Specifies whether to show the pop-up notification window.
+       * @docid
+       * @default true
        */
       showPopup?: boolean;
     };
     /**
-     * A function that is executed when a context menu item is clicked.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/file_manager:ContextMenuItemClickEvent}
+     * @action
+     * @public
      */
     onContextMenuItemClick?: ((e: ContextMenuItemClickEvent) => void);
     /**
-     * A function that is executed before a context menu is displayed.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/file_manager:ContextMenuShowingEvent}
+     * @action
+     * @public
      */
     onContextMenuShowing?: ((e: ContextMenuShowingEvent) => void);
     /**
-     * A function that is executed when the current directory is changed.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:CurrentDirectoryChangedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onCurrentDirectoryChanged?: ((e: CurrentDirectoryChangedEvent) => void);
     /**
-     * A function that is executed when the selected file is opened.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:SelectedFileOpenedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onSelectedFileOpened?: ((e: SelectedFileOpenedEvent) => void);
     /**
-     * A function that is executed when a file system item is selected or selection is canceled.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:SelectionChangedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onSelectionChanged?: ((e: SelectionChangedEvent) => void);
     /**
-     * A function that is executed when a toolbar item is clicked.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:ToolbarItemClickEvent}
+     * @action
+     * @public
      */
     onToolbarItemClick?: ((e: ToolbarItemClickEvent) => void);
     /**
-     * A function that is executed when the focused item is changed.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:FocusedItemChangedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onFocusedItemChanged?: ((e: FocusedItemChangedEvent) => void);
     /**
-     * A function that is executed when an error occurs.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:ErrorOccurredEvent}
+     * @default null
+     * @action
+     * @public
      */
     onErrorOccurred?: ((e: ErrorOccurredEvent) => void);
     /**
-     * A function that is executed before a directory is created.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:DirectoryCreatingEvent}
+     * @default null
+     * @action
+     * @public
      */
     onDirectoryCreating?: ((e: DirectoryCreatingEvent) => void);
     /**
-     * A function that is executed when a directory is created.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:DirectoryCreatedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onDirectoryCreated?: ((e: DirectoryCreatedEvent) => void);
     /**
-     * A function that is executed before a file or directory is renamed.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:ItemRenamingEvent}
+     * @default null
+     * @action
+     * @public
      */
     onItemRenaming?: ((e: ItemRenamingEvent) => void);
     /**
-     * A function that is executed when a file or directory is renamed.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:ItemRenamedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onItemRenamed?: ((e: ItemRenamedEvent) => void);
     /**
-     * A function that is executed before a file or directory is moved.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:ItemMovingEvent}
+     * @default null
+     * @action
+     * @public
      */
     onItemMoving?: ((e: ItemMovingEvent) => void);
     /**
-     * A function that is executed when a file or directory is moved.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:ItemMovedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onItemMoved?: ((e: ItemMovedEvent) => void);
     /**
-     * A function that is executed before a file or directory is copied.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:ItemCopyingEvent}
+     * @default null
+     * @action
+     * @public
      */
     onItemCopying?: ((e: ItemCopyingEvent) => void);
     /**
-     * A function that is executed when a file or directory is copied.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:ItemCopiedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onItemCopied?: ((e: ItemCopiedEvent) => void);
     /**
-     * A function that is executed before a file or directory is deleted.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:ItemDeletingEvent}
+     * @default null
+     * @action
+     * @public
      */
     onItemDeleting?: ((e: ItemDeletingEvent) => void);
     /**
-     * A function that is executed when a file or directory is deleted.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:ItemDeletedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onItemDeleted?: ((e: ItemDeletedEvent) => void);
     /**
-     * A function that is executed before the file is uploaded.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:FileUploadingEvent}
+     * @default null
+     * @action
+     * @public
      */
     onFileUploading?: ((e: FileUploadingEvent) => void);
     /**
-     * A function that is executed when a file is successfully uploaded.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:FileUploadedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onFileUploaded?: ((e: FileUploadedEvent) => void);
     /**
-     * A function that is executed before a file is downloaded.
+     * @docid
+     * @type_function_param1 e:{ui/file_manager:ItemDownloadingEvent}
+     * @default null
+     * @action
+     * @public
      */
     onItemDownloading?: ((e: ItemDownloadingEvent) => void);
     /**
-     * Specifies actions that a user is allowed to perform on files and directories.
+     * @docid
+     * @public
      */
     permissions?: {
       /**
-       * Specifies whether a user is allowed to copy files and directories.
+       * @docid
+       * @default false
        */
       copy?: boolean;
       /**
-       * Specifies whether a user is allowed to create files and directories.
+       * @docid
+       * @default false
        */
       create?: boolean;
       /**
-       * Specifies whether a user is allowed to download files.
+       * @docid
+       * @default false
        */
       download?: boolean;
       /**
-       * Specifies whether a user is allowed to move files and directories.
+       * @docid
+       * @default false
        */
       move?: boolean;
       /**
-       * Specifies whether a user is allowed to delete files and directories.
+       * @docid
+       * @default false
        */
       delete?: boolean;
       /**
-       * Specifies whether a user is allowed to rename files and directories.
+       * @docid
+       * @default false
        */
       rename?: boolean;
       /**
-       * Specifies whether a user is allowed to upload files.
+       * @docid
+       * @default false
        */
       upload?: boolean;
     };
     /**
-     * Specifies the root directory display name.
+     * @docid
+     * @default "Files"
+     * @public
      */
     rootFolderName?: string;
     /**
-     * Specifies whether a user can select a single or multiple files and directories in the item view simultaneously.
+     * @docid
+     * @default "multiple"
+     * @public
      */
     selectionMode?: SingleOrMultiple;
     /**
-     * Contains an array of initially or currently selected files and directories&apos; keys.
+     * @docid
+     * @default []
+     * @public
      */
     selectedItemKeys?: Array<string>;
     /**
-     * Specifies a key of the initially or currently focused item.
+     * @docid
+     * @default null
+     * @public
      */
     focusedItemKey?: string;
     /**
-     * Configures toolbar settings.
+     * @docid
+     * @public
      */
     toolbar?: dxFileManagerToolbar;
     /**
-     * Configures upload settings.
+     * @docid
+     * @public
      */
     upload?: {
       /**
-       * Specifies the maximum upload file size, in bytes.
+       * @docid
+       * @default 0
        */
       maxFileSize?: number;
       /**
-       * Specifies a chunk size, in bytes.
+       * @docid
+       * @default 200000
        */
       chunkSize?: number;
     };
 }
 /**
- * The FileManager is a UI component that allows users to upload, select, and manage files and directories in different file storages.
+ * @docid
+ * @inherits Widget
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxFileManager extends Widget<dxFileManagerOptions> {
     /**
-     * Gets the current directory object.
+     * @docid
+     * @publicName getCurrentDirectory()
+     * @return object
+     * @public
      */
     getCurrentDirectory(): any;
     /**
-     * Gets the selected items.
+     * @docid
+     * @publicName getSelectedItems()
+     * @return Array<object>
+     * @public
      */
     getSelectedItems(): Array<any>;
     /**
-     * Reloads data and repaints the UI component.
+     * @docid
+     * @publicName refresh()
+     * @return Promise<any>
+     * @public
      */
     refresh(): DxPromise<any>;
 }
 
 /**
- * Configures the context menu.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxFileManagerContextMenu {
     /**
-     * Configures context menu items&apos; settings.
+     * @docid
+     * @type Array<dxFileManagerContextMenuItem,Enums.FileManagerPredefinedContextMenuItem>
+     * @default [ "create", "upload", "rename", "move", "copy", "delete", "refresh", "download" ]
+     * @public
      */
     items?: Array<ContextMenuItem | FileManagerPredefinedContextMenuItem>;
 }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxFileManager
+ */
 export type ContextMenuItem = dxFileManagerContextMenuItem;
 
 /**
  * @deprecated Use ContextMenuItem instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
  */
 export interface dxFileManagerContextMenuItem extends dxContextMenuItem {
     /**
-     * Configures settings of a context menu item&apos;s subitems.
+     * @docid
+     * @public
+     * @type Array<dxFileManagerContextMenuItem>
      */
     items?: Array<ContextMenuItem>;
     /**
-     * Specifies the context menu item&apos;s name.
+     * @docid
+     * @public
      */
     name?: FileManagerPredefinedContextMenuItem | string;
     /**
-     * Specifies the context menu item&apos;s visibility.
+     * @docid
+     * @default undefined
+     * @public
      */
     visible?: boolean;
     /**
-     * 
+     * @docid
+     * @hidden
      */
     template?: template | (() => string | UserDefinedElement);
 }
 
 /**
- * Configures the toolbar.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxFileManagerToolbar {
     /**
-     * Configures settings of the toolbar items that are visible when users select files.
+     * @docid
+     * @type Array<dxFileManagerToolbarItem,Enums.FileManagerPredefinedToolbarItem>
+     * @default [ "download", "separator", "move", "copy", "rename", "separator", "delete", "clearSelection", { name: "separator", location: "after" }, "refresh" ]
+     * @public
      */
     fileSelectionItems?: Array<ToolbarItem | FileManagerPredefinedToolbarItem>;
     /**
-     * Configures toolbar items&apos; settings.
+     * @docid
+     * @type Array<dxFileManagerToolbarItem,Enums.FileManagerPredefinedToolbarItem>
+     * @default [ "showNavPane", "create", "upload", "switchView", { name: "separator", location: "after" }, "refresh" ]
+     * @public
      */
     items?: Array<ToolbarItem | FileManagerPredefinedToolbarItem >;
 }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxFileManager
+ */
 export type ToolbarItem = dxFileManagerToolbarItem;
 
 /**
  * @deprecated Use ToolbarItem instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
  */
 export interface dxFileManagerToolbarItem extends dxToolbarItem {
     /**
-     * Specifies the icon to be displayed on the toolbar item.
+     * @docid
+     * @default ""
+     * @public
      */
     icon?: string;
     /**
-     * Specifies the toolbar item&apos;s location.
+     * @docid
+     * @default "before"
+     * @public
      */
     location?: ToolbarItemLocation;
     /**
-     * Specifies the toolbar item&apos;s name.
+     * @docid
+     * @public
      */
     name?: FileManagerPredefinedToolbarItem | string;
     /**
-     * Specifies the toolbar item&apos;s visibility.
+     * @docid
+     * @default undefined
+     * @public
      */
     visible?: boolean;
     /**
-     * 
+     * @docid
+     * @hidden
      */
     html?: string;
     /**
-     * 
+     * @docid
+     * @hidden
      */
     template?: template | (() => string | UserDefinedElement);
     /**
-     * 
+     * @docid
+     * @hidden
      */
     menuItemTemplate?: template | (() => string | UserDefinedElement);
 }
 
 /**
- * Configures the column.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxFileManagerDetailsColumn {
     /**
-     * Specifies the column alignment.
+     * @docid
+     * @type Enums.HorizontalAlignment
+     * @default undefined
+     * @acceptValues undefined
+     * @public
      */
     alignment?: HorizontalAlignment | undefined;
     /**
-     * Specifies the column caption.
+     * @docid
+     * @default undefined
+     * @public
      */
     caption?: string;
     /**
-     * Specifies a CSS class to be applied to the column.
+     * @docid
+     * @default undefined
+     * @public
      */
     cssClass?: string;
     /**
-     * Specifies which data field provides data for the column.
+     * @docid
+     * @default undefined
+     * @public
      */
     dataField?: string;
     /**
-     * Casts column values to a specific data type.
+     * @docid
+     * @default undefined
+     * @public
      */
     dataType?: DataType;
     /**
-     * Specifies the order in which columns are hidden when the UI component adapts to the screen or container size.
+     * @docid
+     * @default undefined
+     * @public
      */
     hidingPriority?: number;
     /**
-     * Specifies the order in which the column is sorted.
+     * @docid
+     * @default undefined
+     * @public
      */
     sortIndex?: number;
     /**
-     * Specifies the sort order of column values.
+     * @docid
+     * @type Enums.SortOrder
+     * @default undefined
+     * @acceptValues undefined
+     * @public
      */
     sortOrder?: SortOrder | undefined;
     /**
-     * Specifies the column visibility.
+     * @docid
+     * @default true
+     * @public
      */
     visible?: boolean;
     /**
-     * Specifies the position of the column in the resulting UI component.
+     * @docid
+     * @default undefined
+     * @public
      */
     visibleIndex?: number;
     /**
-     * Specifies the column width.
+     * @docid
+     * @default undefined
+     * @public
      */
     width?: number | string;
 }
 
+/** @public */
 export type Properties = dxFileManagerOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxFileManagerOptions;
 
 

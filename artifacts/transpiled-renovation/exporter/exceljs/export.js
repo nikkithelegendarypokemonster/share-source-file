@@ -72,8 +72,7 @@ const Export = exports.Export = {
     return _export_format.ExportFormat.convertFormat(format, newFormat.precision, dataType, currency);
   },
   setAlignment(excelCell, wrapText, horizontalAlignment) {
-    var _excelCell$alignment;
-    excelCell.alignment = (_excelCell$alignment = excelCell.alignment) !== null && _excelCell$alignment !== void 0 ? _excelCell$alignment : {};
+    excelCell.alignment = excelCell.alignment ?? {};
     if ((0, _type.isDefined)(wrapText)) {
       excelCell.alignment.wrapText = wrapText;
     }

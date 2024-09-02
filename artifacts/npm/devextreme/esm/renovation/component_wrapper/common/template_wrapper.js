@@ -1,14 +1,14 @@
 /**
 * DevExtreme (esm/renovation/component_wrapper/common/template_wrapper.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["isEqual"];
+const _excluded = ["isEqual"];
 import { InfernoComponent, InfernoEffect } from '@devextreme/runtime/inferno';
 import { findDOMfromVNode } from 'inferno';
 import { replaceWith } from '../../../core/utils/dom';
@@ -21,12 +21,11 @@ function isDxElementWrapper(element) {
   return !!element.toArray;
 }
 export function buildTemplateArgs(model, template) {
-  var _model$data;
-  var args = {
+  const args = {
     template,
     model: _extends({}, model)
   };
-  var _ref = (_model$data = model.data) !== null && _model$data !== void 0 ? _model$data : {},
+  const _ref = model.data ?? {},
     {
       isEqual
     } = _ref,
@@ -38,11 +37,10 @@ export function buildTemplateArgs(model, template) {
   return args;
 }
 function renderTemplateContent(props, container) {
-  var _props$model;
-  var {
+  const {
     data,
     index
-  } = (_props$model = props.model) !== null && _props$model !== void 0 ? _props$model : {
+  } = props.model ?? {
     data: {}
   };
   if (data) {
@@ -52,7 +50,7 @@ function renderTemplateContent(props, container) {
       }
     });
   }
-  var rendered = props.template.render(_extends({
+  const rendered = props.template.render(_extends({
     container,
     transclude: props.transclude
   }, {
@@ -69,7 +67,7 @@ function renderTemplateContent(props, container) {
 }
 function removeDifferentElements(oldChildren, newChildren) {
   newChildren.forEach(newElement => {
-    var hasOldChild = !!oldChildren.find(oldElement => newElement === oldElement);
+    const hasOldChild = !!oldChildren.find(oldElement => newElement === oldElement);
     if (!hasOldChild && newElement.parentNode) {
       $(newElement).remove();
     }
@@ -81,43 +79,43 @@ export class TemplateWrapper extends InfernoComponent {
     this.renderTemplate = this.renderTemplate.bind(this);
   }
   renderTemplate() {
-    var node = findDOMfromVNode(this.$LI, true);
+    const node = findDOMfromVNode(this.$LI, true);
     if (!(node !== null && node !== void 0 && node.parentNode)) {
       return () => {};
     }
-    var container = node.parentNode;
-    var $container = $(container);
-    var $oldContainerContent = $container.contents().toArray();
-    var content = renderTemplateContent(this.props, getPublicElement($container));
+    const container = node.parentNode;
+    const $container = $(container);
+    const $oldContainerContent = $container.contents().toArray();
+    const content = renderTemplateContent(this.props, getPublicElement($container));
     replaceWith($(node), $(content));
     return () => {
-      var $actualContainerContent = $(container).contents().toArray();
+      const $actualContainerContent = $(container).contents().toArray();
       removeDifferentElements($oldContainerContent, $actualContainerContent);
       container.appendChild(node);
     };
   }
   shouldComponentUpdate(nextProps) {
-    var {
+    const {
       model,
       template
     } = this.props;
-    var {
+    const {
       isEqual,
       model: nextModel,
       template: nextTemplate
     } = nextProps;
-    var equalityComparer = isEqual !== null && isEqual !== void 0 ? isEqual : shallowEquals;
+    const equalityComparer = isEqual ?? shallowEquals;
     if (template !== nextTemplate) {
       return true;
     }
     if (!isDefined(model) || !isDefined(nextModel)) {
       return model !== nextModel;
     }
-    var {
+    const {
       data,
       index
     } = model;
-    var {
+    const {
       data: nextData,
       index: nextIndex
     } = nextModel;

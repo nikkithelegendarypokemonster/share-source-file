@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/action.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -19,15 +19,15 @@ export default class Action {
     this._afterExecute = config.afterExecute;
     this._component = config.component;
     this._validatingTargetName = config.validatingTargetName;
-    var excludeValidators = this._excludeValidators = {};
+    const excludeValidators = this._excludeValidators = {};
     if (config.excludeValidators) {
-      for (var i = 0; i < config.excludeValidators.length; i++) {
+      for (let i = 0; i < config.excludeValidators.length; i++) {
         excludeValidators[config.excludeValidators[i]] = true;
       }
     }
   }
   execute() {
-    var e = {
+    const e = {
       action: this._action,
       args: Array.prototype.slice.call(arguments),
       context: this._context,
@@ -36,33 +36,33 @@ export default class Action {
       cancel: false,
       handled: false
     };
-    var beforeExecute = this._beforeExecute;
-    var afterExecute = this._afterExecute;
-    var argsBag = e.args[0] || {};
+    const beforeExecute = this._beforeExecute;
+    const afterExecute = this._afterExecute;
+    const argsBag = e.args[0] || {};
     if (!this._validateAction(e)) {
       return;
     }
-    beforeExecute === null || beforeExecute === void 0 ? void 0 : beforeExecute.call(this._context, e);
+    beforeExecute === null || beforeExecute === void 0 || beforeExecute.call(this._context, e);
     if (e.cancel) {
       return;
     }
-    var result = this._executeAction(e);
+    const result = this._executeAction(e);
     if (argsBag.cancel) {
       return;
     }
-    afterExecute === null || afterExecute === void 0 ? void 0 : afterExecute.call(this._context, e);
+    afterExecute === null || afterExecute === void 0 || afterExecute.call(this._context, e);
     return result;
   }
   _validateAction(e) {
-    var excludeValidators = this._excludeValidators;
-    var {
+    const excludeValidators = this._excludeValidators;
+    const {
       executors
     } = Action;
-    for (var name in executors) {
+    for (const name in executors) {
       if (!excludeValidators[name]) {
         var _executor$validate;
-        var executor = executors[name];
-        (_executor$validate = executor.validate) === null || _executor$validate === void 0 ? void 0 : _executor$validate.call(executor, e);
+        const executor = executors[name];
+        (_executor$validate = executor.validate) === null || _executor$validate === void 0 || _executor$validate.call(executor, e);
         if (e.cancel) {
           return false;
         }
@@ -71,14 +71,14 @@ export default class Action {
     return true;
   }
   _executeAction(e) {
-    var result;
-    var {
+    let result;
+    const {
       executors
     } = Action;
-    for (var name in executors) {
+    for (const name in executors) {
       var _executor$execute;
-      var executor = executors[name];
-      (_executor$execute = executor.execute) === null || _executor$execute === void 0 ? void 0 : _executor$execute.call(executor, e);
+      const executor = executors[name];
+      (_executor$execute = executor.execute) === null || _executor$execute === void 0 || _executor$execute.call(executor, e);
       if (e.handled) {
         result = e.result;
         break;
@@ -103,12 +103,12 @@ export default class Action {
   }
 }
 Action.executors = {};
-var createValidatorByTargetElement = condition => e => {
+const createValidatorByTargetElement = condition => e => {
   if (!e.args.length) {
     return;
   }
-  var args = e.args[0];
-  var element = args[e.validatingTargetName] || args.element;
+  const args = e.args[0];
+  const element = args[e.validatingTargetName] || args.element;
   if (element && condition($(element))) {
     e.cancel = true;
   }

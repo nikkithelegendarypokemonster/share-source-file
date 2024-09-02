@@ -1,23 +1,23 @@
 /**
 * DevExtreme (esm/renovation/ui/scroll_view/internal/load_panel.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-var _excluded = ["refreshingText", "targetElement", "visible"];
+const _excluded = ["refreshingText", "targetElement", "visible"];
 import { createComponentVNode } from "inferno";
 import { BaseInfernoComponent } from '@devextreme/runtime/inferno';
 import { isDefined } from '../../../../core/utils/type';
 import messageLocalization from '../../../../localization/message';
 import { LoadPanel } from '../../overlays/load_panel';
 import { ScrollViewLoadPanelProps } from '../common/scrollview_loadpanel_props';
-var SCROLLVIEW_LOADPANEL = 'dx-scrollview-loadpanel';
-export var viewFunction = viewModel => {
-  var {
+const SCROLLVIEW_LOADPANEL = 'dx-scrollview-loadpanel';
+export const viewFunction = viewModel => {
+  const {
     position,
     props: {
       visible
@@ -40,7 +40,7 @@ export class ScrollViewLoadPanel extends BaseInfernoComponent {
     this.__getterCache = {};
   }
   get refreshingText() {
-    var {
+    const {
       refreshingText
     } = this.props;
     if (isDefined(refreshingText)) {
@@ -62,7 +62,7 @@ export class ScrollViewLoadPanel extends BaseInfernoComponent {
     })();
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
@@ -72,7 +72,7 @@ export class ScrollViewLoadPanel extends BaseInfernoComponent {
     }
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       refreshingText: this.refreshingText,

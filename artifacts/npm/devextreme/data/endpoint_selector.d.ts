@@ -1,18 +1,22 @@
 /**
 * DevExtreme (data/endpoint_selector.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /**
- * The EndpointSelector is an object for managing OData endpoints in your application.
+ * @docid
+ * @namespace DevExpress
+ * @public
  */
 export default class EndpointSelector {
     constructor(options: any);
     /**
-     * Gets an endpoint with a specific key.
+     * @docid
+     * @publicName urlFor(key)
+     * @public
      */
     urlFor(key: string): string;
 }

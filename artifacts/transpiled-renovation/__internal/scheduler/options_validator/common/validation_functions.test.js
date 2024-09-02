@@ -2,11 +2,16 @@
 
 var _jestEach = _interopRequireDefault(require("jest-each"));
 var _validation_functions = require("./validation_functions");
-var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 describe('isInteger', () => {
-  (0, _jestEach.default)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    value   | expectedResult\n    ", "    | ", "\n    ", "  | ", "\n    ", "   | ", "\n    ", " | ", "\n    ", "    | ", "\n  "])), 1, true, 1.5, false, -1, true, -1.5, false, 0, true).it('should detect integer correctly', _ref => {
+  (0, _jestEach.default)`
+    value   | expectedResult
+    ${1}    | ${true}
+    ${1.5}  | ${false}
+    ${-1}   | ${true}
+    ${-1.5} | ${false}
+    ${0}    | ${true}
+  `.it('should detect integer correctly', _ref => {
     let {
       value,
       expectedResult
@@ -16,7 +21,23 @@ describe('isInteger', () => {
   });
 });
 describe('greaterThat', () => {
-  (0, _jestEach.default)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n    value   | min     | strict    | expectedResult\n    ", "   | ", "    | ", "   | ", "\n    ", "   | ", "   | ", "   | ", "\n    ", "   | ", "   | ", "   | ", "\n    ", "    | ", "    | ", "   | ", "\n    ", "  | ", "  | ", "   | ", "\n    ", "  | ", "   | ", "   | ", "\n    ", "  | ", "  | ", "   | ", "\n    ", "   | ", "    | ", "  | ", "\n    ", "   | ", "   | ", "  | ", "\n    ", "   | ", "   | ", "  | ", "\n    ", "    | ", "    | ", "  | ", "\n    ", "  | ", "  | ", "  | ", "\n    ", "  | ", "   | ", "  | ", "\n    ", "  | ", "  | ", "  | ", "\n  "])), 10, 5, true, true, 10, 15, true, false, 10, 10, true, false, 0, 0, true, false, -10, -10, true, false, -10, -5, true, false, -10, -15, true, true, 10, 5, false, true, 10, 15, false, false, 10, 10, false, true, 0, 0, false, true, -10, -10, false, true, -10, -5, false, false, -10, -15, false, true).it('should compare numbers correctly', _ref2 => {
+  (0, _jestEach.default)`
+    value   | min     | strict    | expectedResult
+    ${10}   | ${5}    | ${true}   | ${true}
+    ${10}   | ${15}   | ${true}   | ${false}
+    ${10}   | ${10}   | ${true}   | ${false}
+    ${0}    | ${0}    | ${true}   | ${false}
+    ${-10}  | ${-10}  | ${true}   | ${false}
+    ${-10}  | ${-5}   | ${true}   | ${false}
+    ${-10}  | ${-15}  | ${true}   | ${true}
+    ${10}   | ${5}    | ${false}  | ${true}
+    ${10}   | ${15}   | ${false}  | ${false}
+    ${10}   | ${10}   | ${false}  | ${true}
+    ${0}    | ${0}    | ${false}  | ${true}
+    ${-10}  | ${-10}  | ${false}  | ${true}
+    ${-10}  | ${-5}   | ${false}  | ${false}
+    ${-10}  | ${-15}  | ${false}  | ${true}
+  `.it('should compare numbers correctly', _ref2 => {
     let {
       value,
       min,
@@ -28,7 +49,23 @@ describe('greaterThat', () => {
   });
 });
 describe('lessThat', () => {
-  (0, _jestEach.default)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n    value   | min     | strict    | expectedResult\n    ", "   | ", "    | ", "   | ", "\n    ", "   | ", "   | ", "   | ", "\n    ", "   | ", "   | ", "   | ", "\n    ", "    | ", "    | ", "   | ", "\n    ", "  | ", "  | ", "   | ", "\n    ", "  | ", "   | ", "   | ", "\n    ", "  | ", "  | ", "   | ", "\n    ", "   | ", "    | ", "  | ", "\n    ", "   | ", "   | ", "  | ", "\n    ", "   | ", "   | ", "  | ", "\n    ", "    | ", "    | ", "  | ", "\n    ", "  | ", "  | ", "  | ", "\n    ", "  | ", "   | ", "  | ", "\n    ", "  | ", "  | ", "  | ", "\n  "])), 10, 5, true, false, 10, 15, true, true, 10, 10, true, false, 0, 0, true, false, -10, -10, true, false, -10, -5, true, true, -10, -15, true, false, 10, 5, false, false, 10, 15, false, true, 10, 10, false, true, 0, 0, false, true, -10, -10, false, true, -10, -5, false, true, -10, -15, false, false).it('should compare numbers correctly', _ref3 => {
+  (0, _jestEach.default)`
+    value   | min     | strict    | expectedResult
+    ${10}   | ${5}    | ${true}   | ${false}
+    ${10}   | ${15}   | ${true}   | ${true}
+    ${10}   | ${10}   | ${true}   | ${false}
+    ${0}    | ${0}    | ${true}   | ${false}
+    ${-10}  | ${-10}  | ${true}   | ${false}
+    ${-10}  | ${-5}   | ${true}   | ${true}
+    ${-10}  | ${-15}  | ${true}   | ${false}
+    ${10}   | ${5}    | ${false}  | ${false}
+    ${10}   | ${15}   | ${false}  | ${true}
+    ${10}   | ${10}   | ${false}  | ${true}
+    ${0}    | ${0}    | ${false}  | ${true}
+    ${-10}  | ${-10}  | ${false}  | ${true}
+    ${-10}  | ${-5}   | ${false}  | ${true}
+    ${-10}  | ${-15}  | ${false}  | ${false}
+  `.it('should compare numbers correctly', _ref3 => {
     let {
       value,
       min,
@@ -40,7 +77,19 @@ describe('lessThat', () => {
   });
 });
 describe('inRange', () => {
-  (0, _jestEach.default)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n    value | range         | expectedResult\n    ", "  | ", "  | ", "\n    ", "  | ", "    | ", "\n    ", "  | ", "   | ", "\n    ", "  | ", "   | ", "\n    ", "  | ", "    | ", "\n    ", " | ", "  | ", "\n    ", " | ", "    | ", "\n    ", " | ", "  | ", "\n    ", " | ", "  | ", "\n    ", " | ", "    | ", "\n  "])), 5, [-10, 10], true, 5, [5, 10], true, 5, [-10, 5], true, 5, [-10, 4], false, 5, [6, 10], false, -5, [-10, 10], true, -5, [-5, 0], true, -5, [-10, -5], true, -5, [-10, -6], false, -5, [-4, 0], false).it('should determine interval correctly', _ref4 => {
+  (0, _jestEach.default)`
+    value | range         | expectedResult
+    ${5}  | ${[-10, 10]}  | ${true}
+    ${5}  | ${[5, 10]}    | ${true}
+    ${5}  | ${[-10, 5]}   | ${true}
+    ${5}  | ${[-10, 4]}   | ${false}
+    ${5}  | ${[6, 10]}    | ${false}
+    ${-5} | ${[-10, 10]}  | ${true}
+    ${-5} | ${[-5, 0]}    | ${true}
+    ${-5} | ${[-10, -5]}  | ${true}
+    ${-5} | ${[-10, -6]}  | ${false}
+    ${-5} | ${[-4, 0]}    | ${false}
+  `.it('should determine interval correctly', _ref4 => {
     let {
       value,
       range,
@@ -51,7 +100,19 @@ describe('inRange', () => {
   });
 });
 describe('divisibleBy', () => {
-  (0, _jestEach.default)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n    value  | divider  | expectedResult\n    ", "   | ", "     | ", "\n    ", "   | ", "     | ", "\n    ", "   | ", "   | ", "\n    ", "   | ", "     | ", "\n    ", "   | ", "     | ", "\n    ", "   | ", "   | ", "\n    ", "  | ", "     | ", "\n    ", "  | ", "     | ", "\n    ", "   | ", "     | ", "\n    ", "   | ", "     | ", "\n  "])), 4, 2, true, 5, 2, false, 0, 111, true, 4, -2, true, 5, -2, false, 0, -111, true, -4, 2, true, -5, 2, false, 4, -2, true, 5, -2, false).it('should determine divisible by correctly', _ref5 => {
+  (0, _jestEach.default)`
+    value  | divider  | expectedResult
+    ${4}   | ${2}     | ${true}
+    ${5}   | ${2}     | ${false}
+    ${0}   | ${111}   | ${true}
+    ${4}   | ${-2}     | ${true}
+    ${5}   | ${-2}     | ${false}
+    ${0}   | ${-111}   | ${true}
+    ${-4}  | ${2}     | ${true}
+    ${-5}  | ${2}     | ${false}
+    ${4}   | ${-2}     | ${true}
+    ${5}   | ${-2}     | ${false}
+  `.it('should determine divisible by correctly', _ref5 => {
     let {
       value,
       divider,

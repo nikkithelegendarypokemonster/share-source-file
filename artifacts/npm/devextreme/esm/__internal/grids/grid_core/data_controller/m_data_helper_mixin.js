@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/grid_core/data_controller/m_data_helper_mixin.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,16 +9,16 @@
 import { extend } from '../../../../core/utils/extend';
 import { DataSource } from '../../../../data/data_source/data_source';
 import { normalizeDataSourceOptions } from '../../../../data/data_source/utils';
-import DataController from '../../../../ui/collection/data_controller';
-var DATA_SOURCE_OPTIONS_METHOD = '_dataSourceOptions';
-var DATA_SOURCE_CHANGED_METHOD = '_dataSourceChangedHandler';
-var DATA_SOURCE_LOAD_ERROR_METHOD = '_dataSourceLoadErrorHandler';
-var DATA_SOURCE_LOADING_CHANGED_METHOD = '_dataSourceLoadingChangedHandler';
-var DATA_SOURCE_FROM_URL_LOAD_MODE_METHOD = '_dataSourceFromUrlLoadMode';
-var SPECIFIC_DATA_SOURCE_OPTION = '_getSpecificDataSourceOption';
-var NORMALIZE_DATA_SOURCE = '_normalizeDataSource';
+import DataController from '../../../ui/collection/m_data_controller';
+const DATA_SOURCE_OPTIONS_METHOD = '_dataSourceOptions';
+const DATA_SOURCE_CHANGED_METHOD = '_dataSourceChangedHandler';
+const DATA_SOURCE_LOAD_ERROR_METHOD = '_dataSourceLoadErrorHandler';
+const DATA_SOURCE_LOADING_CHANGED_METHOD = '_dataSourceLoadingChangedHandler';
+const DATA_SOURCE_FROM_URL_LOAD_MODE_METHOD = '_dataSourceFromUrlLoadMode';
+const SPECIFIC_DATA_SOURCE_OPTION = '_getSpecificDataSourceOption';
+const NORMALIZE_DATA_SOURCE = '_normalizeDataSource';
 // TODO Get rid of this mixin
-export var DataHelperMixin = Base => class DataHelperMixin extends Base {
+export const DataHelperMixin = Base => class DataHelperMixin extends Base {
   postCtor() {
     this.on('disposing', () => {
       this._disposeDataSource();
@@ -32,9 +32,9 @@ export var DataHelperMixin = Base => class DataHelperMixin extends Base {
     this._loadDataSource();
   }
   _initDataSource() {
-    var dataSourceOptions = SPECIFIC_DATA_SOURCE_OPTION in this ? this[SPECIFIC_DATA_SOURCE_OPTION]() : this.option('dataSource');
-    var widgetDataSourceOptions;
-    var dataSourceType;
+    let dataSourceOptions = SPECIFIC_DATA_SOURCE_OPTION in this ? this[SPECIFIC_DATA_SOURCE_OPTION]() : this.option('dataSource');
+    let widgetDataSourceOptions;
+    let dataSourceType;
     this._disposeDataSource();
     if (dataSourceOptions) {
       if (dataSourceOptions instanceof DataSource) {
@@ -57,9 +57,9 @@ export var DataHelperMixin = Base => class DataHelperMixin extends Base {
     }
   }
   _initDataController() {
-    var _a;
-    var dataController = (_a = this.option) === null || _a === void 0 ? void 0 : _a.call(this, '_dataController');
-    var dataSource = this._dataSource;
+    var _this$option;
+    const dataController = (_this$option = this.option) === null || _this$option === void 0 ? void 0 : _this$option.call(this, '_dataController');
+    const dataSource = this._dataSource;
     if (dataController) {
       this._dataController = dataController;
     } else {
@@ -85,7 +85,7 @@ export var DataHelperMixin = Base => class DataHelperMixin extends Base {
     this._dataSource.on('loadingChanged', this.readyWatcher);
   }
   _addDataSourceChangeHandler() {
-    var dataSource = this._dataSource;
+    const dataSource = this._dataSource;
     this._proxiedDataSourceChangedHandler = function (e) {
       this[DATA_SOURCE_CHANGED_METHOD](dataSource.items(), e);
     }.bind(this);
@@ -100,7 +100,7 @@ export var DataHelperMixin = Base => class DataHelperMixin extends Base {
     this._dataSource.on('loadingChanged', this._proxiedDataSourceLoadingChangedHandler);
   }
   _loadDataSource() {
-    var dataSource = this._dataSource;
+    const dataSource = this._dataSource;
     if (dataSource) {
       if (dataSource.isLoaded()) {
         this._proxiedDataSourceChangedHandler && this._proxiedDataSourceChangedHandler();

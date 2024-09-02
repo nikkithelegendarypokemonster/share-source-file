@@ -44,7 +44,7 @@ export class FilterBuilderView extends modules.View {
     }
   }
   _initPopup() {
-    var that = this;
+    const that = this;
     that._disposePopup();
     that._filterBuilderPopup = that._createComponent(that.element(), Popup, extend({
       title: messageLocalization.format('dxDataGrid-filterBuilderPopupTitle'),
@@ -65,8 +65,8 @@ export class FilterBuilderView extends modules.View {
     }));
   }
   _getPopupContentTemplate(contentElement) {
-    var $contentElement = $(contentElement);
-    var $filterBuilderContainer = $('<div>').appendTo($(contentElement));
+    const $contentElement = $(contentElement);
+    const $filterBuilderContainer = $('<div>').appendTo($(contentElement));
     this._filterBuilder = this._createComponent($filterBuilderContainer, FilterBuilder, extend({
       value: this.option('filterValue'),
       fields: this._columnsController.getFilteringColumns()
@@ -78,7 +78,7 @@ export class FilterBuilderView extends modules.View {
     });
   }
   _getPopupToolbarItems() {
-    var that = this;
+    const that = this;
     return [{
       toolbar: 'bottom',
       location: 'after',
@@ -86,7 +86,7 @@ export class FilterBuilderView extends modules.View {
       options: {
         text: messageLocalization.format('OK'),
         onClick() {
-          var filter = that._filterBuilder.option('value');
+          const filter = that._filterBuilder.option('value');
           that.option('filterValue', filter);
           that._filterBuilderPopup.hide();
         }
@@ -104,7 +104,7 @@ export class FilterBuilderView extends modules.View {
     }];
   }
 }
-export var filterBuilderModule = {
+export const filterBuilderModule = {
   defaultOptions() {
     return {
       filterBuilder: {

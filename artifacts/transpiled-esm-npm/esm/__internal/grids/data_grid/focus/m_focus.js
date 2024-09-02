@@ -6,8 +6,8 @@ import { isDefined } from '../../../../core/utils/type';
 import { focusModule } from '../../../grids/grid_core/focus/m_focus';
 import gridCore from '../m_core';
 import { createGroupFilter } from '../m_utils';
-var MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || 9007199254740991 /* IE11 */;
-var data = Base => class FocusDataControllerExtender extends focusModule.extenders.controllers.data(Base) {
+const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || 9007199254740991 /* IE11 */;
+const data = Base => class FocusDataControllerExtender extends focusModule.extenders.controllers.data(Base) {
   changeRowExpand(path, isRowClick) {
     // @ts-expect-error
     if (this.option('focusedRowEnabled') && Array.isArray(path) && this.isRowExpanded(path)) {
@@ -19,13 +19,13 @@ var data = Base => class FocusDataControllerExtender extends focusModule.extende
     return super.changeRowExpand(path, isRowClick);
   }
   _isFocusedRowInsideGroup(path) {
-    var focusedRowKey = this.option('focusedRowKey');
-    var rowIndex = this.getRowIndexByKey(focusedRowKey);
-    var focusedRow = rowIndex >= 0 && this.getVisibleRows()[rowIndex];
-    var groups = this._columnsController.getGroupDataSourceParameters(true);
+    const focusedRowKey = this.option('focusedRowKey');
+    const rowIndex = this.getRowIndexByKey(focusedRowKey);
+    const focusedRow = rowIndex >= 0 && this.getVisibleRows()[rowIndex];
+    const groups = this._columnsController.getGroupDataSourceParameters(true);
     if (focusedRow) {
-      for (var i = 0; i < path.length; ++i) {
-        var getter = compileGetter(groups[i] && groups[i].selector);
+      for (let i = 0; i < path.length; ++i) {
+        const getter = compileGetter(groups[i] && groups[i].selector);
         // @ts-expect-error
         if (getter(focusedRow.data) !== path[i]) {
           return false;
@@ -35,10 +35,10 @@ var data = Base => class FocusDataControllerExtender extends focusModule.extende
     return true;
   }
   _getGroupPath(groupItem, groupCount) {
-    var groupPath = [];
-    var items = [groupItem];
+    const groupPath = [];
+    let items = [groupItem];
     while (items && items[0] && groupCount) {
-      var item = items[0];
+      const item = items[0];
       if (item.key !== undefined) {
         groupPath.push(item.key);
       }
@@ -49,7 +49,7 @@ var data = Base => class FocusDataControllerExtender extends focusModule.extende
   }
   _expandGroupByPath(that, groupPath, level) {
     // @ts-expect-error
-    var d = new Deferred();
+    const d = new Deferred();
     level++;
     that.expandRow(groupPath.slice(0, level)).done(() => {
       if (level === groupPath.length) {
@@ -61,13 +61,13 @@ var data = Base => class FocusDataControllerExtender extends focusModule.extende
     return d.promise();
   }
   _calculateGlobalRowIndexByGroupedData(key) {
-    var that = this;
-    var dataSource = that._dataSource;
-    var filter = that._generateFilterByKey(key);
+    const that = this;
+    const dataSource = that._dataSource;
+    const filter = that._generateFilterByKey(key);
     // @ts-expect-error
-    var deferred = new Deferred();
-    var isGroupKey = Array.isArray(key);
-    var group = dataSource.group();
+    const deferred = new Deferred();
+    const isGroupKey = Array.isArray(key);
+    const group = dataSource.group();
     if (isGroupKey) {
       return deferred.resolve(-1).promise();
     }
@@ -82,7 +82,7 @@ var data = Base => class FocusDataControllerExtender extends focusModule.extende
       if (!data || data.length === 0 || !isDefined(data[0].key) || data[0].key === -1) {
         return deferred.resolve(-1).promise();
       }
-      var groupPath = that._getGroupPath(data[0], group.length);
+      const groupPath = that._getGroupPath(data[0], group.length);
       that._expandGroupByPath(that, groupPath, 0).done(() => {
         that._calculateExpandedRowGlobalIndex(deferred, key, groupPath, group);
       }).fail(deferred.reject);
@@ -90,14 +90,14 @@ var data = Base => class FocusDataControllerExtender extends focusModule.extende
     return deferred.promise();
   }
   _calculateExpandedRowGlobalIndex(deferred, key, groupPath, group) {
-    var groupFilter = createGroupFilter(groupPath, {
+    const groupFilter = createGroupFilter(groupPath, {
       group
     });
-    var dataSource = this._dataSource;
-    var scrollingMode = this.option('scrolling.mode');
-    var isVirtualScrolling = scrollingMode === 'virtual' || scrollingMode === 'infinite';
-    var pageSize = dataSource.pageSize();
-    var groupOffset;
+    const dataSource = this._dataSource;
+    const scrollingMode = this.option('scrolling.mode');
+    const isVirtualScrolling = scrollingMode === 'virtual' || scrollingMode === 'infinite';
+    const pageSize = dataSource.pageSize();
+    let groupOffset;
     dataSource._grouping._updatePagingOptions({
       skip: 0,
       take: MAX_SAFE_INTEGER
@@ -108,13 +108,13 @@ var data = Base => class FocusDataControllerExtender extends focusModule.extende
     });
     // @ts-expect-error
     this._calculateGlobalRowIndexByFlatData(key, groupFilter).done(dataOffset => {
-      var count;
-      var groupContinuationCount;
+      let count;
+      let groupContinuationCount;
       if (dataOffset < 0) {
         deferred.resolve(-1);
         return;
       }
-      var currentPageOffset = groupOffset % pageSize || pageSize;
+      const currentPageOffset = groupOffset % pageSize || pageSize;
       count = currentPageOffset + dataOffset - groupPath.length;
       if (isVirtualScrolling) {
         groupContinuationCount = 0;
@@ -126,9 +126,9 @@ var data = Base => class FocusDataControllerExtender extends focusModule.extende
     }).fail(deferred.reject);
   }
 };
-gridCore.registerModule('focus', _extends(_extends({}, focusModule), {
-  extenders: _extends(_extends({}, focusModule.extenders), {
-    controllers: _extends(_extends({}, focusModule.extenders.controllers), {
+gridCore.registerModule('focus', _extends({}, focusModule, {
+  extenders: _extends({}, focusModule.extenders, {
+    controllers: _extends({}, focusModule.extenders.controllers, {
       data
     })
   })

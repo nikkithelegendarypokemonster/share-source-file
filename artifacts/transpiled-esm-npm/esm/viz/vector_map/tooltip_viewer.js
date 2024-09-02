@@ -1,4 +1,4 @@
-var TOOLTIP_OFFSET = 12;
+const TOOLTIP_OFFSET = 12;
 
 // TODO: Somehow it should be merged with the core.Tooltip
 export function TooltipViewer(params) {
@@ -6,19 +6,19 @@ export function TooltipViewer(params) {
 }
 TooltipViewer.prototype = {
   constructor: TooltipViewer,
-  dispose: function dispose() {
+  dispose: function () {
     this._offTracker();
     this._offTracker = null;
   },
-  _subscribeToTracker: function _subscribeToTracker(tracker, tooltip, layerCollection) {
+  _subscribeToTracker: function (tracker, tooltip, layerCollection) {
     this._offTracker = tracker.on({
-      'focus-on': function focusOn(arg) {
-        var layer;
-        var proxy;
+      'focus-on': function (arg) {
+        let layer;
+        let proxy;
         if (tooltip.isEnabled()) {
           layer = layerCollection.byName(arg.data.name);
           proxy = layer && layer.getProxy(arg.data.index);
-          var callback = result => {
+          const callback = result => {
             result && arg.done(result);
           };
           proxy && callback(tooltip.show(proxy, {
@@ -31,10 +31,10 @@ TooltipViewer.prototype = {
         }
       },
       // There are no checks for `tooltip.isEnabled()` in the following two handlers because they are called only if the previous one has finished with `true`
-      'focus-move': function focusMove(arg) {
+      'focus-move': function (arg) {
         tooltip.move(arg.x, arg.y, TOOLTIP_OFFSET);
       },
-      'focus-off': function focusOff() {
+      'focus-off': function () {
         tooltip.hide();
       }
     });

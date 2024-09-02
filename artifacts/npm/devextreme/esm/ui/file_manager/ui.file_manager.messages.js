@@ -1,14 +1,14 @@
 /**
 * DevExtreme (esm/ui/file_manager/ui.file_manager.messages.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import messageLocalization from '../../localization/message';
 import ErrorCode from '../../file_management/error_codes';
-export var FileManagerMessages = {
+export const FileManagerMessages = {
   get: (errorCode, args) => {
     switch (errorCode) {
       case ErrorCode.NoAccess:

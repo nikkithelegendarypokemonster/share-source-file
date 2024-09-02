@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/viz/core/annotations.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -431,7 +431,7 @@ const corePlugin = {
       items: [],
       _hideToolTipForDrag: false,
       tooltip: new _tooltip.Tooltip({
-        cssClass: "".concat(this._rootClassPrefix, "-annotation-tooltip"),
+        cssClass: `${this._rootClassPrefix}-annotation-tooltip`,
         eventTrigger: this._eventTrigger,
         widgetRoot: this.element(),
         widget: this
@@ -456,7 +456,7 @@ const corePlugin = {
   extenders: {
     _createHtmlStructure() {
       this._annotationsGroup = this._renderer.g().attr({
-        'class': "".concat(this._rootClassPrefix, "-annotations")
+        'class': `${this._rootClassPrefix}-annotations`
       }).css(this._getAnnotationStyles()).linkOn(this._renderer.root, 'annotations').linkAppend();
       _events_engine.default.on(getDocument(), POINTER_ACTION, e => {
         if (this._disposed) {

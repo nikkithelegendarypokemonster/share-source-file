@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/header/m_calendar.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,8 +14,8 @@ import Popover from '../../../ui/popover/ui.popover';
 import Popup from '../../../ui/popup/ui.popup';
 import Scrollable from '../../../ui/scroll_view/ui.scrollable';
 import Widget from '../../../ui/widget/ui.widget';
-var CALENDAR_CLASS = 'dx-scheduler-navigator-calendar';
-var CALENDAR_POPOVER_CLASS = 'dx-scheduler-navigator-calendar-popover';
+const CALENDAR_CLASS = 'dx-scheduler-navigator-calendar';
+const CALENDAR_POPOVER_CLASS = 'dx-scheduler-navigator-calendar-popover';
 export default class SchedulerCalendar extends Widget {
   show(target) {
     if (!this._isMobileLayout()) {
@@ -27,8 +27,8 @@ export default class SchedulerCalendar extends Widget {
     this._overlay.hide();
   }
   _keyboardHandler(opts) {
-    var _a;
-    (_a = this._calendar) === null || _a === void 0 ? void 0 : _a._keyboardHandler(opts);
+    var _this$_calendar;
+    (_this$_calendar = this._calendar) === null || _this$_calendar === void 0 || _this$_calendar._keyboardHandler(opts);
   }
   _init() {
     // @ts-expect-error
@@ -43,8 +43,8 @@ export default class SchedulerCalendar extends Widget {
   _renderOverlay() {
     // @ts-expect-error
     this.$element().addClass(CALENDAR_POPOVER_CLASS);
-    var isMobileLayout = this._isMobileLayout();
-    var overlayType = isMobileLayout ? Popup : Popover;
+    const isMobileLayout = this._isMobileLayout();
+    const overlayType = isMobileLayout ? Popup : Popover;
     // @ts-expect-error
     this._overlay = this._createComponent(this.$element(), overlayType, {
       contentTemplate: () => this._createOverlayContent(),
@@ -56,38 +56,42 @@ export default class SchedulerCalendar extends Widget {
           showCloseButton: false,
           toolbarItems: [{
             shortcut: 'cancel'
-          }]
+          }],
+          _ignorePreventScrollEventsDeprecation: true,
+          preventScrollEvents: false,
+          enableBodyScroll: false
         }
       }]
     });
   }
   _createOverlayContent() {
-    var result = $('<div>').addClass(CALENDAR_CLASS);
+    const result = $('<div>').addClass(CALENDAR_CLASS);
     // @ts-expect-error
     this._calendar = this._createComponent(result, Calendar, this._getCalendarOptions());
     if (this._isMobileLayout()) {
-      var scrollable = this._createScrollable(result);
+      const scrollable = this._createScrollable(result);
       return scrollable.$element();
     }
     return result;
   }
   _createScrollable(content) {
     // @ts-expect-error
-    var result = this._createComponent('<div>', Scrollable, {
-      direction: 'vertical'
+    const result = this._createComponent('<div>', Scrollable, {
+      height: 'auto',
+      direction: 'both'
     });
     result.$content().append(content);
     return result;
   }
   _optionChanged(_ref) {
-    var {
+    var _this$_calendar2;
+    let {
       name,
       value
     } = _ref;
-    var _a;
     switch (name) {
       case 'value':
-        (_a = this._calendar) === null || _a === void 0 ? void 0 : _a.option('value', value);
+        (_this$_calendar2 = this._calendar) === null || _this$_calendar2 === void 0 || _this$_calendar2.option('value', value);
         break;
       default:
         break;

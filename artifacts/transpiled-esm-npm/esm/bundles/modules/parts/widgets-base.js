@@ -1,12 +1,12 @@
 /* eslint-disable import/no-commonjs */
-var DevExpress = require('./core');
+const DevExpress = require('./core');
 require('./data');
 require('./file_management');
 
 /// BUNDLER_PARTS
 /* UI core (dx.module-core.js) */
 
-var ui = DevExpress.ui = require('../../../bundles/modules/ui');
+const ui = DevExpress.ui = require('../../../bundles/modules/ui');
 ui.themes = require('../../../ui/themes');
 
 // deprecated
@@ -27,6 +27,7 @@ ui.dxButtonGroup = require('../../../ui/button_group');
 ui.dxCalendar = require('../../../ui/calendar');
 ui.dxCheckBox = require('../../../ui/check_box');
 ui.dxColorBox = require('../../../ui/color_box');
+ui.dxChat = require('../../../ui/chat');
 ui.dxDateBox = require('../../../ui/date_box');
 ui.dxDateRangeBox = require('../../../ui/date_range_box');
 ui.dxDrawer = require('../../../ui/drawer');

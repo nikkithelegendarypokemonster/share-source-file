@@ -1,7 +1,7 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import { isPlainObject, type } from '../../../../core/utils/type';
-var defaultNotDeepCopyArrays = ['dataSource', 'selectedRowKeys'];
-var propsToIgnore = {
+const defaultNotDeepCopyArrays = ['dataSource', 'selectedRowKeys'];
+const propsToIgnore = {
   integrationOptions: true
 };
 function getDiffItem(key, value, previousValue) {
@@ -15,8 +15,8 @@ function compare(resultPaths, item1, item2, key, fullPropName, notDeepCopyArrays
   if (propsToIgnore[key]) {
     return;
   }
-  var type1 = type(item1);
-  var type2 = type(item2);
+  const type1 = type(item1);
+  const type2 = type(item2);
   if (item1 === item2) return;
   if (type1 !== type2) {
     resultPaths.push(getDiffItem(key, item2, item1));
@@ -24,33 +24,33 @@ function compare(resultPaths, item1, item2, key, fullPropName, notDeepCopyArrays
     if (!isPlainObject(item2)) {
       resultPaths.push(getDiffItem(key, item2, item1));
     } else {
-      var diffPaths = objectDiffs(item1, item2, fullPropName, notDeepCopyArrays);
+      const diffPaths = objectDiffs(item1, item2, fullPropName, notDeepCopyArrays);
       resultPaths.push(...diffPaths.map(item => _extends({}, item, {
-        path: "".concat(key, ".").concat(item.path)
+        path: `${key}.${item.path}`
       })));
     }
   } else if (type1 === 'array') {
-    var notDeepCopy = notDeepCopyArrays.some(prop => fullPropName.includes(prop));
+    const notDeepCopy = notDeepCopyArrays.some(prop => fullPropName.includes(prop));
     if (notDeepCopy && item1 !== item2) {
       resultPaths.push(getDiffItem(key, item2, item1));
     } else if (item1.length !== item2.length) {
       resultPaths.push(getDiffItem(key, item2, item1));
     } else {
-      var _diffPaths = objectDiffs(item1, item2, fullPropName, notDeepCopyArrays);
-      [].push.apply(resultPaths, _diffPaths.map(item => _extends({}, item, {
-        path: "".concat(key).concat(item.path)
+      const diffPaths = objectDiffs(item1, item2, fullPropName, notDeepCopyArrays);
+      [].push.apply(resultPaths, diffPaths.map(item => _extends({}, item, {
+        path: `${key}${item.path}`
       })));
     }
   } else {
     resultPaths.push(getDiffItem(key, item2, item1));
   }
 }
-var objectDiffsFiltered = propsEnumerator => (oldProps, props, fullPropName, notDeepCopyArrays) => {
-  var resultPaths = [];
-  var processItem = !Array.isArray(oldProps) ? propName => {
-    compare(resultPaths, oldProps[propName], props[propName], propName, "".concat(fullPropName, ".").concat(propName), notDeepCopyArrays);
+const objectDiffsFiltered = propsEnumerator => (oldProps, props, fullPropName, notDeepCopyArrays) => {
+  const resultPaths = [];
+  const processItem = !Array.isArray(oldProps) ? propName => {
+    compare(resultPaths, oldProps[propName], props[propName], propName, `${fullPropName}.${propName}`, notDeepCopyArrays);
   } : propName => {
-    compare(resultPaths, oldProps[propName], props[propName], "[".concat(propName, "]"), "".concat(fullPropName, ".").concat(propName), notDeepCopyArrays);
+    compare(resultPaths, oldProps[propName], props[propName], `[${propName}]`, `${fullPropName}.${propName}`, notDeepCopyArrays);
   };
   propsEnumerator(oldProps).forEach(processItem);
   Object.keys(props).filter(propName => !Object.prototype.hasOwnProperty.call(oldProps, propName) && oldProps[propName] !== props[propName]).forEach(propName => {
@@ -62,15 +62,15 @@ var objectDiffsFiltered = propsEnumerator => (oldProps, props, fullPropName, not
   });
   return resultPaths;
 };
-var objectDiffs = objectDiffsFiltered(oldProps => Object.keys(oldProps));
-var reactProps = {
+const objectDiffs = objectDiffsFiltered(oldProps => Object.keys(oldProps));
+const reactProps = {
   key: true,
   ref: true,
   children: true,
   style: true
 };
-var objectDiffsWithoutReactProps = objectDiffsFiltered(prop => Object.keys(prop).filter(p => !reactProps[p]));
+const objectDiffsWithoutReactProps = objectDiffsFiltered(prop => Object.keys(prop).filter(p => !reactProps[p]));
 export function getUpdatedOptions(oldProps, props) {
-  var notDeepCopyArrays = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultNotDeepCopyArrays;
+  let notDeepCopyArrays = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultNotDeepCopyArrays;
   return objectDiffsWithoutReactProps(oldProps, props, '', notDeepCopyArrays);
 }

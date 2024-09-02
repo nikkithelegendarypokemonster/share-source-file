@@ -1,32 +1,32 @@
 // there are rangebar, rangearea
 import { extend } from '../../core/utils/extend';
-var _extend = extend;
+const _extend = extend;
 import { isDefined as _isDefined } from '../../core/utils/type';
 import { map as _map } from '../core/utils';
 import { noop as _noop } from '../../core/utils/common';
 import { chart as scatterSeries } from './scatter_series';
 import { chart as barChart } from './bar_series';
 import { chart as areaChart } from './area_series';
-var barSeries = barChart.bar;
-var areaSeries = areaChart.area;
-var chart = {};
-var baseRangeSeries = {
+const barSeries = barChart.bar;
+const areaSeries = areaChart.area;
+const chart = {};
+const baseRangeSeries = {
   areErrorBarsVisible: _noop,
   _createErrorBarGroup: _noop,
-  _checkData: function _checkData(data, skippedFields) {
-    var valueFields = this.getValueFields();
+  _checkData: function (data, skippedFields) {
+    const valueFields = this.getValueFields();
     return scatterSeries._checkData.call(this, data, skippedFields, {
       minValue: valueFields[0],
       value: valueFields[1]
     }) && data.minValue === data.minValue;
   },
   getValueRangeInitialValue: scatterSeries.getValueRangeInitialValue,
-  _getPointDataSelector: function _getPointDataSelector(data) {
-    var valueFields = this.getValueFields();
-    var val1Field = valueFields[0];
-    var val2Field = valueFields[1];
-    var tagField = this.getTagField();
-    var argumentField = this.getArgumentField();
+  _getPointDataSelector: function (data) {
+    const valueFields = this.getValueFields();
+    const val1Field = valueFields[0];
+    const val2Field = valueFields[1];
+    const tagField = this.getTagField();
+    const argumentField = this.getArgumentField();
     return data => {
       return {
         tag: data[tagField],
@@ -40,7 +40,7 @@ var baseRangeSeries = {
   _defaultAggregator: 'range',
   _aggregators: {
     range(_ref, series) {
-      var {
+      let {
         intervalStart,
         intervalEnd,
         data
@@ -48,12 +48,12 @@ var baseRangeSeries = {
       if (!data.length) {
         return;
       }
-      var valueFields = series.getValueFields();
-      var val1Field = valueFields[0];
-      var val2Field = valueFields[1];
-      var result = data.reduce((result, item) => {
-        var val1 = item[val1Field];
-        var val2 = item[val2Field];
+      const valueFields = series.getValueFields();
+      const val1Field = valueFields[0];
+      const val2Field = valueFields[1];
+      const result = data.reduce((result, item) => {
+        const val1 = item[val1Field];
+        const val2 = item[val2Field];
         if (!_isDefined(val1) || !_isDefined(val2)) {
           return result;
         }
@@ -75,26 +75,26 @@ var baseRangeSeries = {
       return result;
     }
   },
-  getValueFields: function getValueFields() {
+  getValueFields: function () {
     return [this._options.rangeValue1Field || 'val1', this._options.rangeValue2Field || 'val2'];
   },
   getSeriesPairCoord(coord, isArgument) {
-    var oppositeCoord = null;
-    var {
+    let oppositeCoord = null;
+    const {
       rotated
     } = this._options;
-    var isOpposite = !isArgument && !rotated || isArgument && rotated;
-    var coordName = isOpposite ? 'vy' : 'vx';
-    var minCoordName = rotated ? 'minX' : 'minY';
-    var oppositeCoordName = isOpposite ? 'vx' : 'vy';
-    var points = this.getPoints();
-    for (var i = 0; i < points.length; i++) {
-      var p = points[i];
-      var tmpCoord = void 0;
+    const isOpposite = !isArgument && !rotated || isArgument && rotated;
+    const coordName = isOpposite ? 'vy' : 'vx';
+    const minCoordName = rotated ? 'minX' : 'minY';
+    const oppositeCoordName = isOpposite ? 'vx' : 'vy';
+    const points = this.getPoints();
+    for (let i = 0; i < points.length; i++) {
+      const p = points[i];
+      let tmpCoord;
       if (isArgument) {
         tmpCoord = p.getCenterCoord()[coordName[1]] === coord ? p[oppositeCoordName] : undefined;
       } else {
-        var coords = [Math.min(p[coordName], p[minCoordName]), Math.max(p[coordName], p[minCoordName])];
+        const coords = [Math.min(p[coordName], p[minCoordName]), Math.max(p[coordName], p[minCoordName])];
         tmpCoord = coord >= coords[0] && coord <= coords[1] ? p[oppositeCoordName] : undefined;
       }
       if (this._checkAxisVisibleAreaCoord(!isArgument, tmpCoord)) {
@@ -107,8 +107,8 @@ var baseRangeSeries = {
 };
 chart['rangebar'] = _extend({}, barSeries, baseRangeSeries);
 chart['rangearea'] = _extend({}, areaSeries, {
-  _drawPoint: function _drawPoint(options) {
-    var point = options.point;
+  _drawPoint: function (options) {
+    const point = options.point;
     if (point.isInVisibleArea()) {
       point.clearVisibility();
       point.draw(this._renderer, options.groups);
@@ -123,9 +123,9 @@ chart['rangearea'] = _extend({}, areaSeries, {
       point.setInvisibility();
     }
   },
-  _prepareSegment: function _prepareSegment(points, rotated) {
-    var processedPoints = this._processSinglePointsAreaSegment(points, rotated);
-    var processedMinPointsCoords = _map(processedPoints, function (pt) {
+  _prepareSegment: function (points, rotated) {
+    const processedPoints = this._processSinglePointsAreaSegment(points, rotated);
+    const processedMinPointsCoords = _map(processedPoints, function (pt) {
       return pt.getCoords(true);
     });
     return {
@@ -137,27 +137,27 @@ chart['rangearea'] = _extend({}, areaSeries, {
       singlePointSegment: processedPoints !== points
     };
   },
-  _getDefaultSegment: function _getDefaultSegment(segment) {
-    var defaultSegment = areaSeries._getDefaultSegment.call(this, segment);
+  _getDefaultSegment: function (segment) {
+    const defaultSegment = areaSeries._getDefaultSegment.call(this, segment);
     defaultSegment.bottomLine = defaultSegment.line;
     return defaultSegment;
   },
-  _removeElement: function _removeElement(element) {
+  _removeElement: function (element) {
     areaSeries._removeElement.call(this, element);
     element.bottomLine && element.bottomLine.remove();
   },
-  _drawElement: function _drawElement(segment, group) {
-    var that = this;
-    var drawnElement = areaSeries._drawElement.call(that, segment, group);
+  _drawElement: function (segment, group) {
+    const that = this;
+    const drawnElement = areaSeries._drawElement.call(that, segment, group);
     drawnElement.bottomLine = that._bordersGroup && that._createBorderElement(segment.bottomLine, {
       'stroke-width': that._styles.normal.border['stroke-width']
     }).append(that._bordersGroup);
     return drawnElement;
   },
-  _applyStyle: function _applyStyle(style) {
-    var that = this;
-    var elementsGroup = that._elementsGroup;
-    var bordersGroup = that._bordersGroup;
+  _applyStyle: function (style) {
+    const that = this;
+    const elementsGroup = that._elementsGroup;
+    const bordersGroup = that._bordersGroup;
     elementsGroup && elementsGroup.smartAttr(style.elements);
     bordersGroup && bordersGroup.attr(style.border);
     (that._graphics || []).forEach(function (graphic) {
@@ -169,11 +169,11 @@ chart['rangearea'] = _extend({}, areaSeries, {
       });
     });
   },
-  _updateElement: function _updateElement(element, segment, animate, complete) {
-    var bottomLineParams = {
+  _updateElement: function (element, segment, animate, complete) {
+    const bottomLineParams = {
       points: segment.bottomLine
     };
-    var bottomBorderElement = element.bottomLine;
+    const bottomBorderElement = element.bottomLine;
     areaSeries._updateElement.apply(this, arguments);
     if (bottomBorderElement) {
       animate ? bottomBorderElement.animate(bottomLineParams) : bottomBorderElement.attr(bottomLineParams);

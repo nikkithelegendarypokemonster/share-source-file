@@ -1,16 +1,16 @@
 /**
 * DevExtreme (esm/__internal/scheduler/tooltip_strategies/m_desktop_tooltip_strategy.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { touch } from '../../../core/utils/support';
-import Tooltip from '../../../ui/tooltip';
+import Tooltip from '../../ui/m_tooltip';
 import { TooltipStrategyBase } from './m_tooltip_strategy_base';
-var APPOINTMENT_TOOLTIP_WRAPPER_CLASS = 'dx-scheduler-appointment-tooltip-wrapper';
-var MAX_TOOLTIP_HEIGHT = 200;
+const APPOINTMENT_TOOLTIP_WRAPPER_CLASS = 'dx-scheduler-appointment-tooltip-wrapper';
+const MAX_TOOLTIP_HEIGHT = 200;
 export class DesktopTooltipStrategy extends TooltipStrategyBase {
   _prepareBeforeVisibleChanged(dataList) {
     this._tooltip.option('position', {
@@ -34,14 +34,14 @@ export class DesktopTooltipStrategy extends TooltipStrategyBase {
   // @ts-expect-error
   _createListOption(target, dataList) {
     // @ts-expect-error
-    var result = super._createListOption(target, dataList);
+    const result = super._createListOption(target, dataList);
     // TODO:T724287 this condition is not covered by tests, because touch variable cannot be overridden.
     // In the future, it is necessary to cover the tests
     result.showScrollbar = touch ? 'always' : 'onHover';
     return result;
   }
   _createTooltip(target, dataList) {
-    var tooltip = this._createTooltipElement(APPOINTMENT_TOOLTIP_WRAPPER_CLASS);
+    const tooltip = this._createTooltipElement(APPOINTMENT_TOOLTIP_WRAPPER_CLASS);
     return this._options.createComponent(tooltip, Tooltip, {
       target,
       maxHeight: MAX_TOOLTIP_HEIGHT,
@@ -57,7 +57,7 @@ export class DesktopTooltipStrategy extends TooltipStrategyBase {
     return this._extraOptions.dragBehavior && this._extraOptions.dragBehavior(e);
   }
   _onListItemContextMenu(e) {
-    var contextMenuEventArgs = this._options.createEventArgs(e);
+    const contextMenuEventArgs = this._options.createEventArgs(e);
     this._options.onItemContextMenu(contextMenuEventArgs);
   }
 }

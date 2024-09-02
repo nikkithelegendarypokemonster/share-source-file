@@ -12,27 +12,22 @@ var _m_utils = require("../../resources/m_utils");
 var _m_utils2 = require("../data_provider/m_utils");
 var _m_strategy_base = _interopRequireDefault(require("./m_strategy_base"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-let AgendaRenderingStrategy = /*#__PURE__*/function (_BaseRenderingStrateg) {
-  _inheritsLoose(AgendaRenderingStrategy, _BaseRenderingStrateg);
-  function AgendaRenderingStrategy() {
-    return _BaseRenderingStrateg.apply(this, arguments) || this;
+class AgendaRenderingStrategy extends _m_strategy_base.default {
+  get instance() {
+    return this.options.instance;
   }
-  var _proto = AgendaRenderingStrategy.prototype;
-  _proto.getAppointmentMinSize = function getAppointmentMinSize() {};
-  _proto.getDeltaTime = function getDeltaTime() {};
-  _proto.keepAppointmentSettings = function keepAppointmentSettings() {
+  get agendaDuration() {
+    return this.options.agendaDuration;
+  }
+  getAppointmentMinSize() {}
+  getDeltaTime() {}
+  keepAppointmentSettings() {
     return true;
-  };
-  _proto.getAppointmentGeometry = function getAppointmentGeometry(geometry) {
+  }
+  getAppointmentGeometry(geometry) {
     return geometry;
-  };
-  _proto.groupAppointmentByResources = function groupAppointmentByResources(appointments) {
+  }
+  groupAppointmentByResources(appointments) {
     const groups = this.instance._getCurrentViewOption('groups');
     const config = {
       loadedResources: this.options.loadedResources,
@@ -40,8 +35,8 @@ let AgendaRenderingStrategy = /*#__PURE__*/function (_BaseRenderingStrateg) {
       dataAccessors: this.dataAccessors.resources
     };
     return (0, _m_utils.groupAppointmentsByResources)(config, appointments, groups);
-  };
-  _proto.createTaskPositionMap = function createTaskPositionMap(appointments) {
+  }
+  createTaskPositionMap(appointments) {
     let height;
     let appointmentsByResources;
     this.calculateRows(appointments, this.agendaDuration, this.currentDate);
@@ -81,8 +76,8 @@ let AgendaRenderingStrategy = /*#__PURE__*/function (_BaseRenderingStrateg) {
       delete appt.settings;
     });
     return result;
-  };
-  _proto._calculateGroupIndex = function _calculateGroupIndex(apptIndex, appointmentsByResources) {
+  }
+  _calculateGroupIndex(apptIndex, appointmentsByResources) {
     let resultInd;
     let counter = 0;
     // eslint-disable-next-line
@@ -97,53 +92,45 @@ let AgendaRenderingStrategy = /*#__PURE__*/function (_BaseRenderingStrateg) {
     return resultInd;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._getDeltaWidth = function _getDeltaWidth(args, initialSize) {};
-  _proto._getAppointmentMaxWidth = function _getAppointmentMaxWidth() {
+  _getDeltaWidth(args, initialSize) {}
+  _getAppointmentMaxWidth() {
     return this.cellWidth;
-  };
-  _proto._needVerifyItemSize = function _needVerifyItemSize() {
+  }
+  _needVerifyItemSize() {
     return false;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._getAppointmentParts = function _getAppointmentParts(geometry, settings) {};
-  _proto._reduceMultiWeekAppointment = function _reduceMultiWeekAppointment() {};
-  _proto.calculateAppointmentHeight = function calculateAppointmentHeight() {
+  _getAppointmentParts(geometry, settings) {}
+  _reduceMultiWeekAppointment() {}
+  calculateAppointmentHeight() {
     return 0;
-  };
-  _proto.calculateAppointmentWidth = function calculateAppointmentWidth() {
+  }
+  calculateAppointmentWidth() {
     return 0;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.isAppointmentGreaterThan = function isAppointmentGreaterThan(etalon, comparisonParameters) {};
-  _proto.isAllDay = function isAllDay() {
+  isAppointmentGreaterThan(etalon, comparisonParameters) {}
+  isAllDay() {
     return false;
-  };
-  _proto._sortCondition = function _sortCondition() {}
+  }
+  _sortCondition() {}
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._rowCondition = function _rowCondition(a, b) {}
+  _rowCondition(a, b) {}
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._columnCondition = function _columnCondition(a, b) {}
+  _columnCondition(a, b) {}
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._findIndexByKey = function _findIndexByKey(arr, iKey, jKey, iValue, jValue) {};
-  _proto._markAppointmentAsVirtual = function _markAppointmentAsVirtual() {};
-  _proto.getDropDownAppointmentWidth = function getDropDownAppointmentWidth() {};
-  _proto.getCollectorLeftOffset = function getCollectorLeftOffset() {};
-  _proto.getCollectorTopOffset = function getCollectorTopOffset() {}
+  _findIndexByKey(arr, iKey, jKey, iValue, jValue) {}
+  _markAppointmentAsVirtual() {}
+  getDropDownAppointmentWidth() {}
+  getCollectorLeftOffset() {}
+  getCollectorTopOffset() {}
   // From subscribe
-  ;
-  _proto.replaceWrongAppointmentEndDate = function replaceWrongAppointmentEndDate(rawAppointment, startDate, endDate) {
+  replaceWrongAppointmentEndDate(rawAppointment, startDate, endDate) {
     const adapter = (0, _m_appointment_adapter.createAppointmentAdapter)(rawAppointment, this.dataAccessors, this.timeZoneCalculator);
     (0, _m_utils2.replaceWrongEndDate)(adapter, startDate, endDate, this.cellDuration, this.dataAccessors);
   }
   // TODO: get rid of an extra 'needClearSettings' argument
-  ;
-  _proto.calculateRows = function calculateRows(appointments, agendaDuration, currentDate, needClearSettings) {
+  calculateRows(appointments, agendaDuration, currentDate, needClearSettings) {
     this._rows = [];
     currentDate = _date.default.trimTime(new Date(currentDate));
     const groupedAppointments = this.groupAppointmentByResources(appointments);
@@ -189,8 +176,8 @@ let AgendaRenderingStrategy = /*#__PURE__*/function (_BaseRenderingStrateg) {
       this._rows.push(groupResult);
     });
     return this._rows;
-  };
-  _proto._iterateRow = function _iterateRow(row, obj, index) {
+  }
+  _iterateRow(row, obj, index) {
     for (let i = 0; i < row.length; i++) {
       obj.counter += row[i];
       if (obj.counter >= index) {
@@ -198,8 +185,8 @@ let AgendaRenderingStrategy = /*#__PURE__*/function (_BaseRenderingStrateg) {
         break;
       }
     }
-  };
-  _proto.getDateByIndex = function getDateByIndex(index, rows, startViewDate) {
+  }
+  getDateByIndex(index, rows, startViewDate) {
     const obj = {
       counter: 0,
       indexInRow: 0
@@ -210,8 +197,8 @@ let AgendaRenderingStrategy = /*#__PURE__*/function (_BaseRenderingStrateg) {
       if (obj.indexInRow) break;
     }
     return new Date(new Date(startViewDate).setDate(startViewDate.getDate() + obj.indexInRow));
-  };
-  _proto.getAppointmentDataCalculator = function getAppointmentDataCalculator() {
+  }
+  getAppointmentDataCalculator() {
     return ($appointment, originalStartDate) => {
       const apptIndex = $appointment.index();
       const startViewDate = this.instance.getStartViewDate();
@@ -221,18 +208,6 @@ let AgendaRenderingStrategy = /*#__PURE__*/function (_BaseRenderingStrateg) {
         startDate: new Date(calculatedStartDate.setHours(wrappedOriginalStartDate.getHours(), wrappedOriginalStartDate.getMinutes(), wrappedOriginalStartDate.getSeconds(), wrappedOriginalStartDate.getMilliseconds()))
       };
     };
-  };
-  _createClass(AgendaRenderingStrategy, [{
-    key: "instance",
-    get: function () {
-      return this.options.instance;
-    }
-  }, {
-    key: "agendaDuration",
-    get: function () {
-      return this.options.agendaDuration;
-    }
-  }]);
-  return AgendaRenderingStrategy;
-}(_m_strategy_base.default);
+  }
+}
 var _default = exports.default = AgendaRenderingStrategy;

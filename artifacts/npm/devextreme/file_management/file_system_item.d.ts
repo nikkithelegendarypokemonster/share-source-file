@@ -1,69 +1,83 @@
 /**
 * DevExtreme (file_management/file_system_item.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /**
- * An object that provides information about a file system item (file or directory) in the FileManager UI component.
+ * @docid FileSystemItem
+ * @namespace DevExpress.fileManagement
+ * @public
  */
 export default class FileSystemItem {
     constructor(path: string, isDirectory: boolean, pathKeys?: Array<string>);
 
     /**
-     * The file system item&apos;s path.
+     * @docid FileSystemItem.path
+     * @public
      */
     path: string;
 
     /**
-     * The file system item&apos;s path specified in keys.
+     * @docid FileSystemItem.pathKeys
+     * @public
      */
     pathKeys: Array<string>;
 
     /**
-     * The file system item&apos;s key.
+     * @docid FileSystemItem.key
+     * @public
      */
     key: string;
 
     /**
-     * The file system item&apos;s name.
+     * @docid FileSystemItem.name
+     * @public
      */
     name: string;
 
     /**
-     * A timestamp that indicates when the file system item was last modified.
+     * @docid FileSystemItem.dateModified
+     * @public
      */
     dateModified: Date;
 
     /**
-     * The file system item&apos;s size (in bytes).
+     * @docid FileSystemItem.size
+     * @public
      */
     size: number;
 
     /**
-     * Specifies whether the file system item is a directory.
+     * @docid FileSystemItem.isDirectory
+     * @public
      */
     isDirectory: boolean;
 
     /**
-     * Specifies whether a directory has subdirectories.
+     * @docid FileSystemItem.hasSubDirectories
+     * @public
      */
     hasSubDirectories: boolean;
 
     /**
-     * An icon (URL) to be used as the file system item&apos;s thumbnail.
+     * @docid FileSystemItem.thumbnail
+     * @public
      */
     thumbnail: string;
 
     /**
-     * The file system data object that stores information about the file system item (name, size, modification date, etc.).
+     * @docid FileSystemItem.dataItem
+     * @public
      */
     dataItem: any;
 
     /**
-     * Gets a file&apos;s extension.
+     * @docid FileSystemItem.getFileExtension
+     * @publicName getFileExtension()
+     * @public
      */
     getFileExtension(): string;
 }

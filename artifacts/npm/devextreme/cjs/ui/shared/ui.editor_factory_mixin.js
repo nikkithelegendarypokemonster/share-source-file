@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/shared/ui.editor_factory_mixin.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -26,8 +26,6 @@ require("../check_box");
 require("../select_box");
 require("../date_box");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const {
   isWrapped
 } = _variable_wrapper.default;
@@ -171,7 +169,6 @@ function prepareLookupEditor(options) {
   let postProcess;
   const isFilterRow = options.parentType === 'filterRow';
   if (lookup) {
-    var _options$editorType;
     displayGetter = (0, _data.compileGetter)(lookup.displayExpr);
     dataSource = lookup.dataSource;
     if ((0, _type.isFunction)(dataSource) && !isWrapped(dataSource)) {
@@ -195,7 +192,7 @@ function prepareLookupEditor(options) {
       }
     }
     const allowClearing = Boolean(lookup.allowClearing && !isFilterRow);
-    options.editorName = (_options$editorType = options.editorType) !== null && _options$editorType !== void 0 ? _options$editorType : 'dxSelectBox';
+    options.editorName = options.editorType ?? 'dxSelectBox';
     options.editorOptions = getResultConfig({
       searchEnabled: true,
       value: options.value,
@@ -281,8 +278,7 @@ const prepareEditor = options => {
   if (options.lookup) {
     prepareLookupEditor(options);
   } else if (options.editorType) {
-    var _prepareDefaultEditor;
-    ((_prepareDefaultEditor = prepareDefaultEditor[options.editorType]) !== null && _prepareDefaultEditor !== void 0 ? _prepareDefaultEditor : prepareCustomEditor)(options);
+    (prepareDefaultEditor[options.editorType] ?? prepareCustomEditor)(options);
   } else {
     switch (options.dataType) {
       case 'date':
@@ -301,13 +297,8 @@ const prepareEditor = options => {
     }
   }
 };
-const EditorFactoryMixin = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(EditorFactoryMixin, _Base);
-  function EditorFactoryMixin() {
-    return _Base.apply(this, arguments) || this;
-  }
-  var _proto = EditorFactoryMixin.prototype;
-  _proto.createEditor = function createEditor($container, options) {
+const EditorFactoryMixin = Base => class EditorFactoryMixin extends Base {
+  createEditor($container, options) {
     options.cancel = false;
     options.editorElement = (0, _element.getPublicElement)($container);
     if (!(0, _type.isDefined)(options.tabIndex)) {
@@ -323,9 +314,8 @@ const EditorFactoryMixin = Base => /*#__PURE__*/function (_Base) {
     }
     createEditorCore(this, options);
     this.executeAction('onEditorPrepared', options);
-  };
-  return EditorFactoryMixin;
-}(Base);
+  }
+};
 var _default = exports.default = EditorFactoryMixin;
 module.exports = exports.default;
 module.exports.default = exports.default;

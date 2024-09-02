@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/viz/m_pie_chart.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -63,8 +63,8 @@ function resolveOverlappedLabels(points, shiftCallback, inverseDirection, canvas
 function getLegendItemAction(points) {
   let state = NORMAL_STATE;
   points.forEach(point => {
-    var _a;
-    const seriesOptions = (_a = point.series) === null || _a === void 0 ? void 0 : _a.getOptions();
+    var _point$series;
+    const seriesOptions = (_point$series = point.series) === null || _point$series === void 0 ? void 0 : _point$series.getOptions();
     let pointState = point.fullState;
     if ((seriesOptions === null || seriesOptions === void 0 ? void 0 : seriesOptions.hoverMode) === 'none') {
       pointState &= ~HOVER_STATE;
@@ -141,7 +141,7 @@ const dxPieChart = _m_base_chart.BaseChart.inherit({
     this.callBase();
   },
   _groupSeries() {
-    var _a;
+    var _series$;
     const {
       series
     } = this;
@@ -152,7 +152,7 @@ const dxPieChart = _m_base_chart.BaseChart.inherit({
           valueType: 'numeric'
         }
       }],
-      argumentOptions: (_a = series[0]) === null || _a === void 0 ? void 0 : _a.getOptions()
+      argumentOptions: (_series$ = series[0]) === null || _series$ === void 0 ? void 0 : _series$.getOptions()
     };
   },
   getArgumentAxis() {

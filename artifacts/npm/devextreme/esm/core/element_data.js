@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/element_data.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,29 +9,29 @@
 import domAdapter from './dom_adapter';
 import eventsEngine from '../events/core/events_engine';
 import MemorizedCallbacks from './memorized_callbacks';
-var dataMap = new WeakMap();
-var strategy;
-export var strategyChanging = new MemorizedCallbacks();
-var beforeCleanDataFunc = function beforeCleanDataFunc() {};
-var afterCleanDataFunc = function afterCleanDataFunc() {};
-export var setDataStrategy = function setDataStrategy(value) {
+const dataMap = new WeakMap();
+let strategy;
+export const strategyChanging = new MemorizedCallbacks();
+let beforeCleanDataFunc = function () {};
+let afterCleanDataFunc = function () {};
+export const setDataStrategy = function (value) {
   strategyChanging.fire(value);
   strategy = value;
-  var cleanData = strategy.cleanData;
+  const cleanData = strategy.cleanData;
   strategy.cleanData = function (nodes) {
     beforeCleanDataFunc(nodes);
-    var result = cleanData.call(this, nodes);
+    const result = cleanData.call(this, nodes);
     afterCleanDataFunc(nodes);
     return result;
   };
 };
 setDataStrategy({
-  data: function data() {
-    var element = arguments[0];
-    var key = arguments[1];
-    var value = arguments[2];
+  data: function () {
+    const element = arguments[0];
+    const key = arguments[1];
+    const value = arguments[2];
     if (!element) return;
-    var elementData = dataMap.get(element);
+    let elementData = dataMap.get(element);
     if (!elementData) {
       elementData = {};
       dataMap.set(element, elementData);
@@ -45,19 +45,19 @@ setDataStrategy({
     elementData[key] = value;
     return value;
   },
-  removeData: function removeData(element, key) {
+  removeData: function (element, key) {
     if (!element) return;
     if (key === undefined) {
       dataMap.delete(element);
     } else {
-      var elementData = dataMap.get(element);
+      const elementData = dataMap.get(element);
       if (elementData) {
         delete elementData[key];
       }
     }
   },
-  cleanData: function cleanData(elements) {
-    for (var i = 0; i < elements.length; i++) {
+  cleanData: function (elements) {
+    for (let i = 0; i < elements.length; i++) {
       eventsEngine.off(elements[i]);
       dataMap.delete(elements[i]);
     }
@@ -85,7 +85,7 @@ export function cleanDataRecursive(element, cleanSelf) {
   if (!domAdapter.isElementNode(element)) {
     return;
   }
-  var childElements = element.getElementsByTagName('*');
+  const childElements = element.getElementsByTagName('*');
   strategy.cleanData(childElements);
   if (cleanSelf) {
     strategy.cleanData([element]);

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/tree_list/selection/m_selection.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,20 +15,15 @@ var _type = require("../../../../core/utils/type");
 var _m_selection = require("../../../grids/grid_core/selection/m_selection");
 var _m_core = _interopRequireDefault(require("../m_core"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */
+/* eslint-disable max-classes-per-file */
+
 const TREELIST_SELECT_ALL_CLASS = 'dx-treelist-select-all';
 const SELECT_CHECKBOX_CLASS = 'dx-select-checkbox';
 const nodeExists = function (array, currentKey) {
   return !!array.filter(key => key === currentKey).length;
 };
-const data = Base => /*#__PURE__*/function (_dataSelectionExtende) {
-  _inheritsLoose(DataSelectionTreeListExtender, _dataSelectionExtende);
-  function DataSelectionTreeListExtender() {
-    return _dataSelectionExtende.apply(this, arguments) || this;
-  }
-  var _proto = DataSelectionTreeListExtender.prototype;
-  _proto._handleDataChanged = function _handleDataChanged(e) {
+const data = Base => class DataSelectionTreeListExtender extends (0, _m_selection.dataSelectionExtenderMixin)(Base) {
+  _handleDataChanged(e) {
     // @ts-expect-error
     const isRecursiveSelection = this._selectionController.isRecursiveSelection();
     if (isRecursiveSelection && (!e || e.changeType !== 'updateSelectionState')) {
@@ -37,12 +32,12 @@ const data = Base => /*#__PURE__*/function (_dataSelectionExtende) {
         selectedItemKeys: this.option('selectedRowKeys')
       });
     }
-    _dataSelectionExtende.prototype._handleDataChanged.apply(this, arguments);
-  };
-  _proto.loadDescendants = function loadDescendants() {
+    super._handleDataChanged.apply(this, arguments);
+  }
+  loadDescendants() {
     const that = this;
     // @ts-expect-error
-    const d = _dataSelectionExtende.prototype.loadDescendants.apply(that, arguments);
+    const d = super.loadDescendants.apply(that, arguments);
     // @ts-expect-error
     const isRecursiveSelection = this._selectionController.isRecursiveSelection();
     if (isRecursiveSelection) {
@@ -54,24 +49,19 @@ const data = Base => /*#__PURE__*/function (_dataSelectionExtende) {
       });
     }
     return d;
-  };
-  return DataSelectionTreeListExtender;
-}((0, _m_selection.dataSelectionExtenderMixin)(Base));
-const selection = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(SelectionControllerTreeListExtender, _Base);
-  function SelectionControllerTreeListExtender() {
-    var _this;
-    _this = _Base.apply(this, arguments) || this;
-    _this._updateSelectColumn = _common.noop;
-    return _this;
   }
-  var _proto2 = SelectionControllerTreeListExtender.prototype;
-  _proto2.init = function init() {
-    _Base.prototype.init.apply(this, arguments);
+};
+const selection = Base => class SelectionControllerTreeListExtender extends Base {
+  constructor() {
+    super(...arguments);
+    this._updateSelectColumn = _common.noop;
+  }
+  init() {
+    super.init.apply(this, arguments);
     this._selectionStateByKey = {};
-  };
-  _proto2._getSelectionConfig = function _getSelectionConfig() {
-    const config = _Base.prototype._getSelectionConfig.apply(this, arguments);
+  }
+  _getSelectionConfig() {
+    const config = super._getSelectionConfig.apply(this, arguments);
     const {
       plainItems
     } = config;
@@ -92,8 +82,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
     // @ts-expect-error
     config.allowLoadByRange = undefined;
     return config;
-  };
-  _proto2.renderSelectCheckBoxContainer = function renderSelectCheckBoxContainer($container, model) {
+  }
+  renderSelectCheckBoxContainer($container, model) {
     const that = this;
     const rowsView = that.component.getView('rowsView');
     // @ts-expect-error
@@ -104,8 +94,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
     });
     // @ts-expect-error
     rowsView._attachCheckBoxClickEvent($checkbox);
-  };
-  _proto2._getSelectAllNodeKeys = function _getSelectAllNodeKeys() {
+  }
+  _getSelectAllNodeKeys() {
     const {
       component
     } = this;
@@ -125,8 +115,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       return isRecursiveSelection ? false : component.isRowExpanded(node.key, cache);
     });
     return keys;
-  };
-  _proto2.isSelectAll = function isSelectAll() {
+  }
+  isSelectAll() {
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     const selectedRowKeys = this.option('selectedRowKeys') || [];
     if (selectedRowKeys.length === 0) return false;
@@ -151,18 +141,18 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       return true;
     }
     return undefined;
-  };
-  _proto2.selectAll = function selectAll() {
+  }
+  selectAll() {
     const visibleKeys = this._getSelectAllNodeKeys().filter(key => !this.isRowSelected(key));
     this.focusedItemIndex(-1);
     return this.selectRows(visibleKeys, true);
-  };
-  _proto2.deselectAll = function deselectAll() {
+  }
+  deselectAll() {
     const visibleKeys = this._getSelectAllNodeKeys();
     this.focusedItemIndex(-1);
     return this.deselectRows(visibleKeys);
-  };
-  _proto2.selectedItemKeys = function selectedItemKeys(value, preserve, isDeselect, isSelectAll) {
+  }
+  selectedItemKeys(value, preserve, isDeselect, isSelectAll) {
     const that = this;
     const selectedRowKeys = that.option('selectedRowKeys');
     const isRecursiveSelection = this.isRecursiveSelection();
@@ -171,7 +161,7 @@ const selection = Base => /*#__PURE__*/function (_Base) {
     }, preserve, !isDeselect);
     if (normalizedArgs && !(0, _common.equalByValue)(normalizedArgs.selectedRowKeys, selectedRowKeys)) {
       that._isSelectionNormalizing = true;
-      return _Base.prototype.selectedItemKeys.call(this, normalizedArgs.selectedRowKeys, false, false, false).always(() => {
+      return super.selectedItemKeys(normalizedArgs.selectedRowKeys, false, false, false).always(() => {
         that._isSelectionNormalizing = false;
       }).done(items => {
         normalizedArgs.selectedRowsData = items;
@@ -179,20 +169,21 @@ const selection = Base => /*#__PURE__*/function (_Base) {
         that._fireSelectionChanged(normalizedArgs);
       });
     }
-    return _Base.prototype.selectedItemKeys.call(this, value, preserve, isDeselect, isSelectAll);
-  };
-  _proto2.changeItemSelection = function changeItemSelection(itemIndex, keyboardKeys) {
+    return super.selectedItemKeys(value, preserve, isDeselect, isSelectAll);
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  changeItemSelection(itemIndex, keyboardKeys, setFocusOnly) {
     const isRecursiveSelection = this.isRecursiveSelection();
-    const callBase = _Base.prototype.changeItemSelection.bind(this);
+    const callBase = super.changeItemSelection.bind(this);
     if (isRecursiveSelection && !keyboardKeys.shift) {
       const key = this._dataController.getKeyByRowIndex(itemIndex);
       return this.selectedItemKeys(key, true, this.isRowSelected(key)).done(() => {
         this.isRowSelected(key) && callBase(itemIndex, keyboardKeys, true);
       });
     }
-    return _Base.prototype.changeItemSelection.apply(this, arguments);
-  };
-  _proto2._updateParentSelectionState = function _updateParentSelectionState(node, isSelected) {
+    return super.changeItemSelection.apply(this, arguments);
+  }
+  _updateParentSelectionState(node, isSelected) {
     const that = this;
     let state = isSelected;
     const parentNode = node.parent;
@@ -211,8 +202,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
         this._updateParentSelectionState(parentNode, state);
       }
     }
-  };
-  _proto2._updateChildrenSelectionState = function _updateChildrenSelectionState(node, isSelected) {
+  }
+  _updateChildrenSelectionState(node, isSelected) {
     const that = this;
     const {
       children
@@ -223,8 +214,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
         that._updateChildrenSelectionState(childNode, isSelected);
       }
     });
-  };
-  _proto2._updateSelectionStateCore = function _updateSelectionStateCore(keys, isSelected) {
+  }
+  _updateSelectionStateCore(keys, isSelected) {
     const dataController = this._dataController;
     for (let i = 0; i < keys.length; i++) {
       this._selectionStateByKey[keys[i]] = isSelected;
@@ -235,8 +226,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
         this._updateChildrenSelectionState(node, isSelected);
       }
     }
-  };
-  _proto2._getSelectedParentKeys = function _getSelectedParentKeys(key, selectedItemKeys, useCash) {
+  }
+  _getSelectedParentKeys(key, selectedItemKeys, useCash) {
     let selectedParentNode;
     // @ts-expect-error
     const node = this._dataController.getNodeByKey(key);
@@ -255,8 +246,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       parentNode = parentNode.parent;
     }
     return selectedParentNode && result || [];
-  };
-  _proto2._getSelectedChildKeys = function _getSelectedChildKeys(key, keysToIgnore) {
+  }
+  _getSelectedChildKeys(key, keysToIgnore) {
     const childKeys = [];
     // @ts-expect-error
     const node = this._dataController.getNodeByKey(key);
@@ -268,8 +259,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       return ignoreKeyIndex > 0 || ignoreKeyIndex < 0 && this._selectionStateByKey[childNode.key] === undefined;
     });
     return childKeys;
-  };
-  _proto2._normalizeParentKeys = function _normalizeParentKeys(key, args) {
+  }
+  _normalizeParentKeys(key, args) {
     const that = this;
     let keysToIgnore = [key];
     const parentNodeKeys = that._getSelectedParentKeys(key, args.selectedRowKeys);
@@ -284,8 +275,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       const childKeys = that._getSelectedChildKeys(parentNodeKeys[0], keysToIgnore);
       args.selectedRowKeys = args.selectedRowKeys.concat(childKeys);
     }
-  };
-  _proto2._normalizeChildrenKeys = function _normalizeChildrenKeys(key, args) {
+  }
+  _normalizeChildrenKeys(key, args) {
     // @ts-expect-error
     const node = this._dataController.getNodeByKey(key);
     node && node.children.forEach(childNode => {
@@ -295,8 +286,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       }
       this._normalizeChildrenKeys(childNode.key, args);
     });
-  };
-  _proto2._normalizeSelectedRowKeysCore = function _normalizeSelectedRowKeysCore(keys, args, preserve, isSelect) {
+  }
+  _normalizeSelectedRowKeysCore(keys, args, preserve, isSelect) {
     const that = this;
     keys.forEach(key => {
       if (preserve && that.isRowSelected(key) === isSelect) {
@@ -317,8 +308,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
         that._normalizeParentKeys(key, args);
       }
     });
-  };
-  _proto2._normalizeSelectionArgs = function _normalizeSelectionArgs(args, preserve, isSelect) {
+  }
+  _normalizeSelectionArgs(args, preserve, isSelect) {
     let result;
     const keys = Array.isArray(args.keys) ? args.keys : [args.keys];
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
@@ -332,20 +323,20 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       this._normalizeSelectedRowKeysCore(keys, result, preserve, isSelect);
     }
     return result;
-  };
-  _proto2._updateSelectedItems = function _updateSelectedItems(args) {
+  }
+  _updateSelectedItems(args) {
     this.updateSelectionState(args);
-    _Base.prototype._updateSelectedItems.call(this, args);
-  };
-  _proto2._fireSelectionChanged = function _fireSelectionChanged() {
+    super._updateSelectedItems(args);
+  }
+  _fireSelectionChanged() {
     if (!this._isSelectionNormalizing) {
-      _Base.prototype._fireSelectionChanged.apply(this, arguments);
+      super._fireSelectionChanged.apply(this, arguments);
     }
-  };
-  _proto2._isModeLeavesOnly = function _isModeLeavesOnly(mode) {
+  }
+  _isModeLeavesOnly(mode) {
     return mode === 'leavesOnly';
-  };
-  _proto2._removeDuplicatedKeys = function _removeDuplicatedKeys(keys) {
+  }
+  _removeDuplicatedKeys(keys) {
     const result = [];
     const processedKeys = {};
     keys.forEach(key => {
@@ -355,8 +346,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       }
     });
     return result;
-  };
-  _proto2._getAllChildKeys = function _getAllChildKeys(key) {
+  }
+  _getAllChildKeys(key) {
     const childKeys = [];
     // @ts-expect-error
     const node = this._dataController.getNodeByKey(key);
@@ -364,8 +355,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       childKeys.push(childNode.key);
     }, true);
     return childKeys;
-  };
-  _proto2._getAllSelectedRowKeys = function _getAllSelectedRowKeys(keys) {
+  }
+  _getAllSelectedRowKeys(keys) {
     let result = [];
     keys.forEach(key => {
       const parentKeys = this._getSelectedParentKeys(key, [], true);
@@ -374,8 +365,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
     });
     result = this._removeDuplicatedKeys(result);
     return result;
-  };
-  _proto2._getParentSelectedRowKeys = function _getParentSelectedRowKeys(keys) {
+  }
+  _getParentSelectedRowKeys(keys) {
     const that = this;
     const result = [];
     keys.forEach(key => {
@@ -383,8 +374,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       !parentKeys.length && result.push(key);
     });
     return result;
-  };
-  _proto2._getLeafSelectedRowKeys = function _getLeafSelectedRowKeys(keys) {
+  }
+  _getLeafSelectedRowKeys(keys) {
     const that = this;
     const result = [];
     const dataController = that._dataController;
@@ -394,23 +385,23 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       node && !node.hasChildren && result.push(key);
     });
     return result;
-  };
-  _proto2.isRecursiveSelection = function isRecursiveSelection() {
+  }
+  isRecursiveSelection() {
     const selectionMode = this.option('selection.mode');
     const isRecursive = this.option('selection.recursive');
     return selectionMode === 'multiple' && isRecursive;
-  };
-  _proto2.updateSelectionState = function updateSelectionState(options) {
+  }
+  updateSelectionState(options) {
     const removedItemKeys = options.removedItemKeys || [];
     const selectedItemKeys = options.selectedItemKeys || [];
     if (this.isRecursiveSelection()) {
       this._updateSelectionStateCore(removedItemKeys, false);
       this._updateSelectionStateCore(selectedItemKeys, true);
     }
-  };
-  _proto2.isRowSelected = function isRowSelected(key, isRecursiveSelection) {
-    const result = _Base.prototype.isRowSelected.apply(this, arguments);
-    isRecursiveSelection = isRecursiveSelection !== null && isRecursiveSelection !== void 0 ? isRecursiveSelection : this.isRecursiveSelection();
+  }
+  isRowSelected(key, isRecursiveSelection) {
+    const result = super.isRowSelected.apply(this, arguments);
+    isRecursiveSelection = isRecursiveSelection ?? this.isRecursiveSelection();
     if (!result && isRecursiveSelection) {
       if (key in this._selectionStateByKey) {
         return this._selectionStateByKey[key];
@@ -418,13 +409,13 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       return false;
     }
     return result;
-  };
-  _proto2.getSelectedRowKeys = function getSelectedRowKeys(mode) {
+  }
+  getSelectedRowKeys(mode) {
     const that = this;
     if (!that._dataController) {
       return [];
     }
-    let selectedRowKeys = _Base.prototype.getSelectedRowKeys.apply(that, arguments);
+    let selectedRowKeys = super.getSelectedRowKeys.apply(that, arguments);
     if (mode) {
       if (this.isRecursiveSelection()) {
         selectedRowKeys = this._getAllSelectedRowKeys(selectedRowKeys);
@@ -438,8 +429,8 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       }
     }
     return selectedRowKeys;
-  };
-  _proto2.getSelectedRowsData = function getSelectedRowsData(mode) {
+  }
+  getSelectedRowsData(mode) {
     const that = this;
     const dataController = that._dataController;
     const selectedKeys = this.getSelectedRowKeys(mode) || [];
@@ -450,23 +441,17 @@ const selection = Base => /*#__PURE__*/function (_Base) {
       node && selectedRowsData.push(node.data);
     });
     return selectedRowsData;
-  };
-  _proto2.refresh = function refresh() {
-    this._selectionStateByKey = {};
-    return _Base.prototype.refresh.apply(this, arguments);
-  };
-  return SelectionControllerTreeListExtender;
-}(Base);
-const columnHeadersView = Base => /*#__PURE__*/function (_columnHeadersSelecti) {
-  _inheritsLoose(ColumnHeaderViewSelectionTreeListExtender, _columnHeadersSelecti);
-  function ColumnHeaderViewSelectionTreeListExtender() {
-    return _columnHeadersSelecti.apply(this, arguments) || this;
   }
-  var _proto3 = ColumnHeaderViewSelectionTreeListExtender.prototype;
-  _proto3._processTemplate = function _processTemplate(template, options) {
+  refresh() {
+    this._selectionStateByKey = {};
+    return super.refresh.apply(this, arguments);
+  }
+};
+const columnHeadersView = Base => class ColumnHeaderViewSelectionTreeListExtender extends (0, _m_selection.columnHeadersSelectionExtenderMixin)(Base) {
+  _processTemplate(template, options) {
     const that = this;
     let resultTemplate;
-    const renderingTemplate = _columnHeadersSelecti.prototype._processTemplate.call(this, template, options);
+    const renderingTemplate = super._processTemplate(template, options);
     // @ts-expect-error
     const firstDataColumnIndex = that._columnsController.getFirstDataColumnIndex();
     if (renderingTemplate && options.rowType === 'header' && options.column.index === firstDataColumnIndex) {
@@ -484,42 +469,34 @@ const columnHeadersView = Base => /*#__PURE__*/function (_columnHeadersSelecti) 
     return resultTemplate;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto3.renderSelectAll = function renderSelectAll($cell, options) {
+  renderSelectAll($cell, options) {
     $cell.addClass(TREELIST_SELECT_ALL_CLASS);
     this._renderSelectAllCheckBox($cell);
-  };
-  _proto3._isSortableElement = function _isSortableElement($target) {
-    return _columnHeadersSelecti.prototype._isSortableElement.call(this, $target) && !$target.closest(".".concat(SELECT_CHECKBOX_CLASS)).length;
-  };
-  return ColumnHeaderViewSelectionTreeListExtender;
-}((0, _m_selection.columnHeadersSelectionExtenderMixin)(Base));
-const rowsView = Base => /*#__PURE__*/function (_rowsViewSelectionExt) {
-  _inheritsLoose(RowsViewSelectionTreeListExtender, _rowsViewSelectionExt);
-  function RowsViewSelectionTreeListExtender() {
-    return _rowsViewSelectionExt.apply(this, arguments) || this;
   }
-  var _proto4 = RowsViewSelectionTreeListExtender.prototype;
-  _proto4._renderIcons = function _renderIcons($iconContainer, options) {
+  _isSortableElement($target) {
+    return super._isSortableElement($target) && !$target.closest(`.${SELECT_CHECKBOX_CLASS}`).length;
+  }
+};
+const rowsView = Base => class RowsViewSelectionTreeListExtender extends (0, _m_selection.rowsViewSelectionExtenderMixin)(Base) {
+  _renderIcons($iconContainer, options) {
     // @ts-expect-error
-    _rowsViewSelectionExt.prototype._renderIcons.apply(this, arguments);
+    super._renderIcons.apply(this, arguments);
     if (!options.row.isNewRow && this.option('selection.mode') === 'multiple') {
       // @ts-expect-error
       this._selectionController.renderSelectCheckBoxContainer($iconContainer, options);
     }
     return $iconContainer;
-  };
-  _proto4._rowClick = function _rowClick(e) {
+  }
+  _rowClick(e) {
     const $targetElement = (0, _renderer.default)(e.event.target);
     // @ts-expect-error
     if (this.isExpandIcon($targetElement)) {
-      _rowsViewSelectionExt.prototype._rowClickForTreeList.apply(this, arguments);
+      super._rowClickForTreeList.apply(this, arguments);
     } else {
-      _rowsViewSelectionExt.prototype._rowClick.apply(this, arguments);
+      super._rowClick.apply(this, arguments);
     }
-  };
-  return RowsViewSelectionTreeListExtender;
-}((0, _m_selection.rowsViewSelectionExtenderMixin)(Base));
+  }
+};
 _m_core.default.registerModule('selection', (0, _extend.extend)(true, {}, _m_selection.selectionModule, {
   defaultOptions() {
     return (0, _extend.extend)(true, _m_selection.selectionModule.defaultOptions(), {

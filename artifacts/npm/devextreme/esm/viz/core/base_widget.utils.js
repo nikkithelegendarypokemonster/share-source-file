@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/core/base_widget.utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,17 +13,17 @@ import { each } from '../../core/utils/iterator';
 import _windowResizeCallbacks from '../../core/utils/resize_callbacks';
 import resizeObserverSingleton from '../../core/resize_observer';
 import { normalizeEnum } from './utils';
-var ERROR_MESSAGES = warnings.ERROR_MESSAGES;
+const ERROR_MESSAGES = warnings.ERROR_MESSAGES;
 export function createEventTrigger(eventsMap, callbackGetter) {
-  var triggers = {};
+  let triggers = {};
   each(eventsMap, function (name, info) {
     if (info.name) {
       createEvent(name);
     }
   });
-  var changes;
+  let changes;
   triggerEvent.change = function (name) {
-    var eventInfo = eventsMap[name];
+    const eventInfo = eventsMap[name];
     if (eventInfo) {
       (changes = changes || {})[name] = eventInfo;
     }
@@ -42,7 +42,7 @@ export function createEventTrigger(eventsMap, callbackGetter) {
   };
   return triggerEvent;
   function createEvent(name) {
-    var eventInfo = eventsMap[name];
+    const eventInfo = eventsMap[name];
     triggers[eventInfo.name] = callbackGetter(name, eventInfo.actionSettings);
   }
   function triggerEvent(name, arg, complete) {
@@ -50,7 +50,7 @@ export function createEventTrigger(eventsMap, callbackGetter) {
     complete && complete();
   }
 }
-export var createIncidentOccurred = function createIncidentOccurred(widgetName, eventTrigger) {
+export let createIncidentOccurred = function (widgetName, eventTrigger) {
   return function incidentOccurred(id, args) {
     eventTrigger('incidentOccurred', {
       target: {
@@ -66,7 +66,7 @@ export var createIncidentOccurred = function createIncidentOccurred(widgetName, 
 };
 function getResizeManager(resizeCallback) {
   return (observe, unsubscribe) => {
-    var {
+    const {
       handler,
       dispose
     } = createDeferredHandler(resizeCallback, unsubscribe);
@@ -75,8 +75,8 @@ function getResizeManager(resizeCallback) {
   };
 }
 function createDeferredHandler(callback, unsubscribe) {
-  var timeout;
-  var handler = function handler() {
+  let timeout;
+  const handler = function () {
     clearTimeout(timeout);
     timeout = setTimeout(callback, 100);
   };
@@ -89,8 +89,8 @@ function createDeferredHandler(callback, unsubscribe) {
   };
 }
 export function createResizeHandler(contentElement, redrawOnResize, resize) {
-  var disposeHandler;
-  var resizeManager = getResizeManager(resize);
+  let disposeHandler;
+  const resizeManager = getResizeManager(resize);
   if (normalizeEnum(redrawOnResize) === 'windowonly') {
     disposeHandler = resizeManager(handler => _windowResizeCallbacks.add(handler), handler => _windowResizeCallbacks.remove(handler));
   } else if (redrawOnResize === true) {

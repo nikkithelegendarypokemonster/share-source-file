@@ -1,6 +1,6 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
 // !!! AUTO-GENERATED FILE, DO NOT EDIT
-export var supplementalCldr = {
+export const supplementalCldr = {
   "supplemental": {
     "version": {
       "_unicodeVersion": "12.1.0",

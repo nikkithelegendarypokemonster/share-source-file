@@ -24,7 +24,7 @@ const resetActiveElement = () => {
   const activeElement = _dom_adapter.default.getActiveElement();
   if (activeElement && activeElement !== _dom_adapter.default.getBody()) {
     var _activeElement$blur;
-    (_activeElement$blur = activeElement.blur) === null || _activeElement$blur === void 0 ? void 0 : _activeElement$blur.call(activeElement);
+    (_activeElement$blur = activeElement.blur) === null || _activeElement$blur === void 0 || _activeElement$blur.call(activeElement);
   }
 };
 exports.resetActiveElement = resetActiveElement;

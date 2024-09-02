@@ -3,13 +3,13 @@ import $ from '../../core/renderer';
 import { extend } from '../../core/utils/extend';
 import { getImageContainer } from '../../core/utils/icon';
 import FileManagerProgressPanel from './ui.file_manager.notification.progress_panel';
-var FILE_MANAGER_PROGRESS_BOX_CLASS = 'dx-filemanager-progress-box';
-var FILE_MANAGER_PROGRESS_BOX_ERROR_CLASS = "".concat(FILE_MANAGER_PROGRESS_BOX_CLASS, "-error");
-var FILE_MANAGER_PROGRESS_BOX_IMAGE_CLASS = "".concat(FILE_MANAGER_PROGRESS_BOX_CLASS, "-image");
-var FILE_MANAGER_PROGRESS_BOX_WRAPPER_CLASS = "".concat(FILE_MANAGER_PROGRESS_BOX_CLASS, "-wrapper");
-var FILE_MANAGER_PROGRESS_BOX_COMMON_CLASS = "".concat(FILE_MANAGER_PROGRESS_BOX_CLASS, "-common");
-var MANAGER_ID_NAME = '__operationInfoManager';
-var ACTION_PROGRESS_STATUS = {
+const FILE_MANAGER_PROGRESS_BOX_CLASS = 'dx-filemanager-progress-box';
+const FILE_MANAGER_PROGRESS_BOX_ERROR_CLASS = `${FILE_MANAGER_PROGRESS_BOX_CLASS}-error`;
+const FILE_MANAGER_PROGRESS_BOX_IMAGE_CLASS = `${FILE_MANAGER_PROGRESS_BOX_CLASS}-image`;
+const FILE_MANAGER_PROGRESS_BOX_WRAPPER_CLASS = `${FILE_MANAGER_PROGRESS_BOX_CLASS}-wrapper`;
+const FILE_MANAGER_PROGRESS_BOX_COMMON_CLASS = `${FILE_MANAGER_PROGRESS_BOX_CLASS}-common`;
+const MANAGER_ID_NAME = '__operationInfoManager';
+const ACTION_PROGRESS_STATUS = {
   default: 'default',
   progress: 'progress',
   error: 'error',
@@ -17,7 +17,7 @@ var ACTION_PROGRESS_STATUS = {
 };
 class NotificationManagerBase {
   constructor(_ref) {
-    var {
+    let {
       onActionProgressStatusChanged,
       isActual
     } = _ref;
@@ -33,7 +33,7 @@ class NotificationManagerBase {
     return this._isActual;
   }
   createErrorDetailsProgressBox($container, item, errorText) {
-    var detailsItem = this._createDetailsItem($container, item);
+    const detailsItem = this._createDetailsItem($container, item);
     this.renderError(detailsItem.$wrapper, errorText);
   }
   renderError($container, errorText) {
@@ -43,7 +43,7 @@ class NotificationManagerBase {
     return this._actionProgressStatus === ACTION_PROGRESS_STATUS.default;
   }
   _createDetailsItem($container, item) {
-    var $detailsItem = $('<div>').appendTo($container);
+    const $detailsItem = $('<div>').appendTo($container);
     return this._createProgressBox($detailsItem, {
       commonText: item.commonText,
       imageUrl: item.imageUrl
@@ -54,8 +54,8 @@ class NotificationManagerBase {
     if (options.imageUrl) {
       getImageContainer(options.imageUrl).addClass(FILE_MANAGER_PROGRESS_BOX_IMAGE_CLASS).appendTo($container);
     }
-    var $wrapper = $('<div>').addClass(FILE_MANAGER_PROGRESS_BOX_WRAPPER_CLASS).appendTo($container);
-    var $commonText = $('<div>').addClass(FILE_MANAGER_PROGRESS_BOX_COMMON_CLASS).text(options.commonText).appendTo($wrapper);
+    const $wrapper = $('<div>').addClass(FILE_MANAGER_PROGRESS_BOX_WRAPPER_CLASS).appendTo($container);
+    const $commonText = $('<div>').addClass(FILE_MANAGER_PROGRESS_BOX_COMMON_CLASS).text(options.commonText).appendTo($wrapper);
     return {
       $commonText,
       $element: $container,
@@ -113,7 +113,7 @@ class NotificationManager extends NotificationManagerBase {
   }
   addOperation(processingMessage, allowCancel, allowProgressAutoUpdate) {
     this._operationInProgressCount++;
-    var operationInfo = this._progressPanel.addOperation(processingMessage, allowCancel, allowProgressAutoUpdate);
+    const operationInfo = this._progressPanel.addOperation(processingMessage, allowCancel, allowProgressAutoUpdate);
     operationInfo[MANAGER_ID_NAME] = this._id;
     this._updateActionProgress(processingMessage, ACTION_PROGRESS_STATUS.progress);
     return operationInfo;
@@ -153,11 +153,11 @@ class NotificationManager extends NotificationManagerBase {
   }
   ensureProgressPanelCreated(container, options) {
     if (!this._progressPanel) {
-      var $progressPanelElement = $('<div>').appendTo(container);
-      var ProgressPanelClass = this._getProgressPanelComponent();
+      const $progressPanelElement = $('<div>').appendTo(container);
+      const ProgressPanelClass = this._getProgressPanelComponent();
       this._progressPanel = new ProgressPanelClass($progressPanelElement, extend({}, options, {
         onOperationClosed: _ref2 => {
-          var {
+          let {
             info
           } = _ref2;
           return this._onProgressPanelOperationClosed(info);
@@ -185,12 +185,12 @@ class NotificationManager extends NotificationManagerBase {
   }
   updateActionProgressStatus(operationInfo) {
     if (operationInfo) {
-      var status = this._failedOperationCount === 0 ? ACTION_PROGRESS_STATUS.success : ACTION_PROGRESS_STATUS.error;
+      const status = this._failedOperationCount === 0 ? ACTION_PROGRESS_STATUS.success : ACTION_PROGRESS_STATUS.error;
       this._updateActionProgress('', status);
     }
   }
   _notifyError(errorInfo) {
-    var status = this.hasNoOperations() ? ACTION_PROGRESS_STATUS.default : ACTION_PROGRESS_STATUS.error;
+    const status = this.hasNoOperations() ? ACTION_PROGRESS_STATUS.default : ACTION_PROGRESS_STATUS.error;
     this._updateActionProgress(errorInfo.commonErrorText, status);
   }
   _updateActionProgress(message, status) {

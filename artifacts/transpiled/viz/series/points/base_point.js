@@ -421,7 +421,7 @@ Point.prototype = {
       const axis = that.series.getArgumentAxis();
       const rangeText = axis.formatRange(aggregationInfo.intervalStart, aggregationInfo.intervalEnd, aggregationInfo.aggregationInterval, tooltip.getOptions().argumentFormat);
       if (rangeText) {
-        tooltipFormatObject.valueText += "\n".concat(rangeText);
+        tooltipFormatObject.valueText += `\n${rangeText}`;
       }
     }
     return tooltipFormatObject;

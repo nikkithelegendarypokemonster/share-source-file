@@ -4,34 +4,34 @@ import { deepExtendArraySafe } from './object';
 import { isObject, isPlainObject, isFunction, isDefined } from './type';
 import { each } from './iterator';
 import variableWrapper from './variable_wrapper';
-var unwrapVariable = variableWrapper.unwrap;
-var isWrapped = variableWrapper.isWrapped;
-var assign = variableWrapper.assign;
-var bracketsToDots = function bracketsToDots(expr) {
+const unwrapVariable = variableWrapper.unwrap;
+const isWrapped = variableWrapper.isWrapped;
+const assign = variableWrapper.assign;
+const bracketsToDots = function (expr) {
   return expr.replace(/\[/g, '.').replace(/\]/g, '');
 };
-export var getPathParts = function getPathParts(name) {
+export const getPathParts = function (name) {
   return bracketsToDots(name).split('.');
 };
-var readPropValue = function readPropValue(obj, propName, options) {
+const readPropValue = function (obj, propName, options) {
   options = options || {};
   if (propName === 'this') {
     return unwrap(obj, options);
   }
   return unwrap(obj[propName], options);
 };
-var assignPropValue = function assignPropValue(obj, propName, value, options) {
+const assignPropValue = function (obj, propName, value, options) {
   if (propName === 'this') {
     throw new errors.Error('E4016');
   }
-  var propValue = obj[propName];
+  const propValue = obj[propName];
   if (options.unwrapObservables && isWrapped(propValue)) {
     assign(propValue, value);
   } else {
     obj[propName] = value;
   }
 };
-var prepareOptions = function prepareOptions(options) {
+const prepareOptions = function (options) {
   options = options || {};
   options.unwrapObservables = options.unwrapObservables !== undefined ? options.unwrapObservables : true;
   return options;
@@ -39,7 +39,7 @@ var prepareOptions = function prepareOptions(options) {
 function unwrap(value, options) {
   return options.unwrapObservables ? unwrapVariable(value) : value;
 }
-export var compileGetter = function compileGetter(expr) {
+export const compileGetter = function (expr) {
   if (arguments.length > 1) {
     expr = [].slice.call(arguments);
   }
@@ -49,24 +49,24 @@ export var compileGetter = function compileGetter(expr) {
     };
   }
   if (typeof expr === 'string') {
-    var path = getPathParts(expr);
+    const path = getPathParts(expr);
     return function (obj, options) {
       options = prepareOptions(options);
-      var functionAsIs = options.functionsAsIs;
-      var hasDefaultValue = ('defaultValue' in options);
-      var current = unwrap(obj, options);
-      for (var i = 0; i < path.length; i++) {
+      const functionAsIs = options.functionsAsIs;
+      const hasDefaultValue = ('defaultValue' in options);
+      let current = unwrap(obj, options);
+      for (let i = 0; i < path.length; i++) {
         if (!current) {
           if (current == null && hasDefaultValue) {
             return options.defaultValue;
           }
           break;
         }
-        var pathPart = path[i];
+        const pathPart = path[i];
         if (hasDefaultValue && isObject(current) && !(pathPart in current)) {
           return options.defaultValue;
         }
-        var next = unwrap(current[pathPart], options);
+        let next = unwrap(current[pathPart], options);
         if (!functionAsIs && isFunction(next)) {
           next = next.call(current);
         }
@@ -83,23 +83,23 @@ export var compileGetter = function compileGetter(expr) {
   }
 };
 function combineGetters(getters) {
-  var compiledGetters = {};
-  for (var i = 0, l = getters.length; i < l; i++) {
-    var getter = getters[i];
+  const compiledGetters = {};
+  for (let i = 0, l = getters.length; i < l; i++) {
+    const getter = getters[i];
     compiledGetters[getter] = compileGetter(getter);
   }
   return function (obj, options) {
-    var result;
+    let result;
     each(compiledGetters, function (name) {
-      var value = this(obj, options);
+      const value = this(obj, options);
       if (value === undefined) {
         return;
       }
-      var current = result || (result = {});
-      var path = name.split('.');
-      var last = path.length - 1;
-      for (var _i = 0; _i < last; _i++) {
-        var pathItem = path[_i];
+      let current = result || (result = {});
+      const path = name.split('.');
+      const last = path.length - 1;
+      for (let i = 0; i < last; i++) {
+        const pathItem = path[i];
         if (!(pathItem in current)) {
           current[pathItem] = {};
         }
@@ -110,23 +110,26 @@ function combineGetters(getters) {
     return result;
   };
 }
-var ensurePropValueDefined = function ensurePropValueDefined(obj, propName, value, options) {
+function toLowerCase(value, options) {
+  return options !== null && options !== void 0 && options.locale ? value.toLocaleLowerCase(options.locale) : value.toLowerCase();
+}
+const ensurePropValueDefined = function (obj, propName, value, options) {
   if (isDefined(value)) {
     return value;
   }
-  var newValue = {};
+  const newValue = {};
   assignPropValue(obj, propName, newValue, options);
   return newValue;
 };
-export var compileSetter = function compileSetter(expr) {
+export const compileSetter = function (expr) {
   expr = getPathParts(expr || 'this');
-  var lastLevelIndex = expr.length - 1;
+  const lastLevelIndex = expr.length - 1;
   return function (obj, value, options) {
     options = prepareOptions(options);
-    var currentValue = unwrap(obj, options);
+    let currentValue = unwrap(obj, options);
     expr.forEach(function (propertyName, levelIndex) {
-      var propertyValue = readPropValue(currentValue, propertyName, options);
-      var isPropertyFunc = !options.functionsAsIs && isFunction(propertyValue) && !isWrapped(propertyValue);
+      let propertyValue = readPropValue(currentValue, propertyName, options);
+      const isPropertyFunc = !options.functionsAsIs && isFunction(propertyValue) && !isWrapped(propertyValue);
       if (levelIndex === lastLevelIndex) {
         if (options.merge && isPlainObject(value) && (!isDefined(propertyValue) || isPlainObject(propertyValue))) {
           propertyValue = ensurePropValueDefined(currentValue, propertyName, propertyValue, options);
@@ -146,21 +149,24 @@ export var compileSetter = function compileSetter(expr) {
     });
   };
 };
-export var toComparable = function toComparable(value, caseSensitive) {
-  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+export const toComparable = function (value, caseSensitive) {
+  var _options$collatorOpti;
+  let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
   if (value instanceof Date) {
     return value.getTime();
   }
   if (value && value instanceof Class && value.valueOf) {
     return value.valueOf();
   }
-  if (!caseSensitive && typeof value === 'string') {
-    var _options$collatorOpti;
-    if ((options === null || options === void 0 ? void 0 : (_options$collatorOpti = options.collatorOptions) === null || _options$collatorOpti === void 0 ? void 0 : _options$collatorOpti.sensitivity) === 'base') {
-      var REMOVE_DIACRITICAL_MARKS_REGEXP = /[\u0300-\u036f]/g;
-      value = value.normalize('NFD').replace(REMOVE_DIACRITICAL_MARKS_REGEXP, '');
+  const isCaseSensitive = (options === null || options === void 0 || (_options$collatorOpti = options.collatorOptions) === null || _options$collatorOpti === void 0 ? void 0 : _options$collatorOpti.sensitivity) === 'case' || caseSensitive;
+  if (!isCaseSensitive && typeof value === 'string') {
+    var _options$collatorOpti2;
+    if ((options === null || options === void 0 || (_options$collatorOpti2 = options.collatorOptions) === null || _options$collatorOpti2 === void 0 ? void 0 : _options$collatorOpti2.sensitivity) === 'base') {
+      const REMOVE_DIACRITICAL_MARKS_REGEXP = /[\u0300-\u036f]/g;
+      value = toLowerCase(value, options).normalize('NFD').replace(REMOVE_DIACRITICAL_MARKS_REGEXP, '');
+      return value;
     }
-    return options !== null && options !== void 0 && options.locale ? value.toLocaleLowerCase(options.locale) : value.toLowerCase();
+    return toLowerCase(value, options);
   }
   return value;
 };

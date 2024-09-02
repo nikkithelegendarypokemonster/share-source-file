@@ -1,10 +1,15 @@
 "use strict";
 
 exports.getPublicElement = getPublicElement;
+exports.getPublicElementNonJquery = getPublicElementNonJquery;
 exports.setPublicElementWrapper = setPublicElementWrapper;
-let strategy = function (element) {
-  return element && element.get(0);
-};
+function getPublicElementNonJquery(element) {
+  if (element && element.get) {
+    return element.get(0);
+  }
+  return element;
+}
+let strategy = getPublicElementNonJquery;
 function getPublicElement(element) {
   return strategy(element);
 }

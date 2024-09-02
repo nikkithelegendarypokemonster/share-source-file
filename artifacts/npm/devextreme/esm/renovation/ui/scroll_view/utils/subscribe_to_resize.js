@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/renovation/ui/scroll_view/utils/subscribe_to_resize.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,9 +11,9 @@ import { hasWindow } from '../../../../core/utils/window';
 import { requestAnimationFrame, cancelAnimationFrame } from '../../../../animation/frame';
 export function subscribeToResize(element, handler) {
   if (hasWindow() && element) {
-    var resizeAnimationFrameID = -1;
+    let resizeAnimationFrameID = -1;
     resizeObserverSingleton.observe(element, _ref => {
-      var {
+      let {
         target
       } = _ref;
       resizeAnimationFrameID = requestAnimationFrame(() => {

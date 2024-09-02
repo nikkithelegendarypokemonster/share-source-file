@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/utils/position.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,7 +13,7 @@ var _config = _interopRequireDefault(require("../config"));
 var _type = require("../utils/type");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const getDefaultAlignment = isRtlEnabled => {
-  const rtlEnabled = isRtlEnabled !== null && isRtlEnabled !== void 0 ? isRtlEnabled : (0, _config.default)().rtlEnabled;
+  const rtlEnabled = isRtlEnabled ?? (0, _config.default)().rtlEnabled;
   return rtlEnabled ? 'right' : 'left';
 };
 exports.getDefaultAlignment = getDefaultAlignment;

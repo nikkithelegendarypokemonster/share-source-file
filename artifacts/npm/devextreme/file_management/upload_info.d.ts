@@ -1,37 +1,44 @@
 /**
 * DevExtreme (file_management/upload_info.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /**
- * An object that provides information about the file upload session.
+ * @docid
+ * @namespace DevExpress.fileManagement
+ * @public
  */
 export default interface UploadInfo {
     /**
-     * The number of bytes that is uploaded to the server.
+     * @docid
+     * @public
      */
     bytesUploaded: number;
 
     /**
-     * The number of uploaded chunks and chunks that are to be uploaded.
+     * @docid
+     * @public
      */
     chunkCount: number;
 
     /**
-     * Custom information that you can pass during file upload. For instance, you can specify a custom file ID when the first part of a file is being uploaded.
+     * @docid
+     * @public
      */
     customData: any;
 
     /**
-     * The binary content of the uploading chunk.
+     * @docid
+     * @public
      */
     chunkBlob: Blob;
 
     /**
-     * The index of the uploading chunk.
+     * @docid
+     * @public
      */
     chunkIndex: number;
 }

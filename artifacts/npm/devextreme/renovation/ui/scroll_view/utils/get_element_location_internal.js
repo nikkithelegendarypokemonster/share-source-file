@@ -1,7 +1,7 @@
 /**
 * DevExtreme (renovation/ui/scroll_view/utils/get_element_location_internal.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -24,8 +24,8 @@ function getElementLocationInternal(targetElement, direction, containerElement, 
   const prop = isVertical ? 'top' : 'left';
   const inverseProp = isVertical ? 'bottom' : 'right';
   const dimension = isVertical ? 'height' : 'width';
-  const containerOffsetSize = containerElement["offset".concat((0, _inflector.titleize)(dimension))];
-  const containerClientSize = containerElement["client".concat((0, _inflector.titleize)(dimension))];
+  const containerOffsetSize = containerElement[`offset${(0, _inflector.titleize)(dimension)}`];
+  const containerClientSize = containerElement[`client${(0, _inflector.titleize)(dimension)}`];
   const containerSize = containerElement.getBoundingClientRect()[dimension];
   const elementSize = targetElement.getBoundingClientRect()[dimension];
   let scale = 1;

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/ui/m_autocomplete.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -98,7 +98,7 @@ const Autocomplete = _ui.default.inherit({
     this._updateListDimensions();
   },
   _popupWrapperClass() {
-    return "".concat(this.callBase(), " ").concat(AUTOCOMPLETE_POPUP_WRAPPER_CLASS);
+    return `${this.callBase()} ${AUTOCOMPLETE_POPUP_WRAPPER_CLASS}`;
   },
   _listConfig() {
     return (0, _extend.extend)(this.callBase(), {
@@ -128,8 +128,7 @@ const Autocomplete = _ui.default.inherit({
   },
   _loadItem(value, cache) {
     const selectedItem = this._getItemFromPlain(value, cache);
-    // @ts-expect-error
-    return new _deferred.Deferred().resolve(selectedItem).promise();
+    return (0, _deferred.Deferred)().resolve(selectedItem).promise();
   },
   _dataSourceOptions() {
     return {

@@ -1,32 +1,32 @@
 /**
 * DevExtreme (esm/__internal/grids/grid_core/editing/m_editing_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import Guid from '../../../../core/guid';
 import { isObject } from '../../../../core/utils/type';
-var NEW_ROW_TEMP_KEY_PREFIX = '_DX_KEY_';
-var GUID_LENGTH = 36;
-export var createFailureHandler = function createFailureHandler(deferred) {
+const NEW_ROW_TEMP_KEY_PREFIX = '_DX_KEY_';
+const GUID_LENGTH = 36;
+export const createFailureHandler = function (deferred) {
   return function (arg) {
-    var error = arg instanceof Error ? arg : new Error(arg && String(arg) || 'Unknown error');
+    const error = arg instanceof Error ? arg : new Error(arg && String(arg) || 'Unknown error');
     deferred.reject(error);
   };
 };
-export var isEditingCell = function isEditingCell(isEditRow, cellOptions) {
+export const isEditingCell = function (isEditRow, cellOptions) {
   return cellOptions.isEditing || isEditRow && cellOptions.column.allowEditing;
 };
-export var isEditingOrShowEditorAlwaysDataCell = function isEditingOrShowEditorAlwaysDataCell(isEditRow, cellOptions) {
-  var isCommandCell = !!cellOptions.column.command;
-  var isEditing = isEditingCell(isEditRow, cellOptions);
-  var isEditorCell = !isCommandCell && (isEditing || cellOptions.column.showEditorAlways);
+export const isEditingOrShowEditorAlwaysDataCell = function (isEditRow, cellOptions) {
+  const isCommandCell = !!cellOptions.column.command;
+  const isEditing = isEditingCell(isEditRow, cellOptions);
+  const isEditorCell = !isCommandCell && (isEditing || cellOptions.column.showEditorAlways);
   return cellOptions.rowType === 'data' && isEditorCell;
 };
-export var getEditingTexts = options => {
-  var editingTexts = options.component.option('editing.texts') || {};
+export const getEditingTexts = options => {
+  const editingTexts = options.component.option('editing.texts') || {};
   return {
     save: editingTexts.saveRowChanges,
     cancel: editingTexts.cancelRowChanges,
@@ -36,10 +36,10 @@ export var getEditingTexts = options => {
     add: editingTexts.addRowToNode
   };
 };
-export var generateNewRowTempKey = () => "".concat(NEW_ROW_TEMP_KEY_PREFIX).concat(new Guid());
-export var isNewRowTempKey = key => typeof key === 'string' && key.startsWith(NEW_ROW_TEMP_KEY_PREFIX) && key.length === NEW_ROW_TEMP_KEY_PREFIX.length + GUID_LENGTH;
-export var getButtonIndex = (buttons, name) => {
-  var result = -1;
+export const generateNewRowTempKey = () => `${NEW_ROW_TEMP_KEY_PREFIX}${new Guid()}`;
+export const isNewRowTempKey = key => typeof key === 'string' && key.startsWith(NEW_ROW_TEMP_KEY_PREFIX) && key.length === NEW_ROW_TEMP_KEY_PREFIX.length + GUID_LENGTH;
+export const getButtonIndex = (buttons, name) => {
+  let result = -1;
   // @ts-expect-error
   // eslint-disable-next-line consistent-return, array-callback-return
   buttons.some((button, index) => {
@@ -57,14 +57,14 @@ export function getButtonName(button) {
 export function isEditable($element) {
   return $element && ($element.is('input') || $element.is('textarea'));
 }
-export var getEditorType = item => {
-  var _a;
-  var {
+export const getEditorType = item => {
+  var _column$formItem;
+  const {
     column
   } = item;
-  return item.isCustomEditorType ? item.editorType : (_a = column.formItem) === null || _a === void 0 ? void 0 : _a.editorType;
+  return item.isCustomEditorType ? item.editorType : (_column$formItem = column.formItem) === null || _column$formItem === void 0 ? void 0 : _column$formItem.editorType;
 };
-export var forEachFormItems = (items, callBack) => {
+export const forEachFormItems = (items, callBack) => {
   items.forEach(item => {
     if (item.items || item.tabs) {
       forEachFormItems(item.items || item.tabs, callBack);

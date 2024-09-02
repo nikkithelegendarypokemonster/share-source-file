@@ -1,14 +1,14 @@
 /**
 * DevExtreme (esm/renovation/ui/scroll_view/scrollbar/scrollbar.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-var _excluded = ["bounceEnabled", "containerHasSizes", "containerSize", "contentSize", "direction", "maxOffset", "minOffset", "scrollByThumb", "scrollLocation", "showScrollbar", "visible"];
+const _excluded = ["bounceEnabled", "containerHasSizes", "containerSize", "contentSize", "direction", "maxOffset", "minOffset", "scrollByThumb", "scrollLocation", "showScrollbar", "visible"];
 import { createVNode } from "inferno";
 import { InfernoEffect, InfernoComponent } from '@devextreme/runtime/inferno';
 import { normalizeStyles } from '@devextreme/runtime/inferno';
@@ -18,9 +18,9 @@ import { DIRECTION_HORIZONTAL, SCROLLABLE_SCROLLBAR_CLASS, SCROLLABLE_SCROLL_CLA
 import { subscribeToDXPointerDownEvent, subscribeToDXPointerUpEvent, subscribeToMouseEnterEvent, subscribeToMouseLeaveEvent } from '../../../utils/subscribe_to_event';
 import { ScrollbarProps } from '../common/scrollbar_props';
 import { ScrollableSimulatedProps } from '../common/simulated_strategy_props';
-export var THUMB_MIN_SIZE = 15;
-export var viewFunction = viewModel => {
-  var {
+export const THUMB_MIN_SIZE = 15;
+export const viewFunction = viewModel => {
+  const {
     hidden,
     scrollbarClasses,
     scrollbarRef,
@@ -34,7 +34,7 @@ export var viewFunction = viewModel => {
     "hidden": hidden
   }, null, scrollbarRef);
 };
-export var ScrollbarPropsType = {
+export const ScrollbarPropsType = {
   get direction() {
     return ScrollbarProps.direction;
   },
@@ -94,8 +94,8 @@ export class Scrollbar extends InfernoComponent {
   }
   updateEffects() {
     var _this$_effects$, _this$_effects$2;
-    (_this$_effects$ = this._effects[2]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([this.props.showScrollbar, this.props.scrollByThumb]);
-    (_this$_effects$2 = this._effects[3]) === null || _this$_effects$2 === void 0 ? void 0 : _this$_effects$2.update([this.props.showScrollbar, this.props.scrollByThumb]);
+    (_this$_effects$ = this._effects[2]) === null || _this$_effects$ === void 0 || _this$_effects$.update([this.props.showScrollbar, this.props.scrollByThumb]);
+    (_this$_effects$2 = this._effects[3]) === null || _this$_effects$2 === void 0 || _this$_effects$2.update([this.props.showScrollbar, this.props.scrollByThumb]);
   }
   pointerDownEffect() {
     return subscribeToDXPointerDownEvent(this.thumbRef.current, () => {
@@ -144,16 +144,16 @@ export class Scrollbar extends InfernoComponent {
     return this.props.contentSize ? this.props.containerSize / this.props.contentSize : this.props.containerSize;
   }
   get scrollRatio() {
-    var scrollOffsetMax = Math.abs(this.props.maxOffset);
+    const scrollOffsetMax = Math.abs(this.props.maxOffset);
     if (scrollOffsetMax) {
       return (this.props.containerSize - this.scrollSize) / scrollOffsetMax;
     }
     return 1;
   }
   get scrollbarClasses() {
-    var classesMap = {
+    const classesMap = {
       [SCROLLABLE_SCROLLBAR_CLASS]: true,
-      ["dx-scrollbar-".concat(this.props.direction)]: true,
+      [`dx-scrollbar-${this.props.direction}`]: true,
       [SCROLLABLE_SCROLLBAR_ACTIVE_CLASS]: this.state.active,
       [HOVER_ENABLED_STATE]: this.isExpandable,
       'dx-state-invisible': this.hidden,
@@ -173,11 +173,11 @@ export class Scrollbar extends InfernoComponent {
     })();
   }
   get thumbTransform() {
-    var translateValue = -this.props.scrollLocation * this.scrollRatio;
+    const translateValue = -this.props.scrollLocation * this.scrollRatio;
     if (this.isHorizontal) {
-      return "translate(".concat(translateValue, "px, 0px)");
+      return `translate(${translateValue}px, 0px)`;
     }
-    return "translate(0px, ".concat(translateValue, "px)");
+    return `translate(0px, ${translateValue}px)`;
   }
   get thumbClasses() {
     return combineClasses({
@@ -213,12 +213,12 @@ export class Scrollbar extends InfernoComponent {
     return this.props.showScrollbar === ShowScrollbarMode.NEVER;
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
   isThumb(element) {
-    return this.scrollbarRef.current.querySelector(".".concat(SCROLLABLE_SCROLL_CLASS)) === element || this.scrollbarRef.current.querySelector(".".concat(SCROLLABLE_SCROLL_CONTENT_CLASS)) === element;
+    return this.scrollbarRef.current.querySelector(`.${SCROLLABLE_SCROLL_CLASS}`) === element || this.scrollbarRef.current.querySelector(`.${SCROLLABLE_SCROLL_CONTENT_CLASS}`) === element;
   }
   isScrollbar(element) {
     return element === this.scrollbarRef.current;
@@ -235,7 +235,7 @@ export class Scrollbar extends InfernoComponent {
     }
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       hovered: this.state.hovered,

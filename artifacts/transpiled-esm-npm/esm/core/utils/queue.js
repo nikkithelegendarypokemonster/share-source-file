@@ -1,13 +1,13 @@
 import errors from '../errors';
 import { when } from '../../core/utils/deferred';
 function createQueue(discardPendingTasks) {
-  var _tasks = [];
-  var _busy = false;
+  let _tasks = [];
+  let _busy = false;
   function exec() {
     while (_tasks.length) {
       _busy = true;
-      var task = _tasks.shift();
-      var result = task();
+      const task = _tasks.shift();
+      const result = task();
       if (result === undefined) {
         continue;
       }
@@ -42,4 +42,4 @@ function createQueue(discardPendingTasks) {
   };
 }
 export { createQueue as create };
-export var enqueue = createQueue().add; // Default global queue for UI sync, consider renaming
+export const enqueue = createQueue().add; // Default global queue for UI sync, consider renaming

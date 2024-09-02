@@ -125,7 +125,7 @@ const getAppointmentDateRange = options => {
   const relativeAppointmentRect = getRelativeAppointmentRect(options.appointmentRect, options.parentAppointmentRect);
   const cellInfo = getAppointmentCellsInfo(options);
   const considerTime = !options.isDateAndTimeView || appointmentSettings.allDay;
-  const extendedOptions = _extends(_extends(_extends({}, options), cellInfo), {
+  const extendedOptions = _extends({}, options, cellInfo, {
     considerTime,
     relativeAppointmentRect
   });

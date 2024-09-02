@@ -1,16 +1,16 @@
 /**
 * DevExtreme (esm/exporter/jspdf/common/rows_spliting_utils/get_multipage_row_pages.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _extends from "@babel/runtime/helpers/esm/extends";
-var isHeader = rect => (rect === null || rect === void 0 ? void 0 : rect.sourceCellInfo.gridCell.rowType) === 'header';
-var spitMultiPageRows = (rectsToPatch, isCurrentPageContainsOnlyHeader, firstRectYAdjustment, splitMultiPageRowFunc, checkIsFitToPageFunc) => {
-  var [newPageRects, remainPageRects] = splitMultiPageRowFunc(isCurrentPageContainsOnlyHeader, rectsToPatch);
-  var newPageRectsArray = [isCurrentPageContainsOnlyHeader ? newPageRects.map(rect => _extends({}, rect, {
+const isHeader = rect => (rect === null || rect === void 0 ? void 0 : rect.sourceCellInfo.gridCell.rowType) === 'header';
+const spitMultiPageRows = (rectsToPatch, isCurrentPageContainsOnlyHeader, firstRectYAdjustment, splitMultiPageRowFunc, checkIsFitToPageFunc) => {
+  let [newPageRects, remainPageRects] = splitMultiPageRowFunc(isCurrentPageContainsOnlyHeader, rectsToPatch);
+  const newPageRectsArray = [isCurrentPageContainsOnlyHeader ? newPageRects.map(rect => _extends({}, rect, {
     y: firstRectYAdjustment
   })) : newPageRects];
   while (!checkIsFitToPageFunc(false, remainPageRects[0].h)) {
@@ -19,42 +19,42 @@ var spitMultiPageRows = (rectsToPatch, isCurrentPageContainsOnlyHeader, firstRec
   }
   return [newPageRectsArray, remainPageRects];
 };
-var patchRects = (rectsToSplit, rectsToPatch, remainPageRects) => {
+const patchRects = (rectsToSplit, rectsToPatch, remainPageRects) => {
   rectsToPatch.forEach((rect, rectIndex) => {
     rect.sourceCellInfo.text = remainPageRects[rectIndex].sourceCellInfo.text;
     rect.h = remainPageRects[rectIndex].h;
   });
-  var untouchedRowIdx = rectsToSplit.indexOf(rectsToPatch[rectsToPatch.length - 1]) + 1;
+  const untouchedRowIdx = rectsToSplit.indexOf(rectsToPatch[rectsToPatch.length - 1]) + 1;
   if (untouchedRowIdx >= rectsToSplit.length) {
     return;
   }
-  var delta = rectsToSplit[untouchedRowIdx].y - (rectsToPatch[0].y + remainPageRects[0].h);
-  for (var idx = untouchedRowIdx; idx < rectsToSplit.length; idx++) {
+  const delta = rectsToSplit[untouchedRowIdx].y - (rectsToPatch[0].y + remainPageRects[0].h);
+  for (let idx = untouchedRowIdx; idx < rectsToSplit.length; idx++) {
     rectsToSplit[idx].y = rectsToSplit[idx].y - delta;
   }
 };
-export var checkPageContainsOnlyHeader = (pageRects, isFirstPage) => isFirstPage && isHeader(pageRects[pageRects.length - 1]);
-export var getMultiPageRowPages = (currentPageRects, rectsToSplit, isCurrentPageContainsOnlyHeader, splitMultiPageRowFunc, checkIsFitToPageFunc) => {
+export const checkPageContainsOnlyHeader = (pageRects, isFirstPage) => isFirstPage && isHeader(pageRects[pageRects.length - 1]);
+export const getMultiPageRowPages = (currentPageRects, rectsToSplit, isCurrentPageContainsOnlyHeader, splitMultiPageRowFunc, checkIsFitToPageFunc) => {
   if (!splitMultiPageRowFunc) {
     return [];
   }
-  var currentPageLastRect = currentPageRects[currentPageRects.length - 1];
-  var nextPageFirstRect = rectsToSplit[currentPageRects.length];
+  const currentPageLastRect = currentPageRects[currentPageRects.length - 1];
+  const nextPageFirstRect = rectsToSplit[currentPageRects.length];
   if (!nextPageFirstRect || isHeader(nextPageFirstRect)) {
     return [];
   }
-  var isRectsFitsToPage = checkIsFitToPageFunc(isCurrentPageContainsOnlyHeader, nextPageFirstRect.h);
+  const isRectsFitsToPage = checkIsFitToPageFunc(isCurrentPageContainsOnlyHeader, nextPageFirstRect.h);
   if (isRectsFitsToPage && !isCurrentPageContainsOnlyHeader) {
     return [];
   }
-  var rectsToPatch = rectsToSplit.filter(_ref => {
-    var {
+  const rectsToPatch = rectsToSplit.filter(_ref => {
+    let {
       y
     } = _ref;
     return y === nextPageFirstRect.y;
   });
-  var firstRectYAdjustment = currentPageLastRect.y + currentPageLastRect.h;
-  var [multiPageRowPages, remainPageRects] = spitMultiPageRows(rectsToPatch, isCurrentPageContainsOnlyHeader, firstRectYAdjustment, splitMultiPageRowFunc, checkIsFitToPageFunc);
+  const firstRectYAdjustment = currentPageLastRect.y + currentPageLastRect.h;
+  const [multiPageRowPages, remainPageRects] = spitMultiPageRows(rectsToPatch, isCurrentPageContainsOnlyHeader, firstRectYAdjustment, splitMultiPageRowFunc, checkIsFitToPageFunc);
   patchRects(rectsToSplit, rectsToPatch, remainPageRects);
   return multiPageRowPages;
 };

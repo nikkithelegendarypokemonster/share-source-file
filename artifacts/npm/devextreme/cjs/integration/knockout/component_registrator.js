@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/integration/knockout/component_registrator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -57,7 +57,7 @@ if (_knockout.default) {
                 component.endUpdate();
               } else {
                 var _model$onInitializing;
-                model === null || model === void 0 ? void 0 : (_model$onInitializing = model.onInitializing) === null || _model$onInitializing === void 0 ? void 0 : _model$onInitializing.call(this, options);
+                model === null || model === void 0 || (_model$onInitializing = model.onInitializing) === null || _model$onInitializing === void 0 || _model$onInitializing.call(this, options);
               }
             }, null, {
               disposeWhenNodeIsRemoved: domNode

@@ -1,18 +1,17 @@
-import _extends from "@babel/runtime/helpers/esm/extends";
 import { BaseWidgetProps } from '../common/base_props';
-export var CollectionWidgetItem = {};
-export var BaseToolbarItemProps = {};
-export var ToolbarTextBoxProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(BaseToolbarItemProps), Object.getOwnPropertyDescriptors({
+export const CollectionWidgetItem = {};
+export const BaseToolbarItemProps = {};
+export const ToolbarTextBoxProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(BaseToolbarItemProps), Object.getOwnPropertyDescriptors({
   value: ''
 })));
-export var ToolbarCheckBoxProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(BaseToolbarItemProps), Object.getOwnPropertyDescriptors({
+export const ToolbarCheckBoxProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(BaseToolbarItemProps), Object.getOwnPropertyDescriptors({
   value: false
 })));
-export var ToolbarButtonGroupProps = BaseToolbarItemProps;
-export var ToolbarButtonProps = BaseToolbarItemProps;
-export var ToolbarDropDownButtonItemProps = CollectionWidgetItem;
-export var ToolbarDropDownButtonItemPropsType = {};
-export var ToolbarDropDownButtonProps = BaseToolbarItemProps;
-export var ToolbarItem = CollectionWidgetItem;
-export var ToolbarItemType = {};
-export var ToolbarProps = BaseWidgetProps;
+export const ToolbarButtonGroupProps = BaseToolbarItemProps;
+export const ToolbarButtonProps = BaseToolbarItemProps;
+export const ToolbarDropDownButtonItemProps = CollectionWidgetItem;
+export const ToolbarDropDownButtonItemPropsType = {};
+export const ToolbarDropDownButtonProps = BaseToolbarItemProps;
+export const ToolbarItem = CollectionWidgetItem;
+export const ToolbarItemType = {};
+export const ToolbarProps = BaseWidgetProps;

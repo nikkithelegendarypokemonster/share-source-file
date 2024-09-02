@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/template_manager.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -17,10 +17,6 @@ var _function_template = require("./templates/function_template");
 var _empty_template = require("./templates/empty_template");
 var _template_manager = require("./utils/template_manager");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 const TEXT_NODE = 3;
 const ANONYMOUS_TEMPLATE_NAME = 'template';
 const TEMPLATE_OPTIONS_NAME = 'dxTemplate';
@@ -41,15 +37,15 @@ const DX_POLYMORPH_WIDGET_TEMPLATE = new _function_template.FunctionTemplate(_re
   }
   return widgetElement;
 });
-let TemplateManager = exports.TemplateManager = /*#__PURE__*/function () {
-  function TemplateManager(createElement, anonymousTemplateName) {
+class TemplateManager {
+  constructor(createElement, anonymousTemplateName) {
     this._tempTemplates = [];
     this._defaultTemplates = {};
     this._anonymousTemplateName = anonymousTemplateName || ANONYMOUS_TEMPLATE_NAME;
     this._createElement = createElement || _template_manager.defaultCreateElement;
     this._createTemplateIfNeeded = this._createTemplateIfNeeded.bind(this);
   }
-  TemplateManager.createDefaultOptions = function createDefaultOptions() {
+  static createDefaultOptions() {
     return {
       integrationOptions: {
         watchMethod: function (fn, callback) {
@@ -65,26 +61,28 @@ let TemplateManager = exports.TemplateManager = /*#__PURE__*/function () {
         useDeferUpdateForTemplates: true
       }
     };
-  };
-  var _proto = TemplateManager.prototype;
-  _proto.addDefaultTemplates = function addDefaultTemplates(templates) {
+  }
+  get anonymousTemplateName() {
+    return this._anonymousTemplateName;
+  }
+  addDefaultTemplates(templates) {
     this._defaultTemplates = (0, _extend.extend)({}, this._defaultTemplates, templates);
-  };
-  _proto.dispose = function dispose() {
+  }
+  dispose() {
     this._tempTemplates.forEach(tempTemplate => {
       tempTemplate.template.dispose && tempTemplate.template.dispose();
     });
     this._tempTemplates = [];
-  };
-  _proto.extractTemplates = function extractTemplates($el) {
+  }
+  extractTemplates($el) {
     const templates = this._extractTemplates($el);
     const anonymousTemplateMeta = this._extractAnonymousTemplate($el);
     return {
       templates,
       anonymousTemplateMeta
     };
-  };
-  _proto._extractTemplates = function _extractTemplates($el) {
+  }
+  _extractTemplates($el) {
     const templates = (0, _template_manager.findTemplates)($el, TEMPLATE_OPTIONS_NAME);
     const suitableTemplates = (0, _template_manager.suitableTemplatesByName)(templates);
     templates.forEach(_ref2 => {
@@ -106,8 +104,8 @@ let TemplateManager = exports.TemplateManager = /*#__PURE__*/function () {
         template: this._createTemplate(suitableTemplates[name])
       };
     });
-  };
-  _proto._extractAnonymousTemplate = function _extractAnonymousTemplate($el) {
+  }
+  _extractAnonymousTemplate($el) {
     const $anonymousTemplate = $el.contents().detach();
     const $notJunkTemplateContent = $anonymousTemplate.filter((_, element) => {
       const isTextNode = element.nodeType === TEXT_NODE;
@@ -118,8 +116,8 @@ let TemplateManager = exports.TemplateManager = /*#__PURE__*/function () {
       template: this._createTemplate($anonymousTemplate),
       name: this._anonymousTemplateName
     } : {};
-  };
-  _proto._createTemplateIfNeeded = function _createTemplateIfNeeded(templateSource) {
+  }
+  _createTemplateIfNeeded(templateSource) {
     const cachedTemplate = this._tempTemplates.filter(tempTemplate => tempTemplate.source === (0, _template_manager.templateKey)(templateSource))[0];
     if (cachedTemplate) return cachedTemplate.template;
     const template = this._createTemplate(templateSource);
@@ -128,11 +126,11 @@ let TemplateManager = exports.TemplateManager = /*#__PURE__*/function () {
       source: (0, _template_manager.templateKey)(templateSource)
     });
     return template;
-  };
-  _proto._createTemplate = function _createTemplate(templateSource) {
+  }
+  _createTemplate(templateSource) {
     return this._createElement((0, _template_manager.validateTemplateSource)(templateSource));
-  };
-  _proto.getTemplate = function getTemplate(templateSource, templates, _ref3, context) {
+  }
+  getTemplate(templateSource, templates, _ref3, context) {
     let {
       isAsyncTemplate,
       skipTemplates
@@ -157,12 +155,6 @@ let TemplateManager = exports.TemplateManager = /*#__PURE__*/function () {
       dispose && template.dispose && template.dispose();
       return result;
     });
-  };
-  _createClass(TemplateManager, [{
-    key: "anonymousTemplateName",
-    get: function () {
-      return this._anonymousTemplateName;
-    }
-  }]);
-  return TemplateManager;
-}();
+  }
+}
+exports.TemplateManager = TemplateManager;

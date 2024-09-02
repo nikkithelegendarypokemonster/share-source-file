@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/editor/ui.data_expression.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22,38 +22,59 @@ import {
 } from '../collection/ui.collection_widget.base';
 
 /**
-                                                               * 
-                                                               * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-                                                               */
-                                                              export interface DataExpressionMixinOptions<T = DataExpressionMixin> {
+ * @namespace DevExpress.ui
+ * @docid
+ * @hidden
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export interface DataExpressionMixinOptions<T = DataExpressionMixin> {
     /**
-     * Binds the UI component to data.
+     * @docid
+     * @default null
+     * @type Store|DataSource|DataSourceOptions|string|Array<CollectionWidgetItem | any>|null
+     * @public
      */
     dataSource?: DataSourceLike<CollectionWidgetItem | any> | null;
     /**
-     * Specifies the data field whose values should be displayed.
+     * @docid
+     * @default undefined
+     * @type_function_param1 item:object
+     * @public
      */
     displayExpr?: string | ((item: any) => string);
     /**
-     * Specifies a custom template for items.
+     * @docid
+     * @default "item"
+     * @type_function_param1 itemData:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     itemTemplate?: template | ((itemData: any, itemIndex: number, itemElement: DxElement) => string | UserDefinedElement);
     /**
-     * An array of items displayed by the UI component.
+     * @docid
+     * @public
      */
     items?: Array<CollectionWidgetItem | any>;
     /**
-     * Specifies the currently selected value. May be an object if dataSource contains objects, the store key is specified, and valueExpr is not set.
+     * @docid
+     * @default null
+     * @public
      */
     value?: any;
     /**
-     * Specifies which data field provides unique values to the UI component&apos;s value.
+     * @docid
+     * @default "this"
+     * @type_function_param1 item:object
+     * @public
      */
     valueExpr?: string | ((item: any) => string | number | boolean);
 }
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @inherits DataHelperMixin
+ * @hidden
+ * @namespace DevExpress.ui
+ * @options DataExpressionMixinOptions
  */
 export default class DataExpressionMixin {
     constructor(options?: DataExpressionMixinOptions);

@@ -1,4 +1,4 @@
-export var BaseWidgetProps = {
+export const BaseWidgetProps = {
   className: '',
   activeStateEnabled: false,
   disabled: false,

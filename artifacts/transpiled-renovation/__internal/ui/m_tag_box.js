@@ -27,9 +27,9 @@ var _events_engine = _interopRequireDefault(require("../../events/core/events_en
 var _index = require("../../events/utils/index");
 var _message = _interopRequireDefault(require("../../localization/message"));
 var _select_box = _interopRequireDefault(require("../../ui/select_box"));
-var _utils2 = _interopRequireDefault(require("../../ui/text_box/utils.caret"));
-var _utils3 = require("../../ui/text_box/utils.scroll");
 var _ui = _interopRequireDefault(require("../../ui/widget/ui.errors"));
+var _m_utils = _interopRequireDefault(require("../ui/text_box/m_utils.caret"));
+var _m_utils2 = require("../ui/text_box/m_utils.scroll");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function xor(a, b) {
   return (a || b) && !(a && b);
@@ -144,7 +144,7 @@ const TagBox = _select_box.default.inherit({
     return false;
   },
   _isCaretAtTheStart() {
-    const position = (0, _utils2.default)(this._input());
+    const position = (0, _m_utils.default)(this._input());
     return (position === null || position === void 0 ? void 0 : position.start) === 0 && position.end === 0;
   },
   _updateInputAriaActiveDescendant(id) {
@@ -158,7 +158,7 @@ const TagBox = _select_box.default.inherit({
       this._updateInputAriaActiveDescendant(this._$focusedTag.attr('id'));
       return;
     }
-    const $nextFocusedTag = this._$focusedTag[direction](".".concat(TAGBOX_TAG_CLASS));
+    const $nextFocusedTag = this._$focusedTag[direction](`.${TAGBOX_TAG_CLASS}`);
     if ($nextFocusedTag.length > 0) {
       this._replaceFocusedTag($nextFocusedTag);
       this._updateInputAriaActiveDescendant($nextFocusedTag.attr('id'));
@@ -281,9 +281,8 @@ const TagBox = _select_box.default.inherit({
     this.callBase();
     this._templateManager.addDefaultTemplates({
       tag: new _bindable_template.BindableTemplate(($container, data) => {
-        var _a;
         const $tagContent = (0, _renderer.default)('<div>').addClass(TAGBOX_TAG_CONTENT_CLASS);
-        (0, _renderer.default)('<span>').text((_a = data.text) !== null && _a !== void 0 ? _a : data).appendTo($tagContent);
+        (0, _renderer.default)('<span>').text(data.text ?? data).appendTo($tagContent);
         (0, _renderer.default)('<div>').addClass(TAGBOX_TAG_REMOVE_BUTTON_CLASS).appendTo($tagContent);
         $container.append($tagContent);
       }, ['text'], this.option('integrationOptions.watchMethod'), {
@@ -348,7 +347,7 @@ const TagBox = _select_box.default.inherit({
       }
       return actualId.split(' ').filter(id => id !== newId).join(' ');
     }
-    return "".concat(actualId, " ").concat(newId);
+    return `${actualId} ${newId}`;
   },
   _updateElementAria(id, shouldRemove) {
     const shouldClearLabel = !id;
@@ -377,9 +376,8 @@ const TagBox = _select_box.default.inherit({
   _renderTagRemoveAction() {
     const tagRemoveAction = this._createAction(this._removeTagHandler.bind(this));
     const eventName = (0, _index.addNamespace)(_click.name, 'dxTagBoxTagRemove');
-    // @ts-expect-error
     _events_engine.default.off(this._$tagsContainer, eventName);
-    _events_engine.default.on(this._$tagsContainer, eventName, ".".concat(TAGBOX_TAG_REMOVE_BUTTON_CLASS), event => {
+    _events_engine.default.on(this._$tagsContainer, eventName, `.${TAGBOX_TAG_REMOVE_BUTTON_CLASS}`, event => {
       tagRemoveAction({
         event
       });
@@ -389,7 +387,6 @@ const TagBox = _select_box.default.inherit({
     const mouseWheelEvent = (0, _index.addNamespace)('dxmousewheel', this.NAME);
     const $element = this.$element();
     const isMultiline = this.option('multiline');
-    // @ts-expect-error
     _events_engine.default.off($element, mouseWheelEvent);
     if (_devices.default.real().deviceType !== 'desktop') {
       this._$tagsContainer && this._$tagsContainer.css('overflowX', isMultiline ? '' : 'auto');
@@ -403,7 +400,7 @@ const TagBox = _select_box.default.inherit({
   _tagContainerMouseWheelHandler(e) {
     const scrollLeft = this._$tagsContainer.scrollLeft();
     const delta = e.delta * TAGBOX_MOUSE_WHEEL_DELTA_MULTIPLIER;
-    if (!(0, _index.isCommandKeyPressed)(e) && (0, _utils3.allowScroll)(this._$tagsContainer, delta, true)) {
+    if (!(0, _index.isCommandKeyPressed)(e) && (0, _m_utils2.allowScroll)(this._$tagsContainer, delta, true)) {
       this._$tagsContainer.scrollLeft(scrollLeft + delta);
       return false;
     }
@@ -421,7 +418,7 @@ const TagBox = _select_box.default.inherit({
     });
   },
   _popupWrapperClass() {
-    return "".concat(this.callBase(), " ").concat(TAGBOX_POPUP_WRAPPER_CLASS);
+    return `${this.callBase()} ${TAGBOX_POPUP_WRAPPER_CLASS}`;
   },
   _renderInput() {
     this.callBase();
@@ -429,7 +426,6 @@ const TagBox = _select_box.default.inherit({
   },
   _renderPreventBlurOnInputClick() {
     const eventName = (0, _index.addNamespace)('mousedown', 'dxTagBox');
-    // @ts-expect-error
     _events_engine.default.off(this._inputWrapper(), eventName);
     _events_engine.default.on(this._inputWrapper(), eventName, e => {
       if (e.target !== this._input()[0] && this._isFocused()) {
@@ -500,8 +496,7 @@ const TagBox = _select_box.default.inherit({
     });
   },
   _renderMultiSelect() {
-    // @ts-expect-error
-    const d = new _deferred.Deferred();
+    const d = (0, _deferred.Deferred)();
     this._updateTagsContainer(this._$textEditorInputContainer);
     this._renderInputSize();
     this._renderTags().done(() => {
@@ -537,13 +532,12 @@ const TagBox = _select_box.default.inherit({
       });
       $calculationElement.insertAfter($input);
       width = (0, _size.getOuterWidth)($calculationElement) + cursorWidth;
-      // @ts-expect-error
       $calculationElement.remove();
     } else if (!value) {
       size = 1;
     }
     $input.css('width', width);
-    $input.attr('size', size !== null && size !== void 0 ? size : '');
+    $input.attr('size', size ?? '');
   },
   _renderInputSubstitution() {
     this.callBase();
@@ -558,7 +552,8 @@ const TagBox = _select_box.default.inherit({
     return (0, _type.isDefined)(maxDisplayedTags) && values.length > maxDisplayedTags;
   },
   _renderMultiTag($input) {
-    const $tag = (0, _renderer.default)('<div>').addClass(TAGBOX_TAG_CLASS).addClass(TAGBOX_MULTI_TAG_CLASS);
+    const tagId = `dx-${new _guid.default()}`;
+    const $tag = (0, _renderer.default)('<div>').attr('id', tagId).addClass(TAGBOX_TAG_CLASS).addClass(TAGBOX_MULTI_TAG_CLASS);
     const args = {
       multiTagElement: (0, _element.getPublicElement)($tag),
       selectedItems: this.option('selectedItems')
@@ -576,6 +571,10 @@ const TagBox = _select_box.default.inherit({
       model: args.text,
       container: (0, _element.getPublicElement)($tag)
     });
+    // @ts-expect-error
+    const tagText = args.text;
+    this._setTagAria($tag, tagText);
+    this._updateElementAria(tagId);
     return $tag;
   },
   _getFilter(creator) {
@@ -589,17 +588,16 @@ const TagBox = _select_box.default.inherit({
     _ui.default.log('W1019', maxFilterQueryLength);
   },
   _getFilteredItems(values) {
-    var _a, _b;
-    (_a = this._loadFilteredItemsPromise) === null || _a === void 0 ? void 0 : _a.reject();
+    var _this$_loadFilteredIt, _this$_list;
+    (_this$_loadFilteredIt = this._loadFilteredItemsPromise) === null || _this$_loadFilteredIt === void 0 || _this$_loadFilteredIt.reject();
     const creator = new _selection_filter.SelectionFilterCreator(values);
-    const listSelectedItems = (_b = this._list) === null || _b === void 0 ? void 0 : _b.option('selectedItems');
+    const listSelectedItems = (_this$_list = this._list) === null || _this$_list === void 0 ? void 0 : _this$_list.option('selectedItems');
     const isListItemsLoaded = !!listSelectedItems && this._list._dataController.isLoaded();
     const selectedItems = listSelectedItems || this.option('selectedItems');
     const clientFilterFunction = creator.getLocalFilter(this._valueGetter);
     const filteredItems = selectedItems.filter(clientFilterFunction);
     const selectedItemsAlreadyLoaded = filteredItems.length === values.length;
-    // @ts-expect-error
-    const d = new _deferred.Deferred();
+    const d = (0, _deferred.Deferred)();
     const dataController = this._dataController;
     if ((!this._isDataSourceChanged || isListItemsLoaded) && selectedItemsAlreadyLoaded) {
       return d.resolve(filteredItems).promise();
@@ -652,8 +650,7 @@ const TagBox = _select_box.default.inherit({
         items.splice(index, 0, newItem);
       }
     });
-    // @ts-expect-error
-    const d = new _deferred.Deferred();
+    const d = (0, _deferred.Deferred)();
     _deferred.when.apply(this, loadItemPromises).always(() => {
       d.resolve(items);
     });
@@ -682,8 +679,7 @@ const TagBox = _select_box.default.inherit({
     return resultItems;
   },
   _getFilteredGroupedItems(values) {
-    // @ts-expect-error
-    const selectedItems = new _deferred.Deferred();
+    const selectedItems = (0, _deferred.Deferred)();
     if (this._filteredGroupedItemsLoadPromise) {
       this._dataController.cancel(this._filteredGroupedItemsLoadPromise.operationId);
     }
@@ -702,8 +698,7 @@ const TagBox = _select_box.default.inherit({
   },
   _loadTagsData() {
     const values = this._getValue();
-    // @ts-expect-error
-    const tagData = new _deferred.Deferred();
+    const tagData = (0, _deferred.Deferred)();
     this._selectedItems = [];
     const filteredItemsPromise = this._isGroupedData() ? this._getFilteredGroupedItems(values) : this._getFilteredItems(values);
     filteredItemsPromise.done(filteredItems => {
@@ -715,8 +710,7 @@ const TagBox = _select_box.default.inherit({
     return tagData.promise();
   },
   _renderTags() {
-    // @ts-expect-error
-    const d = new _deferred.Deferred();
+    const d = (0, _deferred.Deferred)();
     let isPlainDataUsed = false;
     if (this._shouldGetItemsFromPlain(this._valuesToUpdate)) {
       this._selectedItems = this._getItemsFromPlain(this._valuesToUpdate);
@@ -758,8 +752,8 @@ const TagBox = _select_box.default.inherit({
     return selectedItems;
   },
   _getSelectedItemsFromList(values) {
-    var _a;
-    const listSelectedItems = (_a = this._list) === null || _a === void 0 ? void 0 : _a.option('selectedItems');
+    var _this$_list2;
+    const listSelectedItems = (_this$_list2 = this._list) === null || _this$_list2 === void 0 ? void 0 : _this$_list2.option('selectedItems');
     let selectedItems = [];
     if (values.length === (listSelectedItems === null || listSelectedItems === void 0 ? void 0 : listSelectedItems.length)) {
       selectedItems = this._filterSelectedItems(listSelectedItems, values);
@@ -786,15 +780,14 @@ const TagBox = _select_box.default.inherit({
   _integrateInput() {
     this._isInputReady.resolve();
     this.callBase();
-    const tagsContainer = this.$element().find(".".concat(TEXTEDITOR_INPUT_CONTAINER_CLASS));
+    const tagsContainer = this.$element().find(`.${TEXTEDITOR_INPUT_CONTAINER_CLASS}`);
     this._updateTagsContainer(tagsContainer);
     this._renderTagRemoveAction();
   },
   _renderTagsCore(items) {
-    var _a;
-    (_a = this._isInputReady) === null || _a === void 0 ? void 0 : _a.reject();
-    // @ts-expect-error
-    this._isInputReady = new _deferred.Deferred();
+    var _this$_isInputReady;
+    (_this$_isInputReady = this._isInputReady) === null || _this$_isInputReady === void 0 || _this$_isInputReady.reject();
+    this._isInputReady = (0, _deferred.Deferred)();
     this._renderField();
     this.option('selectedItems', this._selectedItems.slice());
     this._cleanTags();
@@ -830,8 +823,7 @@ const TagBox = _select_box.default.inherit({
       (0, _iterator.each)($tags, (_, tag) => {
         const $tag = (0, _renderer.default)(tag);
         const tagData = $tag.data(TAGBOX_TAG_DATA_KEY);
-        if (!(values === null || values === void 0 ? void 0 : values.includes(tagData))) {
-          // @ts-expect-error
+        if (!(values !== null && values !== void 0 && values.includes(tagData))) {
           $tag.remove();
         }
       });
@@ -847,7 +839,7 @@ const TagBox = _select_box.default.inherit({
     this._renderInputSize();
   },
   _refreshTagElements() {
-    this._tagElementsCache = this.$element().find(".".concat(TAGBOX_TAG_CLASS));
+    this._tagElementsCache = this.$element().find(`.${TAGBOX_TAG_CLASS}`);
   },
   _tagElements() {
     return this._tagElementsCache;
@@ -874,9 +866,9 @@ const TagBox = _select_box.default.inherit({
       $tag.removeClass(TAGBOX_CUSTOM_TAG_CLASS);
       this._updateElementAria($tag.attr('id'));
     } else {
-      const tagId = "dx-".concat(new _guid.default());
+      const tagId = `dx-${new _guid.default()}`;
       $tag = this._createTag(value, $input, tagId);
-      this._setTagAria($tag, value);
+      this._setTagAria($tag, (0, _type.isDefined)(displayValue) ? displayValue : value);
       if ((0, _type.isDefined)(item)) {
         this._applyTagTemplate(itemModel, $tag);
       } else {
@@ -929,7 +921,7 @@ const TagBox = _select_box.default.inherit({
     const e = args.event;
     e.stopPropagation();
     this._saveValueChangeEvent(e);
-    const $tag = (0, _renderer.default)(e.target).closest(".".concat(TAGBOX_TAG_CLASS));
+    const $tag = (0, _renderer.default)(e.target).closest(`.${TAGBOX_TAG_CLASS}`);
     this._removeTagElement($tag);
   },
   _removeTagElement($tag) {
@@ -1000,19 +992,21 @@ const TagBox = _select_box.default.inherit({
     }
   },
   _setValue(value) {
+    var _this$_list3;
     if (value === null) {
       return;
     }
     const useButtons = this.option('applyValueMode') === 'useButtons';
     const valueIndex = this._valueIndex(value);
-    const values = (useButtons ? this._list.option('selectedItemKeys') : this._getValue()).slice();
+    const values = (useButtons ? ((_this$_list3 = this._list) === null || _this$_list3 === void 0 ? void 0 : _this$_list3.option('selectedItemKeys')) || [] : this._getValue()).slice();
     if (valueIndex >= 0) {
       values.splice(valueIndex, 1);
     } else {
       values.push(value);
     }
-    if (this.option('applyValueMode') === 'useButtons') {
-      this._list.option('selectedItemKeys', values);
+    if (useButtons) {
+      var _this$_list4;
+      (_this$_list4 = this._list) === null || _this$_list4 === void 0 || _this$_list4.option('selectedItemKeys', values);
     } else {
       this.option('value', values);
     }
@@ -1048,7 +1042,7 @@ const TagBox = _select_box.default.inherit({
   _lastValue() {
     const values = this._getValue();
     const lastValue = values[values.length - 1];
-    return lastValue !== null && lastValue !== void 0 ? lastValue : null;
+    return lastValue ?? null;
   },
   _shouldRenderSearchEvent() {
     return this.option('searchEnabled') || this.option('acceptCustomValue');
@@ -1071,8 +1065,8 @@ const TagBox = _select_box.default.inherit({
     }
   },
   _refreshSelected() {
-    var _a;
-    ((_a = this._list) === null || _a === void 0 ? void 0 : _a.getDataSource()) && this._list.option('selectedItems', this._selectedItems);
+    var _this$_list5;
+    ((_this$_list5 = this._list) === null || _this$_list5 === void 0 ? void 0 : _this$_list5.getDataSource()) && this._list.option('selectedItems', this._selectedItems);
   },
   _resetListDataSourceFilter() {
     const dataController = this._dataController;

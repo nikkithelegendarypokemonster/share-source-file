@@ -1,6 +1,6 @@
 import { normalizeEnum as _normalizeEnum } from '../core/utils';
-var algorithms = {};
-var defaultAlgorithm;
+const algorithms = {};
+let defaultAlgorithm;
 export function getAlgorithm(name) {
   return algorithms[_normalizeEnum(name)] || defaultAlgorithm;
 }

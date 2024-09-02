@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/filter_builder/m_between.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -16,9 +16,9 @@ var _renderer = _interopRequireDefault(require("../../core/renderer"));
 var _extend = require("../../core/utils/extend");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const FILTER_BUILDER_RANGE_CLASS = 'dx-filterbuilder-range';
-const FILTER_BUILDER_RANGE_START_CLASS = "".concat(FILTER_BUILDER_RANGE_CLASS, "-start");
-const FILTER_BUILDER_RANGE_END_CLASS = "".concat(FILTER_BUILDER_RANGE_CLASS, "-end");
-const FILTER_BUILDER_RANGE_SEPARATOR_CLASS = "".concat(FILTER_BUILDER_RANGE_CLASS, "-separator");
+const FILTER_BUILDER_RANGE_START_CLASS = `${FILTER_BUILDER_RANGE_CLASS}-start`;
+const FILTER_BUILDER_RANGE_END_CLASS = `${FILTER_BUILDER_RANGE_CLASS}-end`;
+const FILTER_BUILDER_RANGE_SEPARATOR_CLASS = `${FILTER_BUILDER_RANGE_CLASS}-separator`;
 const SEPARATOR = '\u2013';
 function editorTemplate(conditionInfo, container) {
   const $editorStart = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_RANGE_START_CLASS);

@@ -8,41 +8,41 @@ import { getWindow } from '../../../../core/utils/window';
 import eventsEngine from '../../../../events/core/events_engine';
 import errors from '../../../../ui/widget/ui.errors';
 import modules from '../m_modules';
-var DATE_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
-var parseDates = function parseDates(state) {
+const DATE_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
+const parseDates = function (state) {
   if (!state) return;
   each(state, (key, value) => {
     if (isPlainObject(value) || Array.isArray(value)) {
       parseDates(value);
     } else if (typeof value === 'string') {
-      var date = DATE_REGEX.exec(value);
+      const date = DATE_REGEX.exec(value);
       if (date) {
         state[key] = new Date(Date.UTC(+date[1], +date[2] - 1, +date[3], +date[4], +date[5], +date[6]));
       }
     }
   });
 };
-var getStorage = function getStorage(options) {
-  var storage = options.type === 'sessionStorage' ? sessionStorage() : getWindow().localStorage;
+const getStorage = function (options) {
+  const storage = options.type === 'sessionStorage' ? sessionStorage() : getWindow().localStorage;
   if (!storage) {
     throw new Error('E1007');
   }
   return storage;
 };
-var getUniqueStorageKey = function getUniqueStorageKey(options) {
+const getUniqueStorageKey = function (options) {
   return isDefined(options.storageKey) ? options.storageKey : 'storage';
 };
 export class StateStoringController extends modules.ViewController {
   // TODO getController
   // NOTE: sometimes fields empty in the runtime
   // getter here is a temporary solution
-  get _dataController() {
+  getDataController() {
     return this.getController('data');
   }
-  get _exportController() {
+  getExportController() {
     return this.getController('export');
   }
-  get _columnsController() {
+  getColumnsController() {
     return this.getController('columns');
   }
   init() {
@@ -58,7 +58,7 @@ export class StateStoringController extends modules.ViewController {
     return this; // needed by pivotGrid mocks
   }
   optionChanged(args) {
-    var that = this;
+    const that = this;
     switch (args.name) {
       case 'stateStoring':
         if (that.isEnabled() && !that.isLoading()) {
@@ -75,7 +75,7 @@ export class StateStoringController extends modules.ViewController {
     eventsEngine.off(getWindow(), 'unload', this._windowUnloadHandler);
   }
   _loadState() {
-    var options = this.option('stateStoring');
+    const options = this.option('stateStoring');
     if (options.type === 'custom') {
       return options.customLoad && options.customLoad();
     }
@@ -87,7 +87,7 @@ export class StateStoringController extends modules.ViewController {
     }
   }
   _saveState(state) {
-    var options = this.option('stateStoring');
+    const options = this.option('stateStoring');
     if (options.type === 'custom') {
       options.customSave && options.customSave(state);
       return;
@@ -112,7 +112,7 @@ export class StateStoringController extends modules.ViewController {
   }
   load() {
     this._isLoading = true;
-    var loadResult = fromPromise(this._loadState());
+    const loadResult = fromPromise(this._loadState());
     loadResult.always(() => {
       this._isLoaded = true;
       this._isLoading = false;
@@ -124,7 +124,7 @@ export class StateStoringController extends modules.ViewController {
     return loadResult;
   }
   state(state) {
-    var that = this;
+    const that = this;
     if (!arguments.length) {
       return extend(true, {}, that._state);
     }
@@ -132,7 +132,7 @@ export class StateStoringController extends modules.ViewController {
     parseDates(that._state);
   }
   save() {
-    var that = this;
+    const that = this;
     clearTimeout(that._savingTimeoutID);
     that._savingTimeoutID = setTimeout(() => {
       that._saveState(that.state());

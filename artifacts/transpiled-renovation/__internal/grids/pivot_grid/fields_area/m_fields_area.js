@@ -36,7 +36,7 @@ const FieldsArea = exports.FieldsArea = _m_area_item.AreaItem.inherit({
     return (0, _renderer.default)(DIV).addClass('dx-pivotgrid-fields-area').addClass('dx-area-fields').addClass(AREA_DRAG_CLASS).attr('group', this._area);
   },
   isVisible() {
-    return !!this.option('fieldPanel.visible') && this.option("fieldPanel.show".concat((0, _m_widget_utils.capitalizeFirstLetter)(this._area), "Fields"));
+    return !!this.option('fieldPanel.visible') && this.option(`fieldPanel.show${(0, _m_widget_utils.capitalizeFirstLetter)(this._area)}Fields`);
   },
   _renderButton(element) {
     const that = this;
@@ -122,7 +122,7 @@ const FieldsArea = exports.FieldsArea = _m_area_item.AreaItem.inherit({
       }
     });
     if (!row.children().length) {
-      (0, _renderer.default)('<td>').append((0, _renderer.default)(DIV).addClass('dx-empty-area-text').text(this.option("fieldPanel.texts.".concat(area, "FieldArea")))).appendTo(row);
+      (0, _renderer.default)('<td>').append((0, _renderer.default)(DIV).addClass('dx-empty-area-text').text(this.option(`fieldPanel.texts.${area}FieldArea`))).appendTo(row);
     }
     if (that._shouldCreateButton()) {
       that._renderButton(head);

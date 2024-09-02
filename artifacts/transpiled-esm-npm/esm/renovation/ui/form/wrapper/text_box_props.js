@@ -1,1 +1,1 @@
-export var TextBoxProps = {};
+export const TextBoxProps = {};

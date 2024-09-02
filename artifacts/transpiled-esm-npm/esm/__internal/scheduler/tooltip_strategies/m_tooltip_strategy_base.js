@@ -1,16 +1,16 @@
 import $ from '../../../core/renderer';
 import { FunctionTemplate } from '../../../core/templates/function_template';
 import Button from '../../../ui/button';
-import List from '../../../ui/list/ui.list.edit';
 import { createPromise } from '../../core/utils/promise';
-var TOOLTIP_APPOINTMENT_ITEM = 'dx-tooltip-appointment-item';
-var TOOLTIP_APPOINTMENT_ITEM_CONTENT = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-content");
-var TOOLTIP_APPOINTMENT_ITEM_CONTENT_SUBJECT = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-content-subject");
-var TOOLTIP_APPOINTMENT_ITEM_CONTENT_DATE = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-content-date");
-var TOOLTIP_APPOINTMENT_ITEM_MARKER = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-marker");
-var TOOLTIP_APPOINTMENT_ITEM_MARKER_BODY = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-marker-body");
-var TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON_CONTAINER = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-delete-button-container");
-var TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-delete-button");
+import List from '../../ui/list/m_list.edit';
+const TOOLTIP_APPOINTMENT_ITEM = 'dx-tooltip-appointment-item';
+const TOOLTIP_APPOINTMENT_ITEM_CONTENT = `${TOOLTIP_APPOINTMENT_ITEM}-content`;
+const TOOLTIP_APPOINTMENT_ITEM_CONTENT_SUBJECT = `${TOOLTIP_APPOINTMENT_ITEM}-content-subject`;
+const TOOLTIP_APPOINTMENT_ITEM_CONTENT_DATE = `${TOOLTIP_APPOINTMENT_ITEM}-content-date`;
+const TOOLTIP_APPOINTMENT_ITEM_MARKER = `${TOOLTIP_APPOINTMENT_ITEM}-marker`;
+const TOOLTIP_APPOINTMENT_ITEM_MARKER_BODY = `${TOOLTIP_APPOINTMENT_ITEM}-marker-body`;
+const TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON_CONTAINER = `${TOOLTIP_APPOINTMENT_ITEM}-delete-button-container`;
+const TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON = `${TOOLTIP_APPOINTMENT_ITEM}-delete-button`;
 export class TooltipStrategyBase {
   constructor(options) {
     this.asyncTemplatePromises = new Set();
@@ -39,7 +39,7 @@ export class TooltipStrategyBase {
   _prepareBeforeVisibleChanged(dataList) {}
   _getContentTemplate(dataList) {
     return container => {
-      var listElement = $('<div>');
+      const listElement = $('<div>');
       $(container).append(listElement);
       this._list = this._createList(listElement, dataList);
     };
@@ -90,25 +90,25 @@ export class TooltipStrategyBase {
     return this._options.createComponent(listElement, List, this._createListOption(dataList));
   }
   _renderTemplate(appointment, targetedAppointment, index, color) {
-    var itemListContent = this._createItemListContent(appointment, targetedAppointment, color);
+    const itemListContent = this._createItemListContent(appointment, targetedAppointment, color);
     this._options.addDefaultTemplates({
       // @ts-expect-error
       [this._getItemListTemplateName()]: new FunctionTemplate(options => {
-        var $container = $(options.container);
+        const $container = $(options.container);
         $container.append(itemListContent);
         return $container;
       })
     });
-    var template = this._options.getAppointmentTemplate("".concat(this._getItemListTemplateName(), "Template"));
+    const template = this._options.getAppointmentTemplate(`${this._getItemListTemplateName()}Template`);
     return this._createFunctionTemplate(template, appointment, targetedAppointment, index);
   }
   _createFunctionTemplate(template, appointmentData, targetedAppointmentData, index) {
-    var isButtonClicked = !!this._extraOptions.isButtonClick;
-    var isEmptyDropDownAppointmentTemplate = this._isEmptyDropDownAppointmentTemplate();
+    const isButtonClicked = !!this._extraOptions.isButtonClick;
+    const isEmptyDropDownAppointmentTemplate = this._isEmptyDropDownAppointmentTemplate();
     // @ts-expect-error
     return new FunctionTemplate(options => {
       // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-      var {
+      const {
         promise,
         resolve
       } = createPromise();
@@ -142,34 +142,34 @@ export class TooltipStrategyBase {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _onListItemContextMenu(e) {}
   _createItemListContent(appointment, targetedAppointment, color) {
-    var {
+    const {
       editing
     } = this._extraOptions;
-    var $itemElement = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM);
+    const $itemElement = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM);
     $itemElement.append(this._createItemListMarker(color));
     $itemElement.append(this._createItemListInfo(this._options.createFormattedDateText(appointment, targetedAppointment)));
-    var disabled = this._options.getAppointmentDisabled(appointment);
+    const disabled = this._options.getAppointmentDisabled(appointment);
     if (!disabled && (editing && editing.allowDeleting === true || editing === true)) {
       $itemElement.append(this._createDeleteButton(appointment, targetedAppointment));
     }
     return $itemElement;
   }
   _createItemListMarker(color) {
-    var $marker = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_MARKER);
-    var $markerBody = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_MARKER_BODY);
+    const $marker = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_MARKER);
+    const $markerBody = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_MARKER_BODY);
     $marker.append($markerBody);
     color && color.done(value => $markerBody.css('background', value));
     return $marker;
   }
   _createItemListInfo(object) {
-    var result = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_CONTENT);
-    var $title = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_CONTENT_SUBJECT).text(object.text);
-    var $date = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_CONTENT_DATE).text(object.formatDate);
+    const result = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_CONTENT);
+    const $title = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_CONTENT_SUBJECT).text(object.text);
+    const $date = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_CONTENT_DATE).text(object.formatDate);
     return result.append($title).append($date);
   }
   _createDeleteButton(appointment, targetedAppointment) {
-    var $container = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON_CONTAINER);
-    var $deleteButton = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON);
+    const $container = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON_CONTAINER);
+    const $deleteButton = $('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON);
     $container.append($deleteButton);
     this._options.createComponent($deleteButton, Button, {
       icon: 'trash',

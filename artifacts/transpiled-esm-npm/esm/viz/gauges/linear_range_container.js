@@ -1,10 +1,10 @@
 import BaseRangeContainer from './base_range_container';
-var _Number = Number;
-var _max = Math.max;
+const _Number = Number;
+const _max = Math.max;
 import { normalizeEnum as _normalizeEnum } from '../core/utils';
-var LinearRangeContainer = BaseRangeContainer.inherit({
-  _processOptions: function _processOptions() {
-    var that = this;
+const LinearRangeContainer = BaseRangeContainer.inherit({
+  _processOptions: function () {
+    const that = this;
     that.vertical = that._options.vertical;
     that._inner = that._outer = 0;
     if (that.vertical) {
@@ -33,20 +33,20 @@ var LinearRangeContainer = BaseRangeContainer.inherit({
       }
     }
   },
-  _isVisible: function _isVisible() {
+  _isVisible: function () {
     return true;
   },
-  _createRange: function _createRange(range, layout) {
-    var that = this;
-    var inner = that._inner;
-    var outer = that._outer;
-    var startPosition = that._translator.translate(range.start);
-    var endPosition = that._translator.translate(range.end);
-    var points;
-    var x = layout.x;
-    var y = layout.y;
-    var startWidth = range.startWidth;
-    var endWidth = range.endWidth;
+  _createRange: function (range, layout) {
+    const that = this;
+    const inner = that._inner;
+    const outer = that._outer;
+    const startPosition = that._translator.translate(range.start);
+    const endPosition = that._translator.translate(range.end);
+    let points;
+    const x = layout.x;
+    const y = layout.y;
+    const startWidth = range.startWidth;
+    const endWidth = range.endWidth;
     if (that.vertical) {
       points = [x - startWidth * inner, startPosition, x - endWidth * inner, endPosition, x + endWidth * outer, endPosition, x + startWidth * outer, startPosition];
     } else {
@@ -54,9 +54,9 @@ var LinearRangeContainer = BaseRangeContainer.inherit({
     }
     return that._renderer.path(points, 'area');
   },
-  measure: function measure(layout) {
-    var result = {};
-    var width;
+  measure: function (layout) {
+    const result = {};
+    let width;
     result.min = result.max = layout[this.vertical ? 'x' : 'y'];
     width = this._options.width;
     width = _Number(width) || _max(_Number(width.start), _Number(width.end));

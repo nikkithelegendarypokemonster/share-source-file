@@ -1,71 +1,9 @@
 /**
 * DevExtreme (esm/events/pointer/mouse_and_touch.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-import { extend } from '../../core/utils/extend';
-import BaseStrategy from './base';
-import MouseStrategy from './mouse';
-import TouchStrategy from './touch';
-import { isMouseEvent } from '../utils/index';
-var eventMap = {
-  'dxpointerdown': 'touchstart mousedown',
-  'dxpointermove': 'touchmove mousemove',
-  'dxpointerup': 'touchend mouseup',
-  'dxpointercancel': 'touchcancel',
-  'dxpointerover': 'mouseover',
-  'dxpointerout': 'mouseout',
-  'dxpointerenter': 'mouseenter',
-  'dxpointerleave': 'mouseleave'
-};
-var activated = false;
-var activateStrategy = function activateStrategy() {
-  if (activated) {
-    return;
-  }
-  MouseStrategy.activate();
-  activated = true;
-};
-var MouseAndTouchStrategy = BaseStrategy.inherit({
-  EVENT_LOCK_TIMEOUT: 100,
-  ctor: function ctor() {
-    this.callBase.apply(this, arguments);
-    activateStrategy();
-  },
-  _handler: function _handler(e) {
-    var isMouse = isMouseEvent(e);
-    if (!isMouse) {
-      this._skipNextEvents = true;
-    }
-    if (isMouse && this._mouseLocked) {
-      return;
-    }
-    if (isMouse && this._skipNextEvents) {
-      this._skipNextEvents = false;
-      this._mouseLocked = true;
-      clearTimeout(this._unlockMouseTimer);
-      var that = this;
-      this._unlockMouseTimer = setTimeout(function () {
-        that._mouseLocked = false;
-      }, this.EVENT_LOCK_TIMEOUT);
-      return;
-    }
-    return this.callBase(e);
-  },
-  _fireEvent: function _fireEvent(args) {
-    var normalizer = isMouseEvent(args.originalEvent) ? MouseStrategy.normalize : TouchStrategy.normalize;
-    return this.callBase(extend(normalizer(args.originalEvent), args));
-  },
-  dispose: function dispose() {
-    this.callBase();
-    this._skipNextEvents = false;
-    this._mouseLocked = false;
-    clearTimeout(this._unlockMouseTimer);
-  }
-});
-MouseAndTouchStrategy.map = eventMap;
-MouseAndTouchStrategy.resetObserver = MouseStrategy.resetObserver;
-export default MouseAndTouchStrategy;
+export { default } from '../../__internal/events/pointer/m_mouse_and_touch';

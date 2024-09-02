@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/core/license/byte_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -25,8 +25,8 @@ function base64ToBytes(base64) {
   return new Uint8Array(atob(base64).split('').map(s => s.charCodeAt(0)));
 }
 function hexToBytes(string) {
-  var _a, _b;
-  return new Uint8Array((_b = (_a = string.match(/.{1,2}/g)) === null || _a === void 0 ? void 0 : _a.map(byte => parseInt(byte, 16))) !== null && _b !== void 0 ? _b : []);
+  var _string$match;
+  return new Uint8Array(((_string$match = string.match(/.{1,2}/g)) === null || _string$match === void 0 ? void 0 : _string$match.map(byte => parseInt(byte, 16))) ?? []);
 }
 function stringToBytes(string) {
   const bytes = new Uint8Array(string.length);

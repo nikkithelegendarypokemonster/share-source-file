@@ -6,31 +6,31 @@ import dateSerialization from '../../core/utils/date_serialization';
 import { each } from '../../core/utils/iterator';
 import { getOuterHeight, setHeight, setWidth } from '../../core/utils/size';
 import { APPOINTMENT_SETTINGS_KEY } from './m_constants';
-export var utils = {
+export const utils = {
   dataAccessors: {
     getAppointmentSettings: element => $(element).data(APPOINTMENT_SETTINGS_KEY),
     getAppointmentInfo: element => {
-      var settings = utils.dataAccessors.getAppointmentSettings(element);
+      const settings = utils.dataAccessors.getAppointmentSettings(element);
       return settings === null || settings === void 0 ? void 0 : settings.info;
     },
     create: (fields, currentDataAccessors, forceIsoDateParsing, dateSerializationFormat) => {
-      var isDateField = field => field === 'startDate' || field === 'endDate';
-      var defaultDataAccessors = {
+      const isDateField = field => field === 'startDate' || field === 'endDate';
+      const defaultDataAccessors = {
         getter: {},
         setter: {},
         expr: {}
       };
-      var dataAccessors = currentDataAccessors ? _extends({}, currentDataAccessors) : defaultDataAccessors;
+      const dataAccessors = currentDataAccessors ? _extends({}, currentDataAccessors) : defaultDataAccessors;
       each(fields, (name, expr) => {
         if (expr) {
-          var getter = compileGetter(expr);
-          var setter = compileSetter(expr);
-          var dateGetter;
-          var dateSetter;
-          var serializationFormat;
+          const getter = compileGetter(expr);
+          const setter = compileSetter(expr);
+          let dateGetter;
+          let dateSetter;
+          let serializationFormat;
           if (isDateField(name)) {
             dateGetter = object => {
-              var value = getter(object);
+              let value = getter(object);
               if (forceIsoDateParsing) {
                 value = dateSerialization.deserializeDate(value);
               }
@@ -40,21 +40,21 @@ export var utils = {
               if (dateSerializationFormat) {
                 serializationFormat = dateSerializationFormat;
               } else if (forceIsoDateParsing && !serializationFormat) {
-                var oldValue = getter(object);
+                const oldValue = getter(object);
                 serializationFormat = dateSerialization.getDateSerializationFormat(oldValue);
               }
-              var newValue = dateSerialization.serializeDate(value, serializationFormat);
+              const newValue = dateSerialization.serializeDate(value, serializationFormat);
               setter(object, newValue);
             };
           }
           dataAccessors.getter[name] = dateGetter || getter;
           dataAccessors.setter[name] = dateSetter || setter;
-          dataAccessors.expr["".concat(name, "Expr")] = expr;
+          dataAccessors.expr[`${name}Expr`] = expr;
         } else {
           /* eslint-disable @typescript-eslint/no-dynamic-delete */
           delete dataAccessors.getter[name];
           delete dataAccessors.setter[name];
-          delete dataAccessors.expr["".concat(name, "Expr")];
+          delete dataAccessors.expr[`${name}Expr`];
           /* eslint-enable @typescript-eslint/no-dynamic-delete */
         }
       });
@@ -66,19 +66,19 @@ export var utils = {
   },
   renovation: {
     renderComponent: (widget, parentElement, componentClass, componentName, viewModel) => {
-      var component = widget[componentName];
+      let component = widget[componentName];
       if (!component) {
-        var container = getPublicElement(parentElement);
+        const container = getPublicElement(parentElement);
         component = widget._createComponent(container, componentClass, viewModel);
         widget[componentName] = component;
       } else {
         // TODO: this is a workaround for setTablesSizes. Remove after CSS refactoring
-        var $element = component.$element();
-        var elementStyle = $element.get(0).style;
-        var {
+        const $element = component.$element();
+        const elementStyle = $element.get(0).style;
+        const {
           height
         } = elementStyle;
-        var {
+        const {
           width
         } = elementStyle;
         component.option(viewModel);

@@ -6,20 +6,20 @@ class TestOptionsValidator extends OptionsValidator {
     super(validators);
   }
 }
-var widgetOptions = {
+const widgetOptions = {
   A: 1,
   B: '1',
   C: true
 };
 describe('OptionsValidator', () => {
   it('should call each validator\'s validate method', () => {
-    var validators = [new Validator(() => {}, []), new Validator(() => {}, []), new Validator(() => {}, [])];
-    var validateSpies = validators.map(validator => {
-      var validateSpy = jest.spyOn(validator, 'validate');
+    const validators = [new Validator(() => {}, []), new Validator(() => {}, []), new Validator(() => {}, [])];
+    const validateSpies = validators.map(validator => {
+      const validateSpy = jest.spyOn(validator, 'validate');
       validateSpy.mockImplementation(() => true);
       return validateSpy;
     });
-    var optionsValidator = new TestOptionsValidator({
+    const optionsValidator = new TestOptionsValidator({
       A: validators[0],
       B: validators[1],
       C: validators[2]
@@ -33,44 +33,44 @@ describe('OptionsValidator', () => {
     });
   });
   it('should return true if all validators validates without errors', () => {
-    var validator = new Validator(() => {}, []);
-    var validateSpy = jest.spyOn(validator, 'validate');
+    const validator = new Validator(() => {}, []);
+    const validateSpy = jest.spyOn(validator, 'validate');
     validateSpy.mockImplementation(() => true);
-    var optionsValidator = new TestOptionsValidator({
+    const optionsValidator = new TestOptionsValidator({
       A: validator,
       B: validator,
       C: validator
     });
-    var result = optionsValidator.validate(widgetOptions);
+    const result = optionsValidator.validate(widgetOptions);
     expect(result).toBe(true);
     validateSpy.mockReset();
   });
   it('should return object with errors if some validators validates with errors', () => {
-    var firstValidateResult = {
+    const firstValidateResult = {
       required: 'false',
       isInteger: 'false'
     };
-    var secondValidateResult = true;
-    var thirdValidateResult = {
+    const secondValidateResult = true;
+    const thirdValidateResult = {
       someError: 'some message'
     };
-    var expectedResult = {
+    const expectedResult = {
       A: firstValidateResult,
       C: thirdValidateResult
     };
-    var validators = [new Validator(() => {}, []), new Validator(() => {}, []), new Validator(() => {}, [])];
-    var firstValidateSpy = jest.spyOn(validators[0], 'validate');
-    var secondValidateSpy = jest.spyOn(validators[1], 'validate');
-    var thirdValidateSpy = jest.spyOn(validators[2], 'validate');
+    const validators = [new Validator(() => {}, []), new Validator(() => {}, []), new Validator(() => {}, [])];
+    const firstValidateSpy = jest.spyOn(validators[0], 'validate');
+    const secondValidateSpy = jest.spyOn(validators[1], 'validate');
+    const thirdValidateSpy = jest.spyOn(validators[2], 'validate');
     firstValidateSpy.mockImplementation(() => firstValidateResult);
     secondValidateSpy.mockImplementation(() => secondValidateResult);
     thirdValidateSpy.mockImplementation(() => thirdValidateResult);
-    var optionsValidator = new TestOptionsValidator({
+    const optionsValidator = new TestOptionsValidator({
       A: validators[0],
       B: validators[1],
       C: validators[2]
     });
-    var result = optionsValidator.validate(widgetOptions);
+    const result = optionsValidator.validate(widgetOptions);
     expect(result).toEqual(expectedResult);
     firstValidateSpy.mockReset();
     secondValidateSpy.mockReset();

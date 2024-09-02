@@ -1,13 +1,13 @@
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["accessKey", "activeStateEnabled", "className", "colCount", "colCountByScreen", "disabled", "focusStateEnabled", "formData", "height", "hint", "hoverStateEnabled", "items", "labelLocation", "onClick", "onKeyDown", "rtlEnabled", "scrollingEnabled", "showColonAfterLabel", "showValidationSummary", "tabIndex", "visible", "width"];
+const _excluded = ["accessKey", "activeStateEnabled", "className", "colCount", "colCountByScreen", "disabled", "focusStateEnabled", "formData", "height", "hint", "hoverStateEnabled", "items", "labelLocation", "onClick", "onKeyDown", "rtlEnabled", "scrollingEnabled", "showColonAfterLabel", "showValidationSummary", "tabIndex", "visible", "width"];
 import { createComponentVNode, normalizeProps } from "inferno";
 import { InfernoWrapperComponent } from '@devextreme/runtime/inferno';
 import LegacyForm from '../../../../ui/form';
 import { DomComponentWrapper } from '../../common/dom_component_wrapper';
 import { FormProps } from './form_props';
-export var viewFunction = _ref => {
-  var {
+export const viewFunction = _ref => {
+  let {
     componentProps,
     restAttributes
   } = _ref;
@@ -36,7 +36,7 @@ export class Form extends InfernoWrapperComponent {
     })();
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
@@ -47,7 +47,7 @@ export class Form extends InfernoWrapperComponent {
     }
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       componentProps: this.componentProps,

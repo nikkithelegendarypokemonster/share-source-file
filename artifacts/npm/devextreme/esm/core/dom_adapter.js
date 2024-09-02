@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/dom_adapter.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,22 +10,22 @@
 import injector from './utils/dependency_injector';
 import { noop } from './utils/common';
 import { getShadowElementsFromPoint } from './utils/shadow_dom';
-var ELEMENT_NODE = 1;
-var TEXT_NODE = 3;
-var DOCUMENT_NODE = 9;
-var DOCUMENT_FRAGMENT_NODE = 11;
-var nativeDOMAdapterStrategy = {
+const ELEMENT_NODE = 1;
+const TEXT_NODE = 3;
+const DOCUMENT_NODE = 9;
+const DOCUMENT_FRAGMENT_NODE = 11;
+const nativeDOMAdapterStrategy = {
   querySelectorAll(element, selector) {
     return element.querySelectorAll(selector);
   },
   elementMatches(element, selector) {
-    var matches = element.matches || element.matchesSelector || element.mozMatchesSelector || element.msMatchesSelector || element.oMatchesSelector || element.webkitMatchesSelector || (selector => {
-      var doc = element.document || element.ownerDocument;
+    const matches = element.matches || element.matchesSelector || element.mozMatchesSelector || element.msMatchesSelector || element.oMatchesSelector || element.webkitMatchesSelector || (selector => {
+      const doc = element.document || element.ownerDocument;
       if (!doc) {
         return false;
       }
-      var items = this.querySelectorAll(doc, selector);
-      for (var i = 0; i < items.length; i++) {
+      const items = this.querySelectorAll(doc, selector);
+      for (let i = 0; i < items.length; i++) {
         if (items[i] === element) {
           return true;
         }
@@ -65,7 +65,7 @@ var nativeDOMAdapterStrategy = {
     return element && element.nodeType === DOCUMENT_FRAGMENT_NODE;
   },
   removeElement(element) {
-    var parentNode = element && element.parentNode;
+    const parentNode = element && element.parentNode;
     if (parentNode) {
       parentNode.removeChild(element);
     }
@@ -113,12 +113,12 @@ var nativeDOMAdapterStrategy = {
     return this._document;
   },
   getActiveElement(element) {
-    var activeElementHolder = this.getRootNode(element);
+    const activeElementHolder = this.getRootNode(element);
     return activeElementHolder.activeElement;
   },
   getRootNode(element) {
-    var _element$getRootNode, _element$getRootNode2;
-    return (_element$getRootNode = element === null || element === void 0 ? void 0 : (_element$getRootNode2 = element.getRootNode) === null || _element$getRootNode2 === void 0 ? void 0 : _element$getRootNode2.call(element)) !== null && _element$getRootNode !== void 0 ? _element$getRootNode : this._document;
+    var _element$getRootNode;
+    return (element === null || element === void 0 || (_element$getRootNode = element.getRootNode) === null || _element$getRootNode === void 0 ? void 0 : _element$getRootNode.call(element)) ?? this._document;
   },
   getBody() {
     return this._document.body;
@@ -154,7 +154,7 @@ var nativeDOMAdapterStrategy = {
     };
   },
   elementsFromPoint(x, y, element) {
-    var activeElementHolder = this.getRootNode(element);
+    const activeElementHolder = this.getRootNode(element);
     if (activeElementHolder.host) {
       return getShadowElementsFromPoint(x, y, activeElementHolder);
     }

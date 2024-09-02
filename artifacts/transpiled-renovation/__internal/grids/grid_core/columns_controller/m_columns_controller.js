@@ -28,15 +28,8 @@ var _const = require("./const");
 var _m_columns_controller_utils = require("./m_columns_controller_utils");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modules$Controller) {
-  _inheritsLoose(ColumnsController, _modules$Controller);
-  function ColumnsController() {
-    return _modules$Controller.apply(this, arguments) || this;
-  }
-  var _proto = ColumnsController.prototype;
-  _proto.init = function init(isApplyingUserState) {
+class ColumnsController extends _m_modules.default.Controller {
+  init(isApplyingUserState) {
     this._dataController = this.getController('data');
     this._focusController = this.getController('focus');
     this._stateStoringController = this.getController('stateStoring');
@@ -57,8 +50,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       (0, _m_columns_controller_utils.updateIndexes)(this);
     }
     this._checkColumns();
-  };
-  _proto._getExpandColumnOptions = function _getExpandColumnOptions() {
+  }
+  _getExpandColumnOptions() {
     return {
       type: 'expand',
       command: 'expand',
@@ -71,8 +64,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       allowReordering: false,
       allowHiding: false
     };
-  };
-  _proto._getFirstItems = function _getFirstItems(dataSource) {
+  }
+  _getFirstItems(dataSource) {
     let groupsCount;
     let items = [];
     const getFirstItemsCore = function (items, groupsCount) {
@@ -91,14 +84,14 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       items = getFirstItemsCore(dataSource.items(), groupsCount) || [];
     }
     return items;
-  };
-  _proto._endUpdateCore = function _endUpdateCore() {
+  }
+  _endUpdateCore() {
     !this._skipProcessingColumnsChange && (0, _m_columns_controller_utils.fireColumnsChanged)(this);
-  };
-  _proto.callbackNames = function callbackNames() {
+  }
+  callbackNames() {
     return ['columnsChanged'];
-  };
-  _proto.getColumnByPath = function getColumnByPath(path, columns) {
+  }
+  getColumnByPath(path, columns) {
     const that = this;
     let column;
     const columnIndexes = [];
@@ -117,8 +110,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       }
     }
     return column;
-  };
-  _proto.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     let needUpdateRequireResize;
     switch (args.name) {
       case 'adaptColumnWidthByRatio':
@@ -170,10 +163,10 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
         this.reinit();
         break;
       default:
-        _modules$Controller.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  _proto._columnOptionChanged = function _columnOptionChanged(args) {
+  }
+  _columnOptionChanged(args) {
     let columnOptionValue = {};
     const column = this.getColumnByPath(args.fullName);
     const columnOptionName = args.fullName.replace(_const.COLUMN_OPTION_REGEXP, '');
@@ -187,19 +180,19 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       this.columnOption(column.index, columnOptionValue);
       this._skipProcessingColumnsChange = false;
     }
-  };
-  _proto._updateRequireResize = function _updateRequireResize(args) {
+  }
+  _updateRequireResize(args) {
     const {
       component
     } = this;
     if (args.fullName.replace(_const.COLUMN_OPTION_REGEXP, '') === 'width' && component._updateLockCount) {
       component._requireResize = true;
     }
-  };
-  _proto.publicMethods = function publicMethods() {
+  }
+  publicMethods() {
     return ['addColumn', 'deleteColumn', 'columnOption', 'columnCount', 'clearSorting', 'clearGrouping', 'getVisibleColumns', 'getVisibleColumnIndex'];
-  };
-  _proto.applyDataSource = function applyDataSource(dataSource, forceApplying, isApplyingUserState) {
+  }
+  applyDataSource(dataSource, forceApplying, isApplyingUserState) {
     const that = this;
     const isDataSourceLoaded = dataSource && dataSource.isLoaded();
     that._dataSource = dataSource;
@@ -223,8 +216,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       // @ts-expect-error
       return new _deferred.Deferred().reject().promise();
     }
-  };
-  _proto.reset = function reset() {
+  }
+  reset() {
     this._dataSource = null;
     this._dataSourceApplied = false;
     this._dataSourceColumnsCount = undefined;
@@ -233,33 +226,32 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
   /**
    * @extended: virtual_columns
    * @private
-   */;
-  _proto.resetColumnsCache = function resetColumnsCache() {
+   */
+  resetColumnsCache() {
     const that = this;
     that._visibleColumns = undefined;
     that._fixedColumns = undefined;
     that._rowCount = undefined;
     (0, _m_columns_controller_utils.resetBandColumnsCache)(that);
-  };
-  _proto.reinit = function reinit(ignoreColumnOptionNames) {
+  }
+  reinit(ignoreColumnOptionNames) {
     this._columnsUserState = this.getUserState();
     this._ignoreColumnOptionNames = ignoreColumnOptionNames || null;
     this.init();
     if (ignoreColumnOptionNames) {
       this._ignoreColumnOptionNames = null;
     }
-  };
-  _proto.isInitialized = function isInitialized() {
+  }
+  isInitialized() {
     return !!this._columns.length || !!this.option('columns');
-  };
-  _proto.isDataSourceApplied = function isDataSourceApplied() {
+  }
+  isDataSourceApplied() {
     return this._dataSourceApplied;
-  };
-  _proto.getCommonSettings = function getCommonSettings(column) {
-    var _a, _b;
+  }
+  getCommonSettings(column) {
     const commonColumnSettings = (!column || !column.type) && this.option('commonColumnSettings') || {};
-    const groupingOptions = (_a = this.option('grouping')) !== null && _a !== void 0 ? _a : {};
-    const groupPanelOptions = (_b = this.option('groupPanel')) !== null && _b !== void 0 ? _b : {};
+    const groupingOptions = this.option('grouping') ?? {};
+    const groupPanelOptions = this.option('groupPanel') ?? {};
     return (0, _extend.extend)({
       allowFixing: this.option('columnFixing.enabled'),
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
@@ -271,15 +263,15 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       allowCollapsing: groupingOptions.allowCollapsing,
       allowGrouping: groupPanelOptions.allowColumnDragging && groupPanelOptions.visible || groupingOptions.contextMenuEnabled
     }, commonColumnSettings);
-  };
-  _proto.isColumnOptionUsed = function isColumnOptionUsed(optionName) {
+  }
+  isColumnOptionUsed(optionName) {
     for (let i = 0; i < this._columns.length; i++) {
       if (this._columns[i][optionName]) {
         return true;
       }
     }
-  };
-  _proto.isAllDataTypesDefined = function isAllDataTypesDefined(checkSerializers) {
+  }
+  isAllDataTypesDefined(checkSerializers) {
     const columns = this._columns;
     if (!columns.length) {
       return false;
@@ -293,14 +285,14 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       }
     }
     return true;
-  };
-  _proto.getColumns = function getColumns() {
+  }
+  getColumns() {
     return this._columns;
-  };
-  _proto.isBandColumnsUsed = function isBandColumnsUsed() {
+  }
+  isBandColumnsUsed() {
     return this.getColumns().some(column => column.isBand);
-  };
-  _proto.getGroupColumns = function getGroupColumns() {
+  }
+  getGroupColumns() {
     const result = [];
     (0, _iterator.each)(this._columns, function () {
       const column = this;
@@ -312,21 +304,20 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
   }
   /**
    * @extended: state_storing
-   */;
-  _proto._shouldReturnVisibleColumns = function _shouldReturnVisibleColumns() {
+   */
+  _shouldReturnVisibleColumns() {
     return true;
   }
   /**
    * @extended: virtual_column
-   */;
-  _proto._compileVisibleColumns = function _compileVisibleColumns(rowIndex) {
+   */
+  _compileVisibleColumns(rowIndex) {
     this._visibleColumns = this._visibleColumns || this._compileVisibleColumnsCore();
     rowIndex = (0, _type.isDefined)(rowIndex) ? rowIndex : this._visibleColumns.length - 1;
     return this._visibleColumns[rowIndex] || [];
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.getVisibleColumns = function getVisibleColumns(rowIndex, isBase) {
+  getVisibleColumns(rowIndex, isBase) {
     if (!this._shouldReturnVisibleColumns()) {
       return [];
     }
@@ -335,13 +326,13 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
   }
   /**
    * @extended: virtual_column
-   */;
-  _proto.getFixedColumns = function getFixedColumns(rowIndex) {
+   */
+  getFixedColumns(rowIndex) {
     this._fixedColumns = this._fixedColumns || this._getFixedColumnsCore();
     rowIndex = (0, _type.isDefined)(rowIndex) ? rowIndex : this._fixedColumns.length - 1;
     return this._fixedColumns[rowIndex] || [];
-  };
-  _proto.getFilteringColumns = function getFilteringColumns() {
+  }
+  getFilteringColumns() {
     return this.getColumns().filter(item => (item.dataField || item.name) && (item.allowFiltering || item.allowHeaderFiltering)).map(item => {
       const field = (0, _extend.extend)(true, {}, item);
       if (!(0, _type.isDefined)(field.dataField)) {
@@ -353,11 +344,11 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
   }
   /**
    * @extended: virtual_column
-   */;
-  _proto.getColumnIndexOffset = function getColumnIndexOffset() {
+   */
+  getColumnIndexOffset() {
     return 0;
-  };
-  _proto._getFixedColumnsCore = function _getFixedColumnsCore() {
+  }
+  _getFixedColumnsCore() {
     const that = this;
     const result = [];
     const rowCount = that.getRowCount();
@@ -418,8 +409,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       }
       return newColumn;
     }));
-  };
-  _proto._isColumnFixing = function _isColumnFixing() {
+  }
+  _isColumnFixing() {
     let isColumnFixing = this.option('columnFixing.enabled');
     !isColumnFixing && (0, _iterator.each)(this._columns, (_, column) => {
       if (column.fixed) {
@@ -431,11 +422,11 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
   }
   /**
    * @extended: master_detail
-   */;
-  _proto._getExpandColumnsCore = function _getExpandColumnsCore() {
+   */
+  _getExpandColumnsCore() {
     return this.getGroupColumns();
-  };
-  _proto.getExpandColumns = function getExpandColumns() {
+  }
+  getExpandColumns() {
     let expandColumns = this._getExpandColumnsCore();
     let expandColumn;
     const firstGroupColumn = expandColumns.filter(column => column.groupIndex === 0)[0];
@@ -457,8 +448,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       type: column.type || _const.GROUP_COMMAND_COLUMN_NAME
     }));
     return expandColumns;
-  };
-  _proto.getBandColumnsCache = function getBandColumnsCache() {
+  }
+  getBandColumnsCache() {
     if (!this._bandColumnsCache) {
       const columns = this._columns;
       const columnChildrenByIndex = {};
@@ -498,14 +489,14 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
   }
   /**
    * @extended: adaptivity
-   */;
-  _proto._isColumnVisible = function _isColumnVisible(column) {
+   */
+  _isColumnVisible(column) {
     return column.visible && this.isParentColumnVisible(column.index);
-  };
-  _proto._isColumnInGroupPanel = function _isColumnInGroupPanel(column) {
+  }
+  _isColumnInGroupPanel(column) {
     return (0, _type.isDefined)(column.groupIndex) && !column.showWhenGrouped;
-  };
-  _proto.hasVisibleDataColumns = function hasVisibleDataColumns() {
+  }
+  hasVisibleDataColumns() {
     const columns = this._columns;
     return columns.some(column => {
       const isVisible = this._isColumnVisible(column);
@@ -513,8 +504,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       const isCommand = !!column.command;
       return isVisible && !isInGroupPanel && !isCommand;
     });
-  };
-  _proto._compileVisibleColumnsCore = function _compileVisibleColumnsCore() {
+  }
+  _compileVisibleColumnsCore() {
     const bandColumnsCache = this.getBandColumnsCache();
     const columns = (0, _m_columns_controller_utils.mergeColumns)(this, this._columns, this._commandColumns, true);
     (0, _m_columns_controller_utils.processBandColumns)(this, columns, bandColumnsCache);
@@ -527,8 +518,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       });
     }
     return visibleColumns;
-  };
-  _proto._getIndexedColumns = function _getIndexedColumns(columns) {
+  }
+  _getIndexedColumns(columns) {
     const rtlEnabled = this.option('rtlEnabled');
     const rowCount = this.getRowCount();
     const columnDigitsCount = (0, _m_columns_controller_utils.digitsCount)(columns.length);
@@ -543,7 +534,6 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       positiveIndexedColumns[i] = [{}, {}, {}];
     }
     columns.forEach(column => {
-      var _a, _b, _c, _d;
       let {
         visibleIndex
       } = column;
@@ -557,8 +547,9 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
           visibleIndex = -visibleIndex;
           indexedColumns = negativeIndexedColumns[rowIndex];
         } else {
-          column.fixed = (_b = (_a = parentBandColumns[0]) === null || _a === void 0 ? void 0 : _a.fixed) !== null && _b !== void 0 ? _b : column.fixed;
-          column.fixedPosition = (_d = (_c = parentBandColumns[0]) === null || _c === void 0 ? void 0 : _c.fixedPosition) !== null && _d !== void 0 ? _d : column.fixedPosition;
+          var _parentBandColumns$, _parentBandColumns$2;
+          column.fixed = ((_parentBandColumns$ = parentBandColumns[0]) === null || _parentBandColumns$ === void 0 ? void 0 : _parentBandColumns$.fixed) ?? column.fixed;
+          column.fixedPosition = ((_parentBandColumns$2 = parentBandColumns[0]) === null || _parentBandColumns$2 === void 0 ? void 0 : _parentBandColumns$2.fixedPosition) ?? column.fixedPosition;
           if (column.fixed) {
             const isDefaultCommandColumn = !!column.command && !(0, _m_columns_controller_utils.isCustomCommandColumn)(this, column);
             let isFixedToEnd = column.fixedPosition === 'right';
@@ -584,8 +575,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       positiveIndexedColumns,
       negativeIndexedColumns
     };
-  };
-  _proto._getVisibleColumnsFromIndexed = function _getVisibleColumnsFromIndexed(_ref) {
+  }
+  _getVisibleColumnsFromIndexed(_ref) {
     let {
       positiveIndexedColumns,
       negativeIndexedColumns
@@ -617,8 +608,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
     }
     result.push((0, _m_columns_controller_utils.getDataColumns)(result));
     return result;
-  };
-  _proto.getInvisibleColumns = function getInvisibleColumns(columns, bandColumnIndex) {
+  }
+  getInvisibleColumns(columns, bandColumnIndex) {
     const that = this;
     let result = [];
     let hiddenColumnsByBand;
@@ -644,8 +635,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       }
     });
     return result;
-  };
-  _proto.getChooserColumns = function getChooserColumns(getAllColumns) {
+  }
+  getChooserColumns(getAllColumns) {
     const columns = getAllColumns ? this.getColumns() : this.getInvisibleColumns();
     const columnChooserColumns = columns.filter(column => column.showInColumnChooser);
     const sortOrder = this.option('columnChooser.sortOrder');
@@ -653,8 +644,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
   }
   /**
    * @extended: column_chooser
-   */;
-  _proto.allowMoveColumn = function allowMoveColumn(fromVisibleIndex, toVisibleIndex, sourceLocation, targetLocation) {
+   */
+  allowMoveColumn(fromVisibleIndex, toVisibleIndex, sourceLocation, targetLocation) {
     const that = this;
     const columnIndex = (0, _m_columns_controller_utils.getColumnIndexByVisibleIndex)(that, fromVisibleIndex, sourceLocation);
     const sourceColumn = that._columns[columnIndex];
@@ -678,8 +669,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       return true;
     }
     return false;
-  };
-  _proto.moveColumn = function moveColumn(fromVisibleIndex, toVisibleIndex, sourceLocation, targetLocation) {
+  }
+  moveColumn(fromVisibleIndex, toVisibleIndex, sourceLocation, targetLocation) {
     const that = this;
     const options = {};
     let prevGroupIndex;
@@ -722,8 +713,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       }
       that.columnOption(column.index, options);
     }
-  };
-  _proto.changeSortOrder = function changeSortOrder(columnIndex, sortOrder) {
+  }
+  changeSortOrder(columnIndex, sortOrder) {
     const that = this;
     const options = {};
     const sortingOptions = that.option('sorting');
@@ -773,8 +764,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
   }
   /**
    * @extended: focus
-   */;
-  _proto.getSortDataSourceParameters = function getSortDataSourceParameters(useLocalSelector) {
+   */
+  getSortDataSourceParameters(useLocalSelector) {
     const that = this;
     const sortColumns = [];
     const sort = [];
@@ -797,8 +788,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       }
     });
     return sort.length > 0 ? sort : null;
-  };
-  _proto.getGroupDataSourceParameters = function getGroupDataSourceParameters(useLocalSelector) {
+  }
+  getGroupDataSourceParameters(useLocalSelector) {
     const group = [];
     (0, _iterator.each)(this.getGroupColumns(), function () {
       const selector = this.calculateGroupValue || this.displayField || this.calculateDisplayValue || useLocalSelector && this.selector || this.dataField || this.calculateCellValue;
@@ -815,8 +806,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       }
     });
     return group.length > 0 ? group : null;
-  };
-  _proto.refresh = function refresh(updateNewLookupsOnly) {
+  }
+  refresh(updateNewLookupsOnly) {
     const deferreds = [];
     (0, _iterator.each)(this._columns, function () {
       const {
@@ -832,14 +823,14 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       }
     });
     return _deferred.when.apply(_renderer.default, deferreds).done(_m_columns_controller_utils.resetColumnsCache.bind(null, this));
-  };
-  _proto._updateColumnOptions = function _updateColumnOptions(column, columnIndex) {
-    var _a, _b, _c, _d;
+  }
+  _updateColumnOptions(column, columnIndex) {
+    var _this$_previousColumn, _this$_previousColumn2;
     const defaultSelector = data => column.calculateCellValue(data);
-    const shouldTakeOriginalCallbackFromPrevious = this._reinitAfterLookupChanges && ((_a = this._previousColumns) === null || _a === void 0 ? void 0 : _a[columnIndex]);
-    column.selector = (_b = column.selector) !== null && _b !== void 0 ? _b : defaultSelector;
+    const shouldTakeOriginalCallbackFromPrevious = this._reinitAfterLookupChanges && ((_this$_previousColumn = this._previousColumns) === null || _this$_previousColumn === void 0 ? void 0 : _this$_previousColumn[columnIndex]);
+    column.selector = column.selector ?? defaultSelector;
     column.selector.columnIndex = columnIndex;
-    column.selector.originalCallback = shouldTakeOriginalCallbackFromPrevious ? (_d = (_c = this._previousColumns[columnIndex].selector) === null || _c === void 0 ? void 0 : _c.originalCallback) !== null && _d !== void 0 ? _d : column.selector : column.selector;
+    column.selector.originalCallback = shouldTakeOriginalCallbackFromPrevious ? ((_this$_previousColumn2 = this._previousColumns[columnIndex].selector) === null || _this$_previousColumn2 === void 0 ? void 0 : _this$_previousColumn2.originalCallback) ?? column.selector : column.selector;
     (0, _iterator.each)(['calculateSortValue', 'calculateGroupValue', 'calculateDisplayValue'], (_, calculateCallbackName) => {
       const calculateCallback = column[calculateCallbackName];
       if ((0, _type.isFunction)(calculateCallback)) {
@@ -884,8 +875,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       column.defaultFilterOperation = column.filterOperations && column.filterOperations[0] || '=';
       column.showEditorAlways = (0, _type.isDefined)(column.showEditorAlways) ? column.showEditorAlways : dataType === 'boolean' && !column.cellTemplate && !column.lookup;
     }
-  };
-  _proto.updateColumnDataTypes = function updateColumnDataTypes(dataSource) {
+  }
+  updateColumnDataTypes(dataSource) {
     const that = this;
     const dateSerializationFormat = that.option('dateSerializationFormat');
     const firstItems = that._getFirstItems(dataSource);
@@ -949,8 +940,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       that._updateColumnOptions(column, index);
     });
     return isColumnDataTypesUpdated;
-  };
-  _proto._customizeColumns = function _customizeColumns(columns) {
+  }
+  _customizeColumns(columns) {
     const that = this;
     const customizeColumns = that.option('customizeColumns');
     if (customizeColumns) {
@@ -961,8 +952,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       customizeColumns(columns);
       (0, _m_columns_controller_utils.assignColumns)(that, (0, _m_columns_controller_utils.createColumnsFromOptions)(that, columns));
     }
-  };
-  _proto.updateColumns = function updateColumns(dataSource, forceApplying, isApplyingUserState) {
+  }
+  updateColumns(dataSource, forceApplying, isApplyingUserState) {
     if (!forceApplying) {
       this.updateSortingGrouping(dataSource);
     }
@@ -985,8 +976,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
         (0, _m_columns_controller_utils.fireColumnsChanged)(this);
       });
     }
-  };
-  _proto._updateChanges = function _updateChanges(dataSource, parameters) {
+  }
+  _updateChanges(dataSource, parameters) {
     if (dataSource) {
       this.updateColumnDataTypes(dataSource);
       this._dataSourceApplied = true;
@@ -1001,8 +992,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       (0, _m_columns_controller_utils.updateColumnChanges)(this, 'filtering');
     }
     (0, _m_columns_controller_utils.updateColumnChanges)(this, 'columns');
-  };
-  _proto.updateSortingGrouping = function updateSortingGrouping(dataSource, fromDataSource) {
+  }
+  updateSortingGrouping(dataSource, fromDataSource) {
     const that = this;
     let sortParameters;
     let isColumnsChanged;
@@ -1018,7 +1009,7 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
             const {
               isExpanded
             } = sortParameters[i];
-            if (selector === column.dataField || selector === column.name || selector === column.selector || selector === column.calculateCellValue || selector === column.calculateGroupValue || selector === column.calculateDisplayValue) {
+            if (selector === column.dataField || selector === column.name || selector === column.displayField || selector === column.selector || selector === column.calculateCellValue || selector === column.calculateGroupValue || selector === column.calculateDisplayValue) {
               if (fromDataSource) {
                 column.sortOrder = 'sortOrder' in column ? column.sortOrder : sortParameters[i].desc ? 'desc' : 'asc';
               } else {
@@ -1077,8 +1068,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
         (0, _m_columns_controller_utils.fireColumnsChanged)(that);
       }
     }
-  };
-  _proto.updateFilter = function updateFilter(filter, remoteFiltering, columnIndex, filterValue) {
+  }
+  updateFilter(filter, remoteFiltering, columnIndex, filterValue) {
     const that = this;
     if (!Array.isArray(filter)) return filter;
     filter = (0, _extend.extend)([], filter);
@@ -1103,11 +1094,11 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       filter[i] = that.updateFilter(filter[i], remoteFiltering, columnIndex, filterValue);
     }
     return filter;
-  };
-  _proto.columnCount = function columnCount() {
+  }
+  columnCount() {
     return this._columns ? this._columns.length : 0;
-  };
-  _proto.columnOption = function columnOption(identifier, option, value, notFireEvent) {
+  }
+  columnOption(identifier, option, value, notFireEvent) {
     const that = this;
     const columns = that._columns.concat(that._commandColumns);
     const column = (0, _m_columns_controller_utils.findColumn)(columns, identifier);
@@ -1127,8 +1118,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       }
       (0, _m_columns_controller_utils.fireColumnsChanged)(that);
     }
-  };
-  _proto.clearSorting = function clearSorting() {
+  }
+  clearSorting() {
     const that = this;
     const columnCount = this.columnCount();
     that.beginUpdate();
@@ -1138,8 +1129,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       delete (0, _m_columns_controller_utils.findColumn)(that._columns, i).sortOrder;
     }
     that.endUpdate();
-  };
-  _proto.clearGrouping = function clearGrouping() {
+  }
+  clearGrouping() {
     const that = this;
     const columnCount = this.columnCount();
     that.beginUpdate();
@@ -1147,8 +1138,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       that.columnOption(i, 'groupIndex', undefined);
     }
     that.endUpdate();
-  };
-  _proto.getVisibleIndex = function getVisibleIndex(index, rowIndex) {
+  }
+  getVisibleIndex(index, rowIndex) {
     const columns = this.getVisibleColumns(rowIndex);
     for (let i = columns.length - 1; i >= 0; i--) {
       if (columns[i].index === index) {
@@ -1156,17 +1147,17 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       }
     }
     return -1;
-  };
-  _proto.getVisibleIndexByColumn = function getVisibleIndexByColumn(column, rowIndex) {
+  }
+  getVisibleIndexByColumn(column, rowIndex) {
     const visibleColumns = this.getVisibleColumns(rowIndex);
     const visibleColumn = visibleColumns.filter(col => col.index === column.index && col.command === column.command)[0];
     return visibleColumns.indexOf(visibleColumn);
-  };
-  _proto.getVisibleColumnIndex = function getVisibleColumnIndex(id, rowIndex) {
+  }
+  getVisibleColumnIndex(id, rowIndex) {
     const index = this.columnOption(id, 'index');
     return this.getVisibleIndex(index, rowIndex);
-  };
-  _proto.addColumn = function addColumn(options) {
+  }
+  addColumn(options) {
     const that = this;
     let column = (0, _m_columns_controller_utils.createColumn)(that, options);
     const index = that._columns.length;
@@ -1179,8 +1170,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
     (0, _m_columns_controller_utils.updateIndexes)(that, column);
     that.updateColumns(that._dataSource);
     that._checkColumns();
-  };
-  _proto.deleteColumn = function deleteColumn(id) {
+  }
+  deleteColumn(id) {
     const that = this;
     const column = that.columnOption(id);
     if (column && column.index >= 0) {
@@ -1193,15 +1184,15 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       (0, _m_columns_controller_utils.updateIndexes)(that);
       that.updateColumns(that._dataSource);
     }
-  };
-  _proto.addCommandColumn = function addCommandColumn(options) {
+  }
+  addCommandColumn(options) {
     let commandColumn = this._commandColumns.filter(column => column.command === options.command)[0];
     if (!commandColumn) {
       commandColumn = options;
       this._commandColumns.push(commandColumn);
     }
-  };
-  _proto.getUserState = function getUserState() {
+  }
+  getUserState() {
     const columns = this._columns;
     const result = [];
     let i;
@@ -1215,15 +1206,15 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       (0, _iterator.each)(_const.USER_STATE_FIELD_NAMES, handleStateField);
     }
     return result;
-  };
-  _proto.setName = function setName(column) {
+  }
+  setName(column) {
     column.name = column.name || column.dataField || column.type;
-  };
-  _proto.setUserState = function setUserState(state) {
+  }
+  setUserState(state) {
     const that = this;
     const dataSource = that._dataSource;
     let ignoreColumnOptionNames = that.option('stateStoring.ignoreColumnOptionNames');
-    state === null || state === void 0 ? void 0 : state.forEach(this.setName);
+    state === null || state === void 0 || state.forEach(this.setName);
     if (!ignoreColumnOptionNames) {
       ignoreColumnOptionNames = [];
       const commonColumnSettings = that.getCommonSettings();
@@ -1245,21 +1236,21 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       dataSource.sort(that.getSortDataSourceParameters());
       dataSource.group(that.getGroupDataSourceParameters());
     }
-  };
-  _proto._checkColumns = function _checkColumns() {
+  }
+  _checkColumns() {
     const usedNames = {};
     let hasEditableColumnWithoutName = false;
     const duplicatedNames = [];
     this._columns.forEach(column => {
-      var _a;
+      var _column$columns;
       const {
         name
       } = column;
-      const isBand = (_a = column.columns) === null || _a === void 0 ? void 0 : _a.length;
+      const isBand = (_column$columns = column.columns) === null || _column$columns === void 0 ? void 0 : _column$columns.length;
       const isEditable = column.allowEditing && (column.dataField || column.setCellValue) && !isBand;
       if (name) {
         if (usedNames[name]) {
-          duplicatedNames.push("\"".concat(name, "\""));
+          duplicatedNames.push(`"${name}"`);
         }
         usedNames[name] = true;
       } else if (isEditable) {
@@ -1272,8 +1263,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
     if (hasEditableColumnWithoutName) {
       _ui.default.log('E1060');
     }
-  };
-  _proto._createCalculatedColumnOptions = function _createCalculatedColumnOptions(columnOptions, bandColumn) {
+  }
+  _createCalculatedColumnOptions(columnOptions, bandColumn) {
     let calculatedColumnOptions = {};
     let {
       dataField
@@ -1396,6 +1387,7 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
             }
             if ((0, _type.isPlainObject)(dataSource) || dataSource instanceof _abstract_store.default || Array.isArray(dataSource)) {
               if (that.valueExpr) {
+                // @ts-expect-error
                 const dataSourceOptions = (0, _utils.normalizeDataSourceOptions)(dataSource);
                 dataSourceOptions.paginate = false;
                 dataSource = new _data_source.DataSource(dataSourceOptions);
@@ -1419,22 +1411,22 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
     }
     (0, _iterator.each)(calculatedColumnOptions, optionName => {
       if ((0, _type.isFunction)(calculatedColumnOptions[optionName]) && optionName.indexOf('default') !== 0) {
-        const defaultOptionName = "default".concat(optionName.charAt(0).toUpperCase()).concat(optionName.substr(1));
+        const defaultOptionName = `default${optionName.charAt(0).toUpperCase()}${optionName.substr(1)}`;
         calculatedColumnOptions[defaultOptionName] = calculatedColumnOptions[optionName];
       }
     });
     return calculatedColumnOptions;
-  };
-  _proto.getRowCount = function getRowCount() {
+  }
+  getRowCount() {
     this._rowCount = this._rowCount || (0, _m_columns_controller_utils.getRowCount)(this);
     return this._rowCount;
-  };
-  _proto.getRowIndex = function getRowIndex(columnIndex, alwaysGetRowIndex) {
+  }
+  getRowIndex(columnIndex, alwaysGetRowIndex) {
     const column = this._columns[columnIndex];
     const bandColumnsCache = this.getBandColumnsCache();
     return column && (alwaysGetRowIndex || column.visible && !(column.command || (0, _type.isDefined)(column.groupIndex))) ? (0, _m_columns_controller_utils.getParentBandColumns)(columnIndex, bandColumnsCache.columnParentByIndex).length : 0;
-  };
-  _proto.getChildrenByBandColumn = function getChildrenByBandColumn(bandColumnIndex, onlyVisibleDirectChildren) {
+  }
+  getChildrenByBandColumn(bandColumnIndex, onlyVisibleDirectChildren) {
     const that = this;
     const bandColumnsCache = that.getBandColumnsCache();
     const result = (0, _m_columns_controller_utils.getChildrenByBandColumn)(bandColumnIndex, bandColumnsCache.columnChildrenByIndex, !onlyVisibleDirectChildren);
@@ -1442,8 +1434,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       return result.filter(column => column.visible && !column.command).sort((column1, column2) => column1.visibleIndex - column2.visibleIndex);
     }
     return result;
-  };
-  _proto.isParentBandColumn = function isParentBandColumn(columnIndex, bandColumnIndex) {
+  }
+  isParentBandColumn(columnIndex, bandColumnIndex) {
     let result = false;
     const column = this._columns[columnIndex];
     const bandColumnsCache = this.getBandColumnsCache();
@@ -1458,8 +1450,8 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       });
     }
     return result;
-  };
-  _proto.isParentColumnVisible = function isParentColumnVisible(columnIndex) {
+  }
+  isParentColumnVisible(columnIndex) {
     let result = true;
     const bandColumnsCache = this.getBandColumnsCache();
     const bandColumns = columnIndex >= 0 && (0, _m_columns_controller_utils.getParentBandColumns)(columnIndex, bandColumnsCache.columnParentByIndex);
@@ -1468,28 +1460,28 @@ let ColumnsController = exports.ColumnsController = /*#__PURE__*/function (_modu
       return result;
     });
     return result;
-  };
-  _proto.getColumnId = function getColumnId(column) {
+  }
+  getColumnId(column) {
     if (column.command && column.type === _const.GROUP_COMMAND_COLUMN_NAME) {
       if ((0, _m_columns_controller_utils.isCustomCommandColumn)(this, column)) {
-        return "type:".concat(column.type);
+        return `type:${column.type}`;
       }
-      return "command:".concat(column.command);
+      return `command:${column.command}`;
     }
     return column.index;
-  };
-  _proto.getCustomizeTextByDataType = function getCustomizeTextByDataType(dataType) {
+  }
+  getCustomizeTextByDataType(dataType) {
     return (0, _m_columns_controller_utils.getCustomizeTextByDataType)(dataType);
-  };
-  _proto.getHeaderContentAlignment = function getHeaderContentAlignment(columnAlignment) {
+  }
+  getHeaderContentAlignment(columnAlignment) {
     const rtlEnabled = this.option('rtlEnabled');
     if (rtlEnabled) {
       return columnAlignment === 'left' ? 'right' : 'left';
     }
     return columnAlignment;
-  };
-  return ColumnsController;
-}(_m_modules.default.Controller);
+  }
+}
+exports.ColumnsController = ColumnsController;
 const columnsControllerModule = exports.columnsControllerModule = {
   defaultOptions() {
     return {

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/scroll_view.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22,91 +22,143 @@ import dxScrollable, {
 } from './scroll_view/ui.scrollable';
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_scroll_view_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxScrollView>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_scroll_view_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxScrollView>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_scroll_view_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxScrollView> & ChangedOptionInfo;
 
 /**
- * The type of the pullDown event handler&apos;s argument.
+ * @docid _ui_scroll_view_PullDownEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type PullDownEvent = EventInfo<dxScrollView>;
 
 /**
- * The type of the reachBottom event handler&apos;s argument.
+ * @docid _ui_scroll_view_ReachBottomEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ReachBottomEvent = EventInfo<dxScrollView>;
 
 /**
- * The type of the scroll event handler&apos;s argument.
+ * @docid _ui_scroll_view_ScrollEvent
+ * @public
+ * @type object
+ * @inherits ScrollEventInfo
  */
 export type ScrollEvent = ScrollEventInfo<dxScrollView>;
 
 /**
- * The type of the updated event handler&apos;s argument.
+ * @docid _ui_scroll_view_UpdatedEvent
+ * @public
+ * @type object
+ * @inherits ScrollEventInfo
  */
 export type UpdatedEvent = ScrollEventInfo<dxScrollView>;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxScrollViewOptions extends dxScrollableOptions<dxScrollView> {
     /**
-     * A function that is executed when the &apos;pull to refresh&apos; gesture is performed. Supported on mobile devices only.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/scroll_view:PullDownEvent}
+     * @action
+     * @public
      */
     onPullDown?: ((e: PullDownEvent) => void);
     /**
-     * A function that is executed when the content is scrolled down to the bottom.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/scroll_view:ReachBottomEvent}
+     * @action
+     * @public
      */
     onReachBottom?: ((e: ReachBottomEvent) => void);
     /**
-     * Specifies the text shown in the pullDown panel when pulling the content down lowers the refresh threshold.
+     * @docid
+     * @default "Release to refresh..."
+     * @default "" &for(Material)
+     * @default "" &for(Fluent)
+     * @public
      */
     pulledDownText?: string;
     /**
-     * Specifies the text shown in the pullDown panel while pulling the content down to the refresh threshold.
+     * @docid
+     * @default "Pull down to refresh..."
+     * @default "" &for(Material)
+     * @default "" &for(Fluent)
+     * @public
      */
     pullingDownText?: string;
     /**
-     * Specifies the text shown in the pullDown panel displayed when content is scrolled to the bottom.
+     * @docid
+     * @default "Loading..."
+     * @default "" &for(Material)
+     * @default "" &for(Fluent)
+     * @public
      */
     reachBottomText?: string;
     /**
-     * Specifies the text shown in the pullDown panel displayed when the content is being refreshed.
+     * @docid
+     * @default "Refreshing..."
+     * @default "" &for(Material)
+     * @default "" &for(Fluent)
+     * @public
      */
     refreshingText?: string;
 }
 /**
- * The ScrollView is a UI component that enables a user to scroll its content.
+ * @docid
+ * @inherits dxScrollable
+ * @hasTranscludedContent
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxScrollView extends dxScrollable<dxScrollViewOptions> {
     /**
-     * Locks the UI component until the release(preventScrollBottom) method is called and executes the function passed to the onPullDown property and the handler assigned to the pullDown event.
+     * @docid
+     * @publicName refresh()
+     * @public
      */
     refresh(): void;
     /**
-     * Notifies the ScrollView that data loading is finished.
+     * @docid
+     * @publicName release(preventScrollBottom)
+     * @return Promise<void>
+     * @public
      */
     release(preventScrollBottom: boolean): DxPromise<void>;
 }
 
+/** @public */
 export type Properties = dxScrollViewOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxScrollViewOptions;
 
 

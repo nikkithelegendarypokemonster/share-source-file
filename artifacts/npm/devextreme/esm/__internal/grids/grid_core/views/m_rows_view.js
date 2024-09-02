@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/grid_core/views/m_rows_view.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -25,48 +25,49 @@ import messageLocalization from '../../../../localization/message';
 import Scrollable from '../../../../ui/scroll_view/ui.scrollable';
 import gridCoreUtils from '../m_utils';
 import { ColumnsView } from './m_columns_view';
-var ROWS_VIEW_CLASS = 'rowsview';
-var CONTENT_CLASS = 'content';
-var NOWRAP_CLASS = 'nowrap';
-var GROUP_ROW_CLASS = 'dx-group-row';
-var GROUP_CELL_CLASS = 'dx-group-cell';
-var DATA_ROW_CLASS = 'dx-data-row';
-var FREE_SPACE_CLASS = 'dx-freespace-row';
-var ROW_LINES_CLASS = 'dx-row-lines';
-var COLUMN_LINES_CLASS = 'dx-column-lines';
-var ROW_ALTERNATION_CLASS = 'dx-row-alt';
-var LAST_ROW_BORDER = 'dx-last-row-border';
-var EMPTY_CLASS = 'dx-empty';
-var ROW_INSERTED_ANIMATION_CLASS = 'row-inserted-animation';
-var LOADPANEL_HIDE_TIMEOUT = 200;
+const ROWS_VIEW_CLASS = 'rowsview';
+const CONTENT_CLASS = 'content';
+const NOWRAP_CLASS = 'nowrap';
+const GROUP_ROW_CLASS = 'dx-group-row';
+const GROUP_CELL_CLASS = 'dx-group-cell';
+const DATA_ROW_CLASS = 'dx-data-row';
+const FREE_SPACE_CLASS = 'dx-freespace-row';
+const ROW_LINES_CLASS = 'dx-row-lines';
+const COLUMN_LINES_CLASS = 'dx-column-lines';
+const ROW_ALTERNATION_CLASS = 'dx-row-alt';
+const LAST_ROW_BORDER = 'dx-last-row-border';
+const EMPTY_CLASS = 'dx-empty';
+const ROW_INSERTED_ANIMATION_CLASS = 'row-inserted-animation';
+const CONTENT_FIXED_CLASS = 'content-fixed';
+const LOADPANEL_HIDE_TIMEOUT = 200;
 function getMaxHorizontalScrollOffset(scrollable) {
   return scrollable ? Math.round(scrollable.scrollWidth() - scrollable.clientWidth()) : 0;
 }
 function isGroupRow(_ref) {
-  var {
+  let {
     rowType,
     column
   } = _ref;
   return rowType === 'group' && isDefined(column.groupIndex) && !column.showWhenGrouped && !column.command;
 }
 function setWatcher(_ref2) {
-  var {
+  let {
     element,
     watch,
     getter,
     callBack
   } = _ref2;
   if (watch) {
-    var dispose = watch(getter, callBack);
+    const dispose = watch(getter, callBack);
     eventsEngine.on(element, removeEvent, dispose);
   }
 }
-var defaultCellTemplate = function defaultCellTemplate($container, options) {
-  var isDataTextEmpty = isEmpty(options.text) && options.rowType === 'data';
-  var {
+const defaultCellTemplate = function ($container, options) {
+  const isDataTextEmpty = isEmpty(options.text) && options.rowType === 'data';
+  const {
     text
   } = options;
-  var container = $container.get(0);
+  const container = $container.get(0);
   if (isDataTextEmpty) {
     gridCoreUtils.setEmptyText($container);
   } else if (options.column.encodeHtml) {
@@ -75,8 +76,8 @@ var defaultCellTemplate = function defaultCellTemplate($container, options) {
     container.innerHTML = text;
   }
 };
-var getScrollableBottomPadding = function getScrollableBottomPadding(that) {
-  var scrollable = that.getScrollable();
+const getScrollableBottomPadding = function (that) {
+  const scrollable = that.getScrollable();
   // @ts-expect-error
   return scrollable ? Math.ceil(parseFloat($(scrollable.content()).css('paddingBottom'))) : 0;
 };
@@ -123,25 +124,26 @@ export class RowsView extends ColumnsView {
         return defaultCellTemplate;
     }
   }
+  renderFocusState(params) {}
   _getDefaultGroupTemplate(column) {
-    var that = this;
-    var summaryTexts = that.option('summary.texts');
+    const that = this;
+    const summaryTexts = that.option('summary.texts');
     return function ($container, options) {
-      var {
+      const {
         data
       } = options;
-      var text = "".concat(options.column.caption, ": ").concat(options.text);
-      var container = $container.get(0);
+      let text = `${options.column.caption}: ${options.text}`;
+      const container = $container.get(0);
       if (options.summaryItems && options.summaryItems.length) {
-        text += " ".concat(gridCoreUtils.getGroupRowSummaryText(options.summaryItems, summaryTexts));
+        text += ` ${gridCoreUtils.getGroupRowSummaryText(options.summaryItems, summaryTexts)}`;
       }
       if (data) {
         if (options.groupContinuedMessage && options.groupContinuesMessage) {
-          text += " (".concat(options.groupContinuedMessage, ". ").concat(options.groupContinuesMessage, ")");
+          text += ` (${options.groupContinuedMessage}. ${options.groupContinuesMessage})`;
         } else if (options.groupContinuesMessage) {
-          text += " (".concat(options.groupContinuesMessage, ")");
+          text += ` (${options.groupContinuesMessage})`;
         } else if (options.groupContinuedMessage) {
-          text += " (".concat(options.groupContinuedMessage, ")");
+          text += ` (${options.groupContinuedMessage})`;
         }
       }
       if (column.encodeHtml) {
@@ -168,11 +170,11 @@ export class RowsView extends ColumnsView {
    * @extended: adaptivity, editing, master_detail
    */
   _getCellTemplate(options) {
-    var that = this;
-    var {
+    const that = this;
+    const {
       column
     } = options;
-    var template;
+    let template;
     if (isGroupRow(options)) {
       template = column.groupCellTemplate || {
         allowRenderToDetachedContainer: true,
@@ -192,10 +194,10 @@ export class RowsView extends ColumnsView {
    * @extended: adaptivity, editing, editing_row_based, focus, master_detail
    */
   _createRow(row, tag) {
-    var $row = super._createRow.apply(this, arguments);
+    const $row = super._createRow.apply(this, arguments);
     if (row) {
-      var isGroup = row.rowType === 'group';
-      var isDataRow = row.rowType === 'data';
+      const isGroup = row.rowType === 'group';
+      const isDataRow = row.rowType === 'data';
       isDataRow && $row.addClass(DATA_ROW_CLASS);
       isDataRow && this.option('showRowLines') && $row.addClass(ROW_LINES_CLASS);
       this.option('showColumnLines') && $row.addClass(COLUMN_LINES_CLASS);
@@ -236,11 +238,11 @@ export class RowsView extends ColumnsView {
     if (!$row.is('tr')) {
       return;
     }
-    var {
+    const {
       component
     } = this;
-    var isPagerMode = component.option('scrolling.mode') === 'standard' && !gridCoreUtils.isVirtualRowRendering(component);
-    var rowIndex = row.rowIndex + 1;
+    const isPagerMode = component.option('scrolling.mode') === 'standard' && !gridCoreUtils.isVirtualRowRendering(component);
+    let rowIndex = row.rowIndex + 1;
     if (isPagerMode) {
       rowIndex = component.pageIndex() * component.pageSize() + rowIndex;
     } else {
@@ -249,19 +251,19 @@ export class RowsView extends ColumnsView {
     this.setAria('rowindex', rowIndex, $row);
   }
   setAriaExpandedAttribute($row, row) {
-    var description = row.isExpanded ? this.localize('dxDataGrid-ariaExpandedRow') : this.localize('dxDataGrid-ariaCollapsedRow');
+    const description = row.isExpanded ? this.localize('dxDataGrid-ariaExpandedRow') : this.localize('dxDataGrid-ariaCollapsedRow');
     this.setAria('roledescription', description, $row);
   }
   /**
    * @extended: column_fixing
    */
   _afterRowPrepared(e) {
-    var arg = e.args[0];
-    var dataController = this._dataController;
-    var row = dataController.getVisibleRows()[arg.rowIndex];
-    var watch = this.option('integrationOptions.watchMethod');
+    const arg = e.args[0];
+    const dataController = this._dataController;
+    const row = dataController.getVisibleRows()[arg.rowIndex];
+    const watch = this.option('integrationOptions.watchMethod');
     if (!arg.data || arg.rowType !== 'data' || arg.isNewRow || !this.option('twoWayBindingEnabled') || !watch || !row) return;
-    var dispose = watch(() => dataController.generateDataValues(arg.data, arg.columns), () => {
+    const dispose = watch(() => dataController.generateDataValues(arg.data, arg.columns), () => {
       dataController.repaintRows([row.rowIndex], this.option('repaintChangesOnly'));
     }, {
       deep: true,
@@ -270,8 +272,8 @@ export class RowsView extends ColumnsView {
     eventsEngine.on(arg.rowElement, removeEvent, dispose);
   }
   _renderScrollable(force) {
-    var that = this;
-    var $element = that.element();
+    const that = this;
+    const $element = that.element();
     if (!$element.children().length) {
       $element.append('<div>');
     }
@@ -279,9 +281,9 @@ export class RowsView extends ColumnsView {
       that._renderLoadPanel($element, $element.parent(), that._dataController.isLocalStore());
     }
     if ((force || !that.getScrollable()) && that._dataController.isLoaded()) {
-      var columns = that.getColumns();
-      var allColumnsHasWidth = true;
-      for (var i = 0; i < columns.length; i++) {
+      const columns = that.getColumns();
+      let allColumnsHasWidth = true;
+      for (let i = 0; i < columns.length; i++) {
         if (!columns[i].width && !columns[i].minWidth) {
           allColumnsHasWidth = false;
           break;
@@ -296,12 +298,12 @@ export class RowsView extends ColumnsView {
    * @extended: column_fixing, virtual_column, virtual_scrolling
    */
   _handleScroll(e) {
-    var that = this;
-    var rtlEnabled = that.option('rtlEnabled');
-    var isNativeScrolling = e.component.option('useNative');
+    const that = this;
+    const rtlEnabled = that.option('rtlEnabled');
+    const isNativeScrolling = e.component.option('useNative');
     that._scrollTop = e.scrollOffset.top;
     that._scrollLeft = e.scrollOffset.left;
-    var scrollLeft = e.scrollOffset.left;
+    let scrollLeft = e.scrollOffset.left;
     if (rtlEnabled) {
       this._scrollRight = getMaxHorizontalScrollOffset(e.component) - this._scrollLeft;
       if (isNativeScrolling) {
@@ -311,14 +313,14 @@ export class RowsView extends ColumnsView {
         this._scrollLeft = -1;
       }
     }
-    that.scrollChanged.fire(_extends(_extends({}, e.scrollOffset), {
+    that.scrollChanged.fire(_extends({}, e.scrollOffset, {
       left: scrollLeft
     }), that.name);
   }
   _renderScrollableCore($element) {
-    var that = this;
-    var dxScrollableOptions = that._createScrollableOptions();
-    var scrollHandler = that._handleScroll.bind(that);
+    const that = this;
+    const dxScrollableOptions = that._createScrollableOptions();
+    const scrollHandler = that._handleScroll.bind(that);
     dxScrollableOptions.onScroll = scrollHandler;
     that._scrollable = that._createComponent($element, Scrollable, dxScrollableOptions);
     that._scrollableContainer = that._scrollable && $(that._scrollable.container());
@@ -347,40 +349,40 @@ export class RowsView extends ColumnsView {
     });
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return this.waitAsyncTemplates().done(() => {
-      var contentChanges = this._contentChanges;
+      const contentChanges = this._contentChanges;
       this._contentChanges = [];
       contentChanges.forEach(_ref3 => {
-        var {
+        let {
           newTableElement,
           change,
           isFixedTableRendering
         } = _ref3;
-        var tableElement = this.getTableElement(isFixedTableRendering);
-        var contentElement = this._findContentElement(isFixedTableRendering);
-        var changeType = change === null || change === void 0 ? void 0 : change.changeType;
-        var executors = [];
-        var highlightChanges = this.option('highlightChanges');
-        var rowInsertedClass = this.addWidgetPrefix(ROW_INSERTED_ANIMATION_CLASS);
+        const tableElement = this.getTableElement(isFixedTableRendering);
+        const contentElement = this._findContentElement(isFixedTableRendering);
+        const changeType = change === null || change === void 0 ? void 0 : change.changeType;
+        const executors = [];
+        const highlightChanges = this.option('highlightChanges');
+        const rowInsertedClass = this.addWidgetPrefix(ROW_INSERTED_ANIMATION_CLASS);
         switch (changeType) {
           case 'update':
             each(change.rowIndices, (index, rowIndex) => {
-              var _a;
-              var $newRowElement = this._getRowElements(newTableElement).eq(index);
-              var dataChangeType = (_a = change.changeTypes) === null || _a === void 0 ? void 0 : _a[index];
-              var item = change.items && change.items[index];
+              var _change$changeTypes;
+              const $newRowElement = this._getRowElements(newTableElement).eq(index);
+              const dataChangeType = (_change$changeTypes = change.changeTypes) === null || _change$changeTypes === void 0 ? void 0 : _change$changeTypes[index];
+              const item = change.items && change.items[index];
               executors.push(() => {
-                var _a;
-                var $rowElements = this._getRowElements(tableElement);
-                var $rowElement = $rowElements.eq(rowIndex);
+                const $rowElements = this._getRowElements(tableElement);
+                const $rowElement = $rowElements.eq(rowIndex);
                 // eslint-disable-next-line default-case
                 switch (dataChangeType) {
                   case 'update':
                     if (item) {
-                      var columnIndices = (_a = change.columnIndices) === null || _a === void 0 ? void 0 : _a[index];
+                      var _change$columnIndices;
+                      const columnIndices = (_change$columnIndices = change.columnIndices) === null || _change$columnIndices === void 0 ? void 0 : _change$columnIndices[index];
                       if (isDefined(item.visible) && item.visible !== $rowElement.is(':visible')) {
                         $rowElement.toggle(item.visible);
                       } else if (columnIndices) {
-                        this._updateCells($rowElement, $newRowElement, columnIndices);
+                        this._updateCells($rowElement, $newRowElement, columnIndices, item);
                       } else {
                         $rowElement.replaceWith($newRowElement);
                       }
@@ -389,7 +391,7 @@ export class RowsView extends ColumnsView {
                   case 'insert':
                     if (!$rowElements.length) {
                       if (tableElement) {
-                        var target = $newRowElement.is('tbody') ? tableElement : tableElement.children('tbody');
+                        const target = $newRowElement.is('tbody') ? tableElement : tableElement.children('tbody');
                         $newRowElement.prependTo(target);
                       }
                     } else if ($rowElement.length) {
@@ -428,20 +430,20 @@ export class RowsView extends ColumnsView {
     return 'grid';
   }
   _setGridRole($element) {
-    var _a;
-    var hasData = !((_a = this._dataController) === null || _a === void 0 ? void 0 : _a.isEmpty());
-    var gridRoleName = this._getGridRoleName();
-    if (($element === null || $element === void 0 ? void 0 : $element.length) && hasData) {
+    var _this$_dataController;
+    const hasData = !((_this$_dataController = this._dataController) !== null && _this$_dataController !== void 0 && _this$_dataController.isEmpty());
+    const gridRoleName = this._getGridRoleName();
+    if ($element !== null && $element !== void 0 && $element.length && hasData) {
       this.setAria('role', gridRoleName, $element);
     }
   }
   _createEmptyRow(className, isFixed, height) {
-    var that = this;
-    var $cell;
-    var $row = that._createRow();
-    var columns = isFixed ? this.getFixedColumns() : this.getColumns();
+    const that = this;
+    let $cell;
+    const $row = that._createRow();
+    const columns = isFixed ? this.getFixedColumns() : this.getColumns();
     $row.addClass(className).toggleClass(COLUMN_LINES_CLASS, that.option('showColumnLines'));
-    for (var i = 0; i < columns.length; i++) {
+    for (let i = 0; i < columns.length; i++) {
       $cell = that._createCell({
         column: columns[i],
         rowType: 'freeSpace',
@@ -458,13 +460,13 @@ export class RowsView extends ColumnsView {
     throw new Error('Method not implemented.');
   }
   _appendEmptyRow($table, $emptyRow, location) {
-    var $tBodies = this._getBodies($table);
-    var isTableContainer = !$tBodies.length || $emptyRow.is('tbody');
-    var $container = isTableContainer ? $table : $tBodies;
+    const $tBodies = this._getBodies($table);
+    const isTableContainer = !$tBodies.length || $emptyRow.is('tbody');
+    const $container = isTableContainer ? $table : $tBodies;
     if (location === 'top') {
       $container.first().prepend($emptyRow);
       if (isTableContainer) {
-        var $colgroup = $container.children('colgroup');
+        const $colgroup = $container.children('colgroup');
         $container.prepend($colgroup);
       }
     } else {
@@ -472,7 +474,7 @@ export class RowsView extends ColumnsView {
     }
   }
   _renderFreeSpaceRow($tableElement, change) {
-    var $freeSpaceRowElement = this._createEmptyRow(FREE_SPACE_CLASS);
+    let $freeSpaceRowElement = this._createEmptyRow(FREE_SPACE_CLASS);
     $freeSpaceRowElement = this._wrapRowIfNeed($tableElement, $freeSpaceRowElement, (change === null || change === void 0 ? void 0 : change.changeType) === 'refresh');
     this._appendEmptyRow($tableElement, $freeSpaceRowElement);
   }
@@ -480,9 +482,9 @@ export class RowsView extends ColumnsView {
    * @extended: focues
    */
   _checkRowKeys(options) {
-    var that = this;
-    var rows = that._getRows(options);
-    var keyExpr = that._dataController.store() && that._dataController.store().key();
+    const that = this;
+    const rows = that._getRows(options);
+    const keyExpr = that._dataController.store() && that._dataController.store().key();
     keyExpr && rows.some(row => {
       if (row.rowType === 'data' && row.key === undefined) {
         that._dataController.fireError('E1046', keyExpr);
@@ -499,18 +501,18 @@ export class RowsView extends ColumnsView {
   }
   _getRowsHeight($tableElement) {
     $tableElement = $tableElement || this._tableElement;
-    var $rowElements = $tableElement.children('tbody').children().not('.dx-virtual-row').not(".".concat(FREE_SPACE_CLASS));
+    const $rowElements = $tableElement.children('tbody').children().not('.dx-virtual-row').not(`.${FREE_SPACE_CLASS}`);
     return $rowElements.toArray().reduce((sum, row) => sum + getBoundingRect(row).height, 0);
   }
   /**
    * @extended: virtual_scrolling
    */
   _updateRowHeight() {
-    var that = this;
-    var $tableElement = that.getTableElement();
-    var itemsCount = that._dataController.items().length;
+    const that = this;
+    const $tableElement = that.getTableElement();
+    const itemsCount = that._dataController.items().length;
     if ($tableElement && that._needUpdateRowHeight(itemsCount)) {
-      var rowsHeight = that._getRowsHeight($tableElement);
+      const rowsHeight = that._getRowsHeight($tableElement);
       that._rowHeight = rowsHeight / itemsCount;
     }
   }
@@ -518,8 +520,8 @@ export class RowsView extends ColumnsView {
    * @extended: column_fixing
    */
   _findContentElement(isFixedTableRendering) {
-    var $content = this.element();
-    var scrollable = this.getScrollable();
+    let $content = this.element();
+    const scrollable = this.getScrollable();
     if ($content) {
       if (scrollable) {
         $content = $(scrollable.content());
@@ -531,12 +533,12 @@ export class RowsView extends ColumnsView {
    * @extended virtual_scrolling
    */
   _getRowElements(tableElement) {
-    var $rows = super._getRowElements(tableElement);
-    return $rows && $rows.not(".".concat(FREE_SPACE_CLASS));
+    const $rows = super._getRowElements(tableElement);
+    return $rows && $rows.not(`.${FREE_SPACE_CLASS}`);
   }
   _getFreeSpaceRowElements($table) {
-    var tableElements = $table || this.getTableElements();
-    return tableElements && tableElements.children('tbody').children(".".concat(FREE_SPACE_CLASS));
+    const tableElements = $table || this.getTableElements();
+    return tableElements && tableElements.children('tbody').children(`.${FREE_SPACE_CLASS}`);
   }
   _getNoDataText() {
     return this.option('noDataText');
@@ -545,10 +547,10 @@ export class RowsView extends ColumnsView {
    * @extended: editing, keyboard_navigation, selection
    */
   _rowClick(e) {
-    var item = this._dataController.items()[e.rowIndex] || {};
+    const item = this._dataController.items()[e.rowIndex] || {};
     this.executeAction('onRowClick', extend({
       evaluate(expr) {
-        var getter = compileGetter(expr);
+        const getter = compileGetter(expr);
         // @ts-expect-error
         return getter(item.data);
       }
@@ -558,11 +560,11 @@ export class RowsView extends ColumnsView {
    * @extended: editing
    */
   _rowDblClick(e) {
-    var item = this._dataController.items()[e.rowIndex] || {};
+    const item = this._dataController.items()[e.rowIndex] || {};
     this.executeAction('onRowDblClick', extend({}, e, item));
   }
   _getColumnsCountBeforeGroups(columns) {
-    for (var i = 0; i < columns.length; i++) {
+    for (let i = 0; i < columns.length; i++) {
       if (columns[i].type === 'groupExpand') {
         return i;
       }
@@ -573,8 +575,8 @@ export class RowsView extends ColumnsView {
    * @extended: column_fixing
    */
   _getGroupCellOptions(options) {
-    var columnsCountBeforeGroups = this._getColumnsCountBeforeGroups(options.columns);
-    var columnIndex = (options.row.groupIndex || 0) + columnsCountBeforeGroups;
+    const columnsCountBeforeGroups = this._getColumnsCountBeforeGroups(options.columns);
+    const columnIndex = (options.row.groupIndex || 0) + columnsCountBeforeGroups;
     return {
       columnIndex,
       colspan: options.columns.length - columnIndex - 1
@@ -597,19 +599,19 @@ export class RowsView extends ColumnsView {
    * @extended: column_fixing
    */
   _renderGroupedCells($row, options) {
-    var {
+    const {
       row
     } = options;
-    var expandColumn;
-    var {
+    let expandColumn;
+    const {
       columns
     } = options;
-    var {
+    const {
       rowIndex
     } = row;
-    var isExpanded;
-    var groupCellOptions = this._getGroupCellOptions(options);
-    for (var i = 0; i <= groupCellOptions.columnIndex; i++) {
+    let isExpanded;
+    const groupCellOptions = this._getGroupCellOptions(options);
+    for (let i = 0; i <= groupCellOptions.columnIndex; i++) {
       if (i === groupCellOptions.columnIndex && columns[i].allowCollapsing && options.scrollingMode !== 'infinite') {
         isExpanded = !!row.isExpanded;
         expandColumn = columns[i];
@@ -632,8 +634,8 @@ export class RowsView extends ColumnsView {
         });
       }
     }
-    var groupColumnAlignment = getDefaultAlignment(this.option('rtlEnabled'));
-    var groupColumn = extend({}, columns[groupCellOptions.columnIndex], {
+    const groupColumnAlignment = getDefaultAlignment(this.option('rtlEnabled'));
+    const groupColumn = extend({}, columns[groupCellOptions.columnIndex], {
       command: null,
       type: null,
       cssClass: null,
@@ -657,8 +659,8 @@ export class RowsView extends ColumnsView {
     }
   }
   _renderRows($table, options) {
-    var that = this;
-    var scrollingMode = that.option('scrolling.mode');
+    const that = this;
+    const scrollingMode = that.option('scrolling.mode');
     super._renderRows($table, extend({
       scrollingMode
     }, options));
@@ -669,13 +671,13 @@ export class RowsView extends ColumnsView {
     }
   }
   _renderDataRowByTemplate($table, options, dataRowTemplate) {
-    var {
+    const {
       row
     } = options;
-    var rowOptions = extend({
+    const rowOptions = extend({
       columns: options.columns
     }, row);
-    var $tbody = this._createRow(row, 'tbody');
+    const $tbody = this._createRow(row, 'tbody');
     $tbody.appendTo($table);
     this.renderTemplate($tbody, dataRowTemplate, rowOptions, true, options.change);
     this._rowPrepared($tbody, rowOptions, options.row);
@@ -684,13 +686,13 @@ export class RowsView extends ColumnsView {
    * @extended: column_fixing
    */
   _renderRow($table, options) {
-    var {
+    const {
       row
     } = options;
-    var {
+    const {
       rowTemplate
     } = this.option();
-    var dataRowTemplate = this.option('dataRowTemplate');
+    const dataRowTemplate = this.option('dataRowTemplate');
     if (row.rowType === 'data' && dataRowTemplate) {
       this._renderDataRowByTemplate($table, options, dataRowTemplate);
     } else if ((row.rowType === 'data' || row.rowType === 'group') && !isDefined(row.groupIndex) && rowTemplate) {
@@ -705,10 +707,10 @@ export class RowsView extends ColumnsView {
    * @extended: column_fixing
    */
   _renderTable(options) {
-    var that = this;
-    var $table = super._renderTable(options);
-    var resizeCompletedHandler = function resizeCompletedHandler() {
-      var scrollableInstance = that.getScrollable();
+    const that = this;
+    const $table = super._renderTable(options);
+    const resizeCompletedHandler = function () {
+      const scrollableInstance = that.getScrollable();
       if (scrollableInstance && that.element().closest(getWindow().document).length) {
         that.resizeCompleted.remove(resizeCompletedHandler);
         scrollableInstance._visibilityChanged(true);
@@ -727,7 +729,7 @@ export class RowsView extends ColumnsView {
    * @extended: editing_cell_based
    */
   _createTable() {
-    var $table = super._createTable.apply(this, arguments);
+    const $table = super._createTable.apply(this, arguments);
     if (this.option().rowTemplate || this.option().dataRowTemplate) {
       $table.appendTo(this.component.$element());
     }
@@ -737,14 +739,14 @@ export class RowsView extends ColumnsView {
    * @extended: column_fixing, editing, keyboard_navigation, row_dragging, search, selection, virtual_column, virtual_scrolling
    */
   _renderCore(change) {
-    var $element = this.element();
+    const $element = this.element();
     $element.addClass(this.addWidgetPrefix(ROWS_VIEW_CLASS)).toggleClass(this.addWidgetPrefix(NOWRAP_CLASS), !this.option('wordWrapEnabled'));
     $element.toggleClass(EMPTY_CLASS, this._dataController.isEmpty());
     this.setAria('role', 'presentation', $element);
-    var $table = this._renderTable({
+    const $table = this._renderTable({
       change
     });
-    var deferred = this._updateContent($table, change);
+    const deferred = this._updateContent($table, change);
     super._renderCore(change);
     this._lastColumnWidths = null;
     return deferred;
@@ -756,22 +758,22 @@ export class RowsView extends ColumnsView {
    * @extended: editing
    */
   _getCellOptions(options) {
-    var that = this;
-    var {
+    const that = this;
+    const {
       column
     } = options;
-    var {
+    const {
       row
     } = options;
-    var {
+    const {
       data
     } = row;
-    var summaryCells = row && row.summaryCells;
-    var {
+    const summaryCells = row && row.summaryCells;
+    const {
       value
     } = options;
-    var displayValue = gridCoreUtils.getDisplayValue(column, value, data, row.rowType);
-    var parameters = super._getCellOptions(options);
+    const displayValue = gridCoreUtils.getDisplayValue(column, value, data, row.rowType);
+    const parameters = super._getCellOptions(options);
     parameters.value = value;
     parameters.oldValue = options.oldValue;
     parameters.displayValue = displayValue;
@@ -785,8 +787,8 @@ export class RowsView extends ColumnsView {
     parameters.summaryItems = summaryCells && summaryCells[options.columnIndex];
     parameters.resized = column.resizedCallbacks;
     if (isDefined(column.groupIndex) && !column.command) {
-      var groupingTextsOptions = that.option('grouping.texts');
-      var scrollingMode = that.option('scrolling.mode');
+      const groupingTextsOptions = that.option('grouping.texts');
+      const scrollingMode = that.option('scrolling.mode');
       if (scrollingMode !== 'virtual' && scrollingMode !== 'infinite') {
         parameters.groupContinuesMessage = data && data.isContinuationOnNextPage && groupingTextsOptions && groupingTextsOptions.groupContinuesMessage;
         parameters.groupContinuedMessage = data && data.isContinuation && groupingTextsOptions && groupingTextsOptions.groupContinuedMessage;
@@ -795,13 +797,13 @@ export class RowsView extends ColumnsView {
     return parameters;
   }
   _setRowsOpacityCore($rows, visibleColumns, columnIndex, value) {
-    var columnsController = this._columnsController;
-    var columns = columnsController.getColumns();
-    var column = columns && columns[columnIndex];
-    var columnID = column && column.isBand && column.index;
+    const columnsController = this._columnsController;
+    const columns = columnsController.getColumns();
+    const column = columns && columns[columnIndex];
+    const columnID = column && column.isBand && column.index;
     each($rows, (rowIndex, row) => {
       if (!$(row).hasClass(GROUP_ROW_CLASS)) {
-        for (var i = 0; i < visibleColumns.length; i++) {
+        for (let i = 0; i < visibleColumns.length; i++) {
           if (isNumeric(columnID) && columnsController.isParentBandColumn(visibleColumns[i].index, columnID) || visibleColumns[i].index === columnIndex) {
             $rows.eq(rowIndex).children().eq(i).css({
               opacity: value
@@ -821,9 +823,9 @@ export class RowsView extends ColumnsView {
     return gridCoreUtils.renderNoDataText.apply(this, arguments);
   }
   getCellOptions(rowIndex, columnIdentifier) {
-    var rowOptions = this._dataController.items()[rowIndex];
-    var cellOptions;
-    var column;
+    const rowOptions = this._dataController.items()[rowIndex];
+    let cellOptions;
+    let column;
     if (rowOptions) {
       if (isString(columnIdentifier)) {
         column = this._columnsController.columnOption(columnIdentifier);
@@ -843,7 +845,7 @@ export class RowsView extends ColumnsView {
   }
   getRow(index) {
     if (index >= 0) {
-      var rows = this._getRowElements();
+      const rows = this._getRowElements();
       if (rows.length > index) {
         return $(rows[index]);
       }
@@ -854,16 +856,16 @@ export class RowsView extends ColumnsView {
    * @extended: validating, virtual_scrolling
    */
   updateFreeSpaceRowHeight($table) {
-    var dataController = this._dataController;
-    var itemCount = dataController.items(true).length;
-    var contentElement = this._findContentElement();
-    var freeSpaceRowElements = this._getFreeSpaceRowElements($table);
+    const dataController = this._dataController;
+    const itemCount = dataController.items(true).length;
+    const contentElement = this._findContentElement();
+    const freeSpaceRowElements = this._getFreeSpaceRowElements($table);
     if (freeSpaceRowElements && contentElement && dataController.totalCount() >= 0) {
-      var isFreeSpaceRowVisible = false;
+      let isFreeSpaceRowVisible = false;
       if (itemCount > 0) {
         if (!this._hasHeight) {
-          var freeSpaceRowCount = dataController.pageSize() - itemCount;
-          var scrollingMode = this.option('scrolling.mode');
+          const freeSpaceRowCount = dataController.pageSize() - itemCount;
+          const scrollingMode = this.option('scrolling.mode');
           if (freeSpaceRowCount > 0 && dataController.pageCount() > 1 && scrollingMode !== 'virtual' && scrollingMode !== 'infinite') {
             setHeight(freeSpaceRowElements, freeSpaceRowCount * this._rowHeight);
             isFreeSpaceRowVisible = true;
@@ -877,15 +879,15 @@ export class RowsView extends ColumnsView {
         } else {
           freeSpaceRowElements.hide();
           deferUpdate(() => {
-            var scrollbarWidth = this.getScrollbarWidth(true);
-            var elementHeightWithoutScrollbar = getHeight(this.element()) - scrollbarWidth;
-            var contentHeight = getOuterHeight(contentElement);
-            var showFreeSpaceRow = elementHeightWithoutScrollbar - contentHeight > 0;
-            var rowsHeight = this._getRowsHeight(contentElement.children().first());
-            var $tableElement = $table || this.getTableElements();
-            var borderTopWidth = Math.ceil(parseFloat($tableElement.css('borderTopWidth')));
-            var heightCorrection = this._getHeightCorrection();
-            var resultHeight = elementHeightWithoutScrollbar - rowsHeight - borderTopWidth - heightCorrection;
+            const scrollbarWidth = this.getScrollbarWidth(true);
+            const elementHeightWithoutScrollbar = getHeight(this.element()) - scrollbarWidth;
+            const contentHeight = getOuterHeight(contentElement);
+            const showFreeSpaceRow = elementHeightWithoutScrollbar - contentHeight > 0;
+            const rowsHeight = this._getRowsHeight(contentElement.children().first());
+            const $tableElement = $table || this.getTableElements();
+            const borderTopWidth = Math.ceil(parseFloat($tableElement.css('borderTopWidth')));
+            const heightCorrection = this._getHeightCorrection();
+            const resultHeight = elementHeightWithoutScrollbar - rowsHeight - borderTopWidth - heightCorrection;
             if (showFreeSpaceRow) {
               deferRender(() => {
                 freeSpaceRowElements.css('height', resultHeight);
@@ -904,15 +906,15 @@ export class RowsView extends ColumnsView {
     }
   }
   _getHeightCorrection() {
-    var isZoomedWebkit = browser.webkit && this._getDevicePixelRatio() >= 2; // T606935
+    const isZoomedWebkit = browser.webkit && this._getDevicePixelRatio() >= 2; // T606935
     // @ts-expect-error
-    var isChromeLatest = browser.chrome && browser.version >= 91;
+    const isChromeLatest = browser.chrome && browser.version >= 91;
     // @ts-expect-error
-    var hasExtraBorderTop = browser.mozilla && browser.version >= 70 && !this.option('showRowLines');
+    const hasExtraBorderTop = browser.mozilla && browser.version >= 70 && !this.option('showRowLines');
     return isZoomedWebkit || hasExtraBorderTop || isChromeLatest ? 1 : 0;
   }
   _columnOptionChanged(e) {
-    var {
+    const {
       optionNames
     } = e;
     if (e.changeTypes.grouping) return;
@@ -925,7 +927,7 @@ export class RowsView extends ColumnsView {
     return this._scrollable;
   }
   _handleDataChanged(change) {
-    var that = this;
+    const that = this;
     switch (change.changeType) {
       case 'refresh':
       case 'prepend':
@@ -945,8 +947,8 @@ export class RowsView extends ColumnsView {
     return getWidth(this.element()) - this.getScrollbarWidth();
   }
   getScrollbarWidth(isHorizontal) {
-    var scrollableContainer = this._scrollableContainer && this._scrollableContainer.get(0);
-    var scrollbarWidth = 0;
+    const scrollableContainer = this._scrollableContainer && this._scrollableContainer.get(0);
+    let scrollbarWidth = 0;
     if (scrollableContainer) {
       if (!isHorizontal) {
         scrollbarWidth = scrollableContainer.clientWidth ? scrollableContainer.offsetWidth - scrollableContainer.clientWidth : 0;
@@ -959,11 +961,11 @@ export class RowsView extends ColumnsView {
   }
   // TODO remove this call, move _fireColumnResizedCallbacks functionality to columnsController
   _fireColumnResizedCallbacks() {
-    var that = this;
-    var lastColumnWidths = that._lastColumnWidths || [];
-    var columnWidths = [];
-    var columns = that.getColumns();
-    for (var i = 0; i < columns.length; i++) {
+    const that = this;
+    const lastColumnWidths = that._lastColumnWidths || [];
+    const columnWidths = [];
+    const columns = that.getColumns();
+    for (let i = 0; i < columns.length; i++) {
       columnWidths[i] = columns[i].visibleWidth;
       if (columns[i].resizedCallbacks && !isDefined(columns[i].groupIndex) && lastColumnWidths[i] !== columnWidths[i]) {
         columns[i].resizedCallbacks.fire(columnWidths[i]);
@@ -982,23 +984,23 @@ export class RowsView extends ColumnsView {
    * @extended: column_fixing
    */
   _updateScrollable() {
-    var scrollable = Scrollable.getInstance(this.element());
+    const scrollable = Scrollable.getInstance(this.element());
     if (scrollable) {
       // @ts-expect-error
       scrollable.update();
       // @ts-expect-error
-      if (scrollable.option('useNative') || !(scrollable === null || scrollable === void 0 ? void 0 : scrollable.isRenovated())) {
+      if (scrollable.option('useNative') || !(scrollable !== null && scrollable !== void 0 && scrollable.isRenovated())) {
         this._updateHorizontalScrollPosition();
       }
     }
   }
   _updateHorizontalScrollPosition() {
-    var scrollable = this.getScrollable();
-    var scrollLeft = scrollable && scrollable.scrollOffset().left;
-    var rtlEnabled = this.option('rtlEnabled');
+    const scrollable = this.getScrollable();
+    const scrollLeft = scrollable && scrollable.scrollOffset().left;
+    const rtlEnabled = this.option('rtlEnabled');
     if (rtlEnabled) {
-      var maxHorizontalScrollOffset = getMaxHorizontalScrollOffset(scrollable);
-      var scrollRight = maxHorizontalScrollOffset - scrollLeft;
+      const maxHorizontalScrollOffset = getMaxHorizontalScrollOffset(scrollable);
+      const scrollRight = maxHorizontalScrollOffset - scrollLeft;
       if (scrollRight !== this._scrollRight) {
         this._scrollLeft = maxHorizontalScrollOffset - this._scrollRight;
       }
@@ -1013,7 +1015,7 @@ export class RowsView extends ColumnsView {
    * @extended: column_fixing, filter_row, row_dragging, vitrual_columns, virtual_scrolling
    */
   _resizeCore() {
-    var that = this;
+    const that = this;
     that._fireColumnResizedCallbacks();
     that._updateRowHeight();
     deferRender(() => {
@@ -1026,15 +1028,15 @@ export class RowsView extends ColumnsView {
     });
   }
   scrollTo(location) {
-    var $element = this.element();
-    var dxScrollable = $element && Scrollable.getInstance($element);
+    const $element = this.element();
+    const dxScrollable = $element && Scrollable.getInstance($element);
     if (dxScrollable) {
       dxScrollable.scrollTo(location);
     }
   }
   height(height) {
-    var that = this;
-    var $element = this.element();
+    const that = this;
+    const $element = this.element();
     if (arguments.length === 0) {
       return $element ? getOuterHeight($element, true) : 0;
     }
@@ -1054,12 +1056,12 @@ export class RowsView extends ColumnsView {
    * @extended: virtual_scrolling
    */
   setLoading(isLoading, messageText) {
-    var that = this;
-    var loadPanel = that._loadPanel;
-    var dataController = that._dataController;
-    var loadPanelOptions = that.option('loadPanel') || {};
-    var animation = dataController.isLoaded() ? loadPanelOptions.animation : null;
-    var $element = that.element();
+    const that = this;
+    let loadPanel = that._loadPanel;
+    const dataController = that._dataController;
+    const loadPanelOptions = that.option('loadPanel') || {};
+    const animation = dataController.isLoaded() ? loadPanelOptions.animation : null;
+    const $element = that.element();
     if (!hasWindow()) {
       return;
     }
@@ -1068,7 +1070,7 @@ export class RowsView extends ColumnsView {
       loadPanel = that._loadPanel;
     }
     if (loadPanel) {
-      var visibilityOptions = {
+      const visibilityOptions = {
         message: messageText || loadPanelOptions.text,
         animation,
         visible: isLoading
@@ -1090,14 +1092,14 @@ export class RowsView extends ColumnsView {
    * @extended: column_fixing
    */
   setRowsOpacity(columnIndex, value) {
-    var $rows = this._getRowElements().not(".".concat(GROUP_ROW_CLASS)) || [];
+    const $rows = this._getRowElements().not(`.${GROUP_ROW_CLASS}`) || [];
     this._setRowsOpacityCore($rows, this.getColumns(), columnIndex, value);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _getCellElementsCore(rowIndex) {
-    var $cells = super._getCellElementsCore.apply(this, arguments);
+    const $cells = super._getCellElementsCore.apply(this, arguments);
     if ($cells) {
-      var groupCellIndex = $cells.filter(".".concat(GROUP_CELL_CLASS)).index();
+      const groupCellIndex = $cells.filter(`.${GROUP_CELL_CLASS}`).index();
       if (groupCellIndex >= 0 && $cells.length > groupCellIndex + 1) {
         return $cells.slice(0, groupCellIndex + 1);
       }
@@ -1105,24 +1107,24 @@ export class RowsView extends ColumnsView {
     return $cells;
   }
   _getBoundaryVisibleItemIndex(isTop, isFloor) {
-    var that = this;
-    var itemIndex = 0;
-    var prevOffset = 0;
-    var offset = 0;
-    var viewportBoundary = that._scrollTop;
-    var $contentElement = that._findContentElement();
-    var contentElementOffsetTop = $contentElement && $contentElement.offset().top;
-    var items = this._dataController.items();
-    var tableElement = that.getTableElement();
+    const that = this;
+    let itemIndex = 0;
+    let prevOffset = 0;
+    let offset = 0;
+    let viewportBoundary = that._scrollTop;
+    const $contentElement = that._findContentElement();
+    const contentElementOffsetTop = $contentElement && $contentElement.offset().top;
+    const items = this._dataController.items();
+    const tableElement = that.getTableElement();
     if (items.length && tableElement) {
-      var rowElements = that._getRowElements(tableElement).filter(':visible');
+      const rowElements = that._getRowElements(tableElement).filter(':visible');
       if (!isTop) {
-        var height = getOuterHeight(this._hasHeight ? this.element() : getWindow());
+        const height = getOuterHeight(this._hasHeight ? this.element() : getWindow());
         viewportBoundary += height;
       }
       for (itemIndex = 0; itemIndex < items.length; itemIndex++) {
         prevOffset = offset;
-        var $rowElement = $(rowElements).eq(itemIndex);
+        const $rowElement = $(rowElements).eq(itemIndex);
         if ($rowElement.length) {
           offset = $rowElement.offset();
           offset = (isTop ? offset.top : offset.top + getOuterHeight($rowElement)) - contentElementOffsetTop;
@@ -1149,8 +1151,8 @@ export class RowsView extends ColumnsView {
     return this._getBoundaryVisibleItemIndex(false, isFloor);
   }
   getTopVisibleRowData() {
-    var itemIndex = this.getTopVisibleItemIndex();
-    var items = this._dataController.items();
+    const itemIndex = this.getTopVisibleItemIndex();
+    const items = this._dataController.items();
     if (items[itemIndex]) {
       return items[itemIndex].data;
     }
@@ -1160,11 +1162,11 @@ export class RowsView extends ColumnsView {
    * @extended: column_fixing
    */
   _scrollToElement($element, offset) {
-    var scrollable = this.getScrollable();
+    const scrollable = this.getScrollable();
     scrollable && scrollable.scrollToElement($element, offset);
   }
   optionChanged(args) {
-    var that = this;
+    const that = this;
     super.optionChanged(args);
     // eslint-disable-next-line default-case
     switch (args.name) {
@@ -1202,11 +1204,10 @@ export class RowsView extends ColumnsView {
    * @extended: column_fixing
    */
   setAriaOwns(headerTableId, footerTableId, isFixed) {
-    var _a;
-    var $contentElement = this._findContentElement();
-    var $tableElement = this.getTableElement();
-    if ($tableElement === null || $tableElement === void 0 ? void 0 : $tableElement.length) {
-      this.setAria('owns', "".concat(headerTableId !== null && headerTableId !== void 0 ? headerTableId : '', " ").concat((_a = $tableElement.attr('id')) !== null && _a !== void 0 ? _a : '', " ").concat(footerTableId !== null && footerTableId !== void 0 ? footerTableId : '').trim(), $contentElement);
+    const $contentElement = this._findContentElement();
+    const $tableElement = this.getTableElement();
+    if ($tableElement !== null && $tableElement !== void 0 && $tableElement.length) {
+      this.setAria('owns', `${headerTableId ?? ''} ${$tableElement.attr('id') ?? ''} ${footerTableId ?? ''}`.trim(), $contentElement);
     }
   }
   dispose() {
@@ -1218,13 +1219,22 @@ export class RowsView extends ColumnsView {
    * @extended: column_fixing
    */
   setScrollerSpacing(vScrollbarWidth, hScrollbarWidth) {}
+  getFixedContentElement() {
+    var _this$element;
+    const fixedContentClass = this.addWidgetPrefix(CONTENT_FIXED_CLASS);
+    return (_this$element = this.element()) === null || _this$element === void 0 ? void 0 : _this$element.children(`.${fixedContentClass}`);
+  }
   /**
    * @extended: validating, virtual_scrolling
    */
   // eslint-disable-next-line
   _restoreErrorRow(contentTable) {}
+  isElementInside($element) {
+    const $rowsViewElement = $element.closest(`.${this.addWidgetPrefix(ROWS_VIEW_CLASS)}`);
+    return $rowsViewElement.is(this.element());
+  }
 }
-export var rowsModule = {
+export const rowsModule = {
   defaultOptions() {
     return {
       hoverStateEnabled: false,

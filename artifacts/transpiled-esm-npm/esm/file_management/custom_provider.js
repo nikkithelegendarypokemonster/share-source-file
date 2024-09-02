@@ -19,7 +19,7 @@ class CustomFileSystemProvider extends FileSystemProviderBase {
     this._getItemsContentFunction = this._ensureFunction(options.getItemsContent);
   }
   getItems(parentDir) {
-    var pathInfo = parentDir.getFullPathInfo();
+    const pathInfo = parentDir.getFullPathInfo();
     return this._executeActionAsDeferred(() => this._getItemsFunction(parentDir), true).then(dataItems => this._convertDataObjectsToFileItems(dataItems, pathInfo));
   }
   renameItem(item, name) {
@@ -50,7 +50,7 @@ class CustomFileSystemProvider extends FileSystemProviderBase {
     return this._executeActionAsDeferred(() => this._getItemsContentFunction(items));
   }
   _hasSubDirs(dataObj) {
-    var hasSubDirs = this._hasSubDirsGetter(dataObj);
+    const hasSubDirs = this._hasSubDirsGetter(dataObj);
     return typeof hasSubDirs === 'boolean' ? hasSubDirs : true;
   }
   _getKeyExpr(options) {

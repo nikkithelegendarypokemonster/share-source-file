@@ -1,7 +1,7 @@
 /**
 * DevExtreme (viz/export.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -21,25 +21,49 @@ import type dxVectorMap from './vector_map';
 import type dxSparkline from './sparkline';
 import type dxBullet from './bullet';
 import type dxBarGauge from './bar_gauge';
+import { UserDefinedElement } from '../core/element';
 
+/**
+ * @public
+ */
 export type VizWidget = dxChart | dxPieChart | dxFunnel | dxSankey | dxTreeMap | dxVectorMap | dxSparkline | dxBullet | dxBarGauge;
 
 /**
- * Allows you to export UI components using their SVG markup.
+ * @docid viz.exportFromMarkup
+ * @publicName exportFromMarkup(markup, options)
+ * @param2_field svgToCanvas: function(svg, canvas)
+ * @static
+ * @public
  */
-export function exportFromMarkup(markup: string, options: { fileName?: string; format?: string; backgroundColor?: string; width?: number; height?: number; onExporting?: Function; onExported?: Function; onFileSaving?: Function; margin?: number; svgToCanvas?: Function }): void;
+export function exportFromMarkup(markup: string | UserDefinedElement, options: { fileName?: string; format?: string; backgroundColor?: string; width?: number; height?: number; onExporting?: Function; onExported?: Function; onFileSaving?: Function; margin?: number; svgToCanvas?: Function }): void;
 
 /**
- * Exports one or several UI components to PNG.
+ * @docid viz.exportWidgets
+ * @publicName exportWidgets(widgetInstances)
+ * @param1 widgetInstances: Array<Array<dxChart | dxPieChart | dxFunnel | dxSankey | dxTreeMap | dxVectorMap | dxSparkline | dxBullet | dxBarGauge>>
+ * @static
+ * @public
  */
 export function exportWidgets(widgetInstances: VizWidget | Array<VizWidget> | Array<Array<VizWidget>>): void;
 
 /**
- * Exports one or several UI components.
+ * @docid viz.exportWidgets
+ * @publicName exportWidgets(widgetInstances, options)
+ * @param1 widgetInstances: Array<Array<dxChart | dxPieChart | dxFunnel | dxSankey | dxTreeMap | dxVectorMap | dxSparkline | dxBullet | dxBarGauge>>
+ * @param2_field format:Enums.ExportFormat
+ * @param2_field verticalAlignment:Enums.VerticalAlignment
+ * @param2_field horizontalAlignment:Enums.HorizontalAlignment
+ * @param2_field svgToCanvas: function(svg, canvas)
+ * @static
+ * @public
  */
 export function exportWidgets(widgetInstances: VizWidget | Array<VizWidget> | Array<Array<VizWidget>>, options: { fileName?: string; format?: ExportFormat; backgroundColor?: string; margin?: number; gridLayout?: boolean; verticalAlignment?: VerticalAlignment; horizontalAlignment?: HorizontalAlignment; onExporting?: Function; onExported?: Function; onFileSaving?: Function; svgToCanvas?: Function }): void;
 
 /**
- * Gets the SVG markup of specific UI components for their subsequent export.
+ * @docid viz.getMarkup
+ * @publicName getMarkup(widgetInstances)
+ * @param1 widgetInstances: Array<Array<dxChart | dxPieChart | dxFunnel | dxSankey | dxTreeMap | dxVectorMap | dxSparkline | dxBullet | dxBarGauge>>
+ * @static
+ * @public
  */
 export function getMarkup(widgetInstances: VizWidget | Array<VizWidget> | Array<Array<VizWidget>>): string;

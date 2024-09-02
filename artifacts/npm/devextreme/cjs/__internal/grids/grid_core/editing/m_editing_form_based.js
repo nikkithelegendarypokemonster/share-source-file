@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/grid_core/editing/m_editing_form_based.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -27,34 +27,29 @@ var _button = _interopRequireDefault(require("../../../../ui/button"));
 var _form = _interopRequireDefault(require("../../../../ui/form"));
 var _ui = _interopRequireDefault(require("../../../../ui/popup/ui.popup"));
 var _ui2 = _interopRequireDefault(require("../../../../ui/scroll_view/ui.scrollable"));
+var _m_utils = _interopRequireDefault(require("../m_utils"));
 var _const = require("./const");
 var _m_editing_utils = require("./m_editing_utils");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */
-const editingControllerExtender = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(FormBasedEditingControllerExtender, _Base);
-  function FormBasedEditingControllerExtender() {
-    return _Base.apply(this, arguments) || this;
-  }
-  var _proto = FormBasedEditingControllerExtender.prototype;
-  _proto.init = function init() {
+/* eslint-disable max-classes-per-file */
+
+const editingControllerExtender = Base => class FormBasedEditingControllerExtender extends Base {
+  init() {
     this._editForm = null;
     this._updateEditFormDeferred = null;
-    _Base.prototype.init.call(this);
-  };
-  _proto.isFormOrPopupEditMode = function isFormOrPopupEditMode() {
+    super.init();
+  }
+  isEditRow(rowIndex) {
+    return !this.isPopupEditMode() && super.isEditRow(rowIndex);
+  }
+  isFormOrPopupEditMode() {
     return this.isPopupEditMode() || this.isFormEditMode();
-  };
-  _proto.isPopupEditMode = function isPopupEditMode() {
-    const editMode = this.option('editing.mode');
-    return editMode === _const.EDIT_MODE_POPUP;
-  };
-  _proto.isFormEditMode = function isFormEditMode() {
+  }
+  isFormEditMode() {
     const editMode = this.option('editing.mode');
     return editMode === _const.EDIT_MODE_FORM;
-  };
-  _proto.getFirstEditableColumnIndex = function getFirstEditableColumnIndex() {
+  }
+  getFirstEditableColumnIndex() {
     const firstFormItem = this._firstFormItem;
     if (this.isFormEditMode() && firstFormItem) {
       const editRowKey = this.option(_const.EDITING_EDITROWKEY_OPTION_NAME);
@@ -63,56 +58,55 @@ const editingControllerExtender = Base => /*#__PURE__*/function (_Base) {
       // @ts-expect-error
       return this._rowsView._getEditFormEditorVisibleIndex($editFormElements, firstFormItem.column);
     }
-    return _Base.prototype.getFirstEditableColumnIndex.call(this);
-  };
-  _proto.getEditFormRowIndex = function getEditFormRowIndex() {
-    return this.isFormOrPopupEditMode() ? this._getVisibleEditRowIndex() : _Base.prototype.getEditFormRowIndex.call(this);
-  };
-  _proto._isEditColumnVisible = function _isEditColumnVisible() {
-    const result = _Base.prototype._isEditColumnVisible.call(this);
+    return super.getFirstEditableColumnIndex();
+  }
+  getEditFormRowIndex() {
+    return this.isFormOrPopupEditMode() ? this._getVisibleEditRowIndex() : super.getEditFormRowIndex();
+  }
+  _isEditColumnVisible() {
+    const result = super._isEditColumnVisible();
     const editingOptions = this.option('editing');
     return this.isFormOrPopupEditMode() ? editingOptions.allowUpdating || result : result;
-  };
-  _proto._handleDataChanged = function _handleDataChanged(args) {
-    var _a, _b;
+  }
+  _handleDataChanged(args) {
     if (this.isPopupEditMode()) {
+      var _args$items, _args$changeTypes;
       const editRowKey = this.option('editing.editRowKey');
-      const hasEditRow = (_a = args === null || args === void 0 ? void 0 : args.items) === null || _a === void 0 ? void 0 : _a.some(item => (0, _common.equalByValue)(item.key, editRowKey));
-      const onlyInsertChanges = ((_b = args.changeTypes) === null || _b === void 0 ? void 0 : _b.length) && args.changeTypes.every(item => item === 'insert');
+      const hasEditRow = args === null || args === void 0 || (_args$items = args.items) === null || _args$items === void 0 ? void 0 : _args$items.some(item => (0, _common.equalByValue)(item.key, editRowKey));
+      const onlyInsertChanges = ((_args$changeTypes = args.changeTypes) === null || _args$changeTypes === void 0 ? void 0 : _args$changeTypes.length) && args.changeTypes.every(item => item === 'insert');
       if ((args.changeType === 'refresh' || hasEditRow && args.isOptionChanged) && !onlyInsertChanges) {
         this._repaintEditPopup();
       }
     }
-    _Base.prototype._handleDataChanged.call(this, args);
-  };
-  _proto.getPopupContent = function getPopupContent() {
-    var _a;
-    const popupVisible = (_a = this._editPopup) === null || _a === void 0 ? void 0 : _a.option('visible');
+    super._handleDataChanged(args);
+  }
+  getPopupContent() {
+    var _this$_editPopup;
+    const popupVisible = (_this$_editPopup = this._editPopup) === null || _this$_editPopup === void 0 ? void 0 : _this$_editPopup.option('visible');
     if (this.isPopupEditMode() && popupVisible) {
       return this._$popupContent;
     }
-  };
-  _proto._showAddedRow = function _showAddedRow(rowIndex) {
+  }
+  _showAddedRow(rowIndex) {
     if (this.isPopupEditMode()) {
       this._showEditPopup(rowIndex);
     } else {
-      _Base.prototype._showAddedRow.call(this, rowIndex);
+      super._showAddedRow(rowIndex);
     }
-  };
-  _proto._cancelEditDataCore = function _cancelEditDataCore() {
-    _Base.prototype._cancelEditDataCore.call(this);
+  }
+  _cancelEditDataCore() {
+    super._cancelEditDataCore();
     if (this.isPopupEditMode()) {
       this._hideEditPopup();
     }
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._updateEditRowCore = function _updateEditRowCore(row, skipCurrentRow, isCustomSetCellValue) {
-    var _a;
+  _updateEditRowCore(row, skipCurrentRow, isCustomSetCellValue) {
     const editForm = this._editForm;
     if (this.isPopupEditMode()) {
       if (this.option('repaintChangesOnly')) {
-        (_a = row.update) === null || _a === void 0 ? void 0 : _a.call(row, row);
+        var _row$update;
+        (_row$update = row.update) === null || _row$update === void 0 || _row$update.call(row, row);
         this._rowsView.renderDelayedTemplates();
       } else if (editForm) {
         // @ts-expect-error
@@ -122,10 +116,10 @@ const editingControllerExtender = Base => /*#__PURE__*/function (_Base) {
         }
       }
     } else {
-      _Base.prototype._updateEditRowCore.call(this, row, skipCurrentRow, isCustomSetCellValue);
+      super._updateEditRowCore(row, skipCurrentRow, isCustomSetCellValue);
     }
-  };
-  _proto._showEditPopup = function _showEditPopup(rowIndex, repaintForm) {
+  }
+  _showEditPopup(rowIndex, repaintForm) {
     const isMobileDevice = _devices.default.current().deviceType !== 'desktop';
     const editPopupClass = this.addWidgetPrefix(_const.EDIT_POPUP_CLASS);
     const popupOptions = (0, _extend.extend)({
@@ -152,18 +146,18 @@ const editingControllerExtender = Base => /*#__PURE__*/function (_Base) {
       this._editPopup = this._createComponent($popupContainer, _ui.default);
       this._editPopup.on('hiding', this._getEditPopupHiddenHandler());
       this._editPopup.on('shown', e => {
-        var _a;
-        _events_engine.default.trigger(e.component.$content().find(_const.FOCUSABLE_ELEMENT_SELECTOR).not(".".concat(_const.FOCUSABLE_ELEMENT_CLASS)).first(), 'focus');
+        _events_engine.default.trigger(e.component.$content().find(_const.FOCUSABLE_ELEMENT_SELECTOR).not(`.${_const.FOCUSABLE_ELEMENT_CLASS}`).first(), 'focus');
         if (repaintForm) {
-          (_a = this._editForm) === null || _a === void 0 ? void 0 : _a.repaint();
+          var _this$_editForm;
+          (_this$_editForm = this._editForm) === null || _this$_editForm === void 0 || _this$_editForm.repaint();
         }
       });
     }
     this._editPopup.option(popupOptions);
     this._editPopup.show();
-    _Base.prototype._showEditPopup.call(this, rowIndex, repaintForm);
-  };
-  _proto._getPopupEditFormTemplate = function _getPopupEditFormTemplate(rowIndex) {
+    super._showEditPopup(rowIndex, repaintForm);
+  }
+  _getPopupEditFormTemplate(rowIndex) {
     // @ts-expect-error
     const row = this.component.getVisibleRows()[rowIndex];
     const templateOptions = {
@@ -184,24 +178,24 @@ const editingControllerExtender = Base => /*#__PURE__*/function (_Base) {
       this._rowsView.renderDelayedTemplates();
       (0, _renderer.default)(container).parent().attr('aria-label', this.localize('dxDataGrid-ariaEditForm'));
     };
-  };
-  _proto._repaintEditPopup = function _repaintEditPopup() {
-    var _a, _b;
+  }
+  _repaintEditPopup() {
     const rowIndex = this._getVisibleEditRowIndex();
     if (rowIndex >= 0) {
-      const defaultAnimation = (_a = this._editPopup) === null || _a === void 0 ? void 0 : _a.option('animation');
-      (_b = this._editPopup) === null || _b === void 0 ? void 0 : _b.option('animation', null);
+      var _this$_editPopup2, _this$_editPopup3;
+      const defaultAnimation = (_this$_editPopup2 = this._editPopup) === null || _this$_editPopup2 === void 0 ? void 0 : _this$_editPopup2.option('animation');
+      (_this$_editPopup3 = this._editPopup) === null || _this$_editPopup3 === void 0 || _this$_editPopup3.option('animation', null);
       this._showEditPopup(rowIndex, true);
       if (defaultAnimation !== undefined) {
         this._editPopup.option('animation', defaultAnimation);
       }
     }
-  };
-  _proto._hideEditPopup = function _hideEditPopup() {
-    var _a;
-    (_a = this._editPopup) === null || _a === void 0 ? void 0 : _a.option('visible', false);
-  };
-  _proto.optionChanged = function optionChanged(args) {
+  }
+  _hideEditPopup() {
+    var _this$_editPopup4;
+    (_this$_editPopup4 = this._editPopup) === null || _this$_editPopup4 === void 0 || _this$_editPopup4.option('visible', false);
+  }
+  optionChanged(args) {
     if (args.name === 'editing' && this.isFormOrPopupEditMode()) {
       const {
         fullName
@@ -214,10 +208,10 @@ const editingControllerExtender = Base => /*#__PURE__*/function (_Base) {
         args.handled = true;
       }
     }
-    _Base.prototype.optionChanged.call(this, args);
-  };
-  _proto._handleFormOptionChange = function _handleFormOptionChange(args) {
-    var _a;
+    super.optionChanged(args);
+  }
+  _handleFormOptionChange(args) {
+    var _this$_editPopup5;
     if (this.isFormEditMode()) {
       const editRowIndex = this._getVisibleEditRowIndex();
       if (editRowIndex >= 0) {
@@ -226,11 +220,11 @@ const editingControllerExtender = Base => /*#__PURE__*/function (_Base) {
           rowIndices: [editRowIndex]
         });
       }
-    } else if (((_a = this._editPopup) === null || _a === void 0 ? void 0 : _a.option('visible')) && args.fullName.indexOf(_const.EDITING_FORM_OPTION_NAME) === 0) {
+    } else if ((_this$_editPopup5 = this._editPopup) !== null && _this$_editPopup5 !== void 0 && _this$_editPopup5.option('visible') && args.fullName.indexOf(_const.EDITING_FORM_OPTION_NAME) === 0) {
       this._repaintEditPopup();
     }
-  };
-  _proto._handlePopupOptionChange = function _handlePopupOptionChange(args) {
+  }
+  _handlePopupOptionChange(args) {
     const editPopup = this._editPopup;
     if (editPopup) {
       const popupOptionName = args.fullName.slice(_const.EDITING_POPUP_OPTION_NAME.length + 1);
@@ -243,16 +237,19 @@ const editingControllerExtender = Base => /*#__PURE__*/function (_Base) {
   }
   /**
    * interface override
-   */;
-  _proto.renderFormEditorTemplate = function renderFormEditorTemplate(detailCellOptions, item, formTemplateOptions, container, isReadOnly) {
+   */
+  renderFormEditorTemplate(detailCellOptions, item, formTemplateOptions, container, isReadOnly) {
     const that = this;
     const $container = (0, _renderer.default)(container);
     const {
       column
     } = item;
     const editorType = (0, _m_editing_utils.getEditorType)(item);
-    const rowData = detailCellOptions === null || detailCellOptions === void 0 ? void 0 : detailCellOptions.row.data;
+    const row = detailCellOptions === null || detailCellOptions === void 0 ? void 0 : detailCellOptions.row;
+    const rowData = row === null || row === void 0 ? void 0 : row.data;
     const form = formTemplateOptions.component;
+    const value = column.calculateCellValue(rowData);
+    const displayValue = _m_utils.default.getDisplayValue(column, value, rowData, row === null || row === void 0 ? void 0 : row.rowType);
     const {
       label,
       labelMark,
@@ -277,25 +274,28 @@ const editingControllerExtender = Base => /*#__PURE__*/function (_Base) {
         that.updateFieldValue(cellOptions, value, text);
       }
     });
-    cellOptions.value = column.calculateCellValue(rowData);
+    cellOptions.value = value;
+    cellOptions.displayValue = displayValue;
+    cellOptions.text = !column.command ? _m_utils.default.formatValue(displayValue, column) : '';
     const template = this._getFormEditItemTemplate.bind(this)(cellOptions, column);
     this._rowsView.renderTemplate($container, template, cellOptions, !!(0, _dom.isElementInDom)($container)).done(() => {
       this._rowsView._updateCell($container, cellOptions);
     });
     return cellOptions;
-  };
-  _proto.getFormEditorTemplate = function getFormEditorTemplate(cellOptions, item) {
+  }
+  getFormEditorTemplate(cellOptions, item) {
     const column = this.component.columnOption(item.name || item.dataField);
     return (options, container) => {
       const $container = (0, _renderer.default)(container);
       const {
         row
       } = cellOptions;
-      if (row === null || row === void 0 ? void 0 : row.watch) {
+      if (row !== null && row !== void 0 && row.watch) {
         const dispose = row.watch(() => column.selector(row.data), () => {
+          var _validator;
           let $editorElement = $container.find('.dx-widget').first();
           let validator = $editorElement.data('dxValidator');
-          const validatorOptions = validator === null || validator === void 0 ? void 0 : validator.option();
+          const validatorOptions = (_validator = validator) === null || _validator === void 0 ? void 0 : _validator.option();
           $container.contents().remove();
           cellOptions = this.renderFormEditorTemplate.bind(this)(cellOptions, item, options, $container);
           $editorElement = $container.find('.dx-widget').first();
@@ -312,10 +312,10 @@ const editingControllerExtender = Base => /*#__PURE__*/function (_Base) {
       }
       cellOptions = this.renderFormEditorTemplate.bind(this)(cellOptions, item, options, $container);
     };
-  };
-  _proto.getEditFormOptions = function getEditFormOptions(detailOptions) {
-    var _a, _b;
-    const editFormOptions = (_b = (_a = this)._getValidationGroupsInForm) === null || _b === void 0 ? void 0 : _b.call(_a, detailOptions);
+  }
+  getEditFormOptions(detailOptions) {
+    var _this$_getValidationG;
+    const editFormOptions = (_this$_getValidationG = this._getValidationGroupsInForm) === null || _this$_getValidationG === void 0 ? void 0 : _this$_getValidationG.call(this, detailOptions);
     const userCustomizeItem = this.option('editing.form.customizeItem');
     const editFormItemClass = this.addWidgetPrefix(_const.EDIT_FORM_ITEM_CLASS);
     let items = this.option('editing.form.items');
@@ -342,12 +342,12 @@ const editingControllerExtender = Base => /*#__PURE__*/function (_Base) {
     }
     return (0, _extend.extend)({}, editFormOptions, {
       items,
-      formID: "dx-".concat(new _guid.default()),
+      formID: `dx-${new _guid.default()}`,
       customizeItem: item => {
         let column;
         const itemId = item.name || item.dataField;
         if (item.column || itemId) {
-          column = item.column || this._columnsController.columnOption(item.name ? "name:".concat(item.name) : "dataField:".concat(item.dataField));
+          column = item.column || this._columnsController.columnOption(item.name ? `name:${item.name}` : `dataField:${item.dataField}`);
         }
         if (column) {
           item.label = item.label || {};
@@ -373,12 +373,12 @@ const editingControllerExtender = Base => /*#__PURE__*/function (_Base) {
             this._firstFormItem = item;
           }
         }
-        userCustomizeItem === null || userCustomizeItem === void 0 ? void 0 : userCustomizeItem.call(this, item);
-        item.cssClass = (0, _type.isString)(item.cssClass) ? "".concat(item.cssClass, " ").concat(editFormItemClass) : editFormItemClass;
+        userCustomizeItem === null || userCustomizeItem === void 0 || userCustomizeItem.call(this, item);
+        item.cssClass = (0, _type.isString)(item.cssClass) ? `${item.cssClass} ${editFormItemClass}` : editFormItemClass;
       }
     });
-  };
-  _proto.getEditFormTemplate = function getEditFormTemplate() {
+  }
+  getEditFormTemplate() {
     return ($container, detailOptions, options) => {
       const editFormOptions = this.option(_const.EDITING_FORM_OPTION_NAME);
       const baseEditFormOptions = this.getEditFormOptions(detailOptions);
@@ -395,129 +395,117 @@ const editingControllerExtender = Base => /*#__PURE__*/function (_Base) {
         this._createComponent((0, _renderer.default)('<div>').appendTo($buttonsContainer), _button.default, this._getCancelButtonConfig());
       }
       this._editForm.on('contentReady', () => {
-        var _a;
+        var _this$_editPopup6;
         this._rowsView.renderDelayedTemplates();
-        (_a = this._editPopup) === null || _a === void 0 ? void 0 : _a.repaint();
+        (_this$_editPopup6 = this._editPopup) === null || _this$_editPopup6 === void 0 || _this$_editPopup6.repaint();
       });
     };
-  };
-  _proto.getEditForm = function getEditForm() {
+  }
+  getEditForm() {
     return this._editForm;
-  };
-  _proto._endUpdateCore = function _endUpdateCore() {
-    var _a;
-    (_a = this._updateEditFormDeferred) === null || _a === void 0 ? void 0 : _a.resolve();
-  };
-  _proto._beforeEndSaving = function _beforeEndSaving(changes) {
-    var _a;
-    _Base.prototype._beforeEndSaving.call(this, changes);
+  }
+  _endUpdateCore() {
+    var _this$_updateEditForm;
+    (_this$_updateEditForm = this._updateEditFormDeferred) === null || _this$_updateEditForm === void 0 || _this$_updateEditForm.resolve();
+  }
+  _beforeEndSaving(changes) {
+    super._beforeEndSaving(changes);
     if (this.isPopupEditMode()) {
-      (_a = this._editPopup) === null || _a === void 0 ? void 0 : _a.hide();
+      var _this$_editPopup7;
+      (_this$_editPopup7 = this._editPopup) === null || _this$_editPopup7 === void 0 || _this$_editPopup7.hide();
     }
-  };
-  _proto._processDataItemCore = function _processDataItemCore(item, change, key, columns, generateDataValues) {
+  }
+  _processDataItemCore(item, change, key, columns, generateDataValues) {
     const {
       type
     } = change;
     if (this.isPopupEditMode() && type === _const.DATA_EDIT_DATA_INSERT_TYPE) {
       item.visible = false;
     }
-    _Base.prototype._processDataItemCore.call(this, item, change, key, columns, generateDataValues);
-  };
-  _proto._editRowFromOptionChangedCore = function _editRowFromOptionChangedCore(rowIndices, rowIndex) {
+    super._processDataItemCore(item, change, key, columns, generateDataValues);
+  }
+  _editRowFromOptionChangedCore(rowIndices, rowIndex) {
     const isPopupEditMode = this.isPopupEditMode();
-    _Base.prototype._editRowFromOptionChangedCore.call(this, rowIndices, rowIndex, isPopupEditMode);
+    super._editRowFromOptionChangedCore(rowIndices, rowIndex, isPopupEditMode);
     if (isPopupEditMode) {
       this._showEditPopup(rowIndex);
     }
-  };
-  return FormBasedEditingControllerExtender;
-}(Base);
-const data = Base => /*#__PURE__*/function (_Base2) {
-  _inheritsLoose(DataEditingFormBasedExtender, _Base2);
-  function DataEditingFormBasedExtender() {
-    return _Base2.apply(this, arguments) || this;
   }
-  var _proto2 = DataEditingFormBasedExtender.prototype;
-  _proto2._updateEditItem = function _updateEditItem(item) {
+};
+const data = Base => class DataEditingFormBasedExtender extends Base {
+  _updateEditItem(item) {
     // @ts-expect-error
     if (this._editingController.isFormEditMode()) {
       item.rowType = 'detail';
     }
-  };
-  _proto2._getChangedColumnIndices = function _getChangedColumnIndices(oldItem, newItem, visibleRowIndex, isLiveUpdate) {
+  }
+  _getChangedColumnIndices(oldItem, newItem, visibleRowIndex, isLiveUpdate) {
     // @ts-expect-error
     if (isLiveUpdate === false && newItem.isEditing && this._editingController.isFormEditMode()) {
       return;
     }
-    return _Base2.prototype._getChangedColumnIndices.apply(this, arguments);
-  };
-  return DataEditingFormBasedExtender;
-}(Base);
-const rowsView = Base => /*#__PURE__*/function (_Base3) {
-  _inheritsLoose(RowsViewEditingFormBasedExtender, _Base3);
-  function RowsViewEditingFormBasedExtender() {
-    return _Base3.apply(this, arguments) || this;
+    return super._getChangedColumnIndices.apply(this, arguments);
   }
-  var _proto3 = RowsViewEditingFormBasedExtender.prototype;
-  _proto3._renderCellContent = function _renderCellContent($cell, options) {
+};
+const rowsView = Base => class RowsViewEditingFormBasedExtender extends Base {
+  _renderCellContent($cell, options) {
     // @ts-expect-error
     if (options.rowType === 'data' && this._editingController.isPopupEditMode() && options.row.visible === false) {
       return;
     }
-    _Base3.prototype._renderCellContent.apply(this, arguments);
-  };
-  _proto3.getCellElements = function getCellElements(rowIndex) {
-    const $cellElements = _Base3.prototype.getCellElements.call(this, rowIndex);
+    super._renderCellContent.apply(this, arguments);
+  }
+  getCellElements(rowIndex) {
+    const $cellElements = super.getCellElements(rowIndex);
     const editingController = this._editingController;
     // @ts-expect-error
     const editForm = editingController.getEditForm();
     const editFormRowIndex = editingController.getEditFormRowIndex();
     if (editFormRowIndex === rowIndex && $cellElements && editForm) {
-      return editForm.$element().find(".".concat(this.addWidgetPrefix(_const.EDIT_FORM_ITEM_CLASS), ", .").concat(_const.BUTTON_CLASS));
+      return editForm.$element().find(`.${this.addWidgetPrefix(_const.EDIT_FORM_ITEM_CLASS)}, .${_const.BUTTON_CLASS}`);
     }
     return $cellElements;
-  };
-  _proto3._getVisibleColumnIndex = function _getVisibleColumnIndex($cells, rowIndex, columnIdentifier) {
+  }
+  _getVisibleColumnIndex($cells, rowIndex, columnIdentifier) {
     const editFormRowIndex = this._editingController.getEditFormRowIndex();
     if (editFormRowIndex === rowIndex && (0, _type.isString)(columnIdentifier)) {
       const column = this._columnsController.columnOption(columnIdentifier);
       return this._getEditFormEditorVisibleIndex($cells, column);
     }
-    return _Base3.prototype._getVisibleColumnIndex.apply(this, arguments);
-  };
-  _proto3._getEditFormEditorVisibleIndex = function _getEditFormEditorVisibleIndex($cells, column) {
+    return super._getVisibleColumnIndex.apply(this, arguments);
+  }
+  _getEditFormEditorVisibleIndex($cells, column) {
     let visibleIndex = -1;
     // @ts-expect-error
     (0, _iterator.each)($cells, (index, cellElement) => {
       const item = (0, _renderer.default)(cellElement).find('.dx-field-item-content').data('dx-form-item');
-      if ((item === null || item === void 0 ? void 0 : item.column) && column && item.column.index === column.index) {
+      if (item !== null && item !== void 0 && item.column && column && item.column.index === column.index) {
         visibleIndex = index;
         return false;
       }
     });
     return visibleIndex;
-  };
-  _proto3._isFormItem = function _isFormItem(parameters) {
+  }
+  _isFormItem(parameters) {
     const isDetailRow = parameters.rowType === 'detail' || parameters.rowType === 'detailAdaptive';
     // @ts-expect-error
     const isPopupEditing = parameters.rowType === 'data' && this._editingController.isPopupEditMode();
     return (isDetailRow || isPopupEditing) && parameters.item;
-  };
-  _proto3._updateCell = function _updateCell($cell, parameters) {
+  }
+  _updateCell($cell, parameters) {
     if (this._isFormItem(parameters)) {
       // @ts-expect-error Badly typed based class
       this._formItemPrepared(parameters, $cell);
     } else {
-      _Base3.prototype._updateCell.call(this, $cell, parameters);
+      super._updateCell($cell, parameters);
     }
-  };
-  _proto3._updateContent = function _updateContent() {
+  }
+  _updateContent() {
     const editingController = this._editingController;
     // @ts-expect-error
     const oldEditForm = editingController.getEditForm();
     const validationGroup = oldEditForm === null || oldEditForm === void 0 ? void 0 : oldEditForm.option('validationGroup');
-    const deferred = _Base3.prototype._updateContent.apply(this, arguments);
+    const deferred = super._updateContent.apply(this, arguments);
     return deferred.done(() => {
       // @ts-expect-error
       const newEditForm = editingController.getEditForm();
@@ -525,12 +513,8 @@ const rowsView = Base => /*#__PURE__*/function (_Base3) {
         newEditForm.option('validationGroup', validationGroup);
       }
     });
-  };
-  return RowsViewEditingFormBasedExtender;
-}(Base);
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+  }
+};
 const editingFormBasedModule = exports.editingFormBasedModule = {
   extenders: {
     controllers: {

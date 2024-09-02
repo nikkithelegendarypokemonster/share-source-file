@@ -1,17 +1,17 @@
 /**
 * DevExtreme (esm/core/utils/extend.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { isPlainObject } from './type';
-export var extendFromObject = function extendFromObject(target, source, overrideExistingValues) {
+export const extendFromObject = function (target, source, overrideExistingValues) {
   target = target || {};
-  for (var prop in source) {
+  for (const prop in source) {
     if (Object.prototype.hasOwnProperty.call(source, prop)) {
-      var value = source[prop];
+      const value = source[prop];
       if (!(prop in target) || overrideExistingValues) {
         target[prop] = value;
       }
@@ -19,25 +19,25 @@ export var extendFromObject = function extendFromObject(target, source, override
   }
   return target;
 };
-export var extend = function extend(target) {
+export const extend = function (target) {
   target = target || {};
-  var i = 1;
-  var deep = false;
+  let i = 1;
+  let deep = false;
   if (typeof target === 'boolean') {
     deep = target;
     target = arguments[1] || {};
     i++;
   }
   for (; i < arguments.length; i++) {
-    var source = arguments[i];
+    const source = arguments[i];
     if (source == null) {
       continue;
     }
-    for (var key in source) {
-      var targetValue = target[key];
-      var sourceValue = source[key];
-      var sourceValueIsArray = false;
-      var clone = void 0;
+    for (const key in source) {
+      const targetValue = target[key];
+      const sourceValue = source[key];
+      let sourceValueIsArray = false;
+      let clone;
       if (key === '__proto__' || key === 'constructor' || target === sourceValue) {
         continue;
       }

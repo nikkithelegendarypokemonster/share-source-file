@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/localization/date.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -18,9 +18,9 @@ import firstDayOfWeekData from './cldr-data/first_day_of_week_data';
 import localizationCore from './core';
 import numberLocalization from './number';
 import intlDateLocalization from './intl/date';
-var DEFAULT_DAY_OF_WEEK_INDEX = 0;
-var hasIntl = typeof Intl !== 'undefined';
-var FORMATS_TO_PATTERN_MAP = {
+const DEFAULT_DAY_OF_WEEK_INDEX = 0;
+const hasIntl = typeof Intl !== 'undefined';
+const FORMATS_TO_PATTERN_MAP = {
   'shortdate': 'M/d/y',
   'shorttime': 'h:mm a',
   'longdate': 'EEEE, MMMM d, y',
@@ -42,7 +42,7 @@ var FORMATS_TO_PATTERN_MAP = {
   'millisecond': 'SSS',
   'datetime-local': 'yyyy-MM-ddTHH\':\'mm\':\'ss'
 };
-var possiblePartPatterns = {
+const possiblePartPatterns = {
   year: ['y', 'yy', 'yyyy'],
   day: ['d', 'dd'],
   month: ['M', 'MM', 'MMM', 'MMMM'],
@@ -51,25 +51,25 @@ var possiblePartPatterns = {
   seconds: ['s', 'ss'],
   milliseconds: ['S', 'SS', 'SSS']
 };
-var dateLocalization = dependencyInjector({
-  engine: function engine() {
+const dateLocalization = dependencyInjector({
+  engine: function () {
     return 'base';
   },
-  _getPatternByFormat: function _getPatternByFormat(format) {
+  _getPatternByFormat: function (format) {
     return FORMATS_TO_PATTERN_MAP[format.toLowerCase()];
   },
-  _expandPattern: function _expandPattern(pattern) {
+  _expandPattern: function (pattern) {
     return this._getPatternByFormat(pattern) || pattern;
   },
-  formatUsesMonthName: function formatUsesMonthName(format) {
+  formatUsesMonthName: function (format) {
     return this._expandPattern(format).indexOf('MMMM') !== -1;
   },
-  formatUsesDayName: function formatUsesDayName(format) {
+  formatUsesDayName: function (format) {
     return this._expandPattern(format).indexOf('EEEE') !== -1;
   },
-  getFormatParts: function getFormatParts(format) {
-    var pattern = this._getPatternByFormat(format) || format;
-    var result = [];
+  getFormatParts: function (format) {
+    const pattern = this._getPatternByFormat(format) || format;
+    const result = [];
     each(pattern.split(/\W+/), (_, formatPart) => {
       each(possiblePartPatterns, (partName, possiblePatterns) => {
         if (possiblePatterns.includes(formatPart)) {
@@ -79,49 +79,49 @@ var dateLocalization = dependencyInjector({
     });
     return result;
   },
-  getMonthNames: function getMonthNames(format) {
+  getMonthNames: function (format) {
     return defaultDateNames.getMonthNames(format);
   },
-  getDayNames: function getDayNames(format) {
+  getDayNames: function (format) {
     return defaultDateNames.getDayNames(format);
   },
-  getQuarterNames: function getQuarterNames(format) {
+  getQuarterNames: function (format) {
     return defaultDateNames.getQuarterNames(format);
   },
-  getPeriodNames: function getPeriodNames(format) {
+  getPeriodNames: function (format) {
     return defaultDateNames.getPeriodNames(format);
   },
-  getTimeSeparator: function getTimeSeparator() {
+  getTimeSeparator: function () {
     return ':';
   },
-  is24HourFormat: function is24HourFormat(format) {
-    var amTime = new Date(2017, 0, 20, 11, 0, 0, 0);
-    var pmTime = new Date(2017, 0, 20, 23, 0, 0, 0);
-    var amTimeFormatted = this.format(amTime, format);
-    var pmTimeFormatted = this.format(pmTime, format);
-    for (var i = 0; i < amTimeFormatted.length; i++) {
+  is24HourFormat: function (format) {
+    const amTime = new Date(2017, 0, 20, 11, 0, 0, 0);
+    const pmTime = new Date(2017, 0, 20, 23, 0, 0, 0);
+    const amTimeFormatted = this.format(amTime, format);
+    const pmTimeFormatted = this.format(pmTime, format);
+    for (let i = 0; i < amTimeFormatted.length; i++) {
       if (amTimeFormatted[i] !== pmTimeFormatted[i]) {
         return !isNaN(parseInt(amTimeFormatted[i]));
       }
     }
   },
-  format: function format(date, _format) {
+  format: function (date, format) {
     if (!date) {
       return;
     }
-    if (!_format) {
+    if (!format) {
       return date;
     }
-    var formatter;
-    if (typeof _format === 'function') {
-      formatter = _format;
-    } else if (_format.formatter) {
-      formatter = _format.formatter;
+    let formatter;
+    if (typeof format === 'function') {
+      formatter = format;
+    } else if (format.formatter) {
+      formatter = format.formatter;
     } else {
-      _format = _format.type || _format;
-      if (isString(_format)) {
-        _format = FORMATS_TO_PATTERN_MAP[_format.toLowerCase()] || _format;
-        return numberLocalization.convertDigits(getLDMLDateFormatter(_format, this)(date));
+      format = format.type || format;
+      if (isString(format)) {
+        format = FORMATS_TO_PATTERN_MAP[format.toLowerCase()] || format;
+        return numberLocalization.convertDigits(getLDMLDateFormatter(format, this)(date));
       }
     }
     if (!formatter) {
@@ -130,10 +130,10 @@ var dateLocalization = dependencyInjector({
     }
     return formatter(date);
   },
-  parse: function parse(text, format) {
-    var that = this;
-    var ldmlFormat;
-    var formatter;
+  parse: function (text, format) {
+    const that = this;
+    let ldmlFormat;
+    let formatter;
     if (!text) {
       return;
     }
@@ -147,7 +147,7 @@ var dateLocalization = dependencyInjector({
       ldmlFormat = format;
     } else {
       formatter = value => {
-        var text = that.format(value, format);
+        const text = that.format(value, format);
         return numberLocalization.convertDigits(text, true);
       };
       try {
@@ -159,14 +159,14 @@ var dateLocalization = dependencyInjector({
       return getLDMLDateParser(ldmlFormat, this)(text);
     }
     errors.log('W0012');
-    var result = new Date(text);
+    const result = new Date(text);
     if (!result || isNaN(result.getTime())) {
       return;
     }
     return result;
   },
-  firstDayOfWeekIndex: function firstDayOfWeekIndex() {
-    var index = localizationCore.getValueByClosestLocale(locale => firstDayOfWeekData[locale]);
+  firstDayOfWeekIndex: function () {
+    const index = localizationCore.getValueByClosestLocale(locale => firstDayOfWeekData[locale]);
     return index === undefined ? DEFAULT_DAY_OF_WEEK_INDEX : index;
   }
 });

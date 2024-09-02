@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/viz/axes/smart_formatter.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -241,7 +241,7 @@ function formatDateRange(startValue, endValue, tickInterval) {
     if (highValue) {
       values.push(highValue);
     }
-    values.push("".concat(_format(startValue, diffFormat), " - ").concat(_format(endValue, diffFormat)));
+    values.push(`${_format(startValue, diffFormat)} - ${_format(endValue, diffFormat)}`);
   }
   return values.join(', ');
 }
@@ -331,5 +331,5 @@ function formatRange(_ref2) {
       format: argumentFormat
     }
   };
-  return "".concat(smartFormatter(startValue, formatOptions), " - ").concat(smartFormatter(endValue, formatOptions));
+  return `${smartFormatter(startValue, formatOptions)} - ${smartFormatter(endValue, formatOptions)}`;
 }

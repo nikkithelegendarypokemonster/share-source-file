@@ -2,10 +2,10 @@
 import jQuery from 'jquery';
 import ajax from '../../core/utils/ajax';
 import useJQueryFn from './use_jquery';
-var useJQuery = useJQueryFn();
+const useJQuery = useJQueryFn();
 if (useJQuery) {
   ajax.inject({
-    sendRequest: function sendRequest(options) {
+    sendRequest: function (options) {
       if (!options.responseType && !options.upload) {
         return jQuery.ajax(options);
       }

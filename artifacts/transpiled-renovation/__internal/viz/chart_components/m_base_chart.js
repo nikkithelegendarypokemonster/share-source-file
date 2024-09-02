@@ -25,7 +25,7 @@ var _base_series = require("../../../viz/series/base_series");
 var _m_base_widget = _interopRequireDefault(require("../core/m_base_widget"));
 var _rolling_stock = require("./rolling_stock");
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 // @ts-expect-error
 
@@ -182,15 +182,15 @@ function moveRollingStock(rollingStocks, canvas) {
       }
     }
     if (shouldSetCanvas) {
-      currentRollingStock === null || currentRollingStock === void 0 ? void 0 : currentRollingStock.setRollingStockInCanvas(canvas);
+      currentRollingStock === null || currentRollingStock === void 0 || currentRollingStock.setRollingStockInCanvas(canvas);
     }
   }
 }
 function getLegendFields(name) {
   return {
-    nameField: "".concat(name, "Name"),
-    colorField: "".concat(name, "Color"),
-    indexField: "".concat(name, "Index")
+    nameField: `${name}Name`,
+    colorField: `${name}Color`,
+    indexField: `${name}Index`
   };
 }
 function getLegendSettings(legendDataField) {
@@ -251,7 +251,7 @@ const BaseChart = exports.BaseChart = _m_base_widget.default.inherit({
       name: 'zoomEnd'
     }
   },
-  _fontFields: ["legend.".concat(FONT), "legend.title.".concat(FONT), "legend.title.subtitle.".concat(FONT), "commonSeriesSettings.label.".concat(FONT)],
+  _fontFields: [`legend.${FONT}`, `legend.title.${FONT}`, `legend.title.subtitle.${FONT}`, `commonSeriesSettings.label.${FONT}`],
   _rootClassPrefix: 'dxc',
   _rootClass: 'dxc-chart',
   _initialChanges: ['INIT'],
@@ -389,11 +389,11 @@ const BaseChart = exports.BaseChart = _m_base_widget.default.inherit({
     (this[propName] || []).forEach(item => {
       if (fieldNames && item) {
         fieldNames.forEach(field => {
-          var _a;
-          (_a = item[field]) === null || _a === void 0 ? void 0 : _a.dispose();
+          var _item$field;
+          (_item$field = item[field]) === null || _item$field === void 0 || _item$field.dispose();
         });
       } else {
-        item === null || item === void 0 ? void 0 : item.dispose();
+        item === null || item === void 0 || item.dispose();
       }
     });
     this[propName] = null;
@@ -823,7 +823,7 @@ const BaseChart = exports.BaseChart = _m_base_widget.default.inherit({
     };
   },
   _disposeSeries(seriesIndex) {
-    var _a;
+    var _this$series;
     if (this.series) {
       if ((0, _type.isDefined)(seriesIndex)) {
         this.series[seriesIndex].dispose();
@@ -833,7 +833,7 @@ const BaseChart = exports.BaseChart = _m_base_widget.default.inherit({
         this.series.length = 0;
       }
     }
-    if (!((_a = this.series) === null || _a === void 0 ? void 0 : _a.length)) {
+    if (!((_this$series = this.series) !== null && _this$series !== void 0 && _this$series.length)) {
       this.series = [];
     }
   },
@@ -1066,7 +1066,7 @@ const BaseChart = exports.BaseChart = _m_base_widget.default.inherit({
     for (let i = 0; i < allSeriesOptions.length; i++) {
       particularSeriesOptions = (0, _extend.extend)(true, {}, allSeriesOptions[i], extraOptions);
       if (!(0, _type.isDefined)(particularSeriesOptions.name) || particularSeriesOptions.name === '') {
-        particularSeriesOptions.name = "Series ".concat((i + 1).toString());
+        particularSeriesOptions.name = `Series ${(i + 1).toString()}`;
       }
       particularSeriesOptions.rotated = this._isRotated();
       particularSeriesOptions.customizePoint = themeManager.getOptions('customizePoint');
@@ -1081,7 +1081,7 @@ const BaseChart = exports.BaseChart = _m_base_widget.default.inherit({
     return seriesThemes;
   },
   _populateSeries(data) {
-    var _a;
+    var _this$series3;
     const seriesBasis = [];
     const incidentOccurred = this._incidentOccurred;
     const seriesThemes = this._populateSeriesOptions(data);
@@ -1089,9 +1089,9 @@ const BaseChart = exports.BaseChart = _m_base_widget.default.inherit({
     let disposeSeriesFamilies = false;
     this.needToPopulateSeries = false;
     seriesThemes.forEach(theme => {
-      var _a;
+      var _this$series2;
       const findSeries = s => s.name === theme.name && !seriesBasis.map(sb => sb.series).includes(s);
-      const curSeries = (_a = this.series) === null || _a === void 0 ? void 0 : _a.find(findSeries);
+      const curSeries = (_this$series2 = this.series) === null || _this$series2 === void 0 ? void 0 : _this$series2.find(findSeries);
       if (curSeries && curSeries.type === theme.type) {
         seriesBasis.push({
           series: curSeries,
@@ -1104,7 +1104,7 @@ const BaseChart = exports.BaseChart = _m_base_widget.default.inherit({
         disposeSeriesFamilies = true;
       }
     });
-    ((_a = this.series) === null || _a === void 0 ? void 0 : _a.length) !== 0 && this._tracker.clearHover();
+    ((_this$series3 = this.series) === null || _this$series3 === void 0 ? void 0 : _this$series3.length) !== 0 && this._tracker.clearHover();
     (0, _iterator.reverseEach)(this.series, (index, series) => {
       if (!seriesBasis.some(s => series === s.series)) {
         this._disposeSeries(index);
@@ -1121,9 +1121,9 @@ const BaseChart = exports.BaseChart = _m_base_widget.default.inherit({
       });
     };
     seriesBasis.forEach(basis => {
-      var _a, _b;
+      var _this$_argumentAxes;
       const seriesTheme = basis.options;
-      const argumentAxis = (_b = (_a = this._argumentAxes) === null || _a === void 0 ? void 0 : _a.filter(a => a.pane === seriesTheme.pane)[0]) !== null && _b !== void 0 ? _b : this.getArgumentAxis();
+      const argumentAxis = ((_this$_argumentAxes = this._argumentAxes) === null || _this$_argumentAxes === void 0 ? void 0 : _this$_argumentAxes.filter(a => a.pane === seriesTheme.pane)[0]) ?? this.getArgumentAxis();
       const renderSettings = {
         commonSeriesModes: this._getSelectionModes(),
         argumentAxis,

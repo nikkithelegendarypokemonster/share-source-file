@@ -13,11 +13,13 @@ DevExpress.clientExporter = require('../../exporter');
 DevExpress.excelExporter = require('../../excel_exporter');
 DevExpress.pdfExporter = require('../../pdf_exporter');
 DevExpress.VERSION = require('../../core/version').version;
+DevExpress.assertDevExtremeVersion = require('../../core/version_check').assertDevExtremeVersion;
 DevExpress.Class = require('../../core/class');
 DevExpress.DOMComponent = require('../../core/dom_component');
 DevExpress.Component = require('../../core/component').Component;
 DevExpress.registerComponent = require('../../core/component_registrator');
 DevExpress.devices = require('../../core/devices');
+DevExpress.trial = require('../../core/trial_panel');
 DevExpress.Color = require('../../color');
 const animationFrame = require('../../animation/frame');
 

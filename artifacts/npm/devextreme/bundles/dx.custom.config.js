@@ -9,7 +9,6 @@ const DevExpress = require('devextreme/bundles/modules/core');
 /* Integrations (dx.module-core.js) */
 
 require('devextreme/integration/jquery');
-require('devextreme/integration/angular');
 require('devextreme/integration/knockout');
 
 require('devextreme/localization/globalize/core');
@@ -63,6 +62,7 @@ ui.dxButtonGroup = require('devextreme/ui/button_group');
 ui.dxCalendar = require('devextreme/ui/calendar');
 ui.dxCheckBox = require('devextreme/ui/check_box');
 ui.dxColorBox = require('devextreme/ui/color_box');
+ui.dxChat = require('devextreme/ui/chat');
 ui.dxDateBox = require('devextreme/ui/date_box');
 ui.dxDateRangeBox = require('devextreme/ui/date_range_box');
 ui.dxDrawer = require('devextreme/ui/drawer');

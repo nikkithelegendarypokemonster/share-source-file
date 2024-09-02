@@ -5,27 +5,27 @@ class TestErrorHandler extends OptionsValidatorErrorHandler {
     super(errorsMap, globalErrorHandler);
   }
 }
-var errorMap = {
+const errorMap = {
   A: 'E0',
   B: 'E1',
   C: 'E2',
   D: 'E3'
 };
-var createGlobalErrorHandlerMock = () => ({
+const createGlobalErrorHandlerMock = () => ({
   logError: jest.fn(),
   throwError: jest.fn()
 });
 describe('OptionsValidatorErrorHandler', () => {
   it('shouldn\'t call global error handler if options validator result is "true"', () => {
-    var globalErrorHandler = createGlobalErrorHandlerMock();
-    var handler = new TestErrorHandler(errorMap, globalErrorHandler);
+    const globalErrorHandler = createGlobalErrorHandlerMock();
+    const handler = new TestErrorHandler(errorMap, globalErrorHandler);
     handler.handleValidationResult(true);
     expect(globalErrorHandler.logError).not.toHaveBeenCalled();
     expect(globalErrorHandler.throwError).not.toHaveBeenCalled();
   });
   it('shouldn\'t call global error handler if there is no error codes for validator\'s errors', () => {
-    var globalErrorHandler = createGlobalErrorHandlerMock();
-    var handler = new TestErrorHandler({
+    const globalErrorHandler = createGlobalErrorHandlerMock();
+    const handler = new TestErrorHandler({
       B: 'E1'
     }, globalErrorHandler);
     handler.handleValidationResult({
@@ -44,8 +44,8 @@ describe('OptionsValidatorErrorHandler', () => {
     expect(globalErrorHandler.throwError).not.toHaveBeenCalled();
   });
   it('should log validator\'s errors and throw the last one', () => {
-    var globalErrorHandler = createGlobalErrorHandlerMock();
-    var handler = new TestErrorHandler(errorMap, globalErrorHandler);
+    const globalErrorHandler = createGlobalErrorHandlerMock();
+    const handler = new TestErrorHandler(errorMap, globalErrorHandler);
     handler.handleValidationResult({
       A: {
         fist: 'error',
@@ -69,8 +69,8 @@ describe('OptionsValidatorErrorHandler', () => {
     expect(globalErrorHandler.throwError).toHaveBeenCalledTimes(1);
   });
   it('should log and throw only exising error codes', () => {
-    var globalErrorHandler = createGlobalErrorHandlerMock();
-    var handler = new TestErrorHandler({
+    const globalErrorHandler = createGlobalErrorHandlerMock();
+    const handler = new TestErrorHandler({
       A: 'E0',
       C: 'E2'
     }, globalErrorHandler);
@@ -95,8 +95,8 @@ describe('OptionsValidatorErrorHandler', () => {
     expect(globalErrorHandler.throwError).toHaveBeenCalledTimes(1);
   });
   it('should throw single validator\'s error', () => {
-    var globalErrorHandler = createGlobalErrorHandlerMock();
-    var handler = new TestErrorHandler(errorMap, globalErrorHandler);
+    const globalErrorHandler = createGlobalErrorHandlerMock();
+    const handler = new TestErrorHandler(errorMap, globalErrorHandler);
     handler.handleValidationResult({
       B: {
         some: 'error'
@@ -107,8 +107,8 @@ describe('OptionsValidatorErrorHandler', () => {
     expect(globalErrorHandler.throwError).toHaveBeenCalledTimes(1);
   });
   it('should throw single validator\'s error if only one error code matches with it', () => {
-    var globalErrorHandler = createGlobalErrorHandlerMock();
-    var handler = new TestErrorHandler({
+    const globalErrorHandler = createGlobalErrorHandlerMock();
+    const handler = new TestErrorHandler({
       B: 'E1'
     }, globalErrorHandler);
     handler.handleValidationResult({
@@ -131,8 +131,8 @@ describe('OptionsValidatorErrorHandler', () => {
     expect(globalErrorHandler.throwError).toHaveBeenCalledTimes(1);
   });
   it('shouldn\'t log the same error code more that one time', () => {
-    var globalErrorHandler = createGlobalErrorHandlerMock();
-    var handler = new TestErrorHandler({
+    const globalErrorHandler = createGlobalErrorHandlerMock();
+    const handler = new TestErrorHandler({
       A: 'E0',
       B: 'E0',
       C: 'E1',

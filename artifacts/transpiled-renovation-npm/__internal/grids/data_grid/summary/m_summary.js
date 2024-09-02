@@ -20,8 +20,10 @@ var _m_aggregate_calculator = _interopRequireDefault(require("../m_aggregate_cal
 var _m_core = _interopRequireDefault(require("../m_core"));
 var _m_data_source_adapter = _interopRequireDefault(require("../m_data_source_adapter"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */ // @ts-expect-error
+/* eslint-disable max-classes-per-file */
+
+// @ts-expect-error
+
 const DATAGRID_TOTAL_FOOTER_CLASS = 'dx-datagrid-total-footer';
 const DATAGRID_SUMMARY_ITEM_CLASS = 'dx-datagrid-summary-item';
 const DATAGRID_TEXT_CONTENT_CLASS = 'dx-datagrid-text-content';
@@ -45,7 +47,7 @@ const renderSummaryCell = function (cell, options) {
     for (let i = 0; i < summaryItems.length; i++) {
       const summaryItem = summaryItems[i];
       const text = _m_core.default.getSummaryText(summaryItem, options.summaryTexts);
-      $summaryItems.push((0, _renderer.default)('<div>').css('textAlign', summaryItem.alignment || column.alignment).addClass(DATAGRID_SUMMARY_ITEM_CLASS).addClass(DATAGRID_TEXT_CONTENT_CLASS).addClass(summaryItem.cssClass).toggleClass(DATAGRID_GROUP_TEXT_CONTENT_CLASS, options.rowType === 'group').text(text).attr('aria-label', "".concat(column.caption, " ").concat(text)));
+      $summaryItems.push((0, _renderer.default)('<div>').css('textAlign', summaryItem.alignment || column.alignment).addClass(DATAGRID_SUMMARY_ITEM_CLASS).addClass(DATAGRID_TEXT_CONTENT_CLASS).addClass(summaryItem.cssClass).toggleClass(DATAGRID_GROUP_TEXT_CONTENT_CLASS, options.rowType === 'group').text(text).attr('aria-label', `${column.caption} ${text}`));
     }
     $cell.append($summaryItems);
   }
@@ -163,25 +165,20 @@ const calculateAggregates = function (that, summary, data, groupLevel) {
   }
   return calculator ? calculator.totalAggregates() : [];
 };
-let FooterView = exports.FooterView = /*#__PURE__*/function (_ColumnsView) {
-  _inheritsLoose(FooterView, _ColumnsView);
-  function FooterView() {
-    return _ColumnsView.apply(this, arguments) || this;
-  }
-  var _proto = FooterView.prototype;
-  _proto._getRows = function _getRows() {
+class FooterView extends _m_columns_view.ColumnsView {
+  _getRows() {
     // @ts-expect-error
     return this._dataController.footerItems();
-  };
-  _proto._getCellOptions = function _getCellOptions(options) {
-    return (0, _extend.extend)(_ColumnsView.prototype._getCellOptions.call(this, options), getSummaryCellOptions(this, options));
-  };
-  _proto._renderCellContent = function _renderCellContent($cell, options) {
+  }
+  _getCellOptions(options) {
+    return (0, _extend.extend)(super._getCellOptions(options), getSummaryCellOptions(this, options));
+  }
+  _renderCellContent($cell, options) {
     renderSummaryCell($cell, options);
     // @ts-expect-error
-    _ColumnsView.prototype._renderCellContent.apply(this, arguments);
-  };
-  _proto._renderCore = function _renderCore(change) {
+    super._renderCellContent.apply(this, arguments);
+  }
+  _renderCore(change) {
     let needUpdateScrollLeft = false;
     // @ts-expect-error
     const totalItem = this._dataController.footerItems()[0];
@@ -195,8 +192,8 @@ let FooterView = exports.FooterView = /*#__PURE__*/function (_ColumnsView) {
       }), change);
       needUpdateScrollLeft && this._updateScrollLeftPosition();
     }
-  };
-  _proto._updateContent = function _updateContent($newTable, change) {
+  }
+  _updateContent($newTable, change) {
     if (change && change.changeType === 'update' && change.columnIndices) {
       return this.waitAsyncTemplates().done(() => {
         const $row = this.getTableElement().find('.dx-row');
@@ -205,23 +202,23 @@ let FooterView = exports.FooterView = /*#__PURE__*/function (_ColumnsView) {
       });
     }
     // @ts-expect-error
-    return _ColumnsView.prototype._updateContent.apply(this, arguments);
-  };
-  _proto._rowClick = function _rowClick(e) {
+    return super._updateContent.apply(this, arguments);
+  }
+  _rowClick(e) {
     // @ts-expect-error
     const item = this._dataController.footerItems()[e.rowIndex] || {};
     this.executeAction('onRowClick', (0, _extend.extend)({}, e, item));
-  };
-  _proto._columnOptionChanged = function _columnOptionChanged(e) {
+  }
+  _columnOptionChanged(e) {
     const {
       optionNames
     } = e;
     if (e.changeTypes.grouping) return;
     if (optionNames.width || optionNames.visibleWidth) {
-      _ColumnsView.prototype._columnOptionChanged.call(this, e);
+      super._columnOptionChanged(e);
     }
-  };
-  _proto._handleDataChanged = function _handleDataChanged(e) {
+  }
+  _handleDataChanged(e) {
     const {
       changeType
     } = e;
@@ -237,63 +234,58 @@ let FooterView = exports.FooterView = /*#__PURE__*/function (_ColumnsView) {
     } else if (changeType === 'refresh' || changeType === 'append' || changeType === 'prepend') {
       this.render();
     }
-  };
-  _proto._createRow = function _createRow(row) {
+  }
+  _createRow(row) {
     // @ts-expect-error
-    const $row = _ColumnsView.prototype._createRow.apply(this, arguments);
+    const $row = super._createRow.apply(this, arguments);
     if (row.rowType === DATAGRID_TOTAL_FOOTER_ROW_TYPE) {
       $row.addClass(DATAGRID_FOOTER_ROW_CLASS);
       $row.addClass(DATAGRID_CELL_DISABLED);
       $row.attr('tabindex', 0);
     }
     return $row;
-  };
-  _proto.getHeight = function getHeight() {
+  }
+  getHeight() {
     return this.getElementHeight();
-  };
-  _proto.isVisible = function isVisible() {
+  }
+  isVisible() {
     // @ts-expect-error
     return !!this._dataController.footerItems().length;
-  };
-  return FooterView;
-}(_m_columns_view.ColumnsView);
-const dataSourceAdapterExtender = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(SummaryDataSourceAdapterExtender, _Base);
-  function SummaryDataSourceAdapterExtender() {
-    return _Base.apply(this, arguments) || this;
   }
-  var _proto2 = SummaryDataSourceAdapterExtender.prototype;
-  _proto2.init = function init() {
-    _Base.prototype.init.apply(this, arguments);
+}
+exports.FooterView = FooterView;
+const dataSourceAdapterExtender = Base => class SummaryDataSourceAdapterExtender extends Base {
+  init() {
+    super.init.apply(this, arguments);
     this._editingController = this.getController('editing');
     this._totalAggregates = [];
     this._summaryGetter = _common.noop;
-  };
-  _proto2.summaryGetter = function summaryGetter(_summaryGetter) {
+  }
+  summaryGetter(summaryGetter) {
     if (!arguments.length) {
       return this._summaryGetter;
     }
-    if ((0, _type.isFunction)(_summaryGetter)) {
-      this._summaryGetter = _summaryGetter;
+    if ((0, _type.isFunction)(summaryGetter)) {
+      this._summaryGetter = summaryGetter;
     }
-  };
-  _proto2.summary = function summary(_summary) {
+  }
+  summary(summary) {
     if (!arguments.length) {
       return this._summaryGetter();
     }
     this._summaryGetter = function () {
-      return _summary;
+      return summary;
     };
-  };
-  _proto2.totalAggregates = function totalAggregates() {
+  }
+  totalAggregates() {
     return this._totalAggregates;
-  };
-  _proto2.isLastLevelGroupItemsPagingLocal = function isLastLevelGroupItemsPagingLocal() {
+  }
+  isLastLevelGroupItemsPagingLocal() {
     const summary = this.summary();
     const sortByGroupsInfo = summary === null || summary === void 0 ? void 0 : summary.sortByGroups();
     return sortByGroupsInfo === null || sortByGroupsInfo === void 0 ? void 0 : sortByGroupsInfo.length;
-  };
-  _proto2.sortLastLevelGroupItems = function sortLastLevelGroupItems(items, groups, paths) {
+  }
+  sortLastLevelGroupItems(items, groups, paths) {
     const groupedItems = _store_helper.default.multiLevelGroup((0, _query.default)(items), groups).toArray();
     let result = [];
     paths.forEach(path => {
@@ -304,8 +296,8 @@ const dataSourceAdapterExtender = Base => /*#__PURE__*/function (_Base) {
       });
     });
     return result;
-  };
-  _proto2._customizeRemoteOperations = function _customizeRemoteOperations(options) {
+  }
+  _customizeRemoteOperations(options) {
     const summary = this.summary();
     if (summary) {
       if (options.remoteOperations.summary) {
@@ -323,14 +315,13 @@ const dataSourceAdapterExtender = Base => /*#__PURE__*/function (_Base) {
         options.remoteOperations.paging = false;
       }
     }
-    _Base.prototype._customizeRemoteOperations.apply(this, arguments);
+    super._customizeRemoteOperations.apply(this, arguments);
     const cachedExtra = options.cachedData.extra;
-    if ((cachedExtra === null || cachedExtra === void 0 ? void 0 : cachedExtra.summary) && !options.isCustomLoading) {
+    if (cachedExtra !== null && cachedExtra !== void 0 && cachedExtra.summary && !options.isCustomLoading) {
       options.storeLoadOptions.totalSummary = undefined;
     }
-  };
-  _proto2._handleDataLoadedCore = function _handleDataLoadedCore(options) {
-    var _a, _b;
+  }
+  _handleDataLoadedCore(options) {
     const groups = (0, _utils.normalizeSortingInfo)(options.storeLoadOptions.group || options.loadOptions.group || []);
     const remoteOperations = options.remoteOperations || {};
     const summary = this.summaryGetter()(remoteOperations);
@@ -345,9 +336,10 @@ const dataSourceAdapterExtender = Base => /*#__PURE__*/function (_Base) {
           options.data = sortGroupsBySummary(options.data, groups, summary);
         }
       } else if (!remoteOperations.paging && summary) {
+        var _options$cachedData;
         const operationTypes = options.operationTypes || {};
         const hasOperations = Object.keys(operationTypes).some(type => operationTypes[type]);
-        if (!hasOperations || !((_b = (_a = options.cachedData) === null || _a === void 0 ? void 0 : _a.extra) === null || _b === void 0 ? void 0 : _b.summary) || groups.length && summary.groupAggregates.length) {
+        if (!hasOperations || !((_options$cachedData = options.cachedData) !== null && _options$cachedData !== void 0 && (_options$cachedData = _options$cachedData.extra) !== null && _options$cachedData !== void 0 && _options$cachedData.summary) || groups.length && summary.groupAggregates.length) {
           const totalAggregates = calculateAggregates(this, summary, options.data, groups.length);
           options.extra = (0, _type.isPlainObject)(options.extra) ? options.extra : {};
           options.extra.summary = totalAggregates;
@@ -361,21 +353,15 @@ const dataSourceAdapterExtender = Base => /*#__PURE__*/function (_Base) {
     if (!options.isCustomLoading) {
       this._totalAggregates = options.extra && options.extra.summary || this._totalAggregates;
     }
-    _Base.prototype._handleDataLoadedCore.call(this, options);
-  };
-  return SummaryDataSourceAdapterExtender;
-}(Base);
-_m_data_source_adapter.default.extend(dataSourceAdapterExtender);
-const data = Base => /*#__PURE__*/function (_Base2) {
-  _inheritsLoose(SummaryDataControllerExtender, _Base2);
-  function SummaryDataControllerExtender() {
-    return _Base2.apply(this, arguments) || this;
+    super._handleDataLoadedCore(options);
   }
-  var _proto3 = SummaryDataControllerExtender.prototype;
-  _proto3._isDataColumn = function _isDataColumn(column) {
+};
+_m_data_source_adapter.default.extend(dataSourceAdapterExtender);
+const data = Base => class SummaryDataControllerExtender extends Base {
+  _isDataColumn(column) {
     return column && (!(0, _type.isDefined)(column.groupIndex) || column.showWhenGrouped);
-  };
-  _proto3._isGroupFooterVisible = function _isGroupFooterVisible() {
+  }
+  _isGroupFooterVisible() {
     const groupItems = this.option('summary.groupItems') || [];
     for (let i = 0; i < groupItems.length; i++) {
       const groupItem = groupItems[i];
@@ -385,11 +371,11 @@ const data = Base => /*#__PURE__*/function (_Base2) {
       }
     }
     return false;
-  };
-  _proto3._processGroupItems = function _processGroupItems(items, groupCount, options) {
+  }
+  _processGroupItems(items, groupCount, options) {
     const data = options && options.data;
     // @ts-expect-error
-    const result = _Base2.prototype._processGroupItems.apply(this, arguments);
+    const result = super._processGroupItems.apply(this, arguments);
     if (options) {
       if (options.isGroupFooterVisible === undefined) {
         options.isGroupFooterVisible = this._isGroupFooterVisible();
@@ -405,8 +391,8 @@ const data = Base => /*#__PURE__*/function (_Base2) {
       }
     }
     return result;
-  };
-  _proto3._processGroupItem = function _processGroupItem(groupItem, options) {
+  }
+  _processGroupItem(groupItem, options) {
     const that = this;
     if (!options.summaryGroupItems) {
       options.summaryGroupItems = that.option('summary.groupItems') || [];
@@ -437,8 +423,8 @@ const data = Base => /*#__PURE__*/function (_Base2) {
       groupItem.summaryCells = this._calculateSummaryCells(options.summaryGroupItems, getGroupAggregates(groupItem.data), options.visibleColumns, (summaryItem, column) => summaryItem.showInGroupFooter && that._isDataColumn(column) ? column.index : -1);
     }
     return groupItem;
-  };
-  _proto3._calculateSummaryCells = function _calculateSummaryCells(summaryItems, aggregates, visibleColumns, calculateTargetColumnIndex, isGroupRow) {
+  }
+  _calculateSummaryCells(summaryItems, aggregates, visibleColumns, calculateTargetColumnIndex, isGroupRow) {
     const that = this;
     const summaryCells = [];
     const summaryCellsByColumns = {};
@@ -474,13 +460,13 @@ const data = Base => /*#__PURE__*/function (_Base2) {
       });
     }
     return summaryCells;
-  };
-  _proto3._getSummaryCells = function _getSummaryCells(summaryTotalItems, totalAggregates) {
+  }
+  _getSummaryCells(summaryTotalItems, totalAggregates) {
     const that = this;
     const columnsController = that._columnsController;
     return that._calculateSummaryCells(summaryTotalItems, totalAggregates, columnsController.getVisibleColumns(), (summaryItem, column) => that._isDataColumn(column) ? column.index : -1);
-  };
-  _proto3._updateItemsCore = function _updateItemsCore(change) {
+  }
+  _updateItemsCore(change) {
     const that = this;
     let summaryCells;
     const dataSource = that._dataSource;
@@ -506,9 +492,9 @@ const data = Base => /*#__PURE__*/function (_Base2) {
         });
       }
     }
-    _Base2.prototype._updateItemsCore.call(this, change);
-  };
-  _proto3._prepareUnsavedDataSelector = function _prepareUnsavedDataSelector(selector) {
+    super._updateItemsCore(change);
+  }
+  _prepareUnsavedDataSelector(selector) {
     if (recalculateWhileEditing(this)) {
       const editingController = this._editingController;
       if (editingController) {
@@ -519,8 +505,8 @@ const data = Base => /*#__PURE__*/function (_Base2) {
       }
     }
     return selector;
-  };
-  _proto3._prepareAggregateSelector = function _prepareAggregateSelector(selector, aggregator) {
+  }
+  _prepareAggregateSelector(selector, aggregator) {
     selector = this._prepareUnsavedDataSelector(selector);
     if (aggregator === 'avg' || aggregator === 'sum') {
       return function (data) {
@@ -529,8 +515,8 @@ const data = Base => /*#__PURE__*/function (_Base2) {
       };
     }
     return selector;
-  };
-  _proto3._getAggregates = function _getAggregates(summaryItems, remoteOperations) {
+  }
+  _getAggregates(summaryItems, remoteOperations) {
     const that = this;
     let calculateCustomSummary = that.option('summary.calculateCustomSummary');
     const commonSkipEmptyValues = that.option('summary.skipEmptyValues');
@@ -588,8 +574,8 @@ const data = Base => /*#__PURE__*/function (_Base2) {
         skipEmptyValues
       };
     });
-  };
-  _proto3._addSortInfo = function _addSortInfo(sortByGroups, groupColumn, selector, sortOrder) {
+  }
+  _addSortInfo(sortByGroups, groupColumn, selector, sortOrder) {
     if (groupColumn) {
       const {
         groupIndex
@@ -603,8 +589,8 @@ const data = Base => /*#__PURE__*/function (_Base2) {
         });
       }
     }
-  };
-  _proto3._findSummaryItem = function _findSummaryItem(summaryItems, name) {
+  }
+  _findSummaryItem(summaryItems, name) {
     let summaryItemIndex = -1;
     const getFullName = function (summaryItem) {
       const {
@@ -613,7 +599,7 @@ const data = Base => /*#__PURE__*/function (_Base2) {
       const {
         column
       } = summaryItem;
-      return summaryType && column && "".concat(summaryType, "_").concat(column);
+      return summaryType && column && `${summaryType}_${column}`;
     };
     if ((0, _type.isDefined)(name)) {
       // @ts-expect-error
@@ -625,8 +611,8 @@ const data = Base => /*#__PURE__*/function (_Base2) {
       });
     }
     return summaryItemIndex;
-  };
-  _proto3._getSummarySortByGroups = function _getSummarySortByGroups(sortByGroupSummaryInfo, groupSummaryItems) {
+  }
+  _getSummarySortByGroups(sortByGroupSummaryInfo, groupSummaryItems) {
     const that = this;
     const columnsController = that._columnsController;
     const groupColumns = columnsController.getGroupColumns();
@@ -654,14 +640,14 @@ const data = Base => /*#__PURE__*/function (_Base2) {
       }
     });
     return sortByGroups;
-  };
-  _proto3._createDataSourceAdapterCore = function _createDataSourceAdapterCore(dataSource, remoteOperations) {
+  }
+  _createDataSourceAdapterCore(dataSource, remoteOperations) {
     const that = this;
-    const dataSourceAdapter = _Base2.prototype._createDataSourceAdapterCore.call(this, dataSource, remoteOperations);
+    const dataSourceAdapter = super._createDataSourceAdapterCore(dataSource, remoteOperations);
     dataSourceAdapter.summaryGetter(currentRemoteOperations => that._getSummaryOptions(currentRemoteOperations || remoteOperations));
     return dataSourceAdapter;
-  };
-  _proto3._getSummaryOptions = function _getSummaryOptions(remoteOperations) {
+  }
+  _getSummaryOptions(remoteOperations) {
     const that = this;
     const groupSummaryItems = that.option('summary.groupItems');
     const totalSummaryItems = that.option('summary.totalItems');
@@ -679,107 +665,95 @@ const data = Base => /*#__PURE__*/function (_Base2) {
       };
     }
     return undefined;
-  };
-  _proto3.publicMethods = function publicMethods() {
-    const methods = _Base2.prototype.publicMethods.call(this);
+  }
+  publicMethods() {
+    const methods = super.publicMethods();
     methods.push('getTotalSummaryValue');
     return methods;
-  };
-  _proto3.getTotalSummaryValue = function getTotalSummaryValue(summaryItemName) {
+  }
+  getTotalSummaryValue(summaryItemName) {
     const summaryItemIndex = this._findSummaryItem(this.option('summary.totalItems'), summaryItemName);
     const aggregates = this._dataSource.totalAggregates();
     if (aggregates.length && summaryItemIndex > -1) {
       return aggregates[summaryItemIndex];
     }
-  };
-  _proto3.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     if (args.name === 'summary' || args.name === 'sortByGroupSummaryInfo') {
       args.name = 'dataSource';
     }
-    _Base2.prototype.optionChanged.call(this, args);
-  };
-  _proto3.init = function init() {
-    this._footerItems = [];
-    _Base2.prototype.init.call(this);
-  };
-  _proto3.footerItems = function footerItems() {
-    return this._footerItems;
-  };
-  return SummaryDataControllerExtender;
-}(Base);
-const editing = Base => /*#__PURE__*/function (_Base3) {
-  _inheritsLoose(SummaryEditingController, _Base3);
-  function SummaryEditingController() {
-    return _Base3.apply(this, arguments) || this;
+    super.optionChanged(args);
   }
-  var _proto4 = SummaryEditingController.prototype;
-  _proto4._refreshSummary = function _refreshSummary() {
+  init() {
+    this._footerItems = [];
+    super.init();
+  }
+  footerItems() {
+    return this._footerItems;
+  }
+};
+const editing = Base => class SummaryEditingController extends Base {
+  _refreshSummary() {
     if (recalculateWhileEditing(this) && !this.isSaving()) {
       this._dataController.refresh({
         load: true,
         changesOnly: true
       });
     }
-  };
-  _proto4._addChange = function _addChange(params) {
+  }
+  _addChange(params) {
     // @ts-expect-error
-    const result = _Base3.prototype._addChange.apply(this, arguments);
+    const result = super._addChange.apply(this, arguments);
     if (params.type) {
       this._refreshSummary();
     }
     return result;
-  };
-  _proto4._removeChange = function _removeChange() {
-    // @ts-expect-error
-    const result = _Base3.prototype._removeChange.apply(this, arguments);
-    this._refreshSummary();
-    return result;
-  };
-  _proto4.cancelEditData = function cancelEditData() {
-    // @ts-expect-error
-    const result = _Base3.prototype.cancelEditData.apply(this, arguments);
-    this._refreshSummary();
-    return result;
-  };
-  return SummaryEditingController;
-}(Base);
-const rowsView = Base => /*#__PURE__*/function (_Base4) {
-  _inheritsLoose(SummaryRowsViewExtender, _Base4);
-  function SummaryRowsViewExtender() {
-    return _Base4.apply(this, arguments) || this;
   }
-  var _proto5 = SummaryRowsViewExtender.prototype;
-  _proto5._createRow = function _createRow(row) {
+  _removeChange() {
     // @ts-expect-error
-    const $row = _Base4.prototype._createRow.apply(this, arguments);
+    const result = super._removeChange.apply(this, arguments);
+    this._refreshSummary();
+    return result;
+  }
+  cancelEditData() {
+    // @ts-expect-error
+    const result = super.cancelEditData.apply(this, arguments);
+    this._refreshSummary();
+    return result;
+  }
+};
+const rowsView = Base => class SummaryRowsViewExtender extends Base {
+  _createRow(row) {
+    // @ts-expect-error
+    const $row = super._createRow.apply(this, arguments);
     row && $row.addClass(row.rowType === DATAGRID_GROUP_FOOTER_ROW_TYPE ? DATAGRID_GROUP_FOOTER_CLASS : '');
     return $row;
-  };
-  _proto5._renderCells = function _renderCells($row, options) {
+  }
+  _renderCells($row, options) {
     // @ts-expect-error
-    _Base4.prototype._renderCells.apply(this, arguments);
+    super._renderCells.apply(this, arguments);
     if (options.row.rowType === 'group' && options.row.summaryCells && options.row.summaryCells.length) {
       this._renderGroupSummaryCells($row, options);
     }
-  };
-  _proto5._hasAlignByColumnSummaryItems = function _hasAlignByColumnSummaryItems(columnIndex, options) {
+  }
+  _hasAlignByColumnSummaryItems(columnIndex, options) {
     return !(0, _type.isDefined)(options.columns[columnIndex].groupIndex) && options.row.summaryCells[columnIndex].length;
-  };
-  _proto5._getAlignByColumnCellCount = function _getAlignByColumnCellCount(groupCellColSpan, options) {
+  }
+  _getAlignByColumnCellCount(groupCellColSpan, options) {
     let alignByColumnCellCount = 0;
     for (let i = 1; i < groupCellColSpan; i++) {
       const columnIndex = options.row.summaryCells.length - i;
       alignByColumnCellCount = this._hasAlignByColumnSummaryItems(columnIndex, options) ? i : alignByColumnCellCount;
     }
     return alignByColumnCellCount;
-  };
-  _proto5._renderGroupSummaryCells = function _renderGroupSummaryCells($row, options) {
+  }
+  _renderGroupSummaryCells($row, options) {
     const $groupCell = $row.children().last();
     const groupCellColSpan = Number($groupCell.attr('colSpan')) || 1;
     const alignByColumnCellCount = this._getAlignByColumnCellCount(groupCellColSpan, options);
     this._renderGroupSummaryCellsCore($groupCell, options, groupCellColSpan, alignByColumnCellCount);
-  };
-  _proto5._renderGroupSummaryCellsCore = function _renderGroupSummaryCellsCore($groupCell, options, groupCellColSpan, alignByColumnCellCount) {
+  }
+  _renderGroupSummaryCellsCore($groupCell, options, groupCellColSpan, alignByColumnCellCount) {
     if (alignByColumnCellCount > 0) {
       $groupCell.attr('colSpan', groupCellColSpan - alignByColumnCellCount);
       for (let i = 0; i < alignByColumnCellCount; i++) {
@@ -792,26 +766,24 @@ const rowsView = Base => /*#__PURE__*/function (_Base4) {
     }
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto5._getSummaryCellIndex = function _getSummaryCellIndex(columnIndex, columns) {
+  _getSummaryCellIndex(columnIndex, columns) {
     return columnIndex;
-  };
-  _proto5._getCellTemplate = function _getCellTemplate(options) {
+  }
+  _getCellTemplate(options) {
     if (!options.column.command && !(0, _type.isDefined)(options.column.groupIndex) && options.summaryItems && options.summaryItems.length) {
       return renderSummaryCell;
     }
-    return _Base4.prototype._getCellTemplate.call(this, options);
-  };
-  _proto5._getCellOptions = function _getCellOptions(options) {
+    return super._getCellTemplate(options);
+  }
+  _getCellOptions(options) {
     const that = this;
-    const parameters = _Base4.prototype._getCellOptions.call(this, options);
+    const parameters = super._getCellOptions(options);
     if (options.row.summaryCells) {
       return (0, _extend.extend)(parameters, getSummaryCellOptions(that, options));
     }
     return parameters;
-  };
-  return SummaryRowsViewExtender;
-}(Base);
+  }
+};
 _m_core.default.registerModule('summary', {
   defaultOptions() {
     return {

@@ -3,24 +3,24 @@ import ko from 'knockout';
 import { getImageContainer } from '../../core/utils/icon';
 if (ko) {
   ko.bindingHandlers.dxControlsDescendantBindings = {
-    init: function init(_, valueAccessor) {
+    init: function (_, valueAccessor) {
       return {
         controlsDescendantBindings: ko.unwrap(valueAccessor())
       };
     }
   };
   ko.bindingHandlers.dxIcon = {
-    init: function init(element, valueAccessor) {
-      var options = ko.utils.unwrapObservable(valueAccessor()) || {};
-      var iconElement = getImageContainer(options);
+    init: function (element, valueAccessor) {
+      const options = ko.utils.unwrapObservable(valueAccessor()) || {};
+      const iconElement = getImageContainer(options);
       ko.virtualElements.emptyNode(element);
       if (iconElement) {
         ko.virtualElements.prepend(element, iconElement.get(0));
       }
     },
-    update: function update(element, valueAccessor) {
-      var options = ko.utils.unwrapObservable(valueAccessor()) || {};
-      var iconElement = getImageContainer(options);
+    update: function (element, valueAccessor) {
+      const options = ko.utils.unwrapObservable(valueAccessor()) || {};
+      const iconElement = getImageContainer(options);
       ko.virtualElements.emptyNode(element);
       if (iconElement) {
         ko.virtualElements.prepend(element, iconElement.get(0));

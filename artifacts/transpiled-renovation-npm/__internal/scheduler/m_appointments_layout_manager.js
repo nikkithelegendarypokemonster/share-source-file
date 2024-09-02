@@ -6,24 +6,22 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _common = require("../../core/utils/common");
 var _date = _interopRequireDefault(require("../../core/utils/date"));
-var _index = require("./__migration/utils/index");
+var _index = require("../scheduler/r1/utils/index");
 var _m_view_model_generator = require("./appointments/m_view_model_generator");
 var _m_position_helper = require("./workspaces/helpers/m_position_helper");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 const toMs = _date.default.dateToMilliseconds;
-let AppointmentLayoutManager = /*#__PURE__*/function () {
-  function AppointmentLayoutManager(instance) {
+class AppointmentLayoutManager {
+  constructor(instance) {
     this.instance = instance;
     this.appointmentViewModel = new _m_view_model_generator.AppointmentViewModelGenerator();
   }
-  var _proto = AppointmentLayoutManager.prototype;
+  get appointmentRenderingStrategyName() {
+    return (0, _index.getAppointmentRenderingStrategyName)(this.instance.currentViewType);
+  }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _proto.getCellDimensions = function getCellDimensions(options) {
+  getCellDimensions(options) {
     if (this.instance._workSpace) {
       return {
         width: this.instance._workSpace.getCellWidth(),
@@ -32,8 +30,8 @@ let AppointmentLayoutManager = /*#__PURE__*/function () {
       };
     }
     return undefined;
-  };
-  _proto._getRenderingStrategyOptions = function _getRenderingStrategyOptions() {
+  }
+  _getRenderingStrategyOptions() {
     const workspace = this.instance.getWorkSpace();
     const {
       virtualScrollingDispatcher
@@ -110,8 +108,8 @@ let AppointmentLayoutManager = /*#__PURE__*/function () {
       instance: this.instance,
       agendaDuration: workspace.option('agendaDuration')
     };
-  };
-  _proto.createAppointmentsMap = function createAppointmentsMap(items) {
+  }
+  createAppointmentsMap(items) {
     const renderingStrategyOptions = this._getRenderingStrategyOptions();
     const {
       viewModel,
@@ -119,18 +117,18 @@ let AppointmentLayoutManager = /*#__PURE__*/function () {
     } = this.appointmentViewModel.generate(items, renderingStrategyOptions);
     this._positionMap = positionMap; // TODO get rid of this after remove old render
     return viewModel;
-  };
-  _proto._isDataChanged = function _isDataChanged(data) {
+  }
+  _isDataChanged(data) {
     const {
       appointmentDataProvider
     } = this.instance;
     const updatedData = appointmentDataProvider.getUpdatedAppointment();
     return updatedData === data || appointmentDataProvider.getUpdatedAppointmentKeys().some(item => data[item.key] === item.value);
-  };
-  _proto._isAppointmentShouldAppear = function _isAppointmentShouldAppear(currentAppointment, sourceAppointment) {
+  }
+  _isAppointmentShouldAppear(currentAppointment, sourceAppointment) {
     return currentAppointment.needRepaint && sourceAppointment.needRemove;
-  };
-  _proto._isSettingChanged = function _isSettingChanged(settings, sourceSetting) {
+  }
+  _isSettingChanged(settings, sourceSetting) {
     if (settings.length !== sourceSetting.length) {
       return true;
     }
@@ -142,7 +140,7 @@ let AppointmentLayoutManager = /*#__PURE__*/function () {
       const rowIndex = currentSetting.rowIndex + topVirtualCellCount;
       const hMax = currentSetting.reduced ? currentSetting.hMax : undefined;
       const vMax = currentSetting.reduced ? currentSetting.vMax : undefined;
-      return _extends(_extends({}, currentSetting), {
+      return _extends({}, currentSetting, {
         columnIndex,
         rowIndex,
         positionByMap: undefined,
@@ -167,8 +165,8 @@ let AppointmentLayoutManager = /*#__PURE__*/function () {
       }
     }
     return false;
-  };
-  _proto._getAssociatedSourceAppointment = function _getAssociatedSourceAppointment(currentAppointment, sourceAppointments) {
+  }
+  _getAssociatedSourceAppointment(currentAppointment, sourceAppointments) {
     for (let i = 0; i < sourceAppointments.length; i++) {
       const item = sourceAppointments[i];
       if (item.itemData === currentAppointment.itemData) {
@@ -176,8 +174,8 @@ let AppointmentLayoutManager = /*#__PURE__*/function () {
       }
     }
     return null;
-  };
-  _proto._getDeletedAppointments = function _getDeletedAppointments(currentAppointments, sourceAppointments) {
+  }
+  _getDeletedAppointments(currentAppointments, sourceAppointments) {
     const result = [];
     for (let i = 0; i < sourceAppointments.length; i++) {
       const sourceAppointment = sourceAppointments[i];
@@ -188,8 +186,8 @@ let AppointmentLayoutManager = /*#__PURE__*/function () {
       }
     }
     return result;
-  };
-  _proto.getRepaintedAppointments = function getRepaintedAppointments(currentAppointments, sourceAppointments) {
+  }
+  getRepaintedAppointments(currentAppointments, sourceAppointments) {
     if (sourceAppointments.length === 0 || this.appointmentRenderingStrategyName === 'agenda') {
       return currentAppointments;
     }
@@ -203,21 +201,14 @@ let AppointmentLayoutManager = /*#__PURE__*/function () {
       }
     });
     return currentAppointments.concat(this._getDeletedAppointments(currentAppointments, sourceAppointments));
-  };
-  _proto.getRenderingStrategyInstance = function getRenderingStrategyInstance() {
+  }
+  getRenderingStrategyInstance() {
     const renderingStrategy = this.appointmentViewModel.getRenderingStrategy();
     if (!renderingStrategy) {
       const options = this._getRenderingStrategyOptions();
       this.appointmentViewModel.initRenderingStrategy(options);
     }
     return this.appointmentViewModel.getRenderingStrategy();
-  };
-  _createClass(AppointmentLayoutManager, [{
-    key: "appointmentRenderingStrategyName",
-    get: function () {
-      return (0, _index.getAppointmentRenderingStrategyName)(this.instance.currentViewType);
-    }
-  }]);
-  return AppointmentLayoutManager;
-}();
+  }
+}
 var _default = exports.default = AppointmentLayoutManager;

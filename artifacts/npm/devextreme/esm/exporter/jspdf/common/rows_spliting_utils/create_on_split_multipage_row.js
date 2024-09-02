@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/exporter/jspdf/common/rows_spliting_utils/create_on_split_multipage_row.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -16,28 +16,28 @@ function createMultiCellRect(rect, text, marginTop) {
     y: marginTop
   });
 }
-export var createOnSplitMultiPageRow = (doc, options, headerHeight, maxBottomRight) => (isFirstPage, pageRects) => {
-  var currentPageRects = [];
-  var nextPageRects = [];
-  var maxCurrentPageHeight = 0;
-  var maxNextPageHeight = 0;
+export const createOnSplitMultiPageRow = (doc, options, headerHeight, maxBottomRight) => (isFirstPage, pageRects) => {
+  const currentPageRects = [];
+  const nextPageRects = [];
+  let maxCurrentPageHeight = 0;
+  let maxNextPageHeight = 0;
   pageRects.forEach(rect => {
-    var {
+    const {
       w,
       sourceCellInfo
     } = rect;
-    var additionalHeight = !isFirstPage && options.repeatHeaders ? headerHeight : headerHeight + options.topLeft.y;
-    var heightOfOneLine = getTextDimensions(doc, sourceCellInfo.text, sourceCellInfo.font).h;
-    var paddingHeight = sourceCellInfo.padding.top + sourceCellInfo.padding.bottom;
-    var fullPageHeight = maxBottomRight.y - additionalHeight - paddingHeight - options.margin.top;
-    var possibleLinesCount = Math.floor(fullPageHeight / (heightOfOneLine * doc.getLineHeightFactor()));
-    var allLines = getTextLines(doc, sourceCellInfo.text, sourceCellInfo.font, {
+    const additionalHeight = !isFirstPage && options.repeatHeaders ? headerHeight : headerHeight + options.topLeft.y;
+    const heightOfOneLine = getTextDimensions(doc, sourceCellInfo.text, sourceCellInfo.font).h;
+    const paddingHeight = sourceCellInfo.padding.top + sourceCellInfo.padding.bottom;
+    const fullPageHeight = maxBottomRight.y - additionalHeight - paddingHeight - options.margin.top;
+    const possibleLinesCount = Math.floor(fullPageHeight / (heightOfOneLine * doc.getLineHeightFactor()));
+    const allLines = getTextLines(doc, sourceCellInfo.text, sourceCellInfo.font, {
       wordWrapEnabled: sourceCellInfo.wordWrapEnabled,
       targetRectWidth: w
     });
     if (possibleLinesCount < allLines.length) {
-      var currentPageText = allLines.slice(0, possibleLinesCount).join('\n');
-      var currentPageHeight = calculateTextHeight(doc, currentPageText, sourceCellInfo.font, {
+      const currentPageText = allLines.slice(0, possibleLinesCount).join('\n');
+      const currentPageHeight = calculateTextHeight(doc, currentPageText, sourceCellInfo.font, {
         wordWrapEnabled: sourceCellInfo.wordWrapEnabled,
         targetRectWidth: w
       });
@@ -46,12 +46,12 @@ export var createOnSplitMultiPageRow = (doc, options, headerHeight, maxBottomRig
       currentPageRects.push(createMultiCellRect(rect, currentPageText, options.margin.top));
       nextPageRects.push(createMultiCellRect(rect, allLines.slice(possibleLinesCount).join('\n'), options.margin.top));
     } else {
-      var _currentPageHeight = calculateTextHeight(doc, sourceCellInfo.text, sourceCellInfo.font, {
+      const currentPageHeight = calculateTextHeight(doc, sourceCellInfo.text, sourceCellInfo.font, {
         wordWrapEnabled: sourceCellInfo.wordWrapEnabled,
         targetRectWidth: w
       });
-      maxCurrentPageHeight = Math.max(maxCurrentPageHeight, _currentPageHeight + paddingHeight);
-      maxNextPageHeight = Math.max(maxNextPageHeight, _currentPageHeight + paddingHeight);
+      maxCurrentPageHeight = Math.max(maxCurrentPageHeight, currentPageHeight + paddingHeight);
+      maxNextPageHeight = Math.max(maxNextPageHeight, currentPageHeight + paddingHeight);
       currentPageRects.push(createMultiCellRect(rect, sourceCellInfo.text, options.margin.top));
       nextPageRects.push(createMultiCellRect(rect, '', options.margin.top));
     }

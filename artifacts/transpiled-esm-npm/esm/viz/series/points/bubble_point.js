@@ -1,14 +1,14 @@
 import { extend } from '../../../core/utils/extend';
 import symbolPoint from './symbol_point';
-var _extend = extend;
-var MIN_BUBBLE_HEIGHT = 20;
+const _extend = extend;
+const MIN_BUBBLE_HEIGHT = 20;
 export default _extend({}, symbolPoint, {
-  correctCoordinates: function correctCoordinates(diameter) {
+  correctCoordinates: function (diameter) {
     this.bubbleSize = diameter / 2;
   },
-  _drawMarker: function _drawMarker(renderer, group, animationEnabled) {
-    var that = this;
-    var attr = _extend({
+  _drawMarker: function (renderer, group, animationEnabled) {
+    const that = this;
+    const attr = _extend({
       translateX: that.x,
       translateY: that.y
     }, that._getStyle());
@@ -16,34 +16,34 @@ export default _extend({}, symbolPoint, {
       'chart-data-point': that
     }).append(group);
   },
-  getTooltipParams: function getTooltipParams(location) {
-    var that = this;
-    var graphic = that.graphic;
+  getTooltipParams: function (location) {
+    const that = this;
+    const graphic = that.graphic;
     if (!graphic) {
       return;
     }
-    var height = graphic.getBBox().height;
+    const height = graphic.getBBox().height;
     return {
       x: that.x,
       y: that.y,
       offset: height < MIN_BUBBLE_HEIGHT || location === 'edge' ? height / 2 : 0
     };
   },
-  _getLabelFormatObject: function _getLabelFormatObject() {
-    var formatObject = symbolPoint._getLabelFormatObject.call(this);
+  _getLabelFormatObject: function () {
+    const formatObject = symbolPoint._getLabelFormatObject.call(this);
     formatObject.size = this.initialSize;
     return formatObject;
   },
-  _updateData: function _updateData(data) {
+  _updateData: function (data) {
     symbolPoint._updateData.call(this, data);
     this.size = this.initialSize = data.size;
   },
-  _getGraphicBBox: function _getGraphicBBox() {
-    var that = this;
+  _getGraphicBBox: function () {
+    const that = this;
     return that._getSymbolBBox(that.x, that.y, that.bubbleSize);
   },
-  _updateMarker: function _updateMarker(animationEnabled, style) {
-    var that = this;
+  _updateMarker: function (animationEnabled, style) {
+    const that = this;
     if (!animationEnabled) {
       style = _extend({
         r: that.bubbleSize,
@@ -53,16 +53,16 @@ export default _extend({}, symbolPoint, {
     }
     that.graphic.smartAttr(style);
   },
-  _getFormatObject: function _getFormatObject(tooltip) {
-    var formatObject = symbolPoint._getFormatObject.call(this, tooltip);
+  _getFormatObject: function (tooltip) {
+    const formatObject = symbolPoint._getFormatObject.call(this, tooltip);
     formatObject.sizeText = tooltip.formatValue(this.initialSize);
     return formatObject;
   },
-  _storeTrackerR: function _storeTrackerR() {
+  _storeTrackerR: function () {
     return this.bubbleSize;
   },
-  _getLabelCoords: function _getLabelCoords(label) {
-    var coords;
+  _getLabelCoords: function (label) {
+    let coords;
     if (label.getLayoutOptions().position === 'inside') {
       coords = this._getLabelCoordOfPosition(label, 'inside');
     } else {

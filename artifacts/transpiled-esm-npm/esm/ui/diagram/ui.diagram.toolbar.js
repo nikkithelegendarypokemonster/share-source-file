@@ -11,11 +11,11 @@ import { getDiagram } from './diagram.importer';
 import '../select_box';
 import '../color_box';
 import '../check_box';
-var ACTIVE_FORMAT_CLASS = 'dx-format-active';
-var DIAGRAM_TOOLBAR_CLASS = 'dx-diagram-toolbar';
-var DIAGRAM_TOOLBAR_SEPARATOR_CLASS = 'dx-diagram-toolbar-separator';
-var DIAGRAM_TOOLBAR_MENU_SEPARATOR_CLASS = 'dx-diagram-toolbar-menu-separator';
-var DIAGRAM_MOBILE_TOOLBAR_COLOR_BOX_OPENED_CLASS = 'dx-diagram-mobile-toolbar-color-box-opened';
+const ACTIVE_FORMAT_CLASS = 'dx-format-active';
+const DIAGRAM_TOOLBAR_CLASS = 'dx-diagram-toolbar';
+const DIAGRAM_TOOLBAR_SEPARATOR_CLASS = 'dx-diagram-toolbar-separator';
+const DIAGRAM_TOOLBAR_MENU_SEPARATOR_CLASS = 'dx-diagram-toolbar-menu-separator';
+const DIAGRAM_MOBILE_TOOLBAR_COLOR_BOX_OPENED_CLASS = 'dx-diagram-mobile-toolbar-color-box-opened';
 class DiagramToolbar extends DiagramPanel {
   _init() {
     this._commands = [];
@@ -31,7 +31,7 @@ class DiagramToolbar extends DiagramPanel {
   }
   _initMarkup() {
     super._initMarkup();
-    var isServerSide = !hasWindow();
+    const isServerSide = !hasWindow();
     if (!this.option('skipAdjustSize') && !isServerSide) {
       setWidth(this.$element(), '');
     }
@@ -39,10 +39,10 @@ class DiagramToolbar extends DiagramPanel {
     this._itemHelpers = {};
     this._commandContextMenus = {};
     this._contextMenuList = [];
-    var $toolbar = this._createMainElement();
+    const $toolbar = this._createMainElement();
     this._renderToolbar($toolbar);
     if (!this.option('skipAdjustSize') && !isServerSide) {
-      var $toolbarContent = this.$element().find('.dx-toolbar-before');
+      const $toolbarContent = this.$element().find('.dx-toolbar-before');
       setWidth(this.$element(), getWidth($toolbarContent));
     }
   }
@@ -53,10 +53,10 @@ class DiagramToolbar extends DiagramPanel {
     return this.option('commands') || [];
   }
   _renderToolbar($toolbar) {
-    var beforeCommands = this._commands.filter(command => ['after', 'center'].indexOf(command.location) === -1);
-    var centerCommands = this._commands.filter(command => command.location === 'center');
-    var afterCommands = this._commands.filter(command => command.location === 'after');
-    var dataSource = [].concat(this._prepareToolbarItems(beforeCommands, 'before', this._executeCommand)).concat(this._prepareToolbarItems(centerCommands, 'center', this._executeCommand)).concat(this._prepareToolbarItems(afterCommands, 'after', this._executeCommand));
+    const beforeCommands = this._commands.filter(command => ['after', 'center'].indexOf(command.location) === -1);
+    const centerCommands = this._commands.filter(command => command.location === 'center');
+    const afterCommands = this._commands.filter(command => command.location === 'after');
+    const dataSource = [].concat(this._prepareToolbarItems(beforeCommands, 'before', this._executeCommand)).concat(this._prepareToolbarItems(centerCommands, 'center', this._executeCommand)).concat(this._prepareToolbarItems(afterCommands, 'after', this._executeCommand));
     this._toolbarInstance = this._createComponent($toolbar, Toolbar, {
       dataSource
     });
@@ -102,7 +102,7 @@ class DiagramToolbar extends DiagramPanel {
     };
   }
   _createItemOptions(_ref) {
-    var {
+    let {
       widget,
       command,
       items,
@@ -125,7 +125,7 @@ class DiagramToolbar extends DiagramPanel {
     }
   }
   _createSelectBoxItemOptions(command, hint, items, valueExpr, displayExpr) {
-    var options = this._createTextEditorItemOptions(hint);
+    let options = this._createTextEditorItemOptions(hint);
     options = extend(true, options, {
       options: {
         dataSource: items,
@@ -133,8 +133,8 @@ class DiagramToolbar extends DiagramPanel {
         valueExpr: valueExpr || 'value'
       }
     });
-    var isSelectButton = items && items.every(i => i.icon !== undefined);
-    var nullIconClass = 'dx-diagram-i-selectbox-null-icon dx-diagram-i';
+    const isSelectButton = items && items.every(i => i.icon !== undefined);
+    const nullIconClass = 'dx-diagram-i-selectbox-null-icon dx-diagram-i';
     if (isSelectButton) {
       options = extend(true, options, {
         options: {
@@ -147,7 +147,7 @@ class DiagramToolbar extends DiagramPanel {
           },
           itemTemplate: (data, index, container) => {
             $(container).attr('title', data.hint);
-            return "<i class=\"".concat(data.icon, "\"></i>");
+            return `<i class="${data.icon}"></i>`;
           }
         }
       });
@@ -155,7 +155,7 @@ class DiagramToolbar extends DiagramPanel {
     return options;
   }
   _createTextBoxItemOptions(command, hint) {
-    var options = this._createTextEditorItemOptions(hint);
+    let options = this._createTextEditorItemOptions(hint);
     options = extend(true, options, {
       options: {
         readOnly: true,
@@ -169,7 +169,7 @@ class DiagramToolbar extends DiagramPanel {
             disabled: false,
             stylingMode: 'text',
             onClick: e => {
-              var contextMenu = this._commandContextMenus[command];
+              const contextMenu = this._commandContextMenus[command];
               if (contextMenu) {
                 this._toggleContextMenu(contextMenu);
               }
@@ -181,7 +181,7 @@ class DiagramToolbar extends DiagramPanel {
     return options;
   }
   _createColorBoxItemOptions(command, hint, icon) {
-    var options = this._createTextEditorItemOptions(hint);
+    let options = this._createTextEditorItemOptions(hint);
     if (icon) {
       options = extend(true, options, {
         options: {
@@ -226,7 +226,7 @@ class DiagramToolbar extends DiagramPanel {
         return {
           options: {
             onValueChanged: e => {
-              var parameter = DiagramMenuHelper.getItemCommandParameter(this, item, e.component.option('value'));
+              const parameter = DiagramMenuHelper.getItemCommandParameter(this, item, e.component.option('value'));
               handler.call(this, item.command, item.name, parameter);
             }
           }
@@ -238,10 +238,10 @@ class DiagramToolbar extends DiagramPanel {
           options: {
             onClick: e => {
               if (!item.items) {
-                var parameter = DiagramMenuHelper.getItemCommandParameter(this, item);
+                const parameter = DiagramMenuHelper.getItemCommandParameter(this, item);
                 handler.call(this, item.command, item.name, parameter);
               } else {
-                var contextMenu = e.component._contextMenu;
+                const contextMenu = e.component._contextMenu;
                 if (contextMenu) {
                   this._toggleContextMenu(contextMenu);
                 }
@@ -264,8 +264,8 @@ class DiagramToolbar extends DiagramPanel {
   }
   _onItemContentReady(widget, item, actionHandler) {
     if ((widget.NAME === 'dxButton' || widget.NAME === 'dxTextBox') && item.items) {
-      var isTouchMode = this._isTouchMode();
-      var $menuContainer = $('<div>').appendTo(this.$element());
+      const isTouchMode = this._isTouchMode();
+      const $menuContainer = $('<div>').appendTo(this.$element());
       widget._contextMenu = this._createComponent($menuContainer, ContextMenu, {
         items: item.items,
         target: widget.$element(),
@@ -278,11 +278,11 @@ class DiagramToolbar extends DiagramPanel {
         position: {
           at: 'left bottom'
         },
-        itemTemplate: function itemTemplate(itemData, itemIndex, itemElement) {
+        itemTemplate: function (itemData, itemIndex, itemElement) {
           DiagramMenuHelper.getContextMenuItemTemplate(this, itemData, itemIndex, itemElement);
         },
         onItemClick: _ref2 => {
-          var {
+          let {
             component,
             itemData
           } = _ref2;
@@ -302,13 +302,13 @@ class DiagramToolbar extends DiagramPanel {
           delete this._showingSubMenu;
         },
         onInitialized: _ref3 => {
-          var {
+          let {
             component
           } = _ref3;
           return this._onContextMenuInitialized(component, item, widget);
         },
         onDisposing: _ref4 => {
-          var {
+          let {
             component
           } = _ref4;
           return this._onContextMenuDisposing(component, item);
@@ -325,7 +325,7 @@ class DiagramToolbar extends DiagramPanel {
     }
   }
   _isTouchMode() {
-    var {
+    const {
       Browser
     } = getDiagram();
     return Browser.TouchUI;
@@ -348,7 +348,7 @@ class DiagramToolbar extends DiagramPanel {
   _addContextMenuHelper(item, widget, indexPath, rootWidget) {
     if (item.items) {
       item.items.forEach((subItem, index) => {
-        var itemIndexPath = indexPath.concat(index);
+        const itemIndexPath = indexPath.concat(index);
         this._addItemHelper(subItem.command, new DiagramToolbarSubItemHelper(widget, itemIndexPath, subItem.command, rootWidget));
         this._addContextMenuHelper(subItem, widget, itemIndexPath, rootWidget);
       });
@@ -361,7 +361,7 @@ class DiagramToolbar extends DiagramPanel {
   _executeCommand(command, name, value) {
     if (this._updateLocked) return;
     if (typeof command === 'number') {
-      var valueConverter = this._valueConverters[command];
+      const valueConverter = this._valueConverters[command];
       if (valueConverter && valueConverter.getCommandValue) {
         value = valueConverter.getCommandValue(value);
       }
@@ -385,7 +385,7 @@ class DiagramToolbar extends DiagramPanel {
   }
   _setItemEnabled(command, enabled) {
     if (command in this._itemHelpers) {
-      var helper = this._itemHelpers[command];
+      const helper = this._itemHelpers[command];
       if (helper.canUpdate(this._showingSubMenu)) {
         helper.setEnabled(enabled);
       }
@@ -401,17 +401,17 @@ class DiagramToolbar extends DiagramPanel {
     try {
       this._updateLocked = true;
       if (command in this._itemHelpers) {
-        var helper = this._itemHelpers[command];
+        const helper = this._itemHelpers[command];
         if (helper.canUpdate(this._showingSubMenu)) {
-          var valueConverter = this._valueConverters[command];
+          const valueConverter = this._valueConverters[command];
           if (valueConverter && valueConverter.getEditorValue) {
             value = valueConverter.getEditorValue(value);
           }
-          var displayValue;
+          let displayValue;
           if (valueConverter && valueConverter.getEditorDisplayValue) {
             displayValue = valueConverter.getEditorDisplayValue(value);
           }
-          var contextMenu = this._commandContextMenus[command];
+          const contextMenu = this._commandContextMenus[command];
           helper.setValue(value, displayValue, contextMenu, contextMenu && command);
         }
       }
@@ -422,9 +422,9 @@ class DiagramToolbar extends DiagramPanel {
   _setItemSubItems(command, items) {
     this._updateLocked = true;
     if (command in this._itemHelpers) {
-      var helper = this._itemHelpers[command];
+      const helper = this._itemHelpers[command];
       if (helper.canUpdate(this._showingSubMenu)) {
-        var contextMenu = this._commandContextMenus[command];
+        const contextMenu = this._commandContextMenus[command];
         helper.setItems(items, contextMenu, contextMenu && command);
       }
     }
@@ -564,7 +564,7 @@ class DiagramToolbarSubItemHelper extends DiagramToolbarItemHelper {
   }
   setEnabled(enabled) {
     this._widget.option(this._getItemOptionText() + 'disabled', !enabled);
-    var rootEnabled = this._hasEnabledCommandItems(this._widget.option('items'));
+    const rootEnabled = this._hasEnabledCommandItems(this._widget.option('items'));
     this._rootWidget.option('disabled', !rootEnabled);
   }
   _hasEnabledCommandItems(items) {

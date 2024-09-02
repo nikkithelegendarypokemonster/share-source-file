@@ -1,23 +1,29 @@
 /**
 * DevExtreme (core/guid.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /**
- * The Guid is an object used to generate and contain a GUID.
+ * @docid
+ * @namespace DevExpress.data
+ * @public
  */
 export default class Guid {
     constructor();
     constructor(value: string);
     /**
-     * Gets the GUID. Works identically to the valueOf() method.
+     * @docid
+     * @publicName toString()
+     * @public
      */
     toString(): string;
     /**
-     * Gets the GUID. Works identically to the toString() method.
+     * @docid
+     * @publicName valueOf()
+     * @public
      */
     valueOf(): string;
 }

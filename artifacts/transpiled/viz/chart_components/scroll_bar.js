@@ -158,14 +158,13 @@ ScrollBar.prototype = {
     return margins;
   },
   shift: function (margins) {
-    var _that$_scroll$attr, _that$_scroll$attr2;
     const that = this;
     const options = that._layoutOptions;
     const side = options.position;
     const isVertical = options.vertical;
     const attr = {
-      translateX: (_that$_scroll$attr = that._scroll.attr('translateX')) !== null && _that$_scroll$attr !== void 0 ? _that$_scroll$attr : 0,
-      translateY: (_that$_scroll$attr2 = that._scroll.attr('translateY')) !== null && _that$_scroll$attr2 !== void 0 ? _that$_scroll$attr2 : 0
+      translateX: that._scroll.attr('translateX') ?? 0,
+      translateY: that._scroll.attr('translateY') ?? 0
     };
     const shift = margins[side];
     attr[isVertical ? 'translateX' : 'translateY'] += (side === 'left' || side === 'top' ? -1 : 1) * shift;

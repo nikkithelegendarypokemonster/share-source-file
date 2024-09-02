@@ -19,7 +19,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const findTemplates = (element, name) => {
   const optionsAttributeName = 'data-options';
-  const templates = (0, _renderer.default)(element).contents().filter("[".concat(optionsAttributeName, "*=\"").concat(name, "\"]"));
+  const templates = (0, _renderer.default)(element).contents().filter(`[${optionsAttributeName}*="${name}"]`);
   return [].slice.call(templates).map(element => {
     const optionsString = (0, _renderer.default)(element).attr(optionsAttributeName) || '';
     return {

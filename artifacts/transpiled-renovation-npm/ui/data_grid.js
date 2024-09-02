@@ -4,6 +4,7 @@ exports.default = void 0;
 var _m_widget = _interopRequireDefault(require("../__internal/grids/data_grid/m_widget"));
 var _filter_builder = _interopRequireDefault(require("./filter_builder"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+// STYLE dataGrid
 // NOTE: This redundant import allows to build
 // dependencies between components correctly by theme-builder
 // eslint-disable-next-line no-unused-vars

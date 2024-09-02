@@ -1,16 +1,16 @@
 import $ from '../core/renderer';
 import ajax from '../core/utils/ajax';
 import { getWindow } from '../core/utils/window';
-var window = getWindow();
+const window = getWindow();
 import { isFunction } from '../core/utils/type';
 import { each } from '../core/utils/iterator';
 import { getSvgElement, getSvgMarkup, HIDDEN_FOR_EXPORT } from '../core/utils/svg';
 import { when, Deferred } from '../core/utils/deferred';
-export var svgCreator = {
+export const svgCreator = {
   _markup: '',
   _imageArray: {},
   _imageDeferreds: [],
-  _getBinaryFile: function _getBinaryFile(src, callback) {
+  _getBinaryFile: function (src, callback) {
     ajax.sendRequest({
       url: src,
       method: 'GET',
@@ -19,10 +19,10 @@ export var svgCreator = {
       callback(false);
     });
   },
-  _loadImages: function _loadImages() {
-    var that = this;
+  _loadImages: function () {
+    const that = this;
     each(that._imageArray, function (src) {
-      var deferred = new Deferred();
+      const deferred = new Deferred();
       that._imageDeferreds.push(deferred);
       that._getBinaryFile(src, function (response) {
         if (!response) {
@@ -30,10 +30,10 @@ export var svgCreator = {
           deferred.resolve();
           return;
         }
-        var i;
-        var binary = '';
-        var bytes = new Uint8Array(response);
-        var length = bytes.byteLength;
+        let i;
+        let binary = '';
+        const bytes = new Uint8Array(response);
+        const length = bytes.byteLength;
         for (i = 0; i < length; i++) {
           binary += String.fromCharCode(bytes[i]);
         }
@@ -42,9 +42,9 @@ export var svgCreator = {
       });
     });
   },
-  _parseImages: function _parseImages(element) {
-    var href;
-    var that = this;
+  _parseImages: function (element) {
+    let href;
+    const that = this;
     if (element.tagName === 'image') {
       href = $(element).attr('href') || $(element).attr('xlink:href');
       if (!that._imageArray[href]) {
@@ -55,33 +55,33 @@ export var svgCreator = {
       that._parseImages(element);
     });
   },
-  _prepareImages: function _prepareImages(svgElem) {
+  _prepareImages: function (svgElem) {
     this._parseImages(svgElem);
     this._loadImages();
     return when.apply($, this._imageDeferreds);
   },
-  getData: function getData(data, options) {
-    var markup;
-    var that = this;
-    var xmlVersion = '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>';
-    var svgElem = getSvgElement(data);
-    var $svgObject = $(svgElem);
-    $svgObject.find("[".concat(HIDDEN_FOR_EXPORT, "]")).remove();
+  getData: function (data, options) {
+    let markup;
+    const that = this;
+    const xmlVersion = '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>';
+    const svgElem = getSvgElement(data);
+    const $svgObject = $(svgElem);
+    $svgObject.find(`[${HIDDEN_FOR_EXPORT}]`).remove();
     markup = xmlVersion + getSvgMarkup($svgObject.get(0), options.backgroundColor);
     return that._prepareImages(svgElem).then(() => {
       each(that._imageArray, function (href, dataURI) {
-        var regexpString = "href=['|\"]".concat(href, "['|\"]");
-        markup = markup.replace(new RegExp(regexpString, 'gi'), "href=\"".concat(dataURI, "\""));
+        const regexpString = `href=['|"]${href}['|"]`;
+        markup = markup.replace(new RegExp(regexpString, 'gi'), `href="${dataURI}"`);
       });
       return isFunction(window.Blob) ? that._getBlob(markup) : that._getBase64(markup);
     });
   },
-  _getBlob: function _getBlob(markup) {
+  _getBlob: function (markup) {
     return new window.Blob([markup], {
       type: 'image/svg+xml'
     });
   },
-  _getBase64: function _getBase64(markup) {
+  _getBase64: function (markup) {
     return window.btoa(markup);
   }
 };

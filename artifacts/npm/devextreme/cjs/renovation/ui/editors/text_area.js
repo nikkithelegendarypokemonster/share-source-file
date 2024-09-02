@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/renovation/ui/editors/text_area.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -19,13 +19,7 @@ var _editor_label_props = require("./common/editor_label_props");
 var _text_editor_props = require("./common/text_editor_props");
 const _excluded = ["accessKey", "activeStateEnabled", "autoResizeEnabled", "className", "defaultValue", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "inputAttr", "isDirty", "isValid", "label", "labelMode", "maxLength", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "spellCheck", "stylingMode", "tabIndex", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "valueChangeEvent", "visible", "width"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const viewFunction = _ref => {
   let {
@@ -39,194 +33,105 @@ const viewFunction = _ref => {
   }, restAttributes)));
 };
 exports.viewFunction = viewFunction;
-const TextAreaProps = exports.TextAreaProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(_editor.EditorProps), Object.getOwnPropertyDescriptors({
+const TextAreaProps = exports.TextAreaProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(_editor.EditorProps), Object.getOwnPropertyDescriptors({
   autoResizeEnabled: false,
   isReactComponentWrapper: true
 })));
-const TextAreaPropsType = exports.TextAreaPropsType = Object.defineProperties({
+const TextAreaPropsType = exports.TextAreaPropsType = {
+  get autoResizeEnabled() {
+    return TextAreaProps.autoResizeEnabled;
+  },
+  get readOnly() {
+    return TextAreaProps.readOnly;
+  },
+  get name() {
+    return TextAreaProps.name;
+  },
+  get validationError() {
+    return TextAreaProps.validationError;
+  },
+  get validationErrors() {
+    return TextAreaProps.validationErrors;
+  },
+  get validationMessageMode() {
+    return TextAreaProps.validationMessageMode;
+  },
+  get validationMessagePosition() {
+    return TextAreaProps.validationMessagePosition;
+  },
+  get validationStatus() {
+    return TextAreaProps.validationStatus;
+  },
+  get isValid() {
+    return TextAreaProps.isValid;
+  },
+  get isDirty() {
+    return TextAreaProps.isDirty;
+  },
+  get defaultValue() {
+    return _text_editor_props.TextEditorProps.defaultValue;
+  },
+  get className() {
+    return TextAreaProps.className;
+  },
+  get activeStateEnabled() {
+    return _editor_state_props.EditorStateProps.activeStateEnabled;
+  },
+  get disabled() {
+    return TextAreaProps.disabled;
+  },
+  get focusStateEnabled() {
+    return _editor_state_props.EditorStateProps.focusStateEnabled;
+  },
+  get hoverStateEnabled() {
+    return _editor_state_props.EditorStateProps.hoverStateEnabled;
+  },
+  get tabIndex() {
+    return TextAreaProps.tabIndex;
+  },
+  get visible() {
+    return TextAreaProps.visible;
+  },
+  get label() {
+    return _editor_label_props.EditorLabelProps.label;
+  },
+  get labelMode() {
+    return _editor_label_props.EditorLabelProps.labelMode;
+  },
+  get maxLength() {
+    return _text_editor_props.TextEditorProps.maxLength;
+  },
+  get spellCheck() {
+    return _text_editor_props.TextEditorProps.spellCheck;
+  },
+  get valueChangeEvent() {
+    return _text_editor_props.TextEditorProps.valueChangeEvent;
+  },
+  get stylingMode() {
+    return _text_editor_props.TextEditorProps.stylingMode;
+  },
   isReactComponentWrapper: true
-}, {
-  autoResizeEnabled: {
-    get: function () {
-      return TextAreaProps.autoResizeEnabled;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  readOnly: {
-    get: function () {
-      return TextAreaProps.readOnly;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  name: {
-    get: function () {
-      return TextAreaProps.name;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  validationError: {
-    get: function () {
-      return TextAreaProps.validationError;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  validationErrors: {
-    get: function () {
-      return TextAreaProps.validationErrors;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  validationMessageMode: {
-    get: function () {
-      return TextAreaProps.validationMessageMode;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  validationMessagePosition: {
-    get: function () {
-      return TextAreaProps.validationMessagePosition;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  validationStatus: {
-    get: function () {
-      return TextAreaProps.validationStatus;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  isValid: {
-    get: function () {
-      return TextAreaProps.isValid;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  isDirty: {
-    get: function () {
-      return TextAreaProps.isDirty;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  defaultValue: {
-    get: function () {
-      return _text_editor_props.TextEditorProps.defaultValue;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  className: {
-    get: function () {
-      return TextAreaProps.className;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  activeStateEnabled: {
-    get: function () {
-      return _editor_state_props.EditorStateProps.activeStateEnabled;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  disabled: {
-    get: function () {
-      return TextAreaProps.disabled;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  focusStateEnabled: {
-    get: function () {
-      return _editor_state_props.EditorStateProps.focusStateEnabled;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  hoverStateEnabled: {
-    get: function () {
-      return _editor_state_props.EditorStateProps.hoverStateEnabled;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  tabIndex: {
-    get: function () {
-      return TextAreaProps.tabIndex;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  visible: {
-    get: function () {
-      return TextAreaProps.visible;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  label: {
-    get: function () {
-      return _editor_label_props.EditorLabelProps.label;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  labelMode: {
-    get: function () {
-      return _editor_label_props.EditorLabelProps.labelMode;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  maxLength: {
-    get: function () {
-      return _text_editor_props.TextEditorProps.maxLength;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  spellCheck: {
-    get: function () {
-      return _text_editor_props.TextEditorProps.spellCheck;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  valueChangeEvent: {
-    get: function () {
-      return _text_editor_props.TextEditorProps.valueChangeEvent;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  stylingMode: {
-    get: function () {
-      return _text_editor_props.TextEditorProps.stylingMode;
-    },
-    configurable: true,
-    enumerable: true
-  }
-});
-let TextArea = exports.TextArea = /*#__PURE__*/function (_BaseInfernoComponent) {
-  _inheritsLoose(TextArea, _BaseInfernoComponent);
-  function TextArea(props) {
-    var _this;
-    _this = _BaseInfernoComponent.call(this, props) || this;
-    _this.state = {
-      value: _this.props.value !== undefined ? _this.props.value : _this.props.defaultValue
+};
+class TextArea extends _inferno2.BaseInfernoComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: this.props.value !== undefined ? this.props.value : this.props.defaultValue
     };
-    return _this;
   }
-  var _proto = TextArea.prototype;
-  _proto.render = function render() {
+  get componentProps() {
+    return _extends({}, this.props, {
+      value: this.props.value !== undefined ? this.props.value : this.state.value
+    });
+  }
+  get restAttributes() {
+    const _this$props$value = _extends({}, this.props, {
+        value: this.props.value !== undefined ? this.props.value : this.state.value
+      }),
+      restProps = _objectWithoutPropertiesLoose(_this$props$value, _excluded);
+    return restProps;
+  }
+  render() {
     const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
@@ -235,24 +140,7 @@ let TextArea = exports.TextArea = /*#__PURE__*/function (_BaseInfernoComponent) 
       componentProps: this.componentProps,
       restAttributes: this.restAttributes
     });
-  };
-  _createClass(TextArea, [{
-    key: "componentProps",
-    get: function () {
-      return _extends({}, this.props, {
-        value: this.props.value !== undefined ? this.props.value : this.state.value
-      });
-    }
-  }, {
-    key: "restAttributes",
-    get: function () {
-      const _this$props$value = _extends({}, this.props, {
-          value: this.props.value !== undefined ? this.props.value : this.state.value
-        }),
-        restProps = _objectWithoutPropertiesLoose(_this$props$value, _excluded);
-      return restProps;
-    }
-  }]);
-  return TextArea;
-}(_inferno2.BaseInfernoComponent);
+  }
+}
+exports.TextArea = TextArea;
 TextArea.defaultProps = TextAreaPropsType;

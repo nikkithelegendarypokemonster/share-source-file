@@ -1,16 +1,12 @@
 "use strict";
 
 var _options_validator_error_handler = require("../../../scheduler/options_validator/core/options_validator_error_handler");
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-let TestErrorHandler = /*#__PURE__*/function (_OptionsValidatorErro) {
-  _inheritsLoose(TestErrorHandler, _OptionsValidatorErro);
+class TestErrorHandler extends _options_validator_error_handler.OptionsValidatorErrorHandler {
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
-  function TestErrorHandler(errorsMap, globalErrorHandler) {
-    return _OptionsValidatorErro.call(this, errorsMap, globalErrorHandler) || this;
+  constructor(errorsMap, globalErrorHandler) {
+    super(errorsMap, globalErrorHandler);
   }
-  return TestErrorHandler;
-}(_options_validator_error_handler.OptionsValidatorErrorHandler);
+}
 const errorMap = {
   A: 'E0',
   B: 'E1',

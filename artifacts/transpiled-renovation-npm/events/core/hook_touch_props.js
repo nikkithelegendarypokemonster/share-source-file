@@ -1,23 +1,12 @@
 "use strict";
 
-exports.default = _default;
-const touchPropsToHook = ['pageX', 'pageY', 'screenX', 'screenY', 'clientX', 'clientY'];
-const touchPropHook = function (name, event) {
-  if (event[name] && !event.touches || !event.touches) {
-    return event[name];
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    return _m_hook_touch_props.default;
   }
-  const touches = event.touches.length ? event.touches : event.changedTouches;
-  if (!touches.length) {
-    return;
-  }
-  return touches[0][name];
-};
-function _default(callback) {
-  touchPropsToHook.forEach(function (name) {
-    callback(name, function (event) {
-      return touchPropHook(name, event);
-    });
-  }, this);
-}
+});
+var _m_hook_touch_props = _interopRequireDefault(require("../../__internal/events/core/m_hook_touch_props"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 module.exports = exports.default;
 module.exports.default = exports.default;

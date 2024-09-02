@@ -1,7 +1,7 @@
 /**
 * DevExtreme (viz/pie_chart.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -75,687 +75,934 @@ export {
     ShiftLabelOverlap,
 };
 
+/** @public */
 export type PieChartAnnotationLocation = 'center' | 'edge';
+/** @public */
 export type PieChartLegendHoverMode = 'none' | 'allArgumentPoints';
 /**
  * @deprecated Use ShiftLabelOverlap from 'devextreme/common/charts' instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type PieChartLabelOverlap = ShiftLabelOverlap;
+/** @public */
 export type PieChartSegmentDirection = 'anticlockwise' | 'clockwise';
+/** @public */
 export type PieChartSeriesInteractionMode = 'none' | 'onlyPoint';
+/** @public */
 export type PieChartType = 'donut' | 'doughnut' | 'pie';
+/** @public */
 export type SmallValuesGroupingMode = 'none' | 'smallValueThreshold' | 'topN';
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _viz_pie_chart_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxPieChart>;
 
 /**
- * The type of the done event handler&apos;s argument.
+ * @docid _viz_pie_chart_DoneEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DoneEvent = EventInfo<dxPieChart>;
 
 /**
- * The type of the drawn event handler&apos;s argument.
+ * @docid _viz_pie_chart_DrawnEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DrawnEvent = EventInfo<dxPieChart>;
 
 /**
- * The type of the exported event handler&apos;s argument.
+ * @docid _viz_pie_chart_ExportedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ExportedEvent = EventInfo<dxPieChart>;
 
 /**
- * The type of the exporting event handler&apos;s argument.
+ * @docid _viz_pie_chart_ExportingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ExportInfo
  */
 export type ExportingEvent = EventInfo<dxPieChart> & ExportInfo;
 
 /**
- * The type of the fileSaving event handler&apos;s argument.
+ * @docid _viz_pie_chart_FileSavingEvent
+ * @public
+ * @type object
+ * @inherits FileSavingEventInfo
  */
 export type FileSavingEvent = FileSavingEventInfo<dxPieChart>;
 
 /**
- * The type of the incidentOccurred event handler&apos;s argument.
+ * @docid _viz_pie_chart_IncidentOccurredEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,IncidentInfo
  */
 export type IncidentOccurredEvent = EventInfo<dxPieChart> & IncidentInfo;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _viz_pie_chart_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxPieChart>;
 
 /**
- * The type of the legendClick event handler&apos;s argument.
+ * @docid _viz_pie_chart_LegendClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type LegendClickEvent = NativeEventInfo<dxPieChart, MouseEvent | PointerEvent> & {
-  /**
-   * 
-   */
+  /** @docid _viz_pie_chart_LegendClickEvent.target */
   readonly target: string | number;
   /**
-   * 
+   * @docid _viz_pie_chart_LegendClickEvent.points
+   * @type Array<piePointObject>
    */
   readonly points: Array<piePointObject>;
 };
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _viz_pie_chart_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxPieChart> & ChangedOptionInfo;
 
 /**
- * The type of the pointClick event handler&apos;s argument.
+ * @docid _viz_pie_chart_PointClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,PointInteractionInfo
  */
 export type PointClickEvent = NativeEventInfo<dxPieChart, MouseEvent | PointerEvent> & PointInteractionInfo;
 
 /**
- * The type of the pointHoverChanged event handler&apos;s argument.
+ * @docid _viz_pie_chart_PointHoverChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,PointInteractionInfo
  */
 export type PointHoverChangedEvent = EventInfo<dxPieChart> & PointInteractionInfo;
 
 /**
- * The type of the pointSelectionChanged event handler&apos;s argument.
+ * @docid _viz_pie_chart_PointSelectionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,PointInteractionInfo
  */
 export type PointSelectionChangedEvent = EventInfo<dxPieChart> & PointInteractionInfo;
 
 /**
- * The type of the tooltipHidden event handler&apos;s argument.
+ * @docid _viz_pie_chart_TooltipHiddenEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,_viz_chart_components_base_chart_TooltipInfo
  */
 export type TooltipHiddenEvent = EventInfo<dxPieChart> & TooltipInfo;
 
 /**
- * The type of the tooltipShown event handler&apos;s argument.
+ * @docid _viz_pie_chart_TooltipShownEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,_viz_chart_components_base_chart_TooltipInfo
  */
 export type TooltipShownEvent = EventInfo<dxPieChart> & TooltipInfo;
 
 /**
- * An object that provides information about a legend item in the PieChart UI component.
+ * @public
+ * @docid PieChartLegendItem
+ * @namespace DevExpress.viz.dxPieChart
+ * @inherits BaseLegendItem
+ * @type object
  */
 export type LegendItem = PieChartLegendItem;
 
 /**
  * @deprecated Use LegendItem instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.viz
  */
 export interface PieChartLegendItem extends BaseLegendItem {
     /**
-     * The argument of the point(s) that the legend item represents.
+     * @docid
+     * @public
      */
     argument?: string | Date | number;
     /**
-     * The zero-based index of the legend item used to identify the item among other legend items with the same argument.
+     * @docid
+     * @public
      */
     argumentIndex?: number;
     /**
-     * An array of points that the legend item represents. Can contain more than one point only in a multi-series PieChart.
+     * @docid
+     * @public
      */
     points?: Array<piePointObject>;
     /**
-     * The text that the legend item displays.
+     * @docid
+     * @public
      */
     text?: any;
 }
 
 /**
- * Specifies properties for the series of the PieChart UI component.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @inherits dxPieChartSeriesTypes.CommonPieChartSeries
+ * @hidden
+ * @namespace DevExpress.viz
  */
 export interface PieChartSeries extends dxPieChartSeriesTypesCommonPieChartSeries {
     /**
-     * Specifies the name that identifies the series.
+     * @docid
+     * @default undefined
+     * @public
      */
     name?: string;
     /**
-     * Specifies data about a series.
+     * @docid
+     * @default undefined
+     * @public
      */
     tag?: any;
 }
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.viz
+ * @docid
  */
 export interface dxPieChartOptions extends BaseChartOptions<dxPieChart> {
     /**
-     * Specifies adaptive layout properties.
+     * @docid
+     * @type object
+     * @public
      */
     adaptiveLayout?: AdaptiveLayout;
     /**
-     * Specifies a custom template for content in the pie&apos;s center.
+     * @docid
+     * @default undefined
+     * @type_function_return string|SVGElement|jQuery
+     * @public
      */
     centerTemplate?: template | ((component: dxPieChart, element: SVGGElement) => string | UserDefinedElement<SVGElement>);
     /**
-     * An object defining the configuration properties that are common for all series of the PieChart UI component.
+     * @docid
+     * @inherits dxPieChartSeriesTypes.CommonPieChartSeries
+     * @hideDefaults true
+     * @inheritAll
+     * @public
      */
     commonSeriesSettings?: any;
     /**
-     * Specifies the diameter of the pie.
+     * @docid
+     * @default undefined
+     * @public
      */
     diameter?: number;
     /**
-     * Specifies the fraction of the inner radius relative to the total radius in the series of the &apos;doughnut&apos; type. The value should be between 0 and 1.
+     * @docid
+     * @default 0.5
+     * @propertyOf dxPieChartSeriesTypes.DoughnutSeries
+     * @public
      */
     innerRadius?: number;
     /**
-     * Specifies PieChart legend properties.
+     * @docid
+     * @type object
+     * @public
      */
     legend?: Legend;
     /**
-     * Specifies the minimum diameter of the pie.
+     * @docid
+     * @default 0.5
+     * @public
      */
     minDiameter?: number;
     /**
-     * A function that is executed when a legend item is clicked or tapped.
+     * @docid
+     * @default null
+     * @type function
+     * @type_function_param1 e:{viz/pie_chart:LegendClickEvent}
+     * @notUsedInTheme
+     * @action
+     * @public
      */
     onLegendClick?: ((e: LegendClickEvent) => void) | string;
     /**
-     * Sets the palette to be used to colorize series and their elements.
+     * @docid
+     * @default "Material"
+     * @public
      */
     palette?: Array<string> | Palette;
     /**
-     * Specifies how a chart must behave when point labels overlap.
+     * @docid
+     * @default "none"
+     * @public
      */
     resolveLabelOverlapping?: ShiftLabelOverlap;
     /**
-     * Specifies the direction that the pie chart segments will occupy.
+     * @docid
+     * @default 'clockwise'
+     * @public
      */
     segmentsDirection?: PieChartSegmentDirection;
     /**
-     * Specifies properties for the series of the PieChart UI component.
+     * @docid
+     * @default undefined
+     * @hideDefaults true
+     * @inheritAll
+     * @public
      */
     series?: PieChartSeries | Array<PieChartSeries>;
     /**
-     * Defines properties for the series template.
+     * @docid
+     * @default undefined
+     * @notUsedInTheme
+     * @public
      */
     seriesTemplate?: {
       /**
-       * Specifies a callback function that returns a series object with individual series settings.
+       * @docid
        */
       customizeSeries?: ((seriesName: any) => PieChartSeries);
       /**
-       * Specifies a data source field that represents the series name.
+       * @docid
+       * @default 'series'
        */
       nameField?: string;
     };
     /**
-     * Allows you to display several adjoining pies in the same size.
+     * @docid
+     * @default undefined
+     * @public
      */
     sizeGroup?: string;
     /**
-     * Specifies the angle in arc degrees from which the first segment of a pie chart should start.
+     * @docid
+     * @default 0
+     * @public
      */
     startAngle?: number;
     /**
-     * Specifies the type of the pie chart series.
+     * @docid
+     * @default 'pie'
+     * @public
      */
     type?: PieChartType;
     /**
-     * Specifies the annotation collection.
+     * @docid
+     * @inherits dxPieChartOptions.commonAnnotationSettings
+     * @public
      */
     annotations?: Array<dxPieChartAnnotationConfig | any>;
     /**
-     * Specifies settings common for all annotations in the PieChart.
+     * @docid
+     * @public
      */
     commonAnnotationSettings?: dxPieChartCommonAnnotationConfig;
     /**
-     * Customizes an individual annotation.
+     * @docid
+     * @default undefined
+     * @notUsedInTheme
+     * @public
      */
     customizeAnnotation?: ((annotation: dxPieChartAnnotationConfig | any) => dxPieChartAnnotationConfig);
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @inherits dxPieChartCommonAnnotationConfig
+ * @namespace DevExpress.viz
  */
 export interface dxPieChartAnnotationConfig extends dxPieChartCommonAnnotationConfig {
     /**
-     * Specifies the annotation&apos;s name.
+     * @docid
+     * @default undefined
+     * @public
      */
     name?: string;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @inherits BaseWidgetAnnotationConfig
+ * @namespace DevExpress.viz
  */
 export interface dxPieChartCommonAnnotationConfig extends BaseWidgetAnnotationConfig {
     /**
-     * Specifies an annotation&apos;s position on the surface of a specific argument.
+     * @docid
+     * @default 'center'
+     * @public
      */
     location?: PieChartAnnotationLocation;
     /**
-     * Positions the annotation relative to a specific argument.
+     * @docid
+     * @default undefined
+     * @public
      */
     argument?: number | Date | string;
     /**
-     * Anchors the annotation to a series point. Accepts the name of the point&apos;s series.
+     * @docid
+     * @default undefined
+     * @public
      */
     series?: string;
     /**
-     * Customizes the text and appearance of the annotation&apos;s tooltip.
+     * @docid
+     * @type_function_return object
+     * @default undefined
+     * @notUsedInTheme
+     * @public
      */
     customizeTooltip?: ((annotation: dxPieChartAnnotationConfig | any) => any);
     /**
-     * Specifies a custom template for the annotation. Applies only if the type is &apos;custom&apos;.
+     * @docid
+     * @default undefined
+     * @type_function_param1 annotation:dxPieChartCommonAnnotationConfig|any
+     * @type_function_return string|SVGElement|jQuery
+     * @public
      */
     template?: template | ((annotation: dxPieChartAnnotationConfig | any, element: SVGGElement) => string | UserDefinedElement<SVGElement>);
     /**
-     * Specifies a custom template for an annotation&apos;s tooltip.
+     * @docid
+     * @type_function_return string|Element|jQuery
+     * @default undefined
+     * @public
      */
     tooltipTemplate?: template | ((annotation: dxPieChartAnnotationConfig | any, element: DxElement) => string | UserDefinedElement);
 }
 /**
- * Specifies adaptive layout properties.
+ * @public
+ * @docid dxPieChartAdaptiveLayout
  */
 export type AdaptiveLayout = BaseChartAdaptiveLayout & {
     /**
-     * Specifies whether point labels should be kept when the UI component adapts the layout.
+     * @docid dxPieChartOptions.adaptiveLayout.keepLabels
+     * @default false
+     * @public
      */
     keepLabels?: boolean;
 };
 /**
- * Specifies PieChart legend properties.
- */
+ * @public
+ * @docid dxPieChartLegend
+ * */
 export type Legend = BaseChartLegend & {
     /**
-     * Specifies the text for a hint that appears when a user hovers the mouse pointer over a legend item.
+     * @docid dxPieChartOptions.legend.customizeHint
+     * @public
      */
     customizeHint?: ((pointInfo: { pointName?: any; pointIndex?: number; pointColor?: string }) => string);
     /**
-     * Allows you to change the order, text, and visibility of legend items.
+     * @docid dxPieChartOptions.legend.customizeItems
+     * @type_function_param1 items:Array<PieChartLegendItem>
+     * @type_function_return Array<PieChartLegendItem>
+     * @public
      */
     customizeItems?: ((items: Array<LegendItem>) => Array<LegendItem>);
     /**
-     * Specifies a callback function that returns the text to be displayed by a legend item.
+     * @docid dxPieChartOptions.legend.customizeText
+     * @notUsedInTheme
+     * @public
      */
     customizeText?: ((pointInfo: { pointName?: any; pointIndex?: number; pointColor?: string }) => string);
     /**
-     * Specifies what chart elements to highlight when a corresponding item in the legend is hovered over.
+     * @docid dxPieChartOptions.legend.hoverMode
+     * @default 'allArgumentPoints'
+     * @public
      */
     hoverMode?: PieChartLegendHoverMode;
     /**
-     * Specifies an SVG element that serves as a custom legend item marker.
+     * @docid dxPieChartOptions.legend.markerTemplate
+     * @default undefined
+     * @type_function_param1 legendItem:PieChartLegendItem
+     * @type_function_return string|SVGElement|jQuery
+     * @public
      */
     markerTemplate?: template | ((legendItem: LegendItem, element: SVGGElement) => string | UserDefinedElement<SVGElement>);
 };
 /**
- * The PieChart is a UI component that visualizes data as a circle divided into sectors that each represents a portion of the whole.
+ * @docid
+ * @inherits BaseChart
+ * @namespace DevExpress.viz
+ * @public
  */
 export default class dxPieChart extends BaseChart<dxPieChartOptions> {
     /**
-     * Gets the radius of the doughnut hole in pixels. Applies only when the type is &apos;doughnut&apos; or &apos;donut&apos;.
+     * @docid
+     * @publicName getInnerRadius()
+     * @public
      */
     getInnerRadius(): number;
 }
 
 /**
- * This section lists the objects that define properties to be used to configure series of particular types.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.viz
  */
 export interface dxPieChartSeriesTypes {
     /**
-     * An object that defines configuration properties for chart series.
+     * @docid
+     * @type object
+     * @hidden
      */
     CommonPieChartSeries?: dxPieChartSeriesTypesCommonPieChartSeries;
     /**
-     * An object defining a series of the doughnut type.
+     * @docid
+     * @inherits dxPieChartSeriesTypes.CommonPieChartSeries
+     * @public
      */
     DoughnutSeries?: any;
     /**
-     * An object defining a series of the pie type.
+     * @docid
+     * @inherits dxPieChartSeriesTypes.CommonPieChartSeries
+     * @public
      */
     PieSeries?: any;
 }
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @namespace DevExpress.viz */
 export interface dxPieChartSeriesTypesCommonPieChartSeries {
     /**
-     * Specifies the data source field that provides arguments for series points.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.argumentField
+     * @default 'arg'
+     * @public
      */
     argumentField?: string;
     /**
-     * Specifies the required type for series arguments.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.argumentType
+     * @default undefined
+     * @public
      */
     argumentType?: ChartsDataType;
     /**
-     * An object defining the series border configuration properties.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.border
+     * @public
      */
     border?: {
       /**
-       * Sets a border color for a series.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.border.color
+       * @default undefined
        */
       color?: string;
       /**
-       * Specifies a dash style for the border of a series point.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.border.dashStyle
+       * @default undefined
        */
       dashStyle?: DashStyle;
       /**
-       * Sets border visibility for a series.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.border.visible
+       * @default false
        */
       visible?: boolean;
       /**
-       * Sets a border width for a series in pixels.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.border.width
+       * @default 2
        */
       width?: number;
     };
     /**
-     * Specifies a series color.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.color
+     * @default undefined
+     * @public
      */
     color?: string | ChartsColor;
     /**
-     * Specifies the chart elements to highlight when a series is hovered over.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverMode
+     * @default 'onlyPoint'
+     * @public
      */
     hoverMode?: PieChartSeriesInteractionMode;
     /**
-     * An object defining configuration properties for a hovered series.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverStyle
+     * @public
      */
     hoverStyle?: {
       /**
-       * An object defining the border properties for a hovered series.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverStyle.border
        */
       border?: {
           /**
-           * Sets a border color for the series when it is hovered over.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverStyle.border.color
+           * @default undefined
            */
           color?: string;
           /**
-           * Specifies a dash style for the border of a series point when this point is hovered over.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverStyle.border.dashStyle
+           * @default undefined
            */
           dashStyle?: DashStyle;
           /**
-           * Sets border visibility for a hovered series.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverStyle.border.visible
+           * @default false
            */
           visible?: boolean;
           /**
-           * Sets a border width for a hovered series.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverStyle.border.width
+           * @default 3
            */
           width?: number;
       };
       /**
-       * Sets the color for the series when it is hovered over.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverStyle.color
+       * @default undefined
        */
       color?: string | ChartsColor;
       /**
-       * Specifies the hatching properties to be applied when a point is hovered over.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverStyle.hatching
        */
       hatching?: {
           /**
-           * Specifies how to apply hatching to highlight the hovered point.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverStyle.hatching.direction
+           * @default 'right'
            */
           direction?: HatchDirection;
           /**
-           * Specifies the opacity of hatching lines.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverStyle.hatching.opacity
+           * @default 0.75
            */
           opacity?: number;
           /**
-           * Specifies the distance between two hatching lines in pixels.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverStyle.hatching.step
+           * @default 10
            */
           step?: number;
           /**
-           * Specifies the width of hatching lines in pixels.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverStyle.hatching.width
+           * @default 4
            */
           width?: number;
       };
       /**
-       * Specifies whether to lighten the series when a user points to it.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.hoverStyle.highlight
+       * @default true
        */
       highlight?: boolean;
     };
     /**
-     * An object defining the label configuration properties.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label
+     * @public
      */
     label?: {
       /**
-       * Formats the point argument before it is displayed in the point label. To format the point value, use the format property.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.argumentFormat
+       * @default undefined
        */
       argumentFormat?: Format;
       /**
-       * Colors the point labels&apos; background. The default color is inherited from the points.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.backgroundColor
+       * @default undefined
        */
       backgroundColor?: string;
       /**
-       * Specifies border properties for point labels.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.border
        */
       border?: {
           /**
-           * Specifies a border color for point labels.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.border.color
+           * @default  '#d3d3d3'
            */
           color?: string;
           /**
-           * Specifies a dash style for the borders of point labels.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.border.dashStyle
+           * @default 'solid'
            */
           dashStyle?: DashStyle;
           /**
-           * Indicates whether or not borders are visible in point labels.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.border.visible
+           * @default false
            */
           visible?: boolean;
           /**
-           * Specifies the border width for point labels.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.border.width
+           * @default 1
            */
           width?: number;
       };
       /**
-       * Specifies connector properties for series point labels.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.connector
        */
       connector?: {
           /**
-           * Specifies the color of label connectors.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.connector.color
+           * @default undefined
            */
           color?: string;
           /**
-           * Indicates whether or not label connectors are visible.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.connector.visible
+           * @default false
            */
           visible?: boolean;
           /**
-           * Specifies the width of label connectors.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.connector.width
+           * @default 1
            */
           width?: number;
       };
       /**
-       * Specifies a callback function that returns the text to be displayed by point labels.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.customizeText
+       * @type_function_param1 pointInfo:object
+       * @notUsedInTheme
        */
       customizeText?: ((pointInfo: any) => string);
       /**
-       * Specifies font properties for the text displayed in point labels.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.font
+       * @default '#FFFFFF' &prop(color)
+       * @default 14 &prop(size)
        */
       font?: Font;
       /**
-       * Formats a value before it is displayed in a point label.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.format
+       * @default undefined
        */
       format?: Format;
       /**
-       * Specifies a label position relative to the chart.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.position
+       * @default 'outside'
        */
       position?: LabelPosition;
       /**
-       * Specifies how to shift labels from their initial position in a radial direction in pixels.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.radialOffset
+       * @default 0
        */
       radialOffset?: number;
       /**
-       * Specifies the angle used to rotate point labels from their initial position.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.rotationAngle
+       * @default 0
        */
       rotationAngle?: number;
       /**
-       * Specifies what to do with label texts that overflow the allocated space after applying wordWrap: hide, truncate them and display an ellipsis, or do nothing.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.textOverflow
+       * @default 'ellipsis'
        */
       textOverflow?: TextOverflow;
       /**
-       * Specifies the visibility of point labels.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.visible
+       * @default false
        */
       visible?: boolean;
       /**
-       * Specifies how to wrap label texts if they do not fit into a single line.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.wordWrap
+       * @default 'normal'
        */
       wordWrap?: WordWrap;
       /**
-        * Specifies the label&apos;s text.
-        */
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.label.displayFormat
+       * @default undefined
+       * @public
+       */
        displayFormat?: string;
     };
     /**
-     * Specifies how many points are acceptable to be in a series to display all labels for these points. Otherwise, the labels will not be displayed.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.maxLabelCount
+     * @default undefined
+     * @public
      */
     maxLabelCount?: number;
     /**
-     * Specifies a minimal size of a displayed pie segment.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.minSegmentSize
+     * @default undefined
+     * @public
      */
     minSegmentSize?: number;
     /**
-     * Specifies the chart elements to highlight when the series is selected.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionMode
+     * @default 'onlyPoint'
+     * @public
      */
     selectionMode?: PieChartSeriesInteractionMode;
     /**
-     * An object defining configuration properties for the series when it is selected.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionStyle
+     * @public
      */
     selectionStyle?: {
       /**
-       * An object defining the border properties for a selected series.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionStyle.border
        */
       border?: {
           /**
-           * Sets a border color for a selected series.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionStyle.border.color
+           * @default undefined
            */
           color?: string;
           /**
-           * Specifies a dash style for the border of a selected series point.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionStyle.border.dashStyle
+           * @default undefined
            */
           dashStyle?: DashStyle;
           /**
-           * Sets a border visibility for a selected series.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionStyle.border.visible
+           * @default false
            */
           visible?: boolean;
           /**
-           * Sets a border width for a selected series.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionStyle.border.width
+           * @default 3
            */
           width?: number;
       };
       /**
-       * Sets the color for a series when it is selected.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionStyle.color
+       * @default undefined
        */
       color?: string | ChartsColor;
       /**
-       * Specifies the hatching properties to be applied when a point is selected.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionStyle.hatching
        */
       hatching?: {
           /**
-           * Specifies how to apply hatching to highlight the selected point.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionStyle.hatching.direction
+           * @default 'right'
            */
           direction?: HatchDirection;
           /**
-           * Specifies the opacity of hatching lines.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionStyle.hatching.opacity
+           * @default 0.5
            */
           opacity?: number;
           /**
-           * Specifies the distance between two hatching lines in pixels.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionStyle.hatching.step
+           * @default 10
            */
           step?: number;
           /**
-           * Specifies the width of hatching lines in pixels.
+           * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionStyle.hatching.width
+           * @default 4
            */
           width?: number;
       };
       /**
-       * Specifies whether to lighten the series when a user selects it.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.selectionStyle.highlight
+       * @default true
        */
       highlight?: boolean;
     };
     /**
-     * Specifies chart segment grouping properties.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.smallValuesGrouping
+     * @public
      */
     smallValuesGrouping?: {
       /**
-       * Specifies the name of the grouped chart segment. This name represents the segment in the chart legend.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.smallValuesGrouping.groupName
+       * @default 'others'
        */
       groupName?: string;
       /**
-       * Specifies the segment grouping mode.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.smallValuesGrouping.mode
+       * @default 'none'
        */
       mode?: SmallValuesGroupingMode;
       /**
-       * Specifies a threshold for segment values.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.smallValuesGrouping.threshold
+       * @default undefined
        */
       threshold?: number;
       /**
-       * Specifies how many segments must not be grouped.
+       * @docid dxPieChartSeriesTypes.CommonPieChartSeries.smallValuesGrouping.topCount
+       * @default undefined
        */
       topCount?: number;
     };
     /**
-     * Specifies the name of the data source field that provides data about a point.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.tagField
+     * @default 'tag'
+     * @public
      */
     tagField?: string;
     /**
-     * Specifies the data source field that provides values for series points.
+     * @docid dxPieChartSeriesTypes.CommonPieChartSeries.valueField
+     * @default 'val'
+     * @public
      */
     valueField?: string;
 }
 
 /**
- * This section describes the Point object, which represents a series point.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @publicName Point
+ * @type object
+ * @inherits basePointObject
+ * @namespace DevExpress.viz
  */
 export interface piePointObject extends basePointObject {
     /**
-     * Hides a specific point.
+     * @docid
+     * @publicName hide()
+     * @public
      */
     hide(): void;
     /**
-     * Provides information about the visibility state of a point.
+     * @docid
+     * @publicName isVisible()
+     * @public
      */
     isVisible(): boolean;
     /**
-     * Gets the percentage value of the specific point.
+     * @docid
+     * @public
      */
     percent?: string | number | Date;
     /**
-     * Makes a specific point visible.
+     * @docid
+     * @publicName show()
+     * @public
      */
     show(): void;
 }
 
 /**
- * This section describes the Series object, which represents a series.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @publicName Series
+ * @type object
+ * @inherits baseSeriesObject
+ * @namespace DevExpress.viz
  */
 export interface pieChartSeriesObject extends baseSeriesObject {
   /**
-   * Switches the series into the hover state, the same as when a user places the mouse pointer on it.
+   * @docid
+   * @publicName hover()
+   * @hidden
    */
   hover(): void;
   /**
-   * Switches the series from the hover state back to normal.
+   * @docid
+   * @publicName clearHover()
+   * @hidden
    */
   clearHover(): void;
   /**
-   * Provides information about the hover state of a series.
+   * @docid
+   * @publicName isHovered()
+   * @hidden
    */
   isHovered(): boolean;
 }
 
+/** @public */
 export type Properties = dxPieChartOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxPieChartOptions;
 
 // #region deprecated in v23.1
 
-/**
- * @deprecated Use AdaptiveLayout instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated Use AdaptiveLayout instead */
 export type dxPieChartAdaptiveLayout = AdaptiveLayout;
 
-/**
- * @deprecated Use Legend instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated Use Legend instead */
 export type dxPieChartLegend = Legend;
 
 // #endregion

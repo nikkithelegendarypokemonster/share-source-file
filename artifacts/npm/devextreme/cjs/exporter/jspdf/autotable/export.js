@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/exporter/jspdf/autotable/export.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -139,12 +139,10 @@ const Export = exports.Export = {
                 row.push(pdfCell);
               }
             } else if (gridCell.rowType === 'group' && !(0, _type.isDefined)(pdfCell.content) && row.length === 1) {
-              var _row$0$colSpan;
-              row[0].colSpan = (_row$0$colSpan = row[0].colSpan) !== null && _row$0$colSpan !== void 0 ? _row$0$colSpan : 1;
+              row[0].colSpan = row[0].colSpan ?? 1;
               row[0].colSpan++;
             } else {
-              var _pdfCell$content;
-              pdfCell.content = (_pdfCell$content = pdfCell.content) !== null && _pdfCell$content !== void 0 ? _pdfCell$content : '';
+              pdfCell.content = pdfCell.content ?? '';
               if ((0, _type.isFunction)(customizeCell)) {
                 customizeCell({
                   gridCell,

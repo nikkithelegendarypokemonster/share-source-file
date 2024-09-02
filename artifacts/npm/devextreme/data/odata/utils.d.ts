@@ -1,23 +1,31 @@
 /**
 * DevExtreme (data/odata/utils.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /**
- * The EdmLiteral is an object for working with primitive data types from the OData&apos;s Abstract Type System that are not supported in JavaScript.
+ * @docid
+ * @namespace DevExpress.data
+ * @public
  */
 export class EdmLiteral {
     constructor(value: string);
     /**
-     * Gets the EdmLiteral&apos;s value converted to a string.
+     * @docid
+     * @publicName valueOf()
+     * @public
      */
     valueOf(): string;
 }
 
 /**
-                                                                                                                                                      * Contains built-in OData type converters (for String, Int32, Int64, Boolean, Single, Decimal, and Guid) and allows you to register a custom type converter.
-                                                                                                                                                      */
-                                                                                                                                                     export var keyConverters: any;
+ * @const Utils.keyConverters
+ * @publicName odata.keyConverters
+ * @namespace DevExpress.data.utils.odata
+ * @public
+ */
+// eslint-disable-next-line vars-on-top, import/no-mutable-exports, no-var, @typescript-eslint/init-declarations, @typescript-eslint/no-explicit-any
+export var keyConverters: any;

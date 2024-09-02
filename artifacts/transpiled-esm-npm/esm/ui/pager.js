@@ -1,2 +1,4 @@
-import Widget from '../renovation/ui/pager/pager.j';
-export default Widget;
+import Pager from '../__internal/pager/wrappers/pager';
+import registerComponent from '../core/component_registrator';
+export default Pager;
+registerComponent('dxPager', Pager);

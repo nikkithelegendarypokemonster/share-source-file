@@ -1,15 +1,15 @@
 /**
 * DevExtreme (esm/viz/gauges/linear_gauge.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { each as _each } from '../../core/utils/iterator';
-var _max = Math.max;
-var _min = Math.min;
-var _round = Math.round;
+const _max = Math.max;
+const _min = Math.min;
+const _round = Math.round;
 import registerComponent from '../../core/component_registrator';
 import { extend } from '../../core/utils/extend';
 import { clone } from '../../core/utils/object';
@@ -18,7 +18,7 @@ import { dxGauge, createIndicatorCreator } from './common';
 import { normalizeEnum as _normalizeEnum } from '../core/utils';
 import * as linearIndicators from './linear_indicators';
 import LinearRangeContainer from './linear_range_container';
-var dxLinearGauge = dxGauge.inherit({
+const dxLinearGauge = dxGauge.inherit({
   _rootClass: 'dxg-linear-gauge',
   _factoryMethods: {
     rangeContainer: 'createLinearRangeContainer',
@@ -29,31 +29,31 @@ var dxLinearGauge = dxGauge.inherit({
     type: 'xyAxes',
     drawingType: 'linear'
   },
-  _getTicksOrientation: function _getTicksOrientation(scaleOptions) {
+  _getTicksOrientation: function (scaleOptions) {
     return scaleOptions.isHorizontal ? scaleOptions.verticalOrientation : scaleOptions.horizontalOrientation;
   },
   _getThemeManagerOptions() {
-    var options = this.callBase.apply(this, arguments);
+    const options = this.callBase.apply(this, arguments);
     options.subTheme = '_linear';
     return options;
   },
   _getInvertedState() {
     return !this._area.vertical && this.option('rtlEnabled');
   },
-  _prepareScaleSettings: function _prepareScaleSettings() {
-    var scaleOptions = this.callBase();
+  _prepareScaleSettings: function () {
+    const scaleOptions = this.callBase();
     scaleOptions.inverted = this._getInvertedState();
     return scaleOptions;
   },
-  _updateScaleTickIndent: function _updateScaleTickIndent(scaleOptions) {
-    var indentFromTick = scaleOptions.label.indentFromTick;
-    var length = scaleOptions.tick.length;
-    var textParams = this._scale.measureLabels(extend({}, this._canvas));
-    var verticalTextCorrection = scaleOptions.isHorizontal ? textParams.height + textParams.y : 0;
-    var isIndentPositive = indentFromTick > 0;
-    var orientation;
-    var textCorrection;
-    var tickCorrection;
+  _updateScaleTickIndent: function (scaleOptions) {
+    const indentFromTick = scaleOptions.label.indentFromTick;
+    const length = scaleOptions.tick.length;
+    const textParams = this._scale.measureLabels(extend({}, this._canvas));
+    const verticalTextCorrection = scaleOptions.isHorizontal ? textParams.height + textParams.y : 0;
+    const isIndentPositive = indentFromTick > 0;
+    let orientation;
+    let textCorrection;
+    let tickCorrection;
     if (scaleOptions.isHorizontal) {
       orientation = isIndentPositive ? {
         center: 0.5,
@@ -82,11 +82,11 @@ var dxLinearGauge = dxGauge.inherit({
     scaleOptions.label.indentFromAxis = -indentFromTick + (isIndentPositive ? -tickCorrection + textCorrection : tickCorrection - verticalTextCorrection);
     this._scale.updateOptions(scaleOptions);
   },
-  _shiftScale: function _shiftScale(layout, scaleOptions) {
-    var that = this;
-    var canvas = extend({}, that._canvas);
-    var isHorizontal = scaleOptions.isHorizontal;
-    var scale = that._scale;
+  _shiftScale: function (layout, scaleOptions) {
+    const that = this;
+    const canvas = extend({}, that._canvas);
+    const isHorizontal = scaleOptions.isHorizontal;
+    const scale = that._scale;
     canvas[isHorizontal ? 'left' : 'top'] = that._area[isHorizontal ? 'startCoord' : 'endCoord'];
     canvas[isHorizontal ? 'right' : 'bottom'] = canvas[isHorizontal ? 'width' : 'height'] - that._area[isHorizontal ? 'endCoord' : 'startCoord'];
     scale.draw(canvas);
@@ -95,12 +95,12 @@ var dxLinearGauge = dxGauge.inherit({
       top: -layout.y
     });
   },
-  _setupCodomain: function _setupCodomain() {
-    var that = this;
-    var geometry = that.option('geometry') || {};
-    var vertical = _normalizeEnum(geometry.orientation) === 'vertical';
-    var initialStartCoord = -100;
-    var initialEndCoord = 100;
+  _setupCodomain: function () {
+    const that = this;
+    const geometry = that.option('geometry') || {};
+    const vertical = _normalizeEnum(geometry.orientation) === 'vertical';
+    const initialStartCoord = -100;
+    const initialEndCoord = 100;
     that._area = {
       vertical: vertical,
       x: 0,
@@ -112,11 +112,11 @@ var dxLinearGauge = dxGauge.inherit({
     that._translator.setInverted(that._getInvertedState());
     that._translator.setCodomain(initialStartCoord, initialEndCoord);
   },
-  _getScaleLayoutValue: function _getScaleLayoutValue() {
+  _getScaleLayoutValue: function () {
     return this._area[this._area.vertical ? 'x' : 'y'];
   },
-  _getTicksCoefficients: function _getTicksCoefficients(options) {
-    var coefs = {
+  _getTicksCoefficients: function (options) {
+    const coefs = {
       inner: 0,
       outer: 1
     };
@@ -137,8 +137,8 @@ var dxLinearGauge = dxGauge.inherit({
     }
     return coefs;
   },
-  _correctScaleIndents: function _correctScaleIndents(result, indentFromTick, textParams) {
-    var vertical = this._area.vertical;
+  _correctScaleIndents: function (result, indentFromTick, textParams) {
+    const vertical = this._area.vertical;
     if (indentFromTick >= 0) {
       result.max += indentFromTick + textParams[vertical ? 'width' : 'height'];
     } else {
@@ -146,16 +146,16 @@ var dxLinearGauge = dxGauge.inherit({
     }
     result.indent = textParams[vertical ? 'height' : 'width'] / 2;
   },
-  _measureMainElements: function _measureMainElements(elements, scaleMeasurement) {
-    var that = this;
-    var x = that._area.x;
-    var y = that._area.y;
-    var minBound = 1000;
-    var maxBound = 0;
-    var indent = 0;
-    var scale = that._scale;
+  _measureMainElements: function (elements, scaleMeasurement) {
+    const that = this;
+    const x = that._area.x;
+    const y = that._area.y;
+    let minBound = 1000;
+    let maxBound = 0;
+    let indent = 0;
+    const scale = that._scale;
     _each(elements.concat(scale), function (_, element) {
-      var bounds = element.measure ? element.measure({
+      const bounds = element.measure ? element.measure({
         x: x + element.getOffset(),
         y: y + element.getOffset()
       }) : scaleMeasurement;
@@ -169,12 +169,12 @@ var dxLinearGauge = dxGauge.inherit({
       indent: indent
     };
   },
-  _applyMainLayout: function _applyMainLayout(elements, scaleMeasurement) {
-    var that = this;
-    var measurements = that._measureMainElements(elements, scaleMeasurement);
-    var area = that._area;
-    var rect;
-    var offset;
+  _applyMainLayout: function (elements, scaleMeasurement) {
+    const that = this;
+    const measurements = that._measureMainElements(elements, scaleMeasurement);
+    const area = that._area;
+    let rect;
+    let offset;
     if (area.vertical) {
       rect = selectRectBySizes(that._innerRect, {
         width: measurements.maxBound - measurements.minBound
@@ -195,22 +195,22 @@ var dxLinearGauge = dxGauge.inherit({
     that._translator.setCodomain(area.startCoord, area.endCoord);
     that._innerRect = rect;
   },
-  _getElementLayout: function _getElementLayout(offset) {
+  _getElementLayout: function (offset) {
     return {
       x: _round(this._area.x + offset),
       y: _round(this._area.y + offset)
     };
   },
-  _getApproximateScreenRange: function _getApproximateScreenRange() {
-    var that = this;
-    var area = that._area;
-    var s = area.vertical ? that._canvas.height : that._canvas.width;
+  _getApproximateScreenRange: function () {
+    const that = this;
+    const area = that._area;
+    let s = area.vertical ? that._canvas.height : that._canvas.width;
     s > area.totalSize && (s = area.totalSize);
     s = s * 0.8;
     return s;
   },
-  _getDefaultSize: function _getDefaultSize() {
-    var geometry = this.option('geometry') || {};
+  _getDefaultSize: function () {
+    const geometry = this.option('geometry') || {};
     if (geometry.orientation === 'vertical') {
       return {
         width: 100,
@@ -226,8 +226,8 @@ var dxLinearGauge = dxGauge.inherit({
   _factory: clone(BaseGauge.prototype._factory)
 });
 function selectRectBySizes(srcRect, sizes, margins) {
-  var rect = extend({}, srcRect);
-  var step;
+  const rect = extend({}, srcRect);
+  let step;
   margins = margins || {};
   if (sizes) {
     rect.left += margins.left || 0;
@@ -251,7 +251,7 @@ function selectRectBySizes(srcRect, sizes, margins) {
   }
   return rect;
 }
-var indicators = dxLinearGauge.prototype._factory.indicators = {};
+const indicators = dxLinearGauge.prototype._factory.indicators = {};
 dxLinearGauge.prototype._factory.createIndicator = createIndicatorCreator(indicators);
 
 /* eslint-disable import/namespace */

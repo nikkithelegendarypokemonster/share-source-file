@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/appointments/m_appointment_layout.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -17,7 +17,7 @@ var _renderer = _interopRequireDefault(require("../../../core/renderer"));
 var _message = _interopRequireDefault(require("../../../localization/message"));
 var _m_classes = require("../m_classes");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-const allDayText = " ".concat(_message.default.format('dxScheduler-allDay'), ": ");
+const allDayText = ` ${_message.default.format('dxScheduler-allDay')}: `;
 const createAppointmentLayout = (formatText, config) => {
   const result = (0, _renderer.default)(_dom_adapter.default.createDocumentFragment());
   (0, _renderer.default)('<div>').text(formatText.text).addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_TITLE).appendTo(result);
@@ -26,7 +26,7 @@ const createAppointmentLayout = (formatText, config) => {
   }
   const $contentDetails = (0, _renderer.default)('<div>').addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_CONTENT_DETAILS).appendTo(result);
   (0, _renderer.default)('<div>').addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_DATE).text(formatText.formatDate).appendTo($contentDetails);
-  config.isRecurrence && (0, _renderer.default)('<span>').addClass("".concat(_m_classes.APPOINTMENT_CONTENT_CLASSES.RECURRING_ICON, " dx-icon-repeat")).appendTo(result);
+  config.isRecurrence && (0, _renderer.default)('<span>').addClass(`${_m_classes.APPOINTMENT_CONTENT_CLASSES.RECURRING_ICON} dx-icon-repeat`).appendTo(result);
   config.isAllDay && (0, _renderer.default)('<div>').text(allDayText).addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.ALL_DAY_CONTENT).prependTo($contentDetails);
   return result;
 };
@@ -37,7 +37,7 @@ const createAgendaAppointmentLayout = (formatText, config) => {
   const rightLayoutContainer = (0, _renderer.default)('<div>').addClass('dx-scheduler-agenda-appointment-right-layout').appendTo(result);
   // eslint-disable-next-line no-unused-vars
   const marker = (0, _renderer.default)('<div>').addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.AGENDA_MARKER).appendTo(leftLayoutContainer);
-  config.isRecurrence && (0, _renderer.default)('<span>').addClass("".concat(_m_classes.APPOINTMENT_CONTENT_CLASSES.RECURRING_ICON, " dx-icon-repeat")).appendTo(marker);
+  config.isRecurrence && (0, _renderer.default)('<span>').addClass(`${_m_classes.APPOINTMENT_CONTENT_CLASSES.RECURRING_ICON} dx-icon-repeat`).appendTo(marker);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const text = (0, _renderer.default)('<div>').addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_TITLE).text(formatText.text).appendTo(rightLayoutContainer);
   const additionalContainer = (0, _renderer.default)('<div>').addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_CONTENT_DETAILS).appendTo(rightLayoutContainer);

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/workspaces/m_work_space_grouped_strategy_horizontal.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,14 +13,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _position = require("../../../core/utils/position");
+var _const = require("../../scheduler/workspaces/const");
 var _m_classes = require("../m_classes");
-let HorizontalGroupedStrategy = /*#__PURE__*/function () {
-  function HorizontalGroupedStrategy(_workSpace) {
+class HorizontalGroupedStrategy {
+  constructor(_workSpace) {
     this._workSpace = _workSpace;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  var _proto = HorizontalGroupedStrategy.prototype;
-  _proto.prepareCellIndexes = function prepareCellIndexes(cellCoordinates, groupIndex, inAllDay) {
+  prepareCellIndexes(cellCoordinates, groupIndex, inAllDay) {
     const groupByDay = this._workSpace.isGroupedByDate();
     if (!groupByDay) {
       return {
@@ -32,46 +32,46 @@ let HorizontalGroupedStrategy = /*#__PURE__*/function () {
       rowIndex: cellCoordinates.rowIndex,
       columnIndex: cellCoordinates.columnIndex * this._workSpace._getGroupCount() + groupIndex
     };
-  };
-  _proto.getGroupIndex = function getGroupIndex(rowIndex, columnIndex) {
+  }
+  getGroupIndex(rowIndex, columnIndex) {
     const groupByDay = this._workSpace.isGroupedByDate();
     const groupCount = this._workSpace._getGroupCount();
     if (groupByDay) {
       return columnIndex % groupCount;
     }
     return Math.floor(columnIndex / this._workSpace._getCellCount());
-  };
-  _proto.calculateHeaderCellRepeatCount = function calculateHeaderCellRepeatCount() {
+  }
+  calculateHeaderCellRepeatCount() {
     return this._workSpace._getGroupCount() || 1;
-  };
-  _proto.insertAllDayRowsIntoDateTable = function insertAllDayRowsIntoDateTable() {
+  }
+  insertAllDayRowsIntoDateTable() {
     return false;
-  };
-  _proto.getTotalCellCount = function getTotalCellCount(groupCount) {
+  }
+  getTotalCellCount(groupCount) {
     groupCount = groupCount || 1;
     return this._workSpace._getCellCount() * groupCount;
-  };
-  _proto.getTotalRowCount = function getTotalRowCount() {
+  }
+  getTotalRowCount() {
     return this._workSpace._getRowCount();
-  };
-  _proto.calculateTimeCellRepeatCount = function calculateTimeCellRepeatCount() {
+  }
+  calculateTimeCellRepeatCount() {
     return 1;
-  };
-  _proto.getWorkSpaceMinWidth = function getWorkSpaceMinWidth() {
-    return (0, _position.getBoundingRect)(this._workSpace.$element().get(0)).width - this._workSpace.getTimePanelWidth();
-  };
-  _proto.getAllDayOffset = function getAllDayOffset() {
+  }
+  getWorkSpaceMinWidth() {
+    const workSpaceElementWidth = (0, _position.getBoundingRect)(this._workSpace.$element().get(0)).width;
+    return workSpaceElementWidth - this._workSpace.getTimePanelWidth() - 2 * _const.WORK_SPACE_BORDER_PX;
+  }
+  getAllDayOffset() {
     return this._workSpace.getAllDayHeight();
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.getGroupCountClass = function getGroupCountClass(groups) {
+  getGroupCountClass(groups) {
     return undefined;
-  };
-  _proto.getLeftOffset = function getLeftOffset() {
+  }
+  getLeftOffset() {
     return this._workSpace.getTimePanelWidth();
-  };
-  _proto._createGroupBoundOffset = function _createGroupBoundOffset(startCell, endCell, cellWidth) {
+  }
+  _createGroupBoundOffset(startCell, endCell, cellWidth) {
     const extraOffset = cellWidth / 2;
     const startOffset = startCell ? startCell.offset().left - extraOffset : 0;
     const endOffset = endCell ? endCell.offset().left + cellWidth + extraOffset : 0;
@@ -81,15 +81,15 @@ let HorizontalGroupedStrategy = /*#__PURE__*/function () {
       top: 0,
       bottom: 0
     };
-  };
-  _proto._getGroupedByDateBoundOffset = function _getGroupedByDateBoundOffset($cells, cellWidth) {
+  }
+  _getGroupedByDateBoundOffset($cells, cellWidth) {
     const firstCellIndex = 0;
     const lastCellIndex = $cells.length - 1;
     const startCell = $cells.eq(firstCellIndex);
     const endCell = $cells.eq(lastCellIndex);
     return this._createGroupBoundOffset(startCell, endCell, cellWidth);
-  };
-  _proto.getGroupBoundsOffset = function getGroupBoundsOffset(cellCount, $cells, cellWidth, coordinates, groupedDataMap) {
+  }
+  getGroupBoundsOffset(cellCount, $cells, cellWidth, coordinates, groupedDataMap) {
     if (this._workSpace.isGroupedByDate()) {
       return this._getGroupedByDateBoundOffset($cells, cellWidth);
     }
@@ -106,82 +106,80 @@ let HorizontalGroupedStrategy = /*#__PURE__*/function () {
       endCell = $cells.eq(groupEndPosition.columnIndex);
     }
     return this._createGroupBoundOffset(startCell, endCell, cellWidth);
-  };
-  _proto.shiftIndicator = function shiftIndicator($indicator, height, rtlOffset, groupIndex) {
+  }
+  shiftIndicator($indicator, height, rtlOffset, groupIndex) {
     const offset = this._getIndicatorOffset(groupIndex);
     const horizontalOffset = rtlOffset ? rtlOffset - offset : offset;
     $indicator.css('left', horizontalOffset);
     $indicator.css('top', height);
-  };
-  _proto._getIndicatorOffset = function _getIndicatorOffset(groupIndex) {
+  }
+  _getIndicatorOffset(groupIndex) {
     const groupByDay = this._workSpace.isGroupedByDate();
     return groupByDay ? this._calculateGroupByDateOffset(groupIndex) : this._calculateOffset(groupIndex);
-  };
-  _proto._calculateOffset = function _calculateOffset(groupIndex) {
+  }
+  _calculateOffset(groupIndex) {
     const indicatorStartPosition = this._workSpace.getIndicatorOffset(groupIndex);
     const offset = this._workSpace._getCellCount() * this._workSpace.getRoundedCellWidth(groupIndex - 1, 0) * groupIndex;
     return indicatorStartPosition + offset;
-  };
-  _proto._calculateGroupByDateOffset = function _calculateGroupByDateOffset(groupIndex) {
+  }
+  _calculateGroupByDateOffset(groupIndex) {
     return this._workSpace.getIndicatorOffset(0) * this._workSpace._getGroupCount() + this._workSpace.getRoundedCellWidth(groupIndex - 1, 0) * groupIndex;
-  };
-  _proto.getShaderOffset = function getShaderOffset(i, width) {
+  }
+  getShaderOffset(i, width) {
     const offset = this._workSpace._getCellCount() * this._workSpace.getRoundedCellWidth(i - 1) * i;
     return this._workSpace.option('rtlEnabled') ? (0, _position.getBoundingRect)(this._workSpace._dateTableScrollable.$content().get(0)).width - offset - this._workSpace.getTimePanelWidth() - width : offset;
-  };
-  _proto.getShaderTopOffset = function getShaderTopOffset(i) {
+  }
+  getShaderTopOffset(i) {
     return -this.getShaderMaxHeight() * (i > 0 ? 1 : 0);
-  };
-  _proto.getShaderHeight = function getShaderHeight() {
+  }
+  getShaderHeight() {
     const height = this._workSpace.getIndicationHeight();
     return height;
-  };
-  _proto.getShaderMaxHeight = function getShaderMaxHeight() {
+  }
+  getShaderMaxHeight() {
     return (0, _position.getBoundingRect)(this._workSpace._dateTableScrollable.$content().get(0)).height;
-  };
-  _proto.getShaderWidth = function getShaderWidth(i) {
+  }
+  getShaderWidth(i) {
     return this._workSpace.getIndicationWidth(i);
-  };
-  _proto.getScrollableScrollTop = function getScrollableScrollTop(allDay) {
+  }
+  getScrollableScrollTop(allDay) {
     return !allDay ? this._workSpace.getScrollable().scrollTop() : 0;
   }
   // ---------------
   // We do not need these nethods in renovation
   // ---------------
-  ;
-  _proto.addAdditionalGroupCellClasses = function addAdditionalGroupCellClasses(cellClass, index, i, j) {
+  addAdditionalGroupCellClasses(cellClass, index, i, j) {
     let applyUnconditionally = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
     cellClass = this._addLastGroupCellClass(cellClass, index, applyUnconditionally);
     return this._addFirstGroupCellClass(cellClass, index, applyUnconditionally);
-  };
-  _proto._addLastGroupCellClass = function _addLastGroupCellClass(cellClass, index, applyUnconditionally) {
+  }
+  _addLastGroupCellClass(cellClass, index, applyUnconditionally) {
     if (applyUnconditionally) {
-      return "".concat(cellClass, " ").concat(_m_classes.LAST_GROUP_CELL_CLASS);
+      return `${cellClass} ${_m_classes.LAST_GROUP_CELL_CLASS}`;
     }
     const groupByDate = this._workSpace.isGroupedByDate();
     if (groupByDate) {
       if (index % this._workSpace._getGroupCount() === 0) {
-        return "".concat(cellClass, " ").concat(_m_classes.LAST_GROUP_CELL_CLASS);
+        return `${cellClass} ${_m_classes.LAST_GROUP_CELL_CLASS}`;
       }
     } else if (index % this._workSpace._getCellCount() === 0) {
-      return "".concat(cellClass, " ").concat(_m_classes.LAST_GROUP_CELL_CLASS);
+      return `${cellClass} ${_m_classes.LAST_GROUP_CELL_CLASS}`;
     }
     return cellClass;
-  };
-  _proto._addFirstGroupCellClass = function _addFirstGroupCellClass(cellClass, index, applyUnconditionally) {
+  }
+  _addFirstGroupCellClass(cellClass, index, applyUnconditionally) {
     if (applyUnconditionally) {
-      return "".concat(cellClass, " ").concat(_m_classes.FIRST_GROUP_CELL_CLASS);
+      return `${cellClass} ${_m_classes.FIRST_GROUP_CELL_CLASS}`;
     }
     const groupByDate = this._workSpace.isGroupedByDate();
     if (groupByDate) {
       if ((index - 1) % this._workSpace._getGroupCount() === 0) {
-        return "".concat(cellClass, " ").concat(_m_classes.FIRST_GROUP_CELL_CLASS);
+        return `${cellClass} ${_m_classes.FIRST_GROUP_CELL_CLASS}`;
       }
     } else if ((index - 1) % this._workSpace._getCellCount() === 0) {
-      return "".concat(cellClass, " ").concat(_m_classes.FIRST_GROUP_CELL_CLASS);
+      return `${cellClass} ${_m_classes.FIRST_GROUP_CELL_CLASS}`;
     }
     return cellClass;
-  };
-  return HorizontalGroupedStrategy;
-}();
+  }
+}
 var _default = exports.default = HorizontalGroupedStrategy;

@@ -1,19 +1,20 @@
 /**
 * DevExtreme (cjs/data/query.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 "use strict";
 
-exports.default = void 0;
-var _query_implementation = require("./query_implementation");
-const query = function () {
-  const impl = Array.isArray(arguments[0]) ? 'array' : 'remote';
-  return _query_implementation.queryImpl[impl].apply(this, arguments);
-};
-var _default = exports.default = query;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    return _m_query.default;
+  }
+});
+var _m_query = _interopRequireDefault(require("../__internal/data/m_query"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 module.exports = exports.default;
 module.exports.default = exports.default;

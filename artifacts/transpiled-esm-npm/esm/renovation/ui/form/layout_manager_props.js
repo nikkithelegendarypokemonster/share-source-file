@@ -1,1 +1,1 @@
-export var LayoutManagerProps = {};
+export const LayoutManagerProps = {};

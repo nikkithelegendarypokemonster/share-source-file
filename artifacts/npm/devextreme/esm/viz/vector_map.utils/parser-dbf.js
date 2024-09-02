@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/vector_map.utils/parser-dbf.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -64,18 +64,18 @@ function parseFieldDescriptor(stream) {
   return desc;
 }
 var DBF_FIELD_PARSERS = {
-  'C': function C(stream, length) {
+  'C': function (stream, length) {
     var str = getAsciiString(stream, length);
     try {
       str = decodeURIComponent(escape(str)); // T522922
     } catch (e) {}
     return str.trim();
   },
-  'N': function N(stream, length) {
+  'N': function (stream, length) {
     var str = getAsciiString(stream, length);
     return parseFloat(str);
   },
-  'D': function D(stream, length) {
+  'D': function (stream, length) {
     var str = getAsciiString(stream, length);
     return new Date(str.substring(0, 4), str.substring(4, 6) - 1, str.substring(6, 8));
   }

@@ -75,7 +75,7 @@ const dxPolarChart = _m_advanced_chart.AdvancedChart.inherit({
     const argumentAxis = this.getArgumentAxis();
     const margins = argumentAxis.getMargins();
     Object.keys(margins).forEach(margin => {
-      canvas[margin] = canvas["original".concat(margin[0].toUpperCase()).concat(margin.slice(1))] + margins[margin];
+      canvas[margin] = canvas[`original${margin[0].toUpperCase()}${margin.slice(1)}`] + margins[margin];
     });
     return canvas;
   },

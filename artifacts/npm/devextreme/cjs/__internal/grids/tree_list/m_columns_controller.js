@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/tree_list/m_columns_controller.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,18 +12,11 @@ var _type = require("../../../core/utils/type");
 var _m_columns_controller = require("../../grids/grid_core/columns_controller/m_columns_controller");
 var _m_core = _interopRequireDefault(require("./m_core"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-let TreeListColumnsController = /*#__PURE__*/function (_ColumnsController) {
-  _inheritsLoose(TreeListColumnsController, _ColumnsController);
-  function TreeListColumnsController() {
-    return _ColumnsController.apply(this, arguments) || this;
+class TreeListColumnsController extends _m_columns_controller.ColumnsController {
+  _getFirstItems(dataSourceAdapter) {
+    return super._getFirstItems(dataSourceAdapter).map(node => node.data);
   }
-  var _proto = TreeListColumnsController.prototype;
-  _proto._getFirstItems = function _getFirstItems(dataSourceAdapter) {
-    return _ColumnsController.prototype._getFirstItems.call(this, dataSourceAdapter).map(node => node.data);
-  };
-  _proto.getFirstDataColumnIndex = function getFirstDataColumnIndex() {
+  getFirstDataColumnIndex() {
     const visibleColumns = this.getVisibleColumns();
     const visibleColumnsLength = visibleColumns.length;
     let firstDataColumnIndex = 0;
@@ -34,9 +27,8 @@ let TreeListColumnsController = /*#__PURE__*/function (_ColumnsController) {
       }
     }
     return firstDataColumnIndex;
-  };
-  return TreeListColumnsController;
-}(_m_columns_controller.ColumnsController);
+  }
+}
 _m_core.default.registerModule('columns', {
   defaultOptions: _m_columns_controller.columnsControllerModule.defaultOptions,
   controllers: {

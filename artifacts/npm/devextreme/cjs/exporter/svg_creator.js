@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/exporter/svg_creator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -79,12 +79,12 @@ const svgCreator = exports.svgCreator = {
     const xmlVersion = '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>';
     const svgElem = (0, _svg.getSvgElement)(data);
     const $svgObject = (0, _renderer.default)(svgElem);
-    $svgObject.find("[".concat(_svg.HIDDEN_FOR_EXPORT, "]")).remove();
+    $svgObject.find(`[${_svg.HIDDEN_FOR_EXPORT}]`).remove();
     markup = xmlVersion + (0, _svg.getSvgMarkup)($svgObject.get(0), options.backgroundColor);
     return that._prepareImages(svgElem).then(() => {
       (0, _iterator.each)(that._imageArray, function (href, dataURI) {
-        const regexpString = "href=['|\"]".concat(href, "['|\"]");
-        markup = markup.replace(new RegExp(regexpString, 'gi'), "href=\"".concat(dataURI, "\""));
+        const regexpString = `href=['|"]${href}['|"]`;
+        markup = markup.replace(new RegExp(regexpString, 'gi'), `href="${dataURI}"`);
       });
       return (0, _type.isFunction)(window.Blob) ? that._getBlob(markup) : that._getBase64(markup);
     });

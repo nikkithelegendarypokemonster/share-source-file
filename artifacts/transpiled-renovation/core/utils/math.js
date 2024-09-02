@@ -47,7 +47,7 @@ function getExponentialNotation(value) {
 }
 function multiplyInExponentialForm(value, exponentShift) {
   const exponentialNotation = getExponentialNotation(value);
-  return parseFloat("".concat(exponentialNotation.mantissa, "e").concat(exponentialNotation.exponent + exponentShift));
+  return parseFloat(`${exponentialNotation.mantissa}e${exponentialNotation.exponent + exponentShift}`);
 }
 
 // T570217

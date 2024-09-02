@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/tree_list/data_source_adapter/m_data_source_adapter.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -27,8 +27,6 @@ var _m_data_source_adapter = _interopRequireDefault(require("../../../grids/grid
 var _m_utils = _interopRequireDefault(require("../../../grids/grid_core/m_utils"));
 var _m_core = _interopRequireDefault(require("../m_core"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const {
   queryByOptions
 } = _store_helper.default;
@@ -44,58 +42,54 @@ const getChildKeys = function (that, keys) {
   });
   return childKeys;
 };
+// @ts-expect-error
 const applySorting = (data, sort) => queryByOptions((0, _query.default)(data), {
   sort
 }).toArray();
-let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
-  _inheritsLoose(DataSourceAdapterTreeList, _DataSourceAdapter);
-  function DataSourceAdapterTreeList() {
-    return _DataSourceAdapter.apply(this, arguments) || this;
-  }
-  var _proto = DataSourceAdapterTreeList.prototype;
-  _proto._createKeyGetter = function _createKeyGetter() {
+class DataSourceAdapterTreeList extends _m_data_source_adapter.default {
+  _createKeyGetter() {
     const keyExpr = this.getKeyExpr();
     return (0, _data.compileGetter)(keyExpr);
-  };
-  _proto._createKeySetter = function _createKeySetter() {
+  }
+  _createKeySetter() {
     const keyExpr = this.getKeyExpr();
     if ((0, _type.isFunction)(keyExpr)) {
       return keyExpr;
     }
     return (0, _data.compileSetter)(keyExpr);
-  };
-  _proto.createParentIdGetter = function createParentIdGetter() {
+  }
+  createParentIdGetter() {
     return (0, _data.compileGetter)(this.option('parentIdExpr'));
-  };
-  _proto.createParentIdSetter = function createParentIdSetter() {
+  }
+  createParentIdSetter() {
     const parentIdExpr = this.option('parentIdExpr');
     if ((0, _type.isFunction)(parentIdExpr)) {
       return parentIdExpr;
     }
     return (0, _data.compileSetter)(parentIdExpr);
-  };
-  _proto._createItemsGetter = function _createItemsGetter() {
+  }
+  _createItemsGetter() {
     return (0, _data.compileGetter)(this.option('itemsExpr'));
-  };
-  _proto._createHasItemsGetter = function _createHasItemsGetter() {
+  }
+  _createHasItemsGetter() {
     const hasItemsExpr = this.option('hasItemsExpr');
     return hasItemsExpr && (0, _data.compileGetter)(hasItemsExpr);
-  };
-  _proto._createHasItemsSetter = function _createHasItemsSetter() {
+  }
+  _createHasItemsSetter() {
     const hasItemsExpr = this.option('hasItemsExpr');
     if ((0, _type.isFunction)(hasItemsExpr)) {
       return hasItemsExpr;
     }
     return hasItemsExpr && (0, _data.compileSetter)(hasItemsExpr);
-  };
-  _proto._updateIndexByKeyObject = function _updateIndexByKeyObject(items) {
+  }
+  _updateIndexByKeyObject(items) {
     const that = this;
     that._indexByKey = {};
     (0, _iterator.each)(items, (index, item) => {
       that._indexByKey[item.key] = index;
     });
-  };
-  _proto._calculateHasItems = function _calculateHasItems(node, options) {
+  }
+  _calculateHasItems(node, options) {
     const that = this;
     const {
       parentIds
@@ -115,8 +109,8 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       }
     }
     return !!hasItems;
-  };
-  _proto._fillVisibleItemsByNodes = function _fillVisibleItemsByNodes(nodes, options, result) {
+  }
+  _fillVisibleItemsByNodes(nodes, options, result) {
     for (let i = 0; i < nodes.length; i++) {
       if (nodes[i].visible) {
         result.push(nodes[i]);
@@ -125,8 +119,8 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
         this._fillVisibleItemsByNodes(nodes[i].children, options, result);
       }
     }
-  };
-  _proto._convertItemToNode = function _convertItemToNode(item, rootValue, nodeByKey) {
+  }
+  _convertItemToNode(item, rootValue, nodeByKey) {
     const key = this._keyGetter(item);
     let parentId = this._parentIdGetter(item);
     parentId = (0, _type.isDefined)(parentId) ? parentId : rootValue;
@@ -141,8 +135,8 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
     node.data = item;
     node.parent = parentNode;
     return node;
-  };
-  _proto._createNodesByItems = function _createNodesByItems(items, visibleItems) {
+  }
+  _createNodesByItems(items, visibleItems) {
     const that = this;
     const rootValue = that.option('rootValue');
     const visibleByKey = {};
@@ -169,12 +163,13 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
     };
     rootNode.level = -1;
     return rootNode;
-  };
-  _proto._convertDataToPlainStructure = function _convertDataToPlainStructure(data, parentId, result) {
+  }
+  _convertDataToPlainStructure(data, parentId, result) {
     let key;
     if (this._itemsGetter && !data.isConverted) {
       result = result || [];
       for (let i = 0; i < data.length; i++) {
+        // @ts-expect-error
         const item = (0, _array_utils.createObjectWithChanges)(data[i]);
         key = this._keyGetter(item);
         if (key === undefined) {
@@ -197,16 +192,16 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       return result;
     }
     return data;
-  };
-  _proto._createIdFilter = function _createIdFilter(field, keys) {
+  }
+  _createIdFilter(field, keys) {
     const parentIdFilters = [];
     for (let i = 0; i < keys.length; i++) {
       parentIdFilters.push([field, '=', keys[i]]);
     }
     return _m_utils.default.combineFilters(parentIdFilters, 'or');
-  };
-  _proto._customizeRemoteOperations = function _customizeRemoteOperations(options, operationTypes) {
-    _DataSourceAdapter.prototype._customizeRemoteOperations.apply(this, arguments);
+  }
+  _customizeRemoteOperations(options, operationTypes) {
+    super._customizeRemoteOperations.apply(this, arguments);
     options.remoteOperations.paging = false;
     let expandVisibleNodes = false;
     if (this.option('autoExpandAll')) {
@@ -233,8 +228,8 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       }
     }
     options.expandVisibleNodes = expandVisibleNodes;
-  };
-  _proto._getParentIdsToLoad = function _getParentIdsToLoad(parentIds) {
+  }
+  _getParentIdsToLoad(parentIds) {
     const parentIdsToLoad = [];
     for (let i = 0; i < parentIds.length; i++) {
       const node = this.getNodeByKey(parentIds[i]);
@@ -246,8 +241,8 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
   }
   /**
    * @extended: TreeLists's data_source_adapter
-   */;
-  _proto._handleCustomizeStoreLoadOptions = function _handleCustomizeStoreLoadOptions(options) {
+   */
+  _handleCustomizeStoreLoadOptions(options) {
     const rootValue = this.option('rootValue');
     const parentIdExpr = this.option('parentIdExpr');
     let {
@@ -256,7 +251,7 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
     if (parentIds) {
       options.isCustomLoading = false;
     }
-    _DataSourceAdapter.prototype._handleCustomizeStoreLoadOptions.apply(this, arguments);
+    super._handleCustomizeStoreLoadOptions.apply(this, arguments);
     if (options.remoteOperations.filtering && !options.isCustomLoading) {
       if (isFullBranchFilterMode(this) && options.cachedStoreData || !options.storeLoadOptions.filter) {
         const expandedRowKeys = options.collapseVisibleNodes ? [] : this.option('expandedRowKeys');
@@ -272,8 +267,8 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
         options.storeLoadOptions.filter = this._createIdFilter(parentIdExpr, parentIdsToLoad);
       }
     }
-  };
-  _proto._generateInfoToLoad = function _generateInfoToLoad(data, needChildren) {
+  }
+  _generateInfoToLoad(data, needChildren) {
     const that = this;
     let key;
     const keyMap = {};
@@ -297,9 +292,9 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       keyMap: resultKeyMap,
       keys: resultKeys
     };
-  };
-  _proto._loadParentsOrChildren = function _loadParentsOrChildren(data, options, needChildren) {
-    var _a, _b, _c;
+  }
+  _loadParentsOrChildren(data, options, needChildren) {
+    var _options$storeLoadOpt, _options$loadOptions;
     let filter;
     let needLocalFiltering;
     const {
@@ -310,7 +305,7 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
     const d = new _deferred.Deferred();
     const isRemoteFiltering = options.remoteOperations.filtering;
     const maxFilterLengthInRequest = this.option('maxFilterLengthInRequest');
-    const sort = (_b = (_a = options.storeLoadOptions) === null || _a === void 0 ? void 0 : _a.sort) !== null && _b !== void 0 ? _b : (_c = options.loadOptions) === null || _c === void 0 ? void 0 : _c.sort;
+    const sort = ((_options$storeLoadOpt = options.storeLoadOptions) === null || _options$storeLoadOpt === void 0 ? void 0 : _options$storeLoadOpt.sort) ?? ((_options$loadOptions = options.loadOptions) === null || _options$loadOptions === void 0 ? void 0 : _options$loadOptions.sort);
     let loadOptions = isRemoteFiltering ? options.storeLoadOptions : options.loadOptions;
     const concatLoadedData = loadedData => {
       if (isRemoteFiltering) {
@@ -352,17 +347,17 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       }
     }).fail(d.reject);
     return d;
-  };
-  _proto._loadParents = function _loadParents(data, options) {
+  }
+  _loadParents(data, options) {
     return this._loadParentsOrChildren(data, options);
-  };
-  _proto._loadChildrenIfNeed = function _loadChildrenIfNeed(data, options) {
+  }
+  _loadChildrenIfNeed(data, options) {
     if (isFullBranchFilterMode(this)) {
       return this._loadParentsOrChildren(data, options, true);
     }
     return (0, _deferred.when)(data);
-  };
-  _proto._updateHasItemsMap = function _updateHasItemsMap(options) {
+  }
+  _updateHasItemsMap(options) {
     const {
       parentIds
     } = options.storeLoadOptions;
@@ -371,14 +366,14 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
         this._isChildrenLoaded[parentIds[i]] = true;
       }
     }
-  };
-  _proto._getKeyInfo = function _getKeyInfo() {
+  }
+  _getKeyInfo() {
     return {
       key: () => 'key',
       keyOf: data => data.key
     };
-  };
-  _proto._processChanges = function _processChanges(changes) {
+  }
+  _processChanges(changes) {
     let processedChanges = [];
     changes.forEach(change => {
       if (change.type === 'insert') {
@@ -396,27 +391,27 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       }
     });
     return processedChanges;
-  };
-  _proto._handleChanging = function _handleChanging(e) {
-    _DataSourceAdapter.prototype._handleChanging.apply(this, arguments);
+  }
+  _handleChanging(e) {
+    super._handleChanging.apply(this, arguments);
     const processChanges = changes => {
       const changesToProcess = changes.filter(item => item.type === 'update');
       return this._processChanges(changesToProcess);
     };
     e.postProcessChanges = processChanges;
-  };
-  _proto._applyBatch = function _applyBatch(changes) {
+  }
+  _applyBatch(changes) {
     const processedChanges = this._processChanges(changes);
-    _DataSourceAdapter.prototype._applyBatch.call(this, processedChanges);
-  };
-  _proto._setHasItems = function _setHasItems(node, value) {
+    super._applyBatch(processedChanges);
+  }
+  _setHasItems(node, value) {
     const hasItemsSetter = this._hasItemsSetter;
     node.hasChildren = value;
     if (hasItemsSetter && node.data) {
       hasItemsSetter(node.data, value);
     }
-  };
-  _proto._applyInsert = function _applyInsert(change) {
+  }
+  _applyInsert(change) {
     const that = this;
     const baseChanges = [];
     const parentId = that.parentKeyOf(change.data);
@@ -441,11 +436,11 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       }
     }
     return baseChanges;
-  };
-  _proto._needToCopyDataObject = function _needToCopyDataObject() {
+  }
+  _needToCopyDataObject() {
     return false;
-  };
-  _proto._applyRemove = function _applyRemove(change) {
+  }
+  _applyRemove(change) {
     let baseChanges = [];
     const node = this.getNodeByKey(change.key);
     const parentNode = node && node.parent;
@@ -464,21 +459,22 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       }
     }
     return baseChanges;
-  };
-  _proto._handleDataLoaded = function _handleDataLoaded(options) {
+  }
+  _handleDataLoaded(options) {
     const data = options.data = this._convertDataToPlainStructure(options.data);
     if (!options.remoteOperations.filtering && options.loadOptions.filter) {
+      // @ts-expect-error
       options.fullData = queryByOptions((0, _query.default)(options.data), {
         sort: options.loadOptions && options.loadOptions.sort
       }).toArray();
     }
     this._updateHasItemsMap(options);
-    _DataSourceAdapter.prototype._handleDataLoaded.call(this, options);
+    super._handleDataLoaded(options);
     if (data.isConverted && this._cachedStoreData) {
       this._cachedStoreData.isConverted = true;
     }
-  };
-  _proto._fillNodes = function _fillNodes(nodes, options, expandedRowKeys, level) {
+  }
+  _fillNodes(nodes, options, expandedRowKeys, level) {
     const isFullBranch = isFullBranchFilterMode(this);
     level = level || 0;
     for (let i = 0; i < nodes.length; i++) {
@@ -508,8 +504,8 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
         node.parent.hasChildren = true;
       }
     }
-  };
-  _proto._processTreeStructure = function _processTreeStructure(options, visibleItems) {
+  }
+  _processTreeStructure(options, visibleItems) {
     let {
       data
     } = options;
@@ -543,8 +539,8 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
     this._fillVisibleItemsByNodes(this._rootNode.children, options, resultData);
     options.data = resultData;
     this._totalItemsCount = resultData.length;
-  };
-  _proto._handleDataLoadedCore = function _handleDataLoadedCore(options) {
+  }
+  _handleDataLoadedCore(options) {
     const that = this;
     const {
       data
@@ -567,16 +563,16 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
           that._loadChildrenIfNeed(data, options).done(data => {
             options.data = data;
             that._processTreeStructure(options, visibleItems);
-            _DataSourceAdapter.prototype._handleDataLoadedCore.call(that, options);
+            super._handleDataLoadedCore.call(that, options);
             d.resolve(options.data);
           });
         }).fail(d.reject);
       }
       that._processTreeStructure(options);
     }
-    _DataSourceAdapter.prototype._handleDataLoadedCore.call(this, options);
-  };
-  _proto._handlePush = function _handlePush(_ref) {
+    super._handleDataLoadedCore(options);
+  }
+  _handlePush(_ref) {
     let {
       changes
     } = _ref;
@@ -586,15 +582,13 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       this._isReload = true;
     }
     changes.forEach(change => {
-      var _a;
-      (_a = change.index) !== null && _a !== void 0 ? _a : change.index = -1;
+      change.index ?? (change.index = -1);
     });
-    _DataSourceAdapter.prototype._handlePush.apply(this, arguments);
+    super._handlePush.apply(this, arguments);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.init = function init(dataSource, remoteOperations) {
-    _DataSourceAdapter.prototype.init.apply(this, arguments);
+  init(dataSource, remoteOperations) {
+    super.init.apply(this, arguments);
     const dataStructure = this.option('dataStructure');
     this._keyGetter = this._createKeyGetter();
     this._parentIdGetter = this.createParentIdGetter();
@@ -609,8 +603,8 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
     this._isChildrenLoaded = {};
     this._totalItemsCount = 0;
     this.createAction('onNodesInitialized');
-  };
-  _proto.getKeyExpr = function getKeyExpr() {
+  }
+  getKeyExpr() {
     const store = this.store();
     const key = store && store.key();
     const keyExpr = this.option('keyExpr');
@@ -620,27 +614,26 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       }
     }
     return key || keyExpr || DEFAULT_KEY_EXPRESSION;
-  };
-  _proto.keyOf = function keyOf(data) {
+  }
+  keyOf(data) {
     return this._keyGetter && this._keyGetter(data);
-  };
-  _proto.parentKeyOf = function parentKeyOf(data) {
+  }
+  parentKeyOf(data) {
     return this._parentIdGetter && this._parentIdGetter(data);
-  };
-  _proto.getRootNode = function getRootNode() {
+  }
+  getRootNode() {
     return this._rootNode;
-  };
-  _proto.totalItemsCount = function totalItemsCount() {
+  }
+  totalItemsCount() {
     return this._totalItemsCount + this._totalCountCorrection;
-  };
-  _proto.isRowExpanded = function isRowExpanded(key, cache) {
-    var _a;
+  }
+  isRowExpanded(key, cache) {
     if (cache) {
       let {
         isExpandedByKey
       } = cache;
       if (!isExpandedByKey) {
-        const expandedRowKeys = (_a = this.option('expandedRowKeys')) !== null && _a !== void 0 ? _a : [];
+        const expandedRowKeys = this.option('expandedRowKeys') ?? [];
         isExpandedByKey = cache.isExpandedByKey = {};
         expandedRowKeys.forEach(key => {
           isExpandedByKey[key] = true;
@@ -650,8 +643,8 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
     }
     const indexExpandedNodeKey = _m_utils.default.getIndexByKey(key, this.option('expandedRowKeys'), null);
     return indexExpandedNodeKey >= 0;
-  };
-  _proto._changeRowExpandCore = function _changeRowExpandCore(key) {
+  }
+  _changeRowExpandCore(key) {
     const expandedRowKeys = this.option('expandedRowKeys').slice();
     const indexExpandedNodeKey = _m_utils.default.getIndexByKey(key, expandedRowKeys, null);
     if (indexExpandedNodeKey < 0) {
@@ -660,18 +653,18 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       expandedRowKeys.splice(indexExpandedNodeKey, 1);
     }
     this.option('expandedRowKeys', expandedRowKeys);
-  };
-  _proto.changeRowExpand = function changeRowExpand(key) {
+  }
+  changeRowExpand(key) {
     this._changeRowExpandCore(key);
     // @ts-expect-error
     return this._isNodesInitializing ? new _deferred.Deferred().resolve() : this.load();
-  };
-  _proto.getNodeByKey = function getNodeByKey(key) {
+  }
+  getNodeByKey(key) {
     if (this._nodeByKey) {
       return this._nodeByKey[key];
     }
-  };
-  _proto.getNodeLeafKeys = function getNodeLeafKeys() {
+  }
+  getNodeLeafKeys() {
     const that = this;
     const result = [];
     const keys = that._rootNode ? [that._rootNode.key] : [];
@@ -682,16 +675,16 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       });
     });
     return result;
-  };
-  _proto.getChildNodeKeys = function getChildNodeKeys(parentKey) {
+  }
+  getChildNodeKeys(parentKey) {
     const node = this.getNodeByKey(parentKey);
     const childrenKeys = [];
     node && _m_core.default.foreachNodes(node.children, childNode => {
       childrenKeys.push(childNode.key);
     });
     return childrenKeys;
-  };
-  _proto.loadDescendants = function loadDescendants(keys, childrenOnly) {
+  }
+  loadDescendants(keys, childrenOnly) {
     const that = this;
     // @ts-expect-error
     const d = new _deferred.Deferred();
@@ -717,8 +710,8 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       d.resolve();
     }).fail(d.reject);
     return d.promise();
-  };
-  _proto.forEachNode = function forEachNode() {
+  }
+  forEachNode() {
     let nodes = [];
     let callback;
     if (arguments.length === 1) {
@@ -734,9 +727,8 @@ let DataSourceAdapterTreeList = /*#__PURE__*/function (_DataSourceAdapter) {
       nodes = Array.isArray(nodes) ? nodes : [nodes];
     }
     _m_core.default.foreachNodes(nodes, callback);
-  };
-  return DataSourceAdapterTreeList;
-}(_m_data_source_adapter.default);
+  }
+}
 let DataSourceAdapterTreeListType = DataSourceAdapterTreeList;
 var _default = exports.default = {
   extend(extender) {

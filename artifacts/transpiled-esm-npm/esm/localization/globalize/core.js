@@ -9,11 +9,11 @@ if (Globalize && Globalize.load) {
     Globalize.locale('en');
   }
   coreLocalization.inject({
-    locale: function locale(_locale) {
-      if (!_locale) {
+    locale: function (locale) {
+      if (!locale) {
         return Globalize.locale().locale;
       }
-      Globalize.locale(_locale);
+      Globalize.locale(locale);
     }
   });
 }

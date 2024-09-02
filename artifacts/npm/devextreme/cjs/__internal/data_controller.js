@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/data_controller.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -19,8 +19,8 @@ var _array_store = _interopRequireDefault(require("../data/array_store"));
 var _data_source = require("../data/data_source/data_source");
 var _utils = require("../data/data_source/utils");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-let DataController = /*#__PURE__*/function () {
-  function DataController(dataSourceOptions, _ref) {
+class DataController {
+  constructor(dataSourceOptions, _ref) {
     let {
       key
     } = _ref;
@@ -28,8 +28,7 @@ let DataController = /*#__PURE__*/function () {
     this._keyExpr = key;
     this.updateDataSource(dataSourceOptions);
   }
-  var _proto = DataController.prototype;
-  _proto._updateDataSource = function _updateDataSource(dataSourceOptions) {
+  _updateDataSource(dataSourceOptions) {
     if (!dataSourceOptions) {
       return;
     }
@@ -37,11 +36,12 @@ let DataController = /*#__PURE__*/function () {
       this._isSharedDataSource = true;
       this._dataSource = dataSourceOptions;
     } else {
+      // @ts-expect-error
       const normalizedDataSourceOptions = (0, _utils.normalizeDataSourceOptions)(dataSourceOptions);
       this._dataSource = new _data_source.DataSource((0, _extend.extend)(true, {}, {}, normalizedDataSourceOptions));
     }
-  };
-  _proto._updateDataSourceByItems = function _updateDataSourceByItems(items) {
+  }
+  _updateDataSourceByItems(items) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     this._dataSource = new _data_source.DataSource({
@@ -51,8 +51,8 @@ let DataController = /*#__PURE__*/function () {
       }),
       pageSize: 0
     });
-  };
-  _proto._disposeDataSource = function _disposeDataSource() {
+  }
+  _disposeDataSource() {
     if (this._dataSource) {
       if (this._isSharedDataSource) {
         this._isSharedDataSource = false;
@@ -63,11 +63,11 @@ let DataController = /*#__PURE__*/function () {
       // @ts-expect-error
       delete this._dataSource;
     }
-  };
-  _proto.load = function load() {
+  }
+  load() {
     return this._dataSource.load();
-  };
-  _proto.loadSingle = function loadSingle(propName, propValue) {
+  }
+  loadSingle(propName, propValue) {
     if (!this._dataSource) {
       // @ts-expect-error TS2350
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -80,62 +80,62 @@ let DataController = /*#__PURE__*/function () {
       pName = this.key();
     }
     return this._dataSource.loadSingle(pName, pValue);
-  };
-  _proto.loadFromStore = function loadFromStore(loadOptions) {
+  }
+  loadFromStore(loadOptions) {
     return this.store().load(loadOptions);
-  };
-  _proto.loadNextPage = function loadNextPage() {
+  }
+  loadNextPage() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     this.pageIndex(1 + this.pageIndex());
     return this.load();
-  };
-  _proto.loadOptions = function loadOptions() {
+  }
+  loadOptions() {
     return this._dataSource.loadOptions();
-  };
-  _proto.userData = function userData() {
+  }
+  userData() {
     return this._dataSource._userData;
-  };
-  _proto.cancel = function cancel(operationId) {
+  }
+  cancel(operationId) {
     this._dataSource.cancel(operationId);
-  };
-  _proto.cancelAll = function cancelAll() {
+  }
+  cancelAll() {
     this._dataSource.cancelAll();
-  };
-  _proto.filter = function filter(_filter) {
-    return this._dataSource.filter(_filter);
-  };
-  _proto.addSearchFilter = function addSearchFilter(storeLoadOptions) {
+  }
+  filter(filter) {
+    return this._dataSource.filter(filter);
+  }
+  addSearchFilter(storeLoadOptions) {
     this._dataSource._addSearchFilter(storeLoadOptions);
-  };
-  _proto.group = function group(_group) {
-    return this._dataSource.group(_group);
-  };
-  _proto.paginate = function paginate() {
+  }
+  group(group) {
+    return this._dataSource.group(group);
+  }
+  paginate() {
     return this._dataSource.paginate();
-  };
-  _proto.pageSize = function pageSize() {
+  }
+  pageSize() {
     return this._dataSource._pageSize;
-  };
-  _proto.pageIndex = function pageIndex(_pageIndex) {
-    if (_pageIndex === undefined) {
+  }
+  pageIndex(pageIndex) {
+    if (pageIndex === undefined) {
       return this._dataSource.pageIndex(undefined);
     }
-    return this._dataSource.pageIndex(_pageIndex);
-  };
-  _proto.resetDataSource = function resetDataSource() {
+    return this._dataSource.pageIndex(pageIndex);
+  }
+  resetDataSource() {
     this._disposeDataSource();
-  };
-  _proto.resetDataSourcePageIndex = function resetDataSourcePageIndex() {
+  }
+  resetDataSourcePageIndex() {
     if (this.pageIndex()) {
       this.pageIndex(0);
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.load();
     }
-  };
-  _proto.updateDataSource = function updateDataSource(items, key) {
-    const dataSourceOptions = items !== null && items !== void 0 ? items : this.items();
+  }
+  updateDataSource(items, key) {
+    const dataSourceOptions = items ?? this.items();
     if (key) {
       this._keyExpr = key;
     }
@@ -145,65 +145,63 @@ let DataController = /*#__PURE__*/function () {
     } else {
       this._updateDataSource(dataSourceOptions);
     }
-  };
-  _proto.totalCount = function totalCount() {
+  }
+  totalCount() {
     return this._dataSource.totalCount();
-  };
-  _proto.isLastPage = function isLastPage() {
+  }
+  isLastPage() {
     return this._dataSource.isLastPage() || !this._dataSource._pageSize;
-  };
-  _proto.isLoading = function isLoading() {
+  }
+  isLoading() {
     return this._dataSource.isLoading();
-  };
-  _proto.isLoaded = function isLoaded() {
+  }
+  isLoaded() {
     return this._dataSource.isLoaded();
-  };
-  _proto.searchValue = function searchValue(value) {
+  }
+  searchValue(value) {
     return this._dataSource.searchValue(value);
-  };
-  _proto.searchOperation = function searchOperation(operation) {
+  }
+  searchOperation(operation) {
     return this._dataSource.searchOperation(operation);
-  };
-  _proto.searchExpr = function searchExpr(expr) {
+  }
+  searchExpr(expr) {
     return this._dataSource.searchExpr(expr);
-  };
-  _proto.select = function select() {
+  }
+  select() {
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
     return this._dataSource.select(args);
-  };
-  _proto.key = function key() {
-    var _a;
-    const storeKey = (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.key();
+  }
+  key() {
+    var _this$_dataSource;
+    const storeKey = (_this$_dataSource = this._dataSource) === null || _this$_dataSource === void 0 ? void 0 : _this$_dataSource.key();
     return (0, _type.isDefined)(storeKey) && this._keyExpr === 'this' ? storeKey : this._keyExpr;
-  };
-  _proto.keyOf = function keyOf(item) {
+  }
+  keyOf(item) {
     return this.store().keyOf(item);
-  };
-  _proto.store = function store() {
+  }
+  store() {
     return this._dataSource.store();
-  };
-  _proto.items = function items() {
-    var _a;
-    return (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.items();
-  };
-  _proto.applyMapFunction = function applyMapFunction(data) {
+  }
+  items() {
+    var _this$_dataSource2;
+    return (_this$_dataSource2 = this._dataSource) === null || _this$_dataSource2 === void 0 ? void 0 : _this$_dataSource2.items();
+  }
+  applyMapFunction(data) {
     return this._dataSource._applyMapFunction(data);
-  };
-  _proto.getDataSource = function getDataSource() {
-    var _a;
-    return (_a = this._dataSource) !== null && _a !== void 0 ? _a : null;
-  };
-  _proto.reload = function reload() {
+  }
+  getDataSource() {
+    return this._dataSource ?? null;
+  }
+  reload() {
     return this._dataSource.reload();
-  };
-  _proto.on = function on(event, handler) {
+  }
+  on(event, handler) {
     this._dataSource.on(event, handler);
-  };
-  _proto.off = function off(event, handler) {
+  }
+  off(event, handler) {
     this._dataSource.off(event, handler);
-  };
-  return DataController;
-}();
+  }
+}
 var _default = exports.default = DataController;

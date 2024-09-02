@@ -1,15 +1,15 @@
 /**
 * DevExtreme (esm/viz/series/helpers/display_format_parser.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { formatDate, formatNumber } from '../../../localization';
-var startPlaceHolderChar = '{';
-var endPlaceHolderChar = '}';
-var placeholderFormatDelimiter = ':';
+const startPlaceHolderChar = '{';
+const endPlaceHolderChar = '}';
+const placeholderFormatDelimiter = ':';
 function formatValue(value, format) {
   if (format) {
     if (value instanceof Date) {
@@ -22,8 +22,8 @@ function formatValue(value, format) {
   return value;
 }
 function getValueByPlaceHolder(placeHolder, pointInfo) {
-  var customFormat = '';
-  var customFormatIndex = placeHolder.indexOf(placeholderFormatDelimiter);
+  let customFormat = '';
+  const customFormatIndex = placeHolder.indexOf(placeholderFormatDelimiter);
   if (customFormatIndex > 0) {
     customFormat = placeHolder.substr(customFormatIndex + 1);
     placeHolder = placeHolder.substr(0, customFormatIndex);
@@ -31,14 +31,14 @@ function getValueByPlaceHolder(placeHolder, pointInfo) {
   return formatValue(pointInfo[placeHolder], customFormat);
 }
 export function processDisplayFormat(displayFormat, pointInfo) {
-  var actualText = displayFormat;
-  var continueProcess = true;
+  let actualText = displayFormat;
+  let continueProcess = true;
   while (continueProcess) {
-    var startBracketIndex = actualText.indexOf(startPlaceHolderChar);
-    var endBracketIndex = actualText.indexOf(endPlaceHolderChar);
+    const startBracketIndex = actualText.indexOf(startPlaceHolderChar);
+    const endBracketIndex = actualText.indexOf(endPlaceHolderChar);
     if (startBracketIndex >= 0 && endBracketIndex > 0) {
-      var placeHolder = actualText.substring(startBracketIndex + 1, endBracketIndex);
-      var value = getValueByPlaceHolder(placeHolder, pointInfo);
+      const placeHolder = actualText.substring(startBracketIndex + 1, endBracketIndex);
+      const value = getValueByPlaceHolder(placeHolder, pointInfo);
       actualText = actualText.substr(0, startBracketIndex) + value + actualText.substr(endBracketIndex + 1);
     } else {
       continueProcess = false;

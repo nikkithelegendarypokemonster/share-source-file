@@ -1,32 +1,32 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import { refreshPaths } from './core/renderers/renderer';
 import { each as _each } from '../core/utils/iterator';
-var {
+const {
   floor
 } = Math;
-export var prepareSegmentRectPoints = function prepareSegmentRectPoints(left, top, width, height, borderOptions) {
-  var maxSW = ~~((width < height ? width : height) / 2);
-  var sw = borderOptions.width || 0;
-  var newSW = sw < maxSW ? sw : maxSW;
+export let prepareSegmentRectPoints = function (left, top, width, height, borderOptions) {
+  const maxSW = ~~((width < height ? width : height) / 2);
+  const sw = borderOptions.width || 0;
+  const newSW = sw < maxSW ? sw : maxSW;
   left = left + newSW / 2;
   top = top + newSW / 2;
   width = width - newSW;
   height = height - newSW;
-  var right = left + width;
-  var bottom = top + height;
-  var points = [];
-  var segments = [];
-  var segmentSequence;
-  var visiblyOpt = 0;
-  var prevSegmentVisibility = 0;
-  var allSegment = {
+  const right = left + width;
+  const bottom = top + height;
+  let points = [];
+  let segments = [];
+  let segmentSequence;
+  let visiblyOpt = 0;
+  let prevSegmentVisibility = 0;
+  const allSegment = {
     top: [[left, top], [right, top]],
     right: [[right, top], [right, bottom]],
     bottom: [[right, bottom], [left, bottom]],
     left: [[left, bottom], [left, top]]
   };
   _each(allSegment, function (seg) {
-    var visibility = !!borderOptions[seg];
+    const visibility = !!borderOptions[seg];
     visiblyOpt = visiblyOpt * 2 + ~~visibility;
   });
   switch (visiblyOpt) {
@@ -41,7 +41,7 @@ export var prepareSegmentRectPoints = function prepareSegmentRectPoints(left, to
       segmentSequence = ['top', 'right', 'bottom', 'left'];
   }
   _each(segmentSequence, function (_, seg) {
-    var segmentVisibility = !!borderOptions[seg];
+    const segmentVisibility = !!borderOptions[seg];
     if (!prevSegmentVisibility && segments.length) {
       points.push(segments);
       segments = [];
@@ -61,13 +61,13 @@ export var prepareSegmentRectPoints = function prepareSegmentRectPoints(left, to
   };
 };
 export { refreshPaths };
-export var areCanvasesDifferent = function areCanvasesDifferent(canvas1, canvas2) {
-  var sizeChangingThreshold = 1;
-  var sizeLessThreshold = ['width', 'height'].every(key => Math.abs(canvas1[key] - canvas2[key]) < sizeChangingThreshold);
-  var canvasCoordsIsEqual = ['left', 'right', 'top', 'bottom'].every(key => canvas1[key] === canvas2[key]);
+export const areCanvasesDifferent = function (canvas1, canvas2) {
+  const sizeChangingThreshold = 1;
+  const sizeLessThreshold = ['width', 'height'].every(key => Math.abs(canvas1[key] - canvas2[key]) < sizeChangingThreshold);
+  const canvasCoordsIsEqual = ['left', 'right', 'top', 'bottom'].every(key => canvas1[key] === canvas2[key]);
   return !(sizeLessThreshold && canvasCoordsIsEqual);
 };
-export var floorCanvasDimensions = function floorCanvasDimensions(canvas) {
+export const floorCanvasDimensions = function (canvas) {
   return _extends({}, canvas, {
     height: floor(canvas.height),
     width: floor(canvas.width)

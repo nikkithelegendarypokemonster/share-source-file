@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/options_validator/options_validator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,12 +15,9 @@ exports.SchedulerOptionsValidator = void 0;
 var _index = require("./common/index");
 var _index2 = require("./core/index");
 var _validator_rules = require("./validator_rules");
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-let SchedulerOptionsValidator = exports.SchedulerOptionsValidator = /*#__PURE__*/function (_OptionsValidator) {
-  _inheritsLoose(SchedulerOptionsValidator, _OptionsValidator);
-  function SchedulerOptionsValidator() {
-    return _OptionsValidator.call(this, {
+class SchedulerOptionsValidator extends _index2.OptionsValidator {
+  constructor() {
+    super({
       startDayHour: new _index2.Validator(_ref => {
         let {
           startDayHour
@@ -47,7 +44,7 @@ let SchedulerOptionsValidator = exports.SchedulerOptionsValidator = /*#__PURE__*
       }, [_index.mustBeInteger, (0, _index.mustBeGreaterThan)(0)]),
       startDayHourAndEndDayHour: new _index2.Validator(options => options, [_validator_rules.endDayHourMustBeGreaterThanStartDayHour]),
       cellDurationAndVisibleInterval: new _index2.Validator(options => options, [_validator_rules.visibleIntervalMustBeDivisibleByCellDuration, _validator_rules.cellDurationMustBeLessThanVisibleInterval])
-    }) || this;
+    });
   }
-  return SchedulerOptionsValidator;
-}(_index2.OptionsValidator);
+}
+exports.SchedulerOptionsValidator = SchedulerOptionsValidator;

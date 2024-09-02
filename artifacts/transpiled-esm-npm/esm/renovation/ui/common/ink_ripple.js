@@ -1,11 +1,11 @@
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["config"];
+const _excluded = ["config"];
 import { createVNode, normalizeProps } from "inferno";
 import { BaseInfernoComponent } from '@devextreme/runtime/inferno';
 import { initConfig, showWave, hideWave } from '../../../ui/widget/utils.ink_ripple';
-export var viewFunction = model => normalizeProps(createVNode(1, "div", "dx-inkripple", null, 1, _extends({}, model.restAttributes)));
-export var InkRippleProps = {
+export const viewFunction = model => normalizeProps(createVNode(1, "div", "dx-inkripple", null, 1, _extends({}, model.restAttributes)));
+export const InkRippleProps = {
   config: Object.freeze({})
 };
 export class InkRipple extends BaseInfernoComponent {
@@ -21,14 +21,14 @@ export class InkRipple extends BaseInfernoComponent {
       return this.__getterCache['getConfig'];
     }
     return this.__getterCache['getConfig'] = (() => {
-      var {
+      const {
         config
       } = this.props;
       return initConfig(config);
     })();
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
@@ -44,7 +44,7 @@ export class InkRipple extends BaseInfernoComponent {
     }
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       getConfig: this.getConfig,

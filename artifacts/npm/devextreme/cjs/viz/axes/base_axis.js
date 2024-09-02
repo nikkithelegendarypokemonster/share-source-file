@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/viz/axes/base_axis.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -31,7 +31,7 @@ var _strip = _interopRequireDefault(require("./strip"));
 var _deferred = require("../../core/utils/deferred");
 var _axes_utils = require("./axes_utils");
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const convertTicksToValues = _axes_constants.default.convertTicksToValues;
 const _math = Math;
@@ -141,7 +141,6 @@ function removeInvalidTick(ticks, i) {
   return false;
 }
 function validateAxisOptions(options) {
-  var _labelOptions$minSpac;
   const labelOptions = options.label;
   let position = options.position;
   const defaultPosition = options.isHorizontal ? BOTTOM : LEFT;
@@ -174,7 +173,7 @@ function validateAxisOptions(options) {
   options.position = position;
   labelOptions.position = labelPosition;
   options.hoverMode = options.hoverMode ? options.hoverMode.toLowerCase() : 'none';
-  labelOptions.minSpacing = (_labelOptions$minSpac = labelOptions.minSpacing) !== null && _labelOptions$minSpac !== void 0 ? _labelOptions$minSpac : DEFAULT_AXIS_LABEL_SPACING;
+  labelOptions.minSpacing = labelOptions.minSpacing ?? DEFAULT_AXIS_LABEL_SPACING;
   options.type && (options.type = options.type.toLowerCase());
   options.argumentType && (options.argumentType = options.argumentType.toLowerCase());
   options.valueType && (options.valueType = options.valueType.toLowerCase());
@@ -367,13 +366,12 @@ Axis.prototype = {
     }).append(group);
   },
   _drawConstantLineLabels: function (parsedValue, lineLabelOptions, value, group) {
-    var _text;
     const that = this;
     let text = lineLabelOptions.text;
     const options = that._options;
     const labelOptions = options.label;
     that._checkAlignmentConstantLineLabels(lineLabelOptions);
-    text = (_text = text) !== null && _text !== void 0 ? _text : that.formatLabel(parsedValue, labelOptions);
+    text = text ?? that.formatLabel(parsedValue, labelOptions);
     const coords = that._getConstantLineLabelsCoords(value, lineLabelOptions);
     return that._drawConstantLineLabelText(text, coords.x, coords.y, lineLabelOptions, group);
   },
@@ -390,11 +388,10 @@ Axis.prototype = {
     let endCategoryIndex;
     if (!isContinuous) {
       if ((0, _type.isDefined)(startValue) && (0, _type.isDefined)(endValue)) {
-        var _parsedStartValue$val, _parsedEndValue$value;
         const parsedStartValue = this.parser(startValue);
         const parsedEndValue = this.parser(endValue);
-        startCategoryIndex = categories.indexOf((_parsedStartValue$val = parsedStartValue === null || parsedStartValue === void 0 ? void 0 : parsedStartValue.valueOf()) !== null && _parsedStartValue$val !== void 0 ? _parsedStartValue$val : undefined);
-        endCategoryIndex = categories.indexOf((_parsedEndValue$value = parsedEndValue === null || parsedEndValue === void 0 ? void 0 : parsedEndValue.valueOf()) !== null && _parsedEndValue$value !== void 0 ? _parsedEndValue$value : undefined);
+        startCategoryIndex = categories.indexOf((parsedStartValue === null || parsedStartValue === void 0 ? void 0 : parsedStartValue.valueOf()) ?? undefined);
+        endCategoryIndex = categories.indexOf((parsedEndValue === null || parsedEndValue === void 0 ? void 0 : parsedEndValue.valueOf()) ?? undefined);
         if (startCategoryIndex === -1 || endCategoryIndex === -1) {
           return {
             from: 0,
@@ -648,7 +645,7 @@ Axis.prototype = {
       valueText: (0, _smart_formatter.smartFormatter)(value, {
         labelOptions: labelOptions,
         ticks: ticks || convertTicksToValues(this._majorTicks),
-        tickInterval: tickInterval !== null && tickInterval !== void 0 ? tickInterval : this._tickInterval,
+        tickInterval: tickInterval ?? this._tickInterval,
         dataType: this._options.dataType,
         logarithmBase: this._options.logarithmBase,
         type: this._options.type,
@@ -949,9 +946,8 @@ Axis.prototype = {
     const minVisible = minDefined ? visualRange.startValue : result.minVisible;
     const maxVisible = maxDefined ? visualRange.endValue : result.maxVisible;
     if (!isDiscrete) {
-      var _wholeRange$startValu, _wholeRange$endValue;
-      result.min = (_wholeRange$startValu = wholeRange.startValue) !== null && _wholeRange$startValu !== void 0 ? _wholeRange$startValu : result.min;
-      result.max = (_wholeRange$endValue = wholeRange.endValue) !== null && _wholeRange$endValue !== void 0 ? _wholeRange$endValue : result.max;
+      result.min = wholeRange.startValue ?? result.min;
+      result.max = wholeRange.endValue ?? result.max;
     } else {
       const categoriesInfo = (0, _utils.getCategoriesInfo)(categories, wholeRange.startValue, wholeRange.endValue);
       categories = categoriesInfo.categories;
@@ -1114,7 +1110,6 @@ Axis.prototype = {
     return center;
   },
   setBusinessRange(range, axisReinitialized, oppositeVisualRangeUpdateMode, argCategories) {
-    var _that$_seriesData$min, _that$_seriesData$max;
     const that = this;
     const options = that._options;
     const isDiscrete = options.type === _axes_constants.default.discrete;
@@ -1151,8 +1146,8 @@ Axis.prototype = {
         });
       }
     }
-    that._seriesData.minVisible = (_that$_seriesData$min = that._seriesData.minVisible) !== null && _that$_seriesData$min !== void 0 ? _that$_seriesData$min : that._seriesData.min;
-    that._seriesData.maxVisible = (_that$_seriesData$max = that._seriesData.maxVisible) !== null && _that$_seriesData$max !== void 0 ? _that$_seriesData$max : that._seriesData.max;
+    that._seriesData.minVisible = that._seriesData.minVisible ?? that._seriesData.min;
+    that._seriesData.maxVisible = that._seriesData.maxVisible ?? that._seriesData.max;
     if (!that.isArgumentAxis && options.showZero) {
       that._seriesData.correctValueZeroLevel();
     }
@@ -1278,14 +1273,14 @@ Axis.prototype = {
     return ticks;
   },
   getAggregationInfo(useAllAggregatedPoints, range) {
-    var _visualRange$startVal, _visualRange$endValue, _that$_seriesData;
+    var _that$_seriesData;
     const that = this;
     const options = that._options;
     const marginOptions = that._marginOptions;
     const businessRange = new _range.Range(that.getTranslator().getBusinessRange()).addRange(range);
     const visualRange = that.getViewport();
-    const minVisible = (_visualRange$startVal = visualRange === null || visualRange === void 0 ? void 0 : visualRange.startValue) !== null && _visualRange$startVal !== void 0 ? _visualRange$startVal : businessRange.minVisible;
-    const maxVisible = (_visualRange$endValue = visualRange === null || visualRange === void 0 ? void 0 : visualRange.endValue) !== null && _visualRange$endValue !== void 0 ? _visualRange$endValue : businessRange.maxVisible;
+    const minVisible = (visualRange === null || visualRange === void 0 ? void 0 : visualRange.startValue) ?? businessRange.minVisible;
+    const maxVisible = (visualRange === null || visualRange === void 0 ? void 0 : visualRange.endValue) ?? businessRange.maxVisible;
     let ticks = [];
     if (options.type === _axes_constants.default.discrete && options.aggregateByCategory) {
       return {
@@ -1434,8 +1429,7 @@ Axis.prototype = {
     this._marginOptions = options;
   },
   getMarginOptions() {
-    var _this$_marginOptions;
-    return (_this$_marginOptions = this._marginOptions) !== null && _this$_marginOptions !== void 0 ? _this$_marginOptions : {};
+    return this._marginOptions ?? {};
   },
   _calculateRangeInterval: function (interval) {
     const isDateTime = this._options.dataType === 'datetime';
@@ -1567,13 +1561,11 @@ Axis.prototype = {
     maxPercentPadding = maxPercentPadding === undefined ? maxPadding / screenDeltaWithMargins : maxPercentPadding;
     if (!isDiscrete) {
       if (this._translator.isInverted()) {
-        var _minValue, _maxValue;
-        minValue = (_minValue = minValue) !== null && _minValue !== void 0 ? _minValue : translator.from(canvasStartEnd.start + screenDelta * minPercentPadding, -1);
-        maxValue = (_maxValue = maxValue) !== null && _maxValue !== void 0 ? _maxValue : translator.from(canvasStartEnd.end - screenDelta * maxPercentPadding, 1);
+        minValue = minValue ?? translator.from(canvasStartEnd.start + screenDelta * minPercentPadding, -1);
+        maxValue = maxValue ?? translator.from(canvasStartEnd.end - screenDelta * maxPercentPadding, 1);
       } else {
-        var _minValue2, _maxValue2;
-        minValue = (_minValue2 = minValue) !== null && _minValue2 !== void 0 ? _minValue2 : translator.from(canvasStartEnd.start - screenDelta * minPercentPadding, -1);
-        maxValue = (_maxValue2 = maxValue) !== null && _maxValue2 !== void 0 ? _maxValue2 : translator.from(canvasStartEnd.end + screenDelta * maxPercentPadding, 1);
+        minValue = minValue ?? translator.from(canvasStartEnd.start - screenDelta * minPercentPadding, -1);
+        maxValue = maxValue ?? translator.from(canvasStartEnd.end + screenDelta * maxPercentPadding, 1);
       }
     }
     const {
@@ -1582,13 +1574,13 @@ Axis.prototype = {
       start,
       end
     } = that.getCorrectedValuesToZero(minValue, maxValue);
-    minPadding = start !== null && start !== void 0 ? start : minPadding;
-    maxPadding = end !== null && end !== void 0 ? end : maxPadding;
+    minPadding = start ?? minPadding;
+    maxPadding = end ?? maxPadding;
     return {
       startPadding: translator.isInverted() ? maxPadding : minPadding,
       endPadding: translator.isInverted() ? minPadding : maxPadding,
-      minValue: correctedMin !== null && correctedMin !== void 0 ? correctedMin : minValue,
-      maxValue: correctedMax !== null && correctedMax !== void 0 ? correctedMax : maxValue,
+      minValue: correctedMin ?? minValue,
+      maxValue: correctedMax ?? maxValue,
       interval: rangeInterval,
       isSpacedMargin: minPadding === maxPadding && minPadding !== 0
     };
@@ -1975,9 +1967,8 @@ Axis.prototype = {
       let startValue = adjustedRange.minVisible;
       let endValue = adjustedRange.maxVisible;
       if (that._options.type === _axes_constants.default.discrete) {
-        var _startValue, _endValue;
-        startValue = (_startValue = startValue) !== null && _startValue !== void 0 ? _startValue : adjustedRange.categories[0];
-        endValue = (_endValue = endValue) !== null && _endValue !== void 0 ? _endValue : adjustedRange.categories[adjustedRange.categories.length - 1];
+        startValue = startValue ?? adjustedRange.categories[0];
+        endValue = endValue ?? adjustedRange.categories[adjustedRange.categories.length - 1];
         return {
           startValue,
           endValue,
@@ -2295,7 +2286,7 @@ Axis.prototype = {
     translator.update(translator.getBusinessRange(), this._canvas || {}, this._getTranslatorOptions());
   },
   _getTranslatorOptions: function () {
-    var _options$workWeek2, _options$breakStyle$w, _options$breakStyle;
+    var _options$workWeek2, _options$breakStyle;
     const options = this._options;
     return {
       isHorizontal: this._isHorizontal,
@@ -2303,7 +2294,7 @@ Axis.prototype = {
       interval: options.semiDiscreteInterval,
       firstDayOfWeek: (_options$workWeek2 = options.workWeek) === null || _options$workWeek2 === void 0 ? void 0 : _options$workWeek2[0],
       stick: this._getStick(),
-      breaksSize: (_options$breakStyle$w = (_options$breakStyle = options.breakStyle) === null || _options$breakStyle === void 0 ? void 0 : _options$breakStyle.width) !== null && _options$breakStyle$w !== void 0 ? _options$breakStyle$w : 0
+      breaksSize: ((_options$breakStyle = options.breakStyle) === null || _options$breakStyle === void 0 ? void 0 : _options$breakStyle.width) ?? 0
     };
   },
   getVisibleArea() {
@@ -2354,7 +2345,7 @@ Axis.prototype = {
       sort = argCategories;
     } else {
       const categoriesSortingMethod = this._options.categoriesSortingMethod;
-      sort = categoriesSortingMethod !== null && categoriesSortingMethod !== void 0 ? categoriesSortingMethod : this._options.categories;
+      sort = categoriesSortingMethod ?? this._options.categories;
     }
     return sort;
   },

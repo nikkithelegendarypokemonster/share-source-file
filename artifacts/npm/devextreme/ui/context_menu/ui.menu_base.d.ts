@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/context_menu/ui.menu_base.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -25,8 +25,9 @@ import {
 } from '../../common';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
+ * @docid
+ * @hidden
  */
 export interface dxMenuBaseOptions<
   TComponent extends dxMenuBase<any, TItem, TKey>,
@@ -34,68 +35,95 @@ export interface dxMenuBaseOptions<
   TKey = any,
 > extends Omit<HierarchicalCollectionWidgetOptions<TComponent, TItem, TKey>, 'dataSource'> {
     /**
-     * Specifies whether the UI component changes its visual state as a result of user interaction.
+     * @docid
+     * @default true
+     * @public
      */
     activeStateEnabled?: boolean;
     /**
-     * Configures UI component visibility animations. This object contains two fields: show and hide.
+     * @docid
+     * @default { show: { type: "fade", from: 0, to: 1, duration: 100 }, hide: { type: "fade", from: 1, to: 0, duration: 100 } }
+     * @ref
+     * @public
      */
     animation?: {
       /**
-       * An object that defines the animation properties used when the UI component is being hidden.
+       * @docid
+       * @default { type: "fade", from: 1, to: 0, duration: 100 }
        */
       hide?: AnimationConfig;
       /**
-       * An object that defines the animation properties used when the UI component is being shown.
+       * @docid
+       * @default { type: "fade", from: 0, to: 1, duration: 100 }
        */
       show?: AnimationConfig;
     };
     /**
-     * Specifies the name of the CSS class to be applied to the root menu level and all submenus.
+     * @docid
+     * @default ""
+     * @public
      */
     cssClass?: string;
     /**
-     * Binds the UI component to data.
+     * @docid
+     * @default null
+     * @public
+     * @type Store|DataSource|DataSourceOptions|string|Array<dxMenuBaseItem>|null
      */
     dataSource?: DataSourceLike<TItem, TKey> | null;
     /**
-     * Holds an array of menu items.
+     * @docid
+     * @public
+     * @type Array<dxMenuBaseItem>
      */
     items?: Array<TItem>;
     /**
-     * Specifies whether an item is selected if a user clicks it.
+     * @docid
+     * @default false
+     * @public
      */
     selectByClick?: boolean;
     /**
-     * Specifies the selection mode supported by the menu.
+     * @docid
+     * @default none
+     * @public
      */
     selectionMode?: SingleOrNone;
     /**
-     * Specifies properties of submenu showing and hiding.
+     * @docid
+     * @default { name: "onHover", delay: { show: 50, hide: 300 } }
+     * @public
      */
     showSubmenuMode?: {
       /**
-       * Specifies the delay of submenu show and hiding.
+       * @docid
+       * @default { show: 50, hide: 300 }
        */
       delay?: {
         /**
-         * The time span after which the submenu is hidden.
+         * @docid
+         * @default 300
          */
         hide?: number;
         /**
-         * The time span after which the submenu is shown.
+         * @docid
+         * @default 50
          */
         show?: number;
       } | number;
       /**
-       * Specifies the mode name.
+       * @docid
+       * @default "onHover"
        */
       name?: SubmenuShowMode;
     } | SubmenuShowMode;
 }
 /**
- * The base class for UI components containing an item collection.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @inherits HierarchicalCollectionWidget
+ * @hidden
+ * @namespace DevExpress.ui
+ * @options dxMenuBaseOptions
  */
 export default class dxMenuBase<
   TProperties extends dxMenuBaseOptions<any, TItem, TKey>,
@@ -103,11 +131,15 @@ export default class dxMenuBase<
   TKey = any,
 > extends HierarchicalCollectionWidget<TProperties, TItem, TKey> {
     /**
-     * Selects an item found using its DOM node.
+     * @docid
+     * @publicName selectItem(itemElement)
+     * @public
      */
     selectItem(itemElement: Element): void;
     /**
-     * Cancels the selection of an item found using its DOM node.
+     * @docid
+     * @publicName unselectItem(itemElement)
+     * @public
      */
     unselectItem(itemElement: Element): void;
 }

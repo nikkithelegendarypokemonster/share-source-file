@@ -2,43 +2,43 @@ import { each } from '../../core/utils/iterator';
 import { BaseElement } from './base_indicators';
 import { isString } from '../../core/utils/type';
 import { extractColor } from '../core/utils';
-var _Number = Number;
-var _isArray = Array.isArray;
-var _isFinite = isFinite;
-var BaseRangeContainer = BaseElement.inherit({
-  _init: function _init() {
+const _Number = Number;
+const _isArray = Array.isArray;
+const _isFinite = isFinite;
+const BaseRangeContainer = BaseElement.inherit({
+  _init: function () {
     this._root = this._renderer.g().attr({
       'class': 'dxg-range-container'
     }).linkOn(this._container, 'range-container');
   },
-  _dispose: function _dispose() {
+  _dispose: function () {
     this._root.linkOff();
   },
-  clean: function clean() {
+  clean: function () {
     this._root.linkRemove().clear();
     this._options = this.enabled = null;
     return this;
   },
-  _getRanges: function _getRanges() {
-    var that = this;
-    var options = that._options;
-    var translator = that._translator;
-    var totalStart = translator.getDomain()[0];
-    var totalEnd = translator.getDomain()[1];
-    var totalDelta = totalEnd - totalStart;
-    var isValidSegment = totalDelta >= 0 ? isValidSegmentAsc : isValidSegmentDesc;
-    var subtractSegment = totalDelta >= 0 ? subtractSegmentAsc : subtractSegmentDesc;
-    var list = [];
-    var ranges = [];
-    var backgroundRanges = [{
+  _getRanges: function () {
+    const that = this;
+    const options = that._options;
+    const translator = that._translator;
+    const totalStart = translator.getDomain()[0];
+    const totalEnd = translator.getDomain()[1];
+    const totalDelta = totalEnd - totalStart;
+    const isValidSegment = totalDelta >= 0 ? isValidSegmentAsc : isValidSegmentDesc;
+    const subtractSegment = totalDelta >= 0 ? subtractSegmentAsc : subtractSegmentDesc;
+    let list = [];
+    let ranges = [];
+    let backgroundRanges = [{
       start: totalStart,
       end: totalEnd
     }];
-    var backgroundColor = extractColor(options.backgroundColor) || 'none';
-    var width = options.width || {};
-    var startWidth = _Number(width > 0 ? width : width.start);
-    var endWidth = _Number(width > 0 ? width : width.end);
-    var deltaWidth = endWidth - startWidth;
+    const backgroundColor = extractColor(options.backgroundColor) || 'none';
+    const width = options.width || {};
+    const startWidth = _Number(width > 0 ? width : width.start);
+    const endWidth = _Number(width > 0 ? width : width.end);
+    const deltaWidth = endWidth - startWidth;
     if (options.ranges !== undefined && !_isArray(options.ranges)) {
       return null;
     }
@@ -47,8 +47,8 @@ var BaseRangeContainer = BaseElement.inherit({
     }
     list = (_isArray(options.ranges) ? options.ranges : []).reduce((result, rangeOptions, i) => {
       rangeOptions = rangeOptions || {};
-      var start = translator.adjust(rangeOptions.startValue);
-      var end = translator.adjust(rangeOptions.endValue);
+      const start = translator.adjust(rangeOptions.startValue);
+      const end = translator.adjust(rangeOptions.endValue);
       if (_isFinite(start) && _isFinite(end) && isValidSegment(start, end, rangeOptions)) {
         result.push({
           start: start,
@@ -59,26 +59,26 @@ var BaseRangeContainer = BaseElement.inherit({
       }
       return result;
     }, []);
-    var palette = that._themeManager.createPalette(options.palette, {
+    const palette = that._themeManager.createPalette(options.palette, {
       type: 'indicatingSet',
       extensionMode: options.paletteExtensionMode,
       keepLastColorInEnd: true,
       count: list.length
     });
     each(list, function (_, item) {
-      var paletteColor = palette.getNextColor();
+      const paletteColor = palette.getNextColor();
       item.color = isString(item.color) && item.color || paletteColor || 'none';
       item.className = 'dxg-range dxg-range-' + item.classIndex;
       delete item.classIndex;
     });
     each(list, function (_, item) {
-      var i;
-      var ii;
-      var sub;
-      var subs;
-      var range;
-      var newRanges = [];
-      var newBackgroundRanges = [];
+      let i;
+      let ii;
+      let sub;
+      let subs;
+      let range;
+      const newRanges = [];
+      const newBackgroundRanges = [];
       for (i = 0, ii = ranges.length; i < ii; ++i) {
         range = ranges[i];
         subs = subtractSegment(range.start, range.end, item.start, item.end);
@@ -106,8 +106,8 @@ var BaseRangeContainer = BaseElement.inherit({
     });
     return ranges;
   },
-  render: function render(options) {
-    var that = this;
+  render: function (options) {
+    const that = this;
     that._options = options;
     that._processOptions();
     that._ranges = that._getRanges();
@@ -117,8 +117,8 @@ var BaseRangeContainer = BaseElement.inherit({
     }
     return that;
   },
-  resize: function resize(layout) {
-    var that = this;
+  resize: function (layout) {
+    const that = this;
     that._root.clear();
     if (that._isVisible(layout)) {
       each(that._ranges, function (_, range) {
@@ -134,8 +134,8 @@ var BaseRangeContainer = BaseElement.inherit({
   _isVisible: null,
   _createRange: null,
   // S170193
-  getColorForValue: function getColorForValue(value) {
-    var color = null;
+  getColorForValue: function (value) {
+    let color = null;
     each(this._ranges, function (_, range) {
       if (range.start <= value && value <= range.end || range.start >= value && value >= range.end) {
         color = range.color;
@@ -146,7 +146,7 @@ var BaseRangeContainer = BaseElement.inherit({
   }
 });
 function subtractSegmentAsc(segmentStart, segmentEnd, otherStart, otherEnd) {
-  var result;
+  let result;
   if (otherStart > segmentStart && otherEnd < segmentEnd) {
     result = [{
       start: segmentStart,
@@ -176,7 +176,7 @@ function subtractSegmentAsc(segmentStart, segmentEnd, otherStart, otherEnd) {
   return result;
 }
 function subtractSegmentDesc(segmentStart, segmentEnd, otherStart, otherEnd) {
-  var result;
+  let result;
   if (otherStart < segmentStart && otherEnd > segmentEnd) {
     result = [{
       start: segmentStart,
@@ -206,7 +206,7 @@ function subtractSegmentDesc(segmentStart, segmentEnd, otherStart, otherEnd) {
   return result;
 }
 function areEqualValues(start, end, _ref) {
-  var {
+  let {
     startValue,
     endValue
   } = _ref;

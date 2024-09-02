@@ -15,11 +15,11 @@ function getElementStyle(el) {
 }
 function getElementMargin(element, side) {
   const style = getElementStyle(element);
-  return style ? (0, _type_conversion.toNumber)(style["margin".concat((0, _inflector.titleize)(side))]) : 0;
+  return style ? (0, _type_conversion.toNumber)(style[`margin${(0, _inflector.titleize)(side)}`]) : 0;
 }
 function getElementPadding(element, side) {
   const style = getElementStyle(element);
-  return style ? (0, _type_conversion.toNumber)(style["padding".concat((0, _inflector.titleize)(side))]) : 0;
+  return style ? (0, _type_conversion.toNumber)(style[`padding${(0, _inflector.titleize)(side)}`]) : 0;
 }
 function getElementOverflowX(element) {
   const style = getElementStyle(element);

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/localization/ldml/date.parser.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -28,13 +28,13 @@ const monthRegExpGenerator = function (count, dateParts) {
 };
 const PATTERN_REGEXPS = {
   ':': function (count, dateParts) {
-    const countSuffix = count > 1 ? "{".concat(count, "}") : '';
+    const countSuffix = count > 1 ? `{${count}}` : '';
     let timeSeparator = (0, _common.escapeRegExp)(dateParts.getTimeSeparator());
-    timeSeparator !== ':' && (timeSeparator = "".concat(timeSeparator, "|:"));
-    return "".concat(timeSeparator).concat(countSuffix);
+    timeSeparator !== ':' && (timeSeparator = `${timeSeparator}|:`);
+    return `${timeSeparator}${countSuffix}`;
   },
   y: function (count) {
-    return count === 2 ? "[0-9]{".concat(count, "}") : '[0-9]+?';
+    return count === 2 ? `[0-9]{${count}}` : '[0-9]+?';
   },
   M: monthRegExpGenerator,
   L: monthRegExpGenerator,
@@ -66,10 +66,13 @@ const PATTERN_REGEXPS = {
     return count === 2 ? '[1-5][0-9]|0?[0-9]' : '0??[0-9]|[1-5][0-9]';
   },
   S: function (count) {
-    return "[0-9]{1,".concat(count, "}");
+    return `[0-9]{1,${count}}`;
   },
   w: function (count) {
     return count === 2 ? '[1-5][0-9]|0?[0-9]' : '0??[0-9]|[1-5][0-9]';
+  },
+  x: function (count) {
+    return count === 3 ? '[+-](?:2[0-3]|[01][0-9]):(?:[0-5][0-9])|Z' : '[+-](?:2[0-3]|[01][0-9])(?:[0-5][0-9])|Z';
   }
 };
 const parseNumber = Number;
@@ -181,8 +184,8 @@ const getRegExpInfo = function (format, dateParts) {
   const patterns = [];
   const addPreviousStub = function () {
     if (stubText) {
-      patterns.push("'".concat(stubText, "'"));
-      regexpText += "".concat((0, _common.escapeRegExp)(stubText), ")");
+      patterns.push(`'${stubText}'`);
+      regexpText += `${(0, _common.escapeRegExp)(stubText)})`;
       stubText = '';
     }
   };
@@ -201,7 +204,7 @@ const getRegExpInfo = function (format, dateParts) {
       const pattern = createPattern(char, count);
       addPreviousStub();
       patterns.push(pattern);
-      regexpText += "(".concat(regexpPart(count, dateParts), ")");
+      regexpText += `(${regexpPart(count, dateParts)})`;
       i += count - 1;
     } else {
       if (!stubText) {
@@ -212,11 +215,11 @@ const getRegExpInfo = function (format, dateParts) {
   }
   addPreviousStub();
   if (!isPossibleForParsingFormat(patterns)) {
-    _console.logger.warn("The following format may be parsed incorrectly: ".concat(format, "."));
+    _console.logger.warn(`The following format may be parsed incorrectly: ${format}.`);
   }
   return {
     patterns: patterns,
-    regexp: new RegExp("^".concat(regexpText, "$"), 'i')
+    regexp: new RegExp(`^${regexpText}$`, 'i')
   };
 };
 exports.getRegExpInfo = getRegExpInfo;

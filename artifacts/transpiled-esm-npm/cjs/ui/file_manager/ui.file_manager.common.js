@@ -40,7 +40,7 @@ const getDisplayFileSize = function (byteSize) {
     index++;
   }
   displaySize = Math.round(displaySize * 10) / 10;
-  return "".concat(displaySize, " ").concat(sizesTitles[index]);
+  return `${displaySize} ${sizesTitles[index]}`;
 };
 exports.getDisplayFileSize = getDisplayFileSize;
 const extendAttributes = function (targetObject, sourceObject, objectKeysArray) {

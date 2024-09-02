@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/file_manager/ui.file_manager.files_tree_view.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,23 +11,23 @@ import { extend } from '../../core/utils/extend';
 import { getImageContainer } from '../../core/utils/icon';
 import { noop } from '../../core/utils/common';
 import Widget from '../widget/ui.widget';
-import TreeViewSearch from '../tree_view/ui.tree_view.search';
+import TreeViewSearch from '../tree_view';
 import FileManagerFileActionsButton from './ui.file_manager.file_actions_button';
 import { Deferred } from '../../core/utils/deferred';
 import { hasWindow } from '../../core/utils/window';
 import { isNumeric } from '../../core/utils/type';
-var FILE_MANAGER_DIRS_TREE_CLASS = 'dx-filemanager-dirs-tree';
-var FILE_MANAGER_DIRS_TREE_FOCUSED_ITEM_CLASS = 'dx-filemanager-focused-item';
-var FILE_MANAGER_DIRS_TREE_ITEM_TEXT_CLASS = 'dx-filemanager-dirs-tree-item-text';
-var TREE_VIEW_ITEM_CLASS = 'dx-treeview-item';
+const FILE_MANAGER_DIRS_TREE_CLASS = 'dx-filemanager-dirs-tree';
+const FILE_MANAGER_DIRS_TREE_FOCUSED_ITEM_CLASS = 'dx-filemanager-focused-item';
+const FILE_MANAGER_DIRS_TREE_ITEM_TEXT_CLASS = 'dx-filemanager-dirs-tree-item-text';
+const TREE_VIEW_ITEM_CLASS = 'dx-treeview-item';
 class FileManagerFilesTreeView extends Widget {
   _initMarkup() {
     this._initActions();
     this._getCurrentDirectory = this.option('getCurrentDirectory');
     this._createFileActionsButton = noop;
     this._storeExpandedState = this.option('storeExpandedState') || false;
-    var $treeView = $('<div>').addClass(FILE_MANAGER_DIRS_TREE_CLASS).appendTo(this.$element());
-    var treeViewOptions = {
+    const $treeView = $('<div>').addClass(FILE_MANAGER_DIRS_TREE_CLASS).appendTo(this.$element());
+    const treeViewOptions = {
       dataStructure: 'plain',
       rootValue: '',
       createChildren: this._onFilesTreeViewCreateSubDirectories.bind(this),
@@ -57,28 +57,28 @@ class FileManagerFilesTreeView extends Widget {
   }
   _render() {
     super._render();
-    var that = this;
+    const that = this;
     setTimeout(() => {
       that._updateFocusedElement();
     });
   }
   _onFilesTreeViewCreateSubDirectories(rootItem) {
-    var getDirectories = this.option('getDirectories');
-    var directoryInfo = rootItem && rootItem.itemData || null;
+    const getDirectories = this.option('getDirectories');
+    const directoryInfo = rootItem && rootItem.itemData || null;
     return getDirectories && getDirectories(directoryInfo, true);
   }
   _onFilesTreeViewItemRendered(_ref) {
-    var {
+    let {
       itemData
     } = _ref;
-    var currentDirectory = this._getCurrentDirectory();
+    const currentDirectory = this._getCurrentDirectory();
     if (currentDirectory && currentDirectory.fileItem.equals(itemData.fileItem)) {
       this._updateFocusedElement();
       this._restoreScrollTopPosition();
     }
   }
   _onFilesTreeViewItemExpanded(_ref2) {
-    var {
+    let {
       itemData
     } = _ref2;
     if (this._storeExpandedState) {
@@ -86,7 +86,7 @@ class FileManagerFilesTreeView extends Widget {
     }
   }
   _onFilesTreeViewItemCollapsed(_ref3) {
-    var {
+    let {
       itemData
     } = _ref3;
     if (this._storeExpandedState) {
@@ -94,40 +94,40 @@ class FileManagerFilesTreeView extends Widget {
     }
   }
   _createFilesTreeViewItemTemplate(itemData, itemIndex, itemElement) {
-    var $itemElement = $(itemElement);
-    var $itemWrapper = $itemElement.closest(this._filesTreeViewItemSelector);
+    const $itemElement = $(itemElement);
+    const $itemWrapper = $itemElement.closest(this._filesTreeViewItemSelector);
     $itemWrapper.data('item', itemData);
-    var $image = getImageContainer(itemData.icon);
-    var $text = $('<span>').text(itemData.getDisplayName()).addClass(FILE_MANAGER_DIRS_TREE_ITEM_TEXT_CLASS);
-    var $button = $('<div>');
+    const $image = getImageContainer(itemData.icon);
+    const $text = $('<span>').text(itemData.getDisplayName()).addClass(FILE_MANAGER_DIRS_TREE_ITEM_TEXT_CLASS);
+    const $button = $('<div>');
     $itemElement.append($image, $text, $button);
     this._createFileActionsButton($button, {
       onClick: e => this._onFileItemActionButtonClick(e)
     });
   }
   _onFilesTreeViewItemContextMenu(_ref4) {
-    var {
+    let {
       itemElement,
       event
     } = _ref4;
     event.preventDefault();
     event.stopPropagation();
-    var itemData = $(itemElement).data('item');
+    const itemData = $(itemElement).data('item');
     this._contextMenu.showAt([itemData], itemElement, event, {
       itemData,
       itemElement
     });
   }
   _onFileItemActionButtonClick(_ref5) {
-    var {
+    let {
       component,
       element,
       event
     } = _ref5;
     event.stopPropagation();
-    var itemElement = component.$element().closest(this._filesTreeViewItemSelector);
-    var itemData = itemElement.data('item');
-    var target = {
+    const itemElement = component.$element().closest(this._filesTreeViewItemSelector);
+    const itemData = itemElement.data('item');
+    const target = {
       itemData,
       itemElement,
       isActionButton: true
@@ -142,14 +142,14 @@ class FileManagerFilesTreeView extends Widget {
     }
   }
   toggleNodeDisabledState(key, state) {
-    var node = this._getNodeByKey(key);
+    const node = this._getNodeByKey(key);
     if (!node) {
       return;
     }
-    var items = this._filesTreeView.option('items');
-    var itemIndex = items.map(item => item.getInternalKey()).indexOf(node.getInternalKey());
+    const items = this._filesTreeView.option('items');
+    const itemIndex = items.map(item => item.getInternalKey()).indexOf(node.getInternalKey());
     if (itemIndex !== -1) {
-      this._filesTreeView.option("items[".concat(itemIndex, "].disabled"), state);
+      this._filesTreeView.option(`items[${itemIndex}].disabled`, state);
     }
   }
   _saveScrollTopPosition() {
@@ -165,8 +165,8 @@ class FileManagerFilesTreeView extends Widget {
     setTimeout(() => this._filesTreeView.getScrollable().scrollTo(this._scrollTopPosition));
   }
   _updateFocusedElement() {
-    var directoryInfo = this._getCurrentDirectory();
-    var $element = this._getItemElementByKey(directoryInfo === null || directoryInfo === void 0 ? void 0 : directoryInfo.getInternalKey());
+    const directoryInfo = this._getCurrentDirectory();
+    const $element = this._getItemElementByKey(directoryInfo === null || directoryInfo === void 0 ? void 0 : directoryInfo.getInternalKey());
     if (this._$focusedElement) {
       this._$focusedElement.toggleClass(FILE_MANAGER_DIRS_TREE_FOCUSED_ITEM_CLASS, false);
     }
@@ -180,9 +180,9 @@ class FileManagerFilesTreeView extends Widget {
   _getPublicNode(key) {
     var _this$_filesTreeView2;
     // eslint-disable-next-line no-unsafe-optional-chaining
-    var nodesQueue = [...((_this$_filesTreeView2 = this._filesTreeView) === null || _this$_filesTreeView2 === void 0 ? void 0 : _this$_filesTreeView2.getNodes())];
+    const nodesQueue = [...((_this$_filesTreeView2 = this._filesTreeView) === null || _this$_filesTreeView2 === void 0 ? void 0 : _this$_filesTreeView2.getNodes())];
     while (nodesQueue.length) {
-      var node = nodesQueue.shift();
+      const node = nodesQueue.shift();
       if (node.itemData.getInternalKey() === key) {
         return node;
       } else if (node.children.length) {
@@ -192,9 +192,9 @@ class FileManagerFilesTreeView extends Widget {
     return undefined;
   }
   _getItemElementByKey(key) {
-    var node = this._getNodeByKey(key);
+    const node = this._getNodeByKey(key);
     if (node) {
-      var $node = this._filesTreeView._getNodeElement(node);
+      const $node = this._filesTreeView._getNodeElement(node);
       if ($node) {
         return $node.children(this._filesTreeViewItemSelector);
       }
@@ -212,7 +212,7 @@ class FileManagerFilesTreeView extends Widget {
     });
   }
   _optionChanged(args) {
-    var name = args.name;
+    const name = args.name;
     switch (name) {
       case 'storeExpandedState':
         this._storeExpandedState = this.option(name);
@@ -235,21 +235,21 @@ class FileManagerFilesTreeView extends Widget {
     }
   }
   get _filesTreeViewItemSelector() {
-    return ".".concat(TREE_VIEW_ITEM_CLASS);
+    return `.${TREE_VIEW_ITEM_CLASS}`;
   }
   get _contextMenu() {
     return this.option('contextMenu');
   }
   toggleDirectoryExpandedState(directoryInfo, state) {
-    var deferred = new Deferred();
-    var treeViewNode = this._getPublicNode(directoryInfo === null || directoryInfo === void 0 ? void 0 : directoryInfo.getInternalKey());
+    const deferred = new Deferred();
+    const treeViewNode = this._getPublicNode(directoryInfo === null || directoryInfo === void 0 ? void 0 : directoryInfo.getInternalKey());
     if (!treeViewNode) {
       return deferred.reject().promise();
     }
     if (treeViewNode.expanded === state || treeViewNode.itemsLoaded && !treeViewNode.itemData.fileItem.hasSubDirectories) {
       return deferred.resolve().promise();
     }
-    var action = state ? 'expandItem' : 'collapseItem';
+    const action = state ? 'expandItem' : 'collapseItem';
     return this._filesTreeView[action](directoryInfo.getInternalKey());
   }
   refresh() {
@@ -268,8 +268,8 @@ class FileManagerFilesTreeView extends Widget {
     return this.toggleDirectoryExpandedStateRecursive(this._getCurrentDirectory().parentDirectory, true);
   }
   toggleDirectoryExpandedStateRecursive(directoryInfo, state) {
-    var dirLine = [];
-    for (var dirInfo = directoryInfo; dirInfo; dirInfo = dirInfo.parentDirectory) {
+    const dirLine = [];
+    for (let dirInfo = directoryInfo; dirInfo; dirInfo = dirInfo.parentDirectory) {
       dirLine.unshift(dirInfo);
     }
     return this.toggleDirectoryLineExpandedState(dirLine, state);

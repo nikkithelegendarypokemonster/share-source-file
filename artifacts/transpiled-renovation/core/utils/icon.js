@@ -29,11 +29,11 @@ const getImageContainer = source => {
     case 'image':
       return (0, _renderer.default)('<img>').attr('src', source).addClass(ICON_CLASS);
     case 'fontIcon':
-      return (0, _renderer.default)('<i>').addClass("".concat(ICON_CLASS, " ").concat(source));
+      return (0, _renderer.default)('<i>').addClass(`${ICON_CLASS} ${source}`);
     case 'dxIcon':
-      return (0, _renderer.default)('<i>').addClass("".concat(ICON_CLASS, " ").concat(ICON_CLASS, "-").concat(source));
+      return (0, _renderer.default)('<i>').addClass(`${ICON_CLASS} ${ICON_CLASS}-${source}`);
     case 'svg':
-      return (0, _renderer.default)('<i>').addClass("".concat(ICON_CLASS, " ").concat(SVG_ICON_CLASS)).append(source);
+      return (0, _renderer.default)('<i>').addClass(`${ICON_CLASS} ${SVG_ICON_CLASS}`).append(source);
     default:
       return null;
   }

@@ -198,7 +198,7 @@ const numberLocalization = (0, _dependency_injector.default)({
     const specialCharacters = ['\\', '(', ')', '[', ']', '*', '+', '$', '^', '?', '|', '{', '}'];
     let negativeEtalon = this.format(-1, format).replace(digitalRegExp, '1');
     specialCharacters.forEach(char => {
-      negativeEtalon = negativeEtalon.replace(new RegExp("\\".concat(char), 'g'), "\\".concat(char));
+      negativeEtalon = negativeEtalon.replace(new RegExp(`\\${char}`, 'g'), `\\${char}`);
     });
     negativeEtalon = negativeEtalon.replace(/ /g, '\\s');
     negativeEtalon = negativeEtalon.replace(/1/g, '.*');

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/workspaces/m_work_space_indicator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,24 +14,24 @@ import { getBoundingRect } from '../../../core/utils/position';
 import { setWidth } from '../../../core/utils/size';
 import { hasWindow } from '../../../core/utils/window';
 import { dateUtilsTs } from '../../core/utils/date';
-import { getToday } from '../__migration/utils/index';
+import { getToday } from '../../scheduler/r1/utils/index';
 import { HEADER_CURRENT_TIME_CELL_CLASS } from '../m_classes';
 import timezoneUtils from '../m_utils_time_zone';
 import SchedulerWorkSpace from './m_work_space';
-var toMs = dateUtils.dateToMilliseconds;
-var SCHEDULER_DATE_TIME_INDICATOR_CLASS = 'dx-scheduler-date-time-indicator';
-var TIME_PANEL_CURRENT_TIME_CELL_CLASS = 'dx-scheduler-time-panel-current-time-cell';
+const toMs = dateUtils.dateToMilliseconds;
+const SCHEDULER_DATE_TIME_INDICATOR_CLASS = 'dx-scheduler-date-time-indicator';
+const TIME_PANEL_CURRENT_TIME_CELL_CLASS = 'dx-scheduler-time-panel-current-time-cell';
 class SchedulerWorkSpaceIndicator extends SchedulerWorkSpace {
   // @ts-expect-error
   _getToday() {
-    var viewOffset = this.option('viewOffset');
-    var today = getToday(this.option('indicatorTime'), this.timeZoneCalculator);
+    const viewOffset = this.option('viewOffset');
+    const today = getToday(this.option('indicatorTime'), this.timeZoneCalculator);
     return dateUtilsTs.addOffsets(today, [-viewOffset]);
   }
   isIndicationOnView() {
     if (this.option('showCurrentTimeIndicator')) {
-      var today = this._getToday();
-      var endViewDate = dateUtils.trimTime(this.getEndViewDate());
+      const today = this._getToday();
+      const endViewDate = dateUtils.trimTime(this.getEndViewDate());
       return dateUtils.dateInRange(today, this.getStartViewDate(), new Date(endViewDate.getTime() + toMs('day')));
     }
     return false;
@@ -40,29 +40,29 @@ class SchedulerWorkSpaceIndicator extends SchedulerWorkSpace {
     if (!hasWindow()) {
       return false;
     }
-    var today = this._getToday();
+    const today = this._getToday();
     return today >= dateUtils.trimTime(new Date(this.getStartViewDate()));
   }
   isIndicatorVisible() {
-    var today = this._getToday();
+    const today = this._getToday();
     // Subtracts 1 ms from the real endViewDate instead of 1 minute
-    var endViewDate = new Date(this.getEndViewDate().getTime() + toMs('minute') - 1);
-    var firstViewDate = new Date(this.getStartViewDate());
+    const endViewDate = new Date(this.getEndViewDate().getTime() + toMs('minute') - 1);
+    const firstViewDate = new Date(this.getStartViewDate());
     firstViewDate.setFullYear(today.getFullYear(), today.getMonth(), today.getDate());
     endViewDate.setFullYear(today.getFullYear(), today.getMonth(), today.getDate());
     return dateUtils.dateInRange(today, firstViewDate, endViewDate);
   }
   _renderIndicator(height, rtlOffset, $container, groupCount) {
-    var groupedByDate = this.isGroupedByDate();
-    var repeatCount = groupedByDate ? 1 : groupCount;
-    for (var i = 0; i < repeatCount; i++) {
-      var $indicator = this._createIndicator($container);
+    const groupedByDate = this.isGroupedByDate();
+    const repeatCount = groupedByDate ? 1 : groupCount;
+    for (let i = 0; i < repeatCount; i++) {
+      const $indicator = this._createIndicator($container);
       setWidth($indicator, groupedByDate ? this.getCellWidth() * groupCount : this.getCellWidth());
       this._groupedStrategy.shiftIndicator($indicator, height, rtlOffset, i);
     }
   }
   _createIndicator($container) {
-    var $indicator = $('<div>').addClass(SCHEDULER_DATE_TIME_INDICATOR_CLASS);
+    const $indicator = $('<div>').addClass(SCHEDULER_DATE_TIME_INDICATOR_CLASS);
     $container.append($indicator);
     return $indicator;
   }
@@ -88,37 +88,37 @@ class SchedulerWorkSpaceIndicator extends SchedulerWorkSpace {
     return true;
   }
   getIndicationWidth(groupIndex) {
-    var maxWidth = this.getCellWidth() * this._getCellCount();
-    var difference = this._getIndicatorDuration();
+    const maxWidth = this.getCellWidth() * this._getCellCount();
+    let difference = this._getIndicatorDuration();
     if (difference > this._getCellCount()) {
       difference = this._getCellCount();
     }
-    var width = difference * this.getRoundedCellWidth(groupIndex, groupIndex * this._getCellCount(), difference);
+    const width = difference * this.getRoundedCellWidth(groupIndex, groupIndex * this._getCellCount(), difference);
     return maxWidth < width ? maxWidth : width;
   }
   getIndicatorOffset(groupIndex) {
-    var difference = this._getIndicatorDuration() - 1;
-    var offset = difference * this.getRoundedCellWidth(groupIndex, groupIndex * this._getCellCount(), difference);
+    const difference = this._getIndicatorDuration() - 1;
+    const offset = difference * this.getRoundedCellWidth(groupIndex, groupIndex * this._getCellCount(), difference);
     return offset;
   }
   _getIndicatorDuration() {
-    var today = this._getToday();
-    var firstViewDate = new Date(this.getStartViewDate());
-    var timeDiff = today.getTime() - firstViewDate.getTime();
+    const today = this._getToday();
+    const firstViewDate = new Date(this.getStartViewDate());
+    let timeDiff = today.getTime() - firstViewDate.getTime();
     if (this.option('type') === 'workWeek') {
       timeDiff -= this._getWeekendsCount(Math.round(timeDiff / toMs('day'))) * toMs('day');
     }
     return Math.ceil((timeDiff + 1) / toMs('day'));
   }
   getIndicationHeight() {
-    var today = timezoneUtils.getDateWithoutTimezoneChange(this._getToday());
-    var cellHeight = this.getCellHeight();
-    var date = new Date(this.getStartViewDate());
+    const today = timezoneUtils.getDateWithoutTimezoneChange(this._getToday());
+    const cellHeight = this.getCellHeight();
+    const date = new Date(this.getStartViewDate());
     if (this.isIndicationOnView()) {
       date.setFullYear(today.getFullYear(), today.getMonth(), today.getDate());
     }
-    var duration = today.getTime() - date.getTime();
-    var cellCount = duration / this.getCellDuration();
+    const duration = today.getTime() - date.getTime();
+    const cellCount = duration / this.getCellDuration();
     return cellCount * cellHeight;
   }
   _dispose() {
@@ -138,25 +138,25 @@ class SchedulerWorkSpaceIndicator extends SchedulerWorkSpace {
     }
   }
   renderCurrentDateTimeLineAndShader() {
-    var _a;
+    var _this$_shader;
     this._cleanDateTimeIndicator();
-    (_a = this._shader) === null || _a === void 0 ? void 0 : _a.clean();
+    (_this$_shader = this._shader) === null || _this$_shader === void 0 || _this$_shader.clean();
     this._renderDateTimeIndication();
   }
   _isCurrentTimeHeaderCell(headerIndex) {
     if (this.isIndicationOnView()) {
-      var {
+      const {
         completeDateHeaderMap
       } = this.viewDataProvider;
-      var date = completeDateHeaderMap[completeDateHeaderMap.length - 1][headerIndex].startDate;
+      const date = completeDateHeaderMap[completeDateHeaderMap.length - 1][headerIndex].startDate;
       return dateUtils.sameDate(date, this._getToday());
     }
     return false;
   }
   _getHeaderPanelCellClass(i) {
-    var cellClass = super._getHeaderPanelCellClass(i);
+    const cellClass = super._getHeaderPanelCellClass(i);
     if (this._isCurrentTimeHeaderCell(i)) {
-      return "".concat(cellClass, " ").concat(HEADER_CURRENT_TIME_CELL_CLASS);
+      return `${cellClass} ${HEADER_CURRENT_TIME_CELL_CLASS}`;
     }
     return cellClass;
   }
@@ -169,7 +169,7 @@ class SchedulerWorkSpaceIndicator extends SchedulerWorkSpace {
     this.renderCurrentDateTimeLineAndShader();
   }
   _cleanDateTimeIndicator() {
-    this.$element().find(".".concat(SCHEDULER_DATE_TIME_INDICATOR_CLASS)).remove();
+    this.$element().find(`.${SCHEDULER_DATE_TIME_INDICATOR_CLASS}`).remove();
   }
   _cleanWorkSpace() {
     super._cleanWorkSpace();
@@ -207,22 +207,22 @@ class SchedulerWorkSpaceIndicator extends SchedulerWorkSpace {
     });
   }
   _getCurrentTimePanelCellIndices() {
-    var rowCountPerGroup = this._getTimePanelRowCount();
-    var today = this._getToday();
-    var index = this.getCellIndexByDate(today);
-    var {
+    const rowCountPerGroup = this._getTimePanelRowCount();
+    const today = this._getToday();
+    const index = this.getCellIndexByDate(today);
+    const {
       rowIndex: currentTimeRowIndex
     } = this._getCellCoordinatesByIndex(index);
     if (currentTimeRowIndex === undefined) {
       return [];
     }
-    var cellIndices;
+    let cellIndices;
     if (currentTimeRowIndex === 0) {
       cellIndices = [currentTimeRowIndex];
     } else {
       cellIndices = currentTimeRowIndex % 2 === 0 ? [currentTimeRowIndex - 1, currentTimeRowIndex] : [currentTimeRowIndex, currentTimeRowIndex + 1];
     }
-    var verticalGroupCount = this._isVerticalGroupedWorkSpace() ? this._getGroupCount() : 1;
+    const verticalGroupCount = this._isVerticalGroupedWorkSpace() ? this._getGroupCount() : 1;
     return [...new Array(verticalGroupCount)].reduce((currentIndices, _, groupIndex) => [...currentIndices, ...cellIndices.map(cellIndex => rowCountPerGroup * groupIndex + cellIndex)], []);
   }
   _renderDateTimeIndication() {
@@ -235,10 +235,10 @@ class SchedulerWorkSpaceIndicator extends SchedulerWorkSpace {
     if (!this.isIndicationOnView() || !this.isIndicatorVisible()) {
       return;
     }
-    var groupCount = this._getGroupCount() || 1;
-    var $container = this._dateTableScrollable.$content();
-    var height = this.getIndicationHeight();
-    var rtlOffset = this._getRtlOffset(this.getCellWidth());
+    const groupCount = this._getGroupCount() || 1;
+    const $container = this._dateTableScrollable.$content();
+    const height = this.getIndicationHeight();
+    const rtlOffset = this._getRtlOffset(this.getCellWidth());
     this._renderIndicator(height, rtlOffset, $container, groupCount);
     // TODO Old render: delete this code with the old render.
     if (!this.isRenovatedRender()) {
@@ -248,14 +248,14 @@ class SchedulerWorkSpaceIndicator extends SchedulerWorkSpace {
   // Temporary new render methods.
   // TODO Old render: replace base call methods by these after the deleting of the old render.
   _setCurrentTimeCells() {
-    var timePanelCells = this._getTimePanelCells();
-    var currentTimeCellIndices = this._getCurrentTimePanelCellIndices();
+    const timePanelCells = this._getTimePanelCells();
+    const currentTimeCellIndices = this._getCurrentTimePanelCellIndices();
     currentTimeCellIndices.forEach(timePanelCellIndex => {
       timePanelCells.eq(timePanelCellIndex).addClass(TIME_PANEL_CURRENT_TIME_CELL_CLASS);
     });
   }
   _cleanCurrentTimeCells() {
-    this.$element().find(".".concat(TIME_PANEL_CURRENT_TIME_CELL_CLASS)).removeClass(TIME_PANEL_CURRENT_TIME_CELL_CLASS);
+    this.$element().find(`.${TIME_PANEL_CURRENT_TIME_CELL_CLASS}`).removeClass(TIME_PANEL_CURRENT_TIME_CELL_CLASS);
   }
 }
 registerComponent('dxSchedulerWorkSpace', SchedulerWorkSpaceIndicator);

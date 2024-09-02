@@ -13,37 +13,37 @@ var _type = require("../../core/utils/type");
 var _events_engine = _interopRequireDefault(require("../../events/core/events_engine"));
 var _index = require("../../events/utils/index");
 var _message = _interopRequireDefault(require("../../localization/message"));
-var _utils = require("../../ui/overlay/utils");
-var _popup = _interopRequireDefault(require("../../ui/popup"));
-var _ui = _interopRequireDefault(require("../../ui/shared/ui.editor_factory_mixin"));
+var _ui = _interopRequireDefault(require("../../ui/popup/ui.popup"));
+var _ui2 = _interopRequireDefault(require("../../ui/shared/ui.editor_factory_mixin"));
 var _tree_view = _interopRequireDefault(require("../../ui/tree_view"));
-var _ui2 = _interopRequireDefault(require("../../ui/widget/ui.widget"));
-var _m_utils = require("./m_utils");
+var _ui3 = _interopRequireDefault(require("../../ui/widget/ui.widget"));
+var _m_utils = require("../ui/overlay/m_utils");
+var _m_utils2 = require("./m_utils");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */
+/* eslint-disable max-classes-per-file */
+
 // STYLE filterBuilder
 const FILTER_BUILDER_CLASS = 'dx-filterbuilder';
-const FILTER_BUILDER_GROUP_CLASS = "".concat(FILTER_BUILDER_CLASS, "-group");
-const FILTER_BUILDER_GROUP_ITEM_CLASS = "".concat(FILTER_BUILDER_GROUP_CLASS, "-item");
-const FILTER_BUILDER_GROUP_CONTENT_CLASS = "".concat(FILTER_BUILDER_GROUP_CLASS, "-content");
-const FILTER_BUILDER_GROUP_OPERATIONS_CLASS = "".concat(FILTER_BUILDER_GROUP_CLASS, "-operations");
-const FILTER_BUILDER_GROUP_OPERATION_CLASS = "".concat(FILTER_BUILDER_GROUP_CLASS, "-operation");
-const FILTER_BUILDER_ACTION_CLASS = "".concat(FILTER_BUILDER_CLASS, "-action");
-const FILTER_BUILDER_IMAGE_CLASS = "".concat(FILTER_BUILDER_ACTION_CLASS, "-icon");
+const FILTER_BUILDER_GROUP_CLASS = `${FILTER_BUILDER_CLASS}-group`;
+const FILTER_BUILDER_GROUP_ITEM_CLASS = `${FILTER_BUILDER_GROUP_CLASS}-item`;
+const FILTER_BUILDER_GROUP_CONTENT_CLASS = `${FILTER_BUILDER_GROUP_CLASS}-content`;
+const FILTER_BUILDER_GROUP_OPERATIONS_CLASS = `${FILTER_BUILDER_GROUP_CLASS}-operations`;
+const FILTER_BUILDER_GROUP_OPERATION_CLASS = `${FILTER_BUILDER_GROUP_CLASS}-operation`;
+const FILTER_BUILDER_ACTION_CLASS = `${FILTER_BUILDER_CLASS}-action`;
+const FILTER_BUILDER_IMAGE_CLASS = `${FILTER_BUILDER_ACTION_CLASS}-icon`;
 const FILTER_BUILDER_IMAGE_ADD_CLASS = 'dx-icon-plus';
 const FILTER_BUILDER_IMAGE_REMOVE_CLASS = 'dx-icon-remove';
-const FILTER_BUILDER_ITEM_TEXT_CLASS = "".concat(FILTER_BUILDER_CLASS, "-text");
-const FILTER_BUILDER_ITEM_FIELD_CLASS = "".concat(FILTER_BUILDER_CLASS, "-item-field");
-const FILTER_BUILDER_ITEM_OPERATION_CLASS = "".concat(FILTER_BUILDER_CLASS, "-item-operation");
-const FILTER_BUILDER_ITEM_VALUE_CLASS = "".concat(FILTER_BUILDER_CLASS, "-item-value");
-const FILTER_BUILDER_ITEM_VALUE_TEXT_CLASS = "".concat(FILTER_BUILDER_CLASS, "-item-value-text");
-const FILTER_BUILDER_OVERLAY_CLASS = "".concat(FILTER_BUILDER_CLASS, "-overlay");
-const FILTER_BUILDER_FILTER_OPERATIONS_CLASS = "".concat(FILTER_BUILDER_CLASS, "-operations");
-const FILTER_BUILDER_FIELDS_CLASS = "".concat(FILTER_BUILDER_CLASS, "-fields");
-const FILTER_BUILDER_ADD_CONDITION_CLASS = "".concat(FILTER_BUILDER_CLASS, "-add-condition");
+const FILTER_BUILDER_ITEM_TEXT_CLASS = `${FILTER_BUILDER_CLASS}-text`;
+const FILTER_BUILDER_ITEM_FIELD_CLASS = `${FILTER_BUILDER_CLASS}-item-field`;
+const FILTER_BUILDER_ITEM_OPERATION_CLASS = `${FILTER_BUILDER_CLASS}-item-operation`;
+const FILTER_BUILDER_ITEM_VALUE_CLASS = `${FILTER_BUILDER_CLASS}-item-value`;
+const FILTER_BUILDER_ITEM_VALUE_TEXT_CLASS = `${FILTER_BUILDER_CLASS}-item-value-text`;
+const FILTER_BUILDER_OVERLAY_CLASS = `${FILTER_BUILDER_CLASS}-overlay`;
+const FILTER_BUILDER_FILTER_OPERATIONS_CLASS = `${FILTER_BUILDER_CLASS}-operations`;
+const FILTER_BUILDER_FIELDS_CLASS = `${FILTER_BUILDER_CLASS}-fields`;
+const FILTER_BUILDER_ADD_CONDITION_CLASS = `${FILTER_BUILDER_CLASS}-add-condition`;
 const ACTIVE_CLASS = 'dx-state-active';
-const FILTER_BUILDER_MENU_CUSTOM_OPERATION_CLASS = "".concat(FILTER_BUILDER_CLASS, "-menu-custom-operation");
+const FILTER_BUILDER_MENU_CUSTOM_OPERATION_CLASS = `${FILTER_BUILDER_CLASS}-menu-custom-operation`;
 const SOURCE = 'filterBuilder';
 const DISABLED_STATE_CLASS = 'dx-state-disabled';
 const TAB_KEY = 'tab';
@@ -74,19 +74,11 @@ const OPERATORS = {
   notOr: '!or'
 };
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
-const EditorFactory = (0, _ui.default)( /*#__PURE__*/function () {
-  function _class() {}
-  return _class;
-}());
-let FilterBuilder = /*#__PURE__*/function (_Widget) {
-  _inheritsLoose(FilterBuilder, _Widget);
-  function FilterBuilder() {
-    return _Widget.apply(this, arguments) || this;
-  }
-  var _proto = FilterBuilder.prototype;
-  _proto._getDefaultOptions = function _getDefaultOptions() {
+const EditorFactory = (0, _ui2.default)(class {});
+class FilterBuilder extends _ui3.default {
+  _getDefaultOptions() {
     // @ts-expect-error
-    return (0, _extend.extend)(_Widget.prototype._getDefaultOptions.call(this), {
+    return (0, _extend.extend)(super._getDefaultOptions(), {
       onEditorPreparing: null,
       onEditorPrepared: null,
       onValueChanged: null,
@@ -119,8 +111,8 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
         isNotBlank: _message.default.format('dxFilterBuilder-filterOperationIsNotBlank')
       }
     });
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _optionChanged(args) {
     switch (args.name) {
       case 'closePopupOnTargetScroll':
         break;
@@ -158,54 +150,54 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
         break;
       default:
         // @ts-expect-error
-        _Widget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  _proto.getFilterExpression = function getFilterExpression() {
+  }
+  getFilterExpression() {
     const fields = this._getNormalizedFields();
     const value = (0, _extend.extend)(true, [], this._model);
-    return (0, _m_utils.getFilterExpression)((0, _m_utils.getNormalizedFilter)(value), fields, this._customOperations, SOURCE);
-  };
-  _proto._getNormalizedFields = function _getNormalizedFields() {
-    return (0, _m_utils.getNormalizedFields)(this.option('fields'));
-  };
-  _proto._updateFilter = function _updateFilter() {
+    return (0, _m_utils2.getFilterExpression)((0, _m_utils2.getNormalizedFilter)(value), fields, this._customOperations, SOURCE);
+  }
+  _getNormalizedFields() {
+    return (0, _m_utils2.getNormalizedFields)(this.option('fields'));
+  }
+  _updateFilter() {
     this._disableInvalidateForValue = true;
     const value = (0, _extend.extend)(true, [], this._model);
-    const normalizedValue = (0, _m_utils.getNormalizedFilter)(value);
-    const oldValue = (0, _m_utils.getNormalizedFilter)(this._getModel(this.option('value')));
+    const normalizedValue = (0, _m_utils2.getNormalizedFilter)(value);
+    const oldValue = (0, _m_utils2.getNormalizedFilter)(this._getModel(this.option('value')));
     if (JSON.stringify(oldValue) !== JSON.stringify(normalizedValue)) {
       this.option('value', normalizedValue);
     }
     this._disableInvalidateForValue = false;
     // @ts-expect-error
     this._fireContentReadyAction();
-  };
-  _proto._init = function _init() {
+  }
+  _init() {
     this._initCustomOperations();
     this._initModel();
     this._initEditorFactory();
     this._initActions();
     // @ts-expect-error
-    _Widget.prototype._init.call(this);
-  };
-  _proto._initEditorFactory = function _initEditorFactory() {
+    super._init();
+  }
+  _initEditorFactory() {
     this._editorFactory = new EditorFactory();
-  };
-  _proto._initCustomOperations = function _initCustomOperations() {
-    this._customOperations = (0, _m_utils.getMergedOperations)(this.option('customOperations'), this.option('filterOperationDescriptions.between'), this);
-  };
-  _proto._getDefaultGroupOperation = function _getDefaultGroupOperation() {
-    var _a, _b;
-    return (_b = (_a = this.option('groupOperations')) === null || _a === void 0 ? void 0 : _a[0]) !== null && _b !== void 0 ? _b : OPERATORS.and;
-  };
-  _proto._getModel = function _getModel(value) {
-    return (0, _m_utils.convertToInnerStructure)(value, this._customOperations, this._getDefaultGroupOperation());
-  };
-  _proto._initModel = function _initModel() {
+  }
+  _initCustomOperations() {
+    this._customOperations = (0, _m_utils2.getMergedOperations)(this.option('customOperations'), this.option('filterOperationDescriptions.between'), this);
+  }
+  _getDefaultGroupOperation() {
+    var _this$option;
+    return ((_this$option = this.option('groupOperations')) === null || _this$option === void 0 ? void 0 : _this$option[0]) ?? OPERATORS.and;
+  }
+  _getModel(value) {
+    return (0, _m_utils2.convertToInnerStructure)(value, this._customOperations, this._getDefaultGroupOperation());
+  }
+  _initModel() {
     this._model = this._getModel(this.option('value'));
-  };
-  _proto._initActions = function _initActions() {
+  }
+  _initActions() {
     const that = this;
     that._actions = {};
     ACTIONS.forEach(action => {
@@ -213,69 +205,68 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
       // @ts-expect-error
       that._actions[action.name] = that._createActionByOption(action.name, actionConfig);
     });
-  };
-  _proto.executeAction = function executeAction(actionName, options) {
+  }
+  executeAction(actionName, options) {
     const action = this._actions[actionName];
     return action && action(options);
-  };
-  _proto._initMarkup = function _initMarkup() {
+  }
+  _initMarkup() {
     // @ts-expect-error
     this.$element().addClass(FILTER_BUILDER_CLASS);
     // @ts-expect-error
-    _Widget.prototype._initMarkup.call(this);
+    super._initMarkup();
     this._createGroupElementByCriteria(this._model).appendTo(this.$element());
-  };
-  _proto._createConditionElement = function _createConditionElement(condition, parent) {
+  }
+  _createConditionElement(condition, parent) {
     return (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_GROUP_CLASS).append(this._createConditionItem(condition, parent));
-  };
-  _proto._createGroupElementByCriteria = function _createGroupElementByCriteria(criteria, parent) {
+  }
+  _createGroupElementByCriteria(criteria, parent) {
     let groupLevel = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
     const $group = this._createGroupElement(criteria, parent, groupLevel);
-    const $groupContent = $group.find(".".concat(FILTER_BUILDER_GROUP_CONTENT_CLASS));
-    const groupCriteria = (0, _m_utils.getGroupCriteria)(criteria);
+    const $groupContent = $group.find(`.${FILTER_BUILDER_GROUP_CONTENT_CLASS}`);
+    const groupCriteria = (0, _m_utils2.getGroupCriteria)(criteria);
     for (let i = 0; i < groupCriteria.length; i++) {
       const innerCriteria = groupCriteria[i];
-      if ((0, _m_utils.isGroup)(innerCriteria)) {
+      if ((0, _m_utils2.isGroup)(innerCriteria)) {
         this._createGroupElementByCriteria(innerCriteria, criteria, groupLevel + 1).appendTo($groupContent);
-      } else if ((0, _m_utils.isCondition)(innerCriteria)) {
+      } else if ((0, _m_utils2.isCondition)(innerCriteria)) {
         this._createConditionElement(innerCriteria, criteria).appendTo($groupContent);
       }
     }
     return $group;
-  };
-  _proto._createGroupElement = function _createGroupElement(criteria, parent, groupLevel) {
+  }
+  _createGroupElement(criteria, parent, groupLevel) {
     const $groupItem = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_GROUP_ITEM_CLASS);
     const $groupContent = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_GROUP_CONTENT_CLASS);
     const $group = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_GROUP_CLASS).append($groupItem).append($groupContent);
     if (parent != null) {
       this._createRemoveButton(() => {
-        (0, _m_utils.removeItem)(parent, criteria);
-        // @ts-expect-error dxElementWrapper remove method is badly typed
+        (0, _m_utils2.removeItem)(parent, criteria);
         $group.remove();
         this._updateFilter();
       }).appendTo($groupItem);
     }
     this._createGroupOperationButton(criteria).appendTo($groupItem);
     this._createAddButton(() => {
-      const newGroup = (0, _m_utils.createEmptyGroup)(this._getDefaultGroupOperation());
-      (0, _m_utils.addItem)(newGroup, criteria);
+      const newGroup = (0, _m_utils2.createEmptyGroup)(this._getDefaultGroupOperation());
+      (0, _m_utils2.addItem)(newGroup, criteria);
       this._createGroupElement(newGroup, criteria, groupLevel + 1).appendTo($groupContent);
       this._updateFilter();
     }, () => {
       const field = this.option('fields')[0];
-      const newCondition = (0, _m_utils.createCondition)(field, this._customOperations);
-      (0, _m_utils.addItem)(newCondition, criteria);
+      const newCondition = (0, _m_utils2.createCondition)(field, this._customOperations);
+      (0, _m_utils2.addItem)(newCondition, criteria);
       this._createConditionElement(newCondition, criteria).appendTo($groupContent);
       this._updateFilter();
     }, groupLevel).appendTo($groupItem);
     return $group;
-  };
-  _proto._createButton = function _createButton(caption) {
+  }
+  _createButton(caption) {
     return (0, _renderer.default)('<div>').text(caption);
-  };
-  _proto._createGroupOperationButton = function _createGroupOperationButton(criteria) {
+  }
+  _createGroupOperationButton(criteria) {
     const groupOperations = this._getGroupOperations(criteria);
-    let groupMenuItem = (0, _m_utils.getGroupMenuItem)(criteria, groupOperations);
+    let groupMenuItem = (0, _m_utils2.getGroupMenuItem)(criteria, groupOperations);
     const caption = groupMenuItem.text;
     const $operationButton = groupOperations && groupOperations.length < 2 ? this._createButton(caption).addClass(DISABLED_STATE_CLASS) : this._createButtonWithMenu({
       caption,
@@ -285,7 +276,7 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
         keyExpr: 'value',
         onItemClick: e => {
           if (groupMenuItem !== e.itemData) {
-            (0, _m_utils.setGroupValue)(criteria, e.itemData.value);
+            (0, _m_utils2.setGroupValue)(criteria, e.itemData.value);
             $operationButton.text(e.itemData.text);
             groupMenuItem = e.itemData;
             this._updateFilter();
@@ -298,12 +289,12 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
       }
     });
     return $operationButton.addClass(FILTER_BUILDER_ITEM_TEXT_CLASS).addClass(FILTER_BUILDER_GROUP_OPERATION_CLASS).attr('tabindex', 0);
-  };
-  _proto._createButtonWithMenu = function _createButtonWithMenu(options) {
+  }
+  _createButtonWithMenu(options) {
     const that = this;
     const removeMenu = function () {
       // @ts-expect-error
-      that.$element().find(".".concat(ACTIVE_CLASS)).removeClass(ACTIVE_CLASS);
+      that.$element().find(`.${ACTIVE_CLASS}`).removeClass(ACTIVE_CLASS);
       // @ts-expect-error
       that.$element().find('.dx-overlay .dx-treeview').remove();
       // @ts-expect-error
@@ -328,8 +319,8 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
         $button.removeClass(ACTIVE_CLASS);
       },
       position: {
-        my: "".concat(position, " top"),
-        at: "".concat(position, " bottom"),
+        my: `${position} top`,
+        at: `${position} bottom`,
         offset: '0 1',
         of: $button,
         collision: 'flip'
@@ -338,7 +329,7 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
       onHidden() {
         removeMenu();
       },
-      cssClass: "".concat(FILTER_BUILDER_OVERLAY_CLASS, " ").concat(options.menu.cssClass),
+      cssClass: `${FILTER_BUILDER_OVERLAY_CLASS} ${options.menu.cssClass}`,
       rtlEnabled
     });
     options.popup = {
@@ -364,15 +355,15 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
       $button.addClass(ACTIVE_CLASS);
     });
     return $button;
-  };
-  _proto._hasValueButton = function _hasValueButton(condition) {
-    const customOperation = (0, _m_utils.getCustomOperation)(this._customOperations, condition[1]);
+  }
+  _hasValueButton(condition) {
+    const customOperation = (0, _m_utils2.getCustomOperation)(this._customOperations, condition[1]);
     return customOperation ? customOperation.hasValue !== false : condition[2] !== null;
-  };
-  _proto._createOperationButtonWithMenu = function _createOperationButtonWithMenu(condition, field) {
+  }
+  _createOperationButtonWithMenu(condition, field) {
     const that = this;
-    const availableOperations = (0, _m_utils.getAvailableOperations)(field, this.option('filterOperationDescriptions'), this._customOperations);
-    let currentOperation = (0, _m_utils.getOperationFromAvailable)((0, _m_utils.getOperationValue)(condition), availableOperations);
+    const availableOperations = (0, _m_utils2.getAvailableOperations)(field, this.option('filterOperationDescriptions'), this._customOperations);
+    let currentOperation = (0, _m_utils2.getOperationFromAvailable)((0, _m_utils2.getOperationValue)(condition), availableOperations);
     const $operationButton = this._createButtonWithMenu({
       caption: currentOperation.text,
       menu: {
@@ -387,16 +378,14 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
         onItemClick: e => {
           if (currentOperation !== e.itemData) {
             currentOperation = e.itemData;
-            (0, _m_utils.updateConditionByOperation)(condition, currentOperation.value, that._customOperations);
-            const $valueButton = $operationButton.siblings().filter(".".concat(FILTER_BUILDER_ITEM_VALUE_CLASS));
+            (0, _m_utils2.updateConditionByOperation)(condition, currentOperation.value, that._customOperations);
+            const $valueButton = $operationButton.siblings().filter(`.${FILTER_BUILDER_ITEM_VALUE_CLASS}`);
             if (that._hasValueButton(condition)) {
               if ($valueButton.length !== 0) {
-                // @ts-expect-error
                 $valueButton.remove();
               }
               that._createValueButton(condition, field).appendTo($operationButton.parent());
             } else {
-              // @ts-expect-error
               $valueButton.remove();
             }
             $operationButton.text(currentOperation.text);
@@ -407,20 +396,20 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
       }
     }).addClass(FILTER_BUILDER_ITEM_TEXT_CLASS).addClass(FILTER_BUILDER_ITEM_OPERATION_CLASS).attr('tabindex', 0);
     return $operationButton;
-  };
-  _proto._createOperationAndValueButtons = function _createOperationAndValueButtons(condition, field, $item) {
+  }
+  _createOperationAndValueButtons(condition, field, $item) {
     this._createOperationButtonWithMenu(condition, field).appendTo($item);
     if (this._hasValueButton(condition)) {
       this._createValueButton(condition, field).appendTo($item);
     }
-  };
-  _proto._createFieldButtonWithMenu = function _createFieldButtonWithMenu(fields, condition, field) {
+  }
+  _createFieldButtonWithMenu(fields, condition, field) {
     const that = this;
     const allowHierarchicalFields = this.option('allowHierarchicalFields');
-    const items = (0, _m_utils.getItems)(fields, allowHierarchicalFields);
-    let item = (0, _m_utils.getField)(field.name || field.dataField, items);
+    const items = (0, _m_utils2.getItems)(fields, allowHierarchicalFields);
+    let item = (0, _m_utils2.getField)(field.name || field.dataField, items);
     const getFullCaption = function (item, items) {
-      return allowHierarchicalFields ? (0, _m_utils.getCaptionWithParents)(item, items) : item.caption;
+      return allowHierarchicalFields ? (0, _m_utils2.getCaptionWithParents)(item, items) : item.caption;
     };
     const $fieldButton = this._createButtonWithMenu({
       caption: getFullCaption(item, items),
@@ -435,9 +424,8 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
             item = e.itemData;
             condition[0] = item.name || item.dataField;
             condition[2] = item.dataType === 'object' ? null : '';
-            (0, _m_utils.updateConditionByOperation)(condition, (0, _m_utils.getDefaultOperation)(item), that._customOperations);
-            // @ts-expect-error
-            $fieldButton.siblings().filter(".".concat(FILTER_BUILDER_ITEM_TEXT_CLASS)).remove();
+            (0, _m_utils2.updateConditionByOperation)(condition, (0, _m_utils2.getDefaultOperation)(item), that._customOperations);
+            $fieldButton.siblings().filter(`.${FILTER_BUILDER_ITEM_TEXT_CLASS}`).remove();
             that._createOperationAndValueButtons(condition, item, $fieldButton.parent());
             const caption = getFullCaption(item, e.component.option('items'));
             $fieldButton.text(caption);
@@ -451,19 +439,17 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
       }
     }).addClass(FILTER_BUILDER_ITEM_TEXT_CLASS).addClass(FILTER_BUILDER_ITEM_FIELD_CLASS).attr('tabindex', 0);
     return $fieldButton;
-  };
-  _proto._createConditionItem = function _createConditionItem(condition, parent) {
+  }
+  _createConditionItem(condition, parent) {
     const $item = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_GROUP_ITEM_CLASS);
     const fields = this._getNormalizedFields();
-    const field = (0, _m_utils.getField)(condition[0], fields);
+    const field = (0, _m_utils2.getField)(condition[0], fields);
     this._createRemoveButton(() => {
-      (0, _m_utils.removeItem)(parent, condition);
+      (0, _m_utils2.removeItem)(parent, condition);
       const isSingleChild = $item.parent().children().length === 1;
       if (isSingleChild) {
-        // @ts-expect-error dxElementWrapper remove method is badly typed
         $item.parent().remove();
       } else {
-        // @ts-expect-error dxElementWrapper remove method is badly typed
         $item.remove();
       }
       this._updateFilter();
@@ -471,24 +457,24 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
     this._createFieldButtonWithMenu(fields, condition, field).appendTo($item);
     this._createOperationAndValueButtons(condition, field, $item);
     return $item;
-  };
-  _proto._getGroupOperations = function _getGroupOperations(criteria) {
+  }
+  _getGroupOperations(criteria) {
     let groupOperations = this.option('groupOperations');
     const groupOperationDescriptions = this.option('groupOperationDescriptions');
     if (!groupOperations || !groupOperations.length) {
-      groupOperations = [(0, _m_utils.getGroupValue)(criteria).replace('!', 'not')];
+      groupOperations = [(0, _m_utils2.getGroupValue)(criteria).replace('!', 'not')];
     }
     return groupOperations.map(operation => ({
       text: groupOperationDescriptions[operation],
       value: OPERATORS[operation]
     }));
-  };
-  _proto._createRemoveButton = function _createRemoveButton(handler) {
+  }
+  _createRemoveButton(handler) {
     const $removeButton = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_IMAGE_CLASS).addClass(FILTER_BUILDER_IMAGE_REMOVE_CLASS).addClass(FILTER_BUILDER_ACTION_CLASS).attr('tabindex', 0);
     this._subscribeOnClickAndEnterKey($removeButton, handler);
     return $removeButton;
-  };
-  _proto._createAddButton = function _createAddButton(addGroupHandler, addConditionHandler, groupLevel) {
+  }
+  _createAddButton(addGroupHandler, addConditionHandler, groupLevel) {
     let $button;
     const maxGroupLevel = this.option('maxGroupLevel');
     if ((0, _type.isDefined)(maxGroupLevel) && groupLevel >= maxGroupLevel) {
@@ -513,19 +499,19 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
       });
     }
     return $button.addClass(FILTER_BUILDER_IMAGE_CLASS).addClass(FILTER_BUILDER_IMAGE_ADD_CLASS).addClass(FILTER_BUILDER_ACTION_CLASS).attr('tabindex', 0);
-  };
-  _proto._createValueText = function _createValueText(item, field, $container) {
+  }
+  _createValueText(item, field, $container) {
     const that = this;
     const $text = (0, _renderer.default)('<div>').html('&nbsp;').addClass(FILTER_BUILDER_ITEM_VALUE_TEXT_CLASS).attr('tabindex', 0).appendTo($container);
     const value = item[2];
-    const customOperation = (0, _m_utils.getCustomOperation)(that._customOperations, item[1]);
+    const customOperation = (0, _m_utils2.getCustomOperation)(that._customOperations, item[1]);
     if (!customOperation && field.lookup) {
-      (0, _m_utils.getCurrentLookupValueText)(field, value, result => {
-        (0, _m_utils.renderValueText)($text, result);
+      (0, _m_utils2.getCurrentLookupValueText)(field, value, result => {
+        (0, _m_utils2.renderValueText)($text, result);
       });
     } else {
-      (0, _deferred.when)((0, _m_utils.getCurrentValueText)(field, value, customOperation)).done(result => {
-        (0, _m_utils.renderValueText)($text, result, customOperation);
+      (0, _deferred.when)((0, _m_utils2.getCurrentValueText)(field, value, customOperation)).done(result => {
+        (0, _m_utils2.renderValueText)($text, result, customOperation);
       });
     }
     that._subscribeOnClickAndEnterKey($text, e => {
@@ -535,16 +521,16 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
       that._createValueEditorWithEvents(item, field, $container);
     });
     return $text;
-  };
-  _proto._updateConditionValue = function _updateConditionValue(item, value, callback) {
+  }
+  _updateConditionValue(item, value, callback) {
     const areValuesDifferent = item[2] !== value;
     if (areValuesDifferent) {
       item[2] = value;
     }
     callback();
     this._updateFilter();
-  };
-  _proto._addDocumentKeyUp = function _addDocumentKeyUp($editor, handler) {
+  }
+  _addDocumentKeyUp($editor, handler) {
     let isComposing = false; // IME Composing going on
     let hasCompositionJustEnded = false; // Used to swallow keyup event related to compositionend
     const document = _dom_adapter.default.getDocument();
@@ -575,8 +561,8 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
       }
     });
     this._documentKeyUpHandler = documentKeyUpHandler;
-  };
-  _proto._addDocumentClick = function _addDocumentClick($editor, closeEditorFunc) {
+  }
+  _addDocumentClick($editor, closeEditorFunc) {
     const document = _dom_adapter.default.getDocument();
     const documentClickHandler = e => {
       if (!this._isFocusOnEditorParts($editor, e.target)) {
@@ -587,22 +573,22 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
     };
     _events_engine.default.on(document, 'dxpointerdown', documentClickHandler);
     this._documentClickHandler = documentClickHandler;
-  };
-  _proto._isFocusOnEditorParts = function _isFocusOnEditorParts($editor, target) {
+  }
+  _isFocusOnEditorParts($editor, target) {
     const activeElement = target || _dom_adapter.default.getActiveElement();
     return (0, _renderer.default)(activeElement).closest($editor.children()).length || (0, _renderer.default)(activeElement).closest('.dx-dropdowneditor-overlay').length;
-  };
-  _proto._removeEvents = function _removeEvents() {
+  }
+  _removeEvents() {
     const document = _dom_adapter.default.getDocument();
     (0, _type.isDefined)(this._documentKeyUpHandler) && _events_engine.default.off(document, 'keyup', this._documentKeyUpHandler);
     (0, _type.isDefined)(this._documentClickHandler) && _events_engine.default.off(document, 'dxpointerdown', this._documentClickHandler);
-  };
-  _proto._dispose = function _dispose() {
+  }
+  _dispose() {
     this._removeEvents();
     // @ts-expect-error
-    _Widget.prototype._dispose.call(this);
-  };
-  _proto._createValueEditorWithEvents = function _createValueEditorWithEvents(item, field, $container) {
+    super._dispose();
+  }
+  _createValueEditorWithEvents(item, field, $container) {
     let value = item[2];
     const createValueText = () => {
       $container.empty();
@@ -616,7 +602,7 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
     };
     const options = {
       value: value === '' ? null : value,
-      filterOperation: (0, _m_utils.getOperationValue)(item),
+      filterOperation: (0, _m_utils2.getOperationValue)(item),
       setValue(data) {
         value = data === null ? '' : data;
       },
@@ -656,15 +642,15 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
     });
     // @ts-expect-error
     this._fireContentReadyAction();
-  };
-  _proto._createValueButton = function _createValueButton(item, field) {
+  }
+  _createValueButton(item, field) {
     const $valueButton = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_ITEM_TEXT_CLASS).addClass(FILTER_BUILDER_ITEM_VALUE_CLASS);
     this._createValueText(item, field, $valueButton);
     return $valueButton;
-  };
-  _proto._createValueEditor = function _createValueEditor($container, field, options) {
+  }
+  _createValueEditor($container, field, options) {
     const $editor = (0, _renderer.default)('<div>').attr('tabindex', 0).appendTo($container);
-    const customOperation = (0, _m_utils.getCustomOperation)(this._customOperations, options.filterOperation);
+    const customOperation = (0, _m_utils2.getCustomOperation)(this._customOperations, options.filterOperation);
     const editorTemplate = customOperation && customOperation.editorTemplate ? customOperation.editorTemplate : field.editorTemplate;
     if (editorTemplate) {
       const template = this._getTemplate(editorTemplate);
@@ -680,12 +666,12 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
       }));
     }
     return $editor;
-  };
-  _proto._createPopupWithTreeView = function _createPopupWithTreeView(options, $container) {
+  }
+  _createPopupWithTreeView(options, $container) {
     const that = this;
     const $popup = (0, _renderer.default)('<div>').addClass(options.menu.cssClass).appendTo($container);
     // @ts-expect-error
-    this._createComponent($popup, _popup.default, {
+    this._createComponent($popup, _ui.default, {
       onHiding: options.menu.onHiding,
       onHidden: options.menu.onHidden,
       rtlEnabled: options.menu.rtlEnabled,
@@ -700,10 +686,11 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
       },
       _ignoreFunctionValueDeprecation: true,
       maxHeight() {
-        return (0, _utils.getElementMaxHeightByWindow)(options.menu.position.of);
+        return (0, _m_utils.getElementMaxHeightByWindow)(options.menu.position.of);
       },
       visible: true,
       focusStateEnabled: false,
+      preventScrollEvents: false,
       hideOnParentScroll: this.option('closePopupOnTargetScroll'),
       hideOnOutsideClick: true,
       onShown: options.popup.onShown,
@@ -713,16 +700,15 @@ let FilterBuilder = /*#__PURE__*/function (_Widget) {
       showTitle: false,
       _wrapperClassExternal: options.menu.cssClass
     });
-  };
-  _proto._subscribeOnClickAndEnterKey = function _subscribeOnClickAndEnterKey($button, handler) {
+  }
+  _subscribeOnClickAndEnterKey($button, handler) {
     _events_engine.default.on($button, 'dxclick', handler);
     _events_engine.default.on($button, 'keyup', e => {
       if ((0, _index.normalizeKeyName)(e) === ENTER_KEY) {
         handler(e);
       }
     });
-  };
-  return FilterBuilder;
-}(_ui2.default);
+  }
+}
 (0, _component_registrator.default)('dxFilterBuilder', FilterBuilder);
 var _default = exports.default = FilterBuilder;

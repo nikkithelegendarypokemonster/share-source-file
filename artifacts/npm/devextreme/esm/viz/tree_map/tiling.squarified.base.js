@@ -1,13 +1,13 @@
 /**
 * DevExtreme (esm/viz/tree_map/tiling.squarified.base.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-var _max = Math.max;
-var _round = Math.round;
+const _max = Math.max;
+const _round = Math.round;
 import { buildSidesData, calculateRectangles, getStaticSideIndex } from './tiling';
 function compare(a, b) {
   return b.value - a.value;
@@ -16,15 +16,15 @@ function getAspectRatio(value) {
   return _max(value, 1 / value);
 }
 function findAppropriateCollection(nodes, head, context) {
-  var bestAspectRatio = Infinity;
-  var nextAspectRatio;
-  var sum = 0;
-  var nextSum;
-  var i;
-  var j;
-  var ii = nodes.length;
-  var coeff = context.areaToValue / context.staticSide;
-  var totalAspectRatio;
+  let bestAspectRatio = Infinity;
+  let nextAspectRatio;
+  let sum = 0;
+  let nextSum;
+  let i;
+  let j;
+  const ii = nodes.length;
+  const coeff = context.areaToValue / context.staticSide;
+  let totalAspectRatio;
   for (i = head; i < ii;) {
     nextSum = sum + nodes[i].value;
     totalAspectRatio = context.staticSide / coeff / nextSum;
@@ -50,9 +50,9 @@ function getArea(rect) {
   return (rect[2] - rect[0]) * (rect[3] - rect[1]);
 }
 function doStep(nodes, head, context) {
-  var sidesData = buildSidesData(context.rect, context.directions, context.staticSideIndex);
-  var area = getArea(context.rect);
-  var rowData = area > 0 ? findAppropriateCollection(nodes, head, {
+  const sidesData = buildSidesData(context.rect, context.directions, context.staticSideIndex);
+  const area = getArea(context.rect);
+  const rowData = area > 0 ? findAppropriateCollection(nodes, head, {
     areaToValue: area / context.sum,
     accumulate: context.accumulate,
     staticSide: sidesData.staticSide
@@ -66,10 +66,10 @@ function doStep(nodes, head, context) {
   return head + rowData.count;
 }
 export default function (data, accumulate, isFixedStaticSide) {
-  var items = data.items;
-  var ii = items.length;
-  var i;
-  var context = {
+  const items = data.items;
+  const ii = items.length;
+  let i;
+  const context = {
     sum: data.sum,
     rect: data.rect,
     directions: data.directions,

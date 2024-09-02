@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/file_manager/ui.file_manager.adaptivity.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,42 +15,35 @@ var _extend = require("../../core/utils/extend");
 var _type = require("../../core/utils/type");
 var _window = require("../../core/utils/window");
 var _ui = _interopRequireDefault(require("../widget/ui.widget"));
-var _ui2 = _interopRequireDefault(require("../drawer/ui.drawer"));
+var _drawer = _interopRequireDefault(require("../drawer"));
 var _splitter_control = _interopRequireDefault(require("../splitter_control"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const window = (0, _window.getWindow)();
 const ADAPTIVE_STATE_SCREEN_WIDTH = 573;
 const FILE_MANAGER_ADAPTIVITY_DRAWER_PANEL_CLASS = 'dx-filemanager-adaptivity-drawer-panel';
 const DRAWER_PANEL_CONTENT_INITIAL = 'dx-drawer-panel-content-initial';
 const DRAWER_PANEL_CONTENT_ADAPTIVE = 'dx-drawer-panel-content-adaptive';
-let FileManagerAdaptivityControl = /*#__PURE__*/function (_Widget) {
-  _inheritsLoose(FileManagerAdaptivityControl, _Widget);
-  function FileManagerAdaptivityControl() {
-    return _Widget.apply(this, arguments) || this;
-  }
-  var _proto = FileManagerAdaptivityControl.prototype;
-  _proto._initMarkup = function _initMarkup() {
-    _Widget.prototype._initMarkup.call(this);
+class FileManagerAdaptivityControl extends _ui.default {
+  _initMarkup() {
+    super._initMarkup();
     this._initActions();
     this._isInAdaptiveState = false;
     const $drawer = (0, _renderer.default)('<div>').appendTo(this.$element());
     (0, _renderer.default)('<div>').addClass(FILE_MANAGER_ADAPTIVITY_DRAWER_PANEL_CLASS).appendTo($drawer);
-    this._drawer = this._createComponent($drawer, _ui2.default);
+    this._drawer = this._createComponent($drawer, _drawer.default);
     this._drawer.option({
       opened: true,
       template: this._createDrawerTemplate.bind(this)
     });
     (0, _renderer.default)(this._drawer.content()).addClass(DRAWER_PANEL_CONTENT_INITIAL);
-    const $drawerContent = $drawer.find(".".concat(FILE_MANAGER_ADAPTIVITY_DRAWER_PANEL_CLASS)).first();
+    const $drawerContent = $drawer.find(`.${FILE_MANAGER_ADAPTIVITY_DRAWER_PANEL_CLASS}`).first();
     const contentRenderer = this.option('contentTemplate');
     if ((0, _type.isFunction)(contentRenderer)) {
       contentRenderer($drawerContent);
     }
     this._updateDrawerMaxSize();
-  };
-  _proto._createDrawerTemplate = function _createDrawerTemplate(container) {
+  }
+  _createDrawerTemplate(container) {
     this.option('drawerTemplate')(container);
     this._splitter = this._createComponent('<div>', _splitter_control.default, {
       container: this.$element(),
@@ -61,12 +54,12 @@ let FileManagerAdaptivityControl = /*#__PURE__*/function (_Widget) {
     });
     this._splitter.$element().appendTo(container);
     this._splitter.disableSplitterCalculation(true);
-  };
-  _proto._render = function _render() {
-    _Widget.prototype._render.call(this);
+  }
+  _render() {
+    super._render();
     this._checkAdaptiveState();
-  };
-  _proto._onApplyPanelSize = function _onApplyPanelSize(e) {
+  }
+  _onApplyPanelSize(e) {
     if (!(0, _window.hasWindow)()) {
       return;
     }
@@ -76,28 +69,28 @@ let FileManagerAdaptivityControl = /*#__PURE__*/function (_Widget) {
     }
     (0, _renderer.default)(this._drawer.content()).removeClass(DRAWER_PANEL_CONTENT_INITIAL);
     this._setDrawerWidth(e.leftPanelWidth);
-  };
-  _proto._onActiveStateChanged = function _onActiveStateChanged(_ref) {
+  }
+  _onActiveStateChanged(_ref) {
     let {
       isActive
     } = _ref;
     this._splitter.disableSplitterCalculation(!isActive);
     !isActive && this._splitter.$element().css('left', 'auto');
-  };
-  _proto._setDrawerWidth = function _setDrawerWidth(width) {
+  }
+  _setDrawerWidth(width) {
     (0, _renderer.default)(this._drawer.content()).css('width', width);
     this._updateDrawerMaxSize();
     this._drawer.resizeViewContent();
-  };
-  _proto._updateDrawerMaxSize = function _updateDrawerMaxSize() {
+  }
+  _updateDrawerMaxSize() {
     this._drawer.option('maxSize', this._drawer.getRealPanelWidth());
-  };
-  _proto._dimensionChanged = function _dimensionChanged(dimension) {
+  }
+  _dimensionChanged(dimension) {
     if (!dimension || dimension !== 'height') {
       this._checkAdaptiveState();
     }
-  };
-  _proto._checkAdaptiveState = function _checkAdaptiveState() {
+  }
+  _checkAdaptiveState() {
     const oldState = this._isInAdaptiveState;
     this._isInAdaptiveState = this._isSmallScreen();
     if (oldState !== this._isInAdaptiveState) {
@@ -108,31 +101,31 @@ let FileManagerAdaptivityControl = /*#__PURE__*/function (_Widget) {
     if (this._isInAdaptiveState && this._isDrawerOpened()) {
       this._updateDrawerMaxSize();
     }
-  };
-  _proto._isSmallScreen = function _isSmallScreen() {
+  }
+  _isSmallScreen() {
     return (0, _size.getWidth)(window) <= ADAPTIVE_STATE_SCREEN_WIDTH;
-  };
-  _proto._isDrawerOpened = function _isDrawerOpened() {
+  }
+  _isDrawerOpened() {
     return this._drawer.option('opened');
-  };
-  _proto._initActions = function _initActions() {
+  }
+  _initActions() {
     this._actions = {
       onAdaptiveStateChanged: this._createActionByOption('onAdaptiveStateChanged')
     };
-  };
-  _proto._raiseAdaptiveStateChanged = function _raiseAdaptiveStateChanged(enabled) {
+  }
+  _raiseAdaptiveStateChanged(enabled) {
     this._actions.onAdaptiveStateChanged({
       enabled
     });
-  };
-  _proto._getDefaultOptions = function _getDefaultOptions() {
-    return (0, _extend.extend)(_Widget.prototype._getDefaultOptions.call(this), {
+  }
+  _getDefaultOptions() {
+    return (0, _extend.extend)(super._getDefaultOptions(), {
       drawerTemplate: null,
       contentTemplate: null,
       onAdaptiveStateChanged: null
     });
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _optionChanged(args) {
     const name = args.name;
     switch (name) {
       case 'drawerTemplate':
@@ -143,24 +136,23 @@ let FileManagerAdaptivityControl = /*#__PURE__*/function (_Widget) {
         this._actions[name] = this._createActionByOption(name);
         break;
       default:
-        _Widget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  _proto.isInAdaptiveState = function isInAdaptiveState() {
+  }
+  isInAdaptiveState() {
     return this._isInAdaptiveState;
-  };
-  _proto.toggleDrawer = function toggleDrawer(showing, skipAnimation) {
+  }
+  toggleDrawer(showing, skipAnimation) {
     this._updateDrawerMaxSize();
     this._drawer.option('animationEnabled', !skipAnimation);
     this._drawer.toggle(showing);
     const isSplitterActive = this._isDrawerOpened() && !this.isInAdaptiveState();
     this._splitter.toggleDisabled(!isSplitterActive);
-  };
-  _proto.getSplitterElement = function getSplitterElement() {
+  }
+  getSplitterElement() {
     return this._splitter.getSplitterBorderElement().get(0);
-  };
-  return FileManagerAdaptivityControl;
-}(_ui.default);
+  }
+}
 var _default = exports.default = FileManagerAdaptivityControl;
 module.exports = exports.default;
 module.exports.default = exports.default;

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/viz/chart_components/rolling_stock.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.RollingStock = void 0;
-let RollingStock = exports.RollingStock = /*#__PURE__*/function () {
-  function RollingStock(label, isRotated, shiftFunction) {
+class RollingStock {
+  constructor(label, isRotated, shiftFunction) {
     const bBox = label.getBoundingRect();
     const {
       x
@@ -34,17 +34,16 @@ let RollingStock = exports.RollingStock = /*#__PURE__*/function () {
     };
     this.initialPosition = isRotated ? bBox.x : bBox.y;
   }
-  var _proto = RollingStock.prototype;
-  _proto.toChain = function toChain(nextRollingStock) {
+  toChain(nextRollingStock) {
     const nextRollingStockBBox = nextRollingStock.getBoundingRect();
     nextRollingStock.shift(nextRollingStockBBox.start - this.bBox.end);
     this.changeBoxWidth(nextRollingStockBBox.width);
     this.labels = this.labels.concat(nextRollingStock.labels);
-  };
-  _proto.getBoundingRect = function getBoundingRect() {
+  }
+  getBoundingRect() {
     return this.bBox;
-  };
-  _proto.shift = function shift(shiftLength) {
+  }
+  shift(shiftLength) {
     this.labels.forEach(label => {
       const bBox = label.getBoundingRect();
       const coords = this.shiftFunction(bBox, shiftLength);
@@ -54,24 +53,24 @@ let RollingStock = exports.RollingStock = /*#__PURE__*/function () {
     });
     this.bBox.end -= shiftLength;
     this.bBox.start -= shiftLength;
-  };
-  _proto.setRollingStockInCanvas = function setRollingStockInCanvas(canvas) {
+  }
+  setRollingStockInCanvas(canvas) {
     if (this.bBox.end > canvas.end) {
       this.shift(this.bBox.end - canvas.end);
     }
-  };
-  _proto.getLabels = function getLabels() {
+  }
+  getLabels() {
     return this.labels;
-  };
-  _proto.value = function value() {
+  }
+  value() {
     return this.labels[0].getData().value;
-  };
-  _proto.getInitialPosition = function getInitialPosition() {
+  }
+  getInitialPosition() {
     return this.initialPosition;
-  };
-  _proto.changeBoxWidth = function changeBoxWidth(width) {
+  }
+  changeBoxWidth(width) {
     this.bBox.end += width;
     this.bBox.width += width;
-  };
-  return RollingStock;
-}();
+  }
+}
+exports.RollingStock = RollingStock;

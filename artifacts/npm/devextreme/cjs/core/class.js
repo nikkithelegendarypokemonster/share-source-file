@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/class.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -93,17 +93,6 @@ const subclassOf = function (parentClass) {
 const abstract = function () {
   throw _errors.default.Error('E0001');
 };
-const copyStatic = function () {
-  const hasOwn = Object.prototype.hasOwnProperty;
-  return function (source, destination) {
-    for (const key in source) {
-      if (!hasOwn.call(source, key)) {
-        return;
-      }
-      destination[key] = source[key];
-    }
-  };
-}();
 const classImpl = function () {};
 classImpl.inherit = function (members) {
   const inheritor = function () {
@@ -126,7 +115,7 @@ classImpl.inherit = function (members) {
     }
   };
   inheritor.prototype = clonePrototype(this);
-  copyStatic(this, inheritor);
+  Object.setPrototypeOf(inheritor, this);
   inheritor.inherit = this.inherit;
   inheritor.abstract = abstract;
   inheritor.redefine = redefine;

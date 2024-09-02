@@ -3,10 +3,10 @@ import { extend } from '../../core/utils/extend';
 import { isDefined, isString } from '../../core/utils/type';
 import { ensureDefined } from '../../core/utils/common';
 import Widget from '../widget/ui.widget';
-import ContextMenu from '../context_menu/ui.context_menu';
+import ContextMenu from '../context_menu';
 import { extendAttributes } from './ui.file_manager.common';
-var FILEMANAGER_CONTEXT_MEMU_CLASS = 'dx-filemanager-context-menu';
-var DEFAULT_CONTEXT_MENU_ITEMS = {
+const FILEMANAGER_CONTEXT_MEMU_CLASS = 'dx-filemanager-context-menu';
+const DEFAULT_CONTEXT_MENU_ITEMS = {
   create: {},
   upload: {},
   download: {},
@@ -18,12 +18,12 @@ var DEFAULT_CONTEXT_MENU_ITEMS = {
     beginGroup: true
   }
 };
-var DEFAULT_ITEM_ALLOWED_PROPERTIES = ['beginGroup', 'closeMenuOnClick', 'disabled', 'icon', 'selectable', 'selected', 'text', 'visible'];
+const DEFAULT_ITEM_ALLOWED_PROPERTIES = ['beginGroup', 'closeMenuOnClick', 'disabled', 'icon', 'selectable', 'selected', 'text', 'visible'];
 class FileManagerContextMenu extends Widget {
   _initMarkup() {
     this._initActions();
     this._isVisible = false;
-    var $menu = $('<div>').appendTo(this.$element());
+    const $menu = $('<div>').appendTo(this.$element());
     this._contextMenu = this._createComponent($menu, ContextMenu, {
       cssClass: FILEMANAGER_CONTEXT_MEMU_CLASS,
       showEvent: '',
@@ -35,7 +35,7 @@ class FileManagerContextMenu extends Widget {
     super._initMarkup();
   }
   showAt(fileItems, element, event, target) {
-    var {
+    const {
       itemData,
       itemElement,
       isActionButton = false
@@ -50,7 +50,7 @@ class FileManagerContextMenu extends Widget {
       event,
       isActionButton
     };
-    var position = {
+    const position = {
       of: element,
       at: 'top left',
       my: 'top left',
@@ -72,11 +72,11 @@ class FileManagerContextMenu extends Widget {
   createContextMenuItems(fileItems, contextMenuItems, targetFileItem) {
     this._targetFileItems = fileItems;
     this._targetFileItem = isDefined(targetFileItem) ? targetFileItem : fileItems === null || fileItems === void 0 ? void 0 : fileItems[0];
-    var result = [];
-    var itemArray = contextMenuItems || this.option('items');
+    const result = [];
+    const itemArray = contextMenuItems || this.option('items');
     itemArray.forEach(srcItem => {
-      var commandName = isString(srcItem) ? srcItem : srcItem.name;
-      var item = this._configureItemByCommandName(commandName, srcItem, fileItems, this._targetFileItem);
+      const commandName = isString(srcItem) ? srcItem : srcItem.name;
+      const item = this._configureItemByCommandName(commandName, srcItem, fileItems, this._targetFileItem);
       if (this._isContextMenuItemAvailable(item, fileItems)) {
         result.push(item);
       }
@@ -100,7 +100,7 @@ class FileManagerContextMenu extends Widget {
   }
   _configureItemByCommandName(commandName, item, fileItems, targetFileItem) {
     if (!this._isDefaultItem(commandName)) {
-      var res = extend(true, {}, item);
+      const res = extend(true, {}, item);
       res.originalItemData = item;
       this._addItemClickHandler(commandName, res);
       if (Array.isArray(item.items)) {
@@ -108,8 +108,8 @@ class FileManagerContextMenu extends Widget {
       }
       return res;
     }
-    var result = this._createMenuItemByCommandName(commandName);
-    var defaultConfig = DEFAULT_CONTEXT_MENU_ITEMS[commandName];
+    const result = this._createMenuItemByCommandName(commandName);
+    const defaultConfig = DEFAULT_CONTEXT_MENU_ITEMS[commandName];
     extend(result, defaultConfig);
     result.originalItemData = item;
     extendAttributes(result, item, DEFAULT_ITEM_ALLOWED_PROPERTIES);
@@ -124,11 +124,11 @@ class FileManagerContextMenu extends Widget {
     return result;
   }
   _createMenuItemByCommandName(commandName) {
-    var {
+    const {
       text,
       icon
     } = this._commandManager.getCommandByName(commandName);
-    var menuItem = {
+    const menuItem = {
       name: commandName,
       text,
       icon
@@ -141,13 +141,13 @@ class FileManagerContextMenu extends Widget {
   }
   _onContextMenuItemClick(commandName, args) {
     var _this$_targetFileItem;
-    var changedArgs = extend(true, {}, args);
+    const changedArgs = extend(true, {}, args);
     changedArgs.itemData = args.itemData.originalItemData;
     changedArgs.fileSystemItem = (_this$_targetFileItem = this._targetFileItem) === null || _this$_targetFileItem === void 0 ? void 0 : _this$_targetFileItem.fileItem;
     changedArgs.viewArea = this.option('viewArea');
     this._actions.onItemClick(changedArgs);
     if (this._isDefaultItem(commandName)) {
-      var targetFileItems = this._isIsolatedCreationItemCommand(commandName) ? null : this._targetFileItems;
+      const targetFileItems = this._isIsolatedCreationItemCommand(commandName) ? null : this._targetFileItems;
       this._commandManager.executeCommand(commandName, targetFileItems);
     }
   }
@@ -168,13 +168,13 @@ class FileManagerContextMenu extends Widget {
     });
     this._actions.onContextMenuShowing(e);
     if (!e.cancel) {
-      var items = this.createContextMenuItems(this._menuShowingContext.fileItems, null, this._menuShowingContext.fileSystemItem);
+      const items = this.createContextMenuItems(this._menuShowingContext.fileItems, null, this._menuShowingContext.fileSystemItem);
       this._contextMenu.option('dataSource', items);
     }
   }
   tryUpdateVisibleContextMenu() {
     if (this._isVisible) {
-      var items = this.createContextMenuItems(this._targetFileItems);
+      const items = this.createContextMenuItems(this._targetFileItems);
       this._contextMenu.option('dataSource', items);
     }
   }
@@ -200,7 +200,7 @@ class FileManagerContextMenu extends Widget {
     });
   }
   _optionChanged(args) {
-    var name = args.name;
+    const name = args.name;
     switch (name) {
       case 'commandManager':
         this.repaint();

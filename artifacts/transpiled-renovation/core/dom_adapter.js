@@ -114,8 +114,8 @@ const nativeDOMAdapterStrategy = {
     return activeElementHolder.activeElement;
   },
   getRootNode(element) {
-    var _element$getRootNode, _element$getRootNode2;
-    return (_element$getRootNode = element === null || element === void 0 ? void 0 : (_element$getRootNode2 = element.getRootNode) === null || _element$getRootNode2 === void 0 ? void 0 : _element$getRootNode2.call(element)) !== null && _element$getRootNode !== void 0 ? _element$getRootNode : this._document;
+    var _element$getRootNode;
+    return (element === null || element === void 0 || (_element$getRootNode = element.getRootNode) === null || _element$getRootNode === void 0 ? void 0 : _element$getRootNode.call(element)) ?? this._document;
   },
   getBody() {
     return this._document.body;

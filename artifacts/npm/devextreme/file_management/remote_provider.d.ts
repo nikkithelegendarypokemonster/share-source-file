@@ -1,7 +1,7 @@
 /**
 * DevExtreme (file_management/remote_provider.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,37 +10,52 @@ import FileSystemProviderBase, {
     FileSystemProviderBaseOptions,
 } from './provider_base';
 
+/** @public */
 export type Options = RemoteFileSystemProviderOptions;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated Use Options instead
+ * @namespace DevExpress.fileManagement
+ * @docid
  */
 export interface RemoteFileSystemProviderOptions extends FileSystemProviderBaseOptions<RemoteFileSystemProvider> {
     /**
-     * Specifies a function that customizes an Ajax request before it is sent to the server.
+     * @docid
+     * @type_function_param1_field headers:object
+     * @type_function_param1_field xhrFields:object
+     * @type_function_param1_field formData:object
+     * @public
      */
     beforeAjaxSend?: ((options: { headers?: any; xhrFields?: any; formData?: any }) => void);
     /**
-     * Specifies a function that customizes a form submit request before it is sent to the server.
+     * @docid
+     * @type_function_param1_field formData:object
+     * @public
      */
     beforeSubmit?: ((options: { formData?: any }) => void);
     /**
-     * Specifies the URL of an endpoint used to access and modify a file system located on the server.
+     * @docid
+     * @public
      */
     endpointUrl?: string;
     /**
-     * Specifies which data field provides information about whether a directory has subdirectories.
+     * @docid
+     * @public
      */
     hasSubDirectoriesExpr?: string | Function;
     /**
-     * Specifies the request headers.
+     * @docid
+     * @default {}
+     * @public
      */
     requestHeaders?: any;
 }
 /**
- * The Remote file system provider works with a file system located on the server.
+ * @docid
+ * @inherits FileSystemProviderBase
+ * @namespace DevExpress.fileManagement
+ * @public
+ * @options RemoteFileSystemProviderOptions
  */
 export default class RemoteFileSystemProvider extends FileSystemProviderBase {
     constructor(options?: Options);

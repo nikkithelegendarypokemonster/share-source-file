@@ -1,80 +1,27 @@
 "use strict";
 
 exports.default = void 0;
-var _renderer = _interopRequireDefault(require("../core/renderer"));
-var _component_registrator = _interopRequireDefault(require("../core/component_registrator"));
-var _dom_component = _interopRequireDefault(require("../core/dom_component"));
-var _validation_summary = _interopRequireDefault(require("./validation_summary"));
-var _validation_engine = _interopRequireDefault(require("./validation_engine"));
-var _validator = _interopRequireDefault(require("./validator"));
+var _m_validation_group = _interopRequireDefault(require("../__internal/ui/m_validation_group"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-const VALIDATION_ENGINE_CLASS = 'dx-validationgroup';
-const VALIDATOR_CLASS = 'dx-validator';
-const VALIDATION_SUMMARY_CLASS = 'dx-validationsummary';
-let ValidationGroup = /*#__PURE__*/function (_DOMComponent) {
-  _inheritsLoose(ValidationGroup, _DOMComponent);
-  function ValidationGroup() {
-    return _DOMComponent.apply(this, arguments) || this;
-  }
-  var _proto = ValidationGroup.prototype;
-  _proto._getDefaultOptions = function _getDefaultOptions() {
-    return _DOMComponent.prototype._getDefaultOptions.call(this);
-
-    /**
-    * @name dxValidationGroupOptions.rtlEnabled
-    * @hidden
-    */
-
-    /**
-    * @name dxValidationGroup.beginUpdate
-    * @publicName beginUpdate()
-    * @hidden
-    */
-    /**
-    * @name dxValidationGroup.defaultOptions
-    * @publicName defaultOptions(rule)
-    * @hidden
-    */
-    /**
-    * @name dxValidationGroup.endUpdate
-    * @publicName endUpdate()
-    * @hidden
-    */
-  };
-  _proto._init = function _init() {
-    _DOMComponent.prototype._init.call(this);
-    _validation_engine.default.addGroup(this);
-  };
-  _proto._initMarkup = function _initMarkup() {
-    const $element = this.$element();
-    $element.addClass(VALIDATION_ENGINE_CLASS);
-    $element.find(".".concat(VALIDATOR_CLASS)).each(function (_, validatorContainer) {
-      _validator.default.getInstance((0, _renderer.default)(validatorContainer))._initGroupRegistration();
-    });
-    $element.find(".".concat(VALIDATION_SUMMARY_CLASS)).each(function (_, summaryContainer) {
-      _validation_summary.default.getInstance((0, _renderer.default)(summaryContainer)).refreshValidationGroup();
-    });
-    _DOMComponent.prototype._initMarkup.call(this);
-  };
-  _proto.validate = function validate() {
-    return _validation_engine.default.validateGroup(this);
-  };
-  _proto.reset = function reset() {
-    return _validation_engine.default.resetGroup(this);
-  };
-  _proto._dispose = function _dispose() {
-    _validation_engine.default.removeGroup(this);
-    this.$element().removeClass(VALIDATION_ENGINE_CLASS);
-    _DOMComponent.prototype._dispose.call(this);
-  };
-  _proto._useTemplates = function _useTemplates() {
-    return false;
-  };
-  return ValidationGroup;
-}(_dom_component.default);
-(0, _component_registrator.default)('dxValidationGroup', ValidationGroup);
-var _default = exports.default = ValidationGroup;
+var _default = exports.default = _m_validation_group.default;
+/**
+ * @name dxValidationGroupOptions.rtlEnabled
+ * @hidden
+ */
+/**
+ * @name dxValidationGroup.beginUpdate
+ * @publicName beginUpdate()
+ * @hidden
+ */
+/**
+ * @name dxValidationGroup.defaultOptions
+ * @publicName defaultOptions(rule)
+ * @hidden
+ */
+/**
+ * @name dxValidationGroup.endUpdate
+ * @publicName endUpdate()
+ * @hidden
+ */
 module.exports = exports.default;
 module.exports.default = exports.default;

@@ -1,17 +1,17 @@
 import domAdapter from '../dom_adapter';
 import { toComparable } from './data';
 import { isRenderer } from './type';
-var hasNegation = function hasNegation(oldValue, newValue) {
+const hasNegation = function (oldValue, newValue) {
   return 1 / oldValue === 1 / newValue;
 };
-export var equals = function equals(oldValue, newValue) {
+export const equals = function (oldValue, newValue) {
   oldValue = toComparable(oldValue, true);
   newValue = toComparable(newValue, true);
   if (oldValue && newValue && isRenderer(oldValue) && isRenderer(newValue)) {
     return newValue.is(oldValue);
   }
-  var oldValueIsNaN = oldValue !== oldValue;
-  var newValueIsNaN = newValue !== newValue;
+  const oldValueIsNaN = oldValue !== oldValue;
+  const newValueIsNaN = newValue !== newValue;
   if (oldValueIsNaN && newValueIsNaN) {
     return true;
   }

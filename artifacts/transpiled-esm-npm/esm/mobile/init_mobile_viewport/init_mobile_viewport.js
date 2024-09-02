@@ -2,25 +2,25 @@ import { getWidth, setWidth } from '../../core/utils/size';
 import $ from '../../core/renderer';
 import domAdapter from '../../core/dom_adapter';
 import { getWindow } from '../../core/utils/window';
-var window = getWindow();
+const window = getWindow();
 import eventsEngine from '../../events/core/events_engine';
 import { extend } from '../../core/utils/extend';
 import resizeCallbacks from '../../core/utils/resize_callbacks';
 import { supportProp, touch } from '../../core/utils/support';
 import { styleProp } from '../../core/utils/style';
 import devices from '../../core/devices';
-export var initMobileViewport = function initMobileViewport(options) {
+export const initMobileViewport = function (options) {
   options = extend({}, options);
-  var realDevice = devices.real();
-  var allowZoom = options.allowZoom;
-  var allowPan = options.allowPan;
-  var allowSelection = 'allowSelection' in options ? options.allowSelection : realDevice.platform === 'generic';
-  var metaSelector = 'meta[name=viewport]';
+  let realDevice = devices.real();
+  const allowZoom = options.allowZoom;
+  const allowPan = options.allowPan;
+  const allowSelection = 'allowSelection' in options ? options.allowSelection : realDevice.platform === 'generic';
+  const metaSelector = 'meta[name=viewport]';
   if (!$(metaSelector).length) {
     $('<meta>').attr('name', 'viewport').appendTo('head');
   }
-  var metaVerbs = ['width=device-width'];
-  var msTouchVerbs = [];
+  const metaVerbs = ['width=device-width'];
+  const msTouchVerbs = [];
   if (allowZoom) {
     msTouchVerbs.push('pinch-zoom');
   } else {
@@ -47,21 +47,21 @@ export var initMobileViewport = function initMobileViewport(options) {
   if (touch) {
     eventsEngine.off(domAdapter.getDocument(), '.dxInitMobileViewport');
     eventsEngine.on(domAdapter.getDocument(), 'dxpointermove.dxInitMobileViewport', function (e) {
-      var count = e.pointers.length;
-      var isTouchEvent = e.pointerType === 'touch';
-      var zoomDisabled = !allowZoom && count > 1;
-      var panDisabled = !allowPan && count === 1 && !e.isScrollingEvent;
+      const count = e.pointers.length;
+      const isTouchEvent = e.pointerType === 'touch';
+      const zoomDisabled = !allowZoom && count > 1;
+      const panDisabled = !allowPan && count === 1 && !e.isScrollingEvent;
       if (isTouchEvent && (zoomDisabled || panDisabled)) {
         e.preventDefault();
       }
     });
   }
   if (realDevice.ios) {
-    var isPhoneGap = domAdapter.getLocation().protocol === 'file:';
+    const isPhoneGap = domAdapter.getLocation().protocol === 'file:';
     if (!isPhoneGap) {
       // NOTE: fix app size after device rotation in Safari when keyboard was shown
       resizeCallbacks.add(function () {
-        var windowWidth = getWidth(window);
+        const windowWidth = getWidth(window);
         setWidth($('body'), windowWidth);
       });
     }
@@ -69,7 +69,7 @@ export var initMobileViewport = function initMobileViewport(options) {
   if (realDevice.android) {
     resizeCallbacks.add(function () {
       setTimeout(function () {
-        var activeElement = domAdapter.getActiveElement();
+        const activeElement = domAdapter.getActiveElement();
         activeElement.scrollIntoViewIfNeeded ? activeElement.scrollIntoViewIfNeeded() : activeElement.scrollIntoView(false);
       });
     });

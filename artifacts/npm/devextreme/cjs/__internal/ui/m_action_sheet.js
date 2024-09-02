@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/ui/m_action_sheet.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -131,8 +131,7 @@ const ActionSheet = _uiCollection_widget.default.inherit({
       disabled: false,
       showTitle: true,
       title: this.option('title'),
-      // @ts-expect-error
-      deferRendering: !window.angular,
+      deferRendering: true,
       onContentReady: this._popupContentReadyAction.bind(this),
       onHidden: this.hide.bind(this)
     };
@@ -278,8 +277,7 @@ const ActionSheet = _uiCollection_widget.default.inherit({
   },
   toggle(showing) {
     const that = this;
-    // @ts-expect-error
-    const d = new _deferred.Deferred();
+    const d = (0, _deferred.Deferred)();
     that._popup.toggle(showing).done(() => {
       that.option('visible', showing);
       d.resolveWith(that);

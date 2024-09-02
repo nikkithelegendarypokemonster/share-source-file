@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/gantt/ui.gantt.view.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -18,21 +18,13 @@ var _type = require("../../core/utils/type");
 var _message = _interopRequireDefault(require("../../localization/message"));
 var _string = require("../../core/utils/string");
 var _core = _interopRequireDefault(require("../../localization/core"));
+var _frame = require("../../animation/frame");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-let GanttView = exports.GanttView = /*#__PURE__*/function (_Widget) {
-  _inheritsLoose(GanttView, _Widget);
-  function GanttView() {
-    return _Widget.apply(this, arguments) || this;
-  }
-  var _proto = GanttView.prototype;
-  _proto._init = function _init() {
-    _Widget.prototype._init.call(this);
+const visualStateKey = 'visualState';
+const fullScreenModeKey = 'fullScreen';
+class GanttView extends _ui.default {
+  _init() {
+    super._init();
     this._onSelectionChanged = this._createActionByOption('onSelectionChanged');
     this._onViewTypeChanged = this._createActionByOption('onViewTypeChanged');
     this._onScroll = this._createActionByOption('onScroll');
@@ -44,10 +36,10 @@ let GanttView = exports.GanttView = /*#__PURE__*/function (_Widget) {
     this._taskClick = this._createActionByOption('onTaskClick');
     this._taskDblClick = this._createActionByOption('onTaskDblClick');
     this._onAdjustControl = this._createActionByOption('onAdjustControl');
-  };
-  _proto._initMarkup = function _initMarkup() {
-    const _GanttView = (0, _gantt_importer.getGanttViewCore)();
-    this._ganttViewCore = new _GanttView(this.$element().get(0), this, {
+  }
+  _initMarkup() {
+    const GanttView = (0, _gantt_importer.getGanttViewCore)();
+    this._ganttViewCore = new GanttView(this.$element().get(0), this, {
       showResources: this.option('showResources'),
       showDependencies: this.option('showDependencies'),
       taskTitlePosition: this._getTaskTitlePosition(this.option('taskTitlePosition')),
@@ -73,46 +65,59 @@ let GanttView = exports.GanttView = /*#__PURE__*/function (_Widget) {
     });
     this._selectTask(this.option('selectedRowKey'));
     this.updateBarItemsState();
-  };
-  _proto._getFirstDayOfWeek = function _getFirstDayOfWeek(value) {
+    const visualState = this.option(visualStateKey);
+    if (visualState) {
+      this._restoreStateFrameId = (0, _frame.requestAnimationFrame)(() => this._restoreVisualState(visualState));
+    }
+  }
+  _dispose() {
+    super._dispose();
+    (0, _frame.cancelAnimationFrame)(this._restoreStateFrameId);
+  }
+  _restoreVisualState(state) {
+    if (state[fullScreenModeKey]) {
+      this._ganttViewCore.setFullScreenMode();
+    }
+  }
+  _getFirstDayOfWeek(value) {
     return (0, _type.isDefined)(value) ? value : _date.default.firstDayOfWeekIndex();
-  };
-  _proto.getTaskAreaContainer = function getTaskAreaContainer() {
+  }
+  getTaskAreaContainer() {
     return this._ganttViewCore.getTaskAreaContainer();
-  };
-  _proto.getBarManager = function getBarManager() {
+  }
+  getBarManager() {
     return this._ganttViewCore.barManager;
-  };
-  _proto.executeCoreCommand = function executeCoreCommand(id) {
+  }
+  executeCoreCommand(id) {
     const command = this._ganttViewCore.getCommandByKey(id);
     if (command) {
       command.execute();
     }
-  };
-  _proto.changeTaskExpanded = function changeTaskExpanded(id, value) {
+  }
+  changeTaskExpanded(id, value) {
     this._ganttViewCore.changeTaskExpanded(id, value);
-  };
-  _proto.updateView = function updateView() {
+  }
+  updateView() {
     var _this$_ganttViewCore;
-    (_this$_ganttViewCore = this._ganttViewCore) === null || _this$_ganttViewCore === void 0 ? void 0 : _this$_ganttViewCore.updateView();
-  };
-  _proto.updateBarItemsState = function updateBarItemsState() {
+    (_this$_ganttViewCore = this._ganttViewCore) === null || _this$_ganttViewCore === void 0 || _this$_ganttViewCore.updateView();
+  }
+  updateBarItemsState() {
     this._ganttViewCore.barManager.updateItemsState([]);
-  };
-  _proto.setWidth = function setWidth(value) {
+  }
+  setWidth(value) {
     this._ganttViewCore.setWidth(value);
-  };
-  _proto._onDimensionChanged = function _onDimensionChanged() {
+  }
+  _onDimensionChanged() {
     this._ganttViewCore.onBrowserWindowResize();
-  };
-  _proto._selectTask = function _selectTask(id) {
+  }
+  _selectTask(id) {
     this._ganttViewCore.selectTaskById(id);
-  };
-  _proto._update = function _update(keepExpandState) {
+  }
+  _update(keepExpandState) {
     var _this$_ganttViewCore2;
-    (_this$_ganttViewCore2 = this._ganttViewCore) === null || _this$_ganttViewCore2 === void 0 ? void 0 : _this$_ganttViewCore2.updateWithDataReload(keepExpandState);
-  };
-  _proto._getCultureInfo = function _getCultureInfo() {
+    (_this$_ganttViewCore2 = this._ganttViewCore) === null || _this$_ganttViewCore2 === void 0 || _this$_ganttViewCore2.updateWithDataReload(keepExpandState);
+  }
+  _getCultureInfo() {
     return {
       monthNames: _date.default.getMonthNames('wide'),
       dayNames: _date.default.getDayNames('wide'),
@@ -125,26 +130,26 @@ let GanttView = exports.GanttView = /*#__PURE__*/function (_Widget) {
       end: _message.default.format('dxGantt-dialogEndTitle'),
       progress: _message.default.format('dxGantt-dialogProgressTitle')
     };
-  };
-  _proto._getAmText = function _getAmText() {
+  }
+  _getAmText() {
     return this._hasAmPM() ? _date.default.getPeriodNames()[0] : '';
-  };
-  _proto._getPmText = function _getPmText() {
+  }
+  _getPmText() {
     return this._hasAmPM() ? _date.default.getPeriodNames()[1] : '';
-  };
-  _proto._hasAmPM = function _hasAmPM() {
+  }
+  _hasAmPM() {
     const date = new Date(Date.UTC(2012, 11, 12, 3, 0, 0));
     const dateString = date.toLocaleTimeString(_core.default.locale());
     return dateString.match(/am|pm/i) || date.toString().match(/am|pm/i);
-  };
-  _proto._getQuarterNames = function _getQuarterNames() {
+  }
+  _getQuarterNames() {
     const quarterFormat = _message.default.format('dxGantt-quarter');
     if (!quarterFormat) {
       return _date.default.getQuarterNames();
     }
     return [(0, _string.format)(quarterFormat, 1), (0, _string.format)(quarterFormat, 2), (0, _string.format)(quarterFormat, 3), (0, _string.format)(quarterFormat, 4)];
-  };
-  _proto._getTaskTitlePosition = function _getTaskTitlePosition(value) {
+  }
+  _getTaskTitlePosition(value) {
     switch (value) {
       case 'outside':
         return 1;
@@ -153,8 +158,8 @@ let GanttView = exports.GanttView = /*#__PURE__*/function (_Widget) {
       default:
         return 0;
     }
-  };
-  _proto._getViewTypeByScaleType = function _getViewTypeByScaleType(scaleType) {
+  }
+  _getViewTypeByScaleType(scaleType) {
     switch (scaleType) {
       case 'minutes':
         return 0;
@@ -175,8 +180,8 @@ let GanttView = exports.GanttView = /*#__PURE__*/function (_Widget) {
       default:
         return undefined;
     }
-  };
-  _proto._parseEditingSettings = function _parseEditingSettings(value) {
+  }
+  _parseEditingSettings(value) {
     return {
       enabled: value.enabled,
       allowDependencyDelete: value.allowDependencyDeleting,
@@ -189,17 +194,17 @@ let GanttView = exports.GanttView = /*#__PURE__*/function (_Widget) {
       allowResourceUpdate: value.allowResourceUpdating,
       allowTaskResourceUpdate: value.allowTaskResourceUpdating
     };
-  };
-  _proto._parseViewTypeRangeSettings = function _parseViewTypeRangeSettings(value) {
+  }
+  _parseViewTypeRangeSettings(value) {
     return {
       min: this._getViewTypeByScaleType(value.min),
       max: this._getViewTypeByScaleType(value.max)
     };
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _optionChanged(args) {
     switch (args.name) {
       case 'width':
-        _Widget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
         this._ganttViewCore.setWidth(args.value);
         break;
       case 'height':
@@ -273,121 +278,123 @@ let GanttView = exports.GanttView = /*#__PURE__*/function (_Widget) {
         this._sortAndFilter(args.value);
         break;
       default:
-        _Widget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
   }
 
   // IGanttOwner
-  ;
-  _proto.getRowHeight = function getRowHeight() {
+  get bars() {
+    return this.option('bars');
+  }
+  getRowHeight() {
     return this.option('rowHeight');
-  };
-  _proto.getHeaderHeight = function getHeaderHeight() {
+  }
+  getHeaderHeight() {
     return this.option('headerHeight');
-  };
-  _proto.getGanttTasksData = function getGanttTasksData() {
+  }
+  getGanttTasksData() {
     const tasks = this.option('tasks');
     const sieveOptions = this.getSieveOptions();
     if (sieveOptions !== null && sieveOptions !== void 0 && sieveOptions.sievedItems && sieveOptions !== null && sieveOptions !== void 0 && sieveOptions.sieveColumn) {
       return sieveOptions.sievedItems;
     }
     return tasks;
-  };
-  _proto._sortAndFilter = function _sortAndFilter(args) {
+  }
+  _sortAndFilter(args) {
     this._sieveOptions = args;
     this._update(!(args !== null && args !== void 0 && args.expandTasks));
     const selectedRowKey = this.option('selectedRowKey');
     this._selectTask(selectedRowKey);
-  };
-  _proto.getSieveOptions = function getSieveOptions() {
+  }
+  getSieveOptions() {
     return this._sieveOptions;
-  };
-  _proto.getGanttDependenciesData = function getGanttDependenciesData() {
+  }
+  getGanttDependenciesData() {
     return this.option('dependencies');
-  };
-  _proto.getGanttResourcesData = function getGanttResourcesData() {
+  }
+  getGanttResourcesData() {
     return this.option('resources');
-  };
-  _proto.getGanttResourceAssignmentsData = function getGanttResourceAssignmentsData() {
+  }
+  getGanttResourceAssignmentsData() {
     return this.option('resourceAssignments');
-  };
-  _proto.getGanttWorkTimeRules = function getGanttWorkTimeRules() {
+  }
+  getGanttWorkTimeRules() {
     return null;
-  };
-  _proto.getExternalTaskAreaContainer = function getExternalTaskAreaContainer(element) {
+  }
+  getExternalTaskAreaContainer(element) {
     if (!this._taskAreaContainer) {
       this._taskAreaContainer = new _uiGanttTaskArea.TaskAreaContainer(element, this);
     }
     return this._taskAreaContainer;
-  };
-  _proto.prepareExternalTaskAreaContainer = function prepareExternalTaskAreaContainer(element, info) {
+  }
+  prepareExternalTaskAreaContainer(element, info) {
     if (info !== null && info !== void 0 && info.height) {
       this._taskAreaContainer._scrollView.option('height', info.height);
     }
-  };
-  _proto.changeGanttTaskSelection = function changeGanttTaskSelection(id, selected) {
+  }
+  changeGanttTaskSelection(id, selected) {
     this._onSelectionChanged({
       id: id,
       selected: selected
     });
-  };
-  _proto.onGanttScroll = function onGanttScroll(scrollTop) {
+  }
+  onGanttScroll(scrollTop) {
     this._onScroll({
       scrollTop: scrollTop
     });
-  };
-  _proto.showDialog = function showDialog(name, parameters, callback, afterClosing) {
+  }
+  showDialog(name, parameters, callback, afterClosing) {
     this._onDialogShowing({
       name: name,
       parameters: parameters,
       callback: callback,
       afterClosing: afterClosing
     });
-  };
-  _proto.getModelChangesListener = function getModelChangesListener() {
+  }
+  getModelChangesListener() {
     return this.option('modelChangesListener');
-  };
-  _proto.getExportInfo = function getExportInfo() {
+  }
+  getExportInfo() {
     return this.option('exportInfo');
-  };
-  _proto.showPopupMenu = function showPopupMenu(info) {
+  }
+  showPopupMenu(info) {
     this._onPopupMenuShowing(info);
-  };
-  _proto.hidePopupMenu = function hidePopupMenu(info) {
+  }
+  hidePopupMenu(info) {
     this._onPopupMenuHiding(info);
-  };
-  _proto.getMainElement = function getMainElement() {
+  }
+  getMainElement() {
     return this.option('mainElement').get(0);
-  };
-  _proto.adjustControl = function adjustControl() {
+  }
+  adjustControl() {
     this._onAdjustControl();
-  };
-  _proto.getRequireFirstLoadParentAutoCalc = function getRequireFirstLoadParentAutoCalc() {
+  }
+  getRequireFirstLoadParentAutoCalc() {
     return this.option('validation.autoUpdateParentTasks');
-  };
-  _proto.collapseAll = function collapseAll() {
+  }
+  collapseAll() {
     this._collapseAll();
-  };
-  _proto.expandAll = function expandAll() {
+  }
+  expandAll() {
     this._expandAll();
-  };
-  _proto.onTaskClick = function onTaskClick(key, event) {
+  }
+  onTaskClick(key, event) {
     this._taskClick({
       key: key,
       event: event
     });
     return true;
-  };
-  _proto.onTaskDblClick = function onTaskDblClick(key, event) {
+  }
+  onTaskDblClick(key, event) {
     return this._taskDblClick({
       key: key,
       event: event
     });
-  };
-  _proto.onGanttViewContextMenu = function onGanttViewContextMenu(event, key, type) {
+  }
+  onGanttViewContextMenu(event, key, type) {
     return true;
-  };
-  _proto.getFormattedDateText = function getFormattedDateText(date) {
+  }
+  getFormattedDateText(date) {
     let result = '';
     if (date) {
       const datePart = _date.default.format(date, 'shortDate');
@@ -396,55 +403,54 @@ let GanttView = exports.GanttView = /*#__PURE__*/function (_Widget) {
       result = datePart + ' ' + timePart;
     }
     return result;
-  };
-  _proto.destroyTemplate = function destroyTemplate(container) {
+  }
+  destroyTemplate(container) {
     (0, _renderer.default)(container).empty();
-  };
-  _proto.onTaskAreaSizeChanged = function onTaskAreaSizeChanged(info) {
+  }
+  onTaskAreaSizeChanged(info) {
     const scrollView = this._taskAreaContainer._scrollView;
     if ((0, _type.isDefined)(info === null || info === void 0 ? void 0 : info.height)) {
       const direction = (info === null || info === void 0 ? void 0 : info.height) > this._taskAreaContainer.getHeight() ? 'both' : 'horizontal';
       scrollView.option('direction', direction);
     }
-  };
-  _proto.updateGanttViewType = function updateGanttViewType(type) {
+  }
+  updateGanttViewType(type) {
     this._onViewTypeChanged({
       type: type
     });
   }
   // export
-  ;
-  _proto.getTreeListTableStyle = function getTreeListTableStyle() {
+  getTreeListTableStyle() {
     return this.callExportHelperMethod('getTreeListTableStyle');
-  };
-  _proto.getTreeListColCount = function getTreeListColCount() {
+  }
+  getTreeListColCount() {
     return this.callExportHelperMethod('getTreeListColCount');
-  };
-  _proto.getTreeListHeaderInfo = function getTreeListHeaderInfo(colIndex) {
+  }
+  getTreeListHeaderInfo(colIndex) {
     return this.callExportHelperMethod('getTreeListHeaderInfo', colIndex);
-  };
-  _proto.getTreeListCellInfo = function getTreeListCellInfo(rowIndex, colIndex, key) {
+  }
+  getTreeListCellInfo(rowIndex, colIndex, key) {
     return this.callExportHelperMethod('getTreeListCellInfo', key, colIndex);
-  };
-  _proto.getTreeListEmptyDataCellInfo = function getTreeListEmptyDataCellInfo() {
+  }
+  getTreeListEmptyDataCellInfo() {
     return this.callExportHelperMethod('getTreeListEmptyDataCellInfo');
-  };
-  _proto.callExportHelperMethod = function callExportHelperMethod(methodName) {
+  }
+  callExportHelperMethod(methodName) {
     const helper = this.option('exportHelper');
     for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
     return helper[methodName](...args);
-  };
-  _proto.applyTasksExpandedState = function applyTasksExpandedState(state) {
+  }
+  applyTasksExpandedState(state) {
     var _this$_ganttViewCore3;
-    (_this$_ganttViewCore3 = this._ganttViewCore) === null || _this$_ganttViewCore3 === void 0 ? void 0 : _this$_ganttViewCore3.applyTasksExpandedState(state);
-  };
-  _createClass(GanttView, [{
-    key: "bars",
-    get: function () {
-      return this.option('bars');
-    }
-  }]);
-  return GanttView;
-}(_ui.default);
+    (_this$_ganttViewCore3 = this._ganttViewCore) === null || _this$_ganttViewCore3 === void 0 || _this$_ganttViewCore3.applyTasksExpandedState(state);
+  }
+  getVisualStateToRestore() {
+    var _this$_ganttViewCore4, _this$_ganttViewCore5;
+    return {
+      [fullScreenModeKey]: (_this$_ganttViewCore4 = this._ganttViewCore) === null || _this$_ganttViewCore4 === void 0 || (_this$_ganttViewCore5 = _this$_ganttViewCore4.isInFullScreenMode) === null || _this$_ganttViewCore5 === void 0 ? void 0 : _this$_ganttViewCore5.call(_this$_ganttViewCore4)
+    };
+  }
+}
+exports.GanttView = GanttView;

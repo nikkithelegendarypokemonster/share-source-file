@@ -14,13 +14,13 @@ export function isReachedBottom(element, scrollOffsetTop, pocketHeight, epsilon)
   return Math.round(getScrollTopMax(element) - scrollOffsetTop - pocketHeight) <= epsilon;
 }
 export function getBoundaryProps(direction, scrollOffset, element) {
-  var pocketHeight = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-  var {
+  let pocketHeight = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+  const {
     left,
     top
   } = scrollOffset;
-  var boundaryProps = {};
-  var {
+  const boundaryProps = {};
+  const {
     isHorizontal,
     isVertical
   } = new ScrollDirection(direction);

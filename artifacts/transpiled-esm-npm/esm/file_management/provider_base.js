@@ -5,7 +5,7 @@ import { each } from '../core/utils/iterator';
 import { isPromise } from '../core/utils/type';
 import { Deferred, fromPromise } from '../core/utils/deferred';
 import FileSystemItem from './file_system_item';
-var DEFAULT_FILE_UPLOAD_CHUNK_SIZE = 200000;
+const DEFAULT_FILE_UPLOAD_CHUNK_SIZE = 200000;
 class FileSystemProviderBase {
   constructor(options) {
     options = ensureDefined(options, {});
@@ -32,16 +32,16 @@ class FileSystemProviderBase {
     return DEFAULT_FILE_UPLOAD_CHUNK_SIZE;
   }
   _convertDataObjectsToFileItems(entries, pathInfo) {
-    var result = [];
+    const result = [];
     each(entries, (_, entry) => {
-      var fileItem = this._createFileItem(entry, pathInfo);
+      const fileItem = this._createFileItem(entry, pathInfo);
       result.push(fileItem);
     });
     return result;
   }
   _createFileItem(dataObj, pathInfo) {
-    var key = this._keyGetter(dataObj);
-    var fileItem = new FileSystemItem(pathInfo, this._nameGetter(dataObj), !!this._isDirGetter(dataObj), key);
+    const key = this._keyGetter(dataObj);
+    const fileItem = new FileSystemItem(pathInfo, this._nameGetter(dataObj), !!this._isDirGetter(dataObj), key);
     fileItem.size = this._sizeGetter(dataObj);
     if (fileItem.size === undefined) {
       fileItem.size = 0;
@@ -86,9 +86,9 @@ class FileSystemProviderBase {
     return options.dateModifiedExpr || 'dateModified';
   }
   _executeActionAsDeferred(action, keepResult) {
-    var deferred = new Deferred();
+    const deferred = new Deferred();
     try {
-      var result = action();
+      const result = action();
       if (isPromise(result)) {
         fromPromise(result).done(userResult => deferred.resolve(keepResult && userResult || undefined)).fail(error => deferred.reject(error));
       } else {

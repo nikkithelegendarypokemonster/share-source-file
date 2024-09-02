@@ -5,31 +5,31 @@ import dateLocalization from './localization/date';
 import dependencyInjector from './core/utils/dependency_injector';
 import './localization/currency';
 export default dependencyInjector({
-  format: function format(value, _format) {
-    var formatIsValid = isString(_format) && _format !== '' || isPlainObject(_format) || isFunction(_format);
-    var valueIsValid = isNumeric(value) || isDate(value);
+  format: function (value, format) {
+    const formatIsValid = isString(format) && format !== '' || isPlainObject(format) || isFunction(format);
+    const valueIsValid = isNumeric(value) || isDate(value);
     if (!formatIsValid || !valueIsValid) {
       return isDefined(value) ? value.toString() : '';
     }
-    if (isFunction(_format)) {
-      return _format(value);
+    if (isFunction(format)) {
+      return format(value);
     }
-    if (isString(_format)) {
-      _format = {
-        type: _format
+    if (isString(format)) {
+      format = {
+        type: format
       };
     }
     if (isNumeric(value)) {
-      return numberLocalization.format(value, _format);
+      return numberLocalization.format(value, format);
     }
     if (isDate(value)) {
-      return dateLocalization.format(value, _format);
+      return dateLocalization.format(value, format);
     }
   },
-  getTimeFormat: function getTimeFormat(showSecond) {
+  getTimeFormat: function (showSecond) {
     return showSecond ? 'longtime' : 'shorttime';
   },
-  _normalizeFormat: function _normalizeFormat(format) {
+  _normalizeFormat: function (format) {
     if (!Array.isArray(format)) {
       return format;
     }
@@ -42,11 +42,11 @@ export default dependencyInjector({
       }).join(' ');
     };
   },
-  getDateFormatByDifferences: function getDateFormatByDifferences(dateDifferences, intervalFormat) {
-    var resultFormat = [];
-    var needSpecialSecondFormatter = intervalFormat && dateDifferences.millisecond && !(dateDifferences.year || dateDifferences.month || dateDifferences.day);
+  getDateFormatByDifferences: function (dateDifferences, intervalFormat) {
+    const resultFormat = [];
+    const needSpecialSecondFormatter = intervalFormat && dateDifferences.millisecond && !(dateDifferences.year || dateDifferences.month || dateDifferences.day);
     if (needSpecialSecondFormatter) {
-      var secondFormatter = function secondFormatter(date) {
+      const secondFormatter = function (date) {
         return date.getSeconds() + date.getMilliseconds() / 1000 + 's';
       };
       resultFormat.push(secondFormatter);
@@ -78,7 +78,7 @@ export default dependencyInjector({
     }
     if (dateDifferences.month && dateDifferences.day) {
       if (intervalFormat) {
-        var monthDayFormatter = function monthDayFormatter(date) {
+        const monthDayFormatter = function (date) {
           return dateLocalization.getMonthNames('abbreviated')[date.getMonth()] + ' ' + dateLocalization.format(date, 'day');
         };
         resultFormat.unshift(monthDayFormatter);
@@ -94,7 +94,7 @@ export default dependencyInjector({
       if (intervalFormat) {
         resultFormat.unshift('day');
       } else {
-        var dayFormatter = function dayFormatter(date) {
+        const dayFormatter = function (date) {
           return dateLocalization.format(date, 'dayofweek') + ', ' + dateLocalization.format(date, 'day');
         };
         resultFormat.unshift(dayFormatter);
@@ -103,10 +103,10 @@ export default dependencyInjector({
     }
     return this._normalizeFormat(resultFormat);
   },
-  getDateFormatByTicks: function getDateFormatByTicks(ticks) {
-    var maxDiff;
-    var currentDiff;
-    var i;
+  getDateFormatByTicks: function (ticks) {
+    let maxDiff;
+    let currentDiff;
+    let i;
     if (ticks.length > 1) {
       maxDiff = dateUtils.getDatesDifferences(ticks[0], ticks[1]);
       for (i = 1; i < ticks.length - 1; i++) {
@@ -126,15 +126,15 @@ export default dependencyInjector({
         millisecond: ticks[0].getMilliseconds() > 0
       };
     }
-    var resultFormat = this.getDateFormatByDifferences(maxDiff);
+    const resultFormat = this.getDateFormatByDifferences(maxDiff);
     return resultFormat;
   },
-  getDateFormatByTickInterval: function getDateFormatByTickInterval(startValue, endValue, tickInterval) {
-    var dateUnitInterval;
-    var dateDifferencesConverter = {
+  getDateFormatByTickInterval: function (startValue, endValue, tickInterval) {
+    let dateUnitInterval;
+    const dateDifferencesConverter = {
       week: 'day'
     };
-    var correctDateDifferences = function correctDateDifferences(dateDifferences, tickInterval, value) {
+    const correctDateDifferences = function (dateDifferences, tickInterval, value) {
       switch (tickInterval) {
         case 'year':
         case 'quarter':
@@ -157,7 +157,7 @@ export default dependencyInjector({
           dateDifferences.millisecond = value;
       }
     };
-    var correctDifferencesByMaxDate = function correctDifferencesByMaxDate(differences, minDate, maxDate) {
+    const correctDifferencesByMaxDate = function (differences, minDate, maxDate) {
       if (!maxDate.getMilliseconds() && maxDate.getSeconds()) {
         if (maxDate.getSeconds() - minDate.getSeconds() === 1) {
           differences.millisecond = true;
@@ -191,7 +191,7 @@ export default dependencyInjector({
       }
     };
     tickInterval = isString(tickInterval) ? tickInterval.toLowerCase() : tickInterval;
-    var dateDifferences = dateUtils.getDatesDifferences(startValue, endValue);
+    const dateDifferences = dateUtils.getDatesDifferences(startValue, endValue);
     if (startValue !== endValue) {
       correctDifferencesByMaxDate(dateDifferences, startValue > endValue ? endValue : startValue, startValue > endValue ? startValue : endValue);
     }
@@ -200,7 +200,7 @@ export default dependencyInjector({
     dateUnitInterval = dateUtils.getDateUnitInterval(tickInterval || 'second');
     correctDateDifferences(dateDifferences, dateUnitInterval, false);
     dateDifferences[dateDifferencesConverter[dateUnitInterval] || dateUnitInterval] = true;
-    var resultFormat = this.getDateFormatByDifferences(dateDifferences);
+    const resultFormat = this.getDateFormatByDifferences(dateDifferences);
     return resultFormat;
   }
 });

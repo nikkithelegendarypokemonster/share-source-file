@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/viz/components/legend.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -373,7 +373,9 @@ const legendPrototype = _Legend.prototype = (0, _object.clone)(_layout_element.L
       x: 0,
       y: 0
     };
-    if (that.isVisible() && !that._title) {
+    if (that.isVisible()) {
+      var _that$_title;
+      (_that$_title = that._title) === null || _that$_title === void 0 || _that$_title.dispose();
       that._title = new _title.Title({
         renderer: that._renderer,
         cssClass: that._titleGroupClass,

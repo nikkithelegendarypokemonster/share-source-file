@@ -4,12 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.CellsSelectionController = void 0;
-var _index = require("../__migration/utils/index");
+var _index = require("../../scheduler/r1/utils/index");
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-let CellsSelectionController = exports.CellsSelectionController = /*#__PURE__*/function () {
-  function CellsSelectionController() {}
-  var _proto = CellsSelectionController.prototype;
-  _proto.handleArrowClick = function handleArrowClick(options) {
+class CellsSelectionController {
+  handleArrowClick(options) {
     const {
       key,
       focusedCellPosition,
@@ -26,12 +24,12 @@ let CellsSelectionController = exports.CellsSelectionController = /*#__PURE__*/f
         nextCellIndices = this.getCellFromNextRowPosition(focusedCellPosition, 'prev', edgeIndices);
         break;
       case 'left':
-        nextCellIndices = this.getCellFromNextColumnPosition(_extends(_extends({}, options), {
+        nextCellIndices = this.getCellFromNextColumnPosition(_extends({}, options, {
           direction: 'prev'
         }));
         break;
       case 'right':
-        nextCellIndices = this.getCellFromNextColumnPosition(_extends(_extends({}, options), {
+        nextCellIndices = this.getCellFromNextColumnPosition(_extends({}, options, {
           direction: 'next'
         }));
         break;
@@ -39,11 +37,11 @@ let CellsSelectionController = exports.CellsSelectionController = /*#__PURE__*/f
         break;
     }
     const currentCellData = getCellDataByPosition(nextCellIndices.rowIndex, nextCellIndices.columnIndex, isAllDayPanelCell);
-    return this.moveToCell(_extends(_extends({}, options), {
+    return this.moveToCell(_extends({}, options, {
       currentCellData
     }));
-  };
-  _proto.getCellFromNextRowPosition = function getCellFromNextRowPosition(focusedCellPosition, direction, edgeIndices) {
+  }
+  getCellFromNextRowPosition(focusedCellPosition, direction, edgeIndices) {
     const {
       columnIndex,
       rowIndex
@@ -55,8 +53,8 @@ let CellsSelectionController = exports.CellsSelectionController = /*#__PURE__*/f
       columnIndex,
       rowIndex: validRowIndex
     };
-  };
-  _proto.getCellFromNextColumnPosition = function getCellFromNextColumnPosition(options) {
+  }
+  getCellFromNextColumnPosition(options) {
     const {
       focusedCellPosition,
       direction,
@@ -98,8 +96,8 @@ let CellsSelectionController = exports.CellsSelectionController = /*#__PURE__*/f
       lastRowIndex,
       step
     });
-  };
-  _proto._processEdgeCell = function _processEdgeCell(options) {
+  }
+  _processEdgeCell(options) {
     const {
       nextColumnIndex,
       rowIndex,
@@ -132,8 +130,8 @@ let CellsSelectionController = exports.CellsSelectionController = /*#__PURE__*/f
       columnIndex: validColumnIndex,
       rowIndex: validRowIndex
     };
-  };
-  _proto.moveToCell = function moveToCell(options) {
+  }
+  moveToCell(options) {
     const {
       isMultiSelection,
       isMultiSelectionAllowed,
@@ -143,15 +141,15 @@ let CellsSelectionController = exports.CellsSelectionController = /*#__PURE__*/f
     const isValidMultiSelection = isMultiSelection && isMultiSelectionAllowed;
     const nextFocusedCellData = isValidMultiSelection ? this._getNextCellData(currentCellData, focusedCellData) : currentCellData;
     return nextFocusedCellData;
-  };
-  _proto._getNextCellData = function _getNextCellData(nextFocusedCellData, focusedCellData, isVirtualCell) {
+  }
+  _getNextCellData(nextFocusedCellData, focusedCellData, isVirtualCell) {
     if (isVirtualCell) {
       return focusedCellData;
     }
     const isValidNextFocusedCell = this._isValidNextFocusedCell(nextFocusedCellData, focusedCellData);
     return isValidNextFocusedCell ? nextFocusedCellData : focusedCellData;
-  };
-  _proto._isValidNextFocusedCell = function _isValidNextFocusedCell(nextFocusedCellData, focusedCellData) {
+  }
+  _isValidNextFocusedCell(nextFocusedCellData, focusedCellData) {
     if (!focusedCellData) {
       return true;
     }
@@ -164,6 +162,6 @@ let CellsSelectionController = exports.CellsSelectionController = /*#__PURE__*/f
       allDay: nextAllDay
     } = nextFocusedCellData;
     return groupIndex === nextGroupIndex && allDay === nextAllDay;
-  };
-  return CellsSelectionController;
-}();
+  }
+}
+exports.CellsSelectionController = CellsSelectionController;

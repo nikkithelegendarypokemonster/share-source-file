@@ -1,19 +1,19 @@
 /**
 * DevExtreme (esm/core/utils/string.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { isFunction, isString } from './type';
-export var encodeHtml = function () {
-  var encodeRegExp = [new RegExp('&', 'g'), new RegExp('"', 'g'), new RegExp('\'', 'g'), new RegExp('<', 'g'), new RegExp('>', 'g')];
+export const encodeHtml = function () {
+  const encodeRegExp = [new RegExp('&', 'g'), new RegExp('"', 'g'), new RegExp('\'', 'g'), new RegExp('<', 'g'), new RegExp('>', 'g')];
   return function (str) {
     return String(str).replace(encodeRegExp[0], '&amp;').replace(encodeRegExp[1], '&quot;').replace(encodeRegExp[2], '&#39;').replace(encodeRegExp[3], '&lt;').replace(encodeRegExp[4], '&gt;');
   };
 }();
-var splitQuad = function splitQuad(raw) {
+const splitQuad = function (raw) {
   switch (typeof raw) {
     case 'string':
       return raw.split(/\s+/, 4);
@@ -25,12 +25,12 @@ var splitQuad = function splitQuad(raw) {
       return raw;
   }
 };
-export var quadToObject = function quadToObject(raw) {
-  var quad = splitQuad(raw);
-  var left = parseInt(quad && quad[0], 10);
-  var top = parseInt(quad && quad[1], 10);
-  var right = parseInt(quad && quad[2], 10);
-  var bottom = parseInt(quad && quad[3], 10);
+export const quadToObject = function (raw) {
+  const quad = splitQuad(raw);
+  let left = parseInt(quad && quad[0], 10);
+  let top = parseInt(quad && quad[1], 10);
+  let right = parseInt(quad && quad[2], 10);
+  let bottom = parseInt(quad && quad[3], 10);
   if (!isFinite(left)) {
     left = 0;
   }
@@ -61,13 +61,13 @@ export function format(template) {
     if (isString(value)) {
       value = value.replace(/\$/g, '$$$$');
     }
-    var placeholderReg = new RegExp('\\{' + index + '\\}', 'gm');
+    const placeholderReg = new RegExp('\\{' + index + '\\}', 'gm');
     template = template.replace(placeholderReg, value);
   });
   return template;
 }
-export var isEmpty = function () {
-  var SPACE_REGEXP = /\s/g;
+export const isEmpty = function () {
+  const SPACE_REGEXP = /\s/g;
   return function (text) {
     return !text || !text.replace(SPACE_REGEXP, '');
   };

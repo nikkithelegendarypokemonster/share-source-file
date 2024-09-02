@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/resources/m_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -23,7 +23,7 @@ var _type = require("../../../core/utils/type");
 var _data_source = require("../../../data/data_source/data_source");
 var _utils = require("../../../data/data_source/utils");
 var _themes = require("../../../ui/themes");
-var _index = require("../__migration/utils/index");
+var _index = require("../../scheduler/r1/utils/index");
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const getValueExpr = resource => resource.valueExpr || 'id';
 exports.getValueExpr = getValueExpr;
@@ -35,7 +35,7 @@ const getWrappedDataSource = dataSource => {
   if (dataSource instanceof _data_source.DataSource) {
     return dataSource;
   }
-  const result = _extends(_extends({}, (0, _utils.normalizeDataSourceOptions)(dataSource)), {
+  const result = _extends({}, (0, _utils.normalizeDataSourceOptions)(dataSource), {
     pageSize: 0
   });
   if (!Array.isArray(dataSource)) {
@@ -47,15 +47,15 @@ exports.getWrappedDataSource = getWrappedDataSource;
 const createResourcesTree = groups => {
   let leafIndex = 0;
   const make = (group, groupIndex, result, parent) => {
-    var _a;
     result = result || [];
     for (let itemIndex = 0; itemIndex < group.items.length; itemIndex++) {
+      var _group$data;
       const currentGroupItem = group.items[itemIndex];
       const resultItem = {
         name: group.name,
         value: currentGroupItem.id,
         title: currentGroupItem.text,
-        data: (_a = group.data) === null || _a === void 0 ? void 0 : _a[itemIndex],
+        data: (_group$data = group.data) === null || _group$data === void 0 ? void 0 : _group$data[itemIndex],
         children: [],
         parent: parent || null
       };
@@ -122,7 +122,7 @@ const getGroupsObjectFromGroupsArray = groupsArray => groupsArray.reduce((curren
     name,
     id
   } = _ref;
-  return _extends(_extends({}, currentGroups), {
+  return _extends({}, currentGroups, {
     [name]: id
   });
 }, {});
@@ -168,7 +168,7 @@ const isResourceMultiple = (resources, resourceField) => {
     const field = getFieldExpr(resource);
     return field === resourceField;
   });
-  return !!(resource === null || resource === void 0 ? void 0 : resource.allowMultiple);
+  return !!(resource !== null && resource !== void 0 && resource.allowMultiple);
 };
 exports.isResourceMultiple = isResourceMultiple;
 const filterResources = (resources, fields) => resources.filter(resource => {

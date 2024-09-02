@@ -5,7 +5,7 @@ import { errors } from '../../../data/errors';
 // @ts-expect-error
 import { aggregators } from '../../../data/utils';
 function depthFirstSearch(i, depth, root, callback) {
-  var j = 0;
+  let j = 0;
   if (i < depth) {
     for (; j < root.items.length; j++) {
       depthFirstSearch(i + 1, depth, root.items[j], callback);
@@ -17,11 +17,11 @@ function depthFirstSearch(i, depth, root, callback) {
 }
 // NOTE: https://github.com/jquery/jquery/blame/master/src/core.js#L392
 function map(array, callback) {
-  var i;
+  let i;
   if ('map' in array) {
     return array.map(callback);
   }
-  var result = new Array(array.length);
+  const result = new Array(array.length);
   // eslint-disable-next-line no-restricted-syntax, guard-for-in
   for (i in array) {
     result[i] = callback(array[i], i);
@@ -35,9 +35,9 @@ function isCount(aggregator) {
   return aggregator === aggregators.count;
 }
 function normalizeAggregate(aggregate) {
-  var selector = compileGetter(aggregate.selector);
-  var skipEmptyValues = 'skipEmptyValues' in aggregate ? aggregate.skipEmptyValues : true;
-  var {
+  const selector = compileGetter(aggregate.selector);
+  const skipEmptyValues = 'skipEmptyValues' in aggregate ? aggregate.skipEmptyValues : true;
+  let {
     aggregator
   } = aggregate;
   if (typeof aggregator === 'string') {
@@ -76,13 +76,13 @@ export default class AggregateCalculator {
     return this._totals;
   }
   _aggregate(aggregates, data, container) {
-    var length = data.items ? data.items.length : 0;
-    for (var i = 0; i < aggregates.length; i++) {
+    const length = data.items ? data.items.length : 0;
+    for (let i = 0; i < aggregates.length; i++) {
       if (isCount(aggregates[i].aggregator)) {
         container[i] = (container[i] || 0) + length;
         continue;
       }
-      for (var j = 0; j < length; j++) {
+      for (let j = 0; j < length; j++) {
         this._accumulate(i, aggregates[i], container, data.items[j]);
       }
     }
@@ -94,7 +94,7 @@ export default class AggregateCalculator {
     if (level === this._groupLevel) {
       this._aggregate(this._totalAggregates, data, this._totals);
     } else {
-      for (var i = 0; i < data.items.length; i++) {
+      for (let i = 0; i < data.items.length; i++) {
         this._calculateTotals(level + 1, data.items[i]);
       }
     }
@@ -103,11 +103,11 @@ export default class AggregateCalculator {
     }
   }
   _calculateGroups(root) {
-    var maxLevel = this._groupLevel;
-    var currentLevel = maxLevel + 1;
-    var seedFn = this._seed.bind(this, this._groupAggregates);
-    var stepFn = this._aggregate.bind(this, this._groupAggregates);
-    var finalizeFn = this._finalize.bind(this, this._groupAggregates);
+    const maxLevel = this._groupLevel;
+    let currentLevel = maxLevel + 1;
+    const seedFn = this._seed.bind(this, this._groupAggregates);
+    const stepFn = this._aggregate.bind(this, this._groupAggregates);
+    const finalizeFn = this._finalize.bind(this, this._groupAggregates);
     function aggregator(node) {
       node.aggregates = seedFn(currentLevel - 1);
       if (currentLevel === maxLevel) {
@@ -125,19 +125,19 @@ export default class AggregateCalculator {
   }
   _seed(aggregates, groupIndex) {
     return map(aggregates, aggregate => {
-      var {
+      const {
         aggregator
       } = aggregate;
-      var seed = 'seed' in aggregator ? isFunction(aggregator.seed) ? aggregator.seed(groupIndex) : aggregator.seed : NaN;
+      const seed = 'seed' in aggregator ? isFunction(aggregator.seed) ? aggregator.seed(groupIndex) : aggregator.seed : NaN;
       return seed;
     });
   }
   _accumulate(aggregateIndex, aggregate, results, item) {
-    var value = aggregate.selector(item);
-    var {
+    const value = aggregate.selector(item);
+    const {
       aggregator
     } = aggregate;
-    var {
+    const {
       skipEmptyValues
     } = aggregate;
     if (skipEmptyValues && isEmpty(value)) {
@@ -151,7 +151,7 @@ export default class AggregateCalculator {
   }
   _finalize(aggregates, results) {
     return map(aggregates, (aggregate, index) => {
-      var fin = aggregate.aggregator.finalize;
+      const fin = aggregate.aggregator.finalize;
       return fin ? fin(results[index]) : results[index];
     });
   }

@@ -8,38 +8,38 @@ import { normalizeStyleProp, setStyle, styleProp, stylePropPrefix } from '../../
 import { isDefined } from '../../core/utils/type';
 import { hasWindow } from '../../core/utils/window';
 import CollectionWidget from '../../ui/collection/ui.collection_widget.edit';
-import CollectionWidgetItem from '../../ui/collection/item';
-var BOX_CLASS = 'dx-box';
-var BOX_FLEX_CLASS = 'dx-box-flex';
-var BOX_ITEM_CLASS = 'dx-box-item';
-var BOX_ITEM_DATA_KEY = 'dxBoxItemData';
-var SHRINK = 1;
-var MINSIZE_MAP = {
+import CollectionWidgetItem from '../ui/collection/m_item';
+const BOX_CLASS = 'dx-box';
+const BOX_FLEX_CLASS = 'dx-box-flex';
+const BOX_ITEM_CLASS = 'dx-box-item';
+const BOX_ITEM_DATA_KEY = 'dxBoxItemData';
+const SHRINK = 1;
+const MINSIZE_MAP = {
   row: 'minWidth',
   col: 'minHeight'
 };
-var MAXSIZE_MAP = {
+const MAXSIZE_MAP = {
   row: 'maxWidth',
   col: 'maxHeight'
 };
-var FLEX_JUSTIFY_CONTENT_MAP = {
+const FLEX_JUSTIFY_CONTENT_MAP = {
   start: 'flex-start',
   end: 'flex-end',
   center: 'center',
   'space-between': 'space-between',
   'space-around': 'space-around'
 };
-var FLEX_ALIGN_ITEMS_MAP = {
+const FLEX_ALIGN_ITEMS_MAP = {
   start: 'flex-start',
   end: 'flex-end',
   center: 'center',
   stretch: 'stretch'
 };
-var FLEX_DIRECTION_MAP = {
+const FLEX_DIRECTION_MAP = {
   row: 'row',
   col: 'column'
 };
-var setFlexProp = (element, prop, value) => {
+const setFlexProp = (element, prop, value) => {
   // NOTE: workaround for jQuery version < 1.11.1 (T181692)
   value = normalizeStyleProp(prop, value);
   element.style[styleProp(prop)] = value;
@@ -48,8 +48,8 @@ var setFlexProp = (element, prop, value) => {
     if (value === '' || !isDefined(value)) {
       return;
     }
-    var cssName = dasherize(prop);
-    var styleExpr = "".concat(cssName, ": ").concat(value, ";");
+    const cssName = dasherize(prop);
+    const styleExpr = `${cssName}: ${value};`;
     setStyle(element, styleExpr, false);
   }
 };
@@ -74,7 +74,7 @@ class LayoutStrategy {
   }
   renderBox() {
     this._$element.css({
-      display: "".concat(stylePropPrefix('flexDirection'), "flex")
+      display: `${stylePropPrefix('flexDirection')}flex`
     });
     setFlexProp(this._$element.get(0), 'flexDirection', FLEX_DIRECTION_MAP[this._option('direction')]);
   }
@@ -84,7 +84,7 @@ class LayoutStrategy {
     });
   }
   _normalizedAlign() {
-    var align = this._option('align');
+    const align = this._option('align');
     return align in FLEX_JUSTIFY_CONTENT_MAP ? FLEX_JUSTIFY_CONTENT_MAP[align] : align;
   }
   renderCrossAlign() {
@@ -93,18 +93,18 @@ class LayoutStrategy {
     });
   }
   _normalizedCrossAlign() {
-    var crossAlign = this._option('crossAlign');
+    const crossAlign = this._option('crossAlign');
     return crossAlign in FLEX_ALIGN_ITEMS_MAP ? FLEX_ALIGN_ITEMS_MAP[crossAlign] : crossAlign;
   }
   renderItems($items) {
-    var flexPropPrefix = stylePropPrefix('flexDirection');
-    var direction = this._option('direction');
+    const flexPropPrefix = stylePropPrefix('flexDirection');
+    const direction = this._option('direction');
     each($items, function () {
-      var $item = $(this);
-      var item = $item.data(BOX_ITEM_DATA_KEY);
+      const $item = $(this);
+      const item = $item.data(BOX_ITEM_DATA_KEY);
       // @ts-expect-error
       $item.css({
-        display: "".concat(flexPropPrefix, "flex")
+        display: `${flexPropPrefix}flex`
       }).css(MAXSIZE_MAP[direction], item.maxSize || 'none').css(MINSIZE_MAP[direction], item.minSize || '0');
       setFlexProp($item.get(0), 'flexBasis', item.baseSize || 0);
       setFlexProp($item.get(0), 'flexGrow', item.ratio);
@@ -115,7 +115,7 @@ class LayoutStrategy {
         $(itemContent).css({
           width: 'auto',
           height: 'auto',
-          display: "".concat(stylePropPrefix('flexDirection'), "flex"),
+          display: `${stylePropPrefix('flexDirection')}flex`,
           flexBasis: 0
         });
         setFlexProp(itemContent, 'flexGrow', 1);
@@ -193,7 +193,7 @@ class Box extends CollectionWidget {
   _renderItems(items) {
     super._renderItems(items);
     while (this._queueIsNotEmpty()) {
-      var item = this._shiftItemFromQueue();
+      const item = this._shiftItemFromQueue();
       // @ts-expect-error
       this._createComponent(item.$item, Box, extend({
         // @ts-expect-error
@@ -214,7 +214,7 @@ class Box extends CollectionWidget {
     this._layout.renderItems(this._itemElements());
   }
   _renderItemContent(args) {
-    var $itemNode = args.itemData && args.itemData.node;
+    const $itemNode = args.itemData && args.itemData.node;
     if ($itemNode) {
       // @ts-expect-error
       return this._renderItemContentByNode(args, $itemNode);
@@ -222,7 +222,7 @@ class Box extends CollectionWidget {
     return super._renderItemContent(args);
   }
   _postprocessRenderItem(args) {
-    var boxConfig = args.itemData.box;
+    const boxConfig = args.itemData.box;
     if (!boxConfig) {
       return;
     }
@@ -264,7 +264,7 @@ class Box extends CollectionWidget {
     }
   }
   _itemOptions() {
-    var options = super._itemOptions();
+    const options = super._itemOptions();
     options.fireItemStateChangedAction = e => {
       // @ts-expect-error
       this._onItemStateChanged(e);

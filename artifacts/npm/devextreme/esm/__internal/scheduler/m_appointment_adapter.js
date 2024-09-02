@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/m_appointment_adapter.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,7 +12,7 @@ import errors from '../../ui/widget/ui.errors';
 import { ExpressionUtils } from './m_expression_utils';
 import { getRecurrenceProcessor } from './m_recurrence';
 // TODO Vinogradov refactoring: add types to this module.
-var PROPERTY_NAMES = {
+const PROPERTY_NAMES = {
   startDate: 'startDate',
   endDate: 'endDate',
   allDay: 'allDay',
@@ -35,14 +35,14 @@ class AppointmentAdapter {
     return this.endDate ? this.endDate - this.startDate : 0;
   }
   get startDate() {
-    var result = this.getField(PROPERTY_NAMES.startDate);
+    const result = this.getField(PROPERTY_NAMES.startDate);
     return result === undefined ? result : new Date(result);
   }
   set startDate(value) {
     this.setField(PROPERTY_NAMES.startDate, value);
   }
   get endDate() {
-    var result = this.getField(PROPERTY_NAMES.endDate);
+    const result = this.getField(PROPERTY_NAMES.endDate);
     return result === undefined ? result : new Date(result);
   }
   set endDate(value) {
@@ -116,19 +116,19 @@ class AppointmentAdapter {
     });
   }
   clone() {
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-    var result = new AppointmentAdapter(deepExtendArraySafe({}, this.rawAppointment), this.dataAccessors, this.timeZoneCalculator, options);
-    if (options === null || options === void 0 ? void 0 : options.pathTimeZone) {
+    let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+    const result = new AppointmentAdapter(deepExtendArraySafe({}, this.rawAppointment), this.dataAccessors, this.timeZoneCalculator, options);
+    if (options !== null && options !== void 0 && options.pathTimeZone) {
       result.startDate = result.calculateStartDate(options.pathTimeZone);
       result.endDate = result.calculateEndDate(options.pathTimeZone);
     }
     return result;
   }
   source() {
-    var serializeDate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+    let serializeDate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
     if (serializeDate) {
       // TODO: hack for use dateSerializationFormat
-      var clonedAdapter = this.clone();
+      const clonedAdapter = this.clone();
       clonedAdapter.startDate = this.startDate;
       clonedAdapter.endDate = this.endDate;
       return clonedAdapter.source();
@@ -137,4 +137,4 @@ class AppointmentAdapter {
   }
 }
 export default AppointmentAdapter;
-export var createAppointmentAdapter = (rawAppointment, dataAccessors, timeZoneCalculator, options) => new AppointmentAdapter(rawAppointment, dataAccessors, timeZoneCalculator, options);
+export const createAppointmentAdapter = (rawAppointment, dataAccessors, timeZoneCalculator, options) => new AppointmentAdapter(rawAppointment, dataAccessors, timeZoneCalculator, options);

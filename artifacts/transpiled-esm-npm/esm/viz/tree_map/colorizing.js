@@ -1,7 +1,7 @@
 import { normalizeEnum as _normalizeEnum } from '../core/utils';
 import { noop as _noop } from '../../core/utils/common';
-var colorizers = {};
-var defaultColorizerName;
+const colorizers = {};
+let defaultColorizerName;
 function wrapLeafColorGetter(getter) {
   return function (node) {
     return !node.isNode() ? getter(node) : undefined;
@@ -9,13 +9,13 @@ function wrapLeafColorGetter(getter) {
 }
 function wrapGroupColorGetter(getter) {
   return function (node) {
-    var parent = !node.isNode() && node.parent;
+    const parent = !node.isNode() && node.parent;
     return parent ? parent._groupColor = parent._groupColor || getter(parent) : undefined;
   };
 }
 export function getColorizer(options, themeManager, root) {
-  var type = _normalizeEnum(options.type || defaultColorizerName);
-  var colorizer = colorizers[type] && colorizers[type](options, themeManager, root);
+  const type = _normalizeEnum(options.type || defaultColorizerName);
+  const colorizer = colorizers[type] && colorizers[type](options, themeManager, root);
   return colorizer ? (options.colorizeGroups ? wrapGroupColorGetter : wrapLeafColorGetter)(colorizer) : _noop;
 }
 export function addColorizer(name, colorizer) {

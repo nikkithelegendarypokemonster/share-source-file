@@ -10,29 +10,29 @@ import { value as viewPortValue, changeCallback, originalViewPort } from '../cor
 import { getWindow, hasWindow } from '../core/utils/window';
 import { themeReadyCallback } from './themes_callback';
 import errors from './widget/ui.errors';
-var window = getWindow();
-var ready = readyCallbacks.add;
-var viewPort = viewPortValue;
-var viewPortChanged = changeCallback;
-var initDeferred = new Deferred();
-var DX_LINK_SELECTOR = 'link[rel=dx-theme]';
-var THEME_ATTR = 'data-theme';
-var ACTIVE_ATTR = 'data-active';
-var DX_HAIRLINES_CLASS = 'dx-hairlines';
-var ANY_THEME = 'any';
-var context;
-var $activeThemeLink;
-var knownThemes;
-var currentThemeName;
-var pendingThemeName;
-var defaultTimeout = 15000;
-var THEME_MARKER_PREFIX = 'dx.';
+const window = getWindow();
+const ready = readyCallbacks.add;
+const viewPort = viewPortValue;
+const viewPortChanged = changeCallback;
+let initDeferred = new Deferred();
+const DX_LINK_SELECTOR = 'link[rel=dx-theme]';
+const THEME_ATTR = 'data-theme';
+const ACTIVE_ATTR = 'data-active';
+const DX_HAIRLINES_CLASS = 'dx-hairlines';
+const ANY_THEME = 'any';
+let context;
+let $activeThemeLink;
+let knownThemes;
+let currentThemeName;
+let pendingThemeName;
+let defaultTimeout = 15000;
+const THEME_MARKER_PREFIX = 'dx.';
 function readThemeMarker() {
   if (!hasWindow()) {
     return null;
   }
-  var element = $('<div>', context).addClass('dx-theme-marker').appendTo(context.documentElement);
-  var result;
+  const element = $('<div>', context).addClass('dx-theme-marker').appendTo(context.documentElement);
+  let result;
   try {
     result = window.getComputedStyle(element.get(0))['fontFamily'];
     if (!result) {
@@ -52,9 +52,9 @@ function readThemeMarker() {
 // http://stackoverflow.com/q/2635814
 // http://stackoverflow.com/a/3078636
 export function waitForThemeLoad(themeName) {
-  var waitStartTime;
-  var timerId;
-  var intervalCleared = true;
+  let waitStartTime;
+  let timerId;
+  let intervalCleared = true;
   pendingThemeName = themeName;
   function handleLoaded() {
     pendingThemeName = null;
@@ -76,8 +76,8 @@ export function waitForThemeLoad(themeName) {
     waitStartTime = Date.now();
     intervalCleared = false;
     timerId = setInterval(function () {
-      var isLoaded = isPendingThemeLoaded();
-      var isTimeout = !isLoaded && Date.now() - waitStartTime > defaultTimeout;
+      const isLoaded = isPendingThemeLoaded();
+      const isTimeout = !isLoaded && Date.now() - waitStartTime > defaultTimeout;
       if (isTimeout) {
         errors.log('W0004', pendingThemeName);
       }
@@ -91,28 +91,28 @@ export function isPendingThemeLoaded() {
   if (!pendingThemeName) {
     return true;
   }
-  var anyThemePending = pendingThemeName === ANY_THEME;
+  const anyThemePending = pendingThemeName === ANY_THEME;
   if (initDeferred.state() === 'resolved' && anyThemePending) {
     return true;
   }
-  var themeMarker = readThemeMarker();
+  const themeMarker = readThemeMarker();
   if (themeMarker && anyThemePending) {
     return true;
   }
   return themeMarker === pendingThemeName;
 }
 function processMarkup() {
-  var $allThemeLinks = $(DX_LINK_SELECTOR, context);
+  const $allThemeLinks = $(DX_LINK_SELECTOR, context);
   if (!$allThemeLinks.length) {
     return;
   }
   knownThemes = {};
   $activeThemeLink = $(parseHTML('<link rel=stylesheet>'), context);
   $allThemeLinks.each(function () {
-    var link = $(this, context);
-    var fullThemeName = link.attr(THEME_ATTR);
-    var url = link.attr('href');
-    var isActive = link.attr(ACTIVE_ATTR) === 'true';
+    const link = $(this, context);
+    const fullThemeName = link.attr(THEME_ATTR);
+    const url = link.attr('href');
+    const isActive = link.attr(ACTIVE_ATTR) === 'true';
     knownThemes[fullThemeName] = {
       url: url,
       isActive: isActive
@@ -122,14 +122,14 @@ function processMarkup() {
   $allThemeLinks.remove();
 }
 function resolveFullThemeName(desiredThemeName) {
-  var desiredThemeParts = desiredThemeName ? desiredThemeName.split('.') : [];
-  var result = null;
+  const desiredThemeParts = desiredThemeName ? desiredThemeName.split('.') : [];
+  let result = null;
   if (knownThemes) {
     if (desiredThemeName in knownThemes) {
       return desiredThemeName;
     }
     each(knownThemes, function (knownThemeName, themeData) {
-      var knownThemeParts = knownThemeName.split('.');
+      const knownThemeParts = knownThemeName.split('.');
       if (desiredThemeParts[0] && knownThemeParts[0] !== desiredThemeParts[0]) {
         return;
       }
@@ -180,9 +180,9 @@ export function current(options) {
       theme: options
     };
   }
-  var isAutoInit = options._autoInit;
-  var loadCallback = options.loadCallback;
-  var currentThemeData;
+  const isAutoInit = options._autoInit;
+  const loadCallback = options.loadCallback;
+  let currentThemeData;
   currentThemeName = resolveFullThemeName(options.theme || currentThemeName);
   if (currentThemeName) {
     currentThemeData = knownThemes[currentThemeName];
@@ -210,8 +210,8 @@ export function current(options) {
 }
 function getCssClasses(themeName) {
   themeName = themeName || current();
-  var result = [];
-  var themeNameParts = themeName && themeName.split('.');
+  const result = [];
+  const themeNameParts = themeName && themeName.split('.');
   if (themeNameParts) {
     result.push('dx-theme-' + themeNameParts[0], 'dx-theme-' + themeNameParts[0] + '-typography');
     if (themeNameParts.length > 1) {
@@ -220,16 +220,16 @@ function getCssClasses(themeName) {
   }
   return result;
 }
-var themeClasses;
+let themeClasses;
 export function attachCssClasses(element, themeName) {
   themeClasses = getCssClasses(themeName).join(' ');
   $(element).addClass(themeClasses);
-  var activateHairlines = function activateHairlines() {
-    var pixelRatio = hasWindow() && window.devicePixelRatio;
+  const activateHairlines = function () {
+    const pixelRatio = hasWindow() && window.devicePixelRatio;
     if (!pixelRatio || pixelRatio < 2) {
       return;
     }
-    var $tester = $('<div>');
+    const $tester = $('<div>');
     $tester.css('border', '.5px solid transparent');
     $('body').append($tester);
     if (getOuterHeight($tester) === 1) {
@@ -271,10 +271,10 @@ export function isCompact(themeName) {
   return isTheme('compact', themeName);
 }
 export function isWebFontLoaded(text, fontWeight) {
-  var testedFont = 'Roboto, RobotoFallback, Arial';
-  var etalonFont = 'Arial';
-  var document = domAdapter.getDocument();
-  var testElement = document.createElement('span');
+  const testedFont = 'Roboto, RobotoFallback, Arial';
+  const etalonFont = 'Arial';
+  const document = domAdapter.getDocument();
+  const testElement = document.createElement('span');
   testElement.style.position = 'absolute';
   testElement.style.top = '-9999px';
   testElement.style.left = '-9999px';
@@ -284,28 +284,28 @@ export function isWebFontLoaded(text, fontWeight) {
   testElement.style.fontWeight = fontWeight;
   testElement.innerHTML = text;
   document.body.appendChild(testElement);
-  var etalonFontWidth = testElement.offsetWidth;
+  const etalonFontWidth = testElement.offsetWidth;
   testElement.style.fontFamily = testedFont;
-  var testedFontWidth = testElement.offsetWidth;
+  const testedFontWidth = testElement.offsetWidth;
   testElement.parentNode.removeChild(testElement);
   return etalonFontWidth !== testedFontWidth;
 }
 export function waitWebFont(text, fontWeight) {
-  var interval = 15;
-  var timeout = 2000;
+  const interval = 15;
+  const timeout = 2000;
   return new Promise(resolve => {
-    var check = () => {
+    const check = () => {
       if (isWebFontLoaded(text, fontWeight)) {
         clear();
       }
     };
-    var clear = () => {
+    const clear = () => {
       clearInterval(intervalId);
       clearTimeout(timeoutId);
       resolve();
     };
-    var intervalId = setInterval(check, interval);
-    var timeoutId = setTimeout(clear, timeout);
+    const intervalId = setInterval(check, interval);
+    const timeoutId = setTimeout(clear, timeout);
   });
 }
 function autoInit() {

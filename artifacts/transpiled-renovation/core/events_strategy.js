@@ -5,33 +5,32 @@ var _callbacks = _interopRequireDefault(require("./utils/callbacks"));
 var _iterator = require("./utils/iterator");
 var _type = require("./utils/type");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-let EventsStrategy = exports.EventsStrategy = /*#__PURE__*/function () {
-  function EventsStrategy(owner) {
+class EventsStrategy {
+  constructor(owner) {
     let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     this._events = {};
     this._owner = owner;
     this._options = options;
   }
-  EventsStrategy.create = function create(owner, strategy) {
+  static create(owner, strategy) {
     if (strategy) {
       return (0, _type.isFunction)(strategy) ? strategy(owner) : strategy;
     } else {
       return new EventsStrategy(owner);
     }
-  };
-  var _proto = EventsStrategy.prototype;
-  _proto.hasEvent = function hasEvent(eventName) {
+  }
+  hasEvent(eventName) {
     const callbacks = this._events[eventName];
     return callbacks ? callbacks.has() : false;
-  };
-  _proto.fireEvent = function fireEvent(eventName, eventArgs) {
+  }
+  fireEvent(eventName, eventArgs) {
     const callbacks = this._events[eventName];
     if (callbacks) {
       callbacks.fireWith(this._owner, eventArgs);
     }
     return this._owner;
-  };
-  _proto.on = function on(eventName, eventHandler) {
+  }
+  on(eventName, eventHandler) {
     if ((0, _type.isPlainObject)(eventName)) {
       (0, _iterator.each)(eventName, (e, h) => {
         this.on(e, h);
@@ -47,8 +46,8 @@ let EventsStrategy = exports.EventsStrategy = /*#__PURE__*/function () {
       const addFn = callbacks.originalAdd || callbacks.add;
       addFn.call(callbacks, eventHandler);
     }
-  };
-  _proto.off = function off(eventName, eventHandler) {
+  }
+  off(eventName, eventHandler) {
     const callbacks = this._events[eventName];
     if (callbacks) {
       if ((0, _type.isFunction)(eventHandler)) {
@@ -57,11 +56,11 @@ let EventsStrategy = exports.EventsStrategy = /*#__PURE__*/function () {
         callbacks.empty();
       }
     }
-  };
-  _proto.dispose = function dispose() {
+  }
+  dispose() {
     (0, _iterator.each)(this._events, (eventName, event) => {
       event.empty();
     });
-  };
-  return EventsStrategy;
-}();
+  }
+}
+exports.EventsStrategy = EventsStrategy;

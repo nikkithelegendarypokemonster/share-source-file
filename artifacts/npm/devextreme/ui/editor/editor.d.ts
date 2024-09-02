@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/editor/editor.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22,93 +22,127 @@ import {
 } from '../../common';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @hidden
  */
 export interface ValueChangedInfo {
     /**
-     * 
+     * @docid
+     * @type object
      */
     readonly previousValue?: any;
     /**
-     * 
+     * @docid
+     * @type object
      */
     readonly value?: any;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
+ * @docid
+ * @hidden
  */
 export interface EditorOptions<TComponent> extends WidgetOptions<TComponent> {
     /**
-     * Specifies or indicates whether the editor&apos;s value is valid.
+     * @docid
+     * @default true
+     * @public
      */
     isValid?: boolean;
     /**
-     * A function that is executed after the UI component&apos;s value is changed.
+     * @docid
+     * @default null
+     * @type_function_param1 e:object
+     * @type_function_param1_field value:object
+     * @type_function_param1_field previousValue:object
+     * @type_function_param1_field event:event
+     * @type_function_param1_field component:this
+     * @action
+     * @public
      */
     onValueChanged?: ((e: NativeEventInfo<TComponent, Event> & ValueChangedInfo) => void);
     /**
-     * Specifies whether the editor is read-only.
+     * @docid
+     * @default false
+     * @public
      */
     readOnly?: boolean;
     /**
-     * Information on the broken validation rule. Contains the first item from the validationErrors array.
+     * @docid
+     * @ref
+     * @default null
+     * @public
      */
     validationError?: any;
     /**
-     * An array of the validation rules that failed.
+     * @docid
+     * @default null
+     * @public
      */
     validationErrors?: Array<any>;
     /**
-     * Specifies how the message about the validation rules that are not satisfied by this editor&apos;s value is displayed.
+     * @docid
+     * @default "auto"
+     * @public
      */
     validationMessageMode?: ValidationMessageMode;
     /**
-     * Specifies the position of a validation message relative to the component. The validation message describes the validation rules that this component&apos;s value does not satisfy.
+     * @docid
+     * @default "bottom"
+     * @public
      */
     validationMessagePosition?: Position;
     /**
-     * Indicates or specifies the current validation status.
+     * @docid
+     * @default "valid"
+     * @public
      */
     validationStatus?: ValidationStatus;
     /**
-     * Specifies the UI component&apos;s value.
+     * @docid
+     * @default null
+     * @fires EditorOptions.onValueChanged
+     * @public
      */
     value?: any;
     /**
-     * 
+     * @docid
+     * @default 'outlined'
+     * @hidden
      */
     stylingMode?: EditorStyle;
 
      /**
-     * Specifies whether the component&apos;s current value differs from the initial value.
+     * @docid
+     * @default false
+     * @public
      */
     readonly isDirty?: boolean;
 }
 /**
- * A base class for editors.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @inherits Widget
+ * @hidden
+ * @namespace DevExpress.ui
  */
 export default class Editor<TProperties = Properties> extends Widget<TProperties> {
     /**
-     * Resets the value property to the default value.
+     * @docid
+     * @publicName clear()
+     * @public
      */
     clear(): void;
 
     /**
-     * Resets the value property to the value passed as an argument.
+     * @docid
+     * @type_function_param1 value:any
+     * @publicName reset(value)
+     * @public
      */
     reset(value?: any): void;
 }
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 interface EditorInstance extends Editor<Properties> { }
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 type Properties = EditorOptions<EditorInstance>;

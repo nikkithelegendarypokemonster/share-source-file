@@ -1,13 +1,13 @@
 /**
 * DevExtreme (esm/renovation/ui/editors/common/text_editor_props.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { isMaterial, current } from '../../../../ui/themes';
-export var TextEditorProps = {
+export const TextEditorProps = {
   maxLength: null,
   spellCheck: false,
   valueChangeEvent: 'change',

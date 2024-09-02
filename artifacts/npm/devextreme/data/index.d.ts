@@ -1,7 +1,7 @@
 /**
 * DevExtreme (data/index.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,31 +11,31 @@ import ArrayStore, { Options as ArrayStoreOptions } from './array_store';
 import LocalStore, { Options as LocalStoreOptions } from './local_store';
 import ODataStore, { Options as ODataStoreOptions } from './odata/store';
 
+/**
+ * @public
+ */
 export type SearchOperation = '=' | '<>' | '>' | '>=' | '<' | '<=' | 'startswith' | 'endswith' | 'contains' | 'notcontains';
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 type KeySelector<T> = string | ((source: T) => string | number | Date | Object);
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 type SelectionDescriptor<T> = {
     selector: KeySelector<T>;
 };
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 type OrderingDescriptor<T> = SelectionDescriptor<T> & {
     desc?: boolean;
 };
 
+/**
+ * @public
+ */
 export type GroupingInterval = 'year' | 'quarter' | 'month' | 'day' | 'dayOfWeek' | 'hour' | 'minute' | 'second';
 
 /**
- * 
+ * @docid
+ * @public
+ * @type object
+ * @skip
  */
 export type GroupDescriptor<T> = KeySelector<T> | (OrderingDescriptor<T> & {
     groupInterval?: number | GroupingInterval;
@@ -43,126 +43,177 @@ export type GroupDescriptor<T> = KeySelector<T> | (OrderingDescriptor<T> & {
 });
 
 /**
- * 
+ * @docid
+ * @public
+ * @type object
+ * @skip
  */
 export type SortDescriptor<T> = KeySelector<T> | OrderingDescriptor<T>;
 
 /**
- * 
+ * @docid
+ * @public
+ * @type object
+ * @skip
  */
 export type SelectDescriptor<T> = string | Array<string> | ((source: T) => any);
 /**
- * 
+ * @docid
+ * @public
  */
 export type FilterDescriptor = any;
 /**
- * Specifies parameters for language-specific sorting and filtering.
+ * @docid
+ * @public
  */
 export type LangParams = {
   /**
-   * Specifies the locale whose features affect sorting and filtering.
+   * @docid
+   * @public
    */
   locale: string;
   /**
-   * Specifies Intl.Collator options.
+   * @docid
+   * @public
+   * @type object
    */
   collatorOptions?: Intl.CollatorOptions;
 };
  /**
- * A total summary expression for `loadOptions`.
+ * @docid
+ * @public
+ * @type object
  */
 export type SummaryDescriptor<T> = KeySelector<T> | SelectionDescriptor<T> & {
     summaryType?: 'sum' | 'avg' | 'min' | 'max' | 'count';
 };
 
 /**
- * This section describes the loadOptions object&apos;s fields.
+ * @public
+ * @docid
+ * @namespace DevExpress.data
+ * @type object
  */
 export interface LoadOptions<T = any> {
     /**
-     * An object for storing additional settings that should be sent to the server. Relevant to the ODataStore only.
+     * @docid
+     * @public
      */
     customQueryParams?: any;
     /**
-     * Specifies the start date of the date navigator range. Relevant to the Scheduler only.
+     * @docid
+     * @public
      */
     startDate?: Date;
     /**
-     * Specifies the end date of the date navigator range. Relevant to the Scheduler only.
+     * @docid
+     * @public
      */
     endDate?: Date;
     /**
-     * An array of strings that represent the names of navigation properties to be loaded simultaneously with the ODataStore.
+     * @docid
+     * @public
      */
     expand?: Array<string>;
     /**
-     * A filter expression.
+     * @docid
+     * @public
+     * @type object
      */
     filter?: FilterDescriptor | Array<FilterDescriptor>;
     /**
-     * A group expression.
+     * @docid
+     * @public
+     * @type object
      */
     group?: GroupDescriptor<T> | Array<GroupDescriptor<T>>;
     /**
-     * A group summary expression. Used with the group setting.
+     * @docid
+     * @public
+     * @type SummaryDescriptor | Array<SummaryDescriptor>
      */
     groupSummary?: SummaryDescriptor<T> | Array<SummaryDescriptor<T>>;
     /**
-     * The IDs of the rows being expanded. Relevant only when the CustomStore is used in the TreeList UI component.
+     * @docid
+     * @public
      */
     parentIds?: Array<any>;
     /**
-     * Indicates whether a top-level group count is required. Used in conjunction with the filter, take, skip, requireTotalCount, and group settings.
+     * @docid
+     * @public
      */
     requireGroupCount?: boolean;
     /**
-     * Indicates whether the total count of data objects is needed.
+     * @docid
+     * @public
      */
     requireTotalCount?: boolean;
     /**
-     * A data field or expression whose value is compared to the search value.
+     * @docid
+     * @type getter|Array<getter>
+     * @public
      */
     searchExpr?: string | Function | Array<string | Function>;
     /**
-     * A comparison operation.
+     * @docid
+     * @public
      */
     searchOperation?: SearchOperation;
     /**
-     * The current search value.
+     * @docid
+     * @public
      */
     searchValue?: any;
     /**
-     * A select expression.
+     * @docid
+     * @public
+     * @type object
      */
     select?: SelectDescriptor<T>;
     /**
-     * The number of data objects to be skipped from the result set&apos;s start. In conjunction with take, used to implement paging.
+     * @docid
+     * @public
      */
     skip?: number;
     /**
-     * A sort expression.
+     * @docid
+     * @public
+     * @type object
      */
     sort?: SortDescriptor<T> | Array<SortDescriptor<T>>;
     /**
-     * The number of data objects to be loaded. In conjunction with skip, used to implement paging.
+     * @docid
+     * @public
      */
     take?: number;
     /**
-     * A total summary expression.
+     * @docid
+     * @public
+     * @type SummaryDescriptor | Array<SummaryDescriptor>
      */
     totalSummary?: SummaryDescriptor<T> | Array<SummaryDescriptor<T>>;
     /**
-     * An object for storing additional settings that should be sent to the server.
+     * @docid
+     * @public
      */
     userData?: any;
 }
 
+/**
+ * @public
+ * @namespace DevExpress.data.utils
+ */
 export type Store<TItem = any, TKey = any> =
     CustomStore<TItem, TKey> |
     ArrayStore<TItem, TKey> |
     LocalStore<TItem, TKey> |
     ODataStore<TItem, TKey>;
 
+/**
+ * @public
+ * @namespace DevExpress.data.utils
+ * @type object
+ */
 export type StoreOptions<TItem = any, TKey = any> =
     CustomStoreOptions<TItem, TKey> |
     ArrayStoreOptions<TItem, TKey> & { type: 'array' } |

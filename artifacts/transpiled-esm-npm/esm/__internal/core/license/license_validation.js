@@ -1,51 +1,49 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
-var __rest = this && this.__rest || function (s, e) {
-  var t = {};
-  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
+import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
+const _excluded = ["customerId", "maxVersionAllowed", "format", "internalUsageId"];
+import config from '../../../core/config';
 import errors from '../../../core/errors';
-import { version as packageVersion } from '../../../core/version';
+import { fullVersion } from '../../../core/version';
+import { assertedVersionsCompatible, getPreviousMajorVersion, parseVersion } from '../../utils/version';
 import { base64ToBytes } from './byte_utils';
 import { INTERNAL_USAGE_ID, PUBLIC_KEY } from './key';
 import { pad } from './pkcs1';
 import { compareSignatures } from './rsa_bigint';
 import { sha1 } from './sha1';
+import { showTrialPanel } from './trial_panel';
 import { TokenKind } from './types';
-var SPLITTER = '.';
-var FORMAT = 1;
-var RTM_MIN_PATCH_VERSION = 3;
-var GENERAL_ERROR = {
+const FORMAT = 1;
+const RTM_MIN_PATCH_VERSION = 3;
+const KEY_SPLITTER = '.';
+const BUY_NOW_LINK = 'https://go.devexpress.com/Licensing_Installer_Watermark_DevExtremeJQuery.aspx';
+const GENERAL_ERROR = {
   kind: TokenKind.corrupted,
   error: 'general'
 };
-var VERIFICATION_ERROR = {
+const VERIFICATION_ERROR = {
   kind: TokenKind.corrupted,
   error: 'verification'
 };
-var DECODING_ERROR = {
+const DECODING_ERROR = {
   kind: TokenKind.corrupted,
   error: 'decoding'
 };
-var DESERIALIZATION_ERROR = {
+const DESERIALIZATION_ERROR = {
   kind: TokenKind.corrupted,
   error: 'deserialization'
 };
-var PAYLOAD_ERROR = {
+const PAYLOAD_ERROR = {
   kind: TokenKind.corrupted,
   error: 'payload'
 };
-var VERSION_ERROR = {
+const VERSION_ERROR = {
   kind: TokenKind.corrupted,
   error: 'version'
 };
-var validationPerformed = false;
+let validationPerformed = false;
 // verifies RSASSA-PKCS1-v1.5 signature
 function verifySignature(_ref) {
-  var {
+  let {
     text,
     signature: encodedSignature
   } = _ref;
@@ -59,7 +57,7 @@ export function parseLicenseKey(encodedKey) {
   if (encodedKey === undefined) {
     return GENERAL_ERROR;
   }
-  var parts = encodedKey.split(SPLITTER);
+  const parts = encodedKey.split(KEY_SPLITTER);
   if (parts.length !== 2 || parts[0].length === 0 || parts[1].length === 0) {
     return GENERAL_ERROR;
   }
@@ -69,25 +67,25 @@ export function parseLicenseKey(encodedKey) {
   })) {
     return VERIFICATION_ERROR;
   }
-  var decodedPayload = '';
+  let decodedPayload = '';
   try {
     decodedPayload = atob(parts[0]);
-  } catch (_a) {
+  } catch {
     return DECODING_ERROR;
   }
-  var payload = {};
+  let payload = {};
   try {
     payload = JSON.parse(decodedPayload);
-  } catch (_b) {
+  } catch {
     return DESERIALIZATION_ERROR;
   }
-  var {
+  const {
       customerId,
       maxVersionAllowed,
       format,
       internalUsageId
     } = payload,
-    rest = __rest(payload, ["customerId", "maxVersionAllowed", "format", "internalUsageId"]);
+    rest = _objectWithoutPropertiesLoose(payload, _excluded);
   if (internalUsageId !== undefined) {
     return {
       kind: TokenKind.internal,
@@ -108,22 +106,28 @@ export function parseLicenseKey(encodedKey) {
     }, rest)
   };
 }
+function isPreview(patch) {
+  return isNaN(patch) || patch < RTM_MIN_PATCH_VERSION;
+}
 function getLicenseCheckParams(_ref2) {
-  var {
+  let {
     licenseKey,
     version
   } = _ref2;
-  var preview = false;
+  let preview = false;
   try {
-    var [major, minor, patch] = version.split('.').map(Number);
-    preview = isNaN(patch) || patch < RTM_MIN_PATCH_VERSION;
+    preview = isPreview(version.patch);
+    const {
+      major,
+      minor
+    } = preview ? getPreviousMajorVersion(version) : version;
     if (!licenseKey) {
       return {
         preview,
         error: 'W0019'
       };
     }
-    var license = parseLicenseKey(licenseKey);
+    const license = parseLicenseKey(licenseKey);
     if (license.kind === TokenKind.corrupted) {
       return {
         preview,
@@ -153,7 +157,7 @@ function getLicenseCheckParams(_ref2) {
       preview,
       error: undefined
     };
-  } catch (_a) {
+  } catch {
     return {
       preview,
       error: 'W0021'
@@ -161,19 +165,27 @@ function getLicenseCheckParams(_ref2) {
   }
 }
 export function validateLicense(licenseKey) {
-  var version = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : packageVersion;
+  let versionStr = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : fullVersion;
   if (validationPerformed) {
     return;
   }
   validationPerformed = true;
-  var {
-    preview,
+  const version = parseVersion(versionStr);
+  const versionsCompatible = assertedVersionsCompatible(version);
+  const {
     internal,
     error
   } = getLicenseCheckParams({
     licenseKey,
     version
   });
+  if (!versionsCompatible && internal) {
+    return;
+  }
+  if (error && !internal) {
+    showTrialPanel(config().buyNowLink ?? BUY_NOW_LINK, fullVersion);
+  }
+  const preview = isPreview(version.patch);
   if (error) {
     errors.log(preview ? 'W0022' : error);
     return;
@@ -186,7 +198,7 @@ export function peekValidationPerformed() {
   return validationPerformed;
 }
 export function setLicenseCheckSkipCondition() {
-  var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+  let value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 }
 // NOTE: We need this default export
 // to allow QUnit mock the validateLicense function

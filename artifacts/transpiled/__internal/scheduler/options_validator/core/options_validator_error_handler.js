@@ -4,13 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.OptionsValidatorErrorHandler = void 0;
-let OptionsValidatorErrorHandler = exports.OptionsValidatorErrorHandler = /*#__PURE__*/function () {
-  function OptionsValidatorErrorHandler(validatorNameToErrorCodeMap, globalErrorHandler) {
+class OptionsValidatorErrorHandler {
+  constructor(validatorNameToErrorCodeMap, globalErrorHandler) {
     this.validatorNameToErrorCodeMap = validatorNameToErrorCodeMap;
     this.globalErrorHandler = globalErrorHandler;
   }
-  var _proto = OptionsValidatorErrorHandler.prototype;
-  _proto.handleValidationResult = function handleValidationResult(optionsValidatorResult) {
+  handleValidationResult(optionsValidatorResult) {
     if (optionsValidatorResult === true) {
       return;
     }
@@ -33,6 +32,6 @@ let OptionsValidatorErrorHandler = exports.OptionsValidatorErrorHandler = /*#__P
         this.globalErrorHandler.throwError(errorCode);
       }
     });
-  };
-  return OptionsValidatorErrorHandler;
-}();
+  }
+}
+exports.OptionsValidatorErrorHandler = OptionsValidatorErrorHandler;

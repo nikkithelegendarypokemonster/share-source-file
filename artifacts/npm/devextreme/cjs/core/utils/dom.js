@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/utils/dom.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -32,7 +32,7 @@ const resetActiveElement = () => {
   const activeElement = _dom_adapter.default.getActiveElement();
   if (activeElement && activeElement !== _dom_adapter.default.getBody()) {
     var _activeElement$blur;
-    (_activeElement$blur = activeElement.blur) === null || _activeElement$blur === void 0 ? void 0 : _activeElement$blur.call(activeElement);
+    (_activeElement$blur = activeElement.blur) === null || _activeElement$blur === void 0 || _activeElement$blur.call(activeElement);
   }
 };
 exports.resetActiveElement = resetActiveElement;

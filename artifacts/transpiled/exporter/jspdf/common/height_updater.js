@@ -10,8 +10,7 @@ function updateRowsAndCellsHeights(doc, rows) {
   });
   rows.forEach(row => {
     row.cells.forEach(cell => {
-      var _cell$rowSpan;
-      const rowsCount = ((_cell$rowSpan = cell.rowSpan) !== null && _cell$rowSpan !== void 0 ? _cell$rowSpan : 0) + 1;
+      const rowsCount = (cell.rowSpan ?? 0) + 1;
       cell.pdfCell._rect.h = rows.slice(row.rowIndex, row.rowIndex + rowsCount).reduce((accumulator, rowInfo) => accumulator + rowInfo.height, 0);
     });
   });
@@ -44,10 +43,7 @@ function calculateAdditionalRowsHeights(doc, rows) {
 }
 function sortRowsByMaxRowSpanAsc(rows) {
   const getMaxRowSpan = row => {
-    const spansArray = row.cells.map(cell => {
-      var _cell$rowSpan2;
-      return (_cell$rowSpan2 = cell.rowSpan) !== null && _cell$rowSpan2 !== void 0 ? _cell$rowSpan2 : 0;
-    });
+    const spansArray = row.cells.map(cell => cell.rowSpan ?? 0);
     return Math.max(...spansArray);
   };
   const sortByMaxRowSpan = (row1, row2) => {

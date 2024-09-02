@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/speed_dial_action.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22,82 +22,108 @@ import Widget, {
 } from './widget/ui.widget';
 
 /**
- * The type of the click event handler&apos;s argument.
+ * @docid _ui_speed_dial_action_ClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ClickEvent = NativeEventInfo<dxSpeedDialAction, MouseEvent | PointerEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_speed_dial_action_ClickEvent.actionElement */
     actionElement?: DxElement;
 };
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_speed_dial_action_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxSpeedDialAction> & {
-    /**
-     * 
-     */
+    /** @docid _ui_speed_dial_action_ContentReadyEvent.actionElement */
     actionElement?: DxElement;
 };
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_speed_dial_action_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxSpeedDialAction>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_speed_dial_action_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxSpeedDialAction>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_speed_dial_action_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxSpeedDialAction> & ChangedOptionInfo;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxSpeedDialActionOptions extends WidgetOptions<dxSpeedDialAction> {
     /**
-     * Specifies the icon the FAB or speed dial action button displays.
+     * @docid
+     * @default ""
+     * @public
      */
     icon?: string;
     /**
-     * Allows you to reorder action buttons in the speed dial menu.
+     * @docid
+     * @default 0
+     * @public
      */
     index?: number;
     /**
-     * Specifies the text label displayed inside the FAB or near the speed dial action button.
+     * @docid
+     * @default ""
+     * @public
      */
     label?: string;
     /**
-     * A function that is executed when the FAB or speed dial action button is clicked or tapped.
+     * @docid
+     * @type_function_param1 e:{ui/speed_dial_action:ClickEvent}
+     * @action
+     * @public
      */
     onClick?: ((e: ClickEvent) => void);
     /**
-     * A function that is executed when the UI component is rendered and each time the component is repainted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/speed_dial_action:ContentReadyEvent}
+     * @action
+     * @public
      */
     onContentReady?: ((e: ContentReadyEvent) => void);
     /**
-     * Allows you to hide the FAB from the view or the action from the speed dial menu.
+     * @docid
+     * @public
      */
     visible?: boolean;
 }
 /**
- * The SpeedDialAction is a button that performs a custom action. It can be represented by a Floating Action Button (FAB) or a button in a speed dial menu opened with the FAB.
+ * @docid
+ * @inherits Widget
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxSpeedDialAction extends Widget<dxSpeedDialActionOptions> { }
 
+/** @public */
 export type Properties = dxSpeedDialActionOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxSpeedDialActionOptions;
 
 

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/diagram/ui.diagram.floating_panel.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,7 +12,7 @@ import { extend } from '../../core/utils/extend';
 import { hasWindow } from '../../core/utils/window';
 import Popup from '../popup/ui.popup';
 import DiagramPanel from './ui.diagram.panel';
-var DIAGRAM_MOBILE_POPUP_CLASS = 'dx-diagram-mobile-popup';
+const DIAGRAM_MOBILE_POPUP_CLASS = 'dx-diagram-mobile-popup';
 class DiagramFloatingPanel extends DiagramPanel {
   _init() {
     super._init();
@@ -27,8 +27,8 @@ class DiagramFloatingPanel extends DiagramPanel {
   }
   _initMarkup() {
     super._initMarkup();
-    var $parent = this.$element();
-    var $popupElement = $('<div>').addClass(this._getPopupClass()).addClass(this.isMobileView() && DIAGRAM_MOBILE_POPUP_CLASS).appendTo($parent);
+    const $parent = this.$element();
+    const $popupElement = $('<div>').addClass(this._getPopupClass()).addClass(this.isMobileView() && DIAGRAM_MOBILE_POPUP_CLASS).appendTo($parent);
     this._popup = this._createComponent($popupElement, Popup, this._getPopupOptions());
     this._updatePopupVisible();
   }
@@ -48,18 +48,18 @@ class DiagramFloatingPanel extends DiagramPanel {
     return this._popup.content();
   }
   _getPopupTitle() {
-    var $content = $(this._getPopupContent());
+    const $content = $(this._getPopupContent());
     return $content.parent().find('.dx-popup-title');
   }
   _getPointerUpElements() {
     return [this._getPopupContent(), this._getPopupTitle()];
   }
   _getVerticalPaddingsAndBorders() {
-    var $content = $(this._getPopupContent());
+    const $content = $(this._getPopupContent());
     return getOuterHeight($content) - getHeight($content);
   }
   _getHorizontalPaddingsAndBorders() {
-    var $content = $(this._getPopupContent());
+    const $content = $(this._getPopupContent());
     return getOuterWidth($content) - getWidth($content);
   }
   _getPopupClass() {
@@ -111,10 +111,10 @@ class DiagramFloatingPanel extends DiagramPanel {
     };
   }
   _getPopupOptions() {
-    var that = this;
-    var wrapperClass = this._getPopupClass();
+    const that = this;
+    let wrapperClass = this._getPopupClass();
     if (this.isMobileView()) {
-      wrapperClass += " ".concat(DIAGRAM_MOBILE_POPUP_CLASS);
+      wrapperClass += ` ${DIAGRAM_MOBILE_POPUP_CLASS}`;
     }
     return {
       animation: hasWindow() ? this._getPopupAnimation() : null,
@@ -133,7 +133,7 @@ class DiagramFloatingPanel extends DiagramPanel {
       wrapperAttr: {
         class: wrapperClass
       },
-      onContentReady: function onContentReady() {
+      onContentReady: function () {
         that._renderPopupContent(that._popup.content());
       },
       onShowing: () => {

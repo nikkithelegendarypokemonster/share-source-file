@@ -5,20 +5,14 @@ var _extend = require("../../core/utils/extend");
 var _component = require("../../core/component");
 var _data_helper = _interopRequireDefault(require("../../data_helper"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const ItemsOptionBase = _component.Component.inherit({}).include(_data_helper.default);
-let ItemsOption = /*#__PURE__*/function (_ItemsOptionBase) {
-  _inheritsLoose(ItemsOption, _ItemsOptionBase);
-  function ItemsOption(diagramWidget) {
-    var _this;
-    _this = _ItemsOptionBase.call(this) || this;
-    _this._diagramWidget = diagramWidget;
-    _this._resetCache();
-    return _this;
+class ItemsOption extends ItemsOptionBase {
+  constructor(diagramWidget) {
+    super();
+    this._diagramWidget = diagramWidget;
+    this._resetCache();
   }
-  var _proto = ItemsOption.prototype;
-  _proto._dataSourceChangedHandler = function _dataSourceChangedHandler(newItems, e) {
+  _dataSourceChangedHandler(newItems, e) {
     this._resetCache();
     this._items = newItems.map(item => (0, _extend.extend)(true, {}, item));
     this._dataSourceItems = newItems.slice();
@@ -34,15 +28,15 @@ let ItemsOption = /*#__PURE__*/function (_ItemsOptionBase) {
     } else {
       this._diagramWidget._onDataSourceChanged();
     }
-  };
-  _proto._dataSourceLoadingChangedHandler = function _dataSourceLoadingChangedHandler(isLoading) {
+  }
+  _dataSourceLoadingChangedHandler(isLoading) {
     if (isLoading && !this._dataSource.isLoaded()) {
       this._diagramWidget._showLoadingIndicator();
     } else {
       this._diagramWidget._hideLoadingIndicator();
     }
-  };
-  _proto._prepareData = function _prepareData(dataObj) {
+  }
+  _prepareData(dataObj) {
     for (const key in dataObj) {
       if (!Object.prototype.hasOwnProperty.call(dataObj, key)) continue;
       if (dataObj[key] === undefined) {
@@ -50,8 +44,8 @@ let ItemsOption = /*#__PURE__*/function (_ItemsOptionBase) {
       }
     }
     return dataObj;
-  };
-  _proto.insert = function insert(data, callback, errorCallback) {
+  }
+  insert(data, callback, errorCallback) {
     this._resetCache();
     const store = this._getStore();
     store.insert(this._prepareData(data)).done((data, key) => {
@@ -71,8 +65,8 @@ let ItemsOption = /*#__PURE__*/function (_ItemsOptionBase) {
       }
       this._resetCache();
     });
-  };
-  _proto.update = function update(key, data, callback, errorCallback) {
+  }
+  update(key, data, callback, errorCallback) {
     const store = this._getStore();
     const storeKey = this._getStoreKey(store, key, data);
     store.update(storeKey, this._prepareData(data)).done((data, key) => {
@@ -90,8 +84,8 @@ let ItemsOption = /*#__PURE__*/function (_ItemsOptionBase) {
         errorCallback(error);
       }
     });
-  };
-  _proto.remove = function remove(key, data, callback, errorCallback) {
+  }
+  remove(key, data, callback, errorCallback) {
     this._resetCache();
     const store = this._getStore();
     const storeKey = this._getStoreKey(store, key, data);
@@ -111,32 +105,32 @@ let ItemsOption = /*#__PURE__*/function (_ItemsOptionBase) {
       }
       this._resetCache();
     });
-  };
-  _proto.findItem = function findItem(itemKey) {
+  }
+  findItem(itemKey) {
     if (!this._items) {
       return null;
     }
     return this._getItemByKey(itemKey);
-  };
-  _proto.getItems = function getItems() {
+  }
+  getItems() {
     return this._items;
-  };
-  _proto.hasItems = function hasItems() {
+  }
+  hasItems() {
     return !!this._items;
-  };
-  _proto._reloadContentByChanges = function _reloadContentByChanges(changes, isExternalChanges) {
+  }
+  _reloadContentByChanges(changes, isExternalChanges) {
     changes = changes.map(change => (0, _extend.extend)(change, {
       internalKey: this._getInternalKey(change.key)
     }));
     this._diagramWidget._reloadContentByChanges(changes, isExternalChanges);
-  };
-  _proto._getItemByKey = function _getItemByKey(key) {
+  }
+  _getItemByKey(key) {
     this._ensureCache();
     const cache = this._cache;
     const index = this._getIndexByKey(key);
     return cache.items[index];
-  };
-  _proto._getIndexByKey = function _getIndexByKey(key) {
+  }
+  _getIndexByKey(key) {
     this._ensureCache();
     const cache = this._cache;
     if (typeof key === 'object') {
@@ -154,16 +148,16 @@ let ItemsOption = /*#__PURE__*/function (_ItemsOptionBase) {
       return keySet[key];
     }
     return -1;
-  };
-  _proto._ensureCache = function _ensureCache() {
+  }
+  _ensureCache() {
     const cache = this._cache;
     if (!cache.keys) {
       cache.keys = [];
       cache.items = [];
       this._fillCache(cache, this._items);
     }
-  };
-  _proto._fillCache = function _fillCache(cache, items) {
+  }
+  _fillCache(cache, items) {
     if (!items || !items.length) return;
     const keyExpr = this._getKeyExpr();
     if (keyExpr) {
@@ -180,25 +174,25 @@ let ItemsOption = /*#__PURE__*/function (_ItemsOptionBase) {
     if (containerChildrenExpr) {
       items.forEach(item => this._fillCache(cache, containerChildrenExpr(item)));
     }
-  };
-  _proto._getKeyExpr = function _getKeyExpr() {
+  }
+  _getKeyExpr() {
     throw 'Not Implemented';
-  };
-  _proto._getItemsExpr = function _getItemsExpr() {};
-  _proto._getContainerChildrenExpr = function _getContainerChildrenExpr() {};
-  _proto._initDataSource = function _initDataSource() {
-    _ItemsOptionBase.prototype._initDataSource.call(this);
+  }
+  _getItemsExpr() {}
+  _getContainerChildrenExpr() {}
+  _initDataSource() {
+    super._initDataSource();
     this._dataSource && this._dataSource.paginate(false);
-  };
-  _proto._dataSourceOptions = function _dataSourceOptions() {
+  }
+  _dataSourceOptions() {
     return {
       paginate: false
     };
-  };
-  _proto._getStore = function _getStore() {
+  }
+  _getStore() {
     return this._dataSource && this._dataSource.store();
-  };
-  _proto._getStoreKey = function _getStoreKey(store, internalKey, data) {
+  }
+  _getStoreKey(store, internalKey, data) {
     let storeKey = store.keyOf(data);
     if (storeKey === data) {
       const keyExpr = this._getKeyExpr();
@@ -207,19 +201,18 @@ let ItemsOption = /*#__PURE__*/function (_ItemsOptionBase) {
       });
     }
     return storeKey;
-  };
-  _proto._getInternalKey = function _getInternalKey(storeKey) {
+  }
+  _getInternalKey(storeKey) {
     if (typeof storeKey === 'object') {
       const keyExpr = this._getKeyExpr();
       return keyExpr(storeKey);
     }
     return storeKey;
-  };
-  _proto._resetCache = function _resetCache() {
+  }
+  _resetCache() {
     this._cache = {};
-  };
-  return ItemsOption;
-}(ItemsOptionBase);
+  }
+}
 var _default = exports.default = ItemsOption;
 module.exports = exports.default;
 module.exports.default = exports.default;

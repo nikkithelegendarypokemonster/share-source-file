@@ -1,7 +1,8 @@
-export var PRECISION = 5;
+import { toFixed } from '../../../../localization/utils';
+export const PRECISION = 10;
 export function compareNumbersWithPrecision(actual, expected) {
-  var precision = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : PRECISION;
-  var delta = parseFloat(actual.toFixed(precision)) - parseFloat(expected.toFixed(precision));
+  let precision = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : PRECISION;
+  const delta = parseFloat(toFixed(actual, precision)) - parseFloat(toFixed(expected, precision));
   if (delta === 0) {
     return 0;
   }

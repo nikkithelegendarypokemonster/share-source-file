@@ -1,22 +1,9 @@
 /**
 * DevExtreme (esm/events/utils/add_namespace.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-import errors from '../../core/errors';
-var addNamespace = (eventNames, namespace) => {
-  if (!namespace) {
-    throw errors.Error('E0017');
-  }
-  if (Array.isArray(eventNames)) {
-    return eventNames.map(eventName => addNamespace(eventName, namespace)).join(' ');
-  }
-  if (eventNames.indexOf(' ') !== -1) {
-    return addNamespace(eventNames.split(/\s+/g), namespace);
-  }
-  return "".concat(eventNames, ".").concat(namespace);
-};
-export default addNamespace;
+export { default } from '../../__internal/events/utils/m_add_namespace';

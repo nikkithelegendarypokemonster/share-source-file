@@ -1,13 +1,13 @@
 import { DIRECTION_BOTH, DIRECTION_HORIZONTAL, DIRECTION_VERTICAL } from '../common/consts';
 import { ScrollDirection } from './scroll_direction';
 export function allowedDirection(direction, scrollTopMax, scrollLeftMax, bounceEnabled) {
-  var {
+  const {
     isBoth,
     isHorizontal,
     isVertical
   } = new ScrollDirection(direction);
-  var vDirectionAllowed = isVertical && (scrollTopMax > 0 || bounceEnabled);
-  var hDirectionAllowed = isHorizontal && (scrollLeftMax > 0 || bounceEnabled);
+  const vDirectionAllowed = isVertical && (scrollTopMax > 0 || bounceEnabled);
+  const hDirectionAllowed = isHorizontal && (scrollLeftMax > 0 || bounceEnabled);
   if (isBoth && vDirectionAllowed && hDirectionAllowed) {
     return DIRECTION_BOTH;
   }

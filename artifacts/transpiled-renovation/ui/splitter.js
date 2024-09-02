@@ -22,10 +22,12 @@ var _default = exports.default = _splitter.default; // STYLE splitter
  */
 /**
  * @name dxSplitterOptions.onSelectionChanged
+ * @action
  * @hidden
  */
 /**
  * @name dxSplitterOptions.onItemHold
+ * @action
  * @hidden
  */
 /**
@@ -72,6 +74,10 @@ var _default = exports.default = _splitter.default; // STYLE splitter
  */
 /**
  * @name dxSplitterItem.html
+ * @hidden
+ */
+/**
+ * @name dxSplitterItem.disabled
  * @hidden
  */
 module.exports = exports.default;

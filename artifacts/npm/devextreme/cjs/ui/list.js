@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/list.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,11 +10,11 @@
 
 exports.default = void 0;
 var _list_light = _interopRequireDefault(require("./list_light"));
-require("./list/modules/selection");
-require("./list/modules/deleting");
-require("./list/modules/dragging");
-require("./list/modules/context");
-require("./list/modules/search");
+require("../__internal/ui/list/modules/m_selection");
+require("../__internal/ui/list/modules/m_deleting");
+require("../__internal/ui/list/modules/m_dragging");
+require("../__internal/ui/list/modules/m_context");
+require("../__internal/ui/list/modules/m_search");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var _default = exports.default = _list_light.default;
 /**

@@ -51,7 +51,7 @@ const createColumn = function (that, columnOptions, userStateColumnOptions, band
       const calculatedColumnOptions = that._createCalculatedColumnOptions(columnOptions, bandColumn);
       if (!columnOptions.type) {
         result = {
-          headerId: "dx-col-".concat(globalColumnId++)
+          headerId: `dx-col-${globalColumnId++}`
         };
       }
       result = (0, _object.deepExtendArraySafe)(result, _const.DEFAULT_COLUMN_OPTIONS);
@@ -73,7 +73,7 @@ const createColumnsFromOptions = function (that, columnsOptions, bandColumn, cre
   let result = [];
   if (columnsOptions) {
     (0, _iterator.each)(columnsOptions, (index, columnOptions) => {
-      const currentIndex = (createdColumnCount !== null && createdColumnCount !== void 0 ? createdColumnCount : 0) + result.length;
+      const currentIndex = (createdColumnCount ?? 0) + result.length;
       const userStateColumnOptions = that._columnsUserState && checkUserStateColumn(columnOptions, that._columnsUserState[currentIndex]) && that._columnsUserState[currentIndex];
       const column = createColumn(that, columnOptions, userStateColumnOptions, bandColumn);
       if (column) {
@@ -152,12 +152,12 @@ const getColumnFullPath = function (that, column) {
   if (bandColumnsCache.isPlain) {
     const columnIndex = that._columns.indexOf(column);
     if (columnIndex >= 0) {
-      result = ["columns[".concat(columnIndex, "]")];
+      result = [`columns[${columnIndex}]`];
     }
   } else {
     columns = that._columns.filter(callbackFilter);
     while (columns.length && columns.indexOf(column) !== -1) {
-      result.unshift("columns[".concat(columns.indexOf(column), "]"));
+      result.unshift(`columns[${columns.indexOf(column)}]`);
       column = bandColumnsCache.columnParentByIndex[column.index];
       columns = column ? that._columns.filter(callbackFilter) : [];
     }
@@ -489,7 +489,6 @@ function assignColumns(that, columns) {
   that.updateColumnDataTypes();
 }
 const updateColumnChanges = function (that, changeType, optionName, columnIndex) {
-  var _a;
   const columnChanges = that._columnChanges || {
     optionNames: {
       length: 0
@@ -517,7 +516,7 @@ const updateColumnChanges = function (that, changeType, optionName, columnIndex)
   }
   if (columnIndex === undefined || columnIndex !== columnChanges.columnIndex) {
     if ((0, _type.isDefined)(columnIndex)) {
-      (_a = columnChanges.columnIndices) !== null && _a !== void 0 ? _a : columnChanges.columnIndices = [];
+      columnChanges.columnIndices ?? (columnChanges.columnIndices = []);
       if ((0, _type.isDefined)(columnChanges.columnIndex)) {
         columnChanges.columnIndices.push(columnChanges.columnIndex);
       }
@@ -585,7 +584,7 @@ const fireOptionChanged = function (that, options) {
   const {
     fullOptionName
   } = options;
-  const fullOptionPath = "".concat(fullOptionName, ".").concat(optionName);
+  const fullOptionPath = `${fullOptionName}.${optionName}`;
   if (!_const.IGNORE_COLUMN_OPTION_NAMES[optionName] && that._skipProcessingColumnsChange !== fullOptionPath) {
     that._skipProcessingColumnsChange = fullOptionPath;
     that.component._notifyOptionChanged(fullOptionPath, value, prevValue);
@@ -769,7 +768,7 @@ exports.digitsCount = digitsCount;
 const numberToString = function (number, digitsCount) {
   let str = number ? number.toString() : '0';
   while (str.length < digitsCount) {
-    str = "0".concat(str);
+    str = `0${str}`;
   }
   return str;
 };
@@ -839,7 +838,7 @@ const findColumn = (columns, identifier) => {
     identifier = identifier.substr(identifierOptionName.length + 1);
   }
   if (identifierOptionName) {
-    column = columns.filter(column => "".concat(column[identifierOptionName]) === identifier)[0];
+    column = columns.filter(column => `${column[identifierOptionName]}` === identifier)[0];
   } else {
     ['index', 'name', 'dataField', 'caption'].some(optionName => {
       column = columns.filter(column => column[optionName] === identifier)[0];

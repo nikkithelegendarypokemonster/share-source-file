@@ -1,7 +1,7 @@
 import { extend } from '../../core/utils/extend';
 import { Component } from '../../core/component';
 import DataHelperMixin from '../../data_helper';
-var ItemsOptionBase = Component.inherit({}).include(DataHelperMixin);
+const ItemsOptionBase = Component.inherit({}).include(DataHelperMixin);
 class ItemsOption extends ItemsOptionBase {
   constructor(diagramWidget) {
     super();
@@ -13,8 +13,8 @@ class ItemsOption extends ItemsOptionBase {
     this._items = newItems.map(item => extend(true, {}, item));
     this._dataSourceItems = newItems.slice();
     if (e && e.changes) {
-      var internalChanges = e.changes.filter(change => change.internalChange);
-      var externalChanges = e.changes.filter(change => !change.internalChange);
+      const internalChanges = e.changes.filter(change => change.internalChange);
+      const externalChanges = e.changes.filter(change => !change.internalChange);
       if (internalChanges.length) {
         this._reloadContentByChanges(internalChanges, false);
       }
@@ -33,7 +33,7 @@ class ItemsOption extends ItemsOptionBase {
     }
   }
   _prepareData(dataObj) {
-    for (var key in dataObj) {
+    for (const key in dataObj) {
       if (!Object.prototype.hasOwnProperty.call(dataObj, key)) continue;
       if (dataObj[key] === undefined) {
         dataObj[key] = null;
@@ -43,7 +43,7 @@ class ItemsOption extends ItemsOptionBase {
   }
   insert(data, callback, errorCallback) {
     this._resetCache();
-    var store = this._getStore();
+    const store = this._getStore();
     store.insert(this._prepareData(data)).done((data, key) => {
       store.push([{
         type: 'insert',
@@ -63,8 +63,8 @@ class ItemsOption extends ItemsOptionBase {
     });
   }
   update(key, data, callback, errorCallback) {
-    var store = this._getStore();
-    var storeKey = this._getStoreKey(store, key, data);
+    const store = this._getStore();
+    const storeKey = this._getStoreKey(store, key, data);
     store.update(storeKey, this._prepareData(data)).done((data, key) => {
       store.push([{
         type: 'update',
@@ -83,8 +83,8 @@ class ItemsOption extends ItemsOptionBase {
   }
   remove(key, data, callback, errorCallback) {
     this._resetCache();
-    var store = this._getStore();
-    var storeKey = this._getStoreKey(store, key, data);
+    const store = this._getStore();
+    const storeKey = this._getStoreKey(store, key, data);
     store.remove(storeKey).done(key => {
       store.push([{
         type: 'remove',
@@ -122,19 +122,19 @@ class ItemsOption extends ItemsOptionBase {
   }
   _getItemByKey(key) {
     this._ensureCache();
-    var cache = this._cache;
-    var index = this._getIndexByKey(key);
+    const cache = this._cache;
+    const index = this._getIndexByKey(key);
     return cache.items[index];
   }
   _getIndexByKey(key) {
     this._ensureCache();
-    var cache = this._cache;
+    const cache = this._cache;
     if (typeof key === 'object') {
-      for (var i = 0, length = cache.keys.length; i < length; i++) {
+      for (let i = 0, length = cache.keys.length; i < length; i++) {
         if (cache.keys[i] === key) return i;
       }
     } else {
-      var keySet = cache.keySet || cache.keys.reduce((accumulator, key, index) => {
+      const keySet = cache.keySet || cache.keys.reduce((accumulator, key, index) => {
         accumulator[key] = index;
         return accumulator;
       }, {});
@@ -146,7 +146,7 @@ class ItemsOption extends ItemsOptionBase {
     return -1;
   }
   _ensureCache() {
-    var cache = this._cache;
+    const cache = this._cache;
     if (!cache.keys) {
       cache.keys = [];
       cache.items = [];
@@ -155,18 +155,18 @@ class ItemsOption extends ItemsOptionBase {
   }
   _fillCache(cache, items) {
     if (!items || !items.length) return;
-    var keyExpr = this._getKeyExpr();
+    const keyExpr = this._getKeyExpr();
     if (keyExpr) {
       items.forEach(item => {
         cache.keys.push(keyExpr(item));
         cache.items.push(item);
       });
     }
-    var itemsExpr = this._getItemsExpr();
+    const itemsExpr = this._getItemsExpr();
     if (itemsExpr) {
       items.forEach(item => this._fillCache(cache, itemsExpr(item)));
     }
-    var containerChildrenExpr = this._getContainerChildrenExpr();
+    const containerChildrenExpr = this._getContainerChildrenExpr();
     if (containerChildrenExpr) {
       items.forEach(item => this._fillCache(cache, containerChildrenExpr(item)));
     }
@@ -189,9 +189,9 @@ class ItemsOption extends ItemsOptionBase {
     return this._dataSource && this._dataSource.store();
   }
   _getStoreKey(store, internalKey, data) {
-    var storeKey = store.keyOf(data);
+    let storeKey = store.keyOf(data);
     if (storeKey === data) {
-      var keyExpr = this._getKeyExpr();
+      const keyExpr = this._getKeyExpr();
       this._dataSourceItems.forEach(item => {
         if (keyExpr(item) === internalKey) storeKey = item;
       });
@@ -200,7 +200,7 @@ class ItemsOption extends ItemsOptionBase {
   }
   _getInternalKey(storeKey) {
     if (typeof storeKey === 'object') {
-      var keyExpr = this._getKeyExpr();
+      const keyExpr = this._getKeyExpr();
       return keyExpr(storeKey);
     }
     return storeKey;

@@ -1,13 +1,13 @@
-var states = ['normal', 'hover'];
+const states = ['normal', 'hover'];
 import { isDefined } from '../../core/utils/type';
 import { patchFontOptions } from '../core/utils';
-function _compileAttrs(color, itemOptions, itemBaseOptions) {
-  var border = itemOptions.border;
-  var baseBorder = itemBaseOptions.border;
-  var borderVisible = isDefined(border.visible) ? border.visible : baseBorder.visible;
-  var borderWidth = isDefined(border.width) ? border.width : baseBorder.width;
-  var borderOpacity = isDefined(border.opacity) ? border.opacity : isDefined(baseBorder.opacity) ? baseBorder.opacity : 1;
-  var opacity = isDefined(itemOptions.opacity) ? itemOptions.opacity : isDefined(itemBaseOptions.opacity) ? itemBaseOptions.opacity : 1;
+function compileAttrs(color, itemOptions, itemBaseOptions) {
+  const border = itemOptions.border;
+  const baseBorder = itemBaseOptions.border;
+  const borderVisible = isDefined(border.visible) ? border.visible : baseBorder.visible;
+  const borderWidth = isDefined(border.width) ? border.width : baseBorder.width;
+  const borderOpacity = isDefined(border.opacity) ? border.opacity : isDefined(baseBorder.opacity) ? baseBorder.opacity : 1;
+  const opacity = isDefined(itemOptions.opacity) ? itemOptions.opacity : isDefined(itemBaseOptions.opacity) ? itemBaseOptions.opacity : 1;
   return {
     fill: itemOptions.color || color,
     'stroke-width': borderVisible ? borderWidth : 0,
@@ -18,15 +18,15 @@ function _compileAttrs(color, itemOptions, itemBaseOptions) {
   };
 }
 function compileLabelAttrs(labelOptions, filter, node) {
-  var _patchFontOptions = patchFontOptions;
+  const _patchFontOptions = patchFontOptions;
   if (labelOptions.useNodeColors) {
     labelOptions.font.color = node.color;
   }
-  var borderVisible = isDefined(labelOptions.border.visible) ? labelOptions.border.visible : false;
-  var borderWidth = isDefined(labelOptions.border.width) ? labelOptions.border.width : 0;
-  var borderColor = isDefined(labelOptions.border.color) ? labelOptions.border.color : labelOptions.font.color;
-  var borderOpacity = isDefined(labelOptions.border.opacity) ? labelOptions.border.opacity : 1;
-  var attr = {
+  const borderVisible = isDefined(labelOptions.border.visible) ? labelOptions.border.visible : false;
+  const borderWidth = isDefined(labelOptions.border.width) ? labelOptions.border.width : 0;
+  const borderColor = isDefined(labelOptions.border.color) ? labelOptions.border.color : labelOptions.font.color;
+  const borderOpacity = isDefined(labelOptions.border.opacity) ? labelOptions.border.opacity : 1;
+  const attr = {
     filter: filter
   };
   if (borderVisible && borderWidth) {
@@ -40,8 +40,8 @@ function compileLabelAttrs(labelOptions, filter, node) {
   };
 }
 function Node(widget, params) {
-  var that = this;
-  var widgetOffset = widget._renderer.getRootOffset();
+  const that = this;
+  const widgetOffset = widget._renderer.getRootOffset();
   that.code = 0;
   that.widget = widget;
   that.color = params.color;
@@ -56,21 +56,21 @@ function Node(widget, params) {
   that.linksIn = params.linksIn;
   that.linksOut = params.linksOut;
   this.states = {
-    normal: _compileAttrs(this.color, that.options, that.options),
-    hover: _compileAttrs(this.color, that.options.hoverStyle, that.options)
+    normal: compileAttrs(this.color, that.options, that.options),
+    hover: compileAttrs(this.color, that.options.hoverStyle, that.options)
   };
 }
 Node.prototype = {
-  compileAttrs: function compileAttrs() {
-    return _compileAttrs(this.color, this.options);
+  compileAttrs: function () {
+    return compileAttrs(this.color, this.options);
   },
-  getState: function getState() {
+  getState: function () {
     return states[this.code];
   },
-  isHovered: function isHovered() {
+  isHovered: function () {
     return !!(this.code & 1);
   },
-  setState: function setState(code, state) {
+  setState: function (code, state) {
     if (state) {
       this.code |= code;
     } else {
@@ -89,7 +89,7 @@ Node.prototype = {
     this.widget._applyNodesAppearance();
     this.widget._applyLinksAppearance();
   },
-  hover: function hover(state) {
+  hover: function (state) {
     if (!this.widget._getOption('hoverEnabled', true) || state === this.isHovered()) {
       return;
     }
@@ -101,10 +101,10 @@ Node.prototype = {
     });
     this.widget._resume();
   },
-  setHover: function setHover() {
+  setHover: function () {
     this.hover(true);
   },
-  showTooltip: function showTooltip(coords) {
+  showTooltip: function (coords) {
     this.widget._getOption('hoverEnabled', true) && this.widget._tooltip && this.widget._tooltip.show({
       type: 'node',
       info: {
@@ -122,10 +122,10 @@ Node.prototype = {
       y: coords[1]
     } : this.coords);
   },
-  hideTooltip: function hideTooltip() {
+  hideTooltip: function () {
     this.widget._tooltip && this.widget._tooltip.hide();
   },
-  getLabelAttributes: function getLabelAttributes(labelSettings, filter) {
+  getLabelAttributes: function (labelSettings, filter) {
     return compileLabelAttrs(labelSettings, filter, this);
   }
 };

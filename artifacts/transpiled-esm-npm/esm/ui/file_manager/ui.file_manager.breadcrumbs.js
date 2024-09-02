@@ -1,11 +1,11 @@
 import $ from '../../core/renderer';
 import { extend } from '../../core/utils/extend';
 import Widget from '../widget/ui.widget';
-import Menu from '../menu/ui.menu';
-var FILE_MANAGER_BREADCRUMBS_CLASS = 'dx-filemanager-breadcrumbs';
-var FILE_MANAGER_BREADCRUMBS_PARENT_FOLDER_ITEM_CLASS = FILE_MANAGER_BREADCRUMBS_CLASS + '-parent-folder-item';
-var FILE_MANAGER_BREADCRUMBS_SEPARATOR_ITEM_CLASS = FILE_MANAGER_BREADCRUMBS_CLASS + '-separator-item';
-var FILE_MANAGER_BREADCRUMBS_PATH_SEPARATOR_ITEM_CLASS = FILE_MANAGER_BREADCRUMBS_CLASS + '-path-separator-item';
+import Menu from '../menu';
+const FILE_MANAGER_BREADCRUMBS_CLASS = 'dx-filemanager-breadcrumbs';
+const FILE_MANAGER_BREADCRUMBS_PARENT_FOLDER_ITEM_CLASS = FILE_MANAGER_BREADCRUMBS_CLASS + '-parent-folder-item';
+const FILE_MANAGER_BREADCRUMBS_SEPARATOR_ITEM_CLASS = FILE_MANAGER_BREADCRUMBS_CLASS + '-separator-item';
+const FILE_MANAGER_BREADCRUMBS_PATH_SEPARATOR_ITEM_CLASS = FILE_MANAGER_BREADCRUMBS_CLASS + '-path-separator-item';
 class FileManagerBreadcrumbs extends Widget {
   _init() {
     super._init();
@@ -26,7 +26,7 @@ class FileManagerBreadcrumbs extends Widget {
     }
   }
   _renderMenu() {
-    var $menu = $('<div>').appendTo(this.$element());
+    const $menu = $('<div>').appendTo(this.$element());
     this._menu = this._createComponent($menu, Menu, {
       dataSource: this._getMenuItems(),
       onItemClick: this._onItemClick.bind(this),
@@ -34,8 +34,8 @@ class FileManagerBreadcrumbs extends Widget {
     });
   }
   _getMenuItems() {
-    var dirLine = this._getParentDirsLine();
-    var result = [{
+    const dirLine = this._getParentDirsLine();
+    const result = [{
       icon: 'arrowup',
       directory: this._currentDirectory.parentDirectory,
       isPathItem: true,
@@ -60,19 +60,19 @@ class FileManagerBreadcrumbs extends Widget {
     return result;
   }
   _onItemClick(_ref) {
-    var {
+    let {
       itemData
     } = _ref;
     if (!itemData.isPathItem) {
       return;
     }
-    var newDir = itemData.directory;
+    const newDir = itemData.directory;
     if (!this._areDirsEqual(newDir, this._currentDirectory)) {
       this._raiseCurrentDirectoryChanged(newDir);
     }
   }
   _onItemRendered(_ref2) {
-    var {
+    let {
       itemElement,
       itemData
     } = _ref2;
@@ -81,8 +81,8 @@ class FileManagerBreadcrumbs extends Widget {
     }
   }
   _getParentDirsLine() {
-    var currentDirectory = this._currentDirectory;
-    var result = [];
+    let currentDirectory = this._currentDirectory;
+    const result = [];
     while (currentDirectory) {
       result.unshift(currentDirectory);
       currentDirectory = currentDirectory.parentDirectory;
@@ -109,7 +109,7 @@ class FileManagerBreadcrumbs extends Widget {
     });
   }
   _optionChanged(args) {
-    var name = args.name;
+    const name = args.name;
     switch (name) {
       case 'rootFolderDisplayName':
         this.repaint();

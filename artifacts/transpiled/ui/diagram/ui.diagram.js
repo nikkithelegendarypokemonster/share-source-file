@@ -17,7 +17,7 @@ var _events_engine = _interopRequireDefault(require("../../events/core/events_en
 var _index = require("../../events/utils/index");
 var _message = _interopRequireDefault(require("../../localization/message"));
 var _number = _interopRequireDefault(require("../../localization/number"));
-var zIndexPool = _interopRequireWildcard(require("../overlay/z_index"));
+var zIndexPool = _interopRequireWildcard(require("../../__internal/ui/overlay/m_z_index"));
 var _ui2 = _interopRequireDefault(require("../overlay/ui.overlay"));
 var _uiDiagram = _interopRequireDefault(require("./ui.diagram.toolbar"));
 var _uiDiagram2 = _interopRequireDefault(require("./ui.diagram.main_toolbar"));
@@ -37,10 +37,8 @@ var _diagram4 = _interopRequireDefault(require("./diagram.commands_manager"));
 var _diagram5 = _interopRequireDefault(require("./diagram.nodes_option"));
 var _diagram6 = _interopRequireDefault(require("./diagram.edges_option"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 // STYLE diagram
 
 const DIAGRAM_CLASS = 'dx-diagram';
@@ -69,22 +67,17 @@ const FULLSCREEN_CHANGE_EVENT_NAME = (0, _index.addNamespace)('fullscreenchange'
 const IE_FULLSCREEN_CHANGE_EVENT_NAME = (0, _index.addNamespace)('msfullscreenchange', DIAGRAM_NAMESPACE);
 const WEBKIT_FULLSCREEN_CHANGE_EVENT_NAME = (0, _index.addNamespace)('webkitfullscreenchange', DIAGRAM_NAMESPACE);
 const MOZ_FULLSCREEN_CHANGE_EVENT_NAME = (0, _index.addNamespace)('mozfullscreenchange', DIAGRAM_NAMESPACE);
-let Diagram = /*#__PURE__*/function (_Widget) {
-  _inheritsLoose(Diagram, _Widget);
-  function Diagram() {
-    return _Widget.apply(this, arguments) || this;
-  }
-  var _proto = Diagram.prototype;
-  _proto._init = function _init() {
+class Diagram extends _ui.default {
+  _init() {
     this._updateDiagramLockCount = 0;
     this.toggleFullscreenLock = 0;
     this._toolbars = [];
-    _Widget.prototype._init.call(this);
+    super._init();
     this._initDiagram();
     this._createCustomCommand();
-  };
-  _proto._initMarkup = function _initMarkup() {
-    _Widget.prototype._initMarkup.call(this);
+  }
+  _initMarkup() {
+    super._initMarkup();
     this._toolbars = [];
     delete this._isMobileScreenSize;
     const isServerSide = !(0, _window.hasWindow)();
@@ -142,18 +135,18 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     this._setCustomCommandChecked(_diagram4.default.SHOW_PROPERTIES_PANEL_COMMAND_NAME, this._isPropertiesPanelVisible());
     this._setCustomCommandChecked(_diagram4.default.SHOW_TOOLBOX_COMMAND_NAME, this._isToolboxVisible());
     this._createOptionsUpdateBar();
-  };
-  _proto._dimensionChanged = function _dimensionChanged() {
+  }
+  _dimensionChanged() {
     this._isMobileScreenSize = undefined;
     this._processDiagramResize();
-  };
-  _proto._visibilityChanged = function _visibilityChanged(visible) {
+  }
+  _visibilityChanged(visible) {
     if (visible) {
       this._bindDiagramData();
       this.repaint();
     }
-  };
-  _proto._processDiagramResize = function _processDiagramResize() {
+  }
+  _processDiagramResize() {
     this._diagramInstance.onDimensionChanged();
     if (this._historyToolbarResizeCallback) {
       this._historyToolbarResizeCallback.call(this);
@@ -170,42 +163,42 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     if (this._toolboxResizeCallback) {
       this._toolboxResizeCallback.call(this);
     }
-  };
-  _proto.isMobileScreenSize = function isMobileScreenSize() {
+  }
+  isMobileScreenSize() {
     if (this._isMobileScreenSize === undefined) {
       this._isMobileScreenSize = (0, _window.hasWindow)() && (0, _size.getOuterWidth)(this.$element()) < DIAGRAM_MAX_MOBILE_WINDOW_WIDTH;
     }
     return this._isMobileScreenSize;
-  };
-  _proto._captureFocus = function _captureFocus() {
+  }
+  _captureFocus() {
     if (this._diagramInstance) {
       this._diagramInstance.captureFocus();
     }
-  };
-  _proto._captureFocusOnTimeout = function _captureFocusOnTimeout() {
+  }
+  _captureFocusOnTimeout() {
     this._captureFocusTimeout = setTimeout(() => {
       this._captureFocus();
       delete this._captureFocusTimeout;
     }, 100);
-  };
-  _proto._killCaptureFocusTimeout = function _killCaptureFocusTimeout() {
+  }
+  _killCaptureFocusTimeout() {
     if (this._captureFocusTimeout) {
       clearTimeout(this._captureFocusTimeout);
       delete this._captureFocusTimeout;
     }
-  };
-  _proto.notifyBarCommandExecuted = function notifyBarCommandExecuted() {
+  }
+  notifyBarCommandExecuted() {
     this._captureFocusOnTimeout();
-  };
-  _proto._registerToolbar = function _registerToolbar(component) {
+  }
+  _registerToolbar(component) {
     this._registerBar(component);
     this._toolbars.push(component);
-  };
-  _proto._registerBar = function _registerBar(component) {
+  }
+  _registerBar(component) {
     component.bar.onChanged.add(this);
     this._diagramInstance.registerBar(component.bar);
-  };
-  _proto._getExcludeCommands = function _getExcludeCommands() {
+  }
+  _getExcludeCommands() {
     const excludeCommands = [];
     if (!this._isToolboxEnabled()) {
       excludeCommands.push(_diagram4.default.SHOW_TOOLBOX_COMMAND_NAME);
@@ -214,8 +207,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       excludeCommands.push(_diagram4.default.SHOW_PROPERTIES_PANEL_COMMAND_NAME);
     }
     return excludeCommands;
-  };
-  _proto._getToolbarBaseOptions = function _getToolbarBaseOptions() {
+  }
+  _getToolbarBaseOptions() {
     return {
       onContentReady: _ref => {
         let {
@@ -236,8 +229,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       onCustomCommand: this._onCustomCommand.bind(this),
       isMobileView: this.isMobileScreenSize()
     };
-  };
-  _proto._onInternalCommand = function _onInternalCommand(e) {
+  }
+  _onInternalCommand(e) {
     switch (e.command) {
       case _diagram4.default.SHOW_TOOLBOX_COMMAND_NAME:
         if (this._toolbox) {
@@ -250,23 +243,23 @@ let Diagram = /*#__PURE__*/function (_Widget) {
         }
         break;
     }
-  };
-  _proto._onCustomCommand = function _onCustomCommand(e) {
+  }
+  _onCustomCommand(e) {
     this._customCommandAction({
       name: e.name
     });
-  };
-  _proto._renderMainToolbar = function _renderMainToolbar() {
+  }
+  _renderMainToolbar() {
     const $toolbarWrapper = (0, _renderer.default)('<div>').addClass(DIAGRAM_TOOLBAR_WRAPPER_CLASS).appendTo(this.$element());
     this._mainToolbar = this._createComponent($toolbarWrapper, _uiDiagram2.default, (0, _extend.extend)(this._getToolbarBaseOptions(), {
       commands: this.option('mainToolbar.commands'),
       skipAdjustSize: true
     }));
-  };
-  _proto._isHistoryToolbarVisible = function _isHistoryToolbarVisible() {
+  }
+  _isHistoryToolbarVisible() {
     return this.option('historyToolbar.visible') && !this.isReadOnlyMode();
-  };
-  _proto._renderHistoryToolbar = function _renderHistoryToolbar($parent) {
+  }
+  _renderHistoryToolbar($parent) {
     const $container = (0, _renderer.default)('<div>').addClass(DIAGRAM_FLOATING_TOOLBAR_CONTAINER_CLASS).appendTo($parent);
     this._historyToolbar = this._createComponent($container, _uiDiagram3.default, (0, _extend.extend)(this._getToolbarBaseOptions(), {
       commands: this.option('historyToolbar.commands'),
@@ -276,8 +269,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     this._historyToolbarResizeCallback = () => {
       this._historyToolbar.option('isMobileView', this.isMobileScreenSize());
     };
-  };
-  _proto._updateHistoryToolbarPosition = function _updateHistoryToolbarPosition() {
+  }
+  _updateHistoryToolbarPosition() {
     if (!(0, _window.hasWindow)()) return;
     _position.default.setup(this._historyToolbar.$element(), {
       my: 'left top',
@@ -285,14 +278,14 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       of: this._historyToolbar.$element().parent(),
       offset: DIAGRAM_FLOATING_PANEL_OFFSET + ' ' + DIAGRAM_FLOATING_PANEL_OFFSET
     });
-  };
-  _proto._isToolboxEnabled = function _isToolboxEnabled() {
+  }
+  _isToolboxEnabled() {
     return this.option('toolbox.visibility') !== 'disabled' && !this.isReadOnlyMode();
-  };
-  _proto._isToolboxVisible = function _isToolboxVisible() {
+  }
+  _isToolboxVisible() {
     return this.option('toolbox.visibility') === 'visible' || this.option('toolbox.visibility') === 'auto' && !this.isMobileScreenSize();
-  };
-  _proto._renderToolbox = function _renderToolbox($parent) {
+  }
+  _renderToolbox($parent) {
     const isServerSide = !(0, _window.hasWindow)();
     const $toolBox = (0, _renderer.default)('<div>').appendTo($parent);
     const bounds = this._getToolboxBounds($parent, isServerSide);
@@ -372,8 +365,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       }
       this._toolbox.updateMaxHeight();
     };
-  };
-  _proto._getToolboxBounds = function _getToolboxBounds($parent, isServerSide) {
+  }
+  _getToolboxBounds($parent, isServerSide) {
     const result = {
       offsetX: DIAGRAM_FLOATING_PANEL_OFFSET,
       offsetY: DIAGRAM_FLOATING_PANEL_OFFSET,
@@ -387,8 +380,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       result.height -= (0, _size.getOuterHeight)(this._viewToolbar.$element()) + this._getViewToolbarYOffset(isServerSide);
     }
     return result;
-  };
-  _proto._renderViewToolbar = function _renderViewToolbar($parent) {
+  }
+  _renderViewToolbar($parent) {
     const isServerSide = !(0, _window.hasWindow)();
     const $container = (0, _renderer.default)('<div>').addClass(DIAGRAM_FLOATING_TOOLBAR_CONTAINER_CLASS).appendTo($parent);
     this._viewToolbar = this._createComponent($container, _uiDiagram4.default, (0, _extend.extend)(this._getToolbarBaseOptions(), {
@@ -399,16 +392,16 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     this._viewToolbarResizeCallback = () => {
       this._updateViewToolbarPosition($container, $parent, isServerSide);
     };
-  };
-  _proto._getViewToolbarYOffset = function _getViewToolbarYOffset(isServerSide) {
+  }
+  _getViewToolbarYOffset(isServerSide) {
     if (isServerSide) return;
     let result = DIAGRAM_FLOATING_PANEL_OFFSET;
     if (this._viewToolbar && this._propertiesToolbar) {
       result += ((0, _size.getOuterHeight)(this._propertiesToolbar.$element()) - (0, _size.getOuterHeight)(this._viewToolbar.$element())) / 2;
     }
     return result;
-  };
-  _proto._updateViewToolbarPosition = function _updateViewToolbarPosition($container, $parent, isServerSide) {
+  }
+  _updateViewToolbarPosition($container, $parent, isServerSide) {
     if (isServerSide) return;
     _position.default.setup($container, {
       my: 'left bottom',
@@ -416,14 +409,14 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       of: $parent,
       offset: DIAGRAM_FLOATING_PANEL_OFFSET + ' -' + this._getViewToolbarYOffset(isServerSide)
     });
-  };
-  _proto._isPropertiesPanelEnabled = function _isPropertiesPanelEnabled() {
+  }
+  _isPropertiesPanelEnabled() {
     return this.option('propertiesPanel.visibility') !== 'disabled' && !this.isReadOnlyMode();
-  };
-  _proto._isPropertiesPanelVisible = function _isPropertiesPanelVisible() {
+  }
+  _isPropertiesPanelVisible() {
     return this.option('propertiesPanel.visibility') === 'visible';
-  };
-  _proto._renderPropertiesToolbar = function _renderPropertiesToolbar($parent) {
+  }
+  _renderPropertiesToolbar($parent) {
     const isServerSide = !(0, _window.hasWindow)();
     const $container = (0, _renderer.default)('<div>').addClass(DIAGRAM_FLOATING_TOOLBAR_CONTAINER_CLASS).addClass(DIAGRAM_PROPERTIES_PANEL_TOOLBAR_CONTAINER_CLASS).appendTo($parent);
     this._propertiesToolbar = this._createComponent($container, _uiDiagram5.default, (0, _extend.extend)(this._getToolbarBaseOptions(), {
@@ -435,8 +428,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     this._propertiesToolbarResizeCallback = () => {
       this._updatePropertiesToolbarPosition($container, $parent, isServerSide);
     };
-  };
-  _proto._updatePropertiesToolbarPosition = function _updatePropertiesToolbarPosition($container, $parent, isServerSide) {
+  }
+  _updatePropertiesToolbarPosition($container, $parent, isServerSide) {
     if (isServerSide) return;
     _position.default.setup($container, {
       my: 'right bottom',
@@ -444,8 +437,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       of: $parent,
       offset: '-' + DIAGRAM_FLOATING_PANEL_OFFSET + ' -' + DIAGRAM_FLOATING_PANEL_OFFSET
     });
-  };
-  _proto._renderPropertiesPanel = function _renderPropertiesPanel($parent) {
+  }
+  _renderPropertiesPanel($parent) {
     const isServerSide = !(0, _window.hasWindow)();
     const $propertiesPanel = (0, _renderer.default)('<div>').appendTo($parent);
     const offsetX = DIAGRAM_FLOATING_PANEL_OFFSET;
@@ -498,16 +491,16 @@ let Diagram = /*#__PURE__*/function (_Widget) {
         this._setCustomCommandChecked(_diagram4.default.SHOW_PROPERTIES_PANEL_COMMAND_NAME, this._isPropertiesPanelVisible());
       }
     };
-  };
-  _proto._updatePropertiesPanelGroupBars = function _updatePropertiesPanelGroupBars(component) {
+  }
+  _updatePropertiesPanelGroupBars(component) {
     component.getActiveToolbars().forEach(toolbar => {
       this._diagramInstance.updateBarItemsState(toolbar.bar);
     });
-  };
-  _proto._onPanelPointerUp = function _onPanelPointerUp() {
+  }
+  _onPanelPointerUp() {
     this._captureFocusOnTimeout();
-  };
-  _proto._renderContextMenu = function _renderContextMenu($parent) {
+  }
+  _renderContextMenu($parent) {
     const $contextMenu = (0, _renderer.default)('<div>').appendTo($parent);
     this._contextMenu = this._createComponent($contextMenu, _uiDiagram6.default.DiagramContextMenuWrapper, {
       commands: this.option('contextMenu.commands'),
@@ -531,8 +524,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       onInternalCommand: this._onInternalCommand.bind(this),
       onCustomCommand: this._onCustomCommand.bind(this)
     });
-  };
-  _proto._renderContextToolbox = function _renderContextToolbox($parent) {
+  }
+  _renderContextToolbox($parent) {
     const isServerSide = !(0, _window.hasWindow)();
     const category = this.option('contextToolbox.category');
     const displayMode = this.option('contextToolbox.displayMode');
@@ -562,24 +555,24 @@ let Diagram = /*#__PURE__*/function (_Widget) {
         });
       }
     });
-  };
-  _proto._setCustomCommandChecked = function _setCustomCommandChecked(command, checked) {
+  }
+  _setCustomCommandChecked(command, checked) {
     this._toolbars.forEach(tb => {
       tb.setCommandChecked(command, checked);
     });
-  };
-  _proto._onBeforeCommandExecuted = function _onBeforeCommandExecuted(command) {
+  }
+  _onBeforeCommandExecuted(command) {
     const dialogParameters = _uiDiagram12.default.getDialogParameters(command);
     if (dialogParameters) {
       this._showDialog(dialogParameters);
     }
     return !!dialogParameters;
-  };
-  _proto._renderDialog = function _renderDialog($parent) {
+  }
+  _renderDialog($parent) {
     const $dialogElement = (0, _renderer.default)('<div>').appendTo($parent);
     this._dialogInstance = this._createComponent($dialogElement, _uiDiagram8.default, {});
-  };
-  _proto._showDialog = function _showDialog(dialogParameters) {
+  }
+  _showDialog(dialogParameters) {
     if (this._dialogInstance) {
       this._dialogInstance.option('onGetContent', dialogParameters.onGetContent);
       this._dialogInstance.option('onHidden', function () {
@@ -589,19 +582,19 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       this._dialogInstance.option('title', dialogParameters.title);
       this._dialogInstance._show();
     }
-  };
-  _proto._showLoadingIndicator = function _showLoadingIndicator() {
+  }
+  _showLoadingIndicator() {
     this._loadingIndicator = (0, _renderer.default)('<div>').addClass(DIAGRAM_LOADING_INDICATOR_CLASS);
     this._createComponent(this._loadingIndicator, _load_indicator.default, {});
     const $parent = this._$content || this.$element();
     $parent.append(this._loadingIndicator);
-  };
-  _proto._hideLoadingIndicator = function _hideLoadingIndicator() {
+  }
+  _hideLoadingIndicator() {
     if (!this._loadingIndicator) return;
     this._loadingIndicator.remove();
     this._loadingIndicator = null;
-  };
-  _proto._initDiagram = function _initDiagram() {
+  }
+  _initDiagram() {
     const {
       DiagramControl
     } = (0, _diagram.getDiagram)();
@@ -690,49 +683,49 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     }
     this._updateCustomShapes(this._getCustomShapes());
     this._refreshDataSources();
-  };
-  _proto._createOptionsUpdateBar = function _createOptionsUpdateBar() {
+  }
+  _createOptionsUpdateBar() {
     if (!this.optionsUpdateBar) {
       this.optionsUpdateBar = new _diagram3.default(this);
       this._diagramInstance.registerBar(this.optionsUpdateBar);
     }
-  };
-  _proto._deleteOptionsUpdateBar = function _deleteOptionsUpdateBar() {
+  }
+  _deleteOptionsUpdateBar() {
     delete this.optionsUpdateBar;
-  };
-  _proto._clean = function _clean() {
+  }
+  _clean() {
     if (this._diagramInstance) {
       this._diagramInstance.cleanMarkup(element => {
         (0, _renderer.default)(element).empty();
       });
       this._deleteOptionsUpdateBar();
     }
-    _Widget.prototype._clean.call(this);
-  };
-  _proto._dispose = function _dispose() {
+    super._clean();
+  }
+  _dispose() {
     this._killCaptureFocusTimeout();
-    _Widget.prototype._dispose.call(this);
+    super._dispose();
     if (this._diagramInstance) {
       this._diagramInstance.dispose();
       this._diagramInstance = undefined;
     }
-  };
-  _proto._executeDiagramCommand = function _executeDiagramCommand(command, parameter) {
+  }
+  _executeDiagramCommand(command, parameter) {
     this._diagramInstance.getCommand(command).execute(parameter);
-  };
-  _proto.getNodeDataSource = function getNodeDataSource() {
+  }
+  getNodeDataSource() {
     return this._nodesOption && this._nodesOption.getDataSource();
-  };
-  _proto.getEdgeDataSource = function getEdgeDataSource() {
+  }
+  getEdgeDataSource() {
     return this._edgesOption && this._edgesOption.getDataSource();
-  };
-  _proto._refreshDataSources = function _refreshDataSources() {
+  }
+  _refreshDataSources() {
     this._beginUpdateDiagram();
     this._refreshNodesDataSource();
     this._refreshEdgesDataSource();
     this._endUpdateDiagram();
-  };
-  _proto._refreshNodesDataSource = function _refreshNodesDataSource() {
+  }
+  _refreshNodesDataSource() {
     if (this._nodesOption) {
       this._nodesOption._disposeDataSource();
       delete this._nodesOption;
@@ -742,8 +735,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       this._nodesOption.option('dataSource', this.option('nodes.dataSource'));
       this._nodesOption._refreshDataSource();
     }
-  };
-  _proto._refreshEdgesDataSource = function _refreshEdgesDataSource() {
+  }
+  _refreshEdgesDataSource() {
     if (this._edgesOption) {
       this._edgesOption._disposeDataSource();
       delete this._edgesOption;
@@ -753,8 +746,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       this._edgesOption.option('dataSource', this.option('edges.dataSource'));
       this._edgesOption._refreshDataSource();
     }
-  };
-  _proto._getDiagramData = function _getDiagramData() {
+  }
+  _getDiagramData() {
     let value;
     const {
       DiagramCommand
@@ -763,8 +756,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       value = data;
     });
     return value;
-  };
-  _proto._setDiagramData = function _setDiagramData(data, keepExistingItems) {
+  }
+  _setDiagramData(data, keepExistingItems) {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
@@ -772,14 +765,14 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       data,
       keepExistingItems
     });
-  };
-  _proto.isReadOnlyMode = function isReadOnlyMode() {
+  }
+  isReadOnlyMode() {
     return this.option('readOnly') || this.option('disabled');
-  };
-  _proto._onDataSourceChanged = function _onDataSourceChanged() {
+  }
+  _onDataSourceChanged() {
     this._bindDiagramData();
-  };
-  _proto._getChangesKeys = function _getChangesKeys(changes) {
+  }
+  _getChangesKeys(changes) {
     return changes.map(change => {
       if ((0, _type.isDefined)(change.internalKey)) {
         return change.internalKey;
@@ -789,12 +782,12 @@ let Diagram = /*#__PURE__*/function (_Widget) {
         return null;
       }
     }).filter(key => (0, _type.isDefined)(key));
-  };
-  _proto._createOptionGetter = function _createOptionGetter(optionName) {
+  }
+  _createOptionGetter(optionName) {
     const expr = this.option(optionName);
     return expr && (0, _data.compileGetter)(expr);
-  };
-  _proto._onRequestUpdateLayout = function _onRequestUpdateLayout(changes) {
+  }
+  _onRequestUpdateLayout(changes) {
     if (!this._requestLayoutUpdateAction) {
       this._createRequestLayoutUpdateAction();
     }
@@ -804,15 +797,15 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     };
     this._requestLayoutUpdateAction(eventArgs);
     return eventArgs.allowed;
-  };
-  _proto._createOptionSetter = function _createOptionSetter(optionName) {
+  }
+  _createOptionSetter(optionName) {
     const expr = this.option(optionName);
     if ((0, _type.isFunction)(expr)) {
       return expr;
     }
     return expr && (0, _data.compileSetter)(expr);
-  };
-  _proto._bindDiagramData = function _bindDiagramData() {
+  }
+  _bindDiagramData() {
     if (this._updateDiagramLockCount || !this._isBindingMode()) return;
     const {
       DiagramCommand,
@@ -954,13 +947,13 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     if (data.nodeDataSource) {
       this._executeDiagramCommand(DiagramCommand.BindDocument, data);
     }
-  };
-  _proto._reloadContentByChanges = function _reloadContentByChanges(changes, isExternalChanges) {
+  }
+  _reloadContentByChanges(changes, isExternalChanges) {
     const keys = this._getChangesKeys(changes);
     const applyLayout = this._onRequestUpdateLayout(changes);
     this._reloadContent(keys, applyLayout, isExternalChanges);
-  };
-  _proto._reloadContent = function _reloadContent(itemKeys, applyLayout, isExternalChanges) {
+  }
+  _reloadContent(itemKeys, applyLayout, isExternalChanges) {
     const getData = () => {
       let nodeDataSource;
       let edgeDataSource;
@@ -976,8 +969,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       };
     };
     this._diagramInstance.reloadContent(itemKeys, getData, applyLayout && this._getDataBindingLayoutParameters(), isExternalChanges);
-  };
-  _proto._getConnectorLineOption = function _getConnectorLineOption(lineType) {
+  }
+  _getConnectorLineOption(lineType) {
     const {
       ConnectorLineOption
     } = (0, _diagram.getDiagram)();
@@ -987,8 +980,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       default:
         return ConnectorLineOption.Orthogonal;
     }
-  };
-  _proto._getConnectorLineEnding = function _getConnectorLineEnding(lineEnd) {
+  }
+  _getConnectorLineEnding(lineEnd) {
     const {
       ConnectorLineEnding
     } = (0, _diagram.getDiagram)();
@@ -1002,8 +995,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       default:
         return ConnectorLineEnding.None;
     }
-  };
-  _proto._getDataBindingLayoutParameters = function _getDataBindingLayoutParameters() {
+  }
+  _getDataBindingLayoutParameters() {
     const {
       DataLayoutType,
       DataLayoutOrientation
@@ -1034,11 +1027,11 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     }
     parameters.autoSizeEnabled = !!this.option('nodes.autoSizeEnabled');
     return parameters;
-  };
-  _proto._hasNodePositionExprs = function _hasNodePositionExprs() {
+  }
+  _hasNodePositionExprs() {
     return this.option('nodes.topExpr') && this.option('nodes.leftExpr');
-  };
-  _proto._getAutoZoomValue = function _getAutoZoomValue(option) {
+  }
+  _getAutoZoomValue(option) {
     const {
       AutoZoomMode
     } = (0, _diagram.getDiagram)();
@@ -1050,30 +1043,30 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       default:
         return AutoZoomMode.Disabled;
     }
-  };
-  _proto._isBindingMode = function _isBindingMode() {
+  }
+  _isBindingMode() {
     return this._nodesOption && this._nodesOption.hasItems() || this._edgesOption && this._edgesOption.hasItems();
-  };
-  _proto._beginUpdateDiagram = function _beginUpdateDiagram() {
+  }
+  _beginUpdateDiagram() {
     this._updateDiagramLockCount++;
-  };
-  _proto._endUpdateDiagram = function _endUpdateDiagram() {
+  }
+  _endUpdateDiagram() {
     this._updateDiagramLockCount = Math.max(this._updateDiagramLockCount - 1, 0);
     if (!this._updateDiagramLockCount) {
       this._bindDiagramData();
     }
-  };
-  _proto._getCustomShapes = function _getCustomShapes() {
+  }
+  _getCustomShapes() {
     return this.option('customShapes') || [];
-  };
-  _proto._getToolboxGroups = function _getToolboxGroups() {
+  }
+  _getToolboxGroups() {
     return _diagram2.default.getGroups(this.option('toolbox.groups'));
-  };
-  _proto._updateAllCustomShapes = function _updateAllCustomShapes() {
+  }
+  _updateAllCustomShapes() {
     this._diagramInstance.removeAllCustomShapes();
     this._updateCustomShapes(this._getCustomShapes());
-  };
-  _proto._updateCustomShapes = function _updateCustomShapes(customShapes, prevCustomShapes) {
+  }
+  _updateCustomShapes(customShapes, prevCustomShapes) {
     if (Array.isArray(prevCustomShapes)) {
       this._diagramInstance.removeCustomShapes(prevCustomShapes.map(s => s.type));
     }
@@ -1143,12 +1136,12 @@ let Diagram = /*#__PURE__*/function (_Widget) {
         };
       }));
     }
-  };
-  _proto._getViewport = function _getViewport() {
+  }
+  _getViewport() {
     const $viewPort = this.$element().closest('.dx-viewport');
     return $viewPort.length ? $viewPort : (0, _renderer.default)('body');
-  };
-  _proto._onToggleFullScreen = function _onToggleFullScreen(fullScreen) {
+  }
+  _onToggleFullScreen(fullScreen) {
     if (this.toggleFullscreenLock > 0) return;
     this._changeNativeFullscreen(fullScreen);
     if (fullScreen) {
@@ -1176,8 +1169,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     if (this._historyToolbar) {
       this._updateHistoryToolbarPosition();
     }
-  };
-  _proto._changeNativeFullscreen = function _changeNativeFullscreen(setModeOn) {
+  }
+  _changeNativeFullscreen(setModeOn) {
     const window = (0, _window.getWindow)();
     if (window.self === window.top || setModeOn === this._inNativeFullscreen()) return;
     if (setModeOn) {
@@ -1186,8 +1179,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       this._unsubscribeFullscreenNativeChanged();
     }
     this._setNativeFullscreen(setModeOn);
-  };
-  _proto._setNativeFullscreen = function _setNativeFullscreen(on) {
+  }
+  _setNativeFullscreen(on) {
     const window = (0, _window.getWindow)();
     const document = window.self.document;
     const body = window.self.document.body;
@@ -1212,63 +1205,63 @@ let Diagram = /*#__PURE__*/function (_Widget) {
         document.msExitFullscreen();
       }
     }
-  };
-  _proto._inNativeFullscreen = function _inNativeFullscreen() {
+  }
+  _inNativeFullscreen() {
     const document = (0, _window.getWindow)().document;
     const fullscreenElement = document.fullscreenElement || document.msFullscreenElement || document.webkitFullscreenElement;
     const isInFullscreen = fullscreenElement === document.body || document.webkitIsFullscreen;
     return !!isInFullscreen;
-  };
-  _proto._subscribeFullscreenNativeChanged = function _subscribeFullscreenNativeChanged() {
+  }
+  _subscribeFullscreenNativeChanged() {
     const document = (0, _window.getWindow)().document;
     const handler = this._onNativeFullscreenChangeHandler.bind(this);
     _events_engine.default.on(document, FULLSCREEN_CHANGE_EVENT_NAME, handler);
     _events_engine.default.on(document, IE_FULLSCREEN_CHANGE_EVENT_NAME, handler);
     _events_engine.default.on(document, WEBKIT_FULLSCREEN_CHANGE_EVENT_NAME, handler);
     _events_engine.default.on(document, MOZ_FULLSCREEN_CHANGE_EVENT_NAME, handler);
-  };
-  _proto._unsubscribeFullscreenNativeChanged = function _unsubscribeFullscreenNativeChanged() {
+  }
+  _unsubscribeFullscreenNativeChanged() {
     const document = (0, _window.getWindow)().document;
     _events_engine.default.off(document, FULLSCREEN_CHANGE_EVENT_NAME);
     _events_engine.default.off(document, IE_FULLSCREEN_CHANGE_EVENT_NAME);
     _events_engine.default.off(document, WEBKIT_FULLSCREEN_CHANGE_EVENT_NAME);
     _events_engine.default.off(document, MOZ_FULLSCREEN_CHANGE_EVENT_NAME);
-  };
-  _proto._onNativeFullscreenChangeHandler = function _onNativeFullscreenChangeHandler() {
+  }
+  _onNativeFullscreenChangeHandler() {
     if (!this._inNativeFullscreen()) {
       this._unsubscribeFullscreenNativeChanged();
       this.option('fullScreen', false);
     }
-  };
-  _proto._executeDiagramFullscreenCommand = function _executeDiagramFullscreenCommand(fullscreen) {
+  }
+  _executeDiagramFullscreenCommand(fullscreen) {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this.toggleFullscreenLock++;
     this._executeDiagramCommand(DiagramCommand.Fullscreen, fullscreen);
     this.toggleFullscreenLock--;
-  };
-  _proto._onShowContextMenu = function _onShowContextMenu(x, y, selection) {
+  }
+  _onShowContextMenu(x, y, selection) {
     if (this._contextMenu) {
       this._contextMenu._show(x, y, selection);
     }
-  };
-  _proto._onHideContextMenu = function _onHideContextMenu() {
+  }
+  _onHideContextMenu() {
     if (this._contextMenu) {
       this._contextMenu._hide();
     }
-  };
-  _proto._onShowContextToolbox = function _onShowContextToolbox(x, y, side, category, callback) {
+  }
+  _onShowContextToolbox(x, y, side, category, callback) {
     if (this._contextToolbox) {
       this._contextToolbox._show(x, y, side, category, callback);
     }
-  };
-  _proto._onHideContextToolbox = function _onHideContextToolbox() {
+  }
+  _onHideContextToolbox() {
     if (this._contextToolbox) {
       this._contextToolbox._hide();
     }
-  };
-  _proto._getDiagramUnitValue = function _getDiagramUnitValue(value) {
+  }
+  _getDiagramUnitValue(value) {
     const {
       DiagramUnit
     } = (0, _diagram.getDiagram)();
@@ -1282,15 +1275,15 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       default:
         return DiagramUnit.In;
     }
-  };
-  _proto._updateReadOnlyState = function _updateReadOnlyState() {
+  }
+  _updateReadOnlyState() {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     const readOnly = this.isReadOnlyMode();
     this._executeDiagramCommand(DiagramCommand.ToggleReadOnly, readOnly);
-  };
-  _proto._updateZoomLevelState = function _updateZoomLevelState() {
+  }
+  _updateZoomLevelState() {
     if (this.option('zoomLevel.items')) {
       this._updateZoomLevelItemsState();
       const zoomLevel = this.option('zoomLevel.value');
@@ -1307,45 +1300,45 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       } = (0, _diagram.getDiagram)();
       this._executeDiagramCommand(DiagramCommand.ZoomLevel, zoomLevel);
     }
-  };
-  _proto._updateZoomLevelItemsState = function _updateZoomLevelItemsState() {
+  }
+  _updateZoomLevelItemsState() {
     const zoomLevelItems = this.option('zoomLevel.items');
     if (!Array.isArray(zoomLevelItems)) return;
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.ZoomLevelItems, zoomLevelItems);
-  };
-  _proto._updateAutoZoomState = function _updateAutoZoomState() {
+  }
+  _updateAutoZoomState() {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.SwitchAutoZoom, this._getAutoZoomValue(this.option('autoZoomMode')));
-  };
-  _proto._updateSimpleViewState = function _updateSimpleViewState() {
+  }
+  _updateSimpleViewState() {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.ToggleSimpleView, this.option('simpleView'));
-  };
-  _proto._updateFullscreenState = function _updateFullscreenState() {
+  }
+  _updateFullscreenState() {
     const fullscreen = this.option('fullScreen');
     this._executeDiagramFullscreenCommand(fullscreen);
     this._onToggleFullScreen(fullscreen);
-  };
-  _proto._updateShowGridState = function _updateShowGridState() {
+  }
+  _updateShowGridState() {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.ShowGrid, this.option('showGrid'));
-  };
-  _proto._updateSnapToGridState = function _updateSnapToGridState() {
+  }
+  _updateSnapToGridState() {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.SnapToGrid, this.option('snapToGrid'));
-  };
-  _proto._updateGridSizeState = function _updateGridSizeState() {
+  }
+  _updateGridSizeState() {
     if (this.option('gridSize.items')) {
       this._updateGridSizeItemsState();
       const gridSize = this.option('gridSize.value');
@@ -1362,16 +1355,16 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       } = (0, _diagram.getDiagram)();
       this._executeDiagramCommand(DiagramCommand.GridSize, gridSize);
     }
-  };
-  _proto._updateGridSizeItemsState = function _updateGridSizeItemsState() {
+  }
+  _updateGridSizeItemsState() {
     const gridSizeItems = this.option('gridSize.items');
     if (!Array.isArray(gridSizeItems)) return;
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.GridSizeItems, gridSizeItems);
-  };
-  _proto._updateUnitItems = function _updateUnitItems() {
+  }
+  _updateUnitItems() {
     const {
       DiagramLocalizationService
     } = (0, _diagram.getDiagram)();
@@ -1380,8 +1373,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       this._unitItems = items;
       DiagramLocalizationService.unitItems = items;
     }
-  };
-  _proto._getUnitItems = function _getUnitItems() {
+  }
+  _getUnitItems() {
     const {
       DiagramUnit
     } = (0, _diagram.getDiagram)();
@@ -1390,56 +1383,56 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     items[DiagramUnit.Cm] = _message.default.format('dxDiagram-unitCm');
     items[DiagramUnit.Px] = _message.default.format('dxDiagram-unitPx');
     return items;
-  };
-  _proto._updateFormatUnitsMethod = function _updateFormatUnitsMethod() {
+  }
+  _updateFormatUnitsMethod() {
     const {
       DiagramLocalizationService
     } = (0, _diagram.getDiagram)();
     DiagramLocalizationService.formatUnit = function (value) {
       return _number.default.format(value);
     };
-  };
-  _proto._updateViewUnitsState = function _updateViewUnitsState() {
+  }
+  _updateViewUnitsState() {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.ViewUnits, this._getDiagramUnitValue(this.option('viewUnits')));
-  };
-  _proto._updateUnitsState = function _updateUnitsState() {
+  }
+  _updateUnitsState() {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.Units, this._getDiagramUnitValue(this.option('units')));
-  };
-  _proto._updatePageSizeState = function _updatePageSizeState() {
+  }
+  _updatePageSizeState() {
     const pageSize = this.option('pageSize');
     if (!pageSize || !pageSize.width || !pageSize.height) return;
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.PageSize, pageSize);
-  };
-  _proto._updatePageSizeItemsState = function _updatePageSizeItemsState() {
+  }
+  _updatePageSizeItemsState() {
     const pageSizeItems = this.option('pageSize.items');
     if (!Array.isArray(pageSizeItems)) return;
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.PageSizeItems, pageSizeItems);
-  };
-  _proto._updatePageOrientationState = function _updatePageOrientationState() {
+  }
+  _updatePageOrientationState() {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.PageLandscape, this.option('pageOrientation') === 'landscape');
-  };
-  _proto._updatePageColorState = function _updatePageColorState() {
+  }
+  _updatePageColorState() {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.PageColor, this.option('pageColor'));
-  };
-  _proto._updateShapeTexts = function _updateShapeTexts() {
+  }
+  _updateShapeTexts() {
     const {
       DiagramLocalizationService
     } = (0, _diagram.getDiagram)();
@@ -1448,8 +1441,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       this._shapeTexts = texts;
       DiagramLocalizationService.shapeTexts = texts;
     }
-  };
-  _proto._getShapeTexts = function _getShapeTexts() {
+  }
+  _getShapeTexts() {
     const {
       ShapeTypes
     } = (0, _diagram.getDiagram)();
@@ -1504,8 +1497,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     texts[ShapeTypes.CardWithImageOnTop] = _message.default.format('dxDiagram-shapeCardWithImageOnTop');
     texts[ShapeTypes.CardWithImageOnRight] = _message.default.format('dxDiagram-shapeCardWithImageOnRight');
     return texts;
-  };
-  _proto._updateEventSubscriptionMethods = function _updateEventSubscriptionMethods() {
+  }
+  _updateEventSubscriptionMethods() {
     const {
       RenderHelper
     } = (0, _diagram.getDiagram)();
@@ -1515,8 +1508,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     RenderHelper.removeEventListener = (element, eventName, handler) => {
       _events_engine.default.off(element, eventName, handler);
     };
-  };
-  _proto._updateDefaultItemProperties = function _updateDefaultItemProperties() {
+  }
+  _updateDefaultItemProperties() {
     if (this.option('defaultItemProperties.style')) {
       this._diagramInstance.setInitialStyleProperties(this.option('defaultItemProperties.style'));
     }
@@ -1534,8 +1527,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       shapeMinHeight: this.option('defaultItemProperties.shapeMinHeight'),
       shapeMaxHeight: this.option('defaultItemProperties.shapeMaxHeight')
     });
-  };
-  _proto._updateEditingSettings = function _updateEditingSettings() {
+  }
+  _updateEditingSettings() {
     this._diagramInstance.applyOperationSettings({
       addShape: this.option('editing.allowAddShape'),
       addShapeFromToolbox: this.option('editing.allowAddShape'),
@@ -1548,30 +1541,30 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       resizeShape: this.option('editing.allowResizeShape'),
       moveShape: this.option('editing.allowMoveShape')
     });
-  };
-  _proto.fitToContent = function fitToContent() {
+  }
+  fitToContent() {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.FitToScreen);
-  };
-  _proto.fitToWidth = function fitToWidth() {
+  }
+  fitToWidth() {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
     this._executeDiagramCommand(DiagramCommand.FitToWidth);
-  };
-  _proto.focus = function focus() {
+  }
+  focus() {
     this._captureFocus();
-  };
-  _proto.export = function _export() {
+  }
+  export() {
     return this._getDiagramData();
-  };
-  _proto.exportTo = function exportTo(format, callback) {
+  }
+  exportTo(format, callback) {
     const command = this._getDiagramExportToCommand(format);
     this._executeDiagramCommand(command, callback);
-  };
-  _proto._getDiagramExportToCommand = function _getDiagramExportToCommand(format) {
+  }
+  _getDiagramExportToCommand(format) {
     const {
       DiagramCommand
     } = (0, _diagram.getDiagram)();
@@ -1583,21 +1576,21 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       default:
         return DiagramCommand.ExportSvg;
     }
-  };
-  _proto.import = function _import(data, updateExistingItemsOnly) {
+  }
+  import(data, updateExistingItemsOnly) {
     this._setDiagramData(data, updateExistingItemsOnly);
     this._raiseDataChangeAction();
-  };
-  _proto.updateToolbox = function updateToolbox() {
+  }
+  updateToolbox() {
     this._diagramInstance && this._diagramInstance.refreshToolbox();
     if (this._toolbox) {
       this._toolbox.updateTooltips();
       this._toolbox.updateFilter();
       this._toolbox.updateMaxHeight();
     }
-  };
-  _proto._getDefaultOptions = function _getDefaultOptions() {
-    return (0, _extend.extend)(_Widget.prototype._getDefaultOptions.call(this), {
+  }
+  _getDefaultOptions() {
+    return (0, _extend.extend)(super._getDefaultOptions(), {
       readOnly: false,
       zoomLevel: DIAGRAM_DEFAULT_ZOOMLEVEL,
       simpleView: false,
@@ -1730,55 +1723,55 @@ let Diagram = /*#__PURE__*/function (_Widget) {
        * @hidden true
        */
     });
-  };
-  _proto._raiseDataChangeAction = function _raiseDataChangeAction() {
+  }
+  _raiseDataChangeAction() {
     if (this._initialized) {
       this.option('hasChanges', true);
     }
-  };
-  _proto._raiseEdgeInsertedAction = function _raiseEdgeInsertedAction(data, callback, errorCallback) {
+  }
+  _raiseEdgeInsertedAction(data, callback, errorCallback) {
     if (this._edgesOption) {
       this._edgesOption.insert(data, callback, errorCallback);
     }
-  };
-  _proto._raiseEdgeUpdatedAction = function _raiseEdgeUpdatedAction(key, data, callback, errorCallback) {
+  }
+  _raiseEdgeUpdatedAction(key, data, callback, errorCallback) {
     if (this._edgesOption) {
       this._edgesOption.update(key, data, callback, errorCallback);
     }
-  };
-  _proto._raiseEdgeRemovedAction = function _raiseEdgeRemovedAction(key, data, callback, errorCallback) {
+  }
+  _raiseEdgeRemovedAction(key, data, callback, errorCallback) {
     if (this._edgesOption) {
       this._edgesOption.remove(key, data, callback, errorCallback);
     }
-  };
-  _proto._raiseNodeInsertedAction = function _raiseNodeInsertedAction(data, callback, errorCallback) {
+  }
+  _raiseNodeInsertedAction(data, callback, errorCallback) {
     if (this._nodesOption) {
       this._nodesOption.insert(data, callback, errorCallback);
     }
-  };
-  _proto._raiseNodeUpdatedAction = function _raiseNodeUpdatedAction(key, data, callback, errorCallback) {
+  }
+  _raiseNodeUpdatedAction(key, data, callback, errorCallback) {
     if (this._nodesOption) {
       this._nodesOption.update(key, data, callback, errorCallback);
     }
-  };
-  _proto._raiseNodeRemovedAction = function _raiseNodeRemovedAction(key, data, callback, errorCallback) {
+  }
+  _raiseNodeRemovedAction(key, data, callback, errorCallback) {
     if (this._nodesOption) {
       this._nodesOption.remove(key, data, callback, errorCallback);
     }
-  };
-  _proto._raiseToolboxDragStart = function _raiseToolboxDragStart() {
+  }
+  _raiseToolboxDragStart() {
     if (this._toolbox && this.isMobileScreenSize()) {
       this._toolbox.hide();
       this._toolboxDragHidden = true;
     }
-  };
-  _proto._raiseToolboxDragEnd = function _raiseToolboxDragEnd() {
+  }
+  _raiseToolboxDragEnd() {
     if (this._toolbox && this._toolboxDragHidden) {
       this._toolbox.show();
       delete this._toolboxDragHidden;
     }
-  };
-  _proto._raiseTextInputStart = function _raiseTextInputStart() {
+  }
+  _raiseTextInputStart() {
     this._textInputStarted = true;
     if (this._propertiesPanel) {
       if (this.isMobileScreenSize() && this._propertiesPanel.isVisible()) {
@@ -1792,8 +1785,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
         this._toolboxTextInputHidden = true;
       }
     }
-  };
-  _proto._raiseTextInputEnd = function _raiseTextInputEnd() {
+  }
+  _raiseTextInputEnd() {
     if (this._propertiesPanel) {
       if (this._propertiesPanelTextInputHidden) {
         this._propertiesPanel.show();
@@ -1807,58 +1800,58 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       }
     }
     this._textInputStarted = false;
-  };
-  _proto._createItemClickAction = function _createItemClickAction() {
+  }
+  _createItemClickAction() {
     this._itemClickAction = this._createActionByOption('onItemClick');
-  };
-  _proto._createItemDblClickAction = function _createItemDblClickAction() {
+  }
+  _createItemDblClickAction() {
     this._itemDblClickAction = this._createActionByOption('onItemDblClick');
-  };
-  _proto._createSelectionChangedAction = function _createSelectionChangedAction() {
+  }
+  _createSelectionChangedAction() {
     this._selectionChangedAction = this._createActionByOption('onSelectionChanged');
-  };
-  _proto._createRequestEditOperationAction = function _createRequestEditOperationAction() {
+  }
+  _createRequestEditOperationAction() {
     this._requestEditOperationAction = this._createActionByOption('onRequestEditOperation');
-  };
-  _proto._createRequestLayoutUpdateAction = function _createRequestLayoutUpdateAction() {
+  }
+  _createRequestLayoutUpdateAction() {
     this._requestLayoutUpdateAction = this._createActionByOption('onRequestLayoutUpdate');
-  };
-  _proto._createCustomCommand = function _createCustomCommand() {
+  }
+  _createCustomCommand() {
     this._customCommandAction = this._createActionByOption('onCustomCommand');
-  };
-  _proto._raiseItemClickAction = function _raiseItemClickAction(nativeItem) {
+  }
+  _raiseItemClickAction(nativeItem) {
     if (!this._itemClickAction) {
       this._createItemClickAction();
     }
     this._itemClickAction({
       item: this._nativeItemToDiagramItem(nativeItem)
     });
-  };
-  _proto._raiseItemDblClickAction = function _raiseItemDblClickAction(nativeItem) {
+  }
+  _raiseItemDblClickAction(nativeItem) {
     if (!this._itemDblClickAction) {
       this._createItemDblClickAction();
     }
     this._itemDblClickAction({
       item: this._nativeItemToDiagramItem(nativeItem)
     });
-  };
-  _proto._raiseSelectionChanged = function _raiseSelectionChanged(nativeItems) {
+  }
+  _raiseSelectionChanged(nativeItems) {
     if (!this._selectionChangedAction) {
       this._createSelectionChangedAction();
     }
     this._selectionChangedAction({
       items: nativeItems.map(this._nativeItemToDiagramItem.bind(this))
     });
-  };
-  _proto._raiseRequestEditOperation = function _raiseRequestEditOperation(operation, args) {
+  }
+  _raiseRequestEditOperation(operation, args) {
     if (!this._requestEditOperationAction) {
       this._createRequestEditOperationAction();
     }
     const eventArgs = this._getRequestEditOperationEventArgs(operation, args);
     this._requestEditOperationAction(eventArgs);
     args.allowed = eventArgs.allowed;
-  };
-  _proto._getModelOperation = function _getModelOperation(operation) {
+  }
+  _getModelOperation(operation) {
     const {
       DiagramModelOperation
     } = (0, _diagram.getDiagram)();
@@ -1888,8 +1881,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       case DiagramModelOperation.MoveShape:
         return 'moveShape';
     }
-  };
-  _proto._getRequestEditOperationEventArgs = function _getRequestEditOperationEventArgs(operation, args) {
+  }
+  _getRequestEditOperationEventArgs(operation, args) {
     const {
       DiagramModelOperation,
       ConnectorPosition
@@ -2004,8 +1997,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
         break;
     }
     return eventArgs;
-  };
-  _proto._nativeItemToDiagramItem = function _nativeItemToDiagramItem(nativeItem) {
+  }
+  _nativeItemToDiagramItem(nativeItem) {
     const {
       NativeShape
     } = (0, _diagram.getDiagram)();
@@ -2015,8 +2008,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       key: nativeItem.key,
       dataItem: undefined
     }, createMethod(nativeItem));
-  };
-  _proto._nativeShapeToDiagramShape = function _nativeShapeToDiagramShape(nativeShape) {
+  }
+  _nativeShapeToDiagramShape(nativeShape) {
     return {
       dataItem: this._nodesOption && this._nodesOption.findItem(nativeShape.key),
       itemType: 'shape',
@@ -2035,8 +2028,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       containerChildItemIds: nativeShape.containerChildItemIds,
       containerExpanded: nativeShape.containerExpanded
     };
-  };
-  _proto._nativeConnectorToDiagramConnector = function _nativeConnectorToDiagramConnector(nativeConnector) {
+  }
+  _nativeConnectorToDiagramConnector(nativeConnector) {
     return {
       dataItem: this._edgesOption && this._edgesOption.findItem(nativeConnector.key),
       itemType: 'connector',
@@ -2054,63 +2047,63 @@ let Diagram = /*#__PURE__*/function (_Widget) {
         };
       })
     };
-  };
-  _proto.getItemByKey = function getItemByKey(key) {
+  }
+  getItemByKey(key) {
     const nativeItem = this._diagramInstance && this._diagramInstance.getNativeItemByDataKey(key);
     return nativeItem && this._nativeItemToDiagramItem(nativeItem);
-  };
-  _proto.getItemById = function getItemById(id) {
+  }
+  getItemById(id) {
     const nativeItem = this._diagramInstance && this._diagramInstance.getNativeItemByKey(id);
     return nativeItem && this._nativeItemToDiagramItem(nativeItem);
-  };
-  _proto.getItems = function getItems() {
+  }
+  getItems() {
     return this._diagramInstance.getNativeItems().map(nativeItem => nativeItem && this._nativeItemToDiagramItem(nativeItem));
-  };
-  _proto.getSelectedItems = function getSelectedItems() {
+  }
+  getSelectedItems() {
     return this._diagramInstance.getNativeSelectedItems().map(nativeItem => nativeItem && this._nativeItemToDiagramItem(nativeItem));
-  };
-  _proto.setSelectedItems = function setSelectedItems(items) {
+  }
+  setSelectedItems(items) {
     return this._diagramInstance.setSelectedItems(items.map(item => item.id));
-  };
-  _proto.scrollToItem = function scrollToItem(item) {
+  }
+  scrollToItem(item) {
     return this._diagramInstance.scrollToItems([item.id]);
-  };
-  _proto._invalidateContextMenuCommands = function _invalidateContextMenuCommands() {
+  }
+  _invalidateContextMenuCommands() {
     if (this._contextMenu) {
       this._contextMenu.option({
         commands: this.option('contextMenu.commands')
       });
     }
-  };
-  _proto._invalidateMainToolbarCommands = function _invalidateMainToolbarCommands() {
+  }
+  _invalidateMainToolbarCommands() {
     if (this._mainToolbar) {
       this._mainToolbar.option({
         commands: this.option('mainToolbar.commands')
       });
     }
-  };
-  _proto._invalidateHistoryToolbarCommands = function _invalidateHistoryToolbarCommands() {
+  }
+  _invalidateHistoryToolbarCommands() {
     if (this._historyToolbar) {
       this._historyToolbar.option({
         commands: this.option('historyToolbar.commands')
       });
     }
-  };
-  _proto._invalidateViewToolbarCommands = function _invalidateViewToolbarCommands() {
+  }
+  _invalidateViewToolbarCommands() {
     if (this._viewToolbar) {
       this._viewToolbar.option({
         commands: this.option('viewToolbar.commands')
       });
     }
-  };
-  _proto._invalidateToolboxGroups = function _invalidateToolboxGroups() {
+  }
+  _invalidateToolboxGroups() {
     if (this._toolbox) {
       this._toolbox.option({
         toolboxGroups: this._getToolboxGroups()
       });
     }
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _optionChanged(args) {
     if (!this.optionsUpdateBar || this.optionsUpdateBar.isUpdateLocked()) return;
     this.optionsUpdateBar.beginUpdate();
     try {
@@ -2118,8 +2111,8 @@ let Diagram = /*#__PURE__*/function (_Widget) {
     } finally {
       this.optionsUpdateBar.endUpdate();
     }
-  };
-  _proto._optionChangedCore = function _optionChangedCore(args) {
+  }
+  _optionChangedCore(args) {
     switch (args.name) {
       case 'readOnly':
       case 'disabled':
@@ -2269,11 +2262,10 @@ let Diagram = /*#__PURE__*/function (_Widget) {
       case 'hasChanges':
         break;
       default:
-        _Widget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  return Diagram;
-}(_ui.default);
+  }
+}
 (0, _component_registrator.default)('dxDiagram', Diagram);
 var _default = exports.default = Diagram;
 module.exports = exports.default;

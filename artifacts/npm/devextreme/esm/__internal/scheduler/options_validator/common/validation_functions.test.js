@@ -1,68 +1,129 @@
 /**
 * DevExtreme (esm/__internal/scheduler/options_validator/common/validation_functions.test.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-import _taggedTemplateLiteral from "@babel/runtime/helpers/esm/taggedTemplateLiteral";
-var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5;
 import each from 'jest-each';
 import { divisibleBy, greaterThan, inRange, isInteger, lessThan } from './validation_functions';
 describe('isInteger', () => {
-  each(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    value   | expectedResult\n    ", "    | ", "\n    ", "  | ", "\n    ", "   | ", "\n    ", " | ", "\n    ", "    | ", "\n  "])), 1, true, 1.5, false, -1, true, -1.5, false, 0, true).it('should detect integer correctly', _ref => {
-    var {
+  each`
+    value   | expectedResult
+    ${1}    | ${true}
+    ${1.5}  | ${false}
+    ${-1}   | ${true}
+    ${-1.5} | ${false}
+    ${0}    | ${true}
+  `.it('should detect integer correctly', _ref => {
+    let {
       value,
       expectedResult
     } = _ref;
-    var result = isInteger(value);
+    const result = isInteger(value);
     expect(result).toEqual(expectedResult);
   });
 });
 describe('greaterThat', () => {
-  each(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n    value   | min     | strict    | expectedResult\n    ", "   | ", "    | ", "   | ", "\n    ", "   | ", "   | ", "   | ", "\n    ", "   | ", "   | ", "   | ", "\n    ", "    | ", "    | ", "   | ", "\n    ", "  | ", "  | ", "   | ", "\n    ", "  | ", "   | ", "   | ", "\n    ", "  | ", "  | ", "   | ", "\n    ", "   | ", "    | ", "  | ", "\n    ", "   | ", "   | ", "  | ", "\n    ", "   | ", "   | ", "  | ", "\n    ", "    | ", "    | ", "  | ", "\n    ", "  | ", "  | ", "  | ", "\n    ", "  | ", "   | ", "  | ", "\n    ", "  | ", "  | ", "  | ", "\n  "])), 10, 5, true, true, 10, 15, true, false, 10, 10, true, false, 0, 0, true, false, -10, -10, true, false, -10, -5, true, false, -10, -15, true, true, 10, 5, false, true, 10, 15, false, false, 10, 10, false, true, 0, 0, false, true, -10, -10, false, true, -10, -5, false, false, -10, -15, false, true).it('should compare numbers correctly', _ref2 => {
-    var {
+  each`
+    value   | min     | strict    | expectedResult
+    ${10}   | ${5}    | ${true}   | ${true}
+    ${10}   | ${15}   | ${true}   | ${false}
+    ${10}   | ${10}   | ${true}   | ${false}
+    ${0}    | ${0}    | ${true}   | ${false}
+    ${-10}  | ${-10}  | ${true}   | ${false}
+    ${-10}  | ${-5}   | ${true}   | ${false}
+    ${-10}  | ${-15}  | ${true}   | ${true}
+    ${10}   | ${5}    | ${false}  | ${true}
+    ${10}   | ${15}   | ${false}  | ${false}
+    ${10}   | ${10}   | ${false}  | ${true}
+    ${0}    | ${0}    | ${false}  | ${true}
+    ${-10}  | ${-10}  | ${false}  | ${true}
+    ${-10}  | ${-5}   | ${false}  | ${false}
+    ${-10}  | ${-15}  | ${false}  | ${true}
+  `.it('should compare numbers correctly', _ref2 => {
+    let {
       value,
       min,
       strict,
       expectedResult
     } = _ref2;
-    var result = greaterThan(value, min, strict);
+    const result = greaterThan(value, min, strict);
     expect(result).toEqual(expectedResult);
   });
 });
 describe('lessThat', () => {
-  each(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n    value   | min     | strict    | expectedResult\n    ", "   | ", "    | ", "   | ", "\n    ", "   | ", "   | ", "   | ", "\n    ", "   | ", "   | ", "   | ", "\n    ", "    | ", "    | ", "   | ", "\n    ", "  | ", "  | ", "   | ", "\n    ", "  | ", "   | ", "   | ", "\n    ", "  | ", "  | ", "   | ", "\n    ", "   | ", "    | ", "  | ", "\n    ", "   | ", "   | ", "  | ", "\n    ", "   | ", "   | ", "  | ", "\n    ", "    | ", "    | ", "  | ", "\n    ", "  | ", "  | ", "  | ", "\n    ", "  | ", "   | ", "  | ", "\n    ", "  | ", "  | ", "  | ", "\n  "])), 10, 5, true, false, 10, 15, true, true, 10, 10, true, false, 0, 0, true, false, -10, -10, true, false, -10, -5, true, true, -10, -15, true, false, 10, 5, false, false, 10, 15, false, true, 10, 10, false, true, 0, 0, false, true, -10, -10, false, true, -10, -5, false, true, -10, -15, false, false).it('should compare numbers correctly', _ref3 => {
-    var {
+  each`
+    value   | min     | strict    | expectedResult
+    ${10}   | ${5}    | ${true}   | ${false}
+    ${10}   | ${15}   | ${true}   | ${true}
+    ${10}   | ${10}   | ${true}   | ${false}
+    ${0}    | ${0}    | ${true}   | ${false}
+    ${-10}  | ${-10}  | ${true}   | ${false}
+    ${-10}  | ${-5}   | ${true}   | ${true}
+    ${-10}  | ${-15}  | ${true}   | ${false}
+    ${10}   | ${5}    | ${false}  | ${false}
+    ${10}   | ${15}   | ${false}  | ${true}
+    ${10}   | ${10}   | ${false}  | ${true}
+    ${0}    | ${0}    | ${false}  | ${true}
+    ${-10}  | ${-10}  | ${false}  | ${true}
+    ${-10}  | ${-5}   | ${false}  | ${true}
+    ${-10}  | ${-15}  | ${false}  | ${false}
+  `.it('should compare numbers correctly', _ref3 => {
+    let {
       value,
       min,
       strict,
       expectedResult
     } = _ref3;
-    var result = lessThan(value, min, strict);
+    const result = lessThan(value, min, strict);
     expect(result).toEqual(expectedResult);
   });
 });
 describe('inRange', () => {
-  each(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n    value | range         | expectedResult\n    ", "  | ", "  | ", "\n    ", "  | ", "    | ", "\n    ", "  | ", "   | ", "\n    ", "  | ", "   | ", "\n    ", "  | ", "    | ", "\n    ", " | ", "  | ", "\n    ", " | ", "    | ", "\n    ", " | ", "  | ", "\n    ", " | ", "  | ", "\n    ", " | ", "    | ", "\n  "])), 5, [-10, 10], true, 5, [5, 10], true, 5, [-10, 5], true, 5, [-10, 4], false, 5, [6, 10], false, -5, [-10, 10], true, -5, [-5, 0], true, -5, [-10, -5], true, -5, [-10, -6], false, -5, [-4, 0], false).it('should determine interval correctly', _ref4 => {
-    var {
+  each`
+    value | range         | expectedResult
+    ${5}  | ${[-10, 10]}  | ${true}
+    ${5}  | ${[5, 10]}    | ${true}
+    ${5}  | ${[-10, 5]}   | ${true}
+    ${5}  | ${[-10, 4]}   | ${false}
+    ${5}  | ${[6, 10]}    | ${false}
+    ${-5} | ${[-10, 10]}  | ${true}
+    ${-5} | ${[-5, 0]}    | ${true}
+    ${-5} | ${[-10, -5]}  | ${true}
+    ${-5} | ${[-10, -6]}  | ${false}
+    ${-5} | ${[-4, 0]}    | ${false}
+  `.it('should determine interval correctly', _ref4 => {
+    let {
       value,
       range,
       expectedResult
     } = _ref4;
-    var result = inRange(value, range);
+    const result = inRange(value, range);
     expect(result).toEqual(expectedResult);
   });
 });
 describe('divisibleBy', () => {
-  each(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n    value  | divider  | expectedResult\n    ", "   | ", "     | ", "\n    ", "   | ", "     | ", "\n    ", "   | ", "   | ", "\n    ", "   | ", "     | ", "\n    ", "   | ", "     | ", "\n    ", "   | ", "   | ", "\n    ", "  | ", "     | ", "\n    ", "  | ", "     | ", "\n    ", "   | ", "     | ", "\n    ", "   | ", "     | ", "\n  "])), 4, 2, true, 5, 2, false, 0, 111, true, 4, -2, true, 5, -2, false, 0, -111, true, -4, 2, true, -5, 2, false, 4, -2, true, 5, -2, false).it('should determine divisible by correctly', _ref5 => {
-    var {
+  each`
+    value  | divider  | expectedResult
+    ${4}   | ${2}     | ${true}
+    ${5}   | ${2}     | ${false}
+    ${0}   | ${111}   | ${true}
+    ${4}   | ${-2}     | ${true}
+    ${5}   | ${-2}     | ${false}
+    ${0}   | ${-111}   | ${true}
+    ${-4}  | ${2}     | ${true}
+    ${-5}  | ${2}     | ${false}
+    ${4}   | ${-2}     | ${true}
+    ${5}   | ${-2}     | ${false}
+  `.it('should determine divisible by correctly', _ref5 => {
+    let {
       value,
       divider,
       expectedResult
     } = _ref5;
-    var result = divisibleBy(value, divider);
+    const result = divisibleBy(value, divider);
     expect(result).toEqual(expectedResult);
   });
 });

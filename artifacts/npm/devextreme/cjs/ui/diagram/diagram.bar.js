@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/diagram/diagram.bar.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,37 +10,36 @@
 
 exports.default = void 0;
 var _diagram = require("./diagram.importer");
-let DiagramBar = /*#__PURE__*/function () {
-  function DiagramBar(owner) {
+class DiagramBar {
+  constructor(owner) {
     const {
       EventDispatcher
     } = (0, _diagram.getDiagram)();
     this.onChanged = new EventDispatcher(); // IBar.onChanged: EventDispatcher<IBarListener>
     this._owner = owner;
   }
-  var _proto = DiagramBar.prototype;
-  _proto.raiseBarCommandExecuted = function raiseBarCommandExecuted(key, parameter) {
+  raiseBarCommandExecuted(key, parameter) {
     this.onChanged.raise('notifyBarCommandExecuted', parseInt(key), parameter);
-  };
-  _proto.getCommandKeys = function getCommandKeys() {
+  }
+  getCommandKeys() {
     // IBar.getCommandKeys(): DiagramCommand[]
     throw 'Not Implemented';
-  };
-  _proto.setItemValue = function setItemValue(key, value) {// IBar.setItemValue(key: DiagramCommand, value: any)
-  };
-  _proto.setItemEnabled = function setItemEnabled(key, enabled) {// IBar.setItemEnabled(key: DiagramCommand, enabled: boolean)
-  };
-  _proto.setItemVisible = function setItemVisible(key, enabled) {// IBar.setItemVisible(key: DiagramCommand, visible: boolean)
-  };
-  _proto.setEnabled = function setEnabled(enabled) {// IBar.setEnabled(enabled: boolean)
-  };
-  _proto.setItemSubItems = function setItemSubItems(key, items) {// IBar.setItemSubItems(key: DiagramCommand, items: any[])
-  };
-  _proto.isVisible = function isVisible() {
+  }
+  setItemValue(key, value) {// IBar.setItemValue(key: DiagramCommand, value: any)
+  }
+  setItemEnabled(key, enabled) {// IBar.setItemEnabled(key: DiagramCommand, enabled: boolean)
+  }
+  setItemVisible(key, enabled) {// IBar.setItemVisible(key: DiagramCommand, visible: boolean)
+  }
+  setEnabled(enabled) {// IBar.setEnabled(enabled: boolean)
+  }
+  setItemSubItems(key, items) {// IBar.setItemSubItems(key: DiagramCommand, items: any[])
+  }
+  isVisible() {
     // IBar.isVisible(): boolean
     return true;
-  };
-  _proto._getKeys = function _getKeys(items) {
+  }
+  _getKeys(items) {
     const keys = items.reduce((commands, item) => {
       if (item.command !== undefined) {
         commands.push(item.command);
@@ -51,9 +50,8 @@ let DiagramBar = /*#__PURE__*/function () {
       return commands;
     }, []);
     return keys;
-  };
-  return DiagramBar;
-}();
+  }
+}
 var _default = exports.default = DiagramBar;
 module.exports = exports.default;
 module.exports.default = exports.default;

@@ -1,15 +1,15 @@
 /**
 * DevExtreme (esm/core/resize_observer.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { noop } from './utils/common';
 import { getWindow, hasWindow } from './utils/window';
-var window = getWindow();
-var ResizeObserverMock = {
+const window = getWindow();
+const ResizeObserverMock = {
   observe: noop,
   unobserve: noop,
   disconnect: noop
@@ -23,7 +23,7 @@ class ResizeObserverSingleton {
     this._observer = new window.ResizeObserver(entries => {
       entries.forEach(entry => {
         var _this$_callbacksMap$g;
-        (_this$_callbacksMap$g = this._callbacksMap.get(entry.target)) === null || _this$_callbacksMap$g === void 0 ? void 0 : _this$_callbacksMap$g(entry);
+        (_this$_callbacksMap$g = this._callbacksMap.get(entry.target)) === null || _this$_callbacksMap$g === void 0 || _this$_callbacksMap$g(entry);
       });
     });
   }
@@ -40,5 +40,5 @@ class ResizeObserverSingleton {
     this._observer.disconnect();
   }
 }
-var resizeObserverSingleton = new ResizeObserverSingleton();
+const resizeObserverSingleton = new ResizeObserverSingleton();
 export default resizeObserverSingleton;

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/gantt/ui.gantt.cache.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,7 +15,7 @@ export class GanttDataCache {
   saveData(key, data, keyExpireCallback) {
     if (data) {
       this._clearTimer(key);
-      var storage = this._getCache(key, true);
+      const storage = this._getCache(key, true);
       extendFromObject(storage, data, true);
       if (keyExpireCallback) {
         this._setExpireTimer(key, keyExpireCallback);
@@ -23,7 +23,7 @@ export class GanttDataCache {
     }
   }
   pullDataFromCache(key, target) {
-    var data = this._getCache(key);
+    const data = this._getCache(key);
     if (data) {
       extendFromObject(target, data);
     }
@@ -55,7 +55,7 @@ export class GanttDataCache {
     delete this._cache[key];
   }
   _clearTimer(key) {
-    var timers = this._timers;
+    const timers = this._timers;
     if (timers && timers[key]) {
       clearTimeout(timers[key]);
       delete timers[key];

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/collection/ui.collection_widget.base.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -27,29 +27,23 @@ import Widget, {
     WidgetOptions,
 } from '../widget/ui.widget';
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type ItemLike = string | CollectionWidgetItem | any;
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @hidden
  */
 export interface SelectionChangedInfo<TItem extends ItemLike = any> {
-    /**
-     * 
-     */
+    /** @docid */
     readonly addedItems: Array<TItem>;
-    /**
-     * 
-     */
+    /** @docid */
     readonly removedItems: Array<TItem>;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
+ * @docid
+ * @type object
  */
 export interface CollectionWidgetOptions<
     TComponent extends CollectionWidget<any, TItem, TKey> | any,
@@ -57,69 +51,134 @@ export interface CollectionWidgetOptions<
     TKey = any,
 > extends WidgetOptions<TComponent> {
     /**
-     * Binds the UI component to data.
+     * @docid
+     * @default null
+     * @type Store|DataSource|DataSourceOptions|string|Array<string | CollectionWidgetItem>|null
+     * @public
      */
     dataSource?: DataSourceLike<TItem, TKey> | null;
     /**
-     * The time period in milliseconds before the onItemHold event is raised.
+     * @docid
+     * @default 750
+     * @public
      */
     itemHoldTimeout?: number;
     /**
-     * Specifies a custom template for items.
+     * @docid
+     * @default "item"
+     * @type_function_param1 itemData:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     itemTemplate?: template | ((itemData: TItem, itemIndex: number, itemElement: DxElement) => string | UserDefinedElement);
     /**
-     * An array of items displayed by the UI component.
+     * @docid
+     * @fires CollectionWidgetOptions.onOptionChanged
+     * @type Array<string | CollectionWidgetItem | any>
+     * @public
      */
     items?: Array<TItem>;
     /**
-     * Specifies the key property that provides key values to access data items. Each key value must be unique.
+     * @docid
+     * @default null
+     * @public
      */
     keyExpr?: string | Function;
     /**
-     * Specifies the text or HTML markup displayed by the UI component if the item collection is empty.
+     * @docid
+     * @default "No data to display"
+     * @public
      */
     noDataText?: string;
     /**
-     * A function that is executed when a collection item is clicked or tapped.
+     * @docid
+     * @default null
+     * @type function
+     * @type_function_param1 e:object
+     * @type_function_param1_field itemData:object
+     * @type_function_param1_field event:event
+     * @type_function_param1_field component:this
+     * @action
+     * @public
      */
     onItemClick?: ((e: NativeEventInfo<TComponent, MouseEvent | PointerEvent> & ItemInfo<TItem>) => void) | string;
     /**
-     * A function that is executed when a collection item is right-clicked or pressed.
+     * @docid
+     * @default null
+     * @type_function_param1 e:object
+     * @type_function_param1_field itemData:object
+     * @type_function_param1_field event:event
+     * @type_function_param1_field component:this
+     * @action
+     * @public
      */
     onItemContextMenu?: ((e: NativeEventInfo<TComponent, MouseEvent | PointerEvent | TouchEvent> & ItemInfo<TItem>) => void);
     /**
-     * A function that is executed when a collection item has been held for a specified period.
+     * @docid
+     * @default null
+     * @type_function_param1 e:object
+     * @type_function_param1_field itemData:object
+     * @type_function_param1_field event:event
+     * @type_function_param1_field component:this
+     * @action
+     * @public
      */
     onItemHold?: ((e: NativeEventInfo<TComponent, MouseEvent | PointerEvent | TouchEvent> & ItemInfo<TItem>) => void);
     /**
-     * A function that is executed after a collection item is rendered.
+     * @docid
+     * @default null
+     * @type_function_param1 e:object
+     * @type_function_param1_field itemData:object
+     * @type_function_param1_field component:this
+     * @action
+     * @public
      */
     onItemRendered?: ((e: EventInfo<TComponent> & ItemInfo<TItem>) => void);
     /**
-     * A function that is executed when a collection item is selected or selection is canceled.
+     * @docid
+     * @default null
+     * @type_function_param1 e:object
+     * @type_function_param1_field addedItems:array<any>
+     * @type_function_param1_field removedItems:array<any>
+     * @type_function_param1_field component:this
+     * @action
+     * @public
      */
     onSelectionChanged?: ((e: EventInfo<TComponent> & SelectionChangedInfo<TItem>) => void);
     /**
-     * The index of the currently selected UI component item.
+     * @docid
+     * @default -1
+     * @fires CollectionWidgetOptions.onSelectionChanged
+     * @public
      */
     selectedIndex?: number;
     /**
-     * The selected item object.
+     * @docid
+     * @default null
+     * @fires CollectionWidgetOptions.onSelectionChanged
+     * @ref
+     * @public
      */
     selectedItem?: TItem;
     /**
-     * Specifies an array of currently selected item keys.
+     * @docid
+     * @fires CollectionWidgetOptions.onSelectionChanged
+     * @public
      */
     selectedItemKeys?: Array<TKey>;
     /**
-     * An array of currently selected item objects.
+     * @docid
+     * @fires CollectionWidgetOptions.onSelectionChanged
+     * @public
      */
     selectedItems?: Array<TItem>;
 }
 /**
- * The base class for UI components containing an item collection.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @inherits Widget, DataHelperMixin
+ * @hidden
+ * @namespace DevExpress.ui
+ * @options CollectionWidgetOptions
  */
 export default class CollectionWidget<
     TProperties extends CollectionWidgetOptions<any, TItem, TKey>,
@@ -130,28 +189,37 @@ export default class CollectionWidget<
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface CollectionWidgetItem {
     /**
-     * Specifies whether the UI component item responds to user interaction.
+     * @docid
+     * @default false
+     * @public
      */
     disabled?: boolean;
     /**
-     * Specifies the HTML markup to be inserted into the item element.
+     * @docid
+     * @public
      */
     html?: string;
     /**
-     * Specifies a template that should be used to render this item only.
+     * @docid
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     template?: template | ((itemData: this, itemIndex: number, itemElement: DxElement) => string | UserDefinedElement);
     /**
-     * Specifies text displayed for the UI component item.
+     * @docid
+     * @public
      */
     text?: string;
     /**
-     * Specifies whether or not a UI component item must be displayed.
+     * @docid
+     * @default true
+     * @public
      */
     visible?: boolean;
 }

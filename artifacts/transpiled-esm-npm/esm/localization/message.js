@@ -4,34 +4,34 @@ import { format as stringFormat } from '../core/utils/string';
 import { humanize } from '../core/utils/inflector';
 import coreLocalization from './core';
 import { defaultMessages } from './default_messages';
-var baseDictionary = extend(true, {}, defaultMessages);
-var getDataByLocale = (localeData, locale) => {
+const baseDictionary = extend(true, {}, defaultMessages);
+const getDataByLocale = (localeData, locale) => {
   var _Object$entries$find;
   return localeData[locale] || (locale === null || locale === void 0 ? void 0 : locale.toLowerCase) && ((_Object$entries$find = Object.entries(localeData).find(_ref => {
-    var [key] = _ref;
+    let [key] = _ref;
     return key.toLowerCase() === locale.toLowerCase();
   })) === null || _Object$entries$find === void 0 ? void 0 : _Object$entries$find[1]) || {};
 };
-var newMessages = {};
-var messageLocalization = dependencyInjector({
-  engine: function engine() {
+const newMessages = {};
+const messageLocalization = dependencyInjector({
+  engine: function () {
     return 'base';
   },
   _dictionary: baseDictionary,
-  load: function load(messages) {
+  load: function (messages) {
     extend(true, this._dictionary, messages);
   },
   _localizablePrefix: '@',
-  setup: function setup(localizablePrefix) {
+  setup: function (localizablePrefix) {
     this._localizablePrefix = localizablePrefix;
   },
-  localizeString: function localizeString(text) {
-    var that = this;
-    var regex = new RegExp('(^|[^a-zA-Z_0-9' + that._localizablePrefix + '-]+)(' + that._localizablePrefix + '{1,2})([a-zA-Z_0-9-]+)', 'g');
-    var escapeString = that._localizablePrefix + that._localizablePrefix;
+  localizeString: function (text) {
+    const that = this;
+    const regex = new RegExp('(^|[^a-zA-Z_0-9' + that._localizablePrefix + '-]+)(' + that._localizablePrefix + '{1,2})([a-zA-Z_0-9-]+)', 'g');
+    const escapeString = that._localizablePrefix + that._localizablePrefix;
     return text.replace(regex, (str, prefix, escape, localizationKey) => {
-      var defaultResult = that._localizablePrefix + localizationKey;
-      var result;
+      const defaultResult = that._localizablePrefix + localizationKey;
+      let result;
       if (escape !== escapeString) {
         result = that.format(localizationKey);
       }
@@ -41,31 +41,31 @@ var messageLocalization = dependencyInjector({
       return prefix + (result || defaultResult);
     });
   },
-  getMessagesByLocales: function getMessagesByLocales() {
+  getMessagesByLocales: function () {
     return this._dictionary;
   },
-  getDictionary: function getDictionary(onlyNew) {
+  getDictionary: function (onlyNew) {
     if (onlyNew) {
       return newMessages;
     }
     return extend({}, newMessages, this.getMessagesByLocales()[coreLocalization.locale()]);
   },
-  getFormatter: function getFormatter(key) {
+  getFormatter: function (key) {
     return this._getFormatterBase(key) || this._getFormatterBase(key, 'en');
   },
-  _getFormatterBase: function _getFormatterBase(key, locale) {
-    var message = coreLocalization.getValueByClosestLocale(locale => getDataByLocale(this._dictionary, locale)[key]);
+  _getFormatterBase: function (key, locale) {
+    const message = coreLocalization.getValueByClosestLocale(locale => getDataByLocale(this._dictionary, locale)[key]);
     if (message) {
       return function () {
-        var args = arguments.length === 1 && Array.isArray(arguments[0]) ? arguments[0].slice(0) : Array.prototype.slice.call(arguments, 0);
+        const args = arguments.length === 1 && Array.isArray(arguments[0]) ? arguments[0].slice(0) : Array.prototype.slice.call(arguments, 0);
         args.unshift(message);
         return stringFormat.apply(this, args);
       };
     }
   },
-  format: function format(key) {
-    var formatter = this.getFormatter(key);
-    var values = Array.prototype.slice.call(arguments, 1);
+  format: function (key) {
+    const formatter = this.getFormatter(key);
+    const values = Array.prototype.slice.call(arguments, 1);
     return formatter && formatter.apply(this, values) || '';
   }
 });

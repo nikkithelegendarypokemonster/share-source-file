@@ -1,13 +1,13 @@
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["children", "className", "disabled", "onDragEnter", "onDragLeave", "onDrop"];
+const _excluded = ["children", "className", "disabled", "onDragEnter", "onDragLeave", "onDrop"];
 import { createVNode, normalizeProps } from "inferno";
 import { InfernoEffect, InfernoComponent } from '@devextreme/runtime/inferno';
 import { enter, leave, drop } from '../../events/drag';
 import eventsEngine from '../../events/core/events_engine';
 import { combineClasses } from '../utils/combine_classes';
-export var viewFunction = _ref => {
-  var {
+export const viewFunction = _ref => {
+  let {
     cssClasses,
     props: {
       children
@@ -17,7 +17,7 @@ export var viewFunction = _ref => {
   } = _ref;
   return normalizeProps(createVNode(1, "div", cssClasses, children, 0, _extends({}, restAttributes), null, widgetRef));
 };
-export var DroppableProps = {
+export const DroppableProps = {
   disabled: false,
   className: ''
 };
@@ -38,7 +38,7 @@ export class Droppable extends InfernoComponent {
   }
   updateEffects() {
     var _this$_effects$;
-    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([this.props.disabled, this.props.onDragEnter, this.props.onDragLeave, this.props.onDrop]);
+    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 || _this$_effects$.update([this.props.disabled, this.props.onDragEnter, this.props.onDragLeave, this.props.onDrop]);
   }
   dropEventsEffect() {
     if (this.props.disabled) {
@@ -54,11 +54,11 @@ export class Droppable extends InfernoComponent {
     };
   }
   get cssClasses() {
-    var {
+    const {
       className,
       disabled
     } = this.props;
-    var classesMap = {
+    const classesMap = {
       [className]: !!className,
       'dx-droppable': true,
       'dx-state-disabled': !!disabled
@@ -66,25 +66,25 @@ export class Droppable extends InfernoComponent {
     return combineClasses(classesMap);
   }
   dragEnterHandler(event) {
-    var dragEnterArgs = this.getEventArgs(event);
-    var {
+    const dragEnterArgs = this.getEventArgs(event);
+    const {
       onDragEnter
     } = this.props;
-    onDragEnter === null || onDragEnter === void 0 ? void 0 : onDragEnter(dragEnterArgs);
+    onDragEnter === null || onDragEnter === void 0 || onDragEnter(dragEnterArgs);
   }
   dragLeaveHandler(event) {
-    var dragLeaveArgs = this.getEventArgs(event);
-    var {
+    const dragLeaveArgs = this.getEventArgs(event);
+    const {
       onDragLeave
     } = this.props;
-    onDragLeave === null || onDragLeave === void 0 ? void 0 : onDragLeave(dragLeaveArgs);
+    onDragLeave === null || onDragLeave === void 0 || onDragLeave(dragLeaveArgs);
   }
   dropHandler(event) {
-    var dropArgs = this.getEventArgs(event);
-    var {
+    const dropArgs = this.getEventArgs(event);
+    const {
       onDrop
     } = this.props;
-    onDrop === null || onDrop === void 0 ? void 0 : onDrop(dropArgs);
+    onDrop === null || onDrop === void 0 || onDrop(dropArgs);
   }
   getEventArgs(e) {
     return {
@@ -93,12 +93,12 @@ export class Droppable extends InfernoComponent {
     };
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       widgetRef: this.widgetRef,

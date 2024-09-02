@@ -1,21 +1,21 @@
 /**
 * DevExtreme (esm/renovation/ui/overlays/validation_message.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["accessKey", "activeStateEnabled", "boundary", "className", "contentId", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "mode", "offset", "onClick", "onKeyDown", "positionSide", "rtlEnabled", "tabIndex", "target", "validationErrors", "visible", "visualContainer", "width"];
+const _excluded = ["accessKey", "activeStateEnabled", "boundary", "className", "contentId", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "mode", "offset", "onClick", "onKeyDown", "positionSide", "rtlEnabled", "tabIndex", "target", "validationErrors", "visible", "visualContainer", "width"];
 import { createComponentVNode, normalizeProps } from "inferno";
 import { BaseInfernoComponent } from '@devextreme/runtime/inferno';
 import LegacyValidationMessage from '../../../ui/validation_message';
 import { DomComponentWrapper } from '../common/dom_component_wrapper';
 import { BaseWidgetProps } from '../common/base_props';
-export var viewFunction = _ref => {
-  var {
+export const viewFunction = _ref => {
+  let {
     componentProps,
     restAttributes
   } = _ref;
@@ -25,7 +25,7 @@ export var viewFunction = _ref => {
     "templateNames": []
   }, restAttributes)));
 };
-export var ValidationMessageProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(BaseWidgetProps), Object.getOwnPropertyDescriptors({
+export const ValidationMessageProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(BaseWidgetProps), Object.getOwnPropertyDescriptors({
   mode: 'auto',
   positionSide: 'top',
   offset: Object.freeze({
@@ -43,12 +43,12 @@ export class ValidationMessage extends BaseInfernoComponent {
     return this.props;
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       componentProps: this.componentProps,

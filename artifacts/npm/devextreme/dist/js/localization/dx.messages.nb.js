@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.nb.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -200,7 +200,9 @@
             "dxDataGrid-filterPanelCreateFilter": "Velg filter",
             "dxDataGrid-filterPanelClearFilter": "Slett",
             "dxDataGrid-filterPanelFilterEnabledHint": "Aktivér filter",
+            "dxDataGrid-masterDetail": "Cell with details",
             "dxTreeList-ariaTreeList": "Tree list with {0} rows and {1} columns",
+            "dxTreeList-ariaExpandableInstruction": "Press Ctrl + right arrow to expand the focused node and Ctrl + left arrow to collapse it",
             "dxTreeList-ariaSearchInGrid": "Search in the tree list",
             "dxTreeList-ariaToolbar": "Tree list toolbar",
             "dxTreeList-editingAddRowToNode": "Legg til",
@@ -233,6 +235,7 @@
             "dxPivotGrid-dataFieldArea": "Slipp datafelter her",
             "dxPivotGrid-rowFieldArea": "Slipp radfelter her",
             "dxPivotGrid-filterFieldArea": "Slipp filterfelter her",
+            "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
             "dxScheduler-editorLabelTitle": "Emne",
             "dxScheduler-editorLabelStartDate": "Startdato",
             "dxScheduler-editorLabelEndDate": "Sluttdato",
@@ -279,6 +282,10 @@
             "dxScheduler-confirmRecurrenceDeleteOccurrence": "Slette avtale",
             "dxScheduler-noTimezoneTitle": "Ingen tidssone",
             "dxScheduler-moreAppointments": "{0} mer",
+            "dxCalendar-currentDay": "Today",
+            "dxCalendar-currentMonth": "Current month",
+            "dxCalendar-currentYear": "Current year",
+            "dxCalendar-currentYearRange": "Current year range",
             "dxCalendar-todayButtonText": "I dag",
             "dxCalendar-ariaWidgetName": "Kalender",
             "dxCalendar-previousMonthButtonLabel": "Previous month",
@@ -293,6 +300,9 @@
             "dxCalendar-captionYearLabel": "Year selection",
             "dxCalendar-captionDecadeLabel": "Decade selection",
             "dxCalendar-captionCenturyLabel": "Century selection",
+            "dxCalendar-selectedDate": "The selected date is {0}",
+            "dxCalendar-selectedDateRange": "The selected date range is from {0} to {1}",
+            "dxCalendar-readOnlyLabel": "Read-only calendar",
             "dxColorView-ariaRed": "Rød",
             "dxColorView-ariaGreen": "Grønn",
             "dxColorView-ariaBlue": "Blå",
@@ -686,7 +696,8 @@
             "dxMultiView-elementAriaRoleDescription": "MultiView",
             "dxMultiView-elementAriaLabel": "Use the arrow keys or swipe to navigate between views",
             "dxMultiView-itemAriaRoleDescription": "View",
-            "dxMultiView-itemAriaLabel": "{0} of {1}"
+            "dxMultiView-itemAriaLabel": "{0} of {1}",
+            "dxSplitter-resizeHandleAriaLabel": "Split bar"
         }
     });
 }));

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/pivot_grid/headers_area/m_headers_area.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -75,7 +75,7 @@ const HorizontalHeadersArea = exports.HorizontalHeadersArea = _m_area_item.AreaI
       classArray
     } = options;
     if (options.cellIndex === options.cellsCount - 1) {
-      cssArray.push("".concat(options.rtlEnabled ? 'border-left:' : 'border-right:', "0px"));
+      cssArray.push(`${options.rtlEnabled ? 'border-left:' : 'border-right:'}0px`);
     }
     if (cell.rowspan === rowsCount - options.rowIndex || options.rowIndex + 1 === rowsCount) {
       cssArray.push('border-bottom-width:0px');

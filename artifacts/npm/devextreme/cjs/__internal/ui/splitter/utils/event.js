@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/ui/splitter/utils/event.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,7 +15,7 @@ exports.RESIZE_EVENT = exports.ITEM_EXPANDED_EVENT = exports.ITEM_COLLAPSED_EVEN
 exports.getActionNameByEventName = getActionNameByEventName;
 var _inflector = require("../../../../core/utils/inflector");
 function getActionNameByEventName(eventName) {
-  return "_".concat((0, _inflector.camelize)(eventName.replace('on', '')), "Action");
+  return `_${(0, _inflector.camelize)(eventName.replace('on', ''))}Action`;
 }
 const RESIZE_EVENT = exports.RESIZE_EVENT = {
   onResize: 'onResize',

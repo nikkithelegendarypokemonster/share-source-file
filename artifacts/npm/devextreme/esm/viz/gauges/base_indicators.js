@@ -1,59 +1,59 @@
 /**
 * DevExtreme (esm/viz/gauges/base_indicators.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { noop } from '../../core/utils/common';
 import { each } from '../../core/utils/iterator';
-var _isFinite = isFinite;
-var _Number = Number;
-var _round = Math.round;
+const _isFinite = isFinite;
+const _Number = Number;
+const _round = Math.round;
 import { formatValue, getSampleText } from './base_gauge';
-var _formatValue = formatValue;
-var _getSampleText = getSampleText;
+const _formatValue = formatValue;
+const _getSampleText = getSampleText;
 import { patchFontOptions as _patchFontOptions, extractColor } from '../core/utils';
 import { extend } from '../../core/utils/extend';
 import Class from '../../core/class';
-export var BaseElement = Class.inherit({
-  ctor: function ctor(parameters) {
-    var that = this;
+export const BaseElement = Class.inherit({
+  ctor: function (parameters) {
+    const that = this;
     each(parameters, function (name, value) {
       that['_' + name] = value;
     });
     that._init();
   },
-  dispose: function dispose() {
-    var that = this;
+  dispose: function () {
+    const that = this;
     that._dispose();
     each(that, function (name) {
       that[name] = null;
     });
     return that;
   },
-  getOffset: function getOffset() {
+  getOffset: function () {
     return _Number(this._options.offset) || 0;
   }
 });
-export var BaseIndicator = BaseElement.inherit({
-  _init: function _init() {
-    var that = this;
+export const BaseIndicator = BaseElement.inherit({
+  _init: function () {
+    const that = this;
     that._rootElement = that._createRoot().linkOn(that._owner, {
       name: 'value-indicator',
       after: 'core'
     });
     that._trackerElement = that._createTracker();
   },
-  _dispose: function _dispose() {
+  _dispose: function () {
     this._rootElement.linkOff();
   },
-  _setupAnimation: function _setupAnimation() {
-    var that = this;
+  _setupAnimation: function () {
+    const that = this;
     if (that._options.animation) {
       that._animation = {
-        step: function step(pos) {
+        step: function (pos) {
           that._actualValue = that._animation.start + that._animation.delta * pos;
           that._actualPosition = that._translator.translate(that._actualValue);
           that._move();
@@ -63,9 +63,9 @@ export var BaseIndicator = BaseElement.inherit({
       };
     }
   },
-  _runAnimation: function _runAnimation(value) {
-    var that = this;
-    var animation = that._animation;
+  _runAnimation: function (value) {
+    const that = this;
+    const animation = that._animation;
     animation.start = that._actualValue;
     animation.delta = value - that._actualValue;
     that._rootElement.animate({
@@ -76,17 +76,17 @@ export var BaseIndicator = BaseElement.inherit({
       easing: animation.easing
     });
   },
-  _createRoot: function _createRoot() {
+  _createRoot: function () {
     return this._renderer.g().attr({
       'class': this._className
     });
   },
-  _createTracker: function _createTracker() {
+  _createTracker: function () {
     return this._renderer.path([], 'area');
   },
   _getTrackerSettings: noop,
-  clean: function clean() {
-    var that = this;
+  clean: function () {
+    const that = this;
     that._animation && that._rootElement.stopAnimation();
     that._rootElement.linkRemove().clear();
     that._clear();
@@ -94,8 +94,8 @@ export var BaseIndicator = BaseElement.inherit({
     that._options = that.enabled = that._animation = null;
     return that;
   },
-  render: function render(options) {
-    var that = this;
+  render: function (options) {
+    const that = this;
     that.type = options.type;
     that._options = options;
     that._actualValue = that._currentValue = that._translator.adjust(that._options.currentValue);
@@ -109,8 +109,8 @@ export var BaseIndicator = BaseElement.inherit({
     }
     return that;
   },
-  resize: function resize(layout) {
-    var that = this;
+  resize: function (layout) {
+    const that = this;
     that._rootElement.clear();
     that._clear();
     that.visible = that._isVisible(layout);
@@ -123,11 +123,11 @@ export var BaseIndicator = BaseElement.inherit({
     }
     return that;
   },
-  value: function value(arg, _noAnimation) {
-    var that = this;
-    var val;
-    var rootElement = this._rootElement;
-    var visibility = null;
+  value: function (arg, _noAnimation) {
+    const that = this;
+    let val;
+    const rootElement = this._rootElement;
+    let visibility = null;
     if (arg === undefined) {
       return that._currentValue;
     }
@@ -163,7 +163,7 @@ export var BaseIndicator = BaseElement.inherit({
 
 // The following is from baseMarker.js
 
-var COEFFICIENTS_MAP = {};
+const COEFFICIENTS_MAP = {};
 COEFFICIENTS_MAP['right-bottom'] = COEFFICIENTS_MAP['rb'] = [0, -1, -1, 0, 0, 1, 1, 0];
 COEFFICIENTS_MAP['bottom-right'] = COEFFICIENTS_MAP['br'] = [-1, 0, 0, -1, 1, 0, 0, 1];
 COEFFICIENTS_MAP['left-bottom'] = COEFFICIENTS_MAP['lb'] = [0, -1, 1, 0, 0, 1, -1, 0];
@@ -173,15 +173,15 @@ COEFFICIENTS_MAP['top-left'] = COEFFICIENTS_MAP['tl'] = [1, 0, 0, 1, -1, 0, 0, -
 COEFFICIENTS_MAP['right-top'] = COEFFICIENTS_MAP['rt'] = [0, 1, -1, 0, 0, -1, 1, 0];
 COEFFICIENTS_MAP['top-right'] = COEFFICIENTS_MAP['tr'] = [-1, 0, 0, 1, 1, 0, 0, -1];
 function getTextCloudInfo(options) {
-  var x = options.x;
-  var y = options.y;
-  var type = COEFFICIENTS_MAP[options.type];
-  var cloudWidth = options.cloudWidth;
-  var cloudHeight = options.cloudHeight;
-  var tailWidth;
-  var tailHeight;
-  var cx = x;
-  var cy = y;
+  let x = options.x;
+  let y = options.y;
+  const type = COEFFICIENTS_MAP[options.type];
+  const cloudWidth = options.cloudWidth;
+  const cloudHeight = options.cloudHeight;
+  let tailWidth;
+  let tailHeight;
+  const cx = x;
+  const cy = y;
   tailWidth = tailHeight = options.tailLength;
   if (type[0] & 1) {
     tailHeight = Math.min(tailHeight, cloudHeight / 3);
@@ -194,21 +194,21 @@ function getTextCloudInfo(options) {
     points: [_round(x), _round(y), _round(x += type[0] * (cloudWidth + tailWidth)), _round(y += type[1] * (cloudHeight + tailHeight)), _round(x += type[2] * cloudWidth), _round(y += type[3] * cloudHeight), _round(x += type[4] * cloudWidth), _round(y += type[5] * cloudHeight), _round(x += type[6] * (cloudWidth - tailWidth)), _round(y += type[7] * (cloudHeight - tailHeight))]
   };
 }
-export var BaseTextCloudMarker = BaseIndicator.inherit({
-  _move: function _move() {
-    var that = this;
-    var options = that._options;
-    var textCloudOptions = that._getTextCloudOptions();
-    var text = _formatValue(that._actualValue, options.text);
+export const BaseTextCloudMarker = BaseIndicator.inherit({
+  _move: function () {
+    const that = this;
+    const options = that._options;
+    const textCloudOptions = that._getTextCloudOptions();
+    const text = _formatValue(that._actualValue, options.text);
     that._text.attr({
       text: text
     });
-    var bBox = that._text.getBBox();
-    var x = textCloudOptions.x;
-    var y = textCloudOptions.y;
-    var cloudWidth = (bBox.width || text.length * that._textUnitWidth) + 2 * options.horizontalOffset;
-    var cloudHeight = (bBox.height || that._textHeight) + 2 * options.verticalOffset;
-    var info = getTextCloudInfo({
+    const bBox = that._text.getBBox();
+    const x = textCloudOptions.x;
+    const y = textCloudOptions.y;
+    const cloudWidth = (bBox.width || text.length * that._textUnitWidth) + 2 * options.horizontalOffset;
+    const cloudHeight = (bBox.height || that._textHeight) + 2 * options.verticalOffset;
+    const info = getTextCloudInfo({
       x,
       y,
       cloudWidth,
@@ -233,12 +233,12 @@ export var BaseTextCloudMarker = BaseIndicator.inherit({
       points: info.points
     });
   },
-  _measureText: function _measureText() {
-    var that = this;
-    var root;
-    var text;
-    var bBox;
-    var sampleText;
+  _measureText: function () {
+    const that = this;
+    let root;
+    let text;
+    let bBox;
+    let sampleText;
     if (!that._textVerticalOffset) {
       root = that._createRoot().append(that._owner);
       sampleText = _getSampleText(that._translator, that._options.text);
@@ -255,8 +255,8 @@ export var BaseTextCloudMarker = BaseIndicator.inherit({
       that._textFullHeight = that._textHeight + 2 * that._options.verticalOffset;
     }
   },
-  _render: function _render() {
-    var that = this;
+  _render: function () {
+    const that = this;
     that._measureText();
     that._cloud = that._cloud || that._renderer.path([], 'area').append(that._rootElement);
     that._text = that._text || that._renderer.text().append(that._rootElement);
@@ -264,12 +264,12 @@ export var BaseTextCloudMarker = BaseIndicator.inherit({
       align: 'center'
     }).css(_patchFontOptions(that._options.text.font));
   },
-  _clear: function _clear() {
+  _clear: function () {
     delete this._cloud;
     delete this._text;
   },
-  getTooltipParameters: function getTooltipParameters() {
-    var position = this._getTextCloudOptions();
+  getTooltipParameters: function () {
+    const position = this._getTextCloudOptions();
     return {
       x: position.x,
       y: position.y,
@@ -284,12 +284,12 @@ export var BaseTextCloudMarker = BaseIndicator.inherit({
 
 // The following is from baseRangeBar.js
 
-export var BaseRangeBar = BaseIndicator.inherit({
-  _measureText: function _measureText() {
-    var that = this;
-    var root;
-    var text;
-    var bBox;
+export const BaseRangeBar = BaseIndicator.inherit({
+  _measureText: function () {
+    const that = this;
+    let root;
+    let text;
+    let bBox;
     that._hasText = that._isTextVisible();
     if (that._hasText && !that._textVerticalOffset) {
       root = that._createRoot().append(that._owner);
@@ -304,8 +304,8 @@ export var BaseRangeBar = BaseIndicator.inherit({
       that._textHeight = bBox.height;
     }
   },
-  _move: function _move() {
-    var that = this;
+  _move: function () {
+    const that = this;
     that._updateBarItemsPositions();
     if (that._hasText) {
       that._text.attr({
@@ -315,17 +315,17 @@ export var BaseRangeBar = BaseIndicator.inherit({
       that._updateLinePosition();
     }
   },
-  _updateBarItems: function _updateBarItems() {
-    var that = this;
-    var options = that._options;
-    var spaceColor;
-    var translator = that._translator;
+  _updateBarItems: function () {
+    const that = this;
+    const options = that._options;
+    let spaceColor;
+    const translator = that._translator;
     that._setBarSides();
     that._startPosition = translator.translate(translator.getDomainStart());
     that._endPosition = translator.translate(translator.getDomainEnd());
     that._basePosition = translator.translate(options.baseValue);
     that._space = that._getSpace();
-    var backgroundColor = options.backgroundColor || 'none';
+    const backgroundColor = options.backgroundColor || 'none';
     if (backgroundColor !== 'none' && that._space > 0) {
       spaceColor = options.containerBackgroundColor || 'none';
     } else {
@@ -345,11 +345,11 @@ export var BaseRangeBar = BaseIndicator.inherit({
       fill: spaceColor
     });
   },
-  _getSpace: function _getSpace() {
+  _getSpace: function () {
     return 0;
   },
-  _updateTextItems: function _updateTextItems() {
-    var that = this;
+  _updateTextItems: function () {
+    const that = this;
     if (that._hasText) {
       that._line = that._line || that._renderer.path([], 'line').attr({
         'class': 'dxg-main-bar',
@@ -373,15 +373,15 @@ export var BaseRangeBar = BaseIndicator.inherit({
       }
     }
   },
-  _isTextVisible: function _isTextVisible() {
+  _isTextVisible: function () {
     return false;
   },
-  _getTextAlign: function _getTextAlign() {
+  _getTextAlign: function () {
     return 'center';
   },
-  _getFontOptions: function _getFontOptions() {
-    var options = this._options;
-    var font = options.text.font;
+  _getFontOptions: function () {
+    const options = this._options;
+    let font = options.text.font;
     if (!font || !font.color) {
       font = extend({}, font, {
         color: options.color
@@ -389,9 +389,9 @@ export var BaseRangeBar = BaseIndicator.inherit({
     }
     return _patchFontOptions(font);
   },
-  _updateBarItemsPositions: function _updateBarItemsPositions() {
-    var that = this;
-    var positions = that._getPositions();
+  _updateBarItemsPositions: function () {
+    const that = this;
+    const positions = that._getPositions();
     that._backItem1.attr(that._buildItemSettings(positions.start, positions.back1));
     that._backItem2.attr(that._buildItemSettings(positions.back2, positions.end));
     that._spaceItem1.attr(that._buildItemSettings(positions.back1, positions.main1));
@@ -399,8 +399,8 @@ export var BaseRangeBar = BaseIndicator.inherit({
     that._mainItem.attr(that._buildItemSettings(positions.main1, positions.main2));
     that._trackerElement && that._trackerElement.attr(that._buildItemSettings(positions.main1, positions.main2));
   },
-  _render: function _render() {
-    var that = this;
+  _render: function () {
+    const that = this;
     that._measureText();
     if (!that._backItem1) {
       that._backItem1 = that._createBarItem();
@@ -435,8 +435,8 @@ export var BaseRangeBar = BaseIndicator.inherit({
     that._updateBarItems();
     that._updateTextItems();
   },
-  _clear: function _clear() {
-    var that = this;
+  _clear: function () {
+    const that = this;
     delete that._backItem1;
     delete that._backItem2;
     delete that._spaceItem1;
@@ -446,8 +446,8 @@ export var BaseRangeBar = BaseIndicator.inherit({
     delete that._line;
     delete that._text;
   },
-  getTooltipParameters: function getTooltipParameters() {
-    var position = this._getTooltipPosition();
+  getTooltipParameters: function () {
+    const position = this._getTooltipPosition();
     return {
       x: position.x,
       y: position.y,

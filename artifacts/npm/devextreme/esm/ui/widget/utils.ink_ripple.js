@@ -1,25 +1,25 @@
 /**
 * DevExtreme (esm/ui/widget/utils.ink_ripple.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { getOuterWidth, getOuterHeight } from '../../core/utils/size';
 import $ from '../../core/renderer';
-var INKRIPPLE_CLASS = 'dx-inkripple';
-var INKRIPPLE_WAVE_CLASS = 'dx-inkripple-wave';
-var INKRIPPLE_SHOWING_CLASS = 'dx-inkripple-showing';
-var INKRIPPLE_HIDING_CLASS = 'dx-inkripple-hiding';
-var DEFAULT_WAVE_SIZE_COEFFICIENT = 2;
-var MAX_WAVE_SIZE = 4000; // NOTE: incorrect scaling of ink with big size (T310238)
-var ANIMATION_DURATION = 300;
-var HOLD_ANIMATION_DURATION = 1000;
-var DEFAULT_WAVE_INDEX = 0;
-export var initConfig = function initConfig() {
-  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var {
+const INKRIPPLE_CLASS = 'dx-inkripple';
+const INKRIPPLE_WAVE_CLASS = 'dx-inkripple-wave';
+const INKRIPPLE_SHOWING_CLASS = 'dx-inkripple-showing';
+const INKRIPPLE_HIDING_CLASS = 'dx-inkripple-hiding';
+const DEFAULT_WAVE_SIZE_COEFFICIENT = 2;
+const MAX_WAVE_SIZE = 4000; // NOTE: incorrect scaling of ink with big size (T310238)
+const ANIMATION_DURATION = 300;
+const HOLD_ANIMATION_DURATION = 1000;
+const DEFAULT_WAVE_INDEX = 0;
+export const initConfig = function () {
+  let config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  const {
     useHoldAnimation,
     waveSizeCoefficient,
     isCentered,
@@ -29,48 +29,48 @@ export var initConfig = function initConfig() {
     waveSizeCoefficient: waveSizeCoefficient || DEFAULT_WAVE_SIZE_COEFFICIENT,
     isCentered: isCentered || false,
     wavesNumber: wavesNumber || 1,
-    durations: getDurations(useHoldAnimation !== null && useHoldAnimation !== void 0 ? useHoldAnimation : true)
+    durations: getDurations(useHoldAnimation ?? true)
   };
 };
-export var render = function render(args) {
-  var config = initConfig(args);
+export const render = function (args) {
+  const config = initConfig(args);
   return {
     showWave: showWave.bind(this, config),
     hideWave: hideWave.bind(this, config)
   };
 };
-var getInkRipple = function getInkRipple(element) {
-  var result = element.children('.' + INKRIPPLE_CLASS);
+const getInkRipple = function (element) {
+  let result = element.children('.' + INKRIPPLE_CLASS);
   if (result.length === 0) {
     result = $('<div>').addClass(INKRIPPLE_CLASS).appendTo(element);
   }
   return result;
 };
-var getWaves = function getWaves(element, wavesNumber) {
-  var inkRipple = getInkRipple($(element));
-  var result = inkRipple.children('.' + INKRIPPLE_WAVE_CLASS).toArray();
-  for (var i = result.length; i < wavesNumber; i++) {
-    var $currentWave = $('<div>').appendTo(inkRipple).addClass(INKRIPPLE_WAVE_CLASS);
+const getWaves = function (element, wavesNumber) {
+  const inkRipple = getInkRipple($(element));
+  const result = inkRipple.children('.' + INKRIPPLE_WAVE_CLASS).toArray();
+  for (let i = result.length; i < wavesNumber; i++) {
+    const $currentWave = $('<div>').appendTo(inkRipple).addClass(INKRIPPLE_WAVE_CLASS);
     result.push($currentWave[0]);
   }
   return $(result);
 };
-var getWaveStyleConfig = function getWaveStyleConfig(args, config) {
-  var element = $(config.element);
-  var elementWidth = getOuterWidth(element);
-  var elementHeight = getOuterHeight(element);
-  var elementDiagonal = parseInt(Math.sqrt(elementWidth * elementWidth + elementHeight * elementHeight));
-  var waveSize = Math.min(MAX_WAVE_SIZE, parseInt(elementDiagonal * args.waveSizeCoefficient));
-  var left;
-  var top;
+const getWaveStyleConfig = function (args, config) {
+  const element = $(config.element);
+  const elementWidth = getOuterWidth(element);
+  const elementHeight = getOuterHeight(element);
+  const elementDiagonal = parseInt(Math.sqrt(elementWidth * elementWidth + elementHeight * elementHeight));
+  const waveSize = Math.min(MAX_WAVE_SIZE, parseInt(elementDiagonal * args.waveSizeCoefficient));
+  let left;
+  let top;
   if (args.isCentered) {
     left = (elementWidth - waveSize) / 2;
     top = (elementHeight - waveSize) / 2;
   } else {
-    var event = config.event;
-    var position = element.offset();
-    var x = event.pageX - position.left;
-    var y = event.pageY - position.top;
+    const event = config.event;
+    const position = element.offset();
+    const x = event.pageX - position.left;
+    const y = event.pageY - position.top;
     left = x - waveSize / 2;
     top = y - waveSize / 2;
   }
@@ -82,14 +82,14 @@ var getWaveStyleConfig = function getWaveStyleConfig(args, config) {
   };
 };
 export function showWave(args, config) {
-  var $wave = getWaves(config.element, args.wavesNumber).eq(config.wave || DEFAULT_WAVE_INDEX);
+  const $wave = getWaves(config.element, args.wavesNumber).eq(config.wave || DEFAULT_WAVE_INDEX);
   args.hidingTimeout && clearTimeout(args.hidingTimeout);
   hideSelectedWave($wave);
   $wave.css(getWaveStyleConfig(args, config));
   args.showingTimeout = setTimeout(showingWaveHandler.bind(this, args, $wave), 0);
 }
 function showingWaveHandler(args, $wave) {
-  var durationCss = args.durations.showingScale + 'ms';
+  const durationCss = args.durations.showingScale + 'ms';
   $wave.addClass(INKRIPPLE_SHOWING_CLASS).css('transitionDuration', durationCss);
 }
 function getDurations(useHoldAnimation) {
@@ -104,10 +104,10 @@ function hideSelectedWave($wave) {
 }
 export function hideWave(args, config) {
   args.showingTimeout && clearTimeout(args.showingTimeout);
-  var $wave = getWaves(config.element, config.wavesNumber).eq(config.wave || DEFAULT_WAVE_INDEX);
-  var durations = args.durations;
-  var durationCss = durations.hidingScale + 'ms, ' + durations.hidingOpacity + 'ms';
+  const $wave = getWaves(config.element, config.wavesNumber).eq(config.wave || DEFAULT_WAVE_INDEX);
+  const durations = args.durations;
+  const durationCss = durations.hidingScale + 'ms, ' + durations.hidingOpacity + 'ms';
   $wave.addClass(INKRIPPLE_HIDING_CLASS).removeClass(INKRIPPLE_SHOWING_CLASS).css('transitionDuration', durationCss);
-  var animationDuration = Math.max(durations.hidingScale, durations.hidingOpacity);
+  const animationDuration = Math.max(durations.hidingScale, durations.hidingOpacity);
   args.hidingTimeout = setTimeout(hideSelectedWave.bind(this, $wave), animationDuration);
 }

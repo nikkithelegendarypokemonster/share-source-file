@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/components/tracker.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,19 +11,19 @@ import domAdapter from '../../core/dom_adapter';
 import { name as clickEventName } from '../../events/click';
 import pointer from '../../events/pointer';
 import eventsEngine from '../../events/core/events_engine';
-var downPointerEventName = pointer.down;
-var movePointerEventName = pointer.move;
+const downPointerEventName = pointer.down;
+const movePointerEventName = pointer.move;
 export function Tracker(parameters) {
   this._initHandlers(parameters);
 }
 Tracker.prototype = {
   constructor: Tracker,
-  _initHandlers: function _initHandlers(parameters) {
-    var document = domAdapter.getDocument();
+  _initHandlers: function (parameters) {
+    const document = domAdapter.getDocument();
     parameters.getCoords = function (e) {
       // TODO: Looks like "eventData" just returns e.pageX, e.pageY. Investigate and use just e.pageX, e.pageY is possible. Don't forget about touch.
-      var data = _eventData(e);
-      var offset = parameters.widget._renderer.getRootOffset();
+      const data = _eventData(e);
+      const offset = parameters.widget._renderer.getRootOffset();
       return [data.x - offset.left, data.y - offset.top];
     };
     parameters.root.on(clickEventName, clickHandler);
@@ -46,7 +46,7 @@ Tracker.prototype = {
     // But for now removing "stopPropagation" will suffice - it can be implemented faster and with less changes, there are no known drawbacks in it.
     // We use "stopPropagation" to prevent unexpected scrolling or zooming when widget has some own scrolling behavior and is located inside another widget
     // (like dxScrollable) with its own scrolling behavior - dxTreeMap does not have own scrolling behavior.
-    var isRootDown = false;
+    let isRootDown = false;
     function downHandler(e) {
       if (isRootDown) {
         isRootDown = false;
@@ -62,12 +62,12 @@ Tracker.prototype = {
       parameters.widget._getOption('tooltip').enabled && processTooltip(e, parameters);
     }
   },
-  dispose: function dispose() {
+  dispose: function () {
     this._disposeHandlers();
   }
 };
 function processClick(e, params) {
-  var id = params.getData(e);
+  const id = params.getData(e);
   if (id >= 0) {
     params.click({
       node: params.getNode(id),
@@ -77,7 +77,7 @@ function processClick(e, params) {
   }
 }
 function processHover(e, params) {
-  var id = params.getData(e);
+  const id = params.getData(e);
   if (id >= 0) {
     params.getNode(id).setHover();
   } else {
@@ -85,8 +85,8 @@ function processHover(e, params) {
   }
 }
 function processTooltip(e, params) {
-  var id = params.getData(e, true);
-  var coords;
+  const id = params.getData(e, true);
+  let coords;
   if (id >= 0) {
     coords = _eventData(e);
     params.getNode(id).showTooltip([coords.x, coords.y]);

@@ -1,9 +1,9 @@
-var _max = Math.max;
-export var calculateCanvasMargins = function calculateCanvasMargins(bBoxes, canvas) {
-  var cLeft = canvas.left;
-  var cTop = canvas.top;
-  var cRight = canvas.width - canvas.right;
-  var cBottom = canvas.height - canvas.bottom;
+const _max = Math.max;
+export const calculateCanvasMargins = function (bBoxes, canvas) {
+  const cLeft = canvas.left;
+  const cTop = canvas.top;
+  const cRight = canvas.width - canvas.right;
+  const cBottom = canvas.height - canvas.bottom;
   return bBoxes.reduce(function (margins, bBox) {
     if (!bBox || bBox.isEmpty) {
       return margins;
@@ -21,9 +21,9 @@ export var calculateCanvasMargins = function calculateCanvasMargins(bBoxes, canv
     bottom: 0
   });
 };
-export var measureLabels = function measureLabels(items) {
+export const measureLabels = function (items) {
   items.forEach(function (item) {
-    var label = item.getContentContainer();
+    const label = item.getContentContainer();
     item.labelBBox = label ? label.getBBox() : {
       x: 0,
       y: 0,

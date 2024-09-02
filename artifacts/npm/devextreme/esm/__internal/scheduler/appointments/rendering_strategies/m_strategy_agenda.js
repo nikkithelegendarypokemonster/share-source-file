@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/appointments/rendering_strategies/m_strategy_agenda.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -29,8 +29,8 @@ class AgendaRenderingStrategy extends BaseRenderingStrategy {
     return geometry;
   }
   groupAppointmentByResources(appointments) {
-    var groups = this.instance._getCurrentViewOption('groups');
-    var config = {
+    const groups = this.instance._getCurrentViewOption('groups');
+    const config = {
       loadedResources: this.options.loadedResources,
       resources: this.options.resources,
       dataAccessors: this.dataAccessors.resources
@@ -38,19 +38,19 @@ class AgendaRenderingStrategy extends BaseRenderingStrategy {
     return groupAppointmentsByResources(config, appointments, groups);
   }
   createTaskPositionMap(appointments) {
-    var height;
-    var appointmentsByResources;
+    let height;
+    let appointmentsByResources;
     this.calculateRows(appointments, this.agendaDuration, this.currentDate);
     if (appointments.length) {
       height = this.instance.fire('getAgendaVerticalStepHeight');
       appointmentsByResources = this.groupAppointmentByResources(appointments);
-      var groupedAppts = [];
+      let groupedAppts = [];
       each(appointmentsByResources, (i, appts) => {
-        var additionalAppointments = [];
-        var recurrentIndexes = [];
+        let additionalAppointments = [];
+        let recurrentIndexes = [];
         each(appts, (index, appointment) => {
-          var recurrenceBatch = this.instance.getAppointmentsInstance()._processRecurrenceAppointment(appointment, index);
-          var appointmentBatch = null;
+          const recurrenceBatch = this.instance.getAppointmentsInstance()._processRecurrenceAppointment(appointment, index);
+          let appointmentBatch = null;
           if (!recurrenceBatch.indexes.length) {
             appointmentBatch = this.instance.getAppointmentsInstance()._processLongAppointment(appointment);
             additionalAppointments = additionalAppointments.concat(appointmentBatch.parts);
@@ -64,8 +64,8 @@ class AgendaRenderingStrategy extends BaseRenderingStrategy {
       });
       Array.prototype.splice.apply(appointments, [0, appointments.length].concat(groupedAppts));
     }
-    var result = [];
-    var sortedIndex = 0;
+    const result = [];
+    let sortedIndex = 0;
     appointments.forEach((appt, index) => {
       result.push([{
         height,
@@ -79,11 +79,11 @@ class AgendaRenderingStrategy extends BaseRenderingStrategy {
     return result;
   }
   _calculateGroupIndex(apptIndex, appointmentsByResources) {
-    var resultInd;
-    var counter = 0;
+    let resultInd;
+    let counter = 0;
     // eslint-disable-next-line
-    for (var i in appointmentsByResources) {
-      var countApptInGroup = appointmentsByResources[i].length;
+    for (const i in appointmentsByResources) {
+      const countApptInGroup = appointmentsByResources[i].length;
       if (apptIndex >= counter && apptIndex < counter + countApptInGroup) {
         resultInd = Number(i);
         break;
@@ -127,18 +127,18 @@ class AgendaRenderingStrategy extends BaseRenderingStrategy {
   getCollectorTopOffset() {}
   // From subscribe
   replaceWrongAppointmentEndDate(rawAppointment, startDate, endDate) {
-    var adapter = createAppointmentAdapter(rawAppointment, this.dataAccessors, this.timeZoneCalculator);
+    const adapter = createAppointmentAdapter(rawAppointment, this.dataAccessors, this.timeZoneCalculator);
     replaceWrongEndDate(adapter, startDate, endDate, this.cellDuration, this.dataAccessors);
   }
   // TODO: get rid of an extra 'needClearSettings' argument
   calculateRows(appointments, agendaDuration, currentDate, needClearSettings) {
     this._rows = [];
     currentDate = dateUtils.trimTime(new Date(currentDate));
-    var groupedAppointments = this.groupAppointmentByResources(appointments);
+    const groupedAppointments = this.groupAppointmentByResources(appointments);
     // @ts-expect-error
     each(groupedAppointments, (_, currentAppointments) => {
-      var groupResult = [];
-      var appts = {
+      const groupResult = [];
+      const appts = {
         indexes: [],
         parts: []
       };
@@ -147,28 +147,28 @@ class AgendaRenderingStrategy extends BaseRenderingStrategy {
         return true;
       }
       each(currentAppointments, (index, appointment) => {
-        var startDate = ExpressionUtils.getField(this.dataAccessors, 'startDate', appointment);
-        var endDate = ExpressionUtils.getField(this.dataAccessors, 'endDate', appointment);
+        const startDate = ExpressionUtils.getField(this.dataAccessors, 'startDate', appointment);
+        const endDate = ExpressionUtils.getField(this.dataAccessors, 'endDate', appointment);
         this.replaceWrongAppointmentEndDate(appointment, startDate, endDate);
         needClearSettings && delete appointment.settings;
-        var result = this.instance.getAppointmentsInstance()._processRecurrenceAppointment(appointment, index, false);
+        const result = this.instance.getAppointmentsInstance()._processRecurrenceAppointment(appointment, index, false);
         appts.parts = appts.parts.concat(result.parts);
         appts.indexes = appts.indexes.concat(result.indexes);
       });
       this.instance.getAppointmentsInstance()._reduceRecurrenceAppointments(appts.indexes, currentAppointments);
       currentAppointments.push(...appts.parts);
-      var appointmentCount = currentAppointments.length;
-      for (var i = 0; i < agendaDuration; i++) {
-        var day = new Date(currentDate);
+      const appointmentCount = currentAppointments.length;
+      for (let i = 0; i < agendaDuration; i++) {
+        const day = new Date(currentDate);
         day.setMilliseconds(day.getMilliseconds() + 24 * 3600000 * i);
         if (groupResult[i] === undefined) {
           groupResult[i] = 0;
         }
-        for (var j = 0; j < appointmentCount; j++) {
-          var appointmentData = currentAppointments[j].settings || currentAppointments[j];
-          var adapter = createAppointmentAdapter(currentAppointments[j], this.dataAccessors, this.timeZoneCalculator);
-          var appointmentIsLong = getAppointmentTakesSeveralDays(adapter);
-          var appointmentIsRecurrence = ExpressionUtils.getField(this.dataAccessors, 'recurrenceRule', currentAppointments[j]);
+        for (let j = 0; j < appointmentCount; j++) {
+          const appointmentData = currentAppointments[j].settings || currentAppointments[j];
+          const adapter = createAppointmentAdapter(currentAppointments[j], this.dataAccessors, this.timeZoneCalculator);
+          const appointmentIsLong = getAppointmentTakesSeveralDays(adapter);
+          const appointmentIsRecurrence = ExpressionUtils.getField(this.dataAccessors, 'recurrenceRule', currentAppointments[j]);
           if (this.instance.fire('dayHasAppointment', day, appointmentData, true) || !appointmentIsRecurrence && appointmentIsLong && this.instance.fire('dayHasAppointment', day, currentAppointments[j], true)) {
             groupResult[i] += 1;
           }
@@ -179,7 +179,7 @@ class AgendaRenderingStrategy extends BaseRenderingStrategy {
     return this._rows;
   }
   _iterateRow(row, obj, index) {
-    for (var i = 0; i < row.length; i++) {
+    for (let i = 0; i < row.length; i++) {
       obj.counter += row[i];
       if (obj.counter >= index) {
         obj.indexInRow = i;
@@ -188,12 +188,12 @@ class AgendaRenderingStrategy extends BaseRenderingStrategy {
     }
   }
   getDateByIndex(index, rows, startViewDate) {
-    var obj = {
+    const obj = {
       counter: 0,
       indexInRow: 0
     };
     index++;
-    for (var i = 0; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
       this._iterateRow(rows[i], obj, index);
       if (obj.indexInRow) break;
     }
@@ -201,10 +201,10 @@ class AgendaRenderingStrategy extends BaseRenderingStrategy {
   }
   getAppointmentDataCalculator() {
     return ($appointment, originalStartDate) => {
-      var apptIndex = $appointment.index();
-      var startViewDate = this.instance.getStartViewDate();
-      var calculatedStartDate = this.getDateByIndex(apptIndex, this._rows, startViewDate);
-      var wrappedOriginalStartDate = new Date(originalStartDate);
+      const apptIndex = $appointment.index();
+      const startViewDate = this.instance.getStartViewDate();
+      const calculatedStartDate = this.getDateByIndex(apptIndex, this._rows, startViewDate);
+      const wrappedOriginalStartDate = new Date(originalStartDate);
       return {
         startDate: new Date(calculatedStartDate.setHours(wrappedOriginalStartDate.getHours(), wrappedOriginalStartDate.getMinutes(), wrappedOriginalStartDate.getSeconds(), wrappedOriginalStartDate.getMilliseconds()))
       };

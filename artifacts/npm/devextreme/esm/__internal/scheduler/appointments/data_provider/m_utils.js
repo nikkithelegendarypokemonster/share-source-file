@@ -1,24 +1,24 @@
 /**
 * DevExtreme (esm/__internal/scheduler/appointments/data_provider/m_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import dateUtils from '../../../../core/utils/date';
 import dateSerialization from '../../../../core/utils/date_serialization';
-import timeZoneUtils from '../../../../ui/scheduler/utils.timeZone';
 import { ExpressionUtils } from '../../m_expression_utils';
-var toMs = dateUtils.dateToMilliseconds;
-var FULL_DATE_FORMAT = 'yyyyMMddTHHmmss';
-export var compareDateWithStartDayHour = (startDate, endDate, startDayHour, allDay, severalDays) => {
-  var startTime = dateUtils.dateTimeFromDecimal(startDayHour);
-  var result = startDate.getHours() >= startTime.hours && startDate.getMinutes() >= startTime.minutes || endDate.getHours() === startTime.hours && endDate.getMinutes() > startTime.minutes || endDate.getHours() > startTime.hours || severalDays || allDay;
+import timeZoneUtils from '../../m_utils_time_zone';
+const toMs = dateUtils.dateToMilliseconds;
+const FULL_DATE_FORMAT = 'yyyyMMddTHHmmss';
+export const compareDateWithStartDayHour = (startDate, endDate, startDayHour, allDay, severalDays) => {
+  const startTime = dateUtils.dateTimeFromDecimal(startDayHour);
+  const result = startDate.getHours() >= startTime.hours && startDate.getMinutes() >= startTime.minutes || endDate.getHours() === startTime.hours && endDate.getMinutes() > startTime.minutes || endDate.getHours() > startTime.hours || severalDays || allDay;
   return result;
 };
-export var compareDateWithEndDayHour = options => {
-  var {
+export const compareDateWithEndDayHour = options => {
+  const {
     startDate,
     endDate,
     startDayHour,
@@ -31,15 +31,15 @@ export var compareDateWithEndDayHour = options => {
     max,
     checkIntersectViewport
   } = options;
-  var hiddenInterval = (24 - viewEndDayHour + viewStartDayHour) * toMs('hour');
-  var apptDuration = endDate.getTime() - startDate.getTime();
-  var delta = (hiddenInterval - apptDuration) / toMs('hour');
-  var apptStartHour = startDate.getHours();
-  var apptStartMinutes = startDate.getMinutes();
-  var result;
-  var endTime = dateUtils.dateTimeFromDecimal(endDayHour);
-  var startTime = dateUtils.dateTimeFromDecimal(startDayHour);
-  var apptIntersectViewport = startDate < max && endDate > min;
+  const hiddenInterval = (24 - viewEndDayHour + viewStartDayHour) * toMs('hour');
+  const apptDuration = endDate.getTime() - startDate.getTime();
+  const delta = (hiddenInterval - apptDuration) / toMs('hour');
+  const apptStartHour = startDate.getHours();
+  const apptStartMinutes = startDate.getMinutes();
+  let result;
+  const endTime = dateUtils.dateTimeFromDecimal(endDayHour);
+  const startTime = dateUtils.dateTimeFromDecimal(startDayHour);
+  const apptIntersectViewport = startDate < max && endDate > min;
   result = checkIntersectViewport && apptIntersectViewport || apptStartHour < endTime.hours || apptStartHour === endTime.hours && apptStartMinutes < endTime.minutes || allDay && startDate <= max || severalDays && apptIntersectViewport && (apptStartHour < endTime.hours || endDate.getHours() * 60 + endDate.getMinutes() > startTime.hours * 60);
   if (apptDuration < hiddenInterval) {
     if (apptStartHour > endTime.hours && apptStartMinutes > endTime.minutes && delta <= apptStartHour - endDayHour) {
@@ -48,22 +48,22 @@ export var compareDateWithEndDayHour = options => {
   }
   return result;
 };
-export var getAppointmentTakesSeveralDays = adapter => !dateUtils.sameDate(adapter.startDate, adapter.endDate);
+export const getAppointmentTakesSeveralDays = adapter => !dateUtils.sameDate(adapter.startDate, adapter.endDate);
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export var _isEndDateWrong = (startDate, endDate) => !endDate || isNaN(endDate.getTime()) || startDate.getTime() > endDate.getTime();
+export const _isEndDateWrong = (startDate, endDate) => !endDate || isNaN(endDate.getTime()) || startDate.getTime() > endDate.getTime();
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export var _appointmentPartInInterval = (startDate, endDate, startDayHour, endDayHour) => {
-  var apptStartDayHour = startDate.getHours();
-  var apptEndDayHour = endDate.getHours();
+export const _appointmentPartInInterval = (startDate, endDate, startDayHour, endDayHour) => {
+  const apptStartDayHour = startDate.getHours();
+  const apptEndDayHour = endDate.getHours();
   return apptStartDayHour <= startDayHour && apptEndDayHour <= endDayHour && apptEndDayHour >= startDayHour || apptEndDayHour >= endDayHour && apptStartDayHour <= endDayHour && apptStartDayHour >= startDayHour;
 };
-export var getRecurrenceException = (appointmentAdapter, timeZoneCalculator, timeZone) => {
-  var {
+export const getRecurrenceException = (appointmentAdapter, timeZoneCalculator, timeZone) => {
+  const {
     recurrenceException
   } = appointmentAdapter;
   if (recurrenceException) {
-    var exceptions = recurrenceException.split(',');
-    for (var i = 0; i < exceptions.length; i++) {
+    const exceptions = recurrenceException.split(',');
+    for (let i = 0; i < exceptions.length; i++) {
       exceptions[i] = _convertRecurrenceException(exceptions[i], appointmentAdapter.startDate, timeZoneCalculator, timeZone);
     }
     return exceptions.join();
@@ -71,35 +71,35 @@ export var getRecurrenceException = (appointmentAdapter, timeZoneCalculator, tim
   return recurrenceException;
 };
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export var _convertRecurrenceException = (exceptionString, startDate, timeZoneCalculator, timeZone) => {
+export const _convertRecurrenceException = (exceptionString, startDate, timeZoneCalculator, timeZone) => {
   exceptionString = exceptionString.replace(/\s/g, '');
-  var getConvertedToTimeZone = date => timeZoneCalculator.createDate(date, {
+  const getConvertedToTimeZone = date => timeZoneCalculator.createDate(date, {
     path: 'toGrid'
   });
-  var exceptionDate = dateSerialization.deserializeDate(exceptionString);
-  var convertedStartDate = getConvertedToTimeZone(startDate);
-  var convertedExceptionDate = getConvertedToTimeZone(exceptionDate);
+  const exceptionDate = dateSerialization.deserializeDate(exceptionString);
+  const convertedStartDate = getConvertedToTimeZone(startDate);
+  let convertedExceptionDate = getConvertedToTimeZone(exceptionDate);
   convertedExceptionDate = timeZoneUtils.correctRecurrenceExceptionByTimezone(convertedExceptionDate, convertedStartDate, timeZone);
   exceptionString = dateSerialization.serializeDate(convertedExceptionDate, FULL_DATE_FORMAT);
   return exceptionString;
 };
-export var replaceWrongEndDate = (rawAppointment, startDate, endDate, appointmentDuration, dataAccessors) => {
-  var calculateAppointmentEndDate = (isAllDay, startDate) => {
+export const replaceWrongEndDate = (rawAppointment, startDate, endDate, appointmentDuration, dataAccessors) => {
+  const calculateAppointmentEndDate = (isAllDay, startDate) => {
     if (isAllDay) {
       return dateUtils.setToDayEnd(new Date(startDate));
     }
     return new Date(startDate.getTime() + appointmentDuration * toMs('minute'));
   };
   if (_isEndDateWrong(startDate, endDate)) {
-    var isAllDay = ExpressionUtils.getField(dataAccessors, 'allDay', rawAppointment);
-    var calculatedEndDate = calculateAppointmentEndDate(isAllDay, startDate);
+    const isAllDay = ExpressionUtils.getField(dataAccessors, 'allDay', rawAppointment);
+    const calculatedEndDate = calculateAppointmentEndDate(isAllDay, startDate);
     dataAccessors.setter.endDate(rawAppointment, calculatedEndDate);
   }
 };
-export var sortAppointmentsByStartDate = (appointments, dataAccessors) => {
+export const sortAppointmentsByStartDate = (appointments, dataAccessors) => {
   appointments.sort((a, b) => {
-    var firstDate = new Date(ExpressionUtils.getField(dataAccessors, 'startDate', a.settings || a));
-    var secondDate = new Date(ExpressionUtils.getField(dataAccessors, 'startDate', b.settings || b));
+    const firstDate = new Date(ExpressionUtils.getField(dataAccessors, 'startDate', a.settings || a));
+    const secondDate = new Date(ExpressionUtils.getField(dataAccessors, 'startDate', b.settings || b));
     return Math.sign(firstDate.getTime() - secondDate.getTime());
   });
 };

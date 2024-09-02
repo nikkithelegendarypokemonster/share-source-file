@@ -1,7 +1,7 @@
 import { getKeyHash, equalByValue } from './common';
 import { isString, isObject } from './type';
 import { compileGetter } from './data';
-export var SelectionFilterCreator = function SelectionFilterCreator(selectedItemKeys, isSelectAll) {
+export const SelectionFilterCreator = function (selectedItemKeys, isSelectAll) {
   this.getLocalFilter = function (keyGetter, equalKeys, equalByReference, keyExpr) {
     equalKeys = equalKeys === undefined ? equalByValue : equalKeys;
     return functionFilter.bind(this, equalKeys, keyGetter, equalByReference, keyExpr);
@@ -10,10 +10,10 @@ export var SelectionFilterCreator = function SelectionFilterCreator(selectedItem
     if (!keyExpr) {
       return;
     }
-    var filterExpr;
+    let filterExpr;
     selectedItemKeys.forEach(function (key, index) {
       filterExpr = filterExpr || [];
-      var filterExprPart;
+      let filterExprPart;
       if (index > 0) {
         filterExpr.push(isSelectAll ? 'and' : 'or');
       }
@@ -30,9 +30,9 @@ export var SelectionFilterCreator = function SelectionFilterCreator(selectedItem
     return filterExpr;
   };
   this.getCombinedFilter = function (keyExpr, dataSourceFilter) {
-    var forceCombinedFilter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-    var filterExpr = this.getExpr(keyExpr);
-    var combinedFilter = filterExpr;
+    let forceCombinedFilter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    const filterExpr = this.getExpr(keyExpr);
+    let combinedFilter = filterExpr;
     if ((forceCombinedFilter || isSelectAll) && dataSourceFilter) {
       if (filterExpr) {
         combinedFilter = [];
@@ -44,28 +44,28 @@ export var SelectionFilterCreator = function SelectionFilterCreator(selectedItem
     }
     return combinedFilter;
   };
-  var selectedItemKeyHashesMap;
-  var getSelectedItemKeyHashesMap = function getSelectedItemKeyHashesMap(keyOf, keyExpr) {
+  let selectedItemKeyHashesMap;
+  const getSelectedItemKeyHashesMap = function (keyOf, keyExpr) {
     if (!selectedItemKeyHashesMap) {
       selectedItemKeyHashesMap = {};
-      var normalizedKeys = normalizeKeys(selectedItemKeys, keyOf, keyExpr);
-      for (var i = 0; i < normalizedKeys.length; i++) {
+      const normalizedKeys = normalizeKeys(selectedItemKeys, keyOf, keyExpr);
+      for (let i = 0; i < normalizedKeys.length; i++) {
         selectedItemKeyHashesMap[getKeyHash(normalizedKeys[i])] = true;
       }
     }
     return selectedItemKeyHashesMap;
   };
-  var normalizeKeys = function normalizeKeys(keys, keyOf, keyExpr) {
+  const normalizeKeys = function (keys, keyOf, keyExpr) {
     return Array.isArray(keyExpr) ? keys.map(key => keyOf(key)) : keys;
   };
   function functionFilter(equalKeys, keyOf, equalByReference, keyExpr, item) {
-    var key = keyOf(item);
-    var keyHash;
-    var i;
+    const key = keyOf(item);
+    let keyHash;
+    let i;
     if (!equalByReference) {
       keyHash = getKeyHash(key);
       if (!isObject(keyHash)) {
-        var selectedKeyHashesMap = getSelectedItemKeyHashesMap(keyOf, keyExpr);
+        const selectedKeyHashesMap = getSelectedItemKeyHashesMap(keyOf, keyExpr);
         if (selectedKeyHashesMap[keyHash]) {
           return !isSelectAll;
         }
@@ -86,12 +86,12 @@ export var SelectionFilterCreator = function SelectionFilterCreator(selectedItem
     return [keyExpr, isSelectAll ? '<>' : '=', keyValue];
   }
   function getFilterForCompositeKey(keyExpr, itemKeyValue) {
-    var filterExpr = [];
-    for (var i = 0, length = keyExpr.length; i < length; i++) {
-      var currentKeyExpr = keyExpr[i];
-      var keyValueGetter = compileGetter(currentKeyExpr);
-      var currentKeyValue = itemKeyValue && keyValueGetter(itemKeyValue);
-      var filterExprPart = getFilterForPlainKey(currentKeyExpr, currentKeyValue);
+    const filterExpr = [];
+    for (let i = 0, length = keyExpr.length; i < length; i++) {
+      const currentKeyExpr = keyExpr[i];
+      const keyValueGetter = compileGetter(currentKeyExpr);
+      const currentKeyValue = itemKeyValue && keyValueGetter(itemKeyValue);
+      const filterExprPart = getFilterForPlainKey(currentKeyExpr, currentKeyValue);
       if (!filterExprPart) {
         break;
       }

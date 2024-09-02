@@ -383,7 +383,9 @@ const legendPrototype = _Legend.prototype = (0, _object.clone)(_layout_element.L
       x: 0,
       y: 0
     };
-    if (that.isVisible() && !that._title) {
+    if (that.isVisible()) {
+      var _that$_title;
+      (_that$_title = that._title) === null || _that$_title === void 0 || _that$_title.dispose();
       that._title = new _title.Title({
         renderer: that._renderer,
         cssClass: that._titleGroupClass,

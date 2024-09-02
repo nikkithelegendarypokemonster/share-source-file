@@ -1,27 +1,27 @@
 /**
 * DevExtreme (esm/core/utils/view_port.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import $ from '../renderer';
 import readyCallbacks from './ready_callbacks';
-var ready = readyCallbacks.add;
+const ready = readyCallbacks.add;
 import callbacks from './callbacks';
-var changeCallback = callbacks();
-var $originalViewPort = $();
-var value = function () {
-  var $current;
+const changeCallback = callbacks();
+let $originalViewPort = $();
+const value = function () {
+  let $current;
   return function (element) {
     if (!arguments.length) {
       return $current;
     }
-    var $element = $(element);
+    const $element = $(element);
     $originalViewPort = $element;
-    var isNewViewportFound = !!$element.length;
-    var prevViewPort = value();
+    const isNewViewportFound = !!$element.length;
+    const prevViewPort = value();
     $current = isNewViewportFound ? $element : $('body');
     changeCallback.fire(isNewViewportFound ? value() : $(), prevViewPort);
   };

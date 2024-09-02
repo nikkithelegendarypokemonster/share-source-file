@@ -1,27 +1,27 @@
 /**
 * DevExtreme (esm/viz/sankey/tooltip.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { extend as _extend } from '../../core/utils/extend';
 import { isFunction } from '../../core/utils/type';
-var defaultCustomizeLinkTooltip = formatter => function (info) {
+const defaultCustomizeLinkTooltip = formatter => function (info) {
   return {
-    html: "<strong>".concat(info.source, " > ").concat(info.target, "</strong><br/>Weight: ").concat(formatter(info.weight))
+    html: `<strong>${info.source} > ${info.target}</strong><br/>Weight: ${formatter(info.weight)}`
   };
 };
-var defaultCustomizeNodeTooltip = formatter => function (info) {
+const defaultCustomizeNodeTooltip = formatter => function (info) {
   return {
-    html: "<strong>".concat(info.label, "</strong><br/>Incoming weight: ").concat(formatter(info.weightIn), "<br/>Outgoing weight: ").concat(formatter(info.weightOut))
+    html: `<strong>${info.label}</strong><br/>Incoming weight: ${formatter(info.weightIn)}<br/>Outgoing weight: ${formatter(info.weightOut)}`
   };
 };
-var generateCustomCallback = function generateCustomCallback(customCallback, defaultCallback) {
+const generateCustomCallback = function (customCallback, defaultCallback) {
   return function (objectInfo) {
-    var res = isFunction(customCallback) ? customCallback.call(objectInfo, objectInfo) : {};
-    var hasOwnProperty = Object.prototype.hasOwnProperty.bind(res);
+    let res = isFunction(customCallback) ? customCallback.call(objectInfo, objectInfo) : {};
+    const hasOwnProperty = Object.prototype.hasOwnProperty.bind(res);
     if (!hasOwnProperty('html') && !hasOwnProperty('text')) {
       res = _extend(res, defaultCallback.call(objectInfo, objectInfo));
     }
@@ -30,10 +30,10 @@ var generateCustomCallback = function generateCustomCallback(customCallback, def
 };
 export function setTooltipCustomOptions(sankey) {
   sankey.prototype._setTooltipOptions = function () {
-    var tooltip = this._tooltip;
-    var options = tooltip && this._getOption('tooltip');
-    var linkTemplate;
-    var nodeTemplate;
+    const tooltip = this._tooltip;
+    const options = tooltip && this._getOption('tooltip');
+    let linkTemplate;
+    let nodeTemplate;
     if (options.linkTooltipTemplate) {
       linkTemplate = this._getTemplate(options.linkTooltipTemplate);
     }
@@ -41,11 +41,11 @@ export function setTooltipCustomOptions(sankey) {
       nodeTemplate = this._getTemplate(options.nodeTooltipTemplate);
     }
     tooltip && tooltip.update(_extend({}, options, {
-      customizeTooltip: function customizeTooltip(args) {
+      customizeTooltip: function (args) {
         if (!(linkTemplate && args.type === 'link' || nodeTemplate && args.type === 'node')) {
           args.skipTemplate = true;
         }
-        var formatter = value => tooltip.formatValue(value);
+        const formatter = value => tooltip.formatValue(value);
         if (args.type === 'node') {
           return generateCustomCallback(options.customizeNodeTooltip, defaultCustomizeNodeTooltip(formatter))(args.info);
         } else if (args.type === 'link') {
@@ -54,7 +54,7 @@ export function setTooltipCustomOptions(sankey) {
         return {};
       },
       contentTemplate(arg, div) {
-        var templateArgs = {
+        const templateArgs = {
           model: arg.info,
           container: div
         };

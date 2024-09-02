@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/radio_group.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,74 +33,104 @@ export {
 };
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_radio_group_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxRadioGroup>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_radio_group_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxRadioGroup>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_radio_group_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxRadioGroup>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_radio_group_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxRadioGroup> & ChangedOptionInfo;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_radio_group_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxRadioGroup, KeyboardEvent | MouseEvent | PointerEvent | Event> & ValueChangedInfo;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxRadioGroupOptions extends EditorOptions<dxRadioGroup>, DataExpressionMixinOptions<dxRadioGroup> {
     /**
-     * Specifies whether the UI component changes its visual state as a result of user interaction.
+     * @docid
+     * @default true
+     * @public
      */
     activeStateEnabled?: boolean;
     /**
-     * Specifies whether the UI component can be focused using keyboard navigation.
+     * @docid
+     * @default true &for(desktop)
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * Specifies whether the UI component changes its state when a user pauses on it.
+     * @docid
+     * @default true
+     * @public
      */
     hoverStateEnabled?: boolean;
     /**
-     * Specifies the radio group layout.
+     * @docid
+     * @default 'horizontal' &for(tablets)
+     * @default "vertical"
+     * @public
      */
     layout?: Orientation;
     /**
-     * The value to be assigned to the `name` attribute of the underlying HTML element.
+     * @docid
+     * @hidden false
+     * @public
      */
     name?: string;
     /**
-     * Specifies the UI component&apos;s value.
+     * @docid
+     * @ref
+     * @public
      */
     value?: any;
 }
 /**
- * The RadioGroup is a UI component that contains a set of radio buttons and allows an end user to make a single selection from the set.
+ * @docid
+ * @isEditor
+ * @inherits Editor, DataExpressionMixin
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxRadioGroup extends Editor<dxRadioGroupOptions> {
     getDataSource(): DataSource;
 }
 
+/** @public */
 export type Properties = dxRadioGroupOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxRadioGroupOptions;
 
 

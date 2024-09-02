@@ -1,6 +1,6 @@
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["accessKey", "activeStateEnabled", "aria", "children", "className", "classes", "defaultValue", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "inputAttr", "isDirty", "isValid", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "tabIndex", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "visible", "width"];
+const _excluded = ["accessKey", "activeStateEnabled", "aria", "children", "className", "classes", "defaultValue", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "inputAttr", "isDirty", "isValid", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "tabIndex", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "visible", "width"];
 import { createFragment, createComponentVNode, normalizeProps } from "inferno";
 import { Fragment } from 'inferno';
 import { InfernoEffect, InfernoWrapperComponent } from '@devextreme/runtime/inferno';
@@ -9,21 +9,21 @@ import { Widget, WidgetProps } from '../../common/widget';
 import { BaseWidgetProps } from '../../common/base_props';
 import { combineClasses } from '../../../utils/combine_classes';
 import { ValidationMessage } from '../../overlays/validation_message';
-var getCssClasses = model => {
-  var {
+const getCssClasses = model => {
+  const {
     classes,
     isValid,
     readOnly
   } = model;
-  var classesMap = {
+  const classesMap = {
     'dx-state-readonly': !!readOnly,
     'dx-invalid': !isValid,
-    ["".concat(classes)]: !!classes
+    [String(classes)]: !!classes
   };
   return combineClasses(classesMap);
 };
-export var viewFunction = viewModel => {
-  var {
+export const viewFunction = viewModel => {
+  const {
     aria,
     cssClasses: classes,
     isValidationMessageVisible,
@@ -86,7 +86,7 @@ export var viewFunction = viewModel => {
     })], 0)
   }), null, widgetRef));
 };
-export var EditorProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(BaseWidgetProps), Object.getOwnPropertyDescriptors({
+export const EditorProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(BaseWidgetProps), Object.getOwnPropertyDescriptors({
   readOnly: false,
   name: '',
   validationError: null,
@@ -100,7 +100,7 @@ export var EditorProps = Object.create(Object.prototype, _extends(Object.getOwnP
   defaultValue: null,
   valueChange: () => {}
 })));
-export var EditorPropsType = {
+export const EditorPropsType = {
   get readOnly() {
     return EditorProps.readOnly;
   },
@@ -175,7 +175,7 @@ export class Editor extends InfernoWrapperComponent {
     this.rootElementRef = infernoCreateRef();
     this.__getterCache = {};
     this.state = {
-      validationMessageGuid: "dx-".concat(new Guid()),
+      validationMessageGuid: `dx-${new Guid()}`,
       isValidationMessageVisible: false,
       value: this.props.value !== undefined ? this.props.value : this.props.defaultValue
     };
@@ -189,7 +189,7 @@ export class Editor extends InfernoWrapperComponent {
   }
   updateEffects() {
     var _this$_effects$;
-    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([this.props.isValid, this.props.validationStatus, this.props.validationError, this.props.validationErrors]);
+    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 || _this$_effects$.update([this.props.isValid, this.props.validationStatus, this.props.validationError, this.props.validationErrors]);
   }
   updateValidationMessageVisibility() {
     this.setState(__state_argument => ({
@@ -197,32 +197,31 @@ export class Editor extends InfernoWrapperComponent {
     }));
   }
   onFocusIn(event) {
-    var {
+    const {
       onFocusIn
     } = this.props;
-    onFocusIn === null || onFocusIn === void 0 ? void 0 : onFocusIn(event);
+    onFocusIn === null || onFocusIn === void 0 || onFocusIn(event);
   }
   get cssClasses() {
-    return "".concat(getCssClasses(_extends({}, this.props, {
+    return `${getCssClasses(_extends({}, this.props, {
       value: this.props.value !== undefined ? this.props.value : this.state.value
-    })));
+    }))}`;
   }
   get shouldShowValidationMessage() {
-    var _this$validationError;
-    var {
+    const {
       isValid,
       validationStatus
     } = this.props;
-    var validationErrors = (_this$validationError = this.validationErrors) !== null && _this$validationError !== void 0 ? _this$validationError : [];
-    var isEditorValid = isValid && validationStatus !== 'invalid';
+    const validationErrors = this.validationErrors ?? [];
+    const isEditorValid = isValid && validationStatus !== 'invalid';
     return !isEditorValid && validationErrors.length > 0;
   }
   get aria() {
-    var {
+    const {
       isValid,
       readOnly
     } = this.props;
-    var result = {
+    const result = {
       readonly: readOnly ? 'true' : 'false',
       invalid: !isValid ? 'true' : 'false'
     };
@@ -236,11 +235,11 @@ export class Editor extends InfernoWrapperComponent {
       return this.__getterCache['validationErrors'];
     }
     return this.__getterCache['validationErrors'] = (() => {
-      var {
+      const {
         validationError,
         validationErrors
       } = this.props;
-      var allValidationErrors = validationErrors && [...validationErrors];
+      let allValidationErrors = validationErrors && [...validationErrors];
       if (!allValidationErrors && validationError) {
         allValidationErrors = [_extends({}, validationError)];
       }
@@ -252,7 +251,7 @@ export class Editor extends InfernoWrapperComponent {
     return (_this$rootElementRef = this.rootElementRef) === null || _this$rootElementRef === void 0 ? void 0 : _this$rootElementRef.current;
   }
   get restAttributes() {
-    var _this$props$value = _extends({}, this.props, {
+    const _this$props$value = _extends({}, this.props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value
       }),
       restProps = _objectWithoutPropertiesLoose(_this$props$value, _excluded);
@@ -271,7 +270,7 @@ export class Editor extends InfernoWrapperComponent {
     }
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value
@@ -291,17 +290,17 @@ export class Editor extends InfernoWrapperComponent {
   }
 }
 function __processTwoWayProps(defaultProps) {
-  var twoWayProps = ['value'];
+  const twoWayProps = ['value'];
   return Object.keys(defaultProps).reduce((props, propName) => {
-    var propValue = defaultProps[propName];
-    var defaultPropName = twoWayProps.some(p => p === propName) ? 'default' + propName.charAt(0).toUpperCase() + propName.slice(1) : propName;
+    const propValue = defaultProps[propName];
+    const defaultPropName = twoWayProps.some(p => p === propName) ? 'default' + propName.charAt(0).toUpperCase() + propName.slice(1) : propName;
     props[defaultPropName] = propValue;
     return props;
   }, {});
 }
 Editor.defaultProps = EditorPropsType;
-var __defaultOptionRules = [];
+const __defaultOptionRules = [];
 export function defaultOptions(rule) {
   __defaultOptionRules.push(rule);
-  Editor.defaultProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(Editor.defaultProps), Object.getOwnPropertyDescriptors(__processTwoWayProps(convertRulesToOptions(__defaultOptionRules)))));
+  Editor.defaultProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(Editor.defaultProps), Object.getOwnPropertyDescriptors(__processTwoWayProps(convertRulesToOptions(__defaultOptionRules)))));
 }

@@ -1,7 +1,7 @@
 import { isString } from '../utils/type';
 import errors from '../errors';
-var templateEngines = {};
-var currentTemplateEngine;
+const templateEngines = {};
+let currentTemplateEngine;
 export function registerTemplateEngine(name, templateEngine) {
   templateEngines[name] = templateEngine;
 }

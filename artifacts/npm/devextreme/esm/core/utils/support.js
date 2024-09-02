@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/utils/support.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,31 +11,31 @@ import callOnce from './call_once';
 import { getNavigator, hasProperty } from './window';
 import devices from '../devices';
 import { stylePropPrefix, styleProp } from './style';
-var {
+const {
   maxTouchPoints
 } = getNavigator();
-var transitionEndEventNames = {
+const transitionEndEventNames = {
   'webkitTransition': 'webkitTransitionEnd',
   'MozTransition': 'transitionend',
   'OTransition': 'oTransitionEnd',
   'transition': 'transitionend'
 };
-var supportProp = function supportProp(prop) {
+const supportProp = function (prop) {
   return !!styleProp(prop);
 };
-var isNativeScrollingSupported = function isNativeScrollingSupported() {
-  var {
+const isNativeScrollingSupported = function () {
+  const {
     platform,
     mac: isMac
   } = devices.real();
-  var isNativeScrollDevice = platform === 'ios' || platform === 'android' || isMac;
+  const isNativeScrollDevice = platform === 'ios' || platform === 'android' || isMac;
   return isNativeScrollDevice;
 };
-var inputType = function inputType(type) {
+const inputType = function (type) {
   if (type === 'text') {
     return true;
   }
-  var input = domAdapter.createElement('input');
+  const input = domAdapter.createElement('input');
   try {
     input.setAttribute('type', type);
     input.value = 'wrongValue';
@@ -44,24 +44,24 @@ var inputType = function inputType(type) {
     return false;
   }
 };
-var detectTouchEvents = function detectTouchEvents(hasWindowProperty, maxTouchPoints) {
+const detectTouchEvents = function (hasWindowProperty, maxTouchPoints) {
   return (hasWindowProperty('ontouchstart') || !!maxTouchPoints) && !hasWindowProperty('callPhantom');
 };
-var detectPointerEvent = function detectPointerEvent(hasWindowProperty) {
+const detectPointerEvent = function (hasWindowProperty) {
   return hasWindowProperty('PointerEvent');
 };
-var touchEvents = detectTouchEvents(hasProperty, maxTouchPoints);
-var pointerEvents = detectPointerEvent(hasProperty);
-var touchPointersPresent = !!maxTouchPoints;
+const touchEvents = detectTouchEvents(hasProperty, maxTouchPoints);
+const pointerEvents = detectPointerEvent(hasProperty);
+const touchPointersPresent = !!maxTouchPoints;
 export { touchEvents, pointerEvents, styleProp, stylePropPrefix, supportProp, inputType };
-export var touch = touchEvents || pointerEvents && touchPointersPresent;
-export var transition = callOnce(function () {
+export const touch = touchEvents || pointerEvents && touchPointersPresent;
+export const transition = callOnce(function () {
   return supportProp('transition');
 });
-export var transitionEndEventName = callOnce(function () {
+export const transitionEndEventName = callOnce(function () {
   return transitionEndEventNames[styleProp('transition')];
 });
-export var animation = callOnce(function () {
+export const animation = callOnce(function () {
   return supportProp('animation');
 });
-export var nativeScrolling = isNativeScrollingSupported();
+export const nativeScrolling = isNativeScrollingSupported();

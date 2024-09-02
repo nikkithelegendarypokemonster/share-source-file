@@ -1,7 +1,7 @@
 /* eslint-disable import/no-commonjs */
-var PARENT_LOCALE_SEPARATOR = '-';
+const PARENT_LOCALE_SEPARATOR = '-';
 export default ((parentLocales, locale) => {
-  var parentLocale = parentLocales[locale];
+  const parentLocale = parentLocales[locale];
   if (parentLocale) {
     return parentLocale !== 'root' && parentLocale;
   }

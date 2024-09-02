@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/utils/dependency_injector.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,11 +11,11 @@ import { isFunction } from './type';
 import { each } from './iterator';
 import Class from '../class';
 export default function (object) {
-  var BaseClass = Class.inherit(object);
-  var InjectedClass = BaseClass;
-  var instance = new InjectedClass(object);
-  var initialFields = {};
-  var injectFields = function injectFields(injectionObject, initial) {
+  const BaseClass = Class.inherit(object);
+  let InjectedClass = BaseClass;
+  let instance = new InjectedClass(object);
+  const initialFields = {};
+  const injectFields = function (injectionObject, initial) {
     each(injectionObject, function (key) {
       if (isFunction(instance[key])) {
         if (initial || !object[key]) {

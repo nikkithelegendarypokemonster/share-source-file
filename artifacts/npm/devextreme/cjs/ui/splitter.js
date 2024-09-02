@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/splitter.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -30,10 +30,12 @@ var _default = exports.default = _splitter.default; // STYLE splitter
  */
 /**
  * @name dxSplitterOptions.onSelectionChanged
+ * @action
  * @hidden
  */
 /**
  * @name dxSplitterOptions.onItemHold
+ * @action
  * @hidden
  */
 /**
@@ -80,6 +82,10 @@ var _default = exports.default = _splitter.default; // STYLE splitter
  */
 /**
  * @name dxSplitterItem.html
+ * @hidden
+ */
+/**
+ * @name dxSplitterItem.disabled
  * @hidden
  */
 module.exports = exports.default;

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/core/export.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -18,28 +18,50 @@ import { start as hoverEventStart, end as hoverEventEnd } from '../../events/hov
 import pointerEvents from '../../events/pointer';
 import { logger } from '../../core/utils/console';
 import { getWidth } from '../../core/utils/size';
-var pointerActions = [pointerEvents.down, pointerEvents.move].join(' ');
-var BUTTON_SIZE = 35;
-var ICON_COORDS = [[9, 12, 26, 12, 26, 14, 9, 14], [9, 17, 26, 17, 26, 19, 9, 19], [9, 22, 26, 22, 26, 24, 9, 24]];
-var LIST_PADDING_TOP = 4;
-var LIST_WIDTH = 120;
-var VERTICAL_TEXT_MARGIN = 8;
-var HORIZONTAL_TEXT_MARGIN = 15;
-var MENU_ITEM_HEIGHT = 30;
-var LIST_STROKE_WIDTH = 1;
-var MARGIN = 10;
-var SHADOW_OFFSET = 2;
-var SHADOW_BLUR = 3;
-var DEFAULT_EXPORT_FORMAT = 'PNG';
-var ALLOWED_IMAGE_FORMATS = [DEFAULT_EXPORT_FORMAT, 'JPEG', 'GIF'];
-var ALLOWED_EXTRA_FORMATS = ['PDF', 'SVG'];
-var EXPORT_CSS_CLASS = 'dx-export-menu';
-var A4WidthCm = '21cm';
-var EXPORT_DATA_KEY = 'export-element-type';
-var FORMAT_DATA_KEY = 'export-element-format';
-var GET_COLOR_REGEX = /data-backgroundcolor="([^"]*)"/;
+import { Renderer } from './renderers/renderer';
+import $ from '../../core/renderer';
+const pointerActions = [pointerEvents.down, pointerEvents.move].join(' ');
+const BUTTON_SIZE = 35;
+const ICON_COORDS = [[9, 12, 26, 12, 26, 14, 9, 14], [9, 17, 26, 17, 26, 19, 9, 19], [9, 22, 26, 22, 26, 24, 9, 24]];
+const LIST_PADDING_TOP = 4;
+const LIST_WIDTH = 120;
+const VERTICAL_TEXT_MARGIN = 8;
+const HORIZONTAL_TEXT_MARGIN = 15;
+const MENU_ITEM_HEIGHT = 30;
+const LIST_STROKE_WIDTH = 1;
+const MARGIN = 10;
+const SHADOW_OFFSET = 2;
+const SHADOW_BLUR = 3;
+const DEFAULT_EXPORT_FORMAT = 'PNG';
+const ALLOWED_IMAGE_FORMATS = [DEFAULT_EXPORT_FORMAT, 'JPEG', 'GIF'];
+const ALLOWED_EXTRA_FORMATS = ['PDF', 'SVG'];
+const EXPORT_CSS_CLASS = 'dx-export-menu';
+const A4WidthCm = '21cm';
+const EXPORT_DATA_KEY = 'export-element-type';
+const FORMAT_DATA_KEY = 'export-element-format';
+const GET_COLOR_REGEX = /data-backgroundcolor="([^"]*)"/;
+function getRendererWrapper(width, height, backgroundColor) {
+  const rendererContainer = $('<div>').get(0);
+  const renderer = new Renderer({
+    container: rendererContainer
+  });
+  renderer.resize(width, height);
+  renderer.root.element.setAttribute('data-backgroundcolor', backgroundColor);
+  return {
+    createGroup() {
+      return renderer.g();
+    },
+    getRootContent() {
+      return renderer.root.element.cloneNode(true);
+    },
+    dispose() {
+      renderer.dispose();
+      rendererContainer.remove();
+    }
+  };
+}
 function getValidFormats() {
-  var imageFormats = imageExporter.testFormats(ALLOWED_IMAGE_FORMATS);
+  const imageFormats = imageExporter.testFormats(ALLOWED_IMAGE_FORMATS);
   return {
     unsupported: imageFormats.unsupported,
     supported: imageFormats.supported.concat(ALLOWED_EXTRA_FORMATS)
@@ -65,8 +87,8 @@ function getCreatorFunc(format) {
   }
 }
 function print(imageSrc, options) {
-  var document = getWindow().document;
-  var iFrame = document.createElement('iframe');
+  const document = getWindow().document;
+  const iFrame = document.createElement('iframe');
   iFrame.onload = setPrint(imageSrc, options);
   iFrame.style.position = 'fixed';
   iFrame.style.width = '0';
@@ -77,21 +99,21 @@ function print(imageSrc, options) {
 }
 function calculatePrintPageWidth(iFrameBody) {
   iFrameBody.style.width = A4WidthCm;
-  var width = getWidth(iFrameBody);
+  const width = getWidth(iFrameBody);
   iFrameBody.style.width = '';
   return width;
 }
 function setPrint(imageSrc, options) {
   return function () {
-    var window = this.contentWindow;
-    var img = window.document.createElement('img');
+    let window = this.contentWindow;
+    const img = window.document.createElement('img');
     window.document.body.appendChild(img);
-    var widthRatio = calculatePrintPageWidth(window.document.body) / options.width;
+    const widthRatio = calculatePrintPageWidth(window.document.body) / options.width;
     if (widthRatio < 1) {
-      window.document.body.style.transform = "scale(".concat(widthRatio, ")");
+      window.document.body.style.transform = `scale(${widthRatio})`;
       window.document.body.style['transform-origin'] = '0 0';
     }
-    var removeFrame = () => {
+    const removeFrame = () => {
       this.parentElement.removeChild(this);
     };
     img.addEventListener('load', () => {
@@ -107,9 +129,9 @@ function setPrint(imageSrc, options) {
   };
 }
 function getItemAttributes(options, type, itemIndex) {
-  var x = BUTTON_SIZE - LIST_WIDTH;
-  var y = BUTTON_SIZE + LIST_PADDING_TOP + LIST_STROKE_WIDTH + itemIndex * MENU_ITEM_HEIGHT;
-  var attr = {
+  const x = BUTTON_SIZE - LIST_WIDTH;
+  const y = BUTTON_SIZE + LIST_PADDING_TOP + LIST_STROKE_WIDTH + itemIndex * MENU_ITEM_HEIGHT;
+  const attr = {
     rect: {
       width: LIST_WIDTH - LIST_STROKE_WIDTH * 2,
       height: MENU_ITEM_HEIGHT,
@@ -133,20 +155,20 @@ function getItemAttributes(options, type, itemIndex) {
   return attr;
 }
 function createMenuItem(renderer, options, settings) {
-  var itemData = {};
-  var type = settings.type;
-  var format = settings.format;
-  var attr = getItemAttributes(options, type, settings.itemIndex);
-  var fontStyle = patchFontOptions(options.font);
+  const itemData = {};
+  const type = settings.type;
+  const format = settings.format;
+  const attr = getItemAttributes(options, type, settings.itemIndex);
+  const fontStyle = patchFontOptions(options.font);
   fontStyle['pointer-events'] = 'none';
-  var menuItem = renderer.g().attr({
+  const menuItem = renderer.g().attr({
     'class': EXPORT_CSS_CLASS + '-list-item'
   });
   itemData[EXPORT_DATA_KEY] = type;
   if (format) {
     itemData[FORMAT_DATA_KEY] = format;
   }
-  var rect = renderer.rect();
+  const rect = renderer.rect();
   rect.attr(attr.rect).css({
     cursor: 'pointer',
     'pointer-events': 'all'
@@ -157,7 +179,7 @@ function createMenuItem(renderer, options, settings) {
     fill: null
   }));
   rect.append(menuItem);
-  var text = renderer.text(settings.text).css(fontStyle).attr(attr.text).append(menuItem);
+  const text = renderer.text(settings.text).css(fontStyle).attr(attr.text).append(menuItem);
   if (type === 'printing') {
     renderer.path(null, 'line').attr(attr.separator).append(menuItem);
   }
@@ -168,13 +190,13 @@ function createMenuItem(renderer, options, settings) {
       fill: null
     }),
     fixPosition: () => {
-      var textBBox = text.getBBox();
+      const textBBox = text.getBBox();
       text.move(attr.text.x - textBBox.x - (options.rtl ? textBBox.width : 0));
     }
   };
 }
 function createMenuItems(renderer, options) {
-  var items = [];
+  let items = [];
   if (options.printingEnabled) {
     items.push(createMenuItem(renderer, options, {
       type: 'printing',
@@ -194,10 +216,10 @@ function createMenuItems(renderer, options) {
   return items;
 }
 function getBackgroundColorFromMarkup(markup) {
-  var parsedMarkup = GET_COLOR_REGEX.exec(markup);
+  const parsedMarkup = GET_COLOR_REGEX.exec(markup);
   return parsedMarkup === null || parsedMarkup === void 0 ? void 0 : parsedMarkup[1];
 }
-export var exportFromMarkup = function exportFromMarkup(markup, options) {
+export const exportFromMarkup = function (markup, options) {
   options.format = validateFormat(options.format) || DEFAULT_EXPORT_FORMAT;
   options.fileName = options.fileName || 'file';
   options.exportingAction = options.onExporting;
@@ -207,37 +229,38 @@ export var exportFromMarkup = function exportFromMarkup(markup, options) {
   options.backgroundColor = isDefined(options.backgroundColor) ? options.backgroundColor : getBackgroundColorFromMarkup(markup) || getTheme().backgroundColor;
   _export(markup, options, getCreatorFunc(options.format));
 };
-export var getMarkup = widgets => combineMarkups(widgets).markup;
-export var exportWidgets = function exportWidgets(widgets, options) {
+export const getMarkup = widgets => combineMarkups(widgets).root.outerHTML;
+export const exportWidgets = function (widgets, options) {
   options = options || {};
-  var markupInfo = combineMarkups(widgets, {
+  const markupInfo = combineMarkups(widgets, {
     gridLayout: options.gridLayout,
     verticalAlignment: options.verticalAlignment,
     horizontalAlignment: options.horizontalAlignment
   });
   options.width = markupInfo.width;
   options.height = markupInfo.height;
-  exportFromMarkup(markupInfo.markup, options);
+  exportFromMarkup(markupInfo.root, options);
 };
-export var combineMarkups = function combineMarkups(widgets) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+export let combineMarkups = function (widgets) {
+  let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   if (!Array.isArray(widgets)) {
     widgets = [[widgets]];
   } else if (!Array.isArray(widgets[0])) {
     widgets = widgets.map(item => [item]);
   }
-  var compactView = !options.gridLayout;
-  var exportItems = widgets.reduce((r, row, rowIndex) => {
-    var rowInfo = row.reduce((r, item, colIndex) => {
-      var size = item.getSize();
-      var backgroundColor = item.option('backgroundColor') || getTheme(item.option('theme')).backgroundColor;
+  const compactView = !options.gridLayout;
+  const exportItems = widgets.reduce((r, row, rowIndex) => {
+    const rowInfo = row.reduce((r, item, colIndex) => {
+      const size = item.getSize();
+      const backgroundColor = item.option('backgroundColor') || getTheme(item.option('theme')).backgroundColor;
+      const node = item.element().find('svg').get(0).cloneNode(true);
       backgroundColor && r.backgroundColors.indexOf(backgroundColor) === -1 && r.backgroundColors.push(backgroundColor);
       r.hOffset = r.width;
       r.width += size.width;
       r.height = Math.max(r.height, size.height);
       r.itemWidth = Math.max(r.itemWidth, size.width);
       r.items.push({
-        markup: item.svg(),
+        node,
         width: size.width,
         height: size.height,
         c: colIndex,
@@ -271,31 +294,58 @@ export var combineMarkups = function combineMarkups(widgets) {
     totalWidth: 0,
     backgroundColors: []
   });
-  var backgroundColor = "data-backgroundcolor=\"".concat(exportItems.backgroundColors.length === 1 ? exportItems.backgroundColors[0] : '', "\" ");
-  var getVOffset = item => {
-    var align = options.verticalAlignment;
-    var dy = exportItems.rowHeights[item.r] - item.height;
-    return exportItems.rowOffsets[item.r] + (align === 'bottom' ? dy : align === 'center' ? dy / 2 : 0);
-  };
-  var getHOffset = item => {
-    if (compactView) {
-      return item.hOffset;
-    }
-    var align = options.horizontalAlignment;
-    var colWidth = exportItems.itemWidth;
-    var dx = colWidth - item.width;
-    return item.c * colWidth + (align === 'right' ? dx : align === 'center' ? dx / 2 : 0);
-  };
-  var totalHeight = exportItems.totalHeight;
-  var totalWidth = exportItems.totalWidth;
+  const backgroundColor = `${exportItems.backgroundColors.length === 1 ? exportItems.backgroundColors[0] : ''}`;
+  const {
+    totalWidth,
+    totalHeight
+  } = exportItems;
+  const rootElement = wrapItemsToElement(totalWidth, totalHeight, backgroundColor, {
+    options,
+    exportItems,
+    compactView
+  });
   return {
-    markup: '<svg ' + backgroundColor + 'height="' + totalHeight + '" width="' + totalWidth + '" version="1.1" xmlns="http://www.w3.org/2000/svg">' + exportItems.items.map(item => "<g transform=\"translate(".concat(getHOffset(item), ",").concat(getVOffset(item), ")\">").concat(item.markup, "</g>")).join('') + '</svg>',
+    root: rootElement,
     width: totalWidth,
     height: totalHeight
   };
 };
-export var ExportMenu = function ExportMenu(params) {
-  var renderer = this._renderer = params.renderer;
+function wrapItemsToElement(width, height, backgroundColor, _ref) {
+  let {
+    exportItems,
+    options,
+    compactView
+  } = _ref;
+  const rendererWrapper = getRendererWrapper(width, height, backgroundColor);
+  const getVOffset = item => {
+    const align = options.verticalAlignment;
+    const dy = exportItems.rowHeights[item.r] - item.height;
+    return exportItems.rowOffsets[item.r] + (align === 'bottom' ? dy : align === 'center' ? dy / 2 : 0);
+  };
+  const getHOffset = item => {
+    if (compactView) {
+      return item.hOffset;
+    }
+    const align = options.horizontalAlignment;
+    const colWidth = exportItems.itemWidth;
+    const dx = colWidth - item.width;
+    return item.c * colWidth + (align === 'right' ? dx : align === 'center' ? dx / 2 : 0);
+  };
+  exportItems.items.forEach(item => {
+    const container = rendererWrapper.createGroup();
+    container.attr({
+      translateX: getHOffset(item),
+      translateY: getVOffset(item)
+    });
+    container.element.appendChild(item.node);
+    container.append();
+  });
+  const result = rendererWrapper.getRootContent();
+  rendererWrapper.dispose();
+  return result;
+}
+export let ExportMenu = function (params) {
+  const renderer = this._renderer = params.renderer;
   this._incidentOccurred = params.incidentOccurred;
   this._exportTo = params.exportTo;
   this._print = params.print;
@@ -340,7 +390,7 @@ extend(ExportMenu.prototype, {
         cutLayoutSide: 'top'
       };
     }
-    var bBox = this._buttonGroup.getBBox();
+    const bBox = this._buttonGroup.getBBox();
     bBox.cutSide = 'vertical';
     bBox.cutLayoutSide = 'top';
     bBox.height += MARGIN;
@@ -359,7 +409,7 @@ extend(ExportMenu.prototype, {
   },
   draw(width, height, canvas) {
     this._group.move(width - BUTTON_SIZE - SHADOW_OFFSET - SHADOW_BLUR + canvas.left, Math.floor(height / 2 - BUTTON_SIZE / 2));
-    var layoutOptions = this.getLayoutOptions();
+    const layoutOptions = this.getLayoutOptions();
     if (layoutOptions.width > width || layoutOptions.height > height) {
       this.freeSpace();
     }
@@ -408,11 +458,11 @@ extend(ExportMenu.prototype, {
   },
   measure() {
     this._fillSpace();
-    var margin = this._options.button.margin;
+    const margin = this._options.button.margin;
     return [BUTTON_SIZE + margin.left + margin.right, BUTTON_SIZE + margin.top + margin.bottom];
   },
   move(rect) {
-    var margin = this._options.button.margin;
+    const margin = this._options.button.margin;
     this._group.attr({
       translateX: Math.round(rect[0]) + margin.left,
       translateY: Math.round(rect[1]) + margin.top
@@ -441,7 +491,7 @@ extend(ExportMenu.prototype, {
     this._menuItems.forEach(item => item.fixPosition());
   },
   _setButtonState(state) {
-    var style = this._options.button[state];
+    const style = this._options.button[state];
     this._button.attr({
       stroke: style.borderColor,
       fill: style.backgroundColor
@@ -452,7 +502,7 @@ extend(ExportMenu.prototype, {
   },
   _subscribeEvents() {
     this._renderer.root.on(pointerEvents.up + '.export', e => {
-      var elementType = e.target[EXPORT_DATA_KEY];
+      const elementType = e.target[EXPORT_DATA_KEY];
       if (!elementType) {
         if (this._button) {
           this._hideList();
@@ -486,9 +536,9 @@ extend(ExportMenu.prototype, {
     this._buttonGroup.off();
   },
   _updateButton() {
-    var renderer = this._renderer;
-    var options = this._options;
-    var exportData = {
+    const renderer = this._renderer;
+    const options = this._options;
+    const exportData = {
       'export-element-type': 'button'
     };
     if (!this._button) {
@@ -512,10 +562,10 @@ extend(ExportMenu.prototype, {
     }
   },
   _updateList() {
-    var options = this._options;
-    var buttonDefault = options.button.default;
-    var listGroup = this._listGroup;
-    var items = createMenuItems(this._renderer, options);
+    const options = this._options;
+    const buttonDefault = options.button.default;
+    const listGroup = this._listGroup;
+    const items = createMenuItems(this._renderer, options);
     this._shadow.attr({
       color: options.shadowColor
     });
@@ -536,7 +586,7 @@ function getExportOptions(widget, exportOptions, fileName, format) {
   if (format || exportOptions.format) {
     format = validateFormat(format || exportOptions.format, widget._incidentOccurred);
   }
-  var {
+  const {
     width,
     height
   } = widget.getSize();
@@ -559,7 +609,7 @@ function getExportOptions(widget, exportOptions, fileName, format) {
     })
   };
 }
-export var plugin = {
+export const plugin = {
   name: 'export',
   init() {
     this._exportMenu = new ExportMenu({
@@ -580,18 +630,18 @@ export var plugin = {
       });
     },
     _disablePointerEvents() {
-      var pointerEventsValue = this._renderer.root.attr('pointer-events');
+      const pointerEventsValue = this._renderer.root.attr('pointer-events');
       this._renderer.root.attr({
         'pointer-events': 'none'
       });
       return pointerEventsValue;
     },
     exportTo(fileName, format) {
-      var menu = this._exportMenu;
-      var options = getExportOptions(this, this._getOption('export') || {}, fileName, format);
+      const menu = this._exportMenu;
+      const options = getExportOptions(this, this._getOption('export') || {}, fileName, format);
       menu && menu.hide();
-      var pointerEventsValue = this._disablePointerEvents();
-      var promise = _export(this._renderer.root.element, options, getCreatorFunc(options.format)).fail(logger.error).always(() => {
+      const pointerEventsValue = this._disablePointerEvents();
+      const promise = _export(this._renderer.root.element, options, getCreatorFunc(options.format)).fail(logger.error).always(() => {
         this._renderer.root.attr({
           'pointer-events': pointerEventsValue
         });
@@ -600,23 +650,23 @@ export var plugin = {
       return promise;
     },
     print() {
-      var menu = this._exportMenu;
-      var options = getExportOptions(this, this._getOption('export') || {});
+      const menu = this._exportMenu;
+      const options = getExportOptions(this, this._getOption('export') || {});
       options.exportingAction = null;
       options.exportedAction = null;
       options.margin = 0;
       options.format = 'PNG';
       options.useBase64 = true;
       options.fileSavingAction = eventArgs => {
-        print("data:image/png;base64,".concat(eventArgs.data), {
+        print(`data:image/png;base64,${eventArgs.data}`, {
           width: options.width,
           __test: options.__test
         });
         eventArgs.cancel = true;
       };
-      var pointerEventsValue = this._disablePointerEvents();
+      const pointerEventsValue = this._disablePointerEvents();
       menu && menu.hide();
-      var promise = _export(this._renderer.root.element, options, getCreatorFunc(options.format)).fail(logger.error).always(() => {
+      const promise = _export(this._renderer.root.element, options, getCreatorFunc(options.format)).fail(logger.error).always(() => {
         this._renderer.root.attr({
           'pointer-events': pointerEventsValue
         });
@@ -626,7 +676,7 @@ export var plugin = {
     }
   },
   customize(constructor) {
-    var proto = constructor.prototype;
+    const proto = constructor.prototype;
     constructor.addChange({
       code: 'EXPORT',
       handler() {

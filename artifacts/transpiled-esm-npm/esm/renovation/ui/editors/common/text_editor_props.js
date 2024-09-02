@@ -1,5 +1,5 @@
 import { isMaterial, current } from '../../../../ui/themes';
-export var TextEditorProps = {
+export const TextEditorProps = {
   maxLength: null,
   spellCheck: false,
   valueChangeEvent: 'change',

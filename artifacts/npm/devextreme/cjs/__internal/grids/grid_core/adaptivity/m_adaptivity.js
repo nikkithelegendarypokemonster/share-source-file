@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/grid_core/adaptivity/m_adaptivity.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -31,8 +31,9 @@ var _themes = require("../../../../ui/themes");
 var _m_modules = _interopRequireDefault(require("../m_modules"));
 var _m_utils = _interopRequireDefault(require("../m_utils"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable @typescript-eslint/method-signature-style */ /* eslint-disable max-classes-per-file */
+/* eslint-disable @typescript-eslint/method-signature-style */
+/* eslint-disable max-classes-per-file */
+
 const COLUMN_HEADERS_VIEW = 'columnHeadersView';
 const ROWS_VIEW = 'rowsView';
 const FOOTER_VIEW = 'footerView';
@@ -83,19 +84,14 @@ function adaptiveCellTemplate(container, options) {
   }
 }
 function focusCellHandler(e) {
-  var _a;
-  const $nextCell = (_a = e.data) === null || _a === void 0 ? void 0 : _a.$nextCell;
+  var _e$data;
+  const $nextCell = (_e$data = e.data) === null || _e$data === void 0 ? void 0 : _e$data.$nextCell;
   _events_engine.default.off($nextCell, 'focus', focusCellHandler);
   // @ts-expect-error
   _events_engine.default.trigger($nextCell, 'dxclick');
 }
-let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*/function (_modules$ViewControll) {
-  _inheritsLoose(AdaptiveColumnsController, _modules$ViewControll);
-  function AdaptiveColumnsController() {
-    return _modules$ViewControll.apply(this, arguments) || this;
-  }
-  var _proto = AdaptiveColumnsController.prototype;
-  _proto.init = function init() {
+class AdaptiveColumnsController extends _m_modules.default.ViewController {
+  init() {
     this._columnsController = this.getController('columns');
     this._dataController = this.getController('data');
     this._editingController = this.getController('editing');
@@ -119,28 +115,28 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
     this._hidingColumnsQueue = [];
     this._hiddenColumns = [];
     this.createAction('onAdaptiveDetailRowPreparing');
-    _modules$ViewControll.prototype.init.call(this);
-  };
-  _proto.optionChanged = function optionChanged(args) {
+    super.init();
+  }
+  optionChanged(args) {
     if (args.name === 'columnHidingEnabled') {
       this._columnsController.columnOption('command:adaptive', 'adaptiveHidden', !args.value);
     }
-    _modules$ViewControll.prototype.optionChanged.call(this, args);
-  };
-  _proto.publicMethods = function publicMethods() {
+    super.optionChanged(args);
+  }
+  publicMethods() {
     return ['isAdaptiveDetailRowExpanded', 'expandAdaptiveDetailRow', 'collapseAdaptiveDetailRow'];
-  };
-  _proto._isRowEditMode = function _isRowEditMode() {
+  }
+  _isRowEditMode() {
     const editMode = this._getEditMode();
     return editMode === EDIT_MODE_ROW;
-  };
-  _proto._isItemModified = function _isItemModified(item, cellOptions) {
+  }
+  _isItemModified(item, cellOptions) {
     const columnIndex = this._columnsController.getVisibleIndex(item.column.index);
     const rowIndex = this._dataController.getRowIndexByKey(cellOptions.key);
     const row = this._dataController.items()[rowIndex + 1];
     return row && row.modifiedValues && (0, _type.isDefined)(row.modifiedValues[columnIndex]);
-  };
-  _proto._renderFormViewTemplate = function _renderFormViewTemplate(item, cellOptions, $container) {
+  }
+  _renderFormViewTemplate(item, cellOptions, $container) {
     const that = this;
     const {
       column
@@ -194,8 +190,7 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
     }
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._getTemplate = function _getTemplate(item, cellOptions, updateForm) {
+  _getTemplate(item, cellOptions, updateForm) {
     const that = this;
     const {
       column
@@ -222,7 +217,6 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
           isItemEdited: that._isItemEdited(item),
           value: cellOptions.row.values[columnIndex]
         }), () => {
-          // @ts-expect-error
           $container.contents().remove();
           $container.removeClass(ADAPTIVE_ITEM_TEXT_CLASS);
           renderFormTemplate();
@@ -230,8 +224,8 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
         _events_engine.default.on($container, _remove.removeEvent, dispose);
       }
     };
-  };
-  _proto._isVisibleColumnsValid = function _isVisibleColumnsValid(visibleColumns) {
+  }
+  _isVisibleColumnsValid(visibleColumns) {
     const getCommandColumnsCount = function () {
       let result = 0;
       for (let j = 0; j < visibleColumns.length; j++) {
@@ -249,8 +243,8 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
       return false;
     }
     return true;
-  };
-  _proto._calculatePercentWidths = function _calculatePercentWidths(widths, visibleColumns) {
+  }
+  _calculatePercentWidths(widths, visibleColumns) {
     const that = this;
     let percentWidths = 0;
     visibleColumns.forEach((item, index) => {
@@ -259,14 +253,14 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
       }
     });
     return percentWidths;
-  };
-  _proto._isPercentWidth = function _isPercentWidth(width) {
+  }
+  _isPercentWidth(width) {
     return (0, _type.isString)(width) && width.endsWith('%');
-  };
-  _proto._isColumnHidden = function _isColumnHidden(column) {
+  }
+  _isColumnHidden(column) {
     return this._hiddenColumns.filter(hiddenColumn => hiddenColumn.index === column.index).length > 0;
-  };
-  _proto._getAverageColumnsWidth = function _getAverageColumnsWidth(containerWidth, columns, columnsCanFit) {
+  }
+  _getAverageColumnsWidth(containerWidth, columns, columnsCanFit) {
     const that = this;
     let fixedColumnsWidth = 0;
     let columnsWithoutFixedWidthCount = 0;
@@ -290,8 +284,8 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
       }
     });
     return (containerWidth - fixedColumnsWidth) / columnsWithoutFixedWidthCount;
-  };
-  _proto._calculateColumnWidth = function _calculateColumnWidth(column, containerWidth, contentColumns, columnsCanFit) {
+  }
+  _calculateColumnWidth(column, containerWidth, contentColumns, columnsCanFit) {
     const columnId = getColumnId(this, column);
     const widthOption = this._columnsController.columnOption(columnId, 'width');
     const bestFitWidth = this._columnsController.columnOption(columnId, 'bestFitWidth');
@@ -315,14 +309,14 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
       colWidth = columnAutoWidth || !!column.command ? bestFitWidth : this._getAverageColumnsWidth(containerWidth, contentColumns, columnsCanFit);
     }
     return colWidth;
-  };
-  _proto._calculatePercentWidth = function _calculatePercentWidth(options) {
+  }
+  _calculatePercentWidth(options) {
     const columnFitted = options.visibleIndex < options.columnsCount - 1 && options.columnsCanFit;
     const partialWidth = options.containerWidth * parseFloat(options.columnWidth) / 100;
     const resultWidth = options.columnsCanFit && partialWidth < options.bestFitWidth ? options.bestFitWidth : partialWidth;
     return columnFitted ? options.containerWidth * parseFloat(options.columnWidth) / 100 : resultWidth;
-  };
-  _proto._getNotTruncatedColumnWidth = function _getNotTruncatedColumnWidth(column, containerWidth, contentColumns, columnsCanFit) {
+  }
+  _getNotTruncatedColumnWidth(column, containerWidth, contentColumns, columnsCanFit) {
     const columnId = getColumnId(this, column);
     const widthOption = this._columnsController.columnOption(columnId, 'width');
     const bestFitWidth = this._columnsController.columnOption(columnId, 'bestFitWidth');
@@ -331,15 +325,15 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
     }
     const colWidth = this._calculateColumnWidth(column, containerWidth, contentColumns, columnsCanFit);
     return colWidth < bestFitWidth ? null : colWidth;
-  };
-  _proto._getItemPercentWidth = function _getItemPercentWidth(item) {
+  }
+  _getItemPercentWidth(item) {
     let result = 0;
     if (item.width && this._isPercentWidth(item.width)) {
       result = parseFloat(item.width);
     }
     return result;
-  };
-  _proto._getCommandColumnsWidth = function _getCommandColumnsWidth() {
+  }
+  _getCommandColumnsWidth() {
     const that = this;
     const columns = that._columnsController.getVisibleColumns();
     let colWidth = 0;
@@ -349,8 +343,8 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
       }
     });
     return colWidth;
-  };
-  _proto._isItemEdited = function _isItemEdited(item) {
+  }
+  _isItemEdited(item) {
     if (this.isFormOrPopupEditMode()) {
       return false;
     }
@@ -367,8 +361,8 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
       return this._editingController.isEditCell(rowIndex, columnIndex);
     }
     return undefined;
-  };
-  _proto._getFormItemsByHiddenColumns = function _getFormItemsByHiddenColumns(hiddenColumns) {
+  }
+  _getFormItemsByHiddenColumns(hiddenColumns) {
     const items = [];
     (0, _iterator.each)(hiddenColumns, (_, column) => {
       items.push({
@@ -379,8 +373,8 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
       });
     });
     return items;
-  };
-  _proto._getAdaptiveColumnVisibleIndex = function _getAdaptiveColumnVisibleIndex(visibleColumns) {
+  }
+  _getAdaptiveColumnVisibleIndex(visibleColumns) {
     for (let i = 0; i < visibleColumns.length; i++) {
       const column = visibleColumns[i];
       if (column.command === ADAPTIVE_COLUMN_NAME) {
@@ -388,8 +382,8 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
       }
     }
     return undefined;
-  };
-  _proto._hideAdaptiveColumn = function _hideAdaptiveColumn(resultWidths, visibleColumns) {
+  }
+  _hideAdaptiveColumn(resultWidths, visibleColumns) {
     const visibleIndex = this._getAdaptiveColumnVisibleIndex(visibleColumns);
     if ((0, _type.isDefined)(visibleIndex)) {
       resultWidths[visibleIndex] = HIDDEN_COLUMNS_WIDTH;
@@ -401,8 +395,8 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
   }
   /**
    * @extended: keyboard_navigation
-   */;
-  _proto._showHiddenCellsInView = function _showHiddenCellsInView(_ref) {
+   */
+  _showHiddenCellsInView(_ref) {
     let {
       $cells,
       isCommandColumn
@@ -417,32 +411,32 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
     } else {
       $cells.removeClass(cssClassNameToRemove);
     }
-  };
-  _proto._showHiddenColumns = function _showHiddenColumns() {
+  }
+  _showHiddenColumns() {
     for (let i = 0; i < COLUMN_VIEWS.length; i++) {
       // TODO getView
       // @ts-expect-error
       const view = this.getView(COLUMN_VIEWS[i]);
       if (view && view.isVisible() && view.element()) {
         const viewName = view.name;
-        const $hiddenCommandCells = view.element().find(".".concat(COMMAND_ADAPTIVE_HIDDEN_CLASS));
+        const $hiddenCommandCells = view.element().find(`.${COMMAND_ADAPTIVE_HIDDEN_CLASS}`);
         this._showHiddenCellsInView({
           viewName,
           $cells: $hiddenCommandCells,
           isCommandColumn: true
         });
-        const $hiddenCells = view.element().find(".".concat(this.addWidgetPrefix(HIDDEN_COLUMN_CLASS)));
+        const $hiddenCells = view.element().find(`.${this.addWidgetPrefix(HIDDEN_COLUMN_CLASS)}`);
         this._showHiddenCellsInView({
           viewName,
           $cells: $hiddenCells
         });
       }
     }
-  };
-  _proto._isCellValid = function _isCellValid($cell) {
+  }
+  _isCellValid($cell) {
     return $cell && $cell.length && !$cell.hasClass(MASTER_DETAIL_CELL_CLASS) && !$cell.hasClass(GROUP_CELL_CLASS);
-  };
-  _proto._hideVisibleColumn = function _hideVisibleColumn(_ref2) {
+  }
+  _hideVisibleColumn(_ref2) {
     let {
       isCommandColumn,
       visibleIndex
@@ -458,8 +452,8 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
         visibleIndex
       });
     });
-  };
-  _proto._hideVisibleColumnInView = function _hideVisibleColumnInView(_ref3) {
+  }
+  _hideVisibleColumnInView(_ref3) {
     let {
       view,
       isCommandColumn,
@@ -488,13 +482,13 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
         }
       }
     }
-  };
-  _proto._findCellElementInRow = function _findCellElementInRow($rowElement, visibleColumnIndex) {
+  }
+  _findCellElementInRow($rowElement, visibleColumnIndex) {
     const $rowCells = $rowElement.children();
     let visibleIndex = visibleColumnIndex;
     let cellIsInsideGroup = false;
     if ($rowElement.hasClass(GROUP_ROW_CLASS)) {
-      const $groupCell = $rowElement.find(".".concat(GROUP_CELL_CLASS));
+      const $groupCell = $rowElement.find(`.${GROUP_CELL_CLASS}`);
       const colSpan = $groupCell.attr('colspan');
       if ($groupCell.length && (0, _type.isDefined)(colSpan)) {
         // eslint-disable-next-line radix
@@ -512,8 +506,8 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
   }
   /**
    * @extended: keyboard_navigation
-   */;
-  _proto._hideVisibleCellInView = function _hideVisibleCellInView(_ref4) {
+   */
+  _hideVisibleCellInView(_ref4) {
     let {
       $cell,
       isCommandColumn
@@ -523,15 +517,15 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
       tabIndex: -1,
       'aria-hidden': true
     }).addClass(cssClassNameToAdd);
-  };
-  _proto._getEditMode = function _getEditMode() {
+  }
+  _getEditMode() {
     return this._editingController.getEditMode();
-  };
-  _proto.isFormOrPopupEditMode = function isFormOrPopupEditMode() {
+  }
+  isFormOrPopupEditMode() {
     const editMode = this._getEditMode();
     return editMode === EDIT_MODE_FORM || editMode === EDIT_MODE_POPUP;
-  };
-  _proto.hideRedundantColumns = function hideRedundantColumns(resultWidths, visibleColumns, hiddenQueue) {
+  }
+  hideRedundantColumns(resultWidths, visibleColumns, hiddenQueue) {
     const that = this;
     this._hiddenColumns = [];
     if (that._isVisibleColumnsValid(visibleColumns) && hiddenQueue.length) {
@@ -592,11 +586,11 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
     } else {
       that._hideAdaptiveColumn(resultWidths, visibleColumns);
     }
-  };
-  _proto.getAdaptiveDetailItems = function getAdaptiveDetailItems() {
+  }
+  getAdaptiveDetailItems() {
     return this._$itemContents;
-  };
-  _proto.getItemContentByColumnIndex = function getItemContentByColumnIndex(visibleColumnIndex) {
+  }
+  getItemContentByColumnIndex(visibleColumnIndex) {
     let $itemContent;
     for (let i = 0; i < this._$itemContents.length; i++) {
       $itemContent = this._$itemContents.eq(i);
@@ -605,19 +599,19 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
         return $itemContent;
       }
     }
-  };
-  _proto.toggleExpandAdaptiveDetailRow = function toggleExpandAdaptiveDetailRow(key, alwaysExpanded) {
+  }
+  toggleExpandAdaptiveDetailRow(key, alwaysExpanded) {
     if (!(this.isFormOrPopupEditMode() && this._editingController.isEditing())) {
       // @ts-expect-error
       this._dataController.toggleExpandAdaptiveDetailRow(key, alwaysExpanded);
     }
-  };
-  _proto.createFormByHiddenColumns = function createFormByHiddenColumns(container, options) {
+  }
+  createFormByHiddenColumns(container, options) {
     const that = this;
     const $container = (0, _renderer.default)(container);
     const userFormOptions = {
       items: that._getFormItemsByHiddenColumns(that._hiddenColumns),
-      formID: "dx-".concat(new _guid.default())
+      formID: `dx-${new _guid.default()}`
     };
     // @ts-expect-error
     const defaultFormOptions = (0, _themes.isMaterial)() ? {
@@ -640,15 +634,15 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
       },
       onContentReady(e) {
         userFormOptions.onContentReady && userFormOptions.onContentReady.call(this, e);
-        that._$itemContents = $container.find(".".concat(FORM_ITEM_CONTENT_CLASS));
+        that._$itemContents = $container.find(`.${FORM_ITEM_CONTENT_CLASS}`);
       }
     }));
-  };
-  _proto.hasAdaptiveDetailRowExpanded = function hasAdaptiveDetailRowExpanded() {
+  }
+  hasAdaptiveDetailRowExpanded() {
     // @ts-expect-error
     return (0, _type.isDefined)(this._dataController.adaptiveExpandedKey());
-  };
-  _proto.updateForm = function updateForm(hiddenColumns) {
+  }
+  updateForm(hiddenColumns) {
     if (this.hasAdaptiveDetailRowExpanded()) {
       if (this._form && (0, _type.isDefined)(this._form._contentReadyAction)) {
         if (hiddenColumns && hiddenColumns.length) {
@@ -658,8 +652,8 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
         }
       }
     }
-  };
-  _proto.updateHidingQueue = function updateHidingQueue(columns) {
+  }
+  updateHidingQueue(columns) {
     const that = this;
     const hideableColumns = columns.filter(column => column.visible && !column.type && !column.fixed && !((0, _type.isDefined)(column.groupIndex) && column.groupIndex >= 0));
     let columnsHasHidingPriority;
@@ -684,32 +678,32 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
     }
     that._hidingColumnsQueue = that._hidingColumnsQueue.filter(Object);
     return that._hidingColumnsQueue;
-  };
-  _proto.getHiddenColumns = function getHiddenColumns() {
+  }
+  getHiddenColumns() {
     return this._hiddenColumns;
-  };
-  _proto.hasHiddenColumns = function hasHiddenColumns() {
+  }
+  hasHiddenColumns() {
     return this._hiddenColumns.length > 0;
-  };
-  _proto.getHidingColumnsQueue = function getHidingColumnsQueue() {
+  }
+  getHidingColumnsQueue() {
     return this._hidingColumnsQueue;
-  };
-  _proto.isAdaptiveDetailRowExpanded = function isAdaptiveDetailRowExpanded(key) {
+  }
+  isAdaptiveDetailRowExpanded(key) {
     const dataController = this._dataController;
     // @ts-expect-error
     return dataController.adaptiveExpandedKey() && (0, _common.equalByValue)(dataController.adaptiveExpandedKey(), key);
-  };
-  _proto.expandAdaptiveDetailRow = function expandAdaptiveDetailRow(key) {
+  }
+  expandAdaptiveDetailRow(key) {
     if (!this.hasAdaptiveDetailRowExpanded()) {
       this.toggleExpandAdaptiveDetailRow(key);
     }
-  };
-  _proto.collapseAdaptiveDetailRow = function collapseAdaptiveDetailRow() {
+  }
+  collapseAdaptiveDetailRow() {
     if (this.hasAdaptiveDetailRowExpanded()) {
       this.toggleExpandAdaptiveDetailRow();
     }
-  };
-  _proto.updateCommandAdaptiveAriaLabel = function updateCommandAdaptiveAriaLabel(key, label) {
+  }
+  updateCommandAdaptiveAriaLabel(key, label) {
     const rowIndex = this._dataController.getRowIndexByKey(key);
     if (rowIndex === -1) {
       return;
@@ -717,24 +711,19 @@ let AdaptiveColumnsController = exports.AdaptiveColumnsController = /*#__PURE__*
     // @ts-expect-errors
     const $row = (0, _renderer.default)(this.component.getRowElement(rowIndex));
     this.setCommandAdaptiveAriaLabel($row, label);
-  };
-  _proto.setCommandAdaptiveAriaLabel = function setCommandAdaptiveAriaLabel($row, labelName) {
+  }
+  setCommandAdaptiveAriaLabel($row, labelName) {
     const $adaptiveCommand = $row.find('.dx-command-adaptive');
     $adaptiveCommand.attr('aria-label', _message.default.format(labelName));
-  };
-  return AdaptiveColumnsController;
-}(_m_modules.default.ViewController);
-const keyboardNavigation = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(AdaptivityKeyboardNavigationExtender, _Base);
-  function AdaptivityKeyboardNavigationExtender() {
-    return _Base.apply(this, arguments) || this;
   }
-  var _proto2 = AdaptivityKeyboardNavigationExtender.prototype;
-  _proto2._isCellValid = function _isCellValid($cell, isClick) {
-    return _Base.prototype._isCellValid.call(this, $cell, isClick) && !$cell.hasClass(this.addWidgetPrefix(HIDDEN_COLUMN_CLASS)) && !$cell.hasClass(COMMAND_ADAPTIVE_HIDDEN_CLASS);
-  };
-  _proto2._processNextCellInMasterDetail = function _processNextCellInMasterDetail($nextCell, $cell) {
-    _Base.prototype._processNextCellInMasterDetail.call(this, $nextCell, $cell);
+}
+exports.AdaptiveColumnsController = AdaptiveColumnsController;
+const keyboardNavigation = Base => class AdaptivityKeyboardNavigationExtender extends Base {
+  _isCellValid($cell, isClick) {
+    return super._isCellValid($cell, isClick) && !$cell.hasClass(this.addWidgetPrefix(HIDDEN_COLUMN_CLASS)) && !$cell.hasClass(COMMAND_ADAPTIVE_HIDDEN_CLASS);
+  }
+  _processNextCellInMasterDetail($nextCell, $cell) {
+    super._processNextCellInMasterDetail($nextCell, $cell);
     const isCellOrBatchMode = this._editingController.isCellOrBatchEditMode();
     const isEditing = this._editingController.isEditing();
     if (isEditing && $nextCell && isCellOrBatchMode && !this._isInsideEditForm($nextCell)) {
@@ -745,19 +734,13 @@ const keyboardNavigation = Base => /*#__PURE__*/function (_Base) {
       // @ts-expect-error
       _events_engine.default.trigger($cell, 'focus');
     }
-  };
-  _proto2._isCellElement = function _isCellElement($cell) {
-    return _Base.prototype._isCellElement.call(this, $cell) || $cell.hasClass(ADAPTIVE_ITEM_TEXT_CLASS);
-  };
-  return AdaptivityKeyboardNavigationExtender;
-}(Base);
-const rowsView = Base => /*#__PURE__*/function (_Base2) {
-  _inheritsLoose(AdaptivityRowsViewExtender, _Base2);
-  function AdaptivityRowsViewExtender() {
-    return _Base2.apply(this, arguments) || this;
   }
-  var _proto3 = AdaptivityRowsViewExtender.prototype;
-  _proto3._getCellTemplate = function _getCellTemplate(options) {
+  _isCellElement($cell) {
+    return super._isCellElement($cell) || $cell.hasClass(ADAPTIVE_ITEM_TEXT_CLASS);
+  }
+};
+const rowsView = Base => class AdaptivityRowsViewExtender extends Base {
+  _getCellTemplate(options) {
     const that = this;
     const {
       column
@@ -767,18 +750,18 @@ const rowsView = Base => /*#__PURE__*/function (_Base2) {
         that._adaptiveColumnsController.createFormByHiddenColumns((0, _renderer.default)(container), options);
       };
     }
-    return _Base2.prototype._getCellTemplate.call(this, options);
-  };
-  _proto3._createRow = function _createRow(row) {
-    const $row = _Base2.prototype._createRow.apply(this, arguments);
+    return super._getCellTemplate(options);
+  }
+  _createRow(row) {
+    const $row = super._createRow.apply(this, arguments);
     // @ts-expect-error
     if (row && row.rowType === ADAPTIVE_ROW_TYPE && row.key === this._dataController.adaptiveExpandedKey()) {
       $row.addClass(ADAPTIVE_DETAIL_ROW_CLASS);
     }
     return $row;
-  };
-  _proto3._renderCells = function _renderCells($row, options) {
-    _Base2.prototype._renderCells.call(this, $row, options);
+  }
+  _renderCells($row, options) {
+    super._renderCells($row, options);
     const adaptiveColumnsController = this._adaptiveColumnsController;
     const hidingColumnsQueueLength = adaptiveColumnsController.getHidingColumnsQueue().length;
     const hiddenColumnsLength = adaptiveColumnsController.getHiddenColumns().length;
@@ -788,135 +771,110 @@ const rowsView = Base => /*#__PURE__*/function (_Base2) {
     if (options.row.rowType === 'data') {
       adaptiveColumnsController.setCommandAdaptiveAriaLabel($row, EXPAND_ARIA_NAME);
     }
-  };
-  _proto3._getColumnIndexByElementCore = function _getColumnIndexByElementCore($element) {
-    const $itemContent = $element.closest(".".concat(FORM_ITEM_CONTENT_CLASS));
+  }
+  _getColumnIndexByElementCore($element) {
+    const $itemContent = $element.closest(`.${FORM_ITEM_CONTENT_CLASS}`);
     if ($itemContent.length && $itemContent.closest(this.component.$element()).length) {
       const formItem = $itemContent.length ? $itemContent.first().data('dx-form-item') : null;
       return formItem && formItem.column && this._columnsController.getVisibleIndex(formItem.column.index);
     }
     // @ts-expect-error
-    return _Base2.prototype._getColumnIndexByElementCore.call(this, $element);
-  };
-  _proto3._cellPrepared = function _cellPrepared($cell, options) {
-    _Base2.prototype._cellPrepared.apply(this, arguments);
+    return super._getColumnIndexByElementCore($element);
+  }
+  _cellPrepared($cell, options) {
+    super._cellPrepared.apply(this, arguments);
     if (options.row.rowType !== ADAPTIVE_ROW_TYPE && options.column.visibleWidth === HIDDEN_COLUMNS_WIDTH) {
       $cell.addClass(this.addWidgetPrefix(HIDDEN_COLUMN_CLASS));
     }
-  };
-  _proto3.getCell = function getCell(cellPosition, rows) {
+  }
+  getCell(cellPosition, rows) {
     const item = this._dataController.items()[cellPosition === null || cellPosition === void 0 ? void 0 : cellPosition.rowIndex];
     if ((item === null || item === void 0 ? void 0 : item.rowType) === ADAPTIVE_ROW_TYPE) {
       const $adaptiveDetailItems = this._adaptiveColumnsController.getAdaptiveDetailItems();
-      return _Base2.prototype.getCell.call(this, cellPosition, rows, $adaptiveDetailItems);
+      return super.getCell(cellPosition, rows, $adaptiveDetailItems);
     }
-    return _Base2.prototype.getCell.apply(this, arguments);
-  };
-  _proto3._getCellElement = function _getCellElement(rowIndex, columnIdentifier) {
+    return super.getCell.apply(this, arguments);
+  }
+  _getCellElement(rowIndex, columnIdentifier) {
     const item = this._dataController.items()[rowIndex];
     if (item && item.rowType === ADAPTIVE_ROW_TYPE) {
       return this._adaptiveColumnsController.getItemContentByColumnIndex(columnIdentifier);
     }
-    return _Base2.prototype._getCellElement.apply(this, arguments);
-  };
-  _proto3.getContextMenuItems = function getContextMenuItems(options) {
-    var _a;
+    return super._getCellElement.apply(this, arguments);
+  }
+  getContextMenuItems(options) {
+    var _super$getContextMenu;
     if (options.row && options.row.rowType === 'detailAdaptive') {
       const view = this._columnHeadersView;
-      // @ts-expect-error
       const formItem = (0, _renderer.default)(options.targetElement).closest('.dx-field-item-label').next().data('dx-form-item');
       // @ts-expect-error
       options.column = formItem ? formItem.column : options.column;
       return view.getContextMenuItems && view.getContextMenuItems(options);
     }
     // @ts-expect-error
-    return (_a = _Base2.prototype.getContextMenuItems) === null || _a === void 0 ? void 0 : _a.call(this, options);
-  };
-  _proto3.isClickableElement = function isClickableElement($target) {
-    var _a, _b;
+    return (_super$getContextMenu = super.getContextMenuItems) === null || _super$getContextMenu === void 0 ? void 0 : _super$getContextMenu.call(this, options);
+  }
+  isClickableElement($target) {
+    var _super$isClickableEle;
     // @ts-expect-error
-    const isClickable = (_b = (_a = _Base2.prototype.isClickableElement) === null || _a === void 0 ? void 0 : _a.call(this, $target)) !== null && _b !== void 0 ? _b : false;
-    return isClickable || !!$target.closest(".".concat(ADAPTIVE_COLUMN_NAME_CLASS)).length;
-  };
-  return AdaptivityRowsViewExtender;
-}(Base);
-const exportExtender = Base => /*#__PURE__*/function (_Base3) {
-  _inheritsLoose(AdaptivityExportExtender, _Base3);
-  function AdaptivityExportExtender() {
-    return _Base3.apply(this, arguments) || this;
+    const isClickable = ((_super$isClickableEle = super.isClickableElement) === null || _super$isClickableEle === void 0 ? void 0 : _super$isClickableEle.call(this, $target)) ?? false;
+    return isClickable || !!$target.closest(`.${ADAPTIVE_COLUMN_NAME_CLASS}`).length;
   }
-  var _proto4 = AdaptivityExportExtender.prototype;
-  _proto4._updateColumnWidth = function _updateColumnWidth(column, width) {
-    _Base3.prototype._updateColumnWidth.call(this, column, column.visibleWidth === HIDDEN_COLUMNS_WIDTH ? column.bestFitWidth : width);
-  };
-  return AdaptivityExportExtender;
-}(Base);
-const columnsResizer = Base => /*#__PURE__*/function (_Base4) {
-  _inheritsLoose(AdaptivityColumnsResizerExtender, _Base4);
-  function AdaptivityColumnsResizerExtender() {
-    return _Base4.apply(this, arguments) || this;
+};
+const exportExtender = Base => class AdaptivityExportExtender extends Base {
+  _updateColumnWidth(column, width) {
+    super._updateColumnWidth(column, column.visibleWidth === HIDDEN_COLUMNS_WIDTH ? column.bestFitWidth : width);
   }
-  var _proto5 = AdaptivityColumnsResizerExtender.prototype;
-  _proto5._pointCreated = function _pointCreated(point, cellsLength, columns) {
-    const result = _Base4.prototype._pointCreated.call(this, point, cellsLength, columns);
+};
+const columnsResizer = Base => class AdaptivityColumnsResizerExtender extends Base {
+  _pointCreated(point, cellsLength, columns) {
+    const result = super._pointCreated(point, cellsLength, columns);
     const currentColumn = columns[point.columnIndex] || {};
     const nextColumnIndex = this._getNextColumnIndex(point.columnIndex);
     const nextColumn = columns[nextColumnIndex] || {};
     const hasHiddenColumnsOnly = nextColumnIndex !== point.columnIndex + 1 && nextColumn.command;
     const hasAdaptiveHiddenWidth = currentColumn.visibleWidth === HIDDEN_COLUMNS_WIDTH || hasHiddenColumnsOnly;
     return result || hasAdaptiveHiddenWidth;
-  };
-  _proto5._getNextColumnIndex = function _getNextColumnIndex(currentColumnIndex) {
+  }
+  _getNextColumnIndex(currentColumnIndex) {
     const visibleColumns = this._columnsController.getVisibleColumns();
-    let index = _Base4.prototype._getNextColumnIndex.call(this, currentColumnIndex);
+    let index = super._getNextColumnIndex(currentColumnIndex);
     while (visibleColumns[index] && visibleColumns[index].visibleWidth === HIDDEN_COLUMNS_WIDTH) {
       index++;
     }
     return index;
-  };
-  return AdaptivityColumnsResizerExtender;
-}(Base);
-const draggingHeader = Base => /*#__PURE__*/function (_Base5) {
-  _inheritsLoose(AdaptivityDraggingHeaderExtender, _Base5);
-  function AdaptivityDraggingHeaderExtender() {
-    return _Base5.apply(this, arguments) || this;
   }
-  var _proto6 = AdaptivityDraggingHeaderExtender.prototype;
-  _proto6._pointCreated = function _pointCreated(point, columns, location, sourceColumn) {
-    const result = _Base5.prototype._pointCreated.call(this, point, columns, location, sourceColumn);
+};
+const draggingHeader = Base => class AdaptivityDraggingHeaderExtender extends Base {
+  _pointCreated(point, columns, location, sourceColumn) {
+    const result = super._pointCreated(point, columns, location, sourceColumn);
     const column = columns[point.columnIndex - 1] || {};
     const hasAdaptiveHiddenWidth = column.visibleWidth === HIDDEN_COLUMNS_WIDTH;
     return result || hasAdaptiveHiddenWidth;
-  };
-  return AdaptivityDraggingHeaderExtender;
-}(Base);
-const editing = Base => /*#__PURE__*/function (_Base6) {
-  _inheritsLoose(AdaptivityEditingExtender, _Base6);
-  function AdaptivityEditingExtender() {
-    return _Base6.apply(this, arguments) || this;
   }
-  var _proto7 = AdaptivityEditingExtender.prototype;
-  _proto7._isRowEditMode = function _isRowEditMode() {
+};
+const editing = Base => class AdaptivityEditingExtender extends Base {
+  _isRowEditMode() {
     return this.getEditMode() === EDIT_MODE_ROW;
-  };
-  _proto7._getFormEditItemTemplate = function _getFormEditItemTemplate(cellOptions, column) {
+  }
+  _getFormEditItemTemplate(cellOptions, column) {
     if (this.getEditMode() !== EDIT_MODE_ROW && cellOptions.rowType === 'detailAdaptive') {
       cellOptions.columnIndex = this._columnsController.getVisibleIndex(column.index);
       return this.getColumnTemplate(cellOptions);
     }
-    return _Base6.prototype._getFormEditItemTemplate.call(this, cellOptions, column);
-  };
-  _proto7._closeEditItem = function _closeEditItem($targetElement) {
-    const $itemContents = $targetElement.closest(".".concat(FORM_ITEM_CONTENT_CLASS));
+    return super._getFormEditItemTemplate(cellOptions, column);
+  }
+  _closeEditItem($targetElement) {
+    const $itemContents = $targetElement.closest(`.${FORM_ITEM_CONTENT_CLASS}`);
     // @ts-expect-error
     const rowIndex = this._dataController.getRowIndexByKey(this._dataController.adaptiveExpandedKey()) + 1;
     const formItem = $itemContents.length ? $itemContents.first().data('dx-form-item') : null;
     const columnIndex = formItem && formItem.column && this._columnsController.getVisibleIndex(formItem.column.index);
     if (!this.isEditCell(rowIndex, columnIndex)) {
-      _Base6.prototype._closeEditItem.call(this, $targetElement);
+      super._closeEditItem($targetElement);
     }
-  };
-  _proto7._beforeUpdateItems = function _beforeUpdateItems(rowIndices, rowIndex) {
+  }
+  _beforeUpdateItems(rowIndices, rowIndex) {
     if (!this._adaptiveColumnsController.isFormOrPopupEditMode() && this._adaptiveColumnsController.hasHiddenColumns()) {
       const items = this._dataController.items();
       const item = items[rowIndex];
@@ -930,28 +888,28 @@ const editing = Base => /*#__PURE__*/function (_Base6) {
       // @ts-expect-error
       this._dataController.adaptiveExpandedKey(item.key);
     }
-  };
-  _proto7._afterInsertRow = function _afterInsertRow(key) {
-    _Base6.prototype._afterInsertRow.apply(this, arguments);
+  }
+  _afterInsertRow(key) {
+    super._afterInsertRow.apply(this, arguments);
     if (this._adaptiveColumnsController.hasHiddenColumns()) {
       // @ts-expect-error
       this._adaptiveColumnsController.toggleExpandAdaptiveDetailRow(key, this.isRowEditMode());
       this._isForceRowAdaptiveExpand = true;
     }
-  };
-  _proto7._collapseAdaptiveDetailRow = function _collapseAdaptiveDetailRow() {
+  }
+  _collapseAdaptiveDetailRow() {
     if (this._isRowEditMode() && this._isForceRowAdaptiveExpand) {
       this._adaptiveColumnsController.collapseAdaptiveDetailRow();
       this._isForceRowAdaptiveExpand = false;
     }
-  };
-  _proto7._cancelEditAdaptiveDetailRow = function _cancelEditAdaptiveDetailRow() {
+  }
+  _cancelEditAdaptiveDetailRow() {
     if (this._adaptiveColumnsController.hasHiddenColumns()) {
       this._collapseAdaptiveDetailRow();
     }
-  };
-  _proto7._afterSaveEditData = function _afterSaveEditData() {
-    _Base6.prototype._afterSaveEditData.apply(this, arguments);
+  }
+  _afterSaveEditData() {
+    super._afterSaveEditData.apply(this, arguments);
     // @ts-expect-error
     const deferred = new _deferred.Deferred();
     if (this._isRowEditMode() && this._adaptiveColumnsController.hasHiddenColumns()) {
@@ -965,19 +923,19 @@ const editing = Base => /*#__PURE__*/function (_Base6) {
       deferred.resolve();
     }
     return deferred.promise();
-  };
-  _proto7._beforeCancelEditData = function _beforeCancelEditData() {
-    _Base6.prototype._beforeCancelEditData.call(this);
+  }
+  _beforeCancelEditData() {
+    super._beforeCancelEditData();
     this._cancelEditAdaptiveDetailRow();
-  };
-  _proto7._getRowIndicesForCascadeUpdating = function _getRowIndicesForCascadeUpdating(row) {
-    const rowIndices = _Base6.prototype._getRowIndicesForCascadeUpdating.apply(this, arguments);
+  }
+  _getRowIndicesForCascadeUpdating(row) {
+    const rowIndices = super._getRowIndicesForCascadeUpdating.apply(this, arguments);
     if (this._adaptiveColumnsController.isAdaptiveDetailRowExpanded(row.key)) {
       rowIndices.push(row.rowType === ADAPTIVE_ROW_TYPE ? row.rowIndex - 1 : row.rowIndex + 1);
     }
     return rowIndices;
-  };
-  _proto7._beforeCloseEditCellInBatchMode = function _beforeCloseEditCellInBatchMode(rowIndices) {
+  }
+  _beforeCloseEditCellInBatchMode(rowIndices) {
     // @ts-expect-error
     const expandedKey = this._dataController._adaptiveExpandedKey;
     if (expandedKey) {
@@ -986,37 +944,31 @@ const editing = Base => /*#__PURE__*/function (_Base6) {
         rowIndices.unshift(rowIndex);
       }
     }
-  };
-  _proto7.editRow = function editRow(rowIndex) {
+  }
+  editRow(rowIndex) {
     if (this._adaptiveColumnsController.isFormOrPopupEditMode()) {
       this._adaptiveColumnsController.collapseAdaptiveDetailRow();
     }
-    return _Base6.prototype.editRow.call(this, rowIndex);
-  };
-  _proto7.deleteRow = function deleteRow(rowIndex) {
+    return super.editRow(rowIndex);
+  }
+  deleteRow(rowIndex) {
     const rowKey = this._dataController.getKeyByRowIndex(rowIndex);
     if (this.getEditMode() === EDIT_MODE_BATCH && this._adaptiveColumnsController.isAdaptiveDetailRowExpanded(rowKey)) {
       this._adaptiveColumnsController.collapseAdaptiveDetailRow();
     }
-    _Base6.prototype.deleteRow.call(this, rowIndex);
-  };
-  return AdaptivityEditingExtender;
-}(Base);
-const data = Base => /*#__PURE__*/function (_Base7) {
-  _inheritsLoose(AdaptivityDataControllerExtender, _Base7);
-  function AdaptivityDataControllerExtender() {
-    return _Base7.apply(this, arguments) || this;
+    super.deleteRow(rowIndex);
   }
-  var _proto8 = AdaptivityDataControllerExtender.prototype;
-  _proto8.init = function init() {
-    _Base7.prototype.init.call(this);
+};
+const data = Base => class AdaptivityDataControllerExtender extends Base {
+  init() {
+    super.init();
     this._adaptiveExpandedKey = undefined;
-  };
-  _proto8._processItems = function _processItems(items, change) {
+  }
+  _processItems(items, change) {
     const {
       changeType
     } = change;
-    items = _Base7.prototype._processItems.apply(this, arguments);
+    items = super._processItems.apply(this, arguments);
     if (changeType === 'loadingAll' || !(0, _type.isDefined)(this._adaptiveExpandedKey)) {
       return items;
     }
@@ -1038,24 +990,24 @@ const data = Base => /*#__PURE__*/function (_Base7) {
       this._adaptiveExpandedKey = undefined;
     }
     return items;
-  };
-  _proto8._getRowIndicesForExpand = function _getRowIndicesForExpand(key) {
+  }
+  _getRowIndicesForExpand(key) {
     // @ts-expect-error
-    const rowIndices = _Base7.prototype._getRowIndicesForExpand.apply(this, arguments);
+    const rowIndices = super._getRowIndicesForExpand.apply(this, arguments);
     if (this._adaptiveColumnsController.isAdaptiveDetailRowExpanded(key)) {
       const lastRowIndex = rowIndices[rowIndices.length - 1];
       rowIndices.push(lastRowIndex + 1);
     }
     return rowIndices;
-  };
-  _proto8.adaptiveExpandedKey = function adaptiveExpandedKey(value) {
+  }
+  adaptiveExpandedKey(value) {
     if ((0, _type.isDefined)(value)) {
       this._adaptiveExpandedKey = value;
     } else {
       return this._adaptiveExpandedKey;
     }
-  };
-  _proto8.toggleExpandAdaptiveDetailRow = function toggleExpandAdaptiveDetailRow(key, alwaysExpanded) {
+  }
+  toggleExpandAdaptiveDetailRow(key, alwaysExpanded) {
     const that = this;
     let oldExpandLoadedRowIndex = _m_utils.default.getIndexByKey(that._adaptiveExpandedKey, that._items);
     let newExpandLoadedRowIndex = _m_utils.default.getIndexByKey(key, that._items);
@@ -1079,55 +1031,37 @@ const data = Base => /*#__PURE__*/function (_Base7) {
     });
     this._adaptiveColumnsController.updateCommandAdaptiveAriaLabel(key, COLLAPSE_ARIA_NAME);
     this._adaptiveColumnsController.updateCommandAdaptiveAriaLabel(oldKey, EXPAND_ARIA_NAME);
-  };
-  return AdaptivityDataControllerExtender;
-}(Base);
-const editorFactory = Base => /*#__PURE__*/function (_Base8) {
-  _inheritsLoose(AdaptivityEditorFactoryExtender, _Base8);
-  function AdaptivityEditorFactoryExtender() {
-    return _Base8.apply(this, arguments) || this;
   }
-  var _proto9 = AdaptivityEditorFactoryExtender.prototype;
-  _proto9._needHideBorder = function _needHideBorder($element) {
-    return _Base8.prototype._needHideBorder.call(this, $element) || ($element === null || $element === void 0 ? void 0 : $element.hasClass('dx-field-item-content')) && ($element === null || $element === void 0 ? void 0 : $element.find('.dx-checkbox').length);
-  };
-  _proto9._getFocusCellSelector = function _getFocusCellSelector() {
-    return "".concat(_Base8.prototype._getFocusCellSelector.call(this), ", .dx-adaptive-detail-row .dx-field-item > .dx-field-item-content");
+};
+const editorFactory = Base => class AdaptivityEditorFactoryExtender extends Base {
+  _needHideBorder($element) {
+    return super._needHideBorder($element) || ($element === null || $element === void 0 ? void 0 : $element.hasClass('dx-field-item-content')) && ($element === null || $element === void 0 ? void 0 : $element.find('.dx-checkbox').length);
+  }
+  _getFocusCellSelector() {
+    return `${super._getFocusCellSelector()}, .dx-adaptive-detail-row .dx-field-item > .dx-field-item-content`;
   }
   /**
    * Overrides interface
-   */;
-  _proto9._getRevertTooltipsSelector = function _getRevertTooltipsSelector() {
-    return "".concat(_Base8.prototype._getRevertTooltipsSelector.call(this), ", .dx-field-item-content .").concat(this.addWidgetPrefix(REVERT_TOOLTIP_CLASS));
-  };
-  return AdaptivityEditorFactoryExtender;
-}(Base);
-const columns = Base => /*#__PURE__*/function (_Base9) {
-  _inheritsLoose(AdaptivityColumnsExtender, _Base9);
-  function AdaptivityColumnsExtender() {
-    return _Base9.apply(this, arguments) || this;
+   */
+  _getRevertTooltipsSelector() {
+    return `${super._getRevertTooltipsSelector()}, .dx-field-item-content .${this.addWidgetPrefix(REVERT_TOOLTIP_CLASS)}`;
   }
-  var _proto10 = AdaptivityColumnsExtender.prototype;
-  _proto10._isColumnVisible = function _isColumnVisible(column) {
-    return _Base9.prototype._isColumnVisible.call(this, column) && !column.adaptiveHidden;
-  };
-  return AdaptivityColumnsExtender;
-}(Base);
-const resizing = Base => /*#__PURE__*/function (_Base10) {
-  _inheritsLoose(AdaptivityResizingControllerExtender, _Base10);
-  function AdaptivityResizingControllerExtender() {
-    return _Base10.apply(this, arguments) || this;
+};
+const columns = Base => class AdaptivityColumnsExtender extends Base {
+  _isColumnVisible(column) {
+    return super._isColumnVisible(column) && !column.adaptiveHidden;
   }
-  var _proto11 = AdaptivityResizingControllerExtender.prototype;
-  _proto11.dispose = function dispose() {
-    _Base10.prototype.dispose.apply(this, arguments);
+};
+const resizing = Base => class AdaptivityResizingControllerExtender extends Base {
+  dispose() {
+    super.dispose.apply(this, arguments);
     clearTimeout(this._updateScrollableTimeoutID);
-  };
-  _proto11._needBestFit = function _needBestFit() {
+  }
+  _needBestFit() {
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    return _Base10.prototype._needBestFit.call(this) || !!this._adaptiveColumnsController.getHidingColumnsQueue().length;
-  };
-  _proto11._correctColumnWidths = function _correctColumnWidths(resultWidths, visibleColumns) {
+    return super._needBestFit() || !!this._adaptiveColumnsController.getHidingColumnsQueue().length;
+  }
+  _correctColumnWidths(resultWidths, visibleColumns) {
     const adaptiveController = this._adaptiveColumnsController;
     const oldHiddenColumns = adaptiveController.getHiddenColumns();
     const hidingColumnsQueue = adaptiveController.updateHidingQueue(this._columnsController.getColumns());
@@ -1139,18 +1073,17 @@ const resizing = Base => /*#__PURE__*/function (_Base10) {
       }
     }
     !hiddenColumns.length && adaptiveController.collapseAdaptiveDetailRow();
-    return _Base10.prototype._correctColumnWidths.apply(this, arguments);
-  };
-  _proto11._toggleBestFitMode = function _toggleBestFitMode(isBestFit) {
+    return super._correctColumnWidths.apply(this, arguments);
+  }
+  _toggleBestFitMode(isBestFit) {
     isBestFit && this._adaptiveColumnsController._showHiddenColumns();
-    _Base10.prototype._toggleBestFitMode.call(this, isBestFit);
-  };
-  _proto11._needStretch = function _needStretch() {
+    super._toggleBestFitMode(isBestFit);
+  }
+  _needStretch() {
     const adaptiveColumnsController = this._adaptiveColumnsController;
-    return _Base10.prototype._needStretch.apply(this, arguments) || adaptiveColumnsController.getHidingColumnsQueue().length || adaptiveColumnsController.hasHiddenColumns();
-  };
-  return AdaptivityResizingControllerExtender;
-}(Base);
+    return super._needStretch.apply(this, arguments) || adaptiveColumnsController.getHidingColumnsQueue().length || adaptiveColumnsController.hasHiddenColumns();
+  }
+};
 const adaptivityModule = exports.adaptivityModule = {
   defaultOptions() {
     return {

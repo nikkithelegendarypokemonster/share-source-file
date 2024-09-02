@@ -5,8 +5,6 @@ var _m_focus = require("../../grids/grid_core/focus/m_focus");
 var _m_core = _interopRequireDefault(require("./m_core"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 function findIndex(items, callback) {
   let result = -1;
   items.forEach((node, index) => {
@@ -16,13 +14,8 @@ function findIndex(items, callback) {
   });
   return result;
 }
-const data = Base => /*#__PURE__*/function (_focusModule$extender) {
-  _inheritsLoose(TreeListDataControllerExtender, _focusModule$extender);
-  function TreeListDataControllerExtender() {
-    return _focusModule$extender.apply(this, arguments) || this;
-  }
-  var _proto = TreeListDataControllerExtender.prototype;
-  _proto.changeRowExpand = function changeRowExpand(key) {
+const data = Base => class TreeListDataControllerExtender extends _m_focus.focusModule.extenders.controllers.data(Base) {
+  changeRowExpand(key) {
     // @ts-expect-error
     if (this.option('focusedRowEnabled') && this.isRowExpanded(key)) {
       if (this._isFocusedRowInside(key)) {
@@ -30,9 +23,9 @@ const data = Base => /*#__PURE__*/function (_focusModule$extender) {
       }
     }
     // @ts-expect-error
-    return _focusModule$extender.prototype.changeRowExpand.apply(this, arguments);
-  };
-  _proto._isFocusedRowInside = function _isFocusedRowInside(parentKey) {
+    return super.changeRowExpand.apply(this, arguments);
+  }
+  _isFocusedRowInside(parentKey) {
     const focusedRowKey = this.option('focusedRowKey');
     const rowIndex = this.getRowIndexByKey(focusedRowKey);
     const focusedRow = rowIndex >= 0 && this.getVisibleRows()[rowIndex];
@@ -45,8 +38,8 @@ const data = Base => /*#__PURE__*/function (_focusModule$extender) {
       parent = parent.parent;
     }
     return false;
-  };
-  _proto.getParentKey = function getParentKey(key) {
+  }
+  getParentKey(key) {
     const that = this;
     const dataSource = that._dataSource;
     // @ts-expect-error
@@ -68,8 +61,8 @@ const data = Base => /*#__PURE__*/function (_focusModule$extender) {
       }).fail(d.reject);
     }
     return d.promise();
-  };
-  _proto.expandAscendants = function expandAscendants(key) {
+  }
+  expandAscendants(key) {
     const that = this;
     const dataSource = that._dataSource;
     // @ts-expect-error
@@ -86,8 +79,8 @@ const data = Base => /*#__PURE__*/function (_focusModule$extender) {
       }
     }).fail(d.reject);
     return d.promise();
-  };
-  _proto.getPageIndexByKey = function getPageIndexByKey(key) {
+  }
+  getPageIndexByKey(key) {
     const that = this;
     const dataSource = that._dataSource;
     // @ts-expect-error
@@ -105,12 +98,11 @@ const data = Base => /*#__PURE__*/function (_focusModule$extender) {
       }).fail(d.reject);
     }).fail(d.reject);
     return d.promise();
-  };
-  return TreeListDataControllerExtender;
-}(_m_focus.focusModule.extenders.controllers.data(Base));
-_m_core.default.registerModule('focus', _extends(_extends({}, _m_focus.focusModule), {
-  extenders: _extends(_extends({}, _m_focus.focusModule.extenders), {
-    controllers: _extends(_extends({}, _m_focus.focusModule.extenders.controllers), {
+  }
+};
+_m_core.default.registerModule('focus', _extends({}, _m_focus.focusModule, {
+  extenders: _extends({}, _m_focus.focusModule.extenders, {
+    controllers: _extends({}, _m_focus.focusModule.extenders.controllers, {
       data
     })
   })

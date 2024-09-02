@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/grid_core/filter/m_filter_custom_operations.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -41,7 +41,7 @@ function baseOperation(grid) {
     return result;
   };
   const getFullText = function (itemText, parentText) {
-    return parentText ? "".concat(parentText, "/").concat(itemText) : itemText;
+    return parentText ? `${parentText}/${itemText}` : itemText;
   };
   const getSelectedItemsTexts = function (items, parentText) {
     let result = [];
@@ -55,6 +55,7 @@ function baseOperation(grid) {
     return result;
   };
   const headerFilterController = grid && grid.getController('headerFilter');
+  // Override in the private API WA [T1232532]
   const customizeText = function (fieldInfo, options) {
     options = options || {};
     const {

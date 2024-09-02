@@ -18,7 +18,7 @@ export class TaskAreaContainer {
     return this._scrollView.scrollTop();
   }
   set scrollTop(value) {
-    var diff = value - this._scrollView.scrollTop();
+    const diff = value - this._scrollView.scrollTop();
     if (diff !== 0) {
       this._scrollView.scrollBy({
         left: 0,
@@ -30,7 +30,7 @@ export class TaskAreaContainer {
     return this._scrollView.scrollLeft();
   }
   set scrollLeft(value) {
-    var diff = value - this._scrollView.scrollLeft();
+    const diff = value - this._scrollView.scrollLeft();
     if (diff !== 0) {
       this._scrollView.scrollBy({
         left: diff,

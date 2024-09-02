@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/exporter/exceljs/export.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -80,8 +80,7 @@ const Export = exports.Export = {
     return _export_format.ExportFormat.convertFormat(format, newFormat.precision, dataType, currency);
   },
   setAlignment(excelCell, wrapText, horizontalAlignment) {
-    var _excelCell$alignment;
-    excelCell.alignment = (_excelCell$alignment = excelCell.alignment) !== null && _excelCell$alignment !== void 0 ? _excelCell$alignment : {};
+    excelCell.alignment = excelCell.alignment ?? {};
     if ((0, _type.isDefined)(wrapText)) {
       excelCell.alignment.wrapText = wrapText;
     }

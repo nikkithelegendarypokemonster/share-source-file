@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/utils/variable_wrapper.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,19 +9,19 @@
 import { logger } from './console';
 import dependencyInjector from './dependency_injector';
 export default dependencyInjector({
-  isWrapped: function isWrapped() {
+  isWrapped: function () {
     return false;
   },
-  isWritableWrapped: function isWritableWrapped() {
+  isWritableWrapped: function () {
     return false;
   },
-  wrap: function wrap(value) {
+  wrap: function (value) {
     return value;
   },
-  unwrap: function unwrap(value) {
+  unwrap: function (value) {
     return value;
   },
-  assign: function assign() {
+  assign: function () {
     logger.error('Method \'assign\' should not be used for not wrapped variables. Use \'isWrapped\' method for ensuring.');
   }
 });

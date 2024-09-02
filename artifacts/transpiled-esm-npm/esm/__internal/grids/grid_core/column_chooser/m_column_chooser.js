@@ -14,23 +14,23 @@ import { current, isGeneric, isMaterial as isMaterialTheme } from '../../../../u
 import TreeView from '../../../../ui/tree_view';
 import modules from '../m_modules';
 import { ColumnsView } from '../views/m_columns_view';
-var COLUMN_CHOOSER_CLASS = 'column-chooser';
-var COLUMN_CHOOSER_BUTTON_CLASS = 'column-chooser-button';
-var NOTOUCH_ACTION_CLASS = 'notouch-action';
-var COLUMN_CHOOSER_LIST_CLASS = 'column-chooser-list';
-var COLUMN_CHOOSER_PLAIN_CLASS = 'column-chooser-plain';
-var COLUMN_CHOOSER_DRAG_CLASS = 'column-chooser-mode-drag';
-var COLUMN_CHOOSER_SELECT_CLASS = 'column-chooser-mode-select';
-var COLUMN_CHOOSER_ICON_NAME = 'column-chooser';
-var COLUMN_CHOOSER_ITEM_CLASS = 'dx-column-chooser-item';
-var COLUMN_OPTIONS_USED_IN_ITEMS = ['showInColumnChooser', 'caption', 'allowHiding', 'visible', 'cssClass', 'ownerBand'];
-var processItems = function processItems(that, chooserColumns) {
-  var items = [];
-  var isSelectMode = that.isSelectMode();
-  var isRecursive = that.option('columnChooser.selection.recursive');
+const COLUMN_CHOOSER_CLASS = 'column-chooser';
+const COLUMN_CHOOSER_BUTTON_CLASS = 'column-chooser-button';
+const NOTOUCH_ACTION_CLASS = 'notouch-action';
+const COLUMN_CHOOSER_LIST_CLASS = 'column-chooser-list';
+const COLUMN_CHOOSER_PLAIN_CLASS = 'column-chooser-plain';
+const COLUMN_CHOOSER_DRAG_CLASS = 'column-chooser-mode-drag';
+const COLUMN_CHOOSER_SELECT_CLASS = 'column-chooser-mode-select';
+const COLUMN_CHOOSER_ICON_NAME = 'column-chooser';
+const COLUMN_CHOOSER_ITEM_CLASS = 'dx-column-chooser-item';
+const COLUMN_OPTIONS_USED_IN_ITEMS = ['showInColumnChooser', 'caption', 'allowHiding', 'visible', 'cssClass', 'ownerBand'];
+const processItems = function (that, chooserColumns) {
+  const items = [];
+  const isSelectMode = that.isSelectMode();
+  const isRecursive = that.option('columnChooser.selection.recursive');
   if (chooserColumns.length) {
     each(chooserColumns, (index, column) => {
-      var item = {
+      const item = {
         text: column.caption,
         cssClass: column.cssClass,
         allowHiding: column.allowHiding,
@@ -39,7 +39,7 @@ var processItems = function processItems(that, chooserColumns) {
         disabled: column.allowHiding === false,
         parentId: isDefined(column.ownerBand) ? column.ownerBand : null
       };
-      var isRecursiveWithColumns = isRecursive && column.hasColumns;
+      const isRecursiveWithColumns = isRecursive && column.hasColumns;
       if (isSelectMode && !isRecursiveWithColumns) {
         item.selected = column.visible;
       }
@@ -54,11 +54,11 @@ export class ColumnChooserController extends modules.ViewController {
     this._rowsView = this.getView('rowsView');
   }
   renderShowColumnChooserButton($element) {
-    var that = this;
-    var columnChooserButtonClass = that.addWidgetPrefix(COLUMN_CHOOSER_BUTTON_CLASS);
-    var columnChooserEnabled = that.option('columnChooser.enabled');
-    var $showColumnChooserButton = $element.find(".".concat(columnChooserButtonClass));
-    var $columnChooserButton;
+    const that = this;
+    const columnChooserButtonClass = that.addWidgetPrefix(COLUMN_CHOOSER_BUTTON_CLASS);
+    const columnChooserEnabled = that.option('columnChooser.enabled');
+    const $showColumnChooserButton = $element.find(`.${columnChooserButtonClass}`);
+    let $columnChooserButton;
     if (columnChooserEnabled) {
       if (!$showColumnChooserButton.length) {
         $columnChooserButton = $('<div>').addClass(columnChooserButtonClass).appendTo($element);
@@ -80,7 +80,7 @@ export class ColumnChooserController extends modules.ViewController {
     }
   }
   getPosition() {
-    var position = this.option('columnChooser.position');
+    const position = this.option('columnChooser.position');
     return isDefined(position) ? position : {
       my: 'right bottom',
       at: 'right bottom',
@@ -111,15 +111,15 @@ export class ColumnChooserView extends ColumnsView {
     return !!devices.real().win;
   }
   _initializePopupContainer() {
-    var that = this;
-    var columnChooserClass = that.addWidgetPrefix(COLUMN_CHOOSER_CLASS);
-    var $element = that.element().addClass(columnChooserClass);
-    var columnChooserOptions = that.option('columnChooser');
-    var popupPosition = this._columnChooserController.getPosition();
-    var themeName = current();
-    var isGenericTheme = isGeneric(themeName);
-    var isMaterial = isMaterialTheme(themeName);
-    var dxPopupOptions = {
+    const that = this;
+    const columnChooserClass = that.addWidgetPrefix(COLUMN_CHOOSER_CLASS);
+    const $element = that.element().addClass(columnChooserClass);
+    const columnChooserOptions = that.option('columnChooser');
+    const popupPosition = this._columnChooserController.getPosition();
+    const themeName = current();
+    const isGenericTheme = isGeneric(themeName);
+    const isMaterial = isMaterialTheme(themeName);
+    const dxPopupOptions = {
       visible: false,
       shading: false,
       showCloseButton: false,
@@ -167,8 +167,8 @@ export class ColumnChooserView extends ColumnsView {
     this.setPopupAttributes();
   }
   setPopupAttributes() {
-    var isSelectMode = this.isSelectMode();
-    var isBandColumnsUsed = this._columnsController.isBandColumnsUsed();
+    const isSelectMode = this.isSelectMode();
+    const isBandColumnsUsed = this._columnsController.isBandColumnsUsed();
     this._popupContainer.setAria({
       role: 'dialog',
       label: messageLocalization.format('dxDataGrid-columnChooserTitle')
@@ -181,7 +181,7 @@ export class ColumnChooserView extends ColumnsView {
   }
   _renderCore(change) {
     if (this._popupContainer) {
-      var isDragMode = !this.isSelectMode();
+      const isDragMode = !this.isSelectMode();
       if (!this._columnChooserList || change === 'full') {
         this._renderTreeView();
       } else if (isDragMode) {
@@ -190,14 +190,14 @@ export class ColumnChooserView extends ColumnsView {
     }
   }
   _renderTreeView() {
-    var _a, _b, _c;
-    var that = this;
-    var $container = this._popupContainer.$content();
-    var columnChooser = this.option('columnChooser');
-    var isSelectMode = this.isSelectMode();
-    var searchEnabled = isDefined(columnChooser.allowSearch) ? columnChooser.allowSearch : (_a = columnChooser.search) === null || _a === void 0 ? void 0 : _a.enabled;
-    var searchTimeout = isDefined(columnChooser.searchTimeout) ? columnChooser.searchTimeout : (_b = columnChooser.search) === null || _b === void 0 ? void 0 : _b.timeout;
-    var treeViewConfig = {
+    var _columnChooser$search, _columnChooser$search2, _columnChooser$search3;
+    const that = this;
+    const $container = this._popupContainer.$content();
+    const columnChooser = this.option('columnChooser');
+    const isSelectMode = this.isSelectMode();
+    const searchEnabled = isDefined(columnChooser.allowSearch) ? columnChooser.allowSearch : (_columnChooser$search = columnChooser.search) === null || _columnChooser$search === void 0 ? void 0 : _columnChooser$search.enabled;
+    const searchTimeout = isDefined(columnChooser.searchTimeout) ? columnChooser.searchTimeout : (_columnChooser$search2 = columnChooser.search) === null || _columnChooser$search2 === void 0 ? void 0 : _columnChooser$search2.timeout;
+    const treeViewConfig = {
       dataStructure: 'plain',
       activeStateEnabled: true,
       focusStateEnabled: true,
@@ -207,7 +207,7 @@ export class ColumnChooserView extends ColumnsView {
       rootValue: null,
       searchEnabled,
       searchTimeout,
-      searchEditorOptions: (_c = columnChooser.search) === null || _c === void 0 ? void 0 : _c.editorOptions
+      searchEditorOptions: (_columnChooser$search3 = columnChooser.search) === null || _columnChooser$search3 === void 0 ? void 0 : _columnChooser$search3.editorOptions
     };
     if (this._isWinDevice()) {
       treeViewConfig.useNativeScrolling = false;
@@ -224,14 +224,14 @@ export class ColumnChooserView extends ColumnsView {
       this._columnChooserList = this._createComponent($container, TreeView, treeViewConfig);
       // we need to set items after setting selectNodesRecursive, so they will be processed correctly inside TreeView
       this._updateItems();
-      var scrollTop = 0;
+      let scrollTop = 0;
       this._columnChooserList.on('optionChanged', e => {
-        var scrollable = e.component.getScrollable();
+        const scrollable = e.component.getScrollable();
         scrollTop = scrollable.scrollTop();
       });
       this._columnChooserList.on('contentReady', e => {
         deferUpdate(() => {
-          var scrollable = e.component.getScrollable();
+          const scrollable = e.component.getScrollable();
           scrollable.scrollTo({
             y: scrollTop
           });
@@ -241,11 +241,10 @@ export class ColumnChooserView extends ColumnsView {
     }
   }
   _prepareDragModeConfig() {
-    var columnChooserOptions = this.option('columnChooser');
+    const columnChooserOptions = this.option('columnChooser');
     return {
       noDataText: columnChooserOptions.emptyPanelText,
       activeStateEnabled: false,
-      focusStateEnabled: false,
       hoverStateEnabled: false,
       itemTemplate(data, index, item) {
         $(item).text(data.text).parent().addClass(data.cssClass).addClass(COLUMN_CHOOSER_ITEM_CLASS);
@@ -253,11 +252,10 @@ export class ColumnChooserView extends ColumnsView {
     };
   }
   _prepareSelectModeConfig() {
-    var _a;
-    var that = this;
-    var selectionOptions = (_a = this.option('columnChooser.selection')) !== null && _a !== void 0 ? _a : {};
-    var getFlatNodes = nodes => {
-      var addNodesToArray = (nodes, flatNodesArray) => nodes.reduce((result, node) => {
+    const that = this;
+    const selectionOptions = this.option('columnChooser.selection') ?? {};
+    const getFlatNodes = nodes => {
+      const addNodesToArray = (nodes, flatNodesArray) => nodes.reduce((result, node) => {
         result.push(node);
         if (node.children.length) {
           addNodesToArray(node.children, result);
@@ -266,22 +264,22 @@ export class ColumnChooserView extends ColumnsView {
       }, flatNodesArray);
       return addNodesToArray(nodes, []);
     };
-    var updateSelection = (e, nodes) => {
+    const updateSelection = (e, nodes) => {
       nodes.filter(node => node.itemData.allowHiding === false).forEach(node => e.component.selectItem(node.key));
     };
-    var updateColumnVisibility = nodes => {
+    const updateColumnVisibility = nodes => {
       nodes.forEach(node => {
-        var columnIndex = node.itemData.id;
-        var isVisible = node.selected !== false;
+        const columnIndex = node.itemData.id;
+        const isVisible = node.selected !== false;
         that._columnsController.columnOption(columnIndex, 'visible', isVisible);
       });
     };
-    var isUpdatingSelection = false;
-    var selectionChangedHandler = e => {
+    let isUpdatingSelection = false;
+    const selectionChangedHandler = e => {
       if (isUpdatingSelection) {
         return;
       }
-      var nodes = getFlatNodes(e.component.getNodes());
+      const nodes = getFlatNodes(e.component.getNodes());
       e.component.beginUpdate();
       isUpdatingSelection = true;
       updateSelection(e, nodes);
@@ -301,16 +299,16 @@ export class ColumnChooserView extends ColumnsView {
     };
   }
   _updateItems() {
-    var isSelectMode = this.isSelectMode();
-    var chooserColumns = this._columnsController.getChooserColumns(isSelectMode);
-    var items = processItems(this, chooserColumns);
+    const isSelectMode = this.isSelectMode();
+    const chooserColumns = this._columnsController.getChooserColumns(isSelectMode);
+    const items = processItems(this, chooserColumns);
     this._columnChooserList.option('items', items);
   }
   _updateItemsSelection(columnIndices) {
-    var changedColumns = columnIndices === null || columnIndices === void 0 ? void 0 : columnIndices.map(columnIndex => this._columnsController.columnOption(columnIndex));
+    const changedColumns = columnIndices === null || columnIndices === void 0 ? void 0 : columnIndices.map(columnIndex => this._columnsController.columnOption(columnIndex));
     this._columnChooserList.beginUpdate();
-    changedColumns === null || changedColumns === void 0 ? void 0 : changedColumns.forEach(_ref => {
-      var {
+    changedColumns === null || changedColumns === void 0 || changedColumns.forEach(_ref => {
+      let {
         visible,
         index
       } = _ref;
@@ -324,14 +322,14 @@ export class ColumnChooserView extends ColumnsView {
   }
   _columnOptionChanged(e) {
     super._columnOptionChanged(e);
-    var isSelectMode = this.isSelectMode();
+    const isSelectMode = this.isSelectMode();
     if (isSelectMode && this._columnChooserList && !this._isUpdatingColumnVisibility) {
-      var {
+      const {
         optionNames
       } = e;
-      var onlyVisibleChanged = optionNames.visible && optionNames.length === 1;
-      var columnIndices = isDefined(e.columnIndex) ? [e.columnIndex] : e.columnIndices;
-      var needUpdate = COLUMN_OPTIONS_USED_IN_ITEMS.some(optionName => optionNames[optionName]) || e.changeTypes.columns && optionNames.all;
+      const onlyVisibleChanged = optionNames.visible && optionNames.length === 1;
+      const columnIndices = isDefined(e.columnIndex) ? [e.columnIndex] : e.columnIndices;
+      const needUpdate = COLUMN_OPTIONS_USED_IN_ITEMS.some(optionName => optionNames[optionName]) || e.changeTypes.columns && optionNames.all;
       if (needUpdate) {
         this._updateItemsSelection(columnIndices);
         if (!onlyVisibleChanged) {
@@ -341,15 +339,15 @@ export class ColumnChooserView extends ColumnsView {
     }
   }
   getColumnElements() {
-    var result = [];
-    var isSelectMode = this.isSelectMode();
-    var chooserColumns = this._columnsController.getChooserColumns(isSelectMode);
-    var $content = this._popupContainer && this._popupContainer.$content();
-    var $nodes = $content && $content.find('.dx-treeview-node');
+    const result = [];
+    const isSelectMode = this.isSelectMode();
+    const chooserColumns = this._columnsController.getChooserColumns(isSelectMode);
+    const $content = this._popupContainer && this._popupContainer.$content();
+    const $nodes = $content && $content.find('.dx-treeview-node');
     if ($nodes) {
       chooserColumns.forEach(column => {
-        var $node = $nodes.filter("[data-item-id = '".concat(column.index, "']"));
-        var item = $node.length ? $node.children(".".concat(COLUMN_CHOOSER_ITEM_CLASS)).get(0) : null;
+        const $node = $nodes.filter(`[data-item-id = '${column.index}']`);
+        const item = $node.length ? $node.children(`.${COLUMN_CHOOSER_ITEM_CLASS}`).get(0) : null;
         result.push(item);
       });
     }
@@ -362,19 +360,19 @@ export class ColumnChooserView extends ColumnsView {
     return this._columnsController.getChooserColumns();
   }
   allowDragging(column) {
-    var isParentColumnVisible = this._columnsController.isParentColumnVisible(column.index);
-    var isColumnHidden = !column.visible && column.allowHiding;
+    const isParentColumnVisible = this._columnsController.isParentColumnVisible(column.index);
+    const isColumnHidden = !column.visible && column.allowHiding;
     return this.isColumnChooserVisible() && isParentColumnVisible && isColumnHidden;
   }
   allowColumnHeaderDragging(column) {
-    var isDragMode = !this.isSelectMode();
+    const isDragMode = !this.isSelectMode();
     return isDragMode && this.isColumnChooserVisible() && column.allowHiding;
   }
   getBoundingRect() {
-    var that = this;
-    var container = that._popupContainer && that._popupContainer.$overlayContent();
+    const that = this;
+    const container = that._popupContainer && that._popupContainer.$overlayContent();
     if (container && container.is(':visible')) {
-      var offset = container.offset();
+      const offset = container.offset();
       return {
         left: offset.left,
         top: offset.top,
@@ -400,36 +398,36 @@ export class ColumnChooserView extends ColumnsView {
     }
   }
   isColumnChooserVisible() {
-    var popupContainer = this._popupContainer;
+    const popupContainer = this._popupContainer;
     return popupContainer && popupContainer.option('visible');
   }
   isSelectMode() {
     return this.option('columnChooser.mode') === 'select';
   }
   hasHiddenColumns() {
-    var isEnabled = this.option('columnChooser.enabled');
-    var hiddenColumns = this.getColumns().filter(column => !column.visible);
+    const isEnabled = this.option('columnChooser.enabled');
+    const hiddenColumns = this.getColumns().filter(column => !column.visible);
     return isEnabled && hiddenColumns.length;
   }
 }
-var headerPanel = Base => class ColumnChooserHeaderPanelExtender extends Base {
+const headerPanel = Base => class ColumnChooserHeaderPanelExtender extends Base {
   _getToolbarItems() {
-    var items = super._getToolbarItems();
+    const items = super._getToolbarItems();
     return this._appendColumnChooserItem(items);
   }
   _appendColumnChooserItem(items) {
-    var that = this;
-    var columnChooserEnabled = that.option('columnChooser.enabled');
+    const that = this;
+    const columnChooserEnabled = that.option('columnChooser.enabled');
     if (columnChooserEnabled) {
-      var onClickHandler = function onClickHandler() {
+      const onClickHandler = function () {
         // TODO getView
         that.component.getView('columnChooserView').showColumnChooser();
       };
-      var onInitialized = function onInitialized(e) {
+      const onInitialized = function (e) {
         $(e.element).addClass(that._getToolbarButtonClass(that.addWidgetPrefix(COLUMN_CHOOSER_BUTTON_CLASS)));
       };
-      var hintText = that.option('columnChooser.title');
-      var toolbarItem = {
+      const hintText = that.option('columnChooser.title');
+      const toolbarItem = {
         widget: 'dxButton',
         options: {
           icon: COLUMN_CHOOSER_ICON_NAME,
@@ -462,26 +460,26 @@ var headerPanel = Base => class ColumnChooserHeaderPanelExtender extends Base {
     }
   }
   isVisible() {
-    var that = this;
-    var columnChooserEnabled = that.option('columnChooser.enabled');
+    const that = this;
+    const columnChooserEnabled = that.option('columnChooser.enabled');
     return super.isVisible() || columnChooserEnabled;
   }
 };
-var columns = Base => class ColumnsChooserColumnsControllerExtender extends Base {
+const columns = Base => class ColumnsChooserColumnsControllerExtender extends Base {
   allowMoveColumn(fromVisibleIndex, toVisibleIndex, sourceLocation, targetLocation) {
-    var isSelectMode = this.option('columnChooser.mode') === 'select';
-    var isMoveColumnDisallowed = isSelectMode && targetLocation === 'columnChooser';
+    const isSelectMode = this.option('columnChooser.mode') === 'select';
+    const isMoveColumnDisallowed = isSelectMode && targetLocation === 'columnChooser';
     return isMoveColumnDisallowed ? false : super.allowMoveColumn(fromVisibleIndex, toVisibleIndex, sourceLocation, targetLocation);
   }
 };
-var columnHeadersView = Base => class ColumnChooserColumnHeadersExtender extends Base {
+const columnHeadersView = Base => class ColumnChooserColumnHeadersExtender extends Base {
   allowDragging(column) {
-    var isDragMode = !this._columnChooserView.isSelectMode();
-    var isColumnChooserVisible = this._columnChooserView.isColumnChooserVisible();
+    const isDragMode = !this._columnChooserView.isSelectMode();
+    const isColumnChooserVisible = this._columnChooserView.isColumnChooserVisible();
     return isDragMode && isColumnChooserVisible && column.allowHiding || super.allowDragging(column);
   }
 };
-export var columnChooserModule = {
+export const columnChooserModule = {
   defaultOptions() {
     return {
       columnChooser: {

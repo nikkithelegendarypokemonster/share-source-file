@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/diagram/ui.diagram.panel.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,8 +11,8 @@ import Widget from '../widget/ui.widget';
 import eventsEngine from '../../events/core/events_engine';
 import { addNamespace } from '../../events/utils/index';
 import pointerEvents from '../../events/pointer';
-var POINTERUP_EVENT_NAME = addNamespace(pointerEvents.up, 'dxDiagramPanel');
-var PREVENT_REFOCUS_SELECTOR = '.dx-textbox';
+const POINTERUP_EVENT_NAME = addNamespace(pointerEvents.up, 'dxDiagramPanel');
+const PREVENT_REFOCUS_SELECTOR = '.dx-textbox';
 class DiagramPanel extends Widget {
   _init() {
     super._init();
@@ -26,7 +26,7 @@ class DiagramPanel extends Widget {
     return [this.$element()];
   }
   _attachPointerUpEvent() {
-    var elements = this._getPointerUpElements();
+    const elements = this._getPointerUpElements();
     elements.forEach(element => {
       eventsEngine.off(element, POINTERUP_EVENT_NAME);
       eventsEngine.on(element, POINTERUP_EVENT_NAME, e => {

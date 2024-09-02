@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/viz/themes.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -43,7 +43,7 @@ function getTheme(themeName) {
   return themes[name] || themes[themesMapping[name] || currentTheme()];
 }
 function findThemeNameByName(name, scheme) {
-  const fullThemeKey = "".concat(name, ".").concat(scheme);
+  const fullThemeKey = `${name}.${scheme}`;
   return themesMapping[fullThemeKey] || themesSchemeMapping[fullThemeKey] || themesMapping[name];
 }
 function findThemeNameByPlatform(platform, version, scheme) {
@@ -72,7 +72,7 @@ function registerThemeName(themeName, targetThemeName) {
   const name = themeInfo.name;
   const scheme = themeInfo.scheme;
   if (scheme) {
-    const fullThemeKey = "".concat(name, ".").concat(scheme);
+    const fullThemeKey = `${name}.${scheme}`;
     themesMapping[name] = themesMapping[name] || targetThemeName;
     themesMapping[fullThemeKey] = targetThemeName;
   } else {
@@ -91,15 +91,13 @@ function registerThemeSchemeAlias(from, to) {
   themesSchemeMapping[from] = to;
 }
 function mergeScalar(target, field, source, sourceValue) {
-  var _source$field;
-  const _value = (_source$field = source === null || source === void 0 ? void 0 : source[field]) !== null && _source$field !== void 0 ? _source$field : sourceValue;
+  const _value = (source === null || source === void 0 ? void 0 : source[field]) ?? sourceValue;
   if (_value !== undefined && target[field] === undefined) {
     target[field] = _value;
   }
 }
 function mergeObject(target, field, source, sourceValue) {
-  var _source$field2;
-  const _value = (_source$field2 = source === null || source === void 0 ? void 0 : source[field]) !== null && _source$field2 !== void 0 ? _source$field2 : sourceValue;
+  const _value = (source === null || source === void 0 ? void 0 : source[field]) ?? sourceValue;
   if (_value !== undefined) {
     target[field] = _extend(true, {}, _value, target[field]);
   }

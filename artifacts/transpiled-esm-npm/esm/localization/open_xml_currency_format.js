@@ -2,17 +2,17 @@ export default ((currencySymbol, accountingFormat) => {
   if (!accountingFormat) {
     return;
   }
-  var encodedCurrencySymbol = currencySymbol;
+  let encodedCurrencySymbol = currencySymbol;
   if (typeof currencySymbol === 'string') {
     encodedCurrencySymbol = '';
-    for (var i = 0; i < currencySymbol.length; i++) {
+    for (let i = 0; i < currencySymbol.length; i++) {
       if (currencySymbol[i] !== '$') {
         encodedCurrencySymbol += '\\';
       }
       encodedCurrencySymbol += currencySymbol[i];
     }
   }
-  var encodeSymbols = {
+  const encodeSymbols = {
     '.00': '{0}',
     '\'': '\\\'',
     '\\(': '\\(',
@@ -21,11 +21,11 @@ export default ((currencySymbol, accountingFormat) => {
     '"': '&quot;',
     '\\¤': encodedCurrencySymbol
   };
-  var result = accountingFormat.split(';');
-  for (var _i = 0; _i < result.length; _i++) {
-    for (var symbol in encodeSymbols) {
+  const result = accountingFormat.split(';');
+  for (let i = 0; i < result.length; i++) {
+    for (const symbol in encodeSymbols) {
       if (Object.prototype.hasOwnProperty.call(encodeSymbols, symbol)) {
-        result[_i] = result[_i].replace(new RegExp(symbol, 'g'), encodeSymbols[symbol]);
+        result[i] = result[i].replace(new RegExp(symbol, 'g'), encodeSymbols[symbol]);
       }
     }
   }

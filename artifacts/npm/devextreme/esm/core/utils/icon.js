@@ -1,15 +1,15 @@
 /**
 * DevExtreme (esm/core/utils/icon.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import $ from '../../core/renderer';
-var ICON_CLASS = 'dx-icon';
-var SVG_ICON_CLASS = 'dx-svg-icon';
-export var getImageSourceType = source => {
+const ICON_CLASS = 'dx-icon';
+const SVG_ICON_CLASS = 'dx-svg-icon';
+export const getImageSourceType = source => {
   if (!source || typeof source !== 'string') {
     return false;
   }
@@ -27,16 +27,16 @@ export var getImageSourceType = source => {
   }
   return false;
 };
-export var getImageContainer = source => {
+export const getImageContainer = source => {
   switch (getImageSourceType(source)) {
     case 'image':
       return $('<img>').attr('src', source).addClass(ICON_CLASS);
     case 'fontIcon':
-      return $('<i>').addClass("".concat(ICON_CLASS, " ").concat(source));
+      return $('<i>').addClass(`${ICON_CLASS} ${source}`);
     case 'dxIcon':
-      return $('<i>').addClass("".concat(ICON_CLASS, " ").concat(ICON_CLASS, "-").concat(source));
+      return $('<i>').addClass(`${ICON_CLASS} ${ICON_CLASS}-${source}`);
     case 'svg':
-      return $('<i>').addClass("".concat(ICON_CLASS, " ").concat(SVG_ICON_CLASS)).append(source);
+      return $('<i>').addClass(`${ICON_CLASS} ${SVG_ICON_CLASS}`).append(source);
     default:
       return null;
   }

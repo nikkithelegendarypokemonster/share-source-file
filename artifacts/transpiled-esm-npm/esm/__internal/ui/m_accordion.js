@@ -17,17 +17,17 @@ import eventsEngine from '../../events/core/events_engine';
 import { addNamespace } from '../../events/utils/index';
 import CollectionWidget from '../../ui/collection/ui.collection_widget.live_update';
 import { isMaterialBased } from '../../ui/themes';
-var ACCORDION_CLASS = 'dx-accordion';
-var ACCORDION_WRAPPER_CLASS = 'dx-accordion-wrapper';
-var ACCORDION_ITEM_CLASS = 'dx-accordion-item';
-var ACCORDION_ITEM_OPENED_CLASS = 'dx-accordion-item-opened';
-var ACCORDION_ITEM_CLOSED_CLASS = 'dx-accordion-item-closed';
-var ACCORDION_ITEM_TITLE_CLASS = 'dx-accordion-item-title';
-var ACCORDION_ITEM_BODY_CLASS = 'dx-accordion-item-body';
-var ACCORDION_ITEM_TITLE_CAPTION_CLASS = 'dx-accordion-item-title-caption';
-var ACCORDION_ITEM_DATA_KEY = 'dxAccordionItemData';
-var Accordion = CollectionWidget.inherit({
-  _activeStateUnit: ".".concat(ACCORDION_ITEM_CLASS),
+const ACCORDION_CLASS = 'dx-accordion';
+const ACCORDION_WRAPPER_CLASS = 'dx-accordion-wrapper';
+const ACCORDION_ITEM_CLASS = 'dx-accordion-item';
+const ACCORDION_ITEM_OPENED_CLASS = 'dx-accordion-item-opened';
+const ACCORDION_ITEM_CLOSED_CLASS = 'dx-accordion-item-closed';
+const ACCORDION_ITEM_TITLE_CLASS = 'dx-accordion-item-title';
+const ACCORDION_ITEM_BODY_CLASS = 'dx-accordion-item-body';
+const ACCORDION_ITEM_TITLE_CAPTION_CLASS = 'dx-accordion-item-title-caption';
+const ACCORDION_ITEM_DATA_KEY = 'dxAccordionItemData';
+const Accordion = CollectionWidget.inherit({
+  _activeStateUnit: `.${ACCORDION_ITEM_CLASS}`,
   _getDefaultOptions() {
     return extend(this.callBase(), {
       hoverStateEnabled: true,
@@ -73,7 +73,7 @@ var Accordion = CollectionWidget.inherit({
     this.callBase();
     this.option('selectionRequired', !this.option('collapsible'));
     this.option('selectionMode', this.option('multiple') ? 'multiple' : 'single');
-    var $element = this.$element();
+    const $element = this.$element();
     $element.addClass(ACCORDION_CLASS);
     this._$container = $('<div>').addClass(ACCORDION_WRAPPER_CLASS);
     $element.append(this._$container);
@@ -83,7 +83,7 @@ var Accordion = CollectionWidget.inherit({
     this._templateManager.addDefaultTemplates({
       title: new BindableTemplate(($container, data) => {
         if (isPlainObject(data)) {
-          var $iconElement = getImageContainer(data.icon);
+          const $iconElement = getImageContainer(data.icon);
           if ($iconElement) {
             $container.append($iconElement);
           }
@@ -108,7 +108,7 @@ var Accordion = CollectionWidget.inherit({
       multiselectable: this.option('multiple')
     });
     deferRender(() => {
-      var selectedItemIndices = this._getSelectedItemIndices();
+      const selectedItemIndices = this._getSelectedItemIndices();
       this._renderSelection(selectedItemIndices, []);
     });
   },
@@ -128,10 +128,10 @@ var Accordion = CollectionWidget.inherit({
     return this._$container;
   },
   _itemTitles() {
-    return this._itemElements().find(".".concat(ACCORDION_ITEM_TITLE_CLASS));
+    return this._itemElements().find(`.${ACCORDION_ITEM_TITLE_CLASS}`);
   },
   _itemContents() {
-    return this._itemElements().find(".".concat(ACCORDION_ITEM_BODY_CLASS));
+    return this._itemElements().find(`.${ACCORDION_ITEM_BODY_CLASS}`);
   },
   _getItemData(target) {
     return $(target).parent().data(this._itemDataKey()) || this.callBase.apply(this, arguments);
@@ -153,16 +153,14 @@ var Accordion = CollectionWidget.inherit({
     this.callBase.apply(this, arguments);
   },
   _renderItemContent(args) {
-    // @ts-expect-error
-    this._deferredTemplateItems[args.index] = new Deferred();
-    var itemTitle = this.callBase(extend({}, args, {
+    this._deferredTemplateItems[args.index] = Deferred();
+    const itemTitle = this.callBase(extend({}, args, {
       contentClass: ACCORDION_ITEM_TITLE_CLASS,
       templateProperty: 'titleTemplate',
       defaultTemplateName: this.option('itemTitleTemplate')
     }));
     this._attachItemTitleClickAction(itemTitle);
-    // @ts-expect-error
-    var deferred = new Deferred();
+    const deferred = Deferred();
     if (isDefined(this._deferredItems[args.index])) {
       this._deferredItems[args.index] = deferred;
     } else {
@@ -178,13 +176,12 @@ var Accordion = CollectionWidget.inherit({
   },
   _onItemTemplateRendered(_, renderArgs) {
     return () => {
-      var item = this._deferredTemplateItems[renderArgs.index];
+      const item = this._deferredTemplateItems[renderArgs.index];
       item && item.resolve();
     };
   },
   _attachItemTitleClickAction(itemTitle) {
-    var eventName = addNamespace(clickEventName, this.NAME);
-    // @ts-expect-error
+    const eventName = addNamespace(clickEventName, this.NAME);
     eventsEngine.off(itemTitle, eventName);
     eventsEngine.on(itemTitle, eventName, this._itemTitleClickHandler.bind(this));
   },
@@ -201,15 +198,16 @@ var Accordion = CollectionWidget.inherit({
     this._updateItemHeightsWrapper(false);
   },
   _updateItems(addedSelection, removedSelection) {
-    var $items = this._itemElements();
+    const $items = this._itemElements();
     iteratorUtils.each(addedSelection, (_, index) => {
-      this._deferredItems[index].resolve();
-      var $item = $items.eq(index).addClass(ACCORDION_ITEM_OPENED_CLASS).removeClass(ACCORDION_ITEM_CLOSED_CLASS);
-      this.setAria('hidden', false, $item.find(".".concat(ACCORDION_ITEM_BODY_CLASS)));
+      var _this$_deferredItems$;
+      (_this$_deferredItems$ = this._deferredItems[index]) === null || _this$_deferredItems$ === void 0 || _this$_deferredItems$.resolve();
+      const $item = $items.eq(index).addClass(ACCORDION_ITEM_OPENED_CLASS).removeClass(ACCORDION_ITEM_CLOSED_CLASS);
+      this.setAria('hidden', false, $item.find(`.${ACCORDION_ITEM_BODY_CLASS}`));
     });
     iteratorUtils.each(removedSelection, (_, index) => {
-      var $item = $items.eq(index).removeClass(ACCORDION_ITEM_OPENED_CLASS);
-      this.setAria('hidden', true, $item.find(".".concat(ACCORDION_ITEM_BODY_CLASS)));
+      const $item = $items.eq(index).removeClass(ACCORDION_ITEM_OPENED_CLASS);
+      this.setAria('hidden', true, $item.find(`.${ACCORDION_ITEM_BODY_CLASS}`));
     });
   },
   _updateItemHeightsWrapper(skipAnimation) {
@@ -223,9 +221,9 @@ var Accordion = CollectionWidget.inherit({
     }
   },
   _updateItemHeights(skipAnimation) {
-    var that = this;
-    var deferredAnimate = that._deferredAnimate;
-    var itemHeight = this._splitFreeSpace(this._calculateFreeSpace());
+    const that = this;
+    const deferredAnimate = that._deferredAnimate;
+    const itemHeight = this._splitFreeSpace(this._calculateFreeSpace());
     clearTimeout(this._animationTimer);
     return when.apply($, [].slice.call(this._itemElements()).map(item => that._updateItemHeight($(item), itemHeight, skipAnimation))).done(() => {
       if (deferredAnimate) {
@@ -234,13 +232,13 @@ var Accordion = CollectionWidget.inherit({
     });
   },
   _updateItemHeight($item, itemHeight, skipAnimation) {
-    var $title = $item.children(".".concat(ACCORDION_ITEM_TITLE_CLASS));
+    const $title = $item.children(`.${ACCORDION_ITEM_TITLE_CLASS}`);
     if (fx.isAnimating($item)) {
       // @ts-expect-error
       fx.stop($item);
     }
-    var startItemHeight = getOuterHeight($item);
-    var finalItemHeight;
+    const startItemHeight = getOuterHeight($item);
+    let finalItemHeight;
     if ($item.hasClass(ACCORDION_ITEM_OPENED_CLASS)) {
       finalItemHeight = itemHeight + getOuterHeight($title);
       if (!finalItemHeight) {
@@ -253,11 +251,10 @@ var Accordion = CollectionWidget.inherit({
     return this._animateItem($item, startItemHeight, finalItemHeight, skipAnimation, !!itemHeight);
   },
   _animateItem($element, startHeight, endHeight, skipAnimation, fixedHeight) {
-    var d;
+    let d;
     if (skipAnimation || startHeight === endHeight) {
       $element.css('height', endHeight);
-      // @ts-expect-error
-      d = new Deferred().resolve();
+      d = Deferred().resolve();
     } else {
       d = fx.animate($element, {
         // @ts-expect-error
@@ -278,7 +275,7 @@ var Accordion = CollectionWidget.inherit({
       if ($element.hasClass(ACCORDION_ITEM_OPENED_CLASS) && !fixedHeight) {
         $element.css('height', '');
       }
-      $element.not(".".concat(ACCORDION_ITEM_OPENED_CLASS)).addClass(ACCORDION_ITEM_CLOSED_CLASS);
+      $element.not(`.${ACCORDION_ITEM_OPENED_CLASS}`).addClass(ACCORDION_ITEM_CLOSED_CLASS);
     });
   },
   _splitFreeSpace(freeSpace) {
@@ -288,12 +285,12 @@ var Accordion = CollectionWidget.inherit({
     return freeSpace / this.option('selectedItems').length;
   },
   _calculateFreeSpace() {
-    var height = this.option('height');
+    const height = this.option('height');
     if (height === undefined || height === 'auto') {
       return;
     }
-    var $titles = this._itemTitles();
-    var itemsHeight = 0;
+    const $titles = this._itemTitles();
+    let itemsHeight = 0;
     iteratorUtils.each($titles, (_, title) => {
       itemsHeight += getOuterHeight(title);
     });
@@ -316,7 +313,7 @@ var Accordion = CollectionWidget.inherit({
     this.callBase();
   },
   _tryParseItemPropertyName(fullName) {
-    var matches = fullName.match(/.*\.(.*)/);
+    const matches = fullName.match(/.*\.(.*)/);
     if (isDefined(matches) && matches.length >= 1) {
       return matches[1];
     }
@@ -356,14 +353,12 @@ var Accordion = CollectionWidget.inherit({
     }
   },
   expandItem(index) {
-    // @ts-expect-error
-    this._deferredAnimate = new Deferred();
+    this._deferredAnimate = Deferred();
     this.selectItem(index);
     return this._deferredAnimate.promise();
   },
   collapseItem(index) {
-    // @ts-expect-error
-    this._deferredAnimate = new Deferred();
+    this._deferredAnimate = Deferred();
     this.unselectItem(index);
     return this._deferredAnimate.promise();
   },

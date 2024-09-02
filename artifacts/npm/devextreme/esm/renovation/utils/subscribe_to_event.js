@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/renovation/utils/subscribe_to_event.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,7 +13,7 @@ import scrollEvents from '../../events/gesture/emitter.gesture.scroll';
 import pointerEvents from '../../events/pointer';
 export function subscribeToEvent(eventName) {
   return (element, handler, eventData, namespace) => {
-    var event = namespace ? addNamespace(eventName, namespace) : eventName;
+    const event = namespace ? addNamespace(eventName, namespace) : eventName;
     if (handler) {
       eventsEngine.on(element, event, eventData, handler);
       return () => {
@@ -23,23 +23,23 @@ export function subscribeToEvent(eventName) {
     return undefined;
   };
 }
-export var subscribeToClickEvent = subscribeToEvent(clickEvent.name);
-export var subscribeToScrollEvent = subscribeToEvent(scrollEvents.scroll);
-export var subscribeToScrollInitEvent = subscribeToEvent(scrollEvents.init);
-export var subscribeToDXScrollStartEvent = subscribeToEvent(scrollEvents.start);
-export var subscribeToDXScrollMoveEvent = subscribeToEvent(scrollEvents.move);
-export var subscribeToDXScrollEndEvent = subscribeToEvent(scrollEvents.end);
-export var subscribeToDXScrollStopEvent = subscribeToEvent(scrollEvents.stop);
-export var subscribeToDXScrollCancelEvent = subscribeToEvent(scrollEvents.cancel);
-export var subscribeToDXPointerDownEvent = subscribeToEvent(pointerEvents.down);
-export var subscribeToDXPointerUpEvent = subscribeToEvent(pointerEvents.up);
-export var subscribeToDXPointerMoveEvent = subscribeToEvent(pointerEvents.move);
-export var subscribeToMouseEnterEvent = subscribeToEvent('mouseenter');
-export var subscribeToMouseLeaveEvent = subscribeToEvent('mouseleave');
-export var subscribeToKeyDownEvent = subscribeToEvent('keydown');
-export var subscribeToDxActiveEvent = subscribeToEvent('dxactive');
-export var subscribeToDxInactiveEvent = subscribeToEvent('dxinactive');
-export var subscribeToDxHoverStartEvent = subscribeToEvent('dxhoverstart');
-export var subscribeToDxHoverEndEvent = subscribeToEvent('dxhoverend');
-export var subscribeToDxFocusInEvent = subscribeToEvent('focusin');
-export var subscribeToDxFocusOutEvent = subscribeToEvent('focusout');
+export const subscribeToClickEvent = subscribeToEvent(clickEvent.name);
+export const subscribeToScrollEvent = subscribeToEvent(scrollEvents.scroll);
+export const subscribeToScrollInitEvent = subscribeToEvent(scrollEvents.init);
+export const subscribeToDXScrollStartEvent = subscribeToEvent(scrollEvents.start);
+export const subscribeToDXScrollMoveEvent = subscribeToEvent(scrollEvents.move);
+export const subscribeToDXScrollEndEvent = subscribeToEvent(scrollEvents.end);
+export const subscribeToDXScrollStopEvent = subscribeToEvent(scrollEvents.stop);
+export const subscribeToDXScrollCancelEvent = subscribeToEvent(scrollEvents.cancel);
+export const subscribeToDXPointerDownEvent = subscribeToEvent(pointerEvents.down);
+export const subscribeToDXPointerUpEvent = subscribeToEvent(pointerEvents.up);
+export const subscribeToDXPointerMoveEvent = subscribeToEvent(pointerEvents.move);
+export const subscribeToMouseEnterEvent = subscribeToEvent('mouseenter');
+export const subscribeToMouseLeaveEvent = subscribeToEvent('mouseleave');
+export const subscribeToKeyDownEvent = subscribeToEvent('keydown');
+export const subscribeToDxActiveEvent = subscribeToEvent('dxactive');
+export const subscribeToDxInactiveEvent = subscribeToEvent('dxinactive');
+export const subscribeToDxHoverStartEvent = subscribeToEvent('dxhoverstart');
+export const subscribeToDxHoverEndEvent = subscribeToEvent('dxhoverend');
+export const subscribeToDxFocusInEvent = subscribeToEvent('focusin');
+export const subscribeToDxFocusOutEvent = subscribeToEvent('focusout');

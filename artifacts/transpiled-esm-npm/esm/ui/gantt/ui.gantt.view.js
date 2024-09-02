@@ -7,6 +7,9 @@ import { isDefined } from '../../core/utils/type';
 import messageLocalization from '../../localization/message';
 import { format } from '../../core/utils/string';
 import coreLocalization from '../../localization/core';
+import { requestAnimationFrame, cancelAnimationFrame } from '../../animation/frame';
+const visualStateKey = 'visualState';
+const fullScreenModeKey = 'fullScreen';
 export class GanttView extends Widget {
   _init() {
     super._init();
@@ -23,7 +26,7 @@ export class GanttView extends Widget {
     this._onAdjustControl = this._createActionByOption('onAdjustControl');
   }
   _initMarkup() {
-    var GanttView = getGanttViewCore();
+    const GanttView = getGanttViewCore();
     this._ganttViewCore = new GanttView(this.$element().get(0), this, {
       showResources: this.option('showResources'),
       showDependencies: this.option('showDependencies'),
@@ -50,6 +53,19 @@ export class GanttView extends Widget {
     });
     this._selectTask(this.option('selectedRowKey'));
     this.updateBarItemsState();
+    const visualState = this.option(visualStateKey);
+    if (visualState) {
+      this._restoreStateFrameId = requestAnimationFrame(() => this._restoreVisualState(visualState));
+    }
+  }
+  _dispose() {
+    super._dispose();
+    cancelAnimationFrame(this._restoreStateFrameId);
+  }
+  _restoreVisualState(state) {
+    if (state[fullScreenModeKey]) {
+      this._ganttViewCore.setFullScreenMode();
+    }
   }
   _getFirstDayOfWeek(value) {
     return isDefined(value) ? value : dateLocalization.firstDayOfWeekIndex();
@@ -61,7 +77,7 @@ export class GanttView extends Widget {
     return this._ganttViewCore.barManager;
   }
   executeCoreCommand(id) {
-    var command = this._ganttViewCore.getCommandByKey(id);
+    const command = this._ganttViewCore.getCommandByKey(id);
     if (command) {
       command.execute();
     }
@@ -71,7 +87,7 @@ export class GanttView extends Widget {
   }
   updateView() {
     var _this$_ganttViewCore;
-    (_this$_ganttViewCore = this._ganttViewCore) === null || _this$_ganttViewCore === void 0 ? void 0 : _this$_ganttViewCore.updateView();
+    (_this$_ganttViewCore = this._ganttViewCore) === null || _this$_ganttViewCore === void 0 || _this$_ganttViewCore.updateView();
   }
   updateBarItemsState() {
     this._ganttViewCore.barManager.updateItemsState([]);
@@ -87,7 +103,7 @@ export class GanttView extends Widget {
   }
   _update(keepExpandState) {
     var _this$_ganttViewCore2;
-    (_this$_ganttViewCore2 = this._ganttViewCore) === null || _this$_ganttViewCore2 === void 0 ? void 0 : _this$_ganttViewCore2.updateWithDataReload(keepExpandState);
+    (_this$_ganttViewCore2 = this._ganttViewCore) === null || _this$_ganttViewCore2 === void 0 || _this$_ganttViewCore2.updateWithDataReload(keepExpandState);
   }
   _getCultureInfo() {
     return {
@@ -110,12 +126,12 @@ export class GanttView extends Widget {
     return this._hasAmPM() ? dateLocalization.getPeriodNames()[1] : '';
   }
   _hasAmPM() {
-    var date = new Date(Date.UTC(2012, 11, 12, 3, 0, 0));
-    var dateString = date.toLocaleTimeString(coreLocalization.locale());
+    const date = new Date(Date.UTC(2012, 11, 12, 3, 0, 0));
+    const dateString = date.toLocaleTimeString(coreLocalization.locale());
     return dateString.match(/am|pm/i) || date.toString().match(/am|pm/i);
   }
   _getQuarterNames() {
-    var quarterFormat = messageLocalization.format('dxGantt-quarter');
+    const quarterFormat = messageLocalization.format('dxGantt-quarter');
     if (!quarterFormat) {
       return dateLocalization.getQuarterNames();
     }
@@ -265,8 +281,8 @@ export class GanttView extends Widget {
     return this.option('headerHeight');
   }
   getGanttTasksData() {
-    var tasks = this.option('tasks');
-    var sieveOptions = this.getSieveOptions();
+    const tasks = this.option('tasks');
+    const sieveOptions = this.getSieveOptions();
     if (sieveOptions !== null && sieveOptions !== void 0 && sieveOptions.sievedItems && sieveOptions !== null && sieveOptions !== void 0 && sieveOptions.sieveColumn) {
       return sieveOptions.sievedItems;
     }
@@ -275,7 +291,7 @@ export class GanttView extends Widget {
   _sortAndFilter(args) {
     this._sieveOptions = args;
     this._update(!(args !== null && args !== void 0 && args.expandTasks));
-    var selectedRowKey = this.option('selectedRowKey');
+    const selectedRowKey = this.option('selectedRowKey');
     this._selectTask(selectedRowKey);
   }
   getSieveOptions() {
@@ -367,11 +383,11 @@ export class GanttView extends Widget {
     return true;
   }
   getFormattedDateText(date) {
-    var result = '';
+    let result = '';
     if (date) {
-      var datePart = dateLocalization.format(date, 'shortDate');
-      var timeFormat = this._hasAmPM() ? 'hh:mm a' : 'HH:mm';
-      var timePart = dateLocalization.format(date, timeFormat);
+      const datePart = dateLocalization.format(date, 'shortDate');
+      const timeFormat = this._hasAmPM() ? 'hh:mm a' : 'HH:mm';
+      const timePart = dateLocalization.format(date, timeFormat);
       result = datePart + ' ' + timePart;
     }
     return result;
@@ -380,9 +396,9 @@ export class GanttView extends Widget {
     $(container).empty();
   }
   onTaskAreaSizeChanged(info) {
-    var scrollView = this._taskAreaContainer._scrollView;
+    const scrollView = this._taskAreaContainer._scrollView;
     if (isDefined(info === null || info === void 0 ? void 0 : info.height)) {
-      var direction = (info === null || info === void 0 ? void 0 : info.height) > this._taskAreaContainer.getHeight() ? 'both' : 'horizontal';
+      const direction = (info === null || info === void 0 ? void 0 : info.height) > this._taskAreaContainer.getHeight() ? 'both' : 'horizontal';
       scrollView.option('direction', direction);
     }
   }
@@ -408,7 +424,7 @@ export class GanttView extends Widget {
     return this.callExportHelperMethod('getTreeListEmptyDataCellInfo');
   }
   callExportHelperMethod(methodName) {
-    var helper = this.option('exportHelper');
+    const helper = this.option('exportHelper');
     for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
@@ -416,6 +432,12 @@ export class GanttView extends Widget {
   }
   applyTasksExpandedState(state) {
     var _this$_ganttViewCore3;
-    (_this$_ganttViewCore3 = this._ganttViewCore) === null || _this$_ganttViewCore3 === void 0 ? void 0 : _this$_ganttViewCore3.applyTasksExpandedState(state);
+    (_this$_ganttViewCore3 = this._ganttViewCore) === null || _this$_ganttViewCore3 === void 0 || _this$_ganttViewCore3.applyTasksExpandedState(state);
+  }
+  getVisualStateToRestore() {
+    var _this$_ganttViewCore4, _this$_ganttViewCore5;
+    return {
+      [fullScreenModeKey]: (_this$_ganttViewCore4 = this._ganttViewCore) === null || _this$_ganttViewCore4 === void 0 || (_this$_ganttViewCore5 = _this$_ganttViewCore4.isInFullScreenMode) === null || _this$_ganttViewCore5 === void 0 ? void 0 : _this$_ganttViewCore5.call(_this$_ganttViewCore4)
+    };
   }
 }

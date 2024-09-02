@@ -11,13 +11,7 @@ var _editor_label_props = require("./common/editor_label_props");
 var _text_editor_props = require("./common/text_editor_props");
 const _excluded = ["accessKey", "activeStateEnabled", "buttons", "className", "defaultValue", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "inputAttr", "isDirty", "isValid", "label", "labelMode", "mask", "maskChar", "maskInvalidMessage", "maskRules", "maxLength", "mode", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "showClearButton", "showMaskMode", "spellCheck", "stylingMode", "tabIndex", "useMaskedValue", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "valueChangeEvent", "visible", "width"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const viewFunction = _ref => {
   let {
@@ -31,7 +25,7 @@ const viewFunction = _ref => {
   }, restAttributes)));
 };
 exports.viewFunction = viewFunction;
-const TextBoxProps = exports.TextBoxProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(_editor.EditorProps), Object.getOwnPropertyDescriptors({
+const TextBoxProps = exports.TextBoxProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(_editor.EditorProps), Object.getOwnPropertyDescriptors({
   mask: '',
   maskChar: '_',
   maskInvalidMessage: 'Value is invalid',
@@ -42,239 +36,122 @@ const TextBoxProps = exports.TextBoxProps = Object.create(Object.prototype, _ext
   useMaskedValue: false,
   isReactComponentWrapper: true
 })));
-const TextBoxPropsType = exports.TextBoxPropsType = Object.defineProperties({
+const TextBoxPropsType = exports.TextBoxPropsType = {
+  get mask() {
+    return TextBoxProps.mask;
+  },
+  get maskChar() {
+    return TextBoxProps.maskChar;
+  },
+  get maskInvalidMessage() {
+    return TextBoxProps.maskInvalidMessage;
+  },
+  get maskRules() {
+    return TextBoxProps.maskRules;
+  },
+  get mode() {
+    return TextBoxProps.mode;
+  },
+  get showClearButton() {
+    return TextBoxProps.showClearButton;
+  },
+  get showMaskMode() {
+    return TextBoxProps.showMaskMode;
+  },
+  get useMaskedValue() {
+    return TextBoxProps.useMaskedValue;
+  },
+  get readOnly() {
+    return TextBoxProps.readOnly;
+  },
+  get name() {
+    return TextBoxProps.name;
+  },
+  get validationError() {
+    return TextBoxProps.validationError;
+  },
+  get validationErrors() {
+    return TextBoxProps.validationErrors;
+  },
+  get validationMessageMode() {
+    return TextBoxProps.validationMessageMode;
+  },
+  get validationMessagePosition() {
+    return TextBoxProps.validationMessagePosition;
+  },
+  get validationStatus() {
+    return TextBoxProps.validationStatus;
+  },
+  get isValid() {
+    return TextBoxProps.isValid;
+  },
+  get isDirty() {
+    return TextBoxProps.isDirty;
+  },
+  get defaultValue() {
+    return _text_editor_props.TextEditorProps.defaultValue;
+  },
+  get className() {
+    return TextBoxProps.className;
+  },
+  get activeStateEnabled() {
+    return _editor_state_props.EditorStateProps.activeStateEnabled;
+  },
+  get disabled() {
+    return TextBoxProps.disabled;
+  },
+  get focusStateEnabled() {
+    return _editor_state_props.EditorStateProps.focusStateEnabled;
+  },
+  get hoverStateEnabled() {
+    return _editor_state_props.EditorStateProps.hoverStateEnabled;
+  },
+  get tabIndex() {
+    return TextBoxProps.tabIndex;
+  },
+  get visible() {
+    return TextBoxProps.visible;
+  },
+  get label() {
+    return _editor_label_props.EditorLabelProps.label;
+  },
+  get labelMode() {
+    return _editor_label_props.EditorLabelProps.labelMode;
+  },
+  get maxLength() {
+    return _text_editor_props.TextEditorProps.maxLength;
+  },
+  get spellCheck() {
+    return _text_editor_props.TextEditorProps.spellCheck;
+  },
+  get valueChangeEvent() {
+    return _text_editor_props.TextEditorProps.valueChangeEvent;
+  },
+  get stylingMode() {
+    return _text_editor_props.TextEditorProps.stylingMode;
+  },
   isReactComponentWrapper: true
-}, {
-  mask: {
-    get: function () {
-      return TextBoxProps.mask;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  maskChar: {
-    get: function () {
-      return TextBoxProps.maskChar;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  maskInvalidMessage: {
-    get: function () {
-      return TextBoxProps.maskInvalidMessage;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  maskRules: {
-    get: function () {
-      return TextBoxProps.maskRules;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  mode: {
-    get: function () {
-      return TextBoxProps.mode;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  showClearButton: {
-    get: function () {
-      return TextBoxProps.showClearButton;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  showMaskMode: {
-    get: function () {
-      return TextBoxProps.showMaskMode;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  useMaskedValue: {
-    get: function () {
-      return TextBoxProps.useMaskedValue;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  readOnly: {
-    get: function () {
-      return TextBoxProps.readOnly;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  name: {
-    get: function () {
-      return TextBoxProps.name;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  validationError: {
-    get: function () {
-      return TextBoxProps.validationError;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  validationErrors: {
-    get: function () {
-      return TextBoxProps.validationErrors;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  validationMessageMode: {
-    get: function () {
-      return TextBoxProps.validationMessageMode;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  validationMessagePosition: {
-    get: function () {
-      return TextBoxProps.validationMessagePosition;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  validationStatus: {
-    get: function () {
-      return TextBoxProps.validationStatus;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  isValid: {
-    get: function () {
-      return TextBoxProps.isValid;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  isDirty: {
-    get: function () {
-      return TextBoxProps.isDirty;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  defaultValue: {
-    get: function () {
-      return _text_editor_props.TextEditorProps.defaultValue;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  className: {
-    get: function () {
-      return TextBoxProps.className;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  activeStateEnabled: {
-    get: function () {
-      return _editor_state_props.EditorStateProps.activeStateEnabled;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  disabled: {
-    get: function () {
-      return TextBoxProps.disabled;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  focusStateEnabled: {
-    get: function () {
-      return _editor_state_props.EditorStateProps.focusStateEnabled;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  hoverStateEnabled: {
-    get: function () {
-      return _editor_state_props.EditorStateProps.hoverStateEnabled;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  tabIndex: {
-    get: function () {
-      return TextBoxProps.tabIndex;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  visible: {
-    get: function () {
-      return TextBoxProps.visible;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  label: {
-    get: function () {
-      return _editor_label_props.EditorLabelProps.label;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  labelMode: {
-    get: function () {
-      return _editor_label_props.EditorLabelProps.labelMode;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  maxLength: {
-    get: function () {
-      return _text_editor_props.TextEditorProps.maxLength;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  spellCheck: {
-    get: function () {
-      return _text_editor_props.TextEditorProps.spellCheck;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  valueChangeEvent: {
-    get: function () {
-      return _text_editor_props.TextEditorProps.valueChangeEvent;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  stylingMode: {
-    get: function () {
-      return _text_editor_props.TextEditorProps.stylingMode;
-    },
-    configurable: true,
-    enumerable: true
-  }
-});
-let TextBox = exports.TextBox = /*#__PURE__*/function (_BaseInfernoComponent) {
-  _inheritsLoose(TextBox, _BaseInfernoComponent);
-  function TextBox(props) {
-    var _this;
-    _this = _BaseInfernoComponent.call(this, props) || this;
-    _this.state = {
-      value: _this.props.value !== undefined ? _this.props.value : _this.props.defaultValue
+};
+class TextBox extends _inferno2.BaseInfernoComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: this.props.value !== undefined ? this.props.value : this.props.defaultValue
     };
-    return _this;
   }
-  var _proto = TextBox.prototype;
-  _proto.render = function render() {
+  get componentProps() {
+    return _extends({}, this.props, {
+      value: this.props.value !== undefined ? this.props.value : this.state.value
+    });
+  }
+  get restAttributes() {
+    const _this$props$value = _extends({}, this.props, {
+        value: this.props.value !== undefined ? this.props.value : this.state.value
+      }),
+      restProps = _objectWithoutPropertiesLoose(_this$props$value, _excluded);
+    return restProps;
+  }
+  render() {
     const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
@@ -283,24 +160,7 @@ let TextBox = exports.TextBox = /*#__PURE__*/function (_BaseInfernoComponent) {
       componentProps: this.componentProps,
       restAttributes: this.restAttributes
     });
-  };
-  _createClass(TextBox, [{
-    key: "componentProps",
-    get: function () {
-      return _extends({}, this.props, {
-        value: this.props.value !== undefined ? this.props.value : this.state.value
-      });
-    }
-  }, {
-    key: "restAttributes",
-    get: function () {
-      const _this$props$value = _extends({}, this.props, {
-          value: this.props.value !== undefined ? this.props.value : this.state.value
-        }),
-        restProps = _objectWithoutPropertiesLoose(_this$props$value, _excluded);
-      return restProps;
-    }
-  }]);
-  return TextBox;
-}(_inferno2.BaseInfernoComponent);
+  }
+}
+exports.TextBox = TextBox;
 TextBox.defaultProps = TextBoxPropsType;

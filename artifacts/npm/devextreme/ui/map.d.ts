@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/map.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -21,270 +21,399 @@ import Widget, {
     WidgetOptions,
 } from './widget/ui.widget';
 
+/** @public */
 export type MapProvider = 'bing' | 'google' | 'googleStatic';
+/** @public */
 export type RouteMode = 'driving' | 'walking';
+/** @public */
 export type MapType = 'hybrid' | 'roadmap' | 'satellite';
 
 /**
- * The type of the click event handler&apos;s argument.
+ * @docid _ui_map_ClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ClickEvent = NativeEventInfo<dxMap, MouseEvent | PointerEvent>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_map_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxMap>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_map_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxMap>;
 
 /**
- * The type of the markerAdded event handler&apos;s argument.
+ * @docid _ui_map_MarkerAddedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type MarkerAddedEvent = EventInfo<dxMap> & {
   /**
-   * 
+   * @docid _ui_map_MarkerAddedEvent.options
+   * @type object
    */
   readonly options: any;
   /**
-   * 
+   * @docid _ui_map_MarkerAddedEvent.originalMarker
+   * @type object
    */
   originalMarker: any;
 };
 
 /**
- * The type of the markerRemoved event handler&apos;s argument.
+ * @docid _ui_map_MarkerRemovedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type MarkerRemovedEvent = EventInfo<dxMap> & {
   /**
-   * 
+   * @docid _ui_map_MarkerRemovedEvent.options
+   * @type object
    */
   readonly options?: any;
 };
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_map_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxMap> & ChangedOptionInfo;
 
 /**
- * The type of the ready event handler&apos;s argument.
+ * @docid _ui_map_ReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ReadyEvent = EventInfo<dxMap> & {
   /**
-   * 
+   * @docid _ui_map_ReadyEvent.originalMap
+   * @type object
    */
   originalMap: any;
 };
 
 /**
- * The type of the routeAdded event handler&apos;s argument.
+ * @docid _ui_map_RouteAddedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type RouteAddedEvent = EventInfo<dxMap> & {
   /**
-   * 
+   * @docid _ui_map_RouteAddedEvent.options
+   * @type object
    */
   readonly options: any;
   /**
-   * 
+   * @docid _ui_map_RouteAddedEvent.originalRoute
+   * @type object
    */
   originalRoute: any;
 };
 
 /**
- * The type of the routeRemoved event handler&apos;s argument.
+ * @docid _ui_map_RouteRemovedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type RouteRemovedEvent = EventInfo<dxMap> & {
   /**
-   * 
+   * @docid _ui_map_RouteRemovedEvent.options
+   * @type object
    */
   readonly options?: any;
 };
 
+/**
+ * @public
+ * @namespace DevExpress.ui
+ */
 export interface MapLocation {
     /**
-     * The latitude location of the UI component.
+     * @docid
+     * @default 0
+     * @public
      */
     lat: number;
     /**
-     * The longitude location of the UI component.
+     * @docid
+     * @default 0
+     * @public
      */
     lng: number;
 }
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxMapOptions extends WidgetOptions<dxMap> {
     /**
-     * Keys to authenticate the component within map providers.
+     * @docid
+     * @default { bing: '', google: '', googleStatic: '' }
+     * @public
      */
     apiKey?: string | {
       /**
-       * A key used to authenticate the component within Bing Maps.
+       * @docid
+       * @default ""
        */
       bing?: string;
       /**
-       * A key used to authenticate the component within Google Maps.
+       * @docid
+       * @default ""
        */
       google?: string;
       /**
-       * A key used to authenticate the component within Google Maps Static.
+       * @docid
+       * @default ""
        */
       googleStatic?: string;
     };
     /**
-     * Specifies whether the UI component automatically adjusts center and zoom property values when adding a new marker or route, or if a new UI component contains markers or routes by default.
+     * @docid
+     * @default true
+     * @public
      */
     autoAdjust?: boolean;
     /**
-     * An object, a string, or an array specifying which part of the map is displayed at the UI component&apos;s center using coordinates. The UI component can change this value if autoAdjust is enabled.
+     * @type Object|string|Array<number>
+     * @docid
+     * @fires dxMapOptions.onOptionChanged
+     * @inherits MapLocation
+     * @public
      */
     center?: any | string | Array<number>;
     /**
-     * Specifies whether or not map UI component controls are available.
+     * @docid
+     * @default false
+     * @public
      */
     controls?: boolean;
     /**
-     * Specifies whether the UI component can be focused using keyboard navigation.
+     * @docid
+     * @default true &for(desktop)
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * Specifies the UI component&apos;s height.
+     * @docid
+     * @default 300
+     * @public
      */
     height?: number | string | (() => number | string);
     /**
-     * A URL pointing to the custom icon to be used for map markers.
+     * @docid
+     * @public
      */
     markerIconSrc?: string;
     /**
-     * An array of markers displayed on a map.
+     * @docid
+     * @fires dxMapOptions.onMarkerAdded
+     * @fires dxMapOptions.onMarkerRemoved
+     * @public
      */
     markers?: Array<{
       /**
-       * A URL pointing to the custom icon to be used for the marker.
+       * @docid
        */
       iconSrc?: string;
       /**
-       * Specifies the marker location.
+       * @type Object|string|Array<number>
+       * @docid
+       * @inherits MapLocation
        */
       location?: any | string | Array<number>;
       /**
-       * A callback function performed when the marker is clicked.
+       * @docid
        */
       onClick?: Function;
       /**
-       * A tooltip to be used for the marker.
+       * @docid
        */
       tooltip?: string | {
         /**
-         * Specifies whether a tooltip is visible by default or not.
+         * @docid
+         * @default false
          */
         isShown?: boolean;
         /**
-         * Specifies the text or HTML markup displayed in the tooltip.
+         * @docid
          */
         text?: string;
       };
     }>;
     /**
-     * A function that is executed when any location on the map is clicked or tapped.
+     * @docid
+     * @default null
+     * @type function
+     * @type_function_param1 e:{ui/map:ClickEvent}
+     * @action
+     * @public
      */
     onClick?: ((e: ClickEvent) => void) | string;
     /**
-     * A function that is executed when a marker is created on the map.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/map:MarkerAddedEvent}
+     * @action
+     * @public
      */
     onMarkerAdded?: ((e: MarkerAddedEvent) => void);
     /**
-     * A function that is executed when a marker is removed from the map.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/map:MarkerRemovedEvent}
+     * @action
+     * @public
      */
     onMarkerRemoved?: ((e: MarkerRemovedEvent) => void);
     /**
-     * A function that is executed when the map is ready.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/map:ReadyEvent}
+     * @action
+     * @public
      */
     onReady?: ((e: ReadyEvent) => void);
     /**
-     * A function that is executed when a route is created on the map.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/map:RouteAddedEvent}
+     * @action
+     * @public
      */
     onRouteAdded?: ((e: RouteAddedEvent) => void);
     /**
-     * A function that is executed when a route is removed from the map.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/map:RouteRemovedEvent}
+     * @action
+     * @public
      */
     onRouteRemoved?: ((e: RouteRemovedEvent) => void);
     /**
-     * The name of the current map data provider.
+     * @docid
+     * @default "google"
+     * @public
      */
     provider?: MapProvider;
     /**
-     * An array of routes shown on the map.
+     * @docid
+     * @fires dxMapOptions.onRouteAdded
+     * @fires dxMapOptions.onRouteRemoved
+     * @public
      */
     routes?: Array<{
       /**
-       * Specifies the color of the line displaying the route.
+       * @docid
+       * @default '#0000FF'
        */
       color?: string;
       /**
-       * Contains an array of objects making up the route.
+       * @docid
+       * @inherits MapLocation
+       * @type Array<object>
        */
       locations?: Array<any>;
       /**
-       * Specifies a transportation mode to be used in the displayed route.
+       * @docid
+       * @default 'driving'
        */
       mode?: RouteMode;
       /**
-       * Specifies the opacity of the line displaying the route.
+       * @docid
+       * @default 0.5
        */
       opacity?: number;
       /**
-       * Specifies the thickness of the line displaying the route in pixels.
+       * @docid
+       * @default 5
        */
       weight?: number;
     }>;
     /**
-     * The type of a map to display.
+     * @docid
+     * @default "roadmap"
+     * @public
      */
     type?: MapType;
     /**
-     * Specifies the UI component&apos;s width.
+     * @docid
+     * @default 300
+     * @public
      */
     width?: number | string | (() => number | string);
     /**
-     * The map&apos;s zoom level. The UI component can change this value if autoAdjust is enabled.
+     * @docid
+     * @default 1
+     * @fires dxMapOptions.onOptionChanged
+     * @public
      */
     zoom?: number;
 }
 /**
- * The Map is an interactive UI component that displays a geographic map with markers and routes.
+ * @docid
+ * @inherits Widget
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxMap extends Widget<dxMapOptions> {
     /**
-     * Adds a marker to the map.
+     * @docid
+     * @publicName addMarker(markerOptions)
+     * @param1 markerOptions:Object|Array<Object>
+     * @return Promise<Object>
+     * @public
      */
     addMarker(markerOptions: any | Array<any>): DxPromise<any>;
     /**
-     * Adds a route to the map.
+     * @docid
+     * @publicName addRoute(routeOptions)
+     * @param1 options:object|Array<Object>
+     * @return Promise<Object>
+     * @public
      */
     addRoute(options: any | Array<any>): DxPromise<any>;
     /**
-     * Removes a marker from the map.
+     * @docid
+     * @publicName removeMarker(marker)
+     * @param1 marker:Object|number|Array<Object>
+     * @return Promise<void>
+     * @public
      */
     removeMarker(marker: any | number | Array<any>): DxPromise<void>;
     /**
-     * Removes a route from the map.
+     * @docid
+     * @publicName removeRoute(route)
+     * @param1 route:object|number|Array<Object>
+     * @return Promise<void>
+     * @public
      */
     removeRoute(route: any | number | Array<any>): DxPromise<void>;
 }
 
+/** @public */
 export type Properties = dxMapOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxMapOptions;
 
 

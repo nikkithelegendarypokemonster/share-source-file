@@ -1,7 +1,7 @@
 /**
 * DevExtreme (viz/sparklines/base_sparkline.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -28,72 +28,111 @@ import BaseWidget, {
 } from '../core/base_widget';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.viz
+ * @docid
+ * @hidden
  */
 export interface BaseSparklineOptions<TComponent> extends BaseWidgetOptions<TComponent> {
     /**
-     * Configures the exporting and printing features.
+     * @docid
+     * @type object
+     * @hidden
      */
     export?: BaseWidgetExport;
     /**
-     * Configures the loading indicator.
+     * @docid
+     * @type object
+     * @hidden
      */
     loadingIndicator?: BaseWidgetLoadingIndicator;
     /**
-     * A function that is executed when a tooltip becomes hidden.
+     * @docid
+     * @default null
+     * @notUsedInTheme
+     * @action
+     * @public
      */
     onTooltipHidden?: ((e: EventInfo<TComponent>) => void);
     /**
-     * A function that is executed when a tooltip appears.
+     * @docid
+     * @default null
+     * @notUsedInTheme
+     * @action
+     * @public
      */
     onTooltipShown?: ((e: EventInfo<TComponent>) => void);
     /**
-     * Specifies whether to redraw the UI component when the size of the container changes or a mobile device rotates.
+     * @docid
+     * @hidden
      */
     redrawOnResize?: boolean;
     /**
-     * Configures the UI component&apos;s title.
+     * @docid
+     * @type object
+     * @hidden
      */
     title?: BaseWidgetTitle | string;
     /**
-     * Configures the tooltip.
+     * @docid
+     * @type object
+     * @public
      */
     tooltip?: BaseSparklineTooltip;
 }
 /**
- * Configures the tooltip.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @hidden
+ * @docid
+ * @namespace DevExpress.viz
  */
 export interface BaseSparklineTooltip extends BaseWidgetTooltip {
     /**
-     * Specifies a custom template for tooltips.
+     * @docid BaseSparklineOptions.tooltip.contentTemplate
+     * @type_function_param1 pointsInfo:object
+     * @type_function_return string|Element|jQuery
+     * @default undefined
+     * @public
      */
     contentTemplate?: template | ((pointsInfo: any, element: DxElement) => string | UserDefinedElement);
     /**
-     * Allows you to change tooltip appearance.
+     * @docid BaseSparklineOptions.tooltip.customizeTooltip
+     * @type_function_param1 pointsInfo:object
+     * @type_function_return object
+     * @default undefined
+     * @notUsedInTheme
+     * @public
      */
     customizeTooltip?: ((pointsInfo: any) => any);
     /**
-     * Specifies whether a tooltip is enabled.
+     * @docid BaseSparklineOptions.tooltip.enabled
+     * @default true
+     * @public
      */
     enabled?: boolean;
     /**
-     * 
+     * @docid BaseSparklineOptions.tooltip.interactive
+     * @default false
+     * @public
      */
     interactive?: boolean;
 }
 /**
- * Overridden by descriptions for particular UI components.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @hidden
+ * @inherits BaseWidget
+ * @namespace DevExpress.viz
+ * @options BaseSparklineOptions
  */
 export default class BaseSparkline<TProperties> extends BaseWidget<TProperties> {
     /**
-     * Hides the loading indicator.
+     * @docid
+     * @publicName hideLoadingIndicator()
+     * @hidden
      */
     hideLoadingIndicator(): void;
     /**
-     * Shows the loading indicator.
+     * @docid
+     * @publicName showLoadingIndicator()
+     * @hidden
      */
     showLoadingIndicator(): void;
 }

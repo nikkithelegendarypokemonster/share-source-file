@@ -1,19 +1,19 @@
 import { logger } from './console';
 import dependencyInjector from './dependency_injector';
 export default dependencyInjector({
-  isWrapped: function isWrapped() {
+  isWrapped: function () {
     return false;
   },
-  isWritableWrapped: function isWritableWrapped() {
+  isWritableWrapped: function () {
     return false;
   },
-  wrap: function wrap(value) {
+  wrap: function (value) {
     return value;
   },
-  unwrap: function unwrap(value) {
+  unwrap: function (value) {
     return value;
   },
-  assign: function assign() {
+  assign: function () {
     logger.error('Method \'assign\' should not be used for not wrapped variables. Use \'isWrapped\' method for ensuring.');
   }
 });

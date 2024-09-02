@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.de.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -200,7 +200,9 @@
             "dxDataGrid-filterPanelCreateFilter": "Filter erzeugen",
             "dxDataGrid-filterPanelClearFilter": "Zurücksetzen",
             "dxDataGrid-filterPanelFilterEnabledHint": "Filter aktivieren",
+            "dxDataGrid-masterDetail": "Cell with details",
             "dxTreeList-ariaTreeList": "TreeList mit {0} Zeilen und {1} Spalten",
+            "dxTreeList-ariaExpandableInstruction": "Press Ctrl + right arrow to expand the focused node and Ctrl + left arrow to collapse it",
             "dxTreeList-ariaSearchInGrid": "Suchen in der Strukturliste",
             "dxTreeList-ariaToolbar": "Symbolleiste der Strukturliste",
             "dxTreeList-editingAddRowToNode": "Hinzufügen",
@@ -233,6 +235,7 @@
             "dxPivotGrid-dataFieldArea": "Datenfelder hierher ziehen",
             "dxPivotGrid-rowFieldArea": "Zeilenfelder hierher ziehen",
             "dxPivotGrid-filterFieldArea": "Filterfelder hierher ziehen",
+            "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
             "dxScheduler-editorLabelTitle": "Betreff",
             "dxScheduler-editorLabelStartDate": "Anfangszeit",
             "dxScheduler-editorLabelEndDate": "Endzeit",
@@ -269,8 +272,8 @@
             "dxScheduler-recurrenceRepeatOnDate": "am Datum",
             "dxScheduler-recurrenceRepeatCount": "Ereignisse",
             "dxScheduler-allDay": "Ganztägig",
-            "dxScheduler-confirmRecurrenceEditTitle": "Edit Recurring Appointment",
-            "dxScheduler-confirmRecurrenceDeleteTitle": "Delete Recurring Appointment",
+            "dxScheduler-confirmRecurrenceEditTitle": "Wiederkehrenden Termin bearbeiten",
+            "dxScheduler-confirmRecurrenceDeleteTitle": "Wiederkehrenden Termin löschen",
             "dxScheduler-confirmRecurrenceEditMessage": "Möchten Sie nur diesen Termin bearbeiten, oder die gesamte Serie?",
             "dxScheduler-confirmRecurrenceDeleteMessage": "Möchten Sie nur diesen Termin löschen, oder die gesamte Serie?",
             "dxScheduler-confirmRecurrenceEditSeries": "Serie bearbeiten",
@@ -279,6 +282,10 @@
             "dxScheduler-confirmRecurrenceDeleteOccurrence": "Termin löschen",
             "dxScheduler-noTimezoneTitle": "Keine Zeitzone",
             "dxScheduler-moreAppointments": "{0} weitere",
+            "dxCalendar-currentDay": "Today",
+            "dxCalendar-currentMonth": "Current month",
+            "dxCalendar-currentYear": "Current year",
+            "dxCalendar-currentYearRange": "Current year range",
             "dxCalendar-todayButtonText": "Heute",
             "dxCalendar-ariaWidgetName": "Kalendar",
             "dxCalendar-previousMonthButtonLabel": "Previous month",
@@ -293,6 +300,9 @@
             "dxCalendar-captionYearLabel": "Year selection",
             "dxCalendar-captionDecadeLabel": "Decade selection",
             "dxCalendar-captionCenturyLabel": "Century selection",
+            "dxCalendar-selectedDate": "The selected date is {0}",
+            "dxCalendar-selectedDateRange": "The selected date range is from {0} to {1}",
+            "dxCalendar-readOnlyLabel": "Read-only calendar",
             "dxColorView-ariaRed": "Rot",
             "dxColorView-ariaGreen": "Grün",
             "dxColorView-ariaBlue": "Blau",
@@ -686,7 +696,8 @@
             "dxMultiView-elementAriaRoleDescription": "MultiView",
             "dxMultiView-elementAriaLabel": "Use the arrow keys or swipe to navigate between views",
             "dxMultiView-itemAriaRoleDescription": "View",
-            "dxMultiView-itemAriaLabel": "{0} of {1}"
+            "dxMultiView-itemAriaLabel": "{0} of {1}",
+            "dxSplitter-resizeHandleAriaLabel": "Split bar"
         }
     });
 }));

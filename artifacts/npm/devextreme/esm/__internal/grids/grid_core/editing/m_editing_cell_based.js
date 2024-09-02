@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/grid_core/editing/m_editing_cell_based.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -21,27 +21,27 @@ import pointerEvents from '../../../../events/pointer';
 import { addNamespace } from '../../../../events/utils/index';
 import { ADD_ROW_BUTTON_CLASS, CELL_MODIFIED_CLASS, DATA_EDIT_DATA_REMOVE_TYPE, DATA_ROW_CLASS, DROPDOWN_EDITOR_OVERLAY_CLASS, EDIT_MODE_BATCH, EDIT_MODE_CELL, EDITING_EDITCOLUMNNAME_OPTION_NAME, EDITING_EDITROWKEY_OPTION_NAME, EDITOR_CELL_CLASS, FOCUS_OVERLAY_CLASS, ROW_CLASS, ROW_REMOVED, TARGET_COMPONENT_NAME } from './const';
 import { isEditable } from './m_editing_utils';
-var editingControllerExtender = Base => class CellBasedEditingControllerExtender extends Base {
+const editingControllerExtender = Base => class CellBasedEditingControllerExtender extends Base {
   init() {
-    var needCreateHandlers = !this._saveEditorHandler;
+    const needCreateHandlers = !this._saveEditorHandler;
     super.init();
     if (needCreateHandlers) {
       // chrome 73+
-      var $pointerDownTarget;
-      var isResizing;
+      let $pointerDownTarget;
+      let isResizing;
       this._pointerUpEditorHandler = () => {
-        var _a;
-        isResizing = (_a = this._columnsResizerController) === null || _a === void 0 ? void 0 : _a.isResizing();
+        var _this$_columnsResizer;
+        isResizing = (_this$_columnsResizer = this._columnsResizerController) === null || _this$_columnsResizer === void 0 ? void 0 : _this$_columnsResizer.isResizing();
       };
       // eslint-disable-next-line no-return-assign
       this._pointerDownEditorHandler = e => $pointerDownTarget = $(e.target);
       this._saveEditorHandler = this.createAction(function (e) {
-        var {
+        const {
           event
         } = e;
-        var $target = $(event.target);
-        var targetComponent = event[TARGET_COMPONENT_NAME];
-        var {
+        const $target = $(event.target);
+        const targetComponent = event[TARGET_COMPONENT_NAME];
+        const {
           component
         } = this;
         if (isEditable($pointerDownTarget) && !$pointerDownTarget.is($target)) {
@@ -51,16 +51,16 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
           if (!$element) {
             return false;
           }
-          var $dropDownEditorOverlay = $element.closest(".".concat(DROPDOWN_EDITOR_OVERLAY_CLASS));
-          var $componentElement = component.$element();
+          const $dropDownEditorOverlay = $element.closest(`.${DROPDOWN_EDITOR_OVERLAY_CLASS}`);
+          const $componentElement = component.$element();
           return $dropDownEditorOverlay.length > 0 && $componentElement.closest($dropDownEditorOverlay).length === 0;
         }
         if (this.isCellOrBatchEditMode() && !this._editCellInProgress) {
-          var isEditorPopup = checkEditorPopup($target) || checkEditorPopup(targetComponent === null || targetComponent === void 0 ? void 0 : targetComponent.$element());
-          var isAnotherComponent = targetComponent && !targetComponent._disposed && targetComponent !== this.component;
-          var isAddRowButton = !!$target.closest(".".concat(this.addWidgetPrefix(ADD_ROW_BUTTON_CLASS))).length;
-          var isFocusOverlay = $target.hasClass(this.addWidgetPrefix(FOCUS_OVERLAY_CLASS));
-          var isCellEditMode = this.isCellEditMode();
+          const isEditorPopup = checkEditorPopup($target) || checkEditorPopup(targetComponent === null || targetComponent === void 0 ? void 0 : targetComponent.$element());
+          const isAnotherComponent = targetComponent && !targetComponent._disposed && targetComponent !== this.component;
+          const isAddRowButton = !!$target.closest(`.${this.addWidgetPrefix(ADD_ROW_BUTTON_CLASS)}`).length;
+          const isFocusOverlay = $target.hasClass(this.addWidgetPrefix(FOCUS_OVERLAY_CLASS));
+          const isCellEditMode = this.isCellEditMode();
           if (!isResizing && !isEditorPopup && !isFocusOverlay && !(isAddRowButton && isCellEditMode && this.isEditing()) && (isElementInDom($target) || isAnotherComponent)) {
             this._closeEditItem.bind(this)($target);
           }
@@ -84,22 +84,22 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     return this.isCellEditMode() || this.isBatchEditMode();
   }
   _needToCloseEditableCell($targetElement) {
-    var _a;
-    var $element = this.component.$element();
-    var result = this.isEditing();
-    var isCurrentComponentElement = !$element || !!$targetElement.closest($element).length;
+    const $element = this.component.$element();
+    let result = this.isEditing();
+    const isCurrentComponentElement = !$element || !!$targetElement.closest($element).length;
     if (isCurrentComponentElement) {
-      var isDataRow = $targetElement.closest(".".concat(DATA_ROW_CLASS)).length;
+      const isDataRow = $targetElement.closest(`.${DATA_ROW_CLASS}`).length;
       if (isDataRow) {
-        var $targetCell = $targetElement.closest(".".concat(ROW_CLASS, "> td"));
-        var rowIndex = this._rowsView.getRowIndex($targetCell.parent());
-        var cellElements = this._rowsView.getCellElements(rowIndex);
-        if (cellElements === null || cellElements === void 0 ? void 0 : cellElements.length) {
-          var columnIndex = cellElements.index($targetCell);
-          var visibleColumns = this._columnsController.getVisibleColumns();
+        const $targetCell = $targetElement.closest(`.${ROW_CLASS}> td`);
+        const rowIndex = this._rowsView.getRowIndex($targetCell.parent());
+        const cellElements = this._rowsView.getCellElements(rowIndex);
+        if (cellElements !== null && cellElements !== void 0 && cellElements.length) {
+          var _visibleColumns$colum;
+          const columnIndex = cellElements.index($targetCell);
+          const visibleColumns = this._columnsController.getVisibleColumns();
           // TODO jsdmitry: Move this code to _rowClick method of rowsView
-          var allowEditing = (_a = visibleColumns[columnIndex]) === null || _a === void 0 ? void 0 : _a.allowEditing;
-          var isEditingCell = this.isEditCell(rowIndex, columnIndex);
+          const allowEditing = (_visibleColumns$colum = visibleColumns[columnIndex]) === null || _visibleColumns$colum === void 0 ? void 0 : _visibleColumns$colum.allowEditing;
+          const isEditingCell = this.isEditCell(rowIndex, columnIndex);
           result = result && !allowEditing && !isEditingCell;
         }
       }
@@ -112,10 +112,13 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     }
   }
   _focusEditorIfNeed() {
-    var _a;
     if (this._needFocusEditor && this.isCellOrBatchEditMode()) {
-      var editColumnIndex = this._getVisibleEditColumnIndex();
-      var $cell = (_a = this._rowsView) === null || _a === void 0 ? void 0 : _a._getCellElement(this._getVisibleEditRowIndex(), editColumnIndex); // T319885
+      var _this$_rowsView;
+      const editColumnIndex = this._getVisibleEditColumnIndex();
+      const $cell = (_this$_rowsView = this._rowsView) === null || _this$_rowsView === void 0 ? void 0 : _this$_rowsView._getCellElement(this._getVisibleEditRowIndex(), editColumnIndex); // T319885
+      // NOTE: Cancel redundant editor refocus [T1194403]
+      this._refocusEditCell = false;
+      clearTimeout(this._inputFocusTimeoutID);
       if ($cell && !$cell.find(':focus').length) {
         this._focusEditingCell(() => {
           this._editCellInProgress = false;
@@ -130,24 +133,24 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
   }
   isEditing() {
     if (this.isCellOrBatchEditMode()) {
-      var isEditRowKeyDefined = isDefined(this.option(EDITING_EDITROWKEY_OPTION_NAME));
-      var isEditColumnNameDefined = isDefined(this.option(EDITING_EDITCOLUMNNAME_OPTION_NAME));
+      const isEditRowKeyDefined = isDefined(this.option(EDITING_EDITROWKEY_OPTION_NAME));
+      const isEditColumnNameDefined = isDefined(this.option(EDITING_EDITCOLUMNNAME_OPTION_NAME));
       return isEditRowKeyDefined && isEditColumnNameDefined;
     }
     return super.isEditing();
   }
   _handleEditColumnNameChange(args) {
-    var oldRowIndex = this._getVisibleEditRowIndex(args.previousValue);
+    const oldRowIndex = this._getVisibleEditRowIndex(args.previousValue);
     if (this.isCellOrBatchEditMode() && oldRowIndex !== -1 && isDefined(args.value) && args.value !== args.previousValue) {
-      var columnIndex = this._columnsController.getVisibleColumnIndex(args.value);
-      var oldColumnIndex = this._columnsController.getVisibleColumnIndex(args.previousValue);
+      const columnIndex = this._columnsController.getVisibleColumnIndex(args.value);
+      const oldColumnIndex = this._columnsController.getVisibleColumnIndex(args.previousValue);
       this._editCellFromOptionChanged(columnIndex, oldColumnIndex, oldRowIndex);
     }
   }
   _addRow(parentKey) {
     if (this.isCellEditMode() && this.hasChanges()) {
       // @ts-expect-error
-      var deferred = new Deferred();
+      const deferred = new Deferred();
       this.saveEditData().done(() => {
         // T804894
         if (!this.hasChanges()) {
@@ -171,8 +174,8 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
   }
   _editCell(options) {
     // @ts-expect-error
-    var d = new Deferred();
-    var coreResult;
+    const d = new Deferred();
+    let coreResult;
     this.executeOperation(d, () => {
       coreResult = this._editCellCore(options);
       when(coreResult).done(d.resolve).fail(d.reject);
@@ -180,15 +183,15 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     return coreResult !== undefined ? coreResult : d.promise();
   }
   _editCellCore(options) {
-    var dataController = this._dataController;
-    var isEditByOptionChanged = isDefined(options.oldColumnIndex) || isDefined(options.oldRowIndex);
-    var {
+    const dataController = this._dataController;
+    const isEditByOptionChanged = isDefined(options.oldColumnIndex) || isDefined(options.oldRowIndex);
+    const {
       columnIndex,
       rowIndex,
       column,
       item
     } = this._getNormalizedEditCellOptions(options);
-    var params = {
+    const params = {
       data: item === null || item === void 0 ? void 0 : item.data,
       cancel: false,
       column
@@ -201,7 +204,7 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
       if (!isEditByOptionChanged && this.isEditCell(rowIndex, columnIndex)) {
         return true;
       }
-      var editRowIndex = rowIndex + dataController.getRowIndexOffset();
+      const editRowIndex = rowIndex + dataController.getRowIndexOffset();
       return when(this._beforeEditCell(rowIndex, columnIndex, item)).done(cancel => {
         if (cancel) {
           return;
@@ -219,7 +222,7 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
   _beforeEditCell(rowIndex, columnIndex, item) {
     if (this.isCellEditMode() && !item.isNewRow && this.hasChanges()) {
       // @ts-expect-error
-      var isSaving = new Deferred();
+      const isSaving = new Deferred();
       this.saveEditData().always(() => {
         isSaving.resolve(this.hasChanges());
       });
@@ -229,21 +232,21 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     return false;
   }
   publicMethods() {
-    var publicMethods = super.publicMethods();
+    const publicMethods = super.publicMethods();
     return publicMethods.concat(['editCell', 'closeEditCell']);
   }
   _getNormalizedEditCellOptions(_ref) {
-    var {
+    let {
       oldColumnIndex,
       oldRowIndex,
       columnIndex,
       rowIndex
     } = _ref;
-    var columnsController = this._columnsController;
-    var visibleColumns = columnsController.getVisibleColumns();
-    var items = this._dataController.items();
-    var item = items[rowIndex];
-    var oldColumn;
+    const columnsController = this._columnsController;
+    const visibleColumns = columnsController.getVisibleColumns();
+    const items = this._dataController.items();
+    const item = items[rowIndex];
+    let oldColumn;
     if (isDefined(oldColumnIndex)) {
       oldColumn = visibleColumns[oldColumnIndex];
     } else {
@@ -256,7 +259,7 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
       columnIndex = columnsController.columnOption(columnIndex, 'index');
       columnIndex = columnsController.getVisibleIndex(columnIndex);
     }
-    var column = visibleColumns[columnIndex];
+    const column = visibleColumns[columnIndex];
     return {
       oldColumn,
       columnIndex,
@@ -268,7 +271,6 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _prepareEditCell(params, item, editColumnIndex, editRowIndex) {
-    var _a;
     if (!item.isNewRow) {
       params.key = item.key;
     }
@@ -281,7 +283,7 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     if (!params.column.showEditorAlways) {
       this._addInternalData({
         key: item.key,
-        oldData: (_a = item.oldData) !== null && _a !== void 0 ? _a : item.data
+        oldData: item.oldData ?? item.data
       });
     }
     return true;
@@ -290,11 +292,11 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
    * interface override
    */
   closeEditCell(isError, withoutSaveEditData) {
-    var result = when();
-    var oldEditRowIndex = this._getVisibleEditRowIndex();
+    let result = when();
+    const oldEditRowIndex = this._getVisibleEditRowIndex();
     if (this.isCellOrBatchEditMode()) {
       // @ts-expect-error
-      var deferred = new Deferred();
+      const deferred = new Deferred();
       // @ts-expect-error
       result = new Deferred();
       this.executeOperation(deferred, () => {
@@ -304,10 +306,10 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     return result.promise();
   }
   _closeEditCellCore(isError, oldEditRowIndex, withoutSaveEditData) {
-    var dataController = this._dataController;
+    const dataController = this._dataController;
     // @ts-expect-error
-    var deferred = new Deferred();
-    var promise = deferred.promise();
+    const deferred = new Deferred();
+    const promise = deferred.promise();
     if (this.isCellEditMode() && this.hasChanges()) {
       if (!withoutSaveEditData) {
         this.saveEditData().done(error => {
@@ -323,7 +325,7 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
       this._resetEditRowKey();
       this._resetEditColumnName();
       if (oldEditRowIndex >= 0) {
-        var rowIndices = [oldEditRowIndex];
+        const rowIndices = [oldEditRowIndex];
         this._beforeCloseEditCellInBatchMode(rowIndices);
         if (!isError) {
           dataController.updateItems({
@@ -338,29 +340,29 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
   }
   _resetModifiedClassCells(changes) {
     if (this.isBatchEditMode()) {
-      var columnsCount = this._columnsController.getVisibleColumns().length;
+      const columnsCount = this._columnsController.getVisibleColumns().length;
       changes.forEach(_ref2 => {
-        var {
+        let {
           key
         } = _ref2;
-        var rowIndex = this._dataController.getRowIndexByKey(key);
-        for (var columnIndex = 0; columnIndex < columnsCount; columnIndex++) {
-          var cellElement = this._rowsView._getCellElement(rowIndex, columnIndex);
-          cellElement === null || cellElement === void 0 ? void 0 : cellElement.removeClass(CELL_MODIFIED_CLASS);
+        const rowIndex = this._dataController.getRowIndexByKey(key);
+        for (let columnIndex = 0; columnIndex < columnsCount; columnIndex++) {
+          const cellElement = this._rowsView._getCellElement(rowIndex, columnIndex);
+          cellElement === null || cellElement === void 0 || cellElement.removeClass(CELL_MODIFIED_CLASS);
         }
       });
     }
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _prepareChange(options, value, text) {
-    var $cellElement = $(options.cellElement);
+    const $cellElement = $(options.cellElement);
     if (this.isBatchEditMode() && options.key !== undefined) {
       this._applyModified($cellElement, options);
     }
     return super._prepareChange(options, value, text);
   }
   _cancelSaving(result) {
-    var dataController = this._dataController;
+    const dataController = this._dataController;
     if (this.isCellOrBatchEditMode()) {
       if (this.isBatchEditMode()) {
         this._resetEditIndices();
@@ -370,7 +372,7 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     super._cancelSaving(result);
   }
   optionChanged(args) {
-    var {
+    const {
       fullName
     } = args;
     if (args.name === 'editing' && fullName === EDITING_EDITCOLUMNNAME_OPTION_NAME) {
@@ -381,7 +383,7 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     }
   }
   _editCellFromOptionChanged(columnIndex, oldColumnIndex, oldRowIndex) {
-    var columns = this._columnsController.getVisibleColumns();
+    const columns = this._columnsController.getVisibleColumns();
     if (columnIndex > -1) {
       deferRender(() => {
         this._repaintEditCell(columns[columnIndex], columns[oldColumnIndex], oldRowIndex);
@@ -389,13 +391,13 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     }
   }
   _handleEditRowKeyChange(args) {
-    var _a;
     if (this.isCellOrBatchEditMode()) {
-      var columnIndex = this._getVisibleEditColumnIndex();
-      var oldRowIndexCorrection = this._getEditRowIndexCorrection();
-      var oldRowIndex = this._dataController.getRowIndexByKey(args.previousValue) + oldRowIndexCorrection;
+      const columnIndex = this._getVisibleEditColumnIndex();
+      const oldRowIndexCorrection = this._getEditRowIndexCorrection();
+      const oldRowIndex = this._dataController.getRowIndexByKey(args.previousValue) + oldRowIndexCorrection;
       if (isDefined(args.value) && args.value !== args.previousValue) {
-        (_a = this._editCellFromOptionChanged) === null || _a === void 0 ? void 0 : _a.call(this, columnIndex, columnIndex, oldRowIndex);
+        var _this$_editCellFromOp;
+        (_this$_editCellFromOp = this._editCellFromOptionChanged) === null || _this$_editCellFromOp === void 0 || _this$_editCellFromOp.call(this, columnIndex, columnIndex, oldRowIndex);
       }
     } else {
       super._handleEditRowKeyChange(args);
@@ -403,10 +405,10 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
   }
   deleteRow(rowIndex) {
     if (this.isCellEditMode() && this.isEditing()) {
-      var {
+      const {
         isNewRow
       } = this._dataController.items()[rowIndex];
-      var rowKey = this._dataController.getKeyByRowIndex(rowIndex);
+      const rowKey = this._dataController.getKeyByRowIndex(rowIndex);
       // T850905
       this.closeEditCell(null, isNewRow).always(() => {
         rowIndex = this._dataController.getRowIndexByKey(rowKey);
@@ -424,10 +426,10 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     }
   }
   _refreshCore(params) {
-    var {
+    const {
       isPageChanged
-    } = params !== null && params !== void 0 ? params : {};
-    var needResetIndexes = this.isBatchEditMode() || isPageChanged && this.option('scrolling.mode') !== 'virtual';
+    } = params ?? {};
+    const needResetIndexes = this.isBatchEditMode() || isPageChanged && this.option('scrolling.mode') !== 'virtual';
     if (this.isCellOrBatchEditMode()) {
       if (needResetIndexes) {
         this._resetEditColumnName();
@@ -445,7 +447,7 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     return super._allowRowAdding(params);
   }
   _afterDeleteRow(rowIndex, oldEditRowIndex) {
-    var dataController = this._dataController;
+    const dataController = this._dataController;
     if (this.isBatchEditMode()) {
       dataController.updateItems({
         changeType: 'update',
@@ -465,7 +467,7 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
   }
   _isDefaultButtonVisible(button, options) {
     if (this.isCellOrBatchEditMode()) {
-      var isBatchMode = this.isBatchEditMode();
+      const isBatchMode = this.isBatchEditMode();
       switch (button.name) {
         case 'save':
         case 'cancel':
@@ -482,13 +484,13 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     return super._isDefaultButtonVisible(button, options);
   }
   _isRowDeleteAllowed() {
-    var callBaseResult = super._isRowDeleteAllowed();
+    const callBaseResult = super._isRowDeleteAllowed();
     return callBaseResult || this.isBatchEditMode();
   }
   _beforeEndSaving(changes) {
-    var _a;
     if (this.isCellEditMode()) {
-      if (((_a = changes[0]) === null || _a === void 0 ? void 0 : _a.type) !== 'update') {
+      var _changes$;
+      if (((_changes$ = changes[0]) === null || _changes$ === void 0 ? void 0 : _changes$.type) !== 'update') {
         super._beforeEndSaving(changes);
       }
     } else {
@@ -499,10 +501,9 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     }
   }
   prepareEditButtons(headerPanel) {
-    var _a;
-    var editingOptions = (_a = this.option('editing')) !== null && _a !== void 0 ? _a : {};
-    var buttonItems = super.prepareEditButtons(headerPanel);
-    var needEditingButtons = editingOptions.allowUpdating || editingOptions.allowAdding || editingOptions.allowDeleting;
+    const editingOptions = this.option('editing') ?? {};
+    const buttonItems = super.prepareEditButtons(headerPanel);
+    const needEditingButtons = editingOptions.allowUpdating || editingOptions.allowAdding || editingOptions.allowDeleting;
     if (needEditingButtons && this.isBatchEditMode()) {
       buttonItems.push(this.prepareButtonItem(headerPanel, 'save', 'saveEditData', 21));
       buttonItems.push(this.prepareButtonItem(headerPanel, 'revert', 'cancelEditData', 22));
@@ -510,25 +511,26 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     return buttonItems;
   }
   _saveEditDataInner() {
-    var editRow = this._dataController.getVisibleRows()[this.getEditRowIndex()];
-    var editColumn = this._getEditColumn();
-    var showEditorAlways = editColumn === null || editColumn === void 0 ? void 0 : editColumn.showEditorAlways;
-    var isUpdateInCellMode = this.isCellEditMode() && !(editRow === null || editRow === void 0 ? void 0 : editRow.isNewRow);
-    var deferred;
+    var _deferred;
+    const editRow = this._dataController.getVisibleRows()[this.getEditRowIndex()];
+    const editColumn = this._getEditColumn();
+    const showEditorAlways = editColumn === null || editColumn === void 0 ? void 0 : editColumn.showEditorAlways;
+    const isUpdateInCellMode = this.isCellEditMode() && !(editRow !== null && editRow !== void 0 && editRow.isNewRow);
+    let deferred;
     if (isUpdateInCellMode && showEditorAlways) {
       // @ts-expect-error
       deferred = new Deferred();
       this.addDeferred(deferred);
     }
-    return super._saveEditDataInner().always(deferred === null || deferred === void 0 ? void 0 : deferred.resolve);
+    return super._saveEditDataInner().always((_deferred = deferred) === null || _deferred === void 0 ? void 0 : _deferred.resolve);
   }
   _applyChange(options, params, forceUpdateRow) {
-    var isUpdateInCellMode = this.isCellEditMode() && options.row && !options.row.isNewRow;
-    var {
+    const isUpdateInCellMode = this.isCellEditMode() && options.row && !options.row.isNewRow;
+    const {
       showEditorAlways
     } = options.column;
-    var isCustomSetCellValue = options.column.setCellValue !== options.column.defaultSetCellValue;
-    var focusPreviousEditingCell = showEditorAlways && !forceUpdateRow && isUpdateInCellMode && this.hasEditData() && !this.isEditCell(options.rowIndex, options.columnIndex);
+    const isCustomSetCellValue = options.column.setCellValue !== options.column.defaultSetCellValue;
+    const focusPreviousEditingCell = showEditorAlways && !forceUpdateRow && isUpdateInCellMode && this.hasEditData() && !this.isEditCell(options.rowIndex, options.columnIndex);
     if (focusPreviousEditingCell) {
       this._focusEditingCell();
       this._updateEditRow(options.row, true, isCustomSetCellValue);
@@ -537,10 +539,10 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     return super._applyChange(options, params, forceUpdateRow);
   }
   _applyChangeCore(options, forceUpdateRow) {
-    var {
+    const {
       showEditorAlways
     } = options.column;
-    var isUpdateInCellMode = this.isCellEditMode() && options.row && !options.row.isNewRow;
+    const isUpdateInCellMode = this.isCellEditMode() && options.row && !options.row.isNewRow;
     if (showEditorAlways && !forceUpdateRow) {
       if (isUpdateInCellMode) {
         this._setEditRowKey(options.row.key, true);
@@ -555,7 +557,7 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
     return super._applyChangeCore(options, forceUpdateRow);
   }
   _processDataItemCore(item, change, key, columns, generateDataValues) {
-    var {
+    const {
       data,
       type
     } = change;
@@ -578,17 +580,17 @@ var editingControllerExtender = Base => class CellBasedEditingControllerExtender
   }
   _beforeFocusElementInRow(rowIndex) {
     super._beforeFocusElementInRow(rowIndex);
-    var editRowIndex = rowIndex >= 0 ? rowIndex : 0;
-    var columnIndex = this.getFirstEditableColumnIndex();
+    const editRowIndex = rowIndex >= 0 ? rowIndex : 0;
+    const columnIndex = this.getFirstEditableColumnIndex();
     columnIndex >= 0 && this.editCell(editRowIndex, columnIndex);
   }
 };
-var rowsView = Base => class RowsViewEditingCellBasedExtender extends Base {
+const rowsView = Base => class RowsViewEditingCellBasedExtender extends Base {
   _createTable() {
-    var $table = super._createTable.apply(this, arguments);
-    var editingController = this._editingController;
+    const $table = super._createTable.apply(this, arguments);
+    const editingController = this._editingController;
     if (editingController.isCellOrBatchEditMode() && this.option('editing.allowUpdating')) {
-      eventsEngine.on($table, addNamespace(holdEvent.name, 'dxDataGridRowsView'), "td:not(.".concat(EDITOR_CELL_CLASS, ")"), this.createAction(() => {
+      eventsEngine.on($table, addNamespace(holdEvent.name, 'dxDataGridRowsView'), `td:not(.${EDITOR_CELL_CLASS})`, this.createAction(() => {
         if (editingController.isEditing()) {
           editingController.closeEditCell();
         }
@@ -597,10 +599,10 @@ var rowsView = Base => class RowsViewEditingCellBasedExtender extends Base {
     return $table;
   }
   _createRow(row) {
-    var $row = super._createRow.apply(this, arguments);
+    const $row = super._createRow.apply(this, arguments);
     if (row) {
-      var editingController = this._editingController;
-      var isRowRemoved = !!row.removed;
+      const editingController = this._editingController;
+      const isRowRemoved = !!row.removed;
       // @ts-expect-error
       if (editingController.isBatchEditMode()) {
         isRowRemoved && $row.addClass(ROW_REMOVED);
@@ -609,17 +611,14 @@ var rowsView = Base => class RowsViewEditingCellBasedExtender extends Base {
     return $row;
   }
 };
-var headerPanel = Base => class HeaderPanelEditingCellBasedExtender extends Base {
+const headerPanel = Base => class HeaderPanelEditingCellBasedExtender extends Base {
   isVisible() {
-    var editingOptions = this._editingController.option('editing');
+    const editingOptions = this._editingController.option('editing');
     // @ts-expect-error
     return super.isVisible() || editingOptions && (editingOptions.allowUpdating || editingOptions.allowDeleting) && editingOptions.mode === EDIT_MODE_BATCH;
   }
 };
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
-export var editingCellBasedModule = {
+export const editingCellBasedModule = {
   extenders: {
     controllers: {
       editing: editingControllerExtender

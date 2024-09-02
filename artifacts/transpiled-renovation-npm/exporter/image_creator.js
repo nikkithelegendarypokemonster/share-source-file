@@ -393,8 +393,8 @@ function applyGradient(context, options, _ref, element, type) {
       gradient.addColorStop(offset / 100, opt.stopColor);
     });
     if (type === 'linear') {
-      var _ref2, _gradients$id$transfo;
-      const angle = (_ref2 = ((_gradients$id$transfo = gradients[id].transform) === null || _gradients$id$transfo === void 0 ? void 0 : _gradients$id$transfo.replace(/\D/g, '')) * Math.PI / 180) !== null && _ref2 !== void 0 ? _ref2 : 0;
+      var _gradients$id$transfo;
+      const angle = ((_gradients$id$transfo = gradients[id].transform) === null || _gradients$id$transfo === void 0 ? void 0 : _gradients$id$transfo.replace(/\D/g, '')) * Math.PI / 180 ?? 0;
       context.translate(horizontalCenter, verticalCenter);
       context.rotate(angle);
       context.translate(-horizontalCenter, -verticalCenter);
@@ -460,10 +460,10 @@ function createGradient(element) {
     colors: [],
     transform: (_element$attributes$g = element.attributes.gradientTransform) === null || _element$attributes$g === void 0 ? void 0 : _element$attributes$g.textContent
   };
-  (0, _iterator.each)(element.childNodes, (_, _ref3) => {
+  (0, _iterator.each)(element.childNodes, (_, _ref2) => {
     let {
       attributes
-    } = _ref3;
+    } = _ref2;
     options.colors.push({
       offset: attributes.offset.value,
       stopColor: attributes['stop-color'].value
@@ -647,21 +647,21 @@ function convertSvgToCanvas(svg, canvas, rootAppended) {
     rootAppended
   });
 }
-function getCanvasFromSvg(markup, _ref4) {
+function getCanvasFromSvg(markup, _ref3) {
   let {
     width,
     height,
     backgroundColor,
     margin,
     svgToCanvas = convertSvgToCanvas
-  } = _ref4;
+  } = _ref3;
   const scaledScreenInfo = calcScaledInfo(width, height);
   const canvas = imageCreator._createCanvas(scaledScreenInfo.width, scaledScreenInfo.height, margin);
   const context = canvas.getContext('2d');
   context.setTransform(scaledScreenInfo.pixelRatio, 0, 0, scaledScreenInfo.pixelRatio, 0, 0);
   const svgElem = (0, _svg.getSvgElement)(markup);
   let invisibleDiv;
-  const markupIsDomElement = _dom_adapter.default.isElementNode(markup);
+  const markupIsDomElement = _dom_adapter.default.isElementNode(markup) || (0, _type.isRenderer)(markup);
   context.translate(margin, margin);
   _dom_adapter.default.getBody().appendChild(canvas);
   if (!markupIsDomElement) {
@@ -674,7 +674,7 @@ function getCanvasFromSvg(markup, _ref4) {
     canvas.dir = svgElem.attributes.direction.textContent;
   }
   drawBackground(context, width, height, backgroundColor, margin);
-  return (0, _deferred.fromPromise)(svgToCanvas(svgElem, canvas, markupIsDomElement && (0, _dom.contains)(_dom_adapter.default.getBody(), markup))).then(() => canvas).always(() => {
+  return (0, _deferred.fromPromise)(svgToCanvas(svgElem, canvas, markupIsDomElement && (0, _dom.contains)(_dom_adapter.default.getBody(), (0, _renderer.default)(markup).get(0)))).then(() => canvas).always(() => {
     invisibleDiv && _dom_adapter.default.getBody().removeChild(invisibleDiv);
     _dom_adapter.default.getBody().removeChild(canvas);
   });

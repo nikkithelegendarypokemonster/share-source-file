@@ -55,8 +55,8 @@ function resolveOverlappedLabels(points, shiftCallback, inverseDirection, canvas
 function getLegendItemAction(points) {
   let state = NORMAL_STATE;
   points.forEach(point => {
-    var _a;
-    const seriesOptions = (_a = point.series) === null || _a === void 0 ? void 0 : _a.getOptions();
+    var _point$series;
+    const seriesOptions = (_point$series = point.series) === null || _point$series === void 0 ? void 0 : _point$series.getOptions();
     let pointState = point.fullState;
     if ((seriesOptions === null || seriesOptions === void 0 ? void 0 : seriesOptions.hoverMode) === 'none') {
       pointState &= ~HOVER_STATE;
@@ -133,7 +133,7 @@ const dxPieChart = _m_base_chart.BaseChart.inherit({
     this.callBase();
   },
   _groupSeries() {
-    var _a;
+    var _series$;
     const {
       series
     } = this;
@@ -144,7 +144,7 @@ const dxPieChart = _m_base_chart.BaseChart.inherit({
           valueType: 'numeric'
         }
       }],
-      argumentOptions: (_a = series[0]) === null || _a === void 0 ? void 0 : _a.getOptions()
+      argumentOptions: (_series$ = series[0]) === null || _series$ === void 0 ? void 0 : _series$.getOptions()
     };
   },
   getArgumentAxis() {

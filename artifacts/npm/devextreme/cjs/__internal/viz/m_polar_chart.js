@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/viz/m_polar_chart.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -83,7 +83,7 @@ const dxPolarChart = _m_advanced_chart.AdvancedChart.inherit({
     const argumentAxis = this.getArgumentAxis();
     const margins = argumentAxis.getMargins();
     Object.keys(margins).forEach(margin => {
-      canvas[margin] = canvas["original".concat(margin[0].toUpperCase()).concat(margin.slice(1))] + margins[margin];
+      canvas[margin] = canvas[`original${margin[0].toUpperCase()}${margin.slice(1)}`] + margins[margin];
     });
     return canvas;
   },

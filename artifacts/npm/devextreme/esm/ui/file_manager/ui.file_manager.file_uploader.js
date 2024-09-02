@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/file_manager/ui.file_manager.file_uploader.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,8 +15,8 @@ import Guid from '../../core/guid';
 import Widget from '../widget/ui.widget';
 import FileUploader from '../file_uploader';
 import { whenSome } from './ui.file_manager.common';
-var FILE_MANAGER_FILE_UPLOADER_CLASS = 'dx-filemanager-fileuploader';
-var FILE_MANAGER_FILE_UPLOADER_DROPZONE_PLACEHOLER_CLASS = 'dx-filemanager-fileuploader-dropzone-placeholder';
+const FILE_MANAGER_FILE_UPLOADER_CLASS = 'dx-filemanager-fileuploader';
+const FILE_MANAGER_FILE_UPLOADER_DROPZONE_PLACEHOLER_CLASS = 'dx-filemanager-fileuploader-dropzone-placeholder';
 class FileManagerFileUploader extends Widget {
   _initMarkup() {
     this._initActions();
@@ -28,9 +28,9 @@ class FileManagerFileUploader extends Widget {
     super._initMarkup();
   }
   _createInternalFileUploader() {
-    var chunkSize = this._getController().chunkSize;
-    var $fileUploader = $('<div>').appendTo(this.$element());
-    var fileUploader = this._createComponent($fileUploader, FileUploader, {
+    const chunkSize = this._getController().chunkSize;
+    const $fileUploader = $('<div>').appendTo(this.$element());
+    const fileUploader = this._createComponent($fileUploader, FileUploader, {
       name: 'file',
       multiple: true,
       showFileList: false,
@@ -57,13 +57,13 @@ class FileManagerFileUploader extends Widget {
     });
     fileUploader._shouldRaiseDragLeaveBase = fileUploader._shouldRaiseDragLeave;
     fileUploader._shouldRaiseDragLeave = e => this._shouldRaiseDragLeave(e, fileUploader);
-    var uploaderInfo = {
+    const uploaderInfo = {
       fileUploader
     };
     this._uploaderInfos.push(uploaderInfo);
   }
   tryUpload() {
-    var info = this._findAndUpdateAvailableUploaderInfo();
+    const info = this._findAndUpdateAvailableUploaderInfo();
     if (info) {
       info.fileUploader._selectButtonClickHandler();
     }
@@ -75,39 +75,39 @@ class FileManagerFileUploader extends Widget {
     this._cancelUpload(sessionId, fileIndex);
   }
   _cancelUpload(sessionId, fileIndex) {
-    var {
+    const {
       fileUploader
     } = this._findUploaderInfoBySessionId(sessionId);
     fileUploader.abortUpload(fileIndex);
   }
   _fileUploaderUploadChunk(fileUploader, file, chunksInfo) {
-    var {
+    const {
       session,
       fileIndex
     } = this._findSessionByFile(fileUploader, file);
-    var controller = session.controller;
+    const controller = session.controller;
     chunksInfo.fileIndex = fileIndex;
     return controller.uploadFileChunk(file, chunksInfo);
   }
   _fileUploaderAbortUpload(fileUploader, file, chunksInfo) {
-    var {
+    const {
       session,
       fileIndex
     } = this._findSessionByFile(fileUploader, file);
-    var controller = session.controller;
+    const controller = session.controller;
     chunksInfo.fileIndex = fileIndex;
     return controller.abortFileUpload(file, chunksInfo);
   }
   _onFileUploaderValueChanged(_ref) {
-    var {
+    let {
       component,
       value
     } = _ref;
     if (value.length === 0) {
       return;
     }
-    var files = value.slice();
-    var uploaderInfo = this._findUploaderInfo(component);
+    const files = value.slice();
+    const uploaderInfo = this._findUploaderInfo(component);
     this._uploadFiles(uploaderInfo, files);
     setTimeout(() => {
       if (!this._findAndUpdateAvailableUploaderInfo()) {
@@ -116,19 +116,19 @@ class FileManagerFileUploader extends Widget {
     });
   }
   _onFileUploaderProgress(_ref2) {
-    var {
+    let {
       component,
       file,
       bytesLoaded,
       bytesTotal
     } = _ref2;
-    var {
+    const {
       session,
       fileIndex
     } = this._findSessionByFile(component, file);
-    var fileValue = bytesTotal !== 0 ? bytesLoaded / bytesTotal : 1;
-    var commonValue = component.option('progress') / 100;
-    var args = {
+    const fileValue = bytesTotal !== 0 ? bytesLoaded / bytesTotal : 1;
+    const commonValue = component.option('progress') / 100;
+    const args = {
       sessionId: session.id,
       fileIndex,
       commonValue,
@@ -137,10 +137,10 @@ class FileManagerFileUploader extends Widget {
     this._raiseUploadProgress(args);
   }
   _onFileUploaderAllFilesUploaded(_ref3) {
-    var {
+    let {
       component
     } = _ref3;
-    var {
+    const {
       session
     } = this._findSessionByFile(component, component._files[0].value);
     this._raiseUploadFinished({
@@ -149,48 +149,48 @@ class FileManagerFileUploader extends Widget {
     });
   }
   _onFileUploaderUploaded(_ref4) {
-    var {
+    let {
       component,
       file
     } = _ref4;
-    var deferred = this._getDeferredForFile(component, file);
+    const deferred = this._getDeferredForFile(component, file);
     deferred.resolve();
   }
   _onFileUploaderUploadAborted(_ref5) {
-    var {
+    let {
       component,
       file
     } = _ref5;
-    var deferred = this._getDeferredForFile(component, file);
+    const deferred = this._getDeferredForFile(component, file);
     deferred.resolve({
       canceled: true
     });
   }
   _onFileUploaderUploadError(_ref6) {
-    var {
+    let {
       component,
       file,
       error
     } = _ref6;
-    var deferred = this._getDeferredForFile(component, file);
+    const deferred = this._getDeferredForFile(component, file);
     deferred.reject(error);
   }
   _createDropZonePlaceholder() {
     this._$dropZonePlaceholder = $('<div>').addClass(FILE_MANAGER_FILE_UPLOADER_DROPZONE_PLACEHOLER_CLASS).appendTo(this.option('dropZonePlaceholderContainer'));
   }
   _adjustDropZonePlaceholder() {
-    var $dropZoneTarget = this.option('dropZone');
+    const $dropZoneTarget = this.option('dropZone');
     if (!hasWindow() || $dropZoneTarget.length === 0) {
       return;
     }
-    var placeholderBorderTopWidth = parseFloat(this._$dropZonePlaceholder.css('borderTopWidth'));
-    var placeholderBorderLeftWidth = parseFloat(this._$dropZonePlaceholder.css('borderLeftWidth'));
-    var $placeholderContainer = this.option('dropZonePlaceholderContainer');
-    var containerBorderBottomWidth = parseFloat($placeholderContainer.css('borderBottomWidth'));
-    var containerBorderLeftWidth = parseFloat($placeholderContainer.css('borderLeftWidth'));
-    var containerHeight = getInnerHeight($placeholderContainer);
-    var containerOffset = $placeholderContainer.offset();
-    var dropZoneOffset = $dropZoneTarget.offset();
+    const placeholderBorderTopWidth = parseFloat(this._$dropZonePlaceholder.css('borderTopWidth'));
+    const placeholderBorderLeftWidth = parseFloat(this._$dropZonePlaceholder.css('borderLeftWidth'));
+    const $placeholderContainer = this.option('dropZonePlaceholderContainer');
+    const containerBorderBottomWidth = parseFloat($placeholderContainer.css('borderBottomWidth'));
+    const containerBorderLeftWidth = parseFloat($placeholderContainer.css('borderLeftWidth'));
+    const containerHeight = getInnerHeight($placeholderContainer);
+    const containerOffset = $placeholderContainer.offset();
+    const dropZoneOffset = $dropZoneTarget.offset();
     this._$dropZonePlaceholder.css({
       top: dropZoneOffset.top - containerOffset.top - containerHeight - containerBorderBottomWidth,
       left: dropZoneOffset.left - containerOffset.left - containerBorderLeftWidth
@@ -211,17 +211,17 @@ class FileManagerFileUploader extends Widget {
   }
   _uploadFiles(uploaderInfo, files) {
     this._setDropZonePlaceholderVisible(false);
-    var sessionId = new Guid().toString();
-    var controller = this._getController();
-    var deferreds = files.map(() => new Deferred());
-    var session = {
+    const sessionId = new Guid().toString();
+    const controller = this._getController();
+    const deferreds = files.map(() => new Deferred());
+    const session = {
       id: sessionId,
       controller,
       files,
       deferreds
     };
     uploaderInfo.session = session;
-    var sessionInfo = {
+    const sessionInfo = {
       sessionId,
       deferreds,
       files
@@ -233,25 +233,25 @@ class FileManagerFileUploader extends Widget {
     }));
   }
   _getDeferredForFile(fileUploader, file) {
-    var {
+    const {
       session,
       fileIndex
     } = this._findSessionByFile(fileUploader, file);
     return session.deferreds[fileIndex];
   }
   _findSessionByFile(fileUploader, file) {
-    var uploaderInfo = this._findUploaderInfo(fileUploader);
-    var session = uploaderInfo.session;
-    var fileIndex = session.files.indexOf(file);
+    const uploaderInfo = this._findUploaderInfo(fileUploader);
+    const session = uploaderInfo.session;
+    const fileIndex = session.files.indexOf(file);
     return {
       session,
       fileIndex
     };
   }
   _findUploaderInfoBySessionId(sessionId) {
-    for (var i = 0; i < this._uploaderInfos.length; i++) {
-      var uploaderInfo = this._uploaderInfos[i];
-      var session = uploaderInfo.session;
+    for (let i = 0; i < this._uploaderInfos.length; i++) {
+      const uploaderInfo = this._uploaderInfos[i];
+      const session = uploaderInfo.session;
       if (session && session.id === sessionId) {
         return uploaderInfo;
       }
@@ -260,20 +260,20 @@ class FileManagerFileUploader extends Widget {
   }
   _findAndUpdateAvailableUploaderInfo() {
     var _info;
-    var info = null;
-    for (var i = 0; i < this._uploaderInfos.length; i++) {
-      var currentInfo = this._uploaderInfos[i];
+    let info = null;
+    for (let i = 0; i < this._uploaderInfos.length; i++) {
+      const currentInfo = this._uploaderInfos[i];
       currentInfo.fileUploader.option('dropZone', '');
       if (!info && !currentInfo.session) {
         info = currentInfo;
       }
     }
-    (_info = info) === null || _info === void 0 ? void 0 : _info.fileUploader.option('dropZone', this.option('dropZone'));
+    (_info = info) === null || _info === void 0 || _info.fileUploader.option('dropZone', this.option('dropZone'));
     return info;
   }
   _findUploaderInfo(fileUploader) {
-    for (var i = 0; i < this._uploaderInfos.length; i++) {
-      var info = this._uploaderInfos[i];
+    for (let i = 0; i < this._uploaderInfos.length; i++) {
+      const info = this._uploaderInfos[i];
       if (info.fileUploader === fileUploader) {
         return info;
       }
@@ -281,7 +281,7 @@ class FileManagerFileUploader extends Widget {
     return null;
   }
   _getController() {
-    var controllerGetter = this.option('getController');
+    const controllerGetter = this.option('getController');
     return controllerGetter();
   }
   _raiseUploadSessionStarted(sessionInfo) {
@@ -312,7 +312,7 @@ class FileManagerFileUploader extends Widget {
     });
   }
   _optionChanged(args) {
-    var name = args.name;
+    const name = args.name;
     switch (name) {
       case 'getController':
         this.repaint();

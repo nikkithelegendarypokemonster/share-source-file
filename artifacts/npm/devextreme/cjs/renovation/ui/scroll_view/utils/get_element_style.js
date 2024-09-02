@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/renovation/ui/scroll_view/utils/get_element_style.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -23,11 +23,11 @@ function getElementStyle(el) {
 }
 function getElementMargin(element, side) {
   const style = getElementStyle(element);
-  return style ? (0, _type_conversion.toNumber)(style["margin".concat((0, _inflector.titleize)(side))]) : 0;
+  return style ? (0, _type_conversion.toNumber)(style[`margin${(0, _inflector.titleize)(side)}`]) : 0;
 }
 function getElementPadding(element, side) {
   const style = getElementStyle(element);
-  return style ? (0, _type_conversion.toNumber)(style["padding".concat((0, _inflector.titleize)(side))]) : 0;
+  return style ? (0, _type_conversion.toNumber)(style[`padding${(0, _inflector.titleize)(side)}`]) : 0;
 }
 function getElementOverflowX(element) {
   const style = getElementStyle(element);

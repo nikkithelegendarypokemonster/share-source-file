@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/postponed_operations.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -16,7 +16,7 @@ export class PostponedOperations {
     if (key in this._postponedOperations) {
       postponedPromise && this._postponedOperations[key].promises.push(postponedPromise);
     } else {
-      var completePromise = new Deferred();
+      const completePromise = new Deferred();
       this._postponedOperations[key] = {
         fn: fn,
         completePromise: completePromise,
@@ -26,8 +26,8 @@ export class PostponedOperations {
     return this._postponedOperations[key].completePromise.promise();
   }
   callPostponedOperations() {
-    for (var key in this._postponedOperations) {
-      var operation = this._postponedOperations[key];
+    for (const key in this._postponedOperations) {
+      const operation = this._postponedOperations[key];
       if (isDefined(operation)) {
         if (operation.promises && operation.promises.length) {
           when(...operation.promises).done(operation.fn).then(operation.completePromise.resolve);

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/ui/m_autocomplete.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,12 +13,12 @@ import { Deferred } from '../../core/utils/deferred';
 import { extend } from '../../core/utils/extend';
 import { isCommandKeyPressed } from '../../events/utils/index';
 import DropDownList from '../../ui/drop_down_editor/ui.drop_down_list';
-var AUTOCOMPLETE_CLASS = 'dx-autocomplete';
-var AUTOCOMPLETE_POPUP_WRAPPER_CLASS = 'dx-autocomplete-popup-wrapper';
-var Autocomplete = DropDownList.inherit({
+const AUTOCOMPLETE_CLASS = 'dx-autocomplete';
+const AUTOCOMPLETE_POPUP_WRAPPER_CLASS = 'dx-autocomplete-popup-wrapper';
+const Autocomplete = DropDownList.inherit({
   _supportedKeys() {
-    var item = this._list ? this._list.option('focusedElement') : null;
-    var parent = this.callBase();
+    let item = this._list ? this._list.option('focusedElement') : null;
+    const parent = this.callBase();
     item = item && $(item);
     return extend({}, parent, {
       upArrow(e) {
@@ -47,7 +47,7 @@ var Autocomplete = DropDownList.inherit({
         if (!item) {
           this.close();
         }
-        var opened = this.option('opened');
+        const opened = this.option('opened');
         if (opened) {
           e.preventDefault();
         }
@@ -69,18 +69,18 @@ var Autocomplete = DropDownList.inherit({
     this.$element().addClass(AUTOCOMPLETE_CLASS);
   },
   _getAriaAutocomplete() {
-    var {
+    const {
       disabled,
       readOnly
     } = this.option();
-    var isInputEditable = !(readOnly || disabled);
+    const isInputEditable = !(readOnly || disabled);
     return isInputEditable ? 'list' : 'none';
   },
   _displayGetterExpr() {
     return this.option('valueExpr');
   },
   _closeOutsideDropDownHandler(_ref) {
-    var {
+    let {
       target
     } = _ref;
     return !$(target).closest(this.$element()).length;
@@ -91,7 +91,7 @@ var Autocomplete = DropDownList.inherit({
     this._updateListDimensions();
   },
   _popupWrapperClass() {
-    return "".concat(this.callBase(), " ").concat(AUTOCOMPLETE_POPUP_WRAPPER_CLASS);
+    return `${this.callBase()} ${AUTOCOMPLETE_POPUP_WRAPPER_CLASS}`;
   },
   _listConfig() {
     return extend(this.callBase(), {
@@ -103,7 +103,7 @@ var Autocomplete = DropDownList.inherit({
   },
   _listItemClickHandler(e) {
     this._saveValueChangeEvent(e.event);
-    var value = this._displayGetter(e.itemData);
+    const value = this._displayGetter(e.itemData);
     this.option('value', value);
     this.close();
   },
@@ -120,9 +120,8 @@ var Autocomplete = DropDownList.inherit({
     this.close();
   },
   _loadItem(value, cache) {
-    var selectedItem = this._getItemFromPlain(value, cache);
-    // @ts-expect-error
-    return new Deferred().resolve(selectedItem).promise();
+    const selectedItem = this._getItemFromPlain(value, cache);
+    return Deferred().resolve(selectedItem).promise();
   },
   _dataSourceOptions() {
     return {
@@ -145,7 +144,7 @@ var Autocomplete = DropDownList.inherit({
     return 'input keyup';
   },
   _valueChangeEventHandler(e) {
-    var value = this._input().val() || null;
+    const value = this._input().val() || null;
     return this.callBase(e, value);
   },
   _optionChanged(args) {
@@ -172,7 +171,7 @@ var Autocomplete = DropDownList.inherit({
     this.close();
   },
   reset() {
-    var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+    let value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
     if (arguments.length) {
       this.callBase(value);
     } else {

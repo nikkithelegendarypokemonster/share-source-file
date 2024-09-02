@@ -1,20 +1,20 @@
 /**
 * DevExtreme (esm/viz/core/loading_indicator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { patchFontOptions as _patchFontOptions } from './utils';
-var STATE_HIDDEN = 0;
-var STATE_SHOWN = 1;
-var ANIMATION_EASING = 'linear';
-var ANIMATION_DURATION = 400;
-var LOADING_INDICATOR_READY = 'loadingIndicatorReady';
-export var LoadingIndicator = function LoadingIndicator(parameters) {
-  var that = this;
-  var renderer = parameters.renderer;
+const STATE_HIDDEN = 0;
+const STATE_SHOWN = 1;
+const ANIMATION_EASING = 'linear';
+const ANIMATION_DURATION = 400;
+const LOADING_INDICATOR_READY = 'loadingIndicatorReady';
+export let LoadingIndicator = function (parameters) {
+  const that = this;
+  const renderer = parameters.renderer;
   that._group = renderer.g().attr({
     'class': 'dx-loading-indicator'
   }).linkOn(renderer.root, {
@@ -31,14 +31,14 @@ export var LoadingIndicator = function LoadingIndicator(parameters) {
 };
 LoadingIndicator.prototype = {
   constructor: LoadingIndicator,
-  _createStates: function _createStates(eventTrigger, group, root, notify) {
-    var that = this;
+  _createStates: function (eventTrigger, group, root, notify) {
+    const that = this;
     that._states = [{
       opacity: 0,
-      start: function start() {
+      start: function () {
         notify(false);
       },
-      complete: function complete() {
+      complete: function () {
         group.linkRemove();
         root.css({
           'pointer-events': ''
@@ -47,22 +47,22 @@ LoadingIndicator.prototype = {
       }
     }, {
       opacity: 0.85,
-      start: function start() {
+      start: function () {
         group.linkAppend();
         root.css({
           'pointer-events': 'none'
         });
         notify(true);
       },
-      complete: function complete() {
+      complete: function () {
         eventTrigger(LOADING_INDICATOR_READY);
       }
     }];
     that._state = STATE_HIDDEN;
   },
-  setSize: function setSize(size) {
-    var width = size.width;
-    var height = size.height;
+  setSize: function (size) {
+    const width = size.width;
+    const height = size.height;
     this._rect.attr({
       width: width,
       height: height
@@ -72,7 +72,7 @@ LoadingIndicator.prototype = {
       y: height / 2
     });
   },
-  setOptions: function setOptions(options) {
+  setOptions: function (options) {
     this._rect.attr({
       fill: options.backgroundColor
     });
@@ -82,14 +82,14 @@ LoadingIndicator.prototype = {
     });
     this[options.show ? 'show' : 'hide']();
   },
-  dispose: function dispose() {
-    var that = this;
+  dispose: function () {
+    const that = this;
     that._group.linkRemove().linkOff();
     that._group = that._rect = that._text = that._states = null;
   },
-  _transit: function _transit(stateId) {
-    var that = this;
-    var state;
+  _transit: function (stateId) {
+    const that = this;
+    let state;
     if (that._state !== stateId) {
       that._state = stateId;
       that._isHiding = false;
@@ -107,27 +107,27 @@ LoadingIndicator.prototype = {
       that._noHiding = false;
     }
   },
-  show: function show() {
+  show: function () {
     this._transit(STATE_SHOWN);
   },
-  hide: function hide() {
+  hide: function () {
     this._transit(STATE_HIDDEN);
   },
-  scheduleHiding: function scheduleHiding() {
+  scheduleHiding: function () {
     if (!this._noHiding) {
       this._isHiding = true;
     }
   },
-  fulfillHiding: function fulfillHiding() {
+  fulfillHiding: function () {
     if (this._isHiding) {
       this.hide();
     }
   }
 };
-export var plugin = {
+export const plugin = {
   name: 'loading_indicator',
-  init: function init() {
-    var that = this;
+  init: function () {
+    const that = this;
     // "exports" is used for testing purposes.
     that._loadingIndicator = new LoadingIndicator({
       eventTrigger: that._eventTrigger,
@@ -147,24 +147,24 @@ export var plugin = {
       }
     }
   },
-  dispose: function dispose() {
+  dispose: function () {
     this._loadingIndicator.dispose();
     this._loadingIndicator = null;
   },
   members: {
-    _scheduleLoadingIndicatorHiding: function _scheduleLoadingIndicatorHiding() {
+    _scheduleLoadingIndicatorHiding: function () {
       this._loadingIndicator.scheduleHiding();
     },
-    _fulfillLoadingIndicatorHiding: function _fulfillLoadingIndicatorHiding() {
+    _fulfillLoadingIndicatorHiding: function () {
       this._loadingIndicator.fulfillHiding();
     },
-    showLoadingIndicator: function showLoadingIndicator() {
+    showLoadingIndicator: function () {
       this._loadingIndicator.show();
     },
-    hideLoadingIndicator: function hideLoadingIndicator() {
+    hideLoadingIndicator: function () {
       this._loadingIndicator.hide();
     },
-    _onBeginUpdate: function _onBeginUpdate() {
+    _onBeginUpdate: function () {
       if (!this._optionChangedLocker) {
         this._scheduleLoadingIndicatorHiding();
       }
@@ -185,12 +185,12 @@ export var plugin = {
       }
     }
   },
-  customize: function customize(constructor) {
-    var proto = constructor.prototype;
+  customize: function (constructor) {
+    const proto = constructor.prototype;
 
     // Of course this looks dirty - but cleaning it is another task. For now it has been just extracted from BaseWidget with minimal changes.
     if (proto._dataSourceChangedHandler) {
-      var _dataSourceChangedHandler = proto._dataSourceChangedHandler;
+      const _dataSourceChangedHandler = proto._dataSourceChangedHandler;
       proto._dataSourceChangedHandler = function () {
         this._scheduleLoadingIndicatorHiding();
         _dataSourceChangedHandler.apply(this, arguments);
@@ -198,7 +198,7 @@ export var plugin = {
     }
     constructor.addChange({
       code: 'LOADING_INDICATOR',
-      handler: function handler() {
+      handler: function () {
         if (!this._skipLoadingIndicatorOptions) {
           this._loadingIndicator.setOptions(this._getOption('loadingIndicator'));
         }
@@ -211,7 +211,7 @@ export var plugin = {
     proto._eventsMap.onLoadingIndicatorReady = {
       name: 'loadingIndicatorReady'
     };
-    var _drawn = proto._drawn;
+    const _drawn = proto._drawn;
     proto._drawn = function () {
       _drawn.apply(this, arguments);
       if (this._dataIsReady()) {

@@ -5,7 +5,7 @@ var _extend = require("../../core/utils/extend");
 var _type = require("../../core/utils/type");
 const _excluded = ["x", "y", "canvas", "offsetX", "offsetY", "offset"];
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 const math = Math;
 const round = math.round;
 const max = math.max;
@@ -21,10 +21,10 @@ const buildPath = function () {
   return points.join('');
 };
 function getArc(cornerRadius, xDirection, yDirection) {
-  return "a ".concat(cornerRadius, " ").concat(cornerRadius, " 0 0 1 ").concat(xDirection * cornerRadius, " ").concat(yDirection * cornerRadius);
+  return `a ${cornerRadius} ${cornerRadius} 0 0 1 ${xDirection * cornerRadius} ${yDirection * cornerRadius}`;
 }
 function getAbsoluteArc(cornerRadius, x, y) {
-  return "A ".concat(cornerRadius, " ").concat(cornerRadius, " 0 0 1 ").concat(x, " ").concat(y);
+  return `A ${cornerRadius} ${cornerRadius} 0 0 1 ${x} ${y}`;
 }
 function rotateX(x, y, angle, x0, y0) {
   return (x - x0) * round(cos(angle)) + (y - y0) * round(sin(angle)) + x0;
@@ -171,8 +171,8 @@ function getCloudPoints(_ref2, x, y, anchorX, anchorY, _ref3, bounded) {
   }
   return buildPath('M', points, 'Z');
 }
-let Plaque = exports.Plaque = /*#__PURE__*/function () {
-  function Plaque(options, widget, root, contentTemplate) {
+class Plaque {
+  constructor(options, widget, root, contentTemplate) {
     let bounded = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
     let measureContent = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : (_, g) => g.getBBox();
     let moveContentGroup = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : (_, g, x, y) => g.move(x, y);
@@ -184,8 +184,7 @@ let Plaque = exports.Plaque = /*#__PURE__*/function () {
     this.measureContent = measureContent;
     this.moveContentGroup = moveContentGroup;
   }
-  var _proto = Plaque.prototype;
-  _proto.draw = function draw(_ref4) {
+  draw(_ref4) {
     let {
         x: anchorX,
         y: anchorY,
@@ -292,7 +291,7 @@ let Plaque = exports.Plaque = /*#__PURE__*/function () {
       this.anchorX = anchorX;
       this.anchorY = anchorY;
       this.move(x, y);
-      (_this$_root = this._root) === null || _this$_root === void 0 ? void 0 : _this$_root.append(this.root);
+      (_this$_root = this._root) === null || _this$_root === void 0 || _this$_root.append(this.root);
     };
     if (this.contentTemplate.render) {
       this.contentTemplate.render({
@@ -307,8 +306,8 @@ let Plaque = exports.Plaque = /*#__PURE__*/function () {
       }, restProps));
     }
     return true;
-  };
-  _proto._draw = function _draw() {
+  }
+  _draw() {
     const renderer = this.widget._renderer;
     const options = this.options;
     const shadowSettings = (0, _extend.extend)({
@@ -335,7 +334,7 @@ let Plaque = exports.Plaque = /*#__PURE__*/function () {
     const group = this._root = renderer.g().append(this.root);
     if (options.type) {
       group.attr({
-        class: "dxc-".concat(options.type, "-annotation")
+        class: `dxc-${options.type}-annotation`
       });
     }
     const cloudGroup = renderer.g().attr({
@@ -343,8 +342,8 @@ let Plaque = exports.Plaque = /*#__PURE__*/function () {
     }).append(group);
     this._cloud = renderer.path([], 'area').attr(cloudSettings).sharp().append(cloudGroup);
     this._contentGroup = renderer.g().append(group);
-  };
-  _proto.getBBox = function getBBox() {
+  }
+  getBBox() {
     const size = this._size || {};
     const margins = this.margins || {};
     const rotationAngle = getCloudAngle(size, this.x, this.y, this.anchorX, this.anchorY);
@@ -354,26 +353,26 @@ let Plaque = exports.Plaque = /*#__PURE__*/function () {
       width: size.width + margins.lm + margins.rm,
       height: size.height + margins.tm + margins.bm + (rotationAngle === 90 || rotationAngle === 270 ? this.options.arrowLength : 0)
     };
-  };
-  _proto.clear = function clear() {
+  }
+  clear() {
     if (this._root) {
       this._root.remove();
       this._shadow.remove();
       this._root = null;
     }
     return this;
-  };
-  _proto.customizeCloud = function customizeCloud(attr) {
+  }
+  customizeCloud(attr) {
     if (this._cloud) {
       this._cloud.attr(attr);
     }
-  };
-  _proto.moveRoot = function moveRoot(x, y) {
+  }
+  moveRoot(x, y) {
     if (this._root) {
       this._root.move(x, y);
     }
-  };
-  _proto.move = function move(x, y) {
+  }
+  move(x, y) {
     x = round(x);
     y = round(y);
     this.x = x;
@@ -384,13 +383,13 @@ let Plaque = exports.Plaque = /*#__PURE__*/function () {
       d: getCloudPoints(rotateSize(this._size, rotationAngle), x, y, rotateX(this.anchorX, this.anchorY, radRotationAngle, x, y), rotateY(this.anchorX, this.anchorY, radRotationAngle, x, y), this.options, this.bonded)
     }).rotate(rotationAngle, x, y);
     this.moveContentGroup(this.widget, this._contentGroup, x - this._contentBBox.x - this._contentBBox.width / 2, y - this._contentBBox.y - this._contentBBox.height / 2);
-  };
-  _proto.hitTest = function hitTest(x, y) {
+  }
+  hitTest(x, y) {
     const {
       width,
       height
     } = this._size || {};
     return Math.abs(x - this.x) <= width / 2 && Math.abs(y - this.y) <= height / 2;
-  };
-  return Plaque;
-}();
+  }
+}
+exports.Plaque = Plaque;

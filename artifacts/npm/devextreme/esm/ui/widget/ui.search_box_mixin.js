@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/widget/ui.search_box_mixin.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,9 +12,9 @@ import messageLocalization from '../../localization/message';
 import errors from '../widget/ui.errors';
 import { Deferred } from '../../core/utils/deferred';
 import { stubComponent } from '../../core/utils/stubs';
-var EditorClass = stubComponent('TextBox');
+let EditorClass = stubComponent('TextBox');
 export default {
-  _getDefaultOptions: function _getDefaultOptions() {
+  _getDefaultOptions: function () {
     return extend(this.callBase(), {
       searchMode: '',
       searchExpr: null,
@@ -23,21 +23,21 @@ export default {
       searchEditorOptions: {}
     });
   },
-  _initMarkup: function _initMarkup() {
+  _initMarkup: function () {
     this._renderSearch();
     this.callBase();
   },
-  _renderSearch: function _renderSearch() {
-    var $element = this.$element();
-    var searchEnabled = this.option('searchEnabled');
-    var searchBoxClassName = this._addWidgetPrefix('search');
-    var rootElementClassName = this._addWidgetPrefix('with-search');
+  _renderSearch: function () {
+    const $element = this.$element();
+    const searchEnabled = this.option('searchEnabled');
+    const searchBoxClassName = this._addWidgetPrefix('search');
+    const rootElementClassName = this._addWidgetPrefix('with-search');
     if (!searchEnabled) {
       $element.removeClass(rootElementClassName);
       this._removeSearchBox();
       return;
     }
-    var editorOptions = this._getSearchEditorOptions();
+    const editorOptions = this._getSearchEditorOptions();
     if (this._searchEditor) {
       this._searchEditor.option(editorOptions);
     } else {
@@ -46,15 +46,15 @@ export default {
       this._searchEditor = this._createComponent(this._$searchEditorElement, EditorClass, editorOptions);
     }
   },
-  _removeSearchBox: function _removeSearchBox() {
+  _removeSearchBox: function () {
     this._$searchEditorElement && this._$searchEditorElement.remove();
     delete this._$searchEditorElement;
     delete this._searchEditor;
   },
-  _getSearchEditorOptions: function _getSearchEditorOptions() {
-    var that = this;
-    var userEditorOptions = that.option('searchEditorOptions');
-    var searchText = messageLocalization.format('Search');
+  _getSearchEditorOptions: function () {
+    const that = this;
+    const userEditorOptions = that.option('searchEditorOptions');
+    const searchText = messageLocalization.format('Search');
     return extend({
       mode: 'search',
       placeholder: searchText,
@@ -64,8 +64,8 @@ export default {
       inputAttr: {
         'aria-label': searchText
       },
-      onValueChanged: function onValueChanged(e) {
-        var searchTimeout = that.option('searchTimeout');
+      onValueChanged: function (e) {
+        const searchTimeout = that.option('searchTimeout');
         that._valueChangeDeferred = new Deferred();
         clearTimeout(that._valueChangeTimeout);
         that._valueChangeDeferred.done(function () {
@@ -81,28 +81,28 @@ export default {
       }
     }, userEditorOptions);
   },
-  _getAriaTarget: function _getAriaTarget() {
+  _getAriaTarget: function () {
     if (this.option('searchEnabled')) {
       return this._itemContainer(true);
     }
     return this.callBase();
   },
-  _focusTarget: function _focusTarget() {
+  _focusTarget: function () {
     if (this.option('searchEnabled')) {
       return this._itemContainer(true);
     }
     return this.callBase();
   },
-  _updateFocusState: function _updateFocusState(e, isFocused) {
+  _updateFocusState: function (e, isFocused) {
     if (this.option('searchEnabled')) {
       this._toggleFocusClass(isFocused, this.$element());
     }
     this.callBase(e, isFocused);
   },
-  getOperationBySearchMode: function getOperationBySearchMode(searchMode) {
+  getOperationBySearchMode: function (searchMode) {
     return searchMode === 'equals' ? '=' : searchMode;
   },
-  _optionChanged: function _optionChanged(args) {
+  _optionChanged: function (args) {
     switch (args.name) {
       case 'searchEnabled':
       case 'searchEditorOptions':
@@ -128,15 +128,15 @@ export default {
         this.callBase(args);
     }
   },
-  focus: function focus() {
+  focus: function () {
     if (!this.option('focusedElement') && this.option('searchEnabled')) {
       this._searchEditor && this._searchEditor.focus();
       return;
     }
     this.callBase();
   },
-  _cleanAria: function _cleanAria() {
-    var $element = this.$element();
+  _cleanAria: function () {
+    const $element = this.$element();
     this.setAria({
       'role': null,
       'activedescendant': null
@@ -147,13 +147,13 @@ export default {
     this.callBase();
     this._cleanAria();
   },
-  _refresh: function _refresh() {
+  _refresh: function () {
     if (this._valueChangeDeferred) {
       this._valueChangeDeferred.resolve();
     }
     this.callBase();
   },
-  setEditorClass: function setEditorClass(value) {
+  setEditorClass: function (value) {
     EditorClass = value;
   }
 };

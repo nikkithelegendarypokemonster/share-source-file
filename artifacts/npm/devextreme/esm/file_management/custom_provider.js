@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/file_management/custom_provider.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -27,7 +27,7 @@ class CustomFileSystemProvider extends FileSystemProviderBase {
     this._getItemsContentFunction = this._ensureFunction(options.getItemsContent);
   }
   getItems(parentDir) {
-    var pathInfo = parentDir.getFullPathInfo();
+    const pathInfo = parentDir.getFullPathInfo();
     return this._executeActionAsDeferred(() => this._getItemsFunction(parentDir), true).then(dataItems => this._convertDataObjectsToFileItems(dataItems, pathInfo));
   }
   renameItem(item, name) {
@@ -58,7 +58,7 @@ class CustomFileSystemProvider extends FileSystemProviderBase {
     return this._executeActionAsDeferred(() => this._getItemsContentFunction(items));
   }
   _hasSubDirs(dataObj) {
-    var hasSubDirs = this._hasSubDirsGetter(dataObj);
+    const hasSubDirs = this._hasSubDirsGetter(dataObj);
     return typeof hasSubDirs === 'boolean' ? hasSubDirs : true;
   }
   _getKeyExpr(options) {

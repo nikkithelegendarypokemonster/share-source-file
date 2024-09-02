@@ -275,7 +275,10 @@ _Translator2d.prototype = {
     canvasOptions.rangeDoubleError = Math.pow(10, (0, _utils.getPower)(canvasOptions.rangeMax - canvasOptions.rangeMin) - (0, _utils.getPower)(length) - 2); // B253861
     canvasOptions.ratioOfCanvasRange = canvasOptions.canvasLength / (canvasOptions.rangeMaxVisible - canvasOptions.rangeMinVisible);
     if (breaks !== undefined) {
-      canvasOptions.ratioOfCanvasRange = (canvasOptions.canvasLength - breaks[breaks.length - 1].cumulativeWidth) / (canvasOptions.rangeMaxVisible - canvasOptions.rangeMinVisible - breaks[breaks.length - 1].length);
+      const visibleRangeLength = canvasOptions.rangeMaxVisible - canvasOptions.rangeMinVisible - breaks[breaks.length - 1].length;
+      if (visibleRangeLength !== 0) {
+        canvasOptions.ratioOfCanvasRange = (canvasOptions.canvasLength - breaks[breaks.length - 1].cumulativeWidth) / visibleRangeLength;
+      }
     }
     return canvasOptions;
   },
@@ -373,9 +376,8 @@ _Translator2d.prototype = {
     return this.to(bp, direction, skipRound);
   },
   getInterval: function (interval) {
-    var _interval;
     const canvasOptions = this._canvasOptions;
-    interval = (_interval = interval) !== null && _interval !== void 0 ? _interval : this._businessRange.interval;
+    interval = interval ?? this._businessRange.interval;
     if (interval) {
       return Math.round(canvasOptions.ratioOfCanvasRange * interval);
     }

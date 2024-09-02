@@ -16,10 +16,10 @@ var _iterator = require("../../core/utils/iterator");
 var _type = require("../../core/utils/type");
 var _events_engine = _interopRequireDefault(require("../../events/core/events_engine"));
 var _index = require("../../events/utils/index");
-var _ui = _interopRequireDefault(require("../../ui/drop_down_editor/ui.drop_down_editor"));
-var _ui2 = _interopRequireDefault(require("../../ui/editor/ui.data_expression"));
-var _utils = require("../../ui/overlay/utils");
+var _ui = _interopRequireDefault(require("../../ui/editor/ui.data_expression"));
 var _selectors = require("../../ui/widget/selectors");
+var _m_drop_down_editor = _interopRequireDefault(require("../ui/drop_down_editor/m_drop_down_editor"));
+var _m_utils = require("../ui/overlay/m_utils");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 // @ts-expect-error
 
@@ -29,7 +29,7 @@ const {
 const DROP_DOWN_BOX_CLASS = 'dx-dropdownbox';
 const ANONYMOUS_TEMPLATE_NAME = 'content';
 const realDevice = _devices.default.real();
-const DropDownBox = _ui.default.inherit({
+const DropDownBox = _m_drop_down_editor.default.inherit({
   _supportedKeys() {
     return (0, _extend.extend)({}, this.callBase(), {
       tab(e) {
@@ -89,15 +89,13 @@ const DropDownBox = _ui.default.inherit({
     const values = [];
     if (!this._dataSource) {
       this.callBase(values);
-      // @ts-expect-error
-      return new _deferred.Deferred().resolve();
+      return (0, _deferred.Deferred)().resolve();
     }
     const currentValue = this._getCurrentValue();
-    let keys = currentValue !== null && currentValue !== void 0 ? currentValue : [];
+    let keys = currentValue ?? [];
     keys = Array.isArray(keys) ? keys : [keys];
     const itemLoadDeferreds = (0, _iterator.map)(keys, key => {
-      // @ts-expect-error
-      const deferred = new _deferred.Deferred();
+      const deferred = (0, _deferred.Deferred)();
       this._loadItem(key).always(item => {
         const displayValue = this._displayGetter(item);
         if ((0, _type.isDefined)(displayValue)) {
@@ -123,8 +121,7 @@ const DropDownBox = _ui.default.inherit({
     });
   },
   _loadItem(value) {
-    // @ts-expect-error
-    const deferred = new _deferred.Deferred();
+    const deferred = (0, _deferred.Deferred)();
     const that = this;
     const selectedItem = (0, _common.grep)(this.option('items') || [], item => this._isValueEquals(this._valueGetter(item), value))[0];
     if (selectedItem !== undefined) {
@@ -133,7 +130,7 @@ const DropDownBox = _ui.default.inherit({
       this._loadValue(value).done(item => {
         deferred.resolve(item);
       }).fail(args => {
-        if (args === null || args === void 0 ? void 0 : args.shouldSkipCallback) {
+        if (args !== null && args !== void 0 && args.shouldSkipCallback) {
           return;
         }
         if (that.option('acceptCustomValue')) {
@@ -228,9 +225,9 @@ const DropDownBox = _ui.default.inherit({
       }),
       _ignoreFunctionValueDeprecation: true,
       maxHeight: function () {
-        var _a;
-        const popupLocation = (_a = this._popupPosition) === null || _a === void 0 ? void 0 : _a.v.location;
-        return (0, _utils.getElementMaxHeightByWindow)(this.$element(), popupLocation);
+        var _this$_popupPosition;
+        const popupLocation = (_this$_popupPosition = this._popupPosition) === null || _this$_popupPosition === void 0 ? void 0 : _this$_popupPosition.v.location;
+        return (0, _m_utils.getElementMaxHeightByWindow)(this.$element(), popupLocation);
       }.bind(this)
     });
   },
@@ -260,6 +257,6 @@ const DropDownBox = _ui.default.inherit({
         this.callBase(args);
     }
   }
-}).include(_ui2.default);
+}).include(_ui.default);
 (0, _component_registrator.default)('dxDropDownBox', DropDownBox);
 var _default = exports.default = DropDownBox;

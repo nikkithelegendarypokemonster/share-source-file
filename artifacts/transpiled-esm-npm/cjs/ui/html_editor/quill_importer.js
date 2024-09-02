@@ -1,12 +1,9 @@
 "use strict";
 
-exports.getQuill = getQuill;
-var _ui = _interopRequireDefault(require("../widget/ui.errors"));
-var _devextremeQuill = _interopRequireDefault(require("devextreme-quill"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function getQuill() {
-  if (!_devextremeQuill.default) {
-    throw _ui.default.Error('E1041', 'Quill');
-  }
-  return _devextremeQuill.default;
-}
+exports.default = void 0;
+var _m_quill_importer = require("../../__internal/ui/html_editor/m_quill_importer");
+var _default = exports.default = {
+  getQuill: _m_quill_importer.getQuill
+};
+module.exports = exports.default;
+module.exports.default = exports.default;

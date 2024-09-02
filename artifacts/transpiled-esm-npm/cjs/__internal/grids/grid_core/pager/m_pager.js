@@ -10,8 +10,6 @@ var _message = _interopRequireDefault(require("../../../../localization/message"
 var _pager = _interopRequireDefault(require("../../../../ui/pager"));
 var _m_modules = _interopRequireDefault(require("../m_modules"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const PAGER_CLASS = 'pager';
 const MAX_PAGES_COUNT = 10;
 const getPageIndex = function (dataController) {
@@ -19,13 +17,8 @@ const getPageIndex = function (dataController) {
   return 1 + (parseInt(dataController.pageIndex()) || 0);
 };
 // TODO getController
-let PagerView = exports.PagerView = /*#__PURE__*/function (_modules$View) {
-  _inheritsLoose(PagerView, _modules$View);
-  function PagerView() {
-    return _modules$View.apply(this, arguments) || this;
-  }
-  var _proto = PagerView.prototype;
-  _proto.init = function init() {
+class PagerView extends _m_modules.default.View {
+  init() {
     const dataController = this.getController('data');
     dataController.changed.add(e => {
       if (e && e.repaintChangesOnly) {
@@ -46,11 +39,11 @@ let PagerView = exports.PagerView = /*#__PURE__*/function (_modules$View) {
         this.render();
       }
     });
-  };
-  _proto.dispose = function dispose() {
+  }
+  dispose() {
     this._pager = null;
-  };
-  _proto.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     const {
       name
     } = args;
@@ -76,12 +69,11 @@ let PagerView = exports.PagerView = /*#__PURE__*/function (_modules$View) {
         }
       }
     }
-  };
-  _proto._renderCore = function _renderCore() {
-    var _a;
+  }
+  _renderCore() {
     const that = this;
     const $element = that.element().addClass(that.addWidgetPrefix(PAGER_CLASS));
-    const pagerOptions = (_a = that.option('pager')) !== null && _a !== void 0 ? _a : {};
+    const pagerOptions = that.option('pager') ?? {};
     const dataController = that.getController('data');
     const keyboardController = that.getController('keyboardNavigation');
     const options = {
@@ -98,6 +90,7 @@ let PagerView = exports.PagerView = /*#__PURE__*/function (_modules$View) {
       pageSizes: that.getPageSizes(),
       totalCount: dataController.totalCount(),
       hasKnownLastPage: dataController.hasKnownLastPage(),
+      rtlEnabled: that.option('rtlEnabled'),
       pageIndexChanged(pageIndex) {
         if (dataController.pageIndex() !== pageIndex - 1) {
           dataController.pageIndex(pageIndex - 1);
@@ -106,9 +99,7 @@ let PagerView = exports.PagerView = /*#__PURE__*/function (_modules$View) {
       pageSizeChanged(pageSize) {
         dataController.pageSize(pageSize);
       },
-      onKeyDown: e => keyboardController && keyboardController.executeAction('onKeyDown', e),
-      useLegacyKeyboardNavigation: this.option('useLegacyKeyboardNavigation'),
-      useKeyboard: this.option('keyboardNavigation.enabled')
+      onKeyDown: e => keyboardController && keyboardController.executeAction('onKeyDown', e)
     };
     if ((0, _type.isDefined)(pagerOptions.infoText)) {
       options.infoText = pagerOptions.infoText;
@@ -122,11 +113,11 @@ let PagerView = exports.PagerView = /*#__PURE__*/function (_modules$View) {
     } else {
       $element.addClass('dx-pager').html('<div class="dx-pages"><div class="dx-page"></div></div>');
     }
-  };
-  _proto.getPager = function getPager() {
+  }
+  getPager() {
     return this._pager;
-  };
-  _proto.getPageSizes = function getPageSizes() {
+  }
+  getPageSizes() {
     const that = this;
     const dataController = that.getController('data');
     const pagerOptions = that.option('pager');
@@ -143,8 +134,8 @@ let PagerView = exports.PagerView = /*#__PURE__*/function (_modules$View) {
       }
     }
     return that._pageSizes;
-  };
-  _proto.isVisible = function isVisible() {
+  }
+  isVisible() {
     const dataController = this.getController('data');
     const pagerOptions = this.option('pager');
     let pagerVisible = pagerOptions && pagerOptions.visible;
@@ -158,12 +149,12 @@ let PagerView = exports.PagerView = /*#__PURE__*/function (_modules$View) {
       }
     }
     return !!pagerVisible;
-  };
-  _proto.getHeight = function getHeight() {
+  }
+  getHeight() {
     return this.getElementHeight();
-  };
-  return PagerView;
-}(_m_modules.default.View);
+  }
+}
+exports.PagerView = PagerView;
 const pagerModule = exports.pagerModule = {
   defaultOptions() {
     return {

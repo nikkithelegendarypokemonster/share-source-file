@@ -20,8 +20,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const SCROLLING_MODE_INFINITE = 'infinite';
 const SCROLLING_MODE_VIRTUAL = 'virtual';
 const LEGACY_SCROLLING_MODE = 'scrolling.legacyMode';
-const _isVirtualMode = that => that.option('scrolling.mode') === SCROLLING_MODE_VIRTUAL || that._isVirtual;
-const _isAppendMode = that => that.option('scrolling.mode') === SCROLLING_MODE_INFINITE && !that._isVirtual;
+const isVirtualMode = that => that.option('scrolling.mode') === SCROLLING_MODE_VIRTUAL || that._isVirtual;
+const isAppendMode = that => that.option('scrolling.mode') === SCROLLING_MODE_INFINITE && !that._isVirtual;
 function subscribeToExternalScrollers($element, scrollChangedHandler, $targetElement) {
   let $scrollElement;
   const scrollableArray = [];
@@ -77,10 +77,7 @@ function subscribeToExternalScrollers($element, scrollChangedHandler, $targetEle
       eventsStrategy.off(scrollable, 'scroll', handler);
     });
   }
-  const getScrollElementParent = $element => {
-    var _a;
-    return (0, _renderer.default)((_a = $element.get(0).parentNode) !== null && _a !== void 0 ? _a : $element.get(0).host);
-  };
+  const getScrollElementParent = $element => (0, _renderer.default)($element.get(0).parentNode ?? $element.get(0).host);
   for ($scrollElement = $targetElement.parent(); $scrollElement.length; $scrollElement = getScrollElementParent($scrollElement)) {
     subscribeToScrollEvents($scrollElement);
   }
@@ -97,8 +94,8 @@ function subscribeToExternalScrollers($element, scrollChangedHandler, $targetEle
     }
   };
 }
-let VirtualScrollController = exports.VirtualScrollController = /*#__PURE__*/function () {
-  function VirtualScrollController(component, dataOptions, isVirtual) {
+class VirtualScrollController {
+  constructor(component, dataOptions, isVirtual) {
     this._dataOptions = dataOptions;
     this.component = component;
     this._viewportSize = component.option(LEGACY_SCROLLING_MODE) === false ? 15 : 0;
@@ -113,20 +110,18 @@ let VirtualScrollController = exports.VirtualScrollController = /*#__PURE__*/fun
     this.positionChanged = (0, _callbacks.default)();
     this._dataLoader = new _m_virtual_data_loader.VirtualDataLoader(this, this._dataOptions);
   }
-  var _proto = VirtualScrollController.prototype;
-  _proto.getItemSizes = function getItemSizes() {
+  getItemSizes() {
     return this._itemSizes;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.option = function option(name, value) {
+  option(name, value) {
     return this.component.option.apply(this.component, arguments);
-  };
-  _proto.isVirtual = function isVirtual() {
+  }
+  isVirtual() {
     return this._isVirtual;
-  };
-  _proto.virtualItemsCount = function virtualItemsCount() {
-    if (_isVirtualMode(this)) {
+  }
+  virtualItemsCount() {
+    if (isVirtualMode(this)) {
       const dataOptions = this._dataOptions;
       const totalItemsCount = dataOptions.totalItemsCount();
       if (this.option(LEGACY_SCROLLING_MODE) === false && totalItemsCount !== -1) {
@@ -145,9 +140,8 @@ let VirtualScrollController = exports.VirtualScrollController = /*#__PURE__*/fun
       return this._dataLoader.virtualItemsCount.apply(this._dataLoader, arguments);
     }
     return undefined;
-  };
-  _proto.getScrollingTimeout = function getScrollingTimeout() {
-    var _a;
+  }
+  getScrollingTimeout() {
     const renderAsync = this.option('scrolling.renderAsync');
     let scrollingTimeout = 0;
     if (!(0, _type.isDefined)(renderAsync)) {
@@ -156,11 +150,11 @@ let VirtualScrollController = exports.VirtualScrollController = /*#__PURE__*/fun
         scrollingTimeout = this.option('scrolling.minTimeout') || 0;
       }
     } else if (renderAsync) {
-      scrollingTimeout = (_a = this.option('scrolling.timeout')) !== null && _a !== void 0 ? _a : 0;
+      scrollingTimeout = this.option('scrolling.timeout') ?? 0;
     }
     return scrollingTimeout;
-  };
-  _proto.setViewportPosition = function setViewportPosition(position) {
+  }
+  setViewportPosition(position) {
     // @ts-expect-error
     const result = new _deferred.Deferred();
     const scrollingTimeout = this.getScrollingTimeout();
@@ -175,12 +169,12 @@ let VirtualScrollController = exports.VirtualScrollController = /*#__PURE__*/fun
       result.resolve();
     }
     return result.promise();
-  };
-  _proto.getViewportPosition = function getViewportPosition() {
+  }
+  getViewportPosition() {
     return this._position;
-  };
-  _proto.getItemIndexByPosition = function getItemIndexByPosition(position, viewportItemIndex, height) {
-    position = position !== null && position !== void 0 ? position : this._position;
+  }
+  getItemIndexByPosition(position, viewportItemIndex, height) {
+    position = position ?? this._position;
     const defaultItemSize = this.getItemSize();
     let offset = 0;
     let itemOffset = 0;
@@ -205,11 +199,11 @@ let VirtualScrollController = exports.VirtualScrollController = /*#__PURE__*/fun
       itemOffset += offset < position ? 1 : (position - offset + itemSize) / itemSize;
     }
     return Math.round(itemOffset * 50) / 50;
-  };
-  _proto.isScrollingBack = function isScrollingBack() {
+  }
+  isScrollingBack() {
     return this._isScrollingBack;
-  };
-  _proto._setViewportPositionCore = function _setViewportPositionCore(position) {
+  }
+  _setViewportPositionCore(position) {
     const prevPosition = this._position || 0;
     this._position = position;
     if (prevPosition !== this._position) {
@@ -219,8 +213,8 @@ let VirtualScrollController = exports.VirtualScrollController = /*#__PURE__*/fun
     const result = this.setViewportItemIndex(itemIndex);
     this.positionChanged.fire();
     return result;
-  };
-  _proto.setContentItemSizes = function setContentItemSizes(sizes) {
+  }
+  setContentItemSizes(sizes) {
     const virtualItemsCount = this.virtualItemsCount();
     this._contentSize = sizes.reduce((a, b) => a + b, 0);
     if (virtualItemsCount) {
@@ -235,11 +229,11 @@ let VirtualScrollController = exports.VirtualScrollController = /*#__PURE__*/fun
         this._sizeRatio = 1;
       }
     }
-  };
-  _proto.getItemSize = function getItemSize() {
+  }
+  getItemSize() {
     return this._viewportItemSize * this._sizeRatio;
-  };
-  _proto.getItemOffset = function getItemOffset(itemIndex, isEnd) {
+  }
+  getItemOffset(itemIndex, isEnd) {
     const virtualItemsCount = this.virtualItemsCount();
     let itemCount = itemIndex;
     if (!virtualItemsCount) return 0;
@@ -253,80 +247,78 @@ let VirtualScrollController = exports.VirtualScrollController = /*#__PURE__*/fun
       }
     });
     return Math.floor(offset + itemCount * this._viewportItemSize * this._sizeRatio);
-  };
-  _proto.getContentOffset = function getContentOffset(type) {
+  }
+  getContentOffset(type) {
     const isEnd = type === 'end';
     const virtualItemsCount = this.virtualItemsCount();
     if (!virtualItemsCount) return 0;
     return this.getItemOffset(isEnd ? virtualItemsCount.end : virtualItemsCount.begin, isEnd);
-  };
-  _proto.getVirtualContentSize = function getVirtualContentSize() {
+  }
+  getVirtualContentSize() {
     const virtualItemsCount = this.virtualItemsCount();
     return virtualItemsCount ? this.getContentOffset('begin') + this.getContentOffset('end') + this._contentSize : 0;
-  };
-  _proto.getViewportItemIndex = function getViewportItemIndex() {
+  }
+  getViewportItemIndex() {
     return this._viewportItemIndex;
-  };
-  _proto.setViewportItemIndex = function setViewportItemIndex(itemIndex) {
+  }
+  setViewportItemIndex(itemIndex) {
     this._viewportItemIndex = itemIndex;
     if (this.option(LEGACY_SCROLLING_MODE) === false) {
       return;
     }
     // @ts-expect-error
     return this._dataLoader.viewportItemIndexChanged.apply(this._dataLoader, arguments);
-  };
-  _proto.viewportItemSize = function viewportItemSize(size) {
+  }
+  viewportItemSize(size) {
     if (size !== undefined) {
       this._viewportItemSize = size;
     }
     return this._viewportItemSize;
-  };
-  _proto.viewportSize = function viewportSize(size) {
+  }
+  viewportSize(size) {
     if (size !== undefined) {
       this._viewportSize = size;
     }
     return this._viewportSize;
-  };
-  _proto.viewportHeight = function viewportHeight(height, scrollTop) {
-    const position = scrollTop !== null && scrollTop !== void 0 ? scrollTop : this._position;
+  }
+  viewportHeight(height, scrollTop) {
+    const position = scrollTop ?? this._position;
     const begin = this.getItemIndexByPosition(position);
     const end = this.getItemIndexByPosition(position + height, begin, height);
     this.viewportSize(Math.ceil(end - begin));
     if (!(0, _type.isDefined)(scrollTop) && this._viewportItemIndex !== begin) {
       this._setViewportPositionCore(position);
     }
-  };
-  _proto.reset = function reset(isRefresh) {
+  }
+  reset(isRefresh) {
     this._dataLoader.reset();
     if (!isRefresh) {
       this._itemSizes = {};
     }
-  };
-  _proto.subscribeToWindowScrollEvents = function subscribeToWindowScrollEvents($element) {
+  }
+  subscribeToWindowScrollEvents($element) {
     this._windowScroll = this._windowScroll || subscribeToExternalScrollers($element, scrollTop => {
       if (this.viewportItemSize()) {
         this.setViewportPosition(scrollTop);
       }
     });
-  };
-  _proto.dispose = function dispose() {
+  }
+  dispose() {
     clearTimeout(this._scrollTimeoutID);
     this._windowScroll && this._windowScroll.dispose();
     this._windowScroll = null;
-  };
-  _proto.scrollTo = function scrollTo(pos) {
+  }
+  scrollTo(pos) {
     this._windowScroll && this._windowScroll.scrollTo(pos);
-  };
-  _proto.isVirtualMode = function isVirtualMode() {
-    return _isVirtualMode(this);
-  };
-  _proto.isAppendMode = function isAppendMode() {
-    return _isAppendMode(this);
+  }
+  isVirtualMode() {
+    return isVirtualMode(this);
+  }
+  isAppendMode() {
+    return isAppendMode(this);
   }
   // new mode
-  ;
-  _proto.getViewportParams = function getViewportParams() {
-    var _a;
+  getViewportParams() {
     const virtualMode = this.option('scrolling.mode') === SCROLLING_MODE_VIRTUAL;
     const totalItemsCount = this._dataOptions.totalItemsCount();
     const hasKnownLastPage = this._dataOptions.hasKnownLastPage();
@@ -334,7 +326,7 @@ let VirtualScrollController = exports.VirtualScrollController = /*#__PURE__*/fun
     const bottomIndex = this._viewportSize + topIndex;
     const maxGap = this.option('scrolling.prerenderedRowChunkSize') || 1;
     const isScrollingBack = this.isScrollingBack();
-    const minGap = (_a = this.option('scrolling.prerenderedRowCount')) !== null && _a !== void 0 ? _a : 1;
+    const minGap = this.option('scrolling.prerenderedRowCount') ?? 1;
     const topMinGap = isScrollingBack ? minGap : 0;
     const bottomMinGap = isScrollingBack ? 0 : minGap;
     const skip = Math.floor(Math.max(0, topIndex - topMinGap) / maxGap) * maxGap;
@@ -347,8 +339,8 @@ let VirtualScrollController = exports.VirtualScrollController = /*#__PURE__*/fun
       skip,
       take
     };
-  };
-  _proto.itemsCount = function itemsCount() {
+  }
+  itemsCount() {
     let result = 0;
     if (this.option(LEGACY_SCROLLING_MODE)) {
       // @ts-expect-error
@@ -357,39 +349,39 @@ let VirtualScrollController = exports.VirtualScrollController = /*#__PURE__*/fun
       result = this._dataOptions.itemsCount();
     }
     return result;
-  };
-  _proto.pageIndex = function pageIndex() {
+  }
+  pageIndex() {
     return this._dataLoader.pageIndex(...arguments);
-  };
-  _proto.beginPageIndex = function beginPageIndex() {
+  }
+  beginPageIndex() {
     // @ts-expect-error
     return this._dataLoader.beginPageIndex(...arguments);
-  };
-  _proto.endPageIndex = function endPageIndex() {
+  }
+  endPageIndex() {
     // @ts-expect-error
     return this._dataLoader.endPageIndex(...arguments);
-  };
-  _proto.pageSize = function pageSize() {
+  }
+  pageSize() {
     // @ts-expect-error
     return this._dataLoader.pageSize(...arguments);
-  };
-  _proto.load = function load() {
+  }
+  load() {
     // @ts-expect-error
     return this._dataLoader.load(...arguments);
-  };
-  _proto.loadIfNeed = function loadIfNeed() {
+  }
+  loadIfNeed() {
     // @ts-expect-error
     return this._dataLoader.loadIfNeed(...arguments);
-  };
-  _proto.handleDataChanged = function handleDataChanged() {
+  }
+  handleDataChanged() {
     // @ts-expect-error
     return this._dataLoader.handleDataChanged(...arguments);
-  };
-  _proto.getDelayDeferred = function getDelayDeferred() {
+  }
+  getDelayDeferred() {
     return this._dataLoader.getDelayDeferred();
-  };
-  return VirtualScrollController;
-}();
+  }
+}
+exports.VirtualScrollController = VirtualScrollController;
 var _default = exports.default = {
   VirtualScrollController
 };

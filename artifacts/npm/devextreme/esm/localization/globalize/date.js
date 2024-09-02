@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/localization/globalize/date.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,8 +10,8 @@ import './core';
 import './number';
 // eslint-disable-next-line no-restricted-imports, import/no-unresolved
 import 'globalize/date';
-var ACCEPTABLE_JSON_FORMAT_PROPERTIES = ['skeleton', 'date', 'time', 'datetime', 'raw'];
-var RTL_MARKS_REGEX = /[\u200E\u200F]/g;
+const ACCEPTABLE_JSON_FORMAT_PROPERTIES = ['skeleton', 'date', 'time', 'datetime', 'raw'];
+const RTL_MARKS_REGEX = /[\u200E\u200F]/g;
 
 // eslint-disable-next-line no-restricted-imports
 import Globalize from 'globalize';
@@ -22,8 +22,8 @@ if (Globalize && Globalize.formatDate) {
   if (Globalize.locale().locale === 'en') {
     Globalize.locale('en');
   }
-  var formattersCache = {};
-  var FORMATS_TO_GLOBALIZE_MAP = {
+  const formattersCache = {};
+  const FORMATS_TO_GLOBALIZE_MAP = {
     'shortdate': {
       path: 'dateTimeFormats/availableFormats/yMd'
     },
@@ -84,21 +84,21 @@ if (Globalize && Globalize.formatDate) {
       pattern: 'ss'
     }
   };
-  var globalizeDateLocalization = {
-    engine: function engine() {
+  const globalizeDateLocalization = {
+    engine: function () {
       return 'globalize';
     },
-    _getPatternByFormat: function _getPatternByFormat(format) {
-      var that = this;
-      var lowerFormat = format.toLowerCase();
-      var globalizeFormat = FORMATS_TO_GLOBALIZE_MAP[lowerFormat];
+    _getPatternByFormat: function (format) {
+      const that = this;
+      const lowerFormat = format.toLowerCase();
+      const globalizeFormat = FORMATS_TO_GLOBALIZE_MAP[lowerFormat];
       if (lowerFormat === 'datetime-local') {
         return 'yyyy-MM-ddTHH\':\'mm\':\'ss';
       }
       if (!globalizeFormat) {
         return;
       }
-      var result = globalizeFormat.path && that._getFormatStringByPath(globalizeFormat.path) || globalizeFormat.pattern;
+      let result = globalizeFormat.path && that._getFormatStringByPath(globalizeFormat.path) || globalizeFormat.pattern;
       if (globalizeFormat.parts) {
         iteratorUtils.each(globalizeFormat.parts, (index, part) => {
           result = result.replace('{' + index + '}', that._getPatternByFormat(part));
@@ -106,73 +106,73 @@ if (Globalize && Globalize.formatDate) {
       }
       return result;
     },
-    _getFormatStringByPath: function _getFormatStringByPath(path) {
+    _getFormatStringByPath: function (path) {
       return Globalize.locale().main('dates/calendars/gregorian/' + path);
     },
-    getPeriodNames: function getPeriodNames(format, type) {
+    getPeriodNames: function (format, type) {
       format = format || 'wide';
       type = type === 'format' ? type : 'stand-alone';
-      var json = Globalize.locale().main("dates/calendars/gregorian/dayPeriods/".concat(type, "/").concat(format));
+      const json = Globalize.locale().main(`dates/calendars/gregorian/dayPeriods/${type}/${format}`);
       return [json['am'], json['pm']];
     },
-    getMonthNames: function getMonthNames(format, type) {
-      var months = Globalize.locale().main('dates/calendars/gregorian/months/' + (type === 'format' ? type : 'stand-alone') + '/' + (format || 'wide'));
+    getMonthNames: function (format, type) {
+      const months = Globalize.locale().main('dates/calendars/gregorian/months/' + (type === 'format' ? type : 'stand-alone') + '/' + (format || 'wide'));
       return iteratorUtils.map(months, month => {
         return month;
       });
     },
-    getDayNames: function getDayNames(format) {
-      var days = Globalize.locale().main('dates/calendars/gregorian/days/stand-alone/' + (format || 'wide'));
+    getDayNames: function (format) {
+      const days = Globalize.locale().main('dates/calendars/gregorian/days/stand-alone/' + (format || 'wide'));
       return iteratorUtils.map(days, day => {
         return day;
       });
     },
-    getTimeSeparator: function getTimeSeparator() {
+    getTimeSeparator: function () {
       return Globalize.locale().main('numbers/symbols-numberSystem-latn/timeSeparator');
     },
     removeRtlMarks(text) {
       return text.replace(RTL_MARKS_REGEX, '');
     },
-    format: function format(date, _format) {
+    format: function (date, format) {
       if (!date) {
         return;
       }
-      if (!_format) {
+      if (!format) {
         return date;
       }
-      var formatter;
-      var formatCacheKey;
-      if (typeof _format === 'function') {
-        return _format(date);
+      let formatter;
+      let formatCacheKey;
+      if (typeof format === 'function') {
+        return format(date);
       }
-      if (_format.formatter) {
-        return _format.formatter(date);
+      if (format.formatter) {
+        return format.formatter(date);
       }
-      _format = _format.type || _format;
-      if (typeof _format === 'string') {
-        formatCacheKey = Globalize.locale().locale + ':' + _format;
+      format = format.type || format;
+      if (typeof format === 'string') {
+        formatCacheKey = Globalize.locale().locale + ':' + format;
         formatter = formattersCache[formatCacheKey];
         if (!formatter) {
-          _format = {
-            raw: this._getPatternByFormat(_format) || _format
+          format = {
+            raw: this._getPatternByFormat(format) || format
           };
-          formatter = formattersCache[formatCacheKey] = Globalize.dateFormatter(_format);
+          formatter = formattersCache[formatCacheKey] = Globalize.dateFormatter(format);
         }
       } else {
-        if (!this._isAcceptableFormat(_format)) {
+        if (!this._isAcceptableFormat(format)) {
           return;
         }
-        formatter = Globalize.dateFormatter(_format);
+        formatter = Globalize.dateFormatter(format);
       }
       return this.removeRtlMarks(formatter(date));
     },
-    parse: function parse(text, format) {
+    parse: function (text, format) {
       if (!text) {
         return;
       }
       if (!format || typeof format === 'function' || isObject(format) && !this._isAcceptableFormat(format)) {
         if (format) {
-          var parsedValue = this.callBase(text, format);
+          const parsedValue = this.callBase(text, format);
           if (parsedValue) {
             return parsedValue;
           }
@@ -187,25 +187,25 @@ if (Globalize && Globalize.formatDate) {
           raw: this._getPatternByFormat(format) || format
         };
       }
-      var parsedDate = Globalize.parseDate(text, format);
+      const parsedDate = Globalize.parseDate(text, format);
       return parsedDate ? parsedDate : this.callBase(text, format);
     },
-    _isAcceptableFormat: function _isAcceptableFormat(format) {
+    _isAcceptableFormat: function (format) {
       if (format.parser) {
         return true;
       }
-      for (var i = 0; i < ACCEPTABLE_JSON_FORMAT_PROPERTIES.length; i++) {
+      for (let i = 0; i < ACCEPTABLE_JSON_FORMAT_PROPERTIES.length; i++) {
         if (Object.prototype.hasOwnProperty.call(format, ACCEPTABLE_JSON_FORMAT_PROPERTIES[i])) {
           return true;
         }
       }
     },
-    firstDayOfWeekIndex: function firstDayOfWeekIndex() {
-      var firstDay = Globalize.locale().supplemental.weekData.firstDay();
+    firstDayOfWeekIndex: function () {
+      const firstDay = Globalize.locale().supplemental.weekData.firstDay();
       return this._getDayKeys().indexOf(firstDay);
     },
-    _getDayKeys: function _getDayKeys() {
-      var days = Globalize.locale().main('dates/calendars/gregorian/days/format/short');
+    _getDayKeys: function () {
+      const days = Globalize.locale().main('dates/calendars/gregorian/days/format/short');
       return iteratorUtils.map(days, (day, key) => {
         return key;
       });

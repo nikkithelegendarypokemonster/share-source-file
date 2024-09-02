@@ -1,6 +1,6 @@
 import { patchFontOptions as _patchFontOptions } from '../core/utils';
 export function buildRectAppearance(option) {
-  var border = option.border || {};
+  const border = option.border || {};
   return {
     fill: option.color,
     opacity: option.opacity,

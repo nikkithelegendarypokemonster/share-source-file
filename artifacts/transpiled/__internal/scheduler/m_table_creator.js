@@ -12,13 +12,12 @@ var _type = require("../../core/utils/type");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const ROW_SELECTOR = 'tr';
-let SchedulerTableCreator = /*#__PURE__*/function () {
-  function SchedulerTableCreator() {
+class SchedulerTableCreator {
+  constructor() {
     this.VERTICAL = 'vertical';
     this.HORIZONTAL = 'horizontal';
   }
-  var _proto = SchedulerTableCreator.prototype;
-  _proto.insertAllDayRow = function insertAllDayRow(allDayElements, tableBody, index) {
+  insertAllDayRow(allDayElements, tableBody, index) {
     if (allDayElements[index]) {
       let row = allDayElements[index].find(ROW_SELECTOR);
       if (!row.length) {
@@ -27,9 +26,8 @@ let SchedulerTableCreator = /*#__PURE__*/function () {
       }
       tableBody.appendChild(row.get ? row.get(0) : row);
     }
-  };
-  _proto.makeTable = function makeTable(options) {
-    var _a;
+  }
+  makeTable(options) {
     const tableBody = _dom_adapter.default.createElement('tbody');
     const templateCallbacks = [];
     let row;
@@ -57,6 +55,7 @@ let SchedulerTableCreator = /*#__PURE__*/function () {
         row.className = options.rowClass;
       }
       for (let columnIndex = 0; columnIndex < options.cellCount; columnIndex++) {
+        var _options$setAdditiona;
         const td = _dom_adapter.default.createElement('td');
         row.appendChild(td);
         if (options.cellClass) {
@@ -75,7 +74,7 @@ let SchedulerTableCreator = /*#__PURE__*/function () {
           dataValue = cellDataObject.value;
           dataKey && (0, _element_data.data)(td, dataKey, dataValue);
         }
-        (_a = options.setAdditionalClasses) === null || _a === void 0 ? void 0 : _a.call(options, (0, _renderer.default)(td), dataValue);
+        (_options$setAdditiona = options.setAdditionalClasses) === null || _options$setAdditiona === void 0 || _options$setAdditiona.call(options, (0, _renderer.default)(td), dataValue);
         if (options.cellTemplate && options.cellTemplate.render) {
           const additionalTemplateData = options.getTemplateData ? options.getTemplateData(rowIndex) : {};
           const templateOptions = {
@@ -111,8 +110,8 @@ let SchedulerTableCreator = /*#__PURE__*/function () {
       }
     }
     return templateCallbacks;
-  };
-  _proto.makeGroupedTable = function makeGroupedTable(type, groups, cssClasses, cellCount, cellTemplate, rowCount, groupByDate) {
+  }
+  makeGroupedTable(type, groups, cssClasses, cellCount, cellTemplate, rowCount, groupByDate) {
     let rows = [];
     if (type === this.VERTICAL) {
       rows = this._makeVerticalGroupedRows(groups, cssClasses, cellTemplate, rowCount);
@@ -120,8 +119,8 @@ let SchedulerTableCreator = /*#__PURE__*/function () {
       rows = this._makeHorizontalGroupedRows(groups, cssClasses, cellCount, cellTemplate, groupByDate);
     }
     return rows;
-  };
-  _proto.makeGroupedTableFromJSON = function makeGroupedTableFromJSON(type, data, config) {
+  }
+  makeGroupedTableFromJSON(type, data, config) {
     let table;
     const cellStorage = [];
     let rowIndex = 0;
@@ -213,8 +212,8 @@ let SchedulerTableCreator = /*#__PURE__*/function () {
     generateCells(data);
     putCellsToRows();
     return table;
-  };
-  _proto._makeFlexGroupedRowCells = function _makeFlexGroupedRowCells(group, repeatCount, cssClasses, cellTemplate) {
+  }
+  _makeFlexGroupedRowCells(group, repeatCount, cssClasses, cellTemplate) {
     let repeatByDate = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
     const cells = [];
     const {
@@ -247,8 +246,7 @@ let SchedulerTableCreator = /*#__PURE__*/function () {
     return cells;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._makeVerticalGroupedRows = function _makeVerticalGroupedRows(groups, cssClasses, cellTemplate, rowCount) {
+  _makeVerticalGroupedRows(groups, cssClasses, cellTemplate, rowCount) {
     const cellTemplates = [];
     let repeatCount = 1;
     const cellsArray = [];
@@ -281,8 +279,8 @@ let SchedulerTableCreator = /*#__PURE__*/function () {
       elements: (0, _renderer.default)('<div>').addClass('dx-scheduler-group-flex-container').append(rows),
       cellTemplates
     };
-  };
-  _proto._makeHorizontalGroupedRows = function _makeHorizontalGroupedRows(groups, cssClasses, cellCount, cellTemplate, groupByDate) {
+  }
+  _makeHorizontalGroupedRows(groups, cssClasses, cellCount, cellTemplate, groupByDate) {
     let repeatCount = 1;
     const groupCount = groups.length;
     const rows = [];
@@ -317,8 +315,8 @@ let SchedulerTableCreator = /*#__PURE__*/function () {
       elements: rows,
       cellTemplates
     };
-  };
-  _proto._makeGroupedRowCells = function _makeGroupedRowCells(group, repeatCount, cssClasses, cellTemplate, repeatByDate) {
+  }
+  _makeGroupedRowCells(group, repeatCount, cssClasses, cellTemplate, repeatByDate) {
     repeatByDate = repeatByDate || 1;
     repeatCount *= repeatByDate;
     const cells = [];
@@ -356,9 +354,8 @@ let SchedulerTableCreator = /*#__PURE__*/function () {
       }
     }
     return cells;
-  };
-  return SchedulerTableCreator;
-}();
+  }
+}
 var _default = exports.default = {
   tableCreator: new SchedulerTableCreator()
 };

@@ -8,11 +8,11 @@ import Guid from '../../core/guid';
 // eslint-disable-next-line no-restricted-imports
 import ko from 'knockout';
 if (ko) {
-  var VALIDATION_STATUS_VALID = 'valid';
-  var VALIDATION_STATUS_PENDING = 'pending';
-  var koDxValidator = Class.inherit({
+  const VALIDATION_STATUS_VALID = 'valid';
+  const VALIDATION_STATUS_PENDING = 'pending';
+  const koDxValidator = Class.inherit({
     ctor(target, _ref) {
-      var {
+      let {
         name,
         validationRules
       } = _ref;
@@ -36,12 +36,12 @@ if (ko) {
     },
     _updateValidationResult(result) {
       if (!this._validationInfo.result || this._validationInfo.result.id !== result.id) {
-        var complete = this._validationInfo.deferred && this._validationInfo.result.complete;
+        const complete = this._validationInfo.deferred && this._validationInfo.result.complete;
         this._validationInfo.result = extend({}, result, {
           complete
         });
       } else {
-        for (var prop in result) {
+        for (const prop in result) {
           if (prop !== 'id' && prop !== 'complete') {
             this._validationInfo.result[prop] = result[prop];
           }
@@ -49,12 +49,12 @@ if (ko) {
       }
     },
     validate() {
-      var currentResult = this._validationInfo && this._validationInfo.result;
-      var value = this.target();
+      const currentResult = this._validationInfo && this._validationInfo.result;
+      const value = this.target();
       if (currentResult && currentResult.status === VALIDATION_STATUS_PENDING && currentResult.value === value) {
         return extend({}, currentResult);
       }
-      var result = ValidationEngine.validate(value, this.validationRules, this.name);
+      const result = ValidationEngine.validate(value, this.validationRules, this.name);
       result.id = new Guid().toString();
       this._applyValidationResult(result);
       result.complete && result.complete.then(res => {
@@ -66,7 +66,7 @@ if (ko) {
     },
     reset() {
       this.target(null);
-      var result = {
+      const result = {
         id: null,
         isValid: true,
         brokenRule: null,

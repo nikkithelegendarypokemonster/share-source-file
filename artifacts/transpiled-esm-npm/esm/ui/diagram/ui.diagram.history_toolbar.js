@@ -5,7 +5,7 @@ class DiagramHistoryToolbar extends DiagramToolbar {
     return DiagramCommandsManager.getHistoryToolbarCommands(this.option('commands'), this._getExcludeCommands());
   }
   _getExcludeCommands() {
-    var commands = [].concat(this.option('excludeCommands'));
+    const commands = [].concat(this.option('excludeCommands'));
     if (!this.option('isMobileView')) {
       commands.push(DiagramCommandsManager.SHOW_TOOLBOX_COMMAND_NAME);
     }

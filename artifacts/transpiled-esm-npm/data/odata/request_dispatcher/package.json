@@ -1,7 +1,5 @@
 {
-  "sideEffects": [
-    "../../../esm/data/odata/query_adapter.js"
-  ],
+  "sideEffects": false,
   "main": "../../../cjs/data/odata/request_dispatcher.js",
   "module": "../../../esm/data/odata/request_dispatcher.js"
 }

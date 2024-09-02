@@ -3,9 +3,9 @@ import Node from './node';
 import { expand } from '../core/helpers';
 import { buildRectAppearance } from './common';
 import { parseScalar as _parseScalar } from '../core/utils';
-var proto = TreeMapBase.prototype;
-var nodeProto = Node.prototype;
-var STATE_CODE = 1;
+const proto = TreeMapBase.prototype;
+const nodeProto = Node.prototype;
+const STATE_CODE = 1;
 import './api';
 import './states';
 proto._eventsMap.onHoverChanged = {
@@ -16,8 +16,8 @@ expand(proto._handlers, 'calculateAdditionalStates', function (states, options) 
 });
 TreeMapBase.addChange({
   code: 'HOVER_ENABLED',
-  handler: function handler() {
-    var hoverEnabled = _parseScalar(this._getOption('hoverEnabled', true), true);
+  handler: function () {
+    const hoverEnabled = _parseScalar(this._getOption('hoverEnabled', true), true);
     if (!hoverEnabled) {
       this.clearHover();
     }
@@ -30,7 +30,7 @@ TreeMapBase.addChange({
 nodeProto.statesMap[1] = 1;
 nodeProto.additionalStates.push(1);
 expand(proto, '_extendProxyType', function (proto) {
-  var that = this;
+  const that = this;
   proto.setHover = function () {
     that._hoverNode(this._id);
   };
@@ -42,7 +42,7 @@ expand(proto, '_onNodesCreated', function () {
   this._hoverIndex = -1;
 });
 expand(proto, '_changeGroupSettings', function () {
-  var that = this;
+  const that = this;
   that._groupHoverEnabled = _parseScalar(that._getOption('group').hoverEnabled, true);
   if (!that._groupHoverEnabled) {
     that.clearHover();
@@ -55,17 +55,17 @@ proto._applyHoverState = function (index, state) {
   });
 };
 function setNodeStateRecursive(node, code, state) {
-  var nodes = node.isNode() && node.nodes;
-  var i;
-  var ii = nodes && nodes.length;
+  const nodes = node.isNode() && node.nodes;
+  let i;
+  const ii = nodes && nodes.length;
   node.setState(code, state);
   for (i = 0; i < ii; ++i) {
     setNodeStateRecursive(nodes[i], code, state);
   }
 }
 proto._hoverNode = function (index) {
-  var that = this;
-  var currentIndex = that._hoverIndex;
+  const that = this;
+  const currentIndex = that._hoverIndex;
   if (that._hoverEnabled && currentIndex !== index) {
     if (!that._groupHoverEnabled && index >= 0 && that._nodes[index].isNode()) {
       that.clearHover();

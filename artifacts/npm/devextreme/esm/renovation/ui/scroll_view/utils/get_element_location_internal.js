@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/renovation/ui/scroll_view/utils/get_element_location_internal.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,28 +11,28 @@ import { titleize } from '../../../../core/utils/inflector';
 import { getRelativeOffset } from './get_relative_offset';
 import { DIRECTION_VERTICAL, SCROLLABLE_CONTENT_CLASS } from '../common/consts';
 export function getElementLocationInternal(targetElement, direction, containerElement, scrollOffset, offset) {
-  var additionalOffset = _extends({
+  const additionalOffset = _extends({
     top: 0,
     left: 0,
     right: 0,
     bottom: 0
   }, offset);
-  var isVertical = direction === DIRECTION_VERTICAL;
-  var prop = isVertical ? 'top' : 'left';
-  var inverseProp = isVertical ? 'bottom' : 'right';
-  var dimension = isVertical ? 'height' : 'width';
-  var containerOffsetSize = containerElement["offset".concat(titleize(dimension))];
-  var containerClientSize = containerElement["client".concat(titleize(dimension))];
-  var containerSize = containerElement.getBoundingClientRect()[dimension];
-  var elementSize = targetElement.getBoundingClientRect()[dimension];
-  var scale = 1;
+  const isVertical = direction === DIRECTION_VERTICAL;
+  const prop = isVertical ? 'top' : 'left';
+  const inverseProp = isVertical ? 'bottom' : 'right';
+  const dimension = isVertical ? 'height' : 'width';
+  const containerOffsetSize = containerElement[`offset${titleize(dimension)}`];
+  const containerClientSize = containerElement[`client${titleize(dimension)}`];
+  const containerSize = containerElement.getBoundingClientRect()[dimension];
+  const elementSize = targetElement.getBoundingClientRect()[dimension];
+  let scale = 1;
   if (Math.abs(containerSize - containerOffsetSize) > 1) {
     scale = containerSize / containerOffsetSize;
   }
-  var relativeElementOffset = getRelativeOffset(SCROLLABLE_CONTENT_CLASS, targetElement)[prop] / scale;
-  var containerScrollOffset = scrollOffset[prop];
-  var relativeStartOffset = containerScrollOffset - relativeElementOffset + additionalOffset[prop];
-  var relativeEndOffset = containerScrollOffset - relativeElementOffset - elementSize / scale + containerClientSize - additionalOffset[inverseProp];
+  const relativeElementOffset = getRelativeOffset(SCROLLABLE_CONTENT_CLASS, targetElement)[prop] / scale;
+  const containerScrollOffset = scrollOffset[prop];
+  const relativeStartOffset = containerScrollOffset - relativeElementOffset + additionalOffset[prop];
+  const relativeEndOffset = containerScrollOffset - relativeElementOffset - elementSize / scale + containerClientSize - additionalOffset[inverseProp];
   if (relativeStartOffset <= 0 && relativeEndOffset >= 0) {
     return containerScrollOffset;
   }

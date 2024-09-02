@@ -11,14 +11,14 @@ function wrapSource(source) {
   var buffer = wrapBuffer(source);
   var position = 0;
   var stream = {
-    pos: function pos() {
+    pos: function () {
       return position;
     },
-    skip: function skip(count) {
+    skip: function (count) {
       position += count;
       return stream;
     },
-    ui8arr: function ui8arr(length) {
+    ui8arr: function (length) {
       var i = 0;
       var list = [];
       list.length = length;
@@ -27,71 +27,31 @@ function wrapSource(source) {
       }
       return list;
     },
-    ui8: function (_ui) {
-      function ui8() {
-        return _ui.apply(this, arguments);
-      }
-      ui8.toString = function () {
-        return _ui.toString();
-      };
-      return ui8;
-    }(function () {
+    ui8: function () {
       var val = ui8(buffer, position);
       position += 1;
       return val;
-    }),
-    ui16LE: function (_ui16LE) {
-      function ui16LE() {
-        return _ui16LE.apply(this, arguments);
-      }
-      ui16LE.toString = function () {
-        return _ui16LE.toString();
-      };
-      return ui16LE;
-    }(function () {
+    },
+    ui16LE: function () {
       var val = ui16LE(buffer, position);
       position += 2;
       return val;
-    }),
-    ui32LE: function (_ui32LE) {
-      function ui32LE() {
-        return _ui32LE.apply(this, arguments);
-      }
-      ui32LE.toString = function () {
-        return _ui32LE.toString();
-      };
-      return ui32LE;
-    }(function () {
+    },
+    ui32LE: function () {
       var val = ui32LE(buffer, position);
       position += 4;
       return val;
-    }),
-    ui32BE: function (_ui32BE) {
-      function ui32BE() {
-        return _ui32BE.apply(this, arguments);
-      }
-      ui32BE.toString = function () {
-        return _ui32BE.toString();
-      };
-      return ui32BE;
-    }(function () {
+    },
+    ui32BE: function () {
       var val = ui32BE(buffer, position);
       position += 4;
       return val;
-    }),
-    f64LE: function (_f64LE) {
-      function f64LE() {
-        return _f64LE.apply(this, arguments);
-      }
-      f64LE.toString = function () {
-        return _f64LE.toString();
-      };
-      return f64LE;
-    }(function () {
+    },
+    f64LE: function () {
       var val = f64LE(buffer, position);
       position += 8;
       return val;
-    })
+    }
   };
   return stream;
 }

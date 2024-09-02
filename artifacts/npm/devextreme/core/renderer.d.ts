@@ -1,7 +1,7 @@
 /**
 * DevExtreme (core/renderer.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,9 +11,6 @@ interface Coordinates {
     top: number;
 }
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export interface dxElementWrapper {
 
   add(selector: string): this;
@@ -26,7 +23,7 @@ export interface dxElementWrapper {
 
   appendTo(element: Element | dxElementWrapper): this;
 
-  attr(attributeName: string, value: string | number | null): this;
+  attr(attributeName: string, value: string | number | boolean | null): this;
 
   attr(attributeName: string): string | undefined;
 
@@ -72,11 +69,11 @@ export interface dxElementWrapper {
 
   insertBefore(element: Element | dxElementWrapper): this;
 
-  is(selector: string): boolean;
+  is(selector: string | dxElementWrapper): boolean;
 
   last(): this;
 
-  next(selector: string): this;
+  next(selector?: string): this;
 
   not(selector: string): this;
 
@@ -98,7 +95,7 @@ export interface dxElementWrapper {
 
   prop(propertyName: string, value: string | number | boolean): this;
 
-  remove(element: Element | dxElementWrapper): this;
+  remove(element?: Element | dxElementWrapper): this;
 
   removeAttr(attributeName: string): this;
 
@@ -138,9 +135,6 @@ export interface dxElementWrapper {
   length: number;
 }
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 declare function renderer(selector: string | Element | dxElementWrapper): dxElementWrapper;
 
 export default renderer;

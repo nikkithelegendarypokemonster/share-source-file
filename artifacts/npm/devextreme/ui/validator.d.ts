@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/validator.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -30,12 +30,16 @@ export {
     ValidationStatus,
 };
 
+/** @public */
 export type DisposingEvent = EventInfo<dxValidator>;
 
+/** @public */
 export type InitializedEvent = InitializedEventInfo<dxValidator>;
 
+/** @public */
 export type OptionChangedEvent = EventInfo<dxValidator> & ChangedOptionInfo;
 
+/** @public */
 export type ValidatedEvent = {
     name?: string;
     isValid?: boolean;
@@ -47,121 +51,158 @@ export type ValidatedEvent = {
 };
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxValidatorOptions extends DOMComponentOptions<dxValidator> {
     /**
-     * An object that specifies what and when to validate, and how to apply the validation result.
+     * @docid
+     * @public
      */
     adapter?: {
       /**
-       * A function that the Validator UI component calls after validating a specified value.
+       * @docid
        */
       applyValidationResults?: Function;
       /**
-       * A function that returns a Boolean value specifying whether or not to bypass validation.
+       * @docid
        */
       bypass?: Function;
       /**
-       * A function that sets focus to a validated editor when the corresponding ValidationSummary item is focused.
+       * @docid
        */
       focus?: Function;
       /**
-       * A function that returns the value to be validated.
+       * @docid
        */
       getValue?: Function;
       /**
-       * A function that resets the validated values.
+       * @docid
        */
       reset?: Function;
       /**
-       * Callbacks to be executed on the value validation.
+       * @docid
        */
       validationRequestsCallbacks?: Array<Function>;
     };
     /**
-     * Specifies the editor name to be used in the validation default messages.
+     * @docid
+     * @public
      */
     name?: string;
     /**
-     * A function that is executed after a value is validated.
+     * @docid
+     * @type_function_param1 validatedInfo:Object
+     * @type_function_param1_field value:Object
+     * @type_function_param1_field validationRules:Array<RequiredRule,NumericRule,RangeRule,StringLengthRule,CustomRule,CompareRule,PatternRule,EmailRule,AsyncRule>
+     * @type_function_param1_field brokenRule:RequiredRule|NumericRule|RangeRule|StringLengthRule|CustomRule|CompareRule|PatternRule|EmailRule|AsyncRule
+     * @type_function_param1_field brokenRules:Array<RequiredRule,NumericRule,RangeRule,StringLengthRule,CustomRule,CompareRule,PatternRule,EmailRule,AsyncRule>
+     * @type_function_param1_field status:Enums.ValidationStatus
+     * @action
+     * @public
      */
     onValidated?: ((validatedInfo: ValidatedEvent) => void);
     /**
-     * Specifies the validation group the editor will be related to.
+     * @docid
+     * @ref
+     * @public
      */
     validationGroup?: string;
     /**
-     * An array of validation rules to be checked for the editor with which the dxValidator object is associated.
+     * @docid
+     * @type Array<RequiredRule,NumericRule,RangeRule,StringLengthRule,CustomRule,CompareRule,PatternRule,EmailRule,AsyncRule>
+     * @public
      */
     validationRules?: Array<ValidationRule>;
 }
 /**
- * A UI component that is used to validate the associated DevExtreme editors against the defined validation rules.
+ * @docid
+ * @inherits DOMComponent
+ * @extension
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxValidator extends DOMComponent<dxValidatorOptions> {
     /**
-     * Sets focus to the editor associated with the current Validator object.
+     * @docid
+     * @publicName focus()
+     * @public
      */
     focus(): void;
     /**
-     * Resets the value and validation result of the editor associated with the current Validator object.
+     * @docid
+     * @publicName reset()
+     * @public
      */
     reset(): void;
     /**
-     * Validates the value of the editor that is controlled by the current Validator object against the list of the specified validation rules.
+     * @docid
+     * @publicName validate()
+     * @public
+     * @return dxValidatorResult
      */
     validate(): ValidationResult;
 }
 
+/** @public */
 export type ValidationResult = dxValidatorResult;
 
 /**
- * A validation result.
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
+ * @deprecated {ui/validator.ValidationResult}
  */
 export interface dxValidatorResult {
     /**
-     * A rule that failed to pass the check. Contains the first item from the brokenRules array.
+     * @docid
+     * @type RequiredRule | NumericRule | RangeRule | StringLengthRule | CustomRule | CompareRule | PatternRule | EmailRule | AsyncRule
+     * @public
      */
     brokenRule?: ValidationRule;
     /**
-     * An array of the validationRules that failed to pass the check.
+     * @docid
+     * @type Array<RequiredRule,NumericRule,RangeRule,StringLengthRule,CustomRule,CompareRule,PatternRule,EmailRule,AsyncRule>
+     * @public
      */
     brokenRules?: Array<ValidationRule>;
     /**
-     * A promise that is fulfilled when all async rules are validated.
+     * @docid
+     * @type Promise<dxValidatorResult>
+     * @public
      */
     complete?: DxPromise<dxValidatorResult>;
     /**
-     * Indicates whether all the checked rules are satisfied.
+     * @docid
+     * @public
      */
     isValid?: boolean;
     /**
-     * An array of async rules whose promises are not fulfilled or rejected. Contains items only when the status is &apos;pending&apos;.
+     * @docid
+     * @public
      */
     pendingRules?: Array<AsyncRule>;
     /**
-     * Indicates the validation status.
+     * @docid
+     * @public
      */
     status?: ValidationStatus;
     /**
-     * Validation rules specified for the Validator.
+     * @docid
+     * @type Array<RequiredRule,NumericRule,RangeRule,StringLengthRule,CustomRule,CompareRule,PatternRule,EmailRule,AsyncRule>
+     * @public
      */
     validationRules?: Array<ValidationRule>;
     /**
-     * The value being validated.
+     * @docid
+     * @public
      */
     value?: any;
 }
 
+/** @public */
 export type Properties = dxValidatorOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxValidatorOptions;

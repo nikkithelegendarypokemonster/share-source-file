@@ -9,8 +9,9 @@ var _deferred = require("../../../../core/utils/deferred");
 var _extend = require("../../../../core/utils/extend");
 var _type = require("../../../../core/utils/type");
 var _m_state_storing_core = require("./m_state_storing_core");
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */ // @ts-expect-error
+/* eslint-disable max-classes-per-file */
+// @ts-expect-error
+
 const getDataState = that => {
   // TODO getView
   const pagerView = that.getView('pagerView');
@@ -78,14 +79,9 @@ const getFilterValue = (that, state) => {
   }
   return DEFAULT_FILTER_VALUE;
 };
-const rowsView = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(StateStoringRowsViewExtender, _Base);
-  function StateStoringRowsViewExtender() {
-    return _Base.apply(this, arguments) || this;
-  }
-  var _proto = StateStoringRowsViewExtender.prototype;
-  _proto.init = function init() {
-    _Base.prototype.init.call(this);
+const rowsView = Base => class StateStoringRowsViewExtender extends Base {
+  init() {
+    super.init();
     // @ts-expect-error
     this._dataController.stateLoaded.add(() => {
       if (this._dataController.isLoaded() && !this._dataController.getDataSource()) {
@@ -97,34 +93,28 @@ const rowsView = Base => /*#__PURE__*/function (_Base) {
         this.component._fireContentReadyAction();
       }
     });
-  };
-  return StateStoringRowsViewExtender;
-}(Base);
-const stateStoring = Base => /*#__PURE__*/function (_Base2) {
-  _inheritsLoose(StateStoringExtender, _Base2);
-  function StateStoringExtender() {
-    return _Base2.apply(this, arguments) || this;
   }
-  var _proto2 = StateStoringExtender.prototype;
-  _proto2.init = function init() {
+};
+const stateStoring = Base => class StateStoringExtender extends Base {
+  init() {
     // @ts-expect-error
-    _Base2.prototype.init.apply(this, arguments);
+    super.init.apply(this, arguments);
     processLoadState(this);
     return this;
-  };
-  _proto2.isLoading = function isLoading() {
+  }
+  isLoading() {
     // @ts-expect-error
-    return _Base2.prototype.isLoading.call(this) || this._dataController.isStateLoading();
-  };
-  _proto2.state = function state(_state) {
+    return super.isLoading() || this.getDataController().isStateLoading();
+  }
+  state(state) {
     // @ts-expect-error
-    const result = _Base2.prototype.state.apply(this, arguments);
-    if (_state !== undefined) {
-      this.applyState((0, _extend.extend)(true, {}, _state));
+    const result = super.state.apply(this, arguments);
+    if (state !== undefined) {
+      this.applyState((0, _extend.extend)(true, {}, state));
     }
     return result;
-  };
-  _proto2.updateState = function updateState(state) {
+  }
+  updateState(state) {
     if (this.isEnabled()) {
       const oldState = this.state();
       const newState = (0, _extend.extend)({}, oldState, state);
@@ -141,9 +131,9 @@ const stateStoring = Base => /*#__PURE__*/function (_Base2) {
   }
   /**
    * @extended: TreeList's state_storing
-   */;
-  _proto2.applyState = function applyState(state) {
-    var _a;
+   */
+  applyState(state) {
+    var _this$getView;
     const {
       allowedPageSizes
     } = state;
@@ -160,13 +150,13 @@ const stateStoring = Base => /*#__PURE__*/function (_Base2) {
     const isVirtualScrollingMode = scrollingMode === 'virtual' || scrollingMode === 'infinite';
     const showPageSizeSelector = this.option('pager.visible') === true && this.option('pager.showPageSizeSelector');
     // TODO getView
-    const hasHeight = (_a = this.getView('rowsView')) === null || _a === void 0 ? void 0 : _a.hasHeight();
+    const hasHeight = (_this$getView = this.getView('rowsView')) === null || _this$getView === void 0 ? void 0 : _this$getView.hasHeight();
     this.component.beginUpdate();
-    if (this._columnsController) {
-      this._columnsController.setUserState(state.columns);
+    if (this.getColumnsController()) {
+      this.getColumnsController().setUserState(state.columns);
     }
-    if (this._exportController) {
-      this._exportController.selectionOnly(state.exportSelectionOnly);
+    if (this.getExportController()) {
+      this.getExportController().selectionOnly(state.exportSelectionOnly);
     }
     if (!this.option('selection.deferred')) {
       this.option('selectedRowKeys', selectedRowKeys || []);
@@ -186,37 +176,25 @@ const stateStoring = Base => /*#__PURE__*/function (_Base2) {
     this.option('filterPanel.filterEnabled', state.filterPanel ? state.filterPanel.filterEnabled : true);
     this.option('paging.pageIndex', (!isVirtualScrollingMode || hasHeight) && state.pageIndex || 0);
     this.option('paging.pageSize', (!isVirtualScrollingMode || showPageSizeSelector) && (0, _type.isDefined)(state.pageSize) ? state.pageSize : this._initialPageSize);
-    this._dataController && this._dataController.reset();
-  };
-  return StateStoringExtender;
-}(Base);
-const columns = Base => /*#__PURE__*/function (_Base3) {
-  _inheritsLoose(StateStoringColumnsExtender, _Base3);
-  function StateStoringColumnsExtender() {
-    return _Base3.apply(this, arguments) || this;
+    this.getDataController() && this.getDataController().reset();
   }
-  var _proto3 = StateStoringColumnsExtender.prototype;
-  _proto3._shouldReturnVisibleColumns = function _shouldReturnVisibleColumns() {
+};
+const columns = Base => class StateStoringColumnsExtender extends Base {
+  _shouldReturnVisibleColumns() {
     // @ts-expect-error
-    const result = _Base3.prototype._shouldReturnVisibleColumns.apply(this, arguments);
+    const result = super._shouldReturnVisibleColumns.apply(this, arguments);
     return result && (!this._stateStoringController.isEnabled() || this._stateStoringController.isLoaded());
-  };
-  return StateStoringColumnsExtender;
-}(Base);
-const data = Base => /*#__PURE__*/function (_Base4) {
-  _inheritsLoose(StateStoringDataExtender, _Base4);
-  function StateStoringDataExtender() {
-    return _Base4.apply(this, arguments) || this;
   }
-  var _proto4 = StateStoringDataExtender.prototype;
-  _proto4.dispose = function dispose() {
+};
+const data = Base => class StateStoringDataExtender extends Base {
+  dispose() {
     clearTimeout(this._restoreStateTimeoutID);
-    _Base4.prototype.dispose.call(this);
-  };
-  _proto4.callbackNames = function callbackNames() {
-    return _Base4.prototype.callbackNames.call(this).concat(['stateLoaded']);
-  };
-  _proto4._refreshDataSource = function _refreshDataSource() {
+    super.dispose();
+  }
+  callbackNames() {
+    return super.callbackNames().concat(['stateLoaded']);
+  }
+  _refreshDataSource() {
     if (this._stateStoringController.isEnabled() && !this._stateStoringController.isLoaded()) {
       clearTimeout(this._restoreStateTimeoutID);
       // @ts-expect-error
@@ -225,7 +203,7 @@ const data = Base => /*#__PURE__*/function (_Base4) {
         this._stateStoringController.load().always(() => {
           this._restoreStateTimeoutID = null;
         }).done(() => {
-          _Base4.prototype._refreshDataSource.call(this);
+          super._refreshDataSource();
           // @ts-expect-error
           this.stateLoaded.fire();
           deferred.resolve();
@@ -239,37 +217,30 @@ const data = Base => /*#__PURE__*/function (_Base4) {
       return deferred.promise();
     }
     if (!this.isStateLoading()) {
-      _Base4.prototype._refreshDataSource.call(this);
+      super._refreshDataSource();
     }
-  };
-  _proto4.isLoading = function isLoading() {
-    return _Base4.prototype.isLoading.call(this) || this._stateStoringController.isLoading();
-  };
-  _proto4.isStateLoading = function isStateLoading() {
-    return (0, _type.isDefined)(this._restoreStateTimeoutID);
-  };
-  _proto4.isLoaded = function isLoaded() {
-    return _Base4.prototype.isLoaded.call(this) && !this.isStateLoading();
-  };
-  return StateStoringDataExtender;
-}(Base);
-const selection = Base => /*#__PURE__*/function (_Base5) {
-  _inheritsLoose(StateStoringSelectionExtender, _Base5);
-  function StateStoringSelectionExtender() {
-    return _Base5.apply(this, arguments) || this;
   }
-  var _proto5 = StateStoringSelectionExtender.prototype;
+  isLoading() {
+    return super.isLoading() || this._stateStoringController.isLoading();
+  }
+  isStateLoading() {
+    return (0, _type.isDefined)(this._restoreStateTimeoutID);
+  }
+  isLoaded() {
+    return super.isLoaded() && !this.isStateLoading();
+  }
+};
+const selection = Base => class StateStoringSelectionExtender extends Base {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _proto5._fireSelectionChanged = function _fireSelectionChanged(options) {
+  _fireSelectionChanged(options) {
     const isDeferredSelection = this.option('selection.deferred');
     if (this._stateStoringController.isLoading() && isDeferredSelection) {
       return;
     }
     // @ts-expect-error
-    _Base5.prototype._fireSelectionChanged.apply(this, arguments);
-  };
-  return StateStoringSelectionExtender;
-}(Base);
+    super._fireSelectionChanged.apply(this, arguments);
+  }
+};
 const stateStoringModule = exports.stateStoringModule = {
   defaultOptions() {
     return {

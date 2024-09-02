@@ -32,7 +32,7 @@ class FileManagerEditingControl extends Widget {
       onDialogClosed: this._onDialogClosed.bind(this)
     });
     this._fileUploader = this._createFileUploader();
-    var notificationControl = this.option('notificationControl');
+    const notificationControl = this.option('notificationControl');
     if (notificationControl) {
       this._initNotificationControl(notificationControl);
     }
@@ -42,13 +42,13 @@ class FileManagerEditingControl extends Widget {
     this._notificationControl = notificationControl;
     this._notificationControl.option({
       onOperationCanceled: _ref => {
-        var {
+        let {
           info
         } = _ref;
         return this._onCancelUploadSession(info);
       },
       onOperationItemCanceled: _ref2 => {
-        var {
+        let {
           item,
           itemIndex
         } = _ref2;
@@ -60,7 +60,7 @@ class FileManagerEditingControl extends Widget {
     return FileManagerFileUploader;
   }
   _createFileUploader() {
-    var $fileUploader = $('<div>').appendTo(this.$element());
+    const $fileUploader = $('<div>').appendTo(this.$element());
     return this._createComponent($fileUploader, this._getFileUploaderComponent(), {
       getController: this._getFileUploaderController.bind(this),
       dropZonePlaceholderContainer: this.option('uploadDropZonePlaceholderContainer'),
@@ -76,7 +76,7 @@ class FileManagerEditingControl extends Widget {
     this._fileUploader.option('splitterElement', element);
   }
   _getFileUploaderController() {
-    var uploadDirectory = this.uploadDirectoryInfo.fileItem;
+    const uploadDirectory = this.uploadDirectoryInfo.fileItem;
     return {
       chunkSize: this._controller.getFileUploadChunkSize(),
       uploadFileChunk: (fileData, chunksInfo) => this._controller.uploadFileChunk(fileData, chunksInfo, uploadDirectory),
@@ -160,7 +160,7 @@ class FileManagerEditingControl extends Widget {
     };
   }
   getCommandActions() {
-    var result = {};
+    const result = {};
     each(this._metadataMap, name => {
       if (Object.prototype.hasOwnProperty.call(this._metadataMap, name)) {
         result[name] = arg => this._executeAction(name, arg);
@@ -169,7 +169,7 @@ class FileManagerEditingControl extends Widget {
     return result;
   }
   _executeAction(actionName, arg) {
-    var actionMetadata = this._metadataMap[actionName];
+    const actionMetadata = this._metadataMap[actionName];
     return actionMetadata ? actionMetadata.action(arg) : null;
   }
   _onCancelUploadSession(info) {
@@ -179,38 +179,38 @@ class FileManagerEditingControl extends Widget {
     this._fileUploader.cancelFileUpload(item.info.uploadSessionId, itemIndex);
   }
   _onUploadProgress(_ref3) {
-    var {
+    let {
       sessionId,
       fileIndex,
       commonValue,
       fileValue
     } = _ref3;
-    var {
+    const {
       operationInfo
     } = this._uploadOperationInfoMap[sessionId];
     this._notificationControl.updateOperationItemProgress(operationInfo, fileIndex, fileValue * 100, commonValue * 100);
   }
   _onUploadFinished(_ref4) {
-    var {
+    let {
       sessionId,
       commonValue
     } = _ref4;
-    var {
+    const {
       operationInfo
     } = this._uploadOperationInfoMap[sessionId];
     this._notificationControl.finishOperation(operationInfo, commonValue * 100);
     this._scheduleUploadSessionDisposal(sessionId, 'uploader');
   }
   _onUploadSessionStarted(_ref5) {
-    var {
+    let {
       sessionInfo
     } = _ref5;
     this._controller.processUploadSession(sessionInfo, this.uploadDirectoryInfo);
   }
   _onEditActionStarting(actionInfo) {
-    var actionMetadata = this._metadataMap[actionInfo.name];
-    var context = new FileManagerActionContext(actionMetadata, actionInfo.itemInfos, actionInfo.directory);
-    var operationInfo = this._notificationControl.addOperation(context.processingMessage, actionMetadata.allowCancel, !actionMetadata.allowItemProgress);
+    const actionMetadata = this._metadataMap[actionInfo.name];
+    const context = new FileManagerActionContext(actionMetadata, actionInfo.itemInfos, actionInfo.directory);
+    const operationInfo = this._notificationControl.addOperation(context.processingMessage, actionMetadata.allowCancel, !actionMetadata.allowItemProgress);
     extend(actionInfo.customData, {
       context,
       operationInfo
@@ -218,7 +218,7 @@ class FileManagerEditingControl extends Widget {
     switch (actionInfo.name) {
       case 'upload':
         {
-          var sessionId = actionInfo.customData.sessionInfo.sessionId;
+          const sessionId = actionInfo.customData.sessionInfo.sessionId;
           operationInfo.uploadSessionId = sessionId;
           this._uploadOperationInfoMap[sessionId] = {
             operationInfo
@@ -233,16 +233,16 @@ class FileManagerEditingControl extends Widget {
     }
   }
   _onEditActionResultAcquired(actionInfo) {
-    var {
+    const {
       context,
       operationInfo
     } = actionInfo.customData;
     context.singleRequest = actionInfo.singleRequest;
-    var details = context.itemInfos.map(itemInfo => this._getItemProgressDisplayInfo(itemInfo));
+    const details = context.itemInfos.map(itemInfo => this._getItemProgressDisplayInfo(itemInfo));
     this._notificationControl.addOperationDetails(operationInfo, details, context.actionMetadata.allowCancel);
   }
   _onEditActionError(actionInfo, errorInfo) {
-    var {
+    const {
       context,
       operationInfo
     } = actionInfo.customData;
@@ -251,14 +251,14 @@ class FileManagerEditingControl extends Widget {
     this._completeAction(operationInfo, context);
   }
   _onEditActionItemError(actionInfo, errorInfo) {
-    var {
+    const {
       context,
       operationInfo
     } = actionInfo.customData;
     this._handleActionError(operationInfo, context, errorInfo);
   }
   _onCompleteEditActionItem(actionInfo, info) {
-    var {
+    const {
       context,
       operationInfo
     } = actionInfo.customData;
@@ -268,7 +268,7 @@ class FileManagerEditingControl extends Widget {
     }
   }
   _onCompleteEditAction(actionInfo) {
-    var {
+    const {
       context,
       operationInfo
     } = actionInfo.customData;
@@ -285,22 +285,22 @@ class FileManagerEditingControl extends Widget {
     }
   }
   _tryCreate(parentDirectories) {
-    var parentDirectoryInfo = parentDirectories && parentDirectories[0] || this._getCurrentDirectory();
-    var newDirName = messageLocalization.format('dxFileManager-newDirectoryName');
+    const parentDirectoryInfo = parentDirectories && parentDirectories[0] || this._getCurrentDirectory();
+    const newDirName = messageLocalization.format('dxFileManager-newDirectoryName');
     return this._showDialog(this._dialogManager.getCreateItemDialog(), newDirName).then(_ref6 => {
-      var {
+      let {
         name
       } = _ref6;
       return this._controller.createDirectory(parentDirectoryInfo, name);
     });
   }
   _tryRename(itemInfos) {
-    var itemInfo = itemInfos && itemInfos[0] || this._model.getMultipleSelectedItems()[0];
+    const itemInfo = itemInfos && itemInfos[0] || this._model.getMultipleSelectedItems()[0];
     if (!itemInfo) {
       return new Deferred().reject().promise();
     }
     return this._showDialog(this._dialogManager.getRenameItemDialog(), itemInfo.fileItem.name).then(_ref7 => {
-      var {
+      let {
         name
       } = _ref7;
       return this._controller.renameItem(itemInfo, name);
@@ -311,8 +311,8 @@ class FileManagerEditingControl extends Widget {
     if (itemInfos.length === 0) {
       return new Deferred().reject().promise();
     }
-    var itemName = itemInfos[0].fileItem.name;
-    var itemCount = itemInfos.length;
+    const itemName = itemInfos[0].fileItem.name;
+    const itemCount = itemInfos.length;
     return this._showDialog(this._dialogManager.getDeleteItemDialog(), {
       itemName,
       itemCount
@@ -324,7 +324,7 @@ class FileManagerEditingControl extends Widget {
       return new Deferred().reject().promise();
     }
     return this._showDialog(this._dialogManager.getMoveDialog(itemInfos)).then(_ref8 => {
-      var {
+      let {
         folder
       } = _ref8;
       return this._controller.moveItems(itemInfos, folder);
@@ -336,7 +336,7 @@ class FileManagerEditingControl extends Widget {
       return new Deferred().reject().promise();
     }
     return this._showDialog(this._dialogManager.getCopyDialog(itemInfos)).then(_ref9 => {
-      var {
+      let {
         folder
       } = _ref9;
       return this._controller.copyItems(itemInfos, folder);
@@ -372,26 +372,26 @@ class FileManagerEditingControl extends Widget {
     }
   }
   _handleSingleRequestActionError(operationInfo, context, errorInfo) {
-    var itemInfo = context.getItemForSingleRequestError();
-    var itemName = context.getItemName(errorInfo.errorCode);
-    var errorText = this._getErrorText(errorInfo, itemInfo, itemName);
+    const itemInfo = context.getItemForSingleRequestError();
+    const itemName = context.getItemName(errorInfo.errorCode);
+    const errorText = this._getErrorText(errorInfo, itemInfo, itemName);
     context.processSingleRequestError(errorText);
-    var operationErrorInfo = this._getOperationErrorInfo(context);
+    const operationErrorInfo = this._getOperationErrorInfo(context);
     this._notificationControl.completeSingleOperationWithError(operationInfo, operationErrorInfo);
     if (context.multipleItems) {
       this._raiseOnSuccess(context.onlyFiles);
     }
   }
   _handleMultipleRequestActionError(operationInfo, context, errorInfo) {
-    var itemInfo = context.getItemForMultipleRequestError(errorInfo.index);
-    var itemName = context.getItemName(errorInfo.errorCode, errorInfo.index);
-    var errorText = this._getErrorText(errorInfo, itemInfo, itemName);
+    const itemInfo = context.getItemForMultipleRequestError(errorInfo.index);
+    const itemName = context.getItemName(errorInfo.errorCode, errorInfo.index);
+    const errorText = this._getErrorText(errorInfo, itemInfo, itemName);
     context.processMultipleRequestError(errorInfo.index, errorText);
-    var operationErrorInfo = this._getOperationErrorInfo(context);
+    const operationErrorInfo = this._getOperationErrorInfo(context);
     this._notificationControl.addOperationDetailsError(operationInfo, operationErrorInfo);
   }
   _getOperationErrorInfo(context) {
-    var detailError = context.errorState.currentDetailError;
+    const detailError = context.errorState.currentDetailError;
     return {
       commonErrorText: context.errorState.commonErrorText,
       item: detailError.itemInfo ? this._getItemProgressDisplayInfo(detailError.itemInfo) : null,
@@ -400,8 +400,8 @@ class FileManagerEditingControl extends Widget {
     };
   }
   _getErrorText(errorInfo, itemInfo, itemName) {
-    var errorText = errorInfo.errorText || FileManagerMessages.get(errorInfo.errorCode, itemName);
-    var errorArgs = {
+    const errorText = errorInfo.errorText || FileManagerMessages.get(errorInfo.errorCode, itemName);
+    const errorArgs = {
       fileSystemItem: itemInfo === null || itemInfo === void 0 ? void 0 : itemInfo.fileItem,
       errorCode: errorInfo.errorCode,
       errorText
@@ -421,7 +421,7 @@ class FileManagerEditingControl extends Widget {
     return this._dialogDeferred.promise();
   }
   _onDialogClosed(e) {
-    var result = e.dialogResult;
+    const result = e.dialogResult;
     if (result) {
       this._dialogDeferred.resolve(result);
     } else {
@@ -432,11 +432,11 @@ class FileManagerEditingControl extends Widget {
     this._dialogManager.updateDialogRtl(value);
   }
   _getItemThumbnail(item) {
-    var itemThumbnailGetter = this.option('getItemThumbnail');
+    const itemThumbnailGetter = this.option('getItemThumbnail');
     if (!itemThumbnailGetter) {
       return null;
     }
-    var info = itemThumbnailGetter(item);
+    const info = itemThumbnailGetter(item);
     return info ? info.thumbnail : null;
   }
   _initActions() {
@@ -457,7 +457,7 @@ class FileManagerEditingControl extends Widget {
     });
   }
   _optionChanged(args) {
-    var name = args.name;
+    const name = args.name;
     switch (name) {
       case 'model':
         this.repaint();
@@ -513,7 +513,7 @@ class FileManagerActionContext {
     if (this._singleRequest) {
       this._completedItems = [...this._items];
     } else {
-      var item = this._items[itemIndex];
+      const item = this._items[itemIndex];
       this._completedItems.push(item);
     }
     if (!this._actionMetadata.allowItemProgress) {
@@ -523,14 +523,14 @@ class FileManagerActionContext {
   processSingleRequestError(errorText) {
     this._errorState.failedCount = 1;
     this._errorState.commonErrorText = this._multipleItems ? this._actionMetadata.commonErrorMessage : this._actionMetadata.singleItemErrorMessage;
-    var itemIndex = this._multipleItems ? -1 : 1;
-    var itemInfo = this.getItemForSingleRequestError();
+    const itemIndex = this._multipleItems ? -1 : 1;
+    const itemInfo = this.getItemForSingleRequestError();
     this._setCurrentDetailError(itemIndex, itemInfo, errorText);
   }
   processMultipleRequestError(itemIndex, errorText) {
     this._errorState.failedCount++;
     this._errorState.commonErrorText = this._errorState.failedCount > 1 ? format(this._actionMetadata.multipleItemsErrorMessage, this._errorState.failedCount) : this._actionMetadata.singleItemErrorMessage;
-    var itemInfo = this.getItemForMultipleRequestError(itemIndex);
+    const itemInfo = this.getItemForMultipleRequestError(itemIndex);
     this._setCurrentDetailError(itemIndex, itemInfo, errorText);
   }
   hasModifiedItems() {
@@ -543,8 +543,8 @@ class FileManagerActionContext {
     return this._itemInfos[itemIndex];
   }
   getItemName(errorCode, itemIndex) {
-    var itemInfo = this.singleRequest ? this.getItemForSingleRequestError() : this.getItemForMultipleRequestError(itemIndex);
-    var result = itemInfo === null || itemInfo === void 0 ? void 0 : itemInfo.fileItem.name;
+    const itemInfo = this.singleRequest ? this.getItemForSingleRequestError() : this.getItemForMultipleRequestError(itemIndex);
+    let result = itemInfo === null || itemInfo === void 0 ? void 0 : itemInfo.fileItem.name;
     if (this.itemNewName && this._isItemExistsErrorCode(errorCode)) {
       result = this.itemNewName;
     }

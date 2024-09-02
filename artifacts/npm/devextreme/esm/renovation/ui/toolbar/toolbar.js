@@ -1,24 +1,24 @@
 /**
 * DevExtreme (esm/renovation/ui/toolbar/toolbar.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["accessKey", "activeStateEnabled", "className", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "items", "onClick", "onKeyDown", "rtlEnabled", "tabIndex", "visible", "width"];
+const _excluded = ["accessKey", "activeStateEnabled", "className", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "items", "onClick", "onKeyDown", "rtlEnabled", "tabIndex", "visible", "width"];
 import { createComponentVNode, normalizeProps } from "inferno";
 import { BaseInfernoComponent } from '@devextreme/runtime/inferno';
 import LegacyToolbar from '../../../ui/toolbar';
 import { DomComponentWrapper } from '../common/dom_component_wrapper';
 import { ToolbarProps } from './toolbar_props';
 import { isObject } from '../../../core/utils/type';
-import { ConfigContext } from '../../common/config_context';
-import { resolveRtlEnabled } from '../../utils/resolve_rtl';
-export var viewFunction = _ref => {
-  var {
+import { ConfigContext } from '../../../__internal/core/r1/config_context';
+import { resolveRtlEnabled } from '../../../__internal/core/r1/utils/resolve_rtl';
+export const viewFunction = _ref => {
+  let {
     componentProps,
     restAttributes
   } = _ref;
@@ -29,32 +29,31 @@ export var viewFunction = _ref => {
   }, restAttributes)));
 };
 export class Toolbar extends BaseInfernoComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.__getterCache = {};
-  }
   get config() {
     if (this.context[ConfigContext.id]) {
       return this.context[ConfigContext.id];
     }
     return ConfigContext.defaultValue;
   }
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.__getterCache = {};
+  }
   get componentProps() {
     if (this.__getterCache['componentProps'] !== undefined) {
       return this.__getterCache['componentProps'];
     }
     return this.__getterCache['componentProps'] = (() => {
-      var {
+      const {
         items
       } = this.props;
-      var toolbarItems = items === null || items === void 0 ? void 0 : items.map(item => {
-        var _item$options, _options$rtlEnabled;
+      const toolbarItems = items === null || items === void 0 ? void 0 : items.map(item => {
         if (!isObject(item)) {
           return item;
         }
-        var options = (_item$options = item.options) !== null && _item$options !== void 0 ? _item$options : {};
-        options.rtlEnabled = (_options$rtlEnabled = options.rtlEnabled) !== null && _options$rtlEnabled !== void 0 ? _options$rtlEnabled : this.resolvedRtlEnabled;
+        const options = item.options ?? {};
+        options.rtlEnabled = options.rtlEnabled ?? this.resolvedRtlEnabled;
         return _extends({}, item, {
           options
         });
@@ -65,13 +64,13 @@ export class Toolbar extends BaseInfernoComponent {
     })();
   }
   get resolvedRtlEnabled() {
-    var {
+    const {
       rtlEnabled
     } = this.props;
     return !!resolveRtlEnabled(rtlEnabled, this.config);
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
@@ -81,7 +80,7 @@ export class Toolbar extends BaseInfernoComponent {
     }
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       config: this.config,

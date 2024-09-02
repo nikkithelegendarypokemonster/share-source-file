@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.ja.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -200,7 +200,9 @@
             "dxDataGrid-filterPanelCreateFilter": "フィルターの作成",
             "dxDataGrid-filterPanelClearFilter": "クリア",
             "dxDataGrid-filterPanelFilterEnabledHint": "フィルターの有効化",
+            "dxDataGrid-masterDetail": "Cell with details",
             "dxTreeList-ariaTreeList": "{0} 行と {1} 列のツリー リスト",
+            "dxTreeList-ariaExpandableInstruction": "Press Ctrl + right arrow to expand the focused node and Ctrl + left arrow to collapse it",
             "dxTreeList-ariaSearchInGrid": "ツリー リスト内を検索する",
             "dxTreeList-ariaToolbar": "ツリー リストのツール バー",
             "dxTreeList-editingAddRowToNode": "追加",
@@ -233,6 +235,7 @@
             "dxPivotGrid-dataFieldArea": "データ フィールドをこちらへドラッグ＆ドロップ",
             "dxPivotGrid-rowFieldArea": "行フィールドをこちらへドラッグ＆ドロップ",
             "dxPivotGrid-filterFieldArea": "フィルター フィールドをこちらへドラッグ＆ドロップ",
+            "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
             "dxScheduler-editorLabelTitle": "件名",
             "dxScheduler-editorLabelStartDate": "開始時刻",
             "dxScheduler-editorLabelEndDate": "終了時刻",
@@ -279,6 +282,10 @@
             "dxScheduler-confirmRecurrenceDeleteOccurrence": "予定を削除",
             "dxScheduler-noTimezoneTitle": "時間帯なし",
             "dxScheduler-moreAppointments": "その他 {0} つ選択",
+            "dxCalendar-currentDay": "Today",
+            "dxCalendar-currentMonth": "Current month",
+            "dxCalendar-currentYear": "Current year",
+            "dxCalendar-currentYearRange": "Current year range",
             "dxCalendar-todayButtonText": "今日",
             "dxCalendar-ariaWidgetName": "カレンダー",
             "dxCalendar-previousMonthButtonLabel": "Previous month",
@@ -293,6 +300,9 @@
             "dxCalendar-captionYearLabel": "Year selection",
             "dxCalendar-captionDecadeLabel": "Decade selection",
             "dxCalendar-captionCenturyLabel": "Century selection",
+            "dxCalendar-selectedDate": "The selected date is {0}",
+            "dxCalendar-selectedDateRange": "The selected date range is from {0} to {1}",
+            "dxCalendar-readOnlyLabel": "Read-only calendar",
             "dxColorView-ariaRed": "赤",
             "dxColorView-ariaGreen": "緑",
             "dxColorView-ariaBlue": "青",
@@ -686,7 +696,8 @@
             "dxMultiView-elementAriaRoleDescription": "MultiView",
             "dxMultiView-elementAriaLabel": "Use the arrow keys or swipe to navigate between views",
             "dxMultiView-itemAriaRoleDescription": "View",
-            "dxMultiView-itemAriaLabel": "{0} of {1}"
+            "dxMultiView-itemAriaLabel": "{0} of {1}",
+            "dxSplitter-resizeHandleAriaLabel": "Split bar"
         }
     });
 }));

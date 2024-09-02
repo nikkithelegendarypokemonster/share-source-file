@@ -1,2 +1,2 @@
 import { BaseWidgetProps } from '../../common/base_props';
-export var FormProps = BaseWidgetProps;
+export const FormProps = BaseWidgetProps;

@@ -1,1 +1,1 @@
-export var SimpleItem = {};
+export const SimpleItem = {};

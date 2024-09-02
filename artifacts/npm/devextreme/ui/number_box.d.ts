@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/number_box.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -29,149 +29,223 @@ import {
     Format,
   } from '../localization';
 
+/** @public */
 export type NumberBoxPredefinedButton = 'clear' | 'spins';
+/** @public */
 export type NumberBoxType = 'number' | 'text' | 'tel';
 
 /**
- * The type of the change event handler&apos;s argument.
+ * @docid _ui_number_box_ChangeEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ChangeEvent = NativeEventInfo<dxNumberBox, Event>;
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_number_box_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxNumberBox>;
 
 /**
- * The type of the copy event handler&apos;s argument.
+ * @docid _ui_number_box_CopyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CopyEvent = NativeEventInfo<dxNumberBox, ClipboardEvent>;
 
 /**
- * The type of the cut event handler&apos;s argument.
+ * @docid _ui_number_box_CutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CutEvent = NativeEventInfo<dxNumberBox, ClipboardEvent>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_number_box_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxNumberBox>;
 
 /**
- * The type of the enterKey event handler&apos;s argument.
+ * @docid _ui_number_box_EnterKeyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type EnterKeyEvent = NativeEventInfo<dxNumberBox, KeyboardEvent>;
 
 /**
- * The type of the focusIn event handler&apos;s argument.
+ * @docid _ui_number_box_FocusInEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusInEvent = NativeEventInfo<dxNumberBox, FocusEvent>;
 
 /**
- * The type of the focusOut event handler&apos;s argument.
+ * @docid _ui_number_box_FocusOutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusOutEvent = NativeEventInfo<dxNumberBox, FocusEvent>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_number_box_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxNumberBox>;
 
 /**
- * The type of the input event handler&apos;s argument.
+ * @docid _ui_number_box_InputEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type InputEvent = NativeEventInfo<dxNumberBox, UIEvent & { target: HTMLInputElement }>;
 
 /**
- * The type of the keyDown event handler&apos;s argument.
+ * @docid _ui_number_box_KeyDownEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyDownEvent = NativeEventInfo<dxNumberBox, KeyboardEvent>;
 
+/** @public */
 export type KeyPressEvent = NativeEventInfo<dxNumberBox, KeyboardEvent>;
 
 /**
- * The type of the keyUp event handler&apos;s argument.
+ * @docid _ui_number_box_KeyUpEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyUpEvent = NativeEventInfo<dxNumberBox, KeyboardEvent>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_number_box_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxNumberBox> & ChangedOptionInfo;
 
 /**
- * The type of the paste event handler&apos;s argument.
+ * @docid _ui_number_box_PasteEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type PasteEvent = NativeEventInfo<dxNumberBox, ClipboardEvent>;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_number_box_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxNumberBox, KeyboardEvent | MouseEvent | PointerEvent | TouchEvent | Event> & ValueChangedInfo;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxNumberBoxOptions extends dxTextEditorOptions<dxNumberBox> {
     /**
-     * Allows you to add custom buttons to the input text field.
+     * @docid
+     * @default undefined
+     * @public
      */
     buttons?: Array<NumberBoxPredefinedButton | TextEditorButton>;
     /**
-     * Specifies the value&apos;s display format and controls user input accordingly.
+     * @docid
+     * @default ""
+     * @public
      */
     format?: Format;
     /**
-     * Specifies the text of the message displayed if the specified value is not a number.
+     * @docid
+     * @default "Value must be a number"
+     * @public
      */
     invalidValueMessage?: string;
     /**
-     * The maximum value accepted by the number box.
+     * @docid
+     * @default undefined
+     * @public
      */
     max?: number;
     /**
-     * The minimum value accepted by the number box.
+     * @docid
+     * @default undefined
+     * @public
      */
     min?: number;
     /**
-     * Specifies the value to be passed to the type attribute of the underlying `` element.
+     * @docid
+     * @default "text"
+     * @default 'number' &for(mobile_devices)
+     * @public
      */
     mode?: NumberBoxType;
     /**
-     * Specifies whether to show the buttons that change the value by a step.
+     * @docid
+     * @default false
+     * @public
      */
     showSpinButtons?: boolean;
     /**
-     * Specifies how much the UI component&apos;s value changes when using the spin buttons, Up/Down arrow keys, or mouse wheel.
+     * @docid
+     * @default 1
+     * @public
      */
     step?: number;
     /**
-     * Specifies whether to use touch friendly spin buttons. Applies only if showSpinButtons is true.
+     * @docid
+     * @default true
+     * @default false &for(desktop)
+     * @public
      */
     useLargeSpinButtons?: boolean;
     /**
-     * The current number box value.
+     * @docid
+     * @default 0
+     * @public
      */
     value?: number;
 }
 /**
- * The NumberBox is a UI component that displays a numeric value and allows a user to modify it by typing in a value, and incrementing or decrementing it using the keyboard or mouse.
+ * @docid
+ * @isEditor
+ * @inherits dxTextEditor
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxNumberBox extends dxTextEditor<dxNumberBoxOptions> {
     /**
-     * Resets the value property to the value passed as an argument.
+     * @docid
+     * @publicName reset(value)
+     * @public
      */
     reset(value?: number): void;
 }
 
+/** @public */
 export type Properties = dxNumberBoxOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxNumberBoxOptions;
 
 

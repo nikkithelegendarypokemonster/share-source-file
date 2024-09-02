@@ -123,8 +123,7 @@ const ActionSheet = _uiCollection_widget.default.inherit({
       disabled: false,
       showTitle: true,
       title: this.option('title'),
-      // @ts-expect-error
-      deferRendering: !window.angular,
+      deferRendering: true,
       onContentReady: this._popupContentReadyAction.bind(this),
       onHidden: this.hide.bind(this)
     };
@@ -270,8 +269,7 @@ const ActionSheet = _uiCollection_widget.default.inherit({
   },
   toggle(showing) {
     const that = this;
-    // @ts-expect-error
-    const d = new _deferred.Deferred();
+    const d = (0, _deferred.Deferred)();
     that._popup.toggle(showing).done(() => {
       that.option('visible', showing);
       d.resolveWith(that);

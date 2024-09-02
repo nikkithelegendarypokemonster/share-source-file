@@ -1,7 +1,7 @@
 /**
 * DevExtreme (viz/gauges/base_gauge.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -44,396 +44,591 @@ import {
 } from '../../common/charts';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid _viz_base_gauge_TooltipInfo
+ * @hidden
  */
 export interface TooltipInfo {
     /**
-     * 
+     * @docid _viz_base_gauge_TooltipInfo.target
+     * @type object
      */
     target: any;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.viz
+ * @docid
+ * @hidden
  */
 export interface BaseGaugeOptions<TComponent> extends BaseWidgetOptions<TComponent> {
     /**
-     * Specifies animation properties.
+     * @docid
+     * @type object
+     * @public
      */
     animation?: BaseGaugeAnimation;
     /**
-     * Specifies the color of the parent page element.
+     * @docid
+     * @default 'none'
+     * @public
      */
     containerBackgroundColor?: string;
     /**
-     * Configures the loading indicator.
+     * @docid
+     * @type object
+     * @public
      */
     loadingIndicator?: BaseGaugeLoadingIndicator;
     /**
-     * A function that is executed when a tooltip becomes hidden.
+     * @docid
+     * @default null
+     * @type_function_param1 e:object
+     * @type_function_param1_field component:this
+     * @type_function_param1_field target:object
+     * @notUsedInTheme
+     * @action
+     * @public
      */
     onTooltipHidden?: ((e: EventInfo<TComponent> & TooltipInfo) => void);
     /**
-     * A function that is executed when a tooltip appears.
+     * @docid
+     * @default null
+     * @type_function_param1 e:object
+     * @type_function_param1_field component:this
+     * @type_function_param1_field target:object
+     * @notUsedInTheme
+     * @action
+     * @public
      */
     onTooltipShown?: ((e: EventInfo<TComponent> & TooltipInfo) => void);
     /**
-     * Specifies properties of the gauge&apos;s range container.
+     * @docid
+     * @type object
+     * @public
      */
     rangeContainer?: BaseGaugeRangeContainer;
     /**
-     * Specifies properties of the gauge&apos;s scale.
+     * @docid
+     * @type object
+     * @public
      */
     scale?: BaseGaugeScale;
     /**
-     * Specifies a set of subvalues to be designated by the subvalue indicators.
+     * @docid
+     * @default undefined
+     * @notUsedInTheme
+     * @fires BaseWidgetOptions.onOptionChanged
+     * @public
      */
     subvalues?: Array<number>;
     /**
-     * Configures tooltips.
+     * @docid
+     * @type object
+     * @public
      */
     tooltip?: BaseGaugeTooltip;
     /**
-     * Specifies the main value on a gauge.
+     * @docid
+     * @default undefined
+     * @notUsedInTheme
+     * @fires BaseWidgetOptions.onOptionChanged
+     * @public
      */
     value?: number;
 }
 /**
- * Specifies animation properties.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @hidden
+ * @docid
+ * @namespace DevExpress.viz
  */
 export interface BaseGaugeAnimation {
     /**
-     * Determines how long animation runs.
+     * @docid BaseGaugeOptions.animation.duration
+     * @default 1000
+     * @public
      */
     duration?: number;
     /**
-     * Specifies the animation easing mode.
+     * @docid BaseGaugeOptions.animation.easing
+     * @default 'easeOutCubic'
+     * @public
      */
     easing?: AnimationEaseMode;
     /**
-     * Indicates whether or not animation is enabled.
+     * @docid BaseGaugeOptions.animation.enabled
+     * @default true
+     * @public
      */
     enabled?: boolean;
 }
 /**
- * Configures the loading indicator.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @hidden
+ * @docid
+ * @namespace DevExpress.viz
  */
 export interface BaseGaugeLoadingIndicator extends BaseWidgetLoadingIndicator {
     /**
-     * Specifies whether the loading indicator should be displayed and hidden automatically.
+     * @docid BaseGaugeOptions.loadingIndicator.enabled
+     * @hidden
      */
     enabled?: boolean;
 }
 /**
- * Specifies properties of the gauge&apos;s range container.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @hidden
+ * @docid
+ * @namespace DevExpress.viz
  */
 export interface BaseGaugeRangeContainer {
     /**
-     * Specifies a range container&apos;s background color.
+     * @docid BaseGaugeOptions.rangeContainer.backgroundColor
+     * @default '#808080'
+     * @public
      */
     backgroundColor?: string | ChartsColor;
     /**
-     * Specifies the offset of the range container from an invisible scale line in pixels.
+     * @docid BaseGaugeOptions.rangeContainer.offset
+     * @default 0
+     * @public
      */
     offset?: number;
     /**
-     * Specifies the palette to be used for colorizing ranges in the range container.
+     * @docid BaseGaugeOptions.rangeContainer.palette
+     * @default "Material"
+     * @public
      */
     palette?: Array<string> | Palette;
     /**
-     * Specifies what to do with colors in the palette when their number is less than the number of ranges in the range container.
+     * @docid BaseGaugeOptions.rangeContainer.paletteExtensionMode
+     * @default 'blend'
+     * @public
      */
     paletteExtensionMode?: PaletteExtensionMode;
     /**
-     * An array of objects representing ranges contained in the range container.
+     * @docid BaseGaugeOptions.rangeContainer.ranges
+     * @default []
+     * @notUsedInTheme
+     * @public
      */
     ranges?: Array<{
       /**
-       * Specifies the color of a range.
+       * @docid BaseGaugeOptions.rangeContainer.ranges.color
        */
       color?: string | ChartsColor;
       /**
-       * Specifies an end value of a range.
+       * @docid BaseGaugeOptions.rangeContainer.ranges.endValue
        */
       endValue?: number;
       /**
-       * Specifies a start value of a range.
+       * @docid BaseGaugeOptions.rangeContainer.ranges.startValue
        */
       startValue?: number;
     }>;
 }
 /**
- * Specifies properties of the gauge&apos;s scale.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @hidden
+ * @docid
+ * @namespace DevExpress.viz
  */
 export interface BaseGaugeScale {
     /**
-     * Specifies whether to allow decimal values on the scale. When false, the scale contains integer values only.
+     * @docid BaseGaugeOptions.scale.allowDecimals
+     * @default undefined
+     * @public
      */
     allowDecimals?: boolean;
     /**
-     * Specifies an array of custom minor ticks.
+     * @docid BaseGaugeOptions.scale.customMinorTicks
+     * @default undefined
+     * @notUsedInTheme
+     * @public
      */
     customMinorTicks?: Array<number>;
     /**
-     * Specifies an array of custom major ticks.
+     * @docid BaseGaugeOptions.scale.customTicks
+     * @default undefined
+     * @notUsedInTheme
+     * @public
      */
     customTicks?: Array<number>;
     /**
-     * Specifies the end value for the scale of the gauge.
+     * @docid BaseGaugeOptions.scale.endValue
+     * @default 100
+     * @notUsedInTheme
+     * @public
      */
     endValue?: number;
     /**
-     * Specifies common properties for scale labels.
+     * @docid BaseGaugeOptions.scale.label
+     * @type object
+     * @public
      */
     label?: BaseGaugeScaleLabel;
     /**
-     * Specifies properties of the gauge&apos;s minor ticks.
+     * @docid BaseGaugeOptions.scale.minorTick
+     * @public
      */
     minorTick?: {
       /**
-       * Specifies the color of the scale&apos;s minor ticks.
+       * @docid BaseGaugeOptions.scale.minorTick.color
+       * @default '#FFFFFF'
        */
       color?: string;
       /**
-       * Specifies the length of the scale&apos;s minor ticks.
+       * @docid BaseGaugeOptions.scale.minorTick.length
+       * @default 3
        */
       length?: number;
       /**
-       * Specifies the opacity of the scale&apos;s minor ticks.
+       * @docid BaseGaugeOptions.scale.minorTick.opacity
+       * @default 1
        */
       opacity?: number;
       /**
-       * Indicates whether scale minor ticks are visible or not.
+       * @docid BaseGaugeOptions.scale.minorTick.visible
+       * @default false
        */
       visible?: boolean;
       /**
-       * Specifies the width of the scale&apos;s minor ticks.
+       * @docid BaseGaugeOptions.scale.minorTick.width
+       * @default 1
        */
       width?: number;
     };
     /**
-     * Specifies an interval between minor ticks.
+     * @docid BaseGaugeOptions.scale.minorTickInterval
+     * @default undefined
+     * @public
      */
     minorTickInterval?: number;
     /**
-     * Specifies the minimum distance between two neighboring major ticks in pixels.
+     * @docid BaseGaugeOptions.scale.scaleDivisionFactor
+     * @default 17
+     * @public
      */
     scaleDivisionFactor?: number;
     /**
-     * Specifies the start value for the scale of the gauge.
+     * @docid BaseGaugeOptions.scale.startValue
+     * @default 0
+     * @notUsedInTheme
+     * @public
      */
     startValue?: number;
     /**
-     * Specifies properties of the gauge&apos;s major ticks.
+     * @docid BaseGaugeOptions.scale.tick
+     * @public
      */
     tick?: {
       /**
-       * Specifies the color of the scale&apos;s major ticks.
+       * @docid BaseGaugeOptions.scale.tick.color
+       * @default '#FFFFFF'
        */
       color?: string;
       /**
-       * Specifies the length of the scale&apos;s major ticks.
+       * @docid BaseGaugeOptions.scale.tick.length
+       * @default 5
        */
       length?: number;
       /**
-       * Specifies the opacity of the scale&apos;s major ticks.
+       * @docid BaseGaugeOptions.scale.tick.opacity
+       * @default 1
        */
       opacity?: number;
       /**
-       * Indicates whether scale major ticks are visible or not.
+       * @docid BaseGaugeOptions.scale.tick.visible
+       * @default true
        */
       visible?: boolean;
       /**
-       * Specifies the width of the scale&apos;s major ticks.
+       * @docid BaseGaugeOptions.scale.tick.width
+       * @default 2
        */
       width?: number;
     };
     /**
-     * Specifies an interval between major ticks.
+     * @docid BaseGaugeOptions.scale.tickInterval
+     * @default undefined
+     * @public
      */
     tickInterval?: number;
 }
 /**
- * Specifies common properties for scale labels.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @hidden
+ * @docid
+ * @namespace DevExpress.viz
  */
 export interface BaseGaugeScaleLabel {
     /**
-     * Specifies a callback function that returns the text to be displayed in scale labels.
+     * @docid BaseGaugeOptions.scale.label.customizeText
+     * @notUsedInTheme
+     * @public
      */
     customizeText?: ((scaleValue: { value?: number; valueText?: string }) => string);
     /**
-     * Specifies font properties for the text displayed in the scale labels of the gauge.
+     * @docid BaseGaugeOptions.scale.label.font
+     * @default '#767676' &prop(color)
+     * @public
      */
     font?: Font;
     /**
-     * Formats a value before it is displayed in a scale label. Accepts only numeric formats.
+     * @docid BaseGaugeOptions.scale.label.format
+     * @default undefined
+     * @public
      */
     format?: Format;
     /**
-     * Decides how to arrange scale labels when there is not enough space to keep all of them.
+     * @docid BaseGaugeOptions.scale.label.overlappingBehavior
+     * @default 'hide'
+     * @public
      */
     overlappingBehavior?: LabelOverlap;
     /**
-     * Specifies whether or not scale labels should be colored similarly to their corresponding ranges in the range container.
+     * @docid BaseGaugeOptions.scale.label.useRangeColors
+     * @default false
+     * @public
      */
     useRangeColors?: boolean;
     /**
-     * Specifies whether or not scale labels are visible on the gauge.
+     * @docid BaseGaugeOptions.scale.label.visible
+     * @default true
+     * @public
      */
     visible?: boolean;
 }
 /**
- * Configures tooltips.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @hidden
+ * @docid
+ * @namespace DevExpress.viz
  */
 export interface BaseGaugeTooltip extends BaseWidgetTooltip {
     /**
-     * Specifies a custom template for a tooltip.
+     * @docid BaseGaugeOptions.tooltip.contentTemplate
+     * @type_function_return string|Element|jQuery
+     * @default undefined
+     * @public
      */
     contentTemplate?: template | ((scaleValue: { value?: number; valueText?: string }, element: DxElement) => string | UserDefinedElement);
     /**
-     * Allows you to change the appearance of specified tooltips.
+     * @docid BaseGaugeOptions.tooltip.customizeTooltip
+     * @default undefined
+     * @type_function_return object
+     * @public
      */
     customizeTooltip?: ((scaleValue: { value?: number; valueText?: string }) => any);
     /**
-     * 
+     * @docid BaseGaugeOptions.tooltip.interactive
+     * @default false
+     * @public
      */
     interactive?: boolean;
 }
 /**
- * A gauge UI component.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @hidden
+ * @inherits BaseWidget
+ * @namespace DevExpress.viz
+ * @options BaseGaugeOptions
  */
 export class BaseGauge<TProperties> extends BaseWidget<TProperties> {
     /**
-     * Gets subvalues.
+     * @docid
+     * @publicName subvalues()
+     * @public
      */
     subvalues(): Array<number>;
     /**
-     * Updates subvalues.
+     * @docid
+     * @publicName subvalues(subvalues)
+     * @public
      */
     subvalues(subvalues: Array<number>): void;
     /**
-     * Gets the main value.
+     * @docid
+     * @publicName value()
+     * @public
      */
     value(): number;
     /**
-     * Updates the main value.
+     * @docid
+     * @publicName value(value)
+     * @public
      */
     value(value: number): void;
 }
 
 /**
- * A base object for gauge value and subvalue indicators. Includes the properties of indicators of all types.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @section CommonIndicators
+ * @type object
+ * @namespace DevExpress.viz
+ * @hidden
  */
 export interface CommonIndicator {
     /**
-     * Specifies the length of an arrow for the indicator of the textCloud type in pixels.
+     * @docid
+     * @default 5
+     * @propertyOf circularTextCloud,linearTextCloud
+     * @public
      */
     arrowLength?: number;
     /**
-     * Specifies the background color for the indicator of the rangeBar type.
+     * @docid
+     * @default 'none'
+     * @propertyOf circularRangeBar,linearRangeBar
+     * @public
      */
     backgroundColor?: string;
     /**
-     * Specifies the base value for the indicator of the rangeBar type.
+     * @docid
+     * @default undefined
+     * @notUsedInTheme
+     * @propertyOf circularRangeBar,linearRangeBar
+     * @public
      */
     baseValue?: number;
     /**
-     * Specifies a radius small enough for the indicator to begin adapting.
+     * @docid
+     * @default 50
+     * @propertyOf circularTwoColorNeedle,circularRectangleNeedle,circularTriangleNeedle
+     * @public
      */
     beginAdaptingAtRadius?: number;
     /**
-     * Specifies the color of the indicator.
+     * @docid
+     * @public
      */
     color?: string | ChartsColor;
     /**
-     * Specifies the orientation of the rangeBar indicator. Applies only if the geometry.orientation property is &apos;vertical&apos;.
+     * @docid
+     * @default 'right' &for(value_indicators)
+     * @default 'left' &for(subvalue_indicators)
+     * @propertyOf linearRangeBar
+     * @public
      */
     horizontalOrientation?: HorizontalEdge;
     /**
-     * Specifies the distance between the needle and the center of a gauge for the indicator of a needle-like type.
+     * @docid
+     * @default 0
+     * @propertyOf circularTwoColorNeedle,circularRectangleNeedle,circularTriangleNeedle
+     * @public
      */
     indentFromCenter?: number;
     /**
-     * Specifies the indicator length.
+     * @docid
+     * @default 15
+     * @propertyOf circularTriangleMarker,linearRectangle,linearCircle,linearRhombus,linearTriangleMarker
+     * @public
      */
     length?: number;
     /**
-     * Specifies the distance between the indicator and the invisible scale line.
+     * @docid
+     * @public
      */
     offset?: number;
     /**
-     * Sets the palette to be used to colorize indicators differently.
+     * @docid
+     * @default "Material"
+     * @public
      */
     palette?: Array<string> | Palette;
     /**
-     * Specifies the second color for the indicator of the twoColorNeedle type.
+     * @docid
+     * @default '#E18E92'
+     * @propertyOf circularTwoColorNeedle
+     * @public
      */
     secondColor?: string;
     /**
-     * Specifies the length of a twoNeedleColor type indicator tip as a percentage.
+     * @docid
+     * @default 0.4
+     * @propertyOf circularTwoColorNeedle
+     * @public
      */
     secondFraction?: number;
     /**
-     * Specifies the range bar size for an indicator of the rangeBar type.
+     * @docid
+     * @default 10
+     * @propertyOf circularRangeBar,linearRangeBar
+     * @public
      */
     size?: number;
     /**
-     * Specifies the inner diameter in pixels, so that the spindle has the shape of a ring.
+     * @docid
+     * @default 10
+     * @propertyOf circularTwoColorNeedle,circularRectangleNeedle,circularTriangleNeedle
+     * @public
      */
     spindleGapSize?: number;
     /**
-     * Specifies the spindle&apos;s diameter in pixels for the indicator of a needle-like type.
+     * @docid
+     * @default 14
+     * @propertyOf circularTwoColorNeedle,circularRectangleNeedle,circularTriangleNeedle
+     * @public
      */
     spindleSize?: number;
     /**
-     * Specifies the appearance of the text displayed in an indicator of the rangeBar type.
+     * @docid
+     * @propertyOf circularRangeBar,linearRangeBar,circularTextCloud,linearTextCloud
+     * @public
      */
     text?: {
       /**
-       * Specifies a callback function that returns the text to be displayed in an indicator.
+       * @docid
+       * @notUsedInTheme
+       * @default undefined
+       * @propertyOf circularRangeBar,linearRangeBar,circularTextCloud,linearTextCloud
        */
       customizeText?: ((indicatedValue: { value?: number; valueText?: string }) => string);
       /**
-       * Specifies font properties for the text displayed by the indicator.
+       * @docid
+       * @propertyOf circularRangeBar,linearRangeBar,circularTextCloud,linearTextCloud
+       * @default 14 &prop(size)
        */
       font?: Font;
       /**
-       * Formats a value before it is displayed in an indicator. Accepts only numeric formats.
+       * @docid
+       * @default undefined
+       * @propertyOf circularRangeBar,linearRangeBar,circularTextCloud,linearTextCloud
        */
       format?: Format;
       /**
-       * Specifies the range bar&apos;s label indent in pixels.
+       * @docid
+       * @default 0
+       * @propertyOf circularRangeBar,linearRangeBar
        */
       indent?: number;
     };
     /**
-     * Specifies the orientation of the rangeBar indicator. Applies only if the geometry.orientation property is &apos;horizontal&apos;.
+     * @docid
+     * @default 'bottom' &for(value_indicators)
+     * @default 'top' &for(subvalue_indicators)
+     * @propertyOf linearRangeBar
+     * @public
      */
     verticalOrientation?: VerticalEdge;
     /**
-     * Specifies the width of an indicator in pixels.
+     * @docid
+     * @default 2
+     * @propertyOf circularTriangleMarker,circularTwoColorNeedle,circularRectangleNeedle,circularTriangleNeedle,linearRectangle,linearTriangleMarker,linearRhombus
+     * @public
      */
     width?: number;
 }
+/** @public */
 export type GaugeIndicatorType = 'circle' | 'rangeBar' | 'rectangle' | 'rectangleNeedle' | 'rhombus' | 'textCloud' | 'triangleMarker' | 'triangleNeedle' | 'twoColorNeedle';
 
 /**
- * A base object for gauge value and subvalue indicators. Includes the properties of indicators of all types.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @inherits CommonIndicator
+ * @namespace DevExpress.viz
+ * @hidden
  */
 export interface GaugeIndicator extends CommonIndicator {
     /**
-     * Specifies the type of gauge indicators.
+     * @docid
+     * @type string
+     * @acceptValues 'circle'|'rangeBar'|'rectangle'|'rectangleNeedle'|'rhombus'|'textCloud'|'triangleMarker'|'triangleNeedle'|'twoColorNeedle'
+     * @public
      */
     type?: GaugeIndicatorType;
 }

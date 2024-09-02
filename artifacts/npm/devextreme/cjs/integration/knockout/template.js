@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/integration/knockout/template.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -17,8 +17,8 @@ var _template_base = require("../../core/templates/template_base");
 var _dom = require("../../core/utils/dom");
 var _utils = require("./utils");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } // eslint-disable-next-line no-restricted-imports
+// eslint-disable-next-line no-restricted-imports
+
 const getParentContext = function (data) {
   const parentNode = _dom_adapter.default.createElement('div');
   _knockout.default.applyBindingsToNode(parentNode, null, data);
@@ -26,22 +26,18 @@ const getParentContext = function (data) {
   _knockout.default.cleanNode(parentNode);
   return parentContext;
 };
-const KoTemplate = exports.KoTemplate = /*#__PURE__*/function (_TemplateBase) {
-  _inheritsLoose(KoTemplate, _TemplateBase);
-  function KoTemplate(element) {
-    var _this;
-    _this = _TemplateBase.call(this) || this;
-    _this._element = element;
-    _this._template = (0, _renderer.default)('<div>').append((0, _dom.normalizeTemplateElement)(element));
-    _this._registerKoTemplate();
-    return _this;
+const KoTemplate = class extends _template_base.TemplateBase {
+  constructor(element) {
+    super();
+    this._element = element;
+    this._template = (0, _renderer.default)('<div>').append((0, _dom.normalizeTemplateElement)(element));
+    this._registerKoTemplate();
   }
-  var _proto = KoTemplate.prototype;
-  _proto._registerKoTemplate = function _registerKoTemplate() {
+  _registerKoTemplate() {
     const template = this._template.get(0);
     new _knockout.default.templateSources.anonymousTemplate(template)['nodes'](template);
-  };
-  _proto._prepareDataForContainer = function _prepareDataForContainer(data, container) {
+  }
+  _prepareDataForContainer(data, container) {
     if (container && container.length) {
       const node = (0, _utils.getClosestNodeWithContext)(container.get(0));
       const containerContext = _knockout.default.contextFor(node);
@@ -53,8 +49,8 @@ const KoTemplate = exports.KoTemplate = /*#__PURE__*/function (_TemplateBase) {
 
     // workaround for https://github.com/knockout/knockout/pull/651
     return getParentContext(data).createChildContext(data);
-  };
-  _proto._renderCore = function _renderCore(options) {
+  }
+  _renderCore(options) {
     const model = this._prepareDataForContainer(options.model, (0, _renderer.default)(options.container));
     if ((0, _type.isDefined)(options.index)) {
       model.$index = options.index;
@@ -67,12 +63,12 @@ const KoTemplate = exports.KoTemplate = /*#__PURE__*/function (_TemplateBase) {
       }
     }, $placeholder.get(0), 'replaceNode');
     return $result;
-  };
-  _proto.source = function source() {
+  }
+  source() {
     return (0, _renderer.default)(this._element).clone();
-  };
-  _proto.dispose = function dispose() {
+  }
+  dispose() {
     this._template.remove();
-  };
-  return KoTemplate;
-}(_template_base.TemplateBase);
+  }
+};
+exports.KoTemplate = KoTemplate;

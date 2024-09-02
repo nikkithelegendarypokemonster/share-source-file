@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/viz/gauges/bar_gauge.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -119,13 +119,14 @@ const dxBarGauge = exports.dxBarGauge = _base_gauge.BaseGauge.inherit({
   _renderContent: function () {
     const that = this;
     let labelOptions = that.option('label');
-    let text;
-    let bBox;
     const context = that._context;
     that._barsGroup.linkAppend();
     context.textEnabled = labelOptions === undefined || labelOptions && (!('visible' in labelOptions) || labelOptions.visible);
     if (context.textEnabled) {
-      context.textColor = labelOptions && labelOptions.font && labelOptions.font.color || null;
+      var _labelOptions, _labelOptions2;
+      context.fontStyles = _patchFontOptions(_extend({}, that._themeManager.theme().label.font, (_labelOptions = labelOptions) === null || _labelOptions === void 0 ? void 0 : _labelOptions.font, {
+        color: ((_labelOptions2 = labelOptions) === null || _labelOptions2 === void 0 || (_labelOptions2 = _labelOptions2.font) === null || _labelOptions2 === void 0 ? void 0 : _labelOptions2.color) || null
+      }));
       labelOptions = _extend(true, {}, that._themeManager.theme().label, labelOptions);
       context.formatOptions = {
         format: labelOptions.format !== undefined ? labelOptions.format : that._defaultFormatOptions,
@@ -134,14 +135,11 @@ const dxBarGauge = exports.dxBarGauge = _base_gauge.BaseGauge.inherit({
       context.textOptions = {
         align: 'center'
       };
-      context.fontStyles = _patchFontOptions(_extend({}, that._themeManager.theme().label.font, labelOptions.font, {
-        color: null
-      }));
       that._textIndent = labelOptions.indent > 0 ? _Number(labelOptions.indent) : 0;
       context.lineWidth = labelOptions.connectorWidth > 0 ? _Number(labelOptions.connectorWidth) : 0;
       context.lineColor = labelOptions.connectorColor || null;
-      text = that._renderer.text(_getSampleText(that._translator, context.formatOptions), 0, 0).attr(context.textOptions).css(context.fontStyles).append(that._barsGroup);
-      bBox = text.getBBox();
+      const text = that._renderer.text(_getSampleText(that._translator, context.formatOptions), 0, 0).attr(context.textOptions).css(context.fontStyles).append(that._barsGroup);
+      const bBox = text.getBBox();
       text.remove();
       context.textY = bBox.y;
       context.textWidth = bBox.width;
@@ -619,7 +617,7 @@ _extend(BarWrapper.prototype, {
         stroke: context.lineColor || that._color
       }).sharp();
       that._text.css({
-        fill: context.textColor || that._color
+        fill: context.fontStyles.fill || that._color
       });
     }
     return that;

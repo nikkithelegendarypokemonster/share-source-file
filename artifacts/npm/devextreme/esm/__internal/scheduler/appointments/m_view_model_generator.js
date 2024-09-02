@@ -1,21 +1,21 @@
 /**
 * DevExtreme (esm/__internal/scheduler/appointments/m_view_model_generator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _extends from "@babel/runtime/helpers/esm/extends";
 import { dateUtilsTs } from '../../core/utils/date';
-import { getAppointmentKey } from '../__migration/utils/index';
+import { getAppointmentKey } from '../../scheduler/r1/utils/index';
 import AgendaAppointmentsStrategy from './rendering_strategies/m_strategy_agenda';
 import HorizontalAppointmentsStrategy from './rendering_strategies/m_strategy_horizontal';
 import HorizontalMonthAppointmentsStrategy from './rendering_strategies/m_strategy_horizontal_month';
 import HorizontalMonthLineAppointmentsStrategy from './rendering_strategies/m_strategy_horizontal_month_line';
 import VerticalAppointmentsStrategy from './rendering_strategies/m_strategy_vertical';
 import WeekAppointmentRenderingStrategy from './rendering_strategies/m_strategy_week';
-var RENDERING_STRATEGIES = {
+const RENDERING_STRATEGIES = {
   horizontal: HorizontalAppointmentsStrategy,
   horizontalMonth: HorizontalMonthAppointmentsStrategy,
   horizontalMonthLine: HorizontalMonthLineAppointmentsStrategy,
@@ -25,37 +25,37 @@ var RENDERING_STRATEGIES = {
 };
 export class AppointmentViewModelGenerator {
   initRenderingStrategy(options) {
-    var RenderingStrategy = RENDERING_STRATEGIES[options.appointmentRenderingStrategyName];
+    const RenderingStrategy = RENDERING_STRATEGIES[options.appointmentRenderingStrategyName];
     this.renderingStrategy = new RenderingStrategy(options);
   }
   generate(filteredItems, options) {
-    var {
+    const {
       viewOffset
     } = options;
-    var appointments = filteredItems ? filteredItems.slice() : [];
+    const appointments = filteredItems ? filteredItems.slice() : [];
     this.initRenderingStrategy(options);
-    var renderingStrategy = this.getRenderingStrategy();
-    var positionMap = renderingStrategy.createTaskPositionMap(appointments); // TODO - appointments are mutated inside!
-    var shiftedViewModel = this.postProcess(appointments, positionMap);
-    var viewModel = this.unshiftViewModelAppointmentsByViewOffset(shiftedViewModel, viewOffset);
+    const renderingStrategy = this.getRenderingStrategy();
+    const positionMap = renderingStrategy.createTaskPositionMap(appointments); // TODO - appointments are mutated inside!
+    const shiftedViewModel = this.postProcess(appointments, positionMap);
+    const viewModel = this.unshiftViewModelAppointmentsByViewOffset(shiftedViewModel, viewOffset);
     return {
       positionMap,
       viewModel
     };
   }
   postProcess(filteredItems, positionMap) {
-    var renderingStrategy = this.getRenderingStrategy();
+    const renderingStrategy = this.getRenderingStrategy();
     return filteredItems.map((data, index) => {
       // TODO research do we need this code
       if (!renderingStrategy.keepAppointmentSettings()) {
         delete data.settings;
       }
       // TODO Seems we can analize direction in the rendering strategies
-      var appointmentSettings = positionMap[index];
+      const appointmentSettings = positionMap[index];
       appointmentSettings.forEach(item => {
         item.direction = renderingStrategy.getDirection() === 'vertical' && !item.allDay ? 'vertical' : 'horizontal';
       });
-      var item = {
+      const item = {
         itemData: data,
         settings: appointmentSettings
       };
@@ -65,18 +65,18 @@ export class AppointmentViewModelGenerator {
     });
   }
   makeRenovatedViewModels(viewModel, supportAllDayRow, isVerticalGrouping) {
-    var strategy = this.getRenderingStrategy();
-    var regularViewModels = [];
-    var allDayViewModels = [];
-    var compactOptions = [];
-    var isAllDayPanel = supportAllDayRow && !isVerticalGrouping;
+    const strategy = this.getRenderingStrategy();
+    const regularViewModels = [];
+    const allDayViewModels = [];
+    const compactOptions = [];
+    const isAllDayPanel = supportAllDayRow && !isVerticalGrouping;
     viewModel.forEach(_ref => {
-      var {
+      let {
         itemData,
         settings
       } = _ref;
       settings.forEach(options => {
-        var item = this.prepareViewModel(options, strategy, itemData);
+        const item = this.prepareViewModel(options, strategy, itemData);
         if (options.isCompact) {
           compactOptions.push({
             compactViewModel: options.virtual,
@@ -89,24 +89,24 @@ export class AppointmentViewModelGenerator {
         }
       });
     });
-    var compactViewModels = this.prepareCompactViewModels(compactOptions, supportAllDayRow);
-    var result = _extends({
+    const compactViewModels = this.prepareCompactViewModels(compactOptions, supportAllDayRow);
+    const result = _extends({
       allDay: allDayViewModels,
       regular: regularViewModels
     }, compactViewModels);
     return result;
   }
   prepareViewModel(options, strategy, itemData) {
-    var geometry = strategy.getAppointmentGeometry(options);
-    var viewModel = {
+    const geometry = strategy.getAppointmentGeometry(options);
+    const viewModel = {
       key: getAppointmentKey(geometry),
       appointment: itemData,
-      geometry: _extends(_extends({}, geometry), {
+      geometry: _extends({}, geometry, {
         // TODO move to the rendering strategies
         leftVirtualWidth: options.leftVirtualWidth,
         topVirtualHeight: options.topVirtualHeight
       }),
-      info: _extends(_extends({}, options.info), {
+      info: _extends({}, options.info, {
         allDay: options.allDay,
         direction: options.direction,
         appointmentReduced: options.appointmentReduced,
@@ -134,22 +134,22 @@ export class AppointmentViewModelGenerator {
     };
   }
   prepareCompactViewModels(compactOptions, supportAllDayRow) {
-    var regularCompact = {};
-    var allDayCompact = {};
+    const regularCompact = {};
+    const allDayCompact = {};
     compactOptions.forEach(_ref2 => {
-      var {
+      let {
         compactViewModel,
         appointmentViewModel
       } = _ref2;
-      var {
+      const {
         index,
         isAllDay
       } = compactViewModel;
-      var viewModel = isAllDay && supportAllDayRow ? allDayCompact : regularCompact;
+      const viewModel = isAllDay && supportAllDayRow ? allDayCompact : regularCompact;
       if (!viewModel[index]) {
         viewModel[index] = this.getCompactViewModelFrame(compactViewModel);
       }
-      var {
+      const {
         settings,
         data,
         colors
@@ -158,11 +158,11 @@ export class AppointmentViewModelGenerator {
       data.push(appointmentViewModel.appointment);
       colors.push(appointmentViewModel.info.resourceColor);
     });
-    var toArray = items => Object.keys(items).map(key => _extends({
+    const toArray = items => Object.keys(items).map(key => _extends({
       key
     }, items[key]));
-    var allDayViewModels = toArray(allDayCompact);
-    var regularViewModels = toArray(regularCompact);
+    const allDayViewModels = toArray(allDayCompact);
+    const regularViewModels = toArray(regularCompact);
     return {
       allDayCompact: allDayViewModels,
       regularCompact: regularViewModels
@@ -175,14 +175,14 @@ export class AppointmentViewModelGenerator {
   // because in this case it will break the refs (keys) of dataSource's appointments,
   // and it will break appointment updates :(
   unshiftViewModelAppointmentsByViewOffset(viewModel, viewOffset) {
-    var _a, _b;
-    var processedAppointments = new Set();
+    const processedAppointments = new Set();
     // eslint-disable-next-line no-restricted-syntax
-    for (var model of viewModel) {
+    for (const model of viewModel) {
       // eslint-disable-next-line no-restricted-syntax
-      for (var setting of (_a = model.settings) !== null && _a !== void 0 ? _a : []) {
+      for (const setting of model.settings ?? []) {
+        var _setting$info;
         // eslint-disable-next-line prefer-destructuring
-        var appointment = (_b = setting === null || setting === void 0 ? void 0 : setting.info) === null || _b === void 0 ? void 0 : _b.appointment;
+        const appointment = setting === null || setting === void 0 || (_setting$info = setting.info) === null || _setting$info === void 0 ? void 0 : _setting$info.appointment;
         if (appointment && !processedAppointments.has(appointment)) {
           appointment.startDate = dateUtilsTs.addOffsets(appointment.startDate, [viewOffset]);
           appointment.endDate = dateUtilsTs.addOffsets(appointment.endDate, [viewOffset]);

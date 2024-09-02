@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/diagram/ui.diagram.context_menu.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,11 +13,11 @@ import DiagramCommandsManager from './diagram.commands_manager';
 import DiagramMenuHelper from './ui.diagram.menu_helper';
 import DiagramBar from './diagram.bar';
 import { getDiagram } from './diagram.importer';
-var DIAGRAM_TOUCHBAR_CLASS = 'dx-diagram-touchbar';
-var DIAGRAM_TOUCHBAR_OVERLAY_CLASS = 'dx-diagram-touchbar-overlay';
-var DIAGRAM_TOUCHBAR_TARGET_CLASS = 'dx-diagram-touchbar-target';
-var DIAGRAM_TOUCHBAR_MIN_UNWRAPPED_WIDTH = 800;
-var DIAGRAM_TOUCHBAR_Y_OFFSET = 32;
+const DIAGRAM_TOUCHBAR_CLASS = 'dx-diagram-touchbar';
+const DIAGRAM_TOUCHBAR_OVERLAY_CLASS = 'dx-diagram-touchbar-overlay';
+const DIAGRAM_TOUCHBAR_TARGET_CLASS = 'dx-diagram-touchbar-target';
+const DIAGRAM_TOUCHBAR_MIN_UNWRAPPED_WIDTH = 800;
+const DIAGRAM_TOUCHBAR_Y_OFFSET = 32;
 class DiagramContextMenuWrapper extends Widget {
   _init() {
     super._init();
@@ -36,7 +36,7 @@ class DiagramContextMenuWrapper extends Widget {
     this._commandToIndexMap = {};
     this._fillCommandToIndexMap(this._commands, []);
     this._$contextMenuTargetElement = $('<div>').addClass(DIAGRAM_TOUCHBAR_TARGET_CLASS).appendTo(this.$element());
-    var $contextMenu = $('<div>').appendTo(this.$element());
+    const $contextMenu = $('<div>').appendTo(this.$element());
     this._contextMenuInstance = this._createComponent($contextMenu, DiagramContextMenu, {
       isTouchBarMode: this._isTouchBarMode(),
       cssClass: this._isTouchBarMode() ? DIAGRAM_TOUCHBAR_CLASS : DiagramMenuHelper.getContextMenuCssClass(),
@@ -55,11 +55,11 @@ class DiagramContextMenuWrapper extends Widget {
         },
         of: this._$contextMenuTargetElement
       } : {},
-      itemTemplate: function itemTemplate(itemData, itemIndex, itemElement) {
+      itemTemplate: function (itemData, itemIndex, itemElement) {
         DiagramMenuHelper.getContextMenuItemTemplate(this, itemData, itemIndex, itemElement);
       },
       onItemClick: _ref => {
-        var {
+        let {
           itemData
         } = _ref;
         return this._onItemClick(itemData);
@@ -88,7 +88,7 @@ class DiagramContextMenuWrapper extends Widget {
           height: 0
         };
       }
-      var widthCorrection = selection.width > DIAGRAM_TOUCHBAR_MIN_UNWRAPPED_WIDTH ? 0 : (DIAGRAM_TOUCHBAR_MIN_UNWRAPPED_WIDTH - selection.width) / 2;
+      const widthCorrection = selection.width > DIAGRAM_TOUCHBAR_MIN_UNWRAPPED_WIDTH ? 0 : (DIAGRAM_TOUCHBAR_MIN_UNWRAPPED_WIDTH - selection.width) / 2;
       this._$contextMenuTargetElement.css({
         left: selection.x - widthCorrection,
         top: selection.y - DIAGRAM_TOUCHBAR_Y_OFFSET,
@@ -108,13 +108,13 @@ class DiagramContextMenuWrapper extends Widget {
     this._contextMenuInstance.hide();
   }
   _isTouchBarMode() {
-    var {
+    const {
       Browser
     } = getDiagram();
     return Browser.TouchUI;
   }
   _onItemClick(itemData) {
-    var processed = false;
+    let processed = false;
     if (this._onItemClickAction) {
       processed = this._onItemClickAction(itemData);
     }
@@ -148,7 +148,7 @@ class DiagramContextMenuWrapper extends Widget {
   }
   _fillCommandToIndexMap(commands, indexPath) {
     commands.forEach((command, index) => {
-      var commandIndexPath = indexPath.concat([index]);
+      const commandIndexPath = indexPath.concat([index]);
       if (command.command !== undefined) {
         this._commandToIndexMap[command.command] = commandIndexPath;
       }
@@ -161,15 +161,15 @@ class DiagramContextMenuWrapper extends Widget {
     this._setItemVisible(key, enabled);
   }
   _setItemVisible(key, visible) {
-    var itemOptionText = DiagramMenuHelper.getItemOptionText(this._contextMenuInstance, this._commandToIndexMap[key]);
+    const itemOptionText = DiagramMenuHelper.getItemOptionText(this._contextMenuInstance, this._commandToIndexMap[key]);
     DiagramMenuHelper.updateContextMenuItemVisible(this._contextMenuInstance, itemOptionText, visible);
   }
   _setItemValue(key, value) {
-    var itemOptionText = DiagramMenuHelper.getItemOptionText(this._contextMenuInstance, this._commandToIndexMap[key]);
+    const itemOptionText = DiagramMenuHelper.getItemOptionText(this._contextMenuInstance, this._commandToIndexMap[key]);
     DiagramMenuHelper.updateContextMenuItemValue(this._contextMenuInstance, itemOptionText, key, value);
   }
   _setItemSubItems(key, items) {
-    var itemOptionText = DiagramMenuHelper.getItemOptionText(this._contextMenuInstance, this._commandToIndexMap[key]);
+    const itemOptionText = DiagramMenuHelper.getItemOptionText(this._contextMenuInstance, this._commandToIndexMap[key]);
     DiagramMenuHelper.updateContextMenuItems(this._contextMenuInstance, itemOptionText, key, items);
   }
   _setEnabled(enabled) {
@@ -213,7 +213,7 @@ class DiagramContextMenu extends ContextMenu {
     super._renderContextMenuOverlay();
     if (this._overlay && this.option('isTouchBarMode')) {
       this._overlay && this._overlay.option('onShown', () => {
-        var $content = $(this._overlay.$content());
+        const $content = $(this._overlay.$content());
         $content.parent().addClass(DIAGRAM_TOUCHBAR_OVERLAY_CLASS);
       });
     }

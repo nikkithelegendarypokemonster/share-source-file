@@ -1,14 +1,14 @@
 export class RollingStock {
   constructor(label, isRotated, shiftFunction) {
-    var bBox = label.getBoundingRect();
-    var {
+    const bBox = label.getBoundingRect();
+    const {
       x
     } = bBox;
-    var {
+    const {
       y
     } = bBox;
-    var endX = bBox.x + bBox.width;
-    var endY = bBox.y + bBox.height;
+    const endX = bBox.x + bBox.width;
+    const endY = bBox.y + bBox.height;
     this.labels = [label];
     this.shiftFunction = shiftFunction;
     this.bBox = {
@@ -21,7 +21,7 @@ export class RollingStock {
     this.initialPosition = isRotated ? bBox.x : bBox.y;
   }
   toChain(nextRollingStock) {
-    var nextRollingStockBBox = nextRollingStock.getBoundingRect();
+    const nextRollingStockBBox = nextRollingStock.getBoundingRect();
     nextRollingStock.shift(nextRollingStockBBox.start - this.bBox.end);
     this.changeBoxWidth(nextRollingStockBBox.width);
     this.labels = this.labels.concat(nextRollingStock.labels);
@@ -31,8 +31,8 @@ export class RollingStock {
   }
   shift(shiftLength) {
     this.labels.forEach(label => {
-      var bBox = label.getBoundingRect();
-      var coords = this.shiftFunction(bBox, shiftLength);
+      const bBox = label.getBoundingRect();
+      const coords = this.shiftFunction(bBox, shiftLength);
       if (!label.hideInsideLabel(coords)) {
         label.shift(coords.x, coords.y);
       }

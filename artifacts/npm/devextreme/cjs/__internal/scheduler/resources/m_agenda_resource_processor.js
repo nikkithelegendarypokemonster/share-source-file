@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/resources/m_agenda_resource_processor.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,17 +15,27 @@ exports.AgendaResourceProcessor = void 0;
 var _array = require("../../../core/utils/array");
 var _deferred = require("../../../core/utils/deferred");
 var _m_utils = require("./m_utils");
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); } /* eslint-disable max-classes-per-file */
+/* eslint-disable max-classes-per-file */
+
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
-let PromiseItem = function PromiseItem(rawAppointment, promise) {
-  this.rawAppointment = rawAppointment;
-  this.promise = promise;
-};
-let AgendaResourceProcessor = exports.AgendaResourceProcessor = /*#__PURE__*/function () {
-  function AgendaResourceProcessor() {
+class PromiseItem {
+  constructor(rawAppointment, promise) {
+    this.rawAppointment = rawAppointment;
+    this.promise = promise;
+  }
+}
+class AgendaResourceProcessor {
+  get resourceDeclarations() {
+    return this._resourceDeclarations;
+  }
+  set resourceDeclarations(value) {
+    this._resourceDeclarations = value;
+    this.isLoaded = false;
+    this.isLoading = false;
+    this.resourceMap.clear();
+    this.appointmentPromiseQueue = [];
+  }
+  constructor() {
     let resourceDeclarations = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     this._resourceDeclarations = resourceDeclarations;
     this.isLoaded = false;
@@ -33,8 +43,7 @@ let AgendaResourceProcessor = exports.AgendaResourceProcessor = /*#__PURE__*/fun
     this.resourceMap = new Map();
     this.appointmentPromiseQueue = [];
   }
-  var _proto = AgendaResourceProcessor.prototype;
-  _proto._pushAllResources = function _pushAllResources() {
+  _pushAllResources() {
     this.appointmentPromiseQueue.forEach(_ref => {
       let {
         promise,
@@ -56,16 +65,16 @@ let AgendaResourceProcessor = exports.AgendaResourceProcessor = /*#__PURE__*/fun
       promise.resolve(result);
     });
     this.appointmentPromiseQueue = [];
-  };
-  _proto._onPullResource = function _onPullResource(fieldName, valueName, displayName, label, items) {
+  }
+  _onPullResource(fieldName, valueName, displayName, label, items) {
     const map = new Map();
     items.forEach(item => map.set(item[valueName], item[displayName]));
     this.resourceMap.set(fieldName, {
       label,
       map
     });
-  };
-  _proto._hasResourceDeclarations = function _hasResourceDeclarations(resources) {
+  }
+  _hasResourceDeclarations(resources) {
     if (resources.length === 0) {
       this.appointmentPromiseQueue.forEach(_ref2 => {
         let {
@@ -77,8 +86,8 @@ let AgendaResourceProcessor = exports.AgendaResourceProcessor = /*#__PURE__*/fun
       return false;
     }
     return true;
-  };
-  _proto._tryPullResources = function _tryPullResources(resources, resultAsync) {
+  }
+  _tryPullResources(resources, resultAsync) {
     if (!this.isLoading) {
       this.isLoading = true;
       const promises = [];
@@ -99,12 +108,12 @@ let AgendaResourceProcessor = exports.AgendaResourceProcessor = /*#__PURE__*/fun
         this._pushAllResources();
       }).fail(() => resultAsync.reject());
     }
-  };
-  _proto.initializeState = function initializeState() {
+  }
+  initializeState() {
     let resourceDeclarations = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     this.resourceDeclarations = resourceDeclarations;
-  };
-  _proto.createListAsync = function createListAsync(rawAppointment) {
+  }
+  createListAsync(rawAppointment) {
     // @ts-expect-error
     const resultAsync = new _deferred.Deferred();
     this.appointmentPromiseQueue.push(new PromiseItem(rawAppointment, resultAsync));
@@ -116,19 +125,6 @@ let AgendaResourceProcessor = exports.AgendaResourceProcessor = /*#__PURE__*/fun
       }
     }
     return resultAsync.promise();
-  };
-  _createClass(AgendaResourceProcessor, [{
-    key: "resourceDeclarations",
-    get: function () {
-      return this._resourceDeclarations;
-    },
-    set: function (value) {
-      this._resourceDeclarations = value;
-      this.isLoaded = false;
-      this.isLoading = false;
-      this.resourceMap.clear();
-      this.appointmentPromiseQueue = [];
-    }
-  }]);
-  return AgendaResourceProcessor;
-}();
+  }
+}
+exports.AgendaResourceProcessor = AgendaResourceProcessor;

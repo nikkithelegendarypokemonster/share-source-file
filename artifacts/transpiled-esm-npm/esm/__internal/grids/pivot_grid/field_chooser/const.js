@@ -1,9 +1,9 @@
-export var ATTRIBUTES = {
+export const ATTRIBUTES = {
   treeViewItem: 'tree-view-item',
   allowScrolling: 'allow-scrolling',
   itemGroup: 'item-group'
 };
-export var CLASSES = {
+export const CLASSES = {
   area: {
     self: 'dx-area',
     box: 'dx-area-box',
@@ -41,7 +41,7 @@ export var CLASSES = {
   row: 'dx-row',
   widget: 'dx-widget'
 };
-export var ICONS = {
+export const ICONS = {
   all: 'smalliconslayout',
   column: 'columnfield',
   row: 'rowfield',
@@ -51,12 +51,12 @@ export var ICONS = {
   hierarchy: 'hierarchy',
   dimension: 'detailslayout'
 };
-export var SORTABLE_CONST = {
+export const SORTABLE_CONST = {
   targets: {
     drag: 'drag'
   }
 };
-export var SORT_ORDER = {
+export const SORT_ORDER = {
   descending: 'desc',
   ascending: 'asc'
 };

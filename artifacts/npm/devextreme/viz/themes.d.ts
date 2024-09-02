@@ -1,37 +1,57 @@
 /**
 * DevExtreme (viz/themes.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /**
- * Gets the current theme&apos;s name.
+ * @docid viz.currentTheme
+ * @publicName currentTheme()
+ * @static
+ * @public
  */
 export function currentTheme(): string;
 
 /**
- * Changes the current theme for all data visualization UI components on the page. The color scheme is defined separately.
+ * @docid viz.currentTheme
+ * @publicName currentTheme(platform, colorScheme)
+ * @static
+ * @public
  */
 export function currentTheme(platform: string, colorScheme: string): void;
 
 /**
- * Changes the current theme for all data visualization UI components on the page.
+ * @docid viz.currentTheme
+ * @publicName currentTheme(theme)
+ * @static
+ * @public
  */
 export function currentTheme(theme: string): void;
 
 /**
- * Gets a predefined or registered theme&apos;s settings.
+ * @docid viz.getTheme
+ * @publicName getTheme(theme)
+ * @return object
+ * @static
+ * @public
  */
 export function getTheme(theme: string): any;
 
 /**
- * Refreshes the current theme and palette in all data visualization UI components on the page.
+ * @docid viz.refreshTheme
+ * @publicName refreshTheme()
+ * @static
+ * @public
  */
 export function refreshTheme(): void;
 
 /**
- * Registers a new theme based on the existing one.
+ * @docid viz.registerTheme
+ * @publicName registerTheme(customTheme, baseTheme)
+ * @param1 customTheme:object
+ * @static
+ * @public
  */
 export function registerTheme(customTheme: any, baseTheme: string): void;

@@ -1,19 +1,19 @@
 import $ from '../../../core/renderer';
 import { setHeight, setWidth } from '../../../core/utils/size';
 import CurrentTimeShader from './m_current_time_shader';
-var DATE_TIME_SHADER_ALL_DAY_CLASS = 'dx-scheduler-date-time-shader-all-day';
-var DATE_TIME_SHADER_TOP_CLASS = 'dx-scheduler-date-time-shader-top';
-var DATE_TIME_SHADER_BOTTOM_CLASS = 'dx-scheduler-date-time-shader-bottom';
+const DATE_TIME_SHADER_ALL_DAY_CLASS = 'dx-scheduler-date-time-shader-all-day';
+const DATE_TIME_SHADER_TOP_CLASS = 'dx-scheduler-date-time-shader-top';
+const DATE_TIME_SHADER_BOTTOM_CLASS = 'dx-scheduler-date-time-shader-bottom';
 class VerticalCurrentTimeShader extends CurrentTimeShader {
   renderShader() {
-    var shaderHeight = this._getShaderHeight();
-    var maxHeight = this._getShaderMaxHeight();
-    var isSolidShader = shaderHeight > maxHeight;
+    let shaderHeight = this._getShaderHeight();
+    const maxHeight = this._getShaderMaxHeight();
+    const isSolidShader = shaderHeight > maxHeight;
     if (shaderHeight > maxHeight) {
       shaderHeight = maxHeight;
     }
     setHeight(this._$shader, shaderHeight);
-    var groupCount = this._workSpace._getGroupCount() || 1;
+    const groupCount = this._workSpace._getGroupCount() || 1;
     if (this._workSpace.isGroupedByDate()) {
       this._renderGroupedByDateShaderParts(groupCount, shaderHeight, maxHeight, isSolidShader);
     } else {
@@ -21,16 +21,16 @@ class VerticalCurrentTimeShader extends CurrentTimeShader {
     }
   }
   _renderShaderParts(groupCount, shaderHeight, maxHeight, isSolidShader) {
-    for (var i = 0; i < groupCount; i++) {
-      var shaderWidth = this._getShaderWidth(i);
+    for (let i = 0; i < groupCount; i++) {
+      const shaderWidth = this._getShaderWidth(i);
       this._renderTopShader(this._$shader, shaderHeight, shaderWidth, i);
       !isSolidShader && this._renderBottomShader(this._$shader, maxHeight, shaderHeight, shaderWidth, i);
       this._renderAllDayShader(shaderWidth, i);
     }
   }
   _renderGroupedByDateShaderParts(groupCount, shaderHeight, maxHeight, isSolidShader) {
-    var shaderWidth = this._getShaderWidth(0);
-    var bottomShaderWidth = shaderWidth - this._workSpace.getCellWidth();
+    const shaderWidth = this._getShaderWidth(0);
+    let bottomShaderWidth = shaderWidth - this._workSpace.getCellWidth();
     if (shaderHeight < 0) {
       shaderHeight = 0;
       bottomShaderWidth = shaderWidth;
@@ -53,8 +53,8 @@ class VerticalCurrentTimeShader extends CurrentTimeShader {
   }
   _renderBottomShader($shader, maxHeight, height, width, i) {
     this._$bottomShader = $('<div>').addClass(DATE_TIME_SHADER_BOTTOM_CLASS);
-    var shaderWidth = height < 0 ? width : width - this._workSpace.getCellWidth();
-    var shaderHeight = height < 0 ? maxHeight : maxHeight - height;
+    const shaderWidth = height < 0 ? width : width - this._workSpace.getCellWidth();
+    const shaderHeight = height < 0 ? maxHeight : maxHeight - height;
     setWidth(this._$bottomShader, shaderWidth);
     setHeight(this._$bottomShader, shaderHeight);
     this._$bottomShader.css('left', this._getShaderOffset(i, width - this._workSpace.getCellWidth()));
@@ -86,7 +86,7 @@ class VerticalCurrentTimeShader extends CurrentTimeShader {
   }
   clean() {
     super.clean();
-    this._workSpace && this._workSpace._$allDayPanel && this._workSpace._$allDayPanel.find(".".concat(DATE_TIME_SHADER_ALL_DAY_CLASS)).remove();
+    this._workSpace && this._workSpace._$allDayPanel && this._workSpace._$allDayPanel.find(`.${DATE_TIME_SHADER_ALL_DAY_CLASS}`).remove();
   }
 }
 export default VerticalCurrentTimeShader;

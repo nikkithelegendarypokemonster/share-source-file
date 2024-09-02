@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/box.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -31,112 +31,170 @@ export {
     Mode,
 };
 
+/** @public */
 export type Distribution = 'center' | 'end' | 'space-around' | 'space-between' | 'start';
+/** @public */
 export type CrosswiseDistribution = 'center' | 'end' | 'start' | 'stretch';
+/** @public */
 export type BoxDirection = 'col' | 'row';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_box_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent<TItem extends ItemLike<TKey> = any, TKey = any> = EventInfo<dxBox<TItem, TKey>>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_box_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent<TItem extends ItemLike<TKey> = any, TKey = any> = EventInfo<dxBox<TItem, TKey>>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_box_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent<TItem extends ItemLike<TKey> = any, TKey = any> = InitializedEventInfo<dxBox<TItem, TKey>>;
 
 /**
- * The type of the itemClick event handler&apos;s argument.
+ * @docid _ui_box_ItemClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemClickEvent<TItem extends ItemLike<TKey> = any, TKey = any> = NativeEventInfo<dxBox<TItem, TKey>, MouseEvent | PointerEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the itemContextMenu event handler&apos;s argument.
+ * @docid _ui_box_ItemContextMenuEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemContextMenuEvent<TItem extends ItemLike<TKey> = any, TKey = any> = NativeEventInfo<dxBox<TItem, TKey>, MouseEvent | PointerEvent | TouchEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the itemHold event handler&apos;s argument.
+ * @docid _ui_box_ItemHoldEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemHoldEvent<TItem extends ItemLike<TKey> = any, TKey = any> = NativeEventInfo<dxBox<TItem, TKey>, MouseEvent | PointerEvent | TouchEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the itemRendered event handler&apos;s argument.
+ * @docid _ui_box_ItemRenderedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ItemInfo
  */
 export type ItemRenderedEvent<TItem extends ItemLike<TKey> = any, TKey = any> = EventInfo<dxBox<TItem, TKey>> & ItemInfo<TItem>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_box_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent<TItem extends ItemLike<TKey> = any, TKey = any> = EventInfo<dxBox<TItem, TKey>> & ChangedOptionInfo;
 
 /**
- * 
- * @deprecated 
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @public
+ * @docid
  */
 export interface dxBoxOptions<
     TItem extends ItemLike<TKey> = any,
     TKey = any,
 > extends CollectionWidgetOptions<dxBox<TItem, TKey>, TItem, TKey> {
     /**
-     * Specifies how UI component items are aligned along the main direction.
+     * @docid
+     * @default 'start'
+     * @public
      */
     align?: Distribution;
     /**
-     * Specifies how UI component items are aligned cross-wise.
+     * @docid
+     * @default 'start'
+     * @public
      */
     crossAlign?: CrosswiseDistribution;
     /**
-     * Binds the UI component to data.
+     * @docid
+     * @type string | Array<string | dxBoxItem | any> | Store | DataSource | DataSourceOptions | null
+     * @default null
+     * @public
      */
     dataSource?: DataSourceLike<TItem, TKey> | null;
     /**
-     * Specifies the direction of item positioning in the UI component.
+     * @docid
+     * @default 'row'
+     * @public
      */
     direction?: BoxDirection;
     /**
-     * An array of items displayed by the UI component.
+     * @docid
+     * @type Array<string | dxBoxItem | any>
+     * @fires dxBoxOptions.onOptionChanged
+     * @public
      */
     items?: Array<TItem>;
 }
 /**
- * The Box UI component allows you to arrange various elements within it. Separate and adaptive, the Box UI component acts as a building block for the layout.
+ * @docid
+ * @inherits CollectionWidget
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxBox<
     TItem extends ItemLike<TKey> = any,
     TKey = any,
 > extends CollectionWidget<dxBoxOptions<TItem, TKey>, TItem, TKey> { }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxBox
+ */
 export type Item<TKey = any> = dxBoxItem<TKey>;
 
 /**
  * @deprecated Use Item instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
  */
 export interface dxBoxItem<TKey = any> extends CollectionWidgetItem {
     /**
-     * Specifies the base size of an item element along the main direction.
+     * @docid
+     * @default 0
+     * @public
      */
     baseSize?: number | string;
     /**
-     * Holds a Box configuration object for the item.
+     * @docid
+     * @default undefined
+     * @public
+     * @type dxBoxOptions
      */
     box?: dxBoxOptions<any, TKey>;
     /**
-     * Specifies the ratio value used to count the item element size along the main direction.
+     * @docid
+     * @default 0
+     * @public
      */
     ratio?: number;
     /**
-     * A factor that defines how much an item shrinks relative to the rest of the items in the container.
+     * @docid
+     * @default 1
+     * @public
      */
     shrink?: number;
 }
 
+/** @public */
 export type ExplicitTypes<
     TItem extends ItemLike<TKey>,
     TKey,
@@ -152,15 +210,13 @@ export type ExplicitTypes<
     OptionChangedEvent: OptionChangedEvent<TItem, TKey>;
 };
 
+/** @public */
 export type Properties<
     TItem extends ItemLike<TKey> = any,
     TKey = any,
 > = dxBoxOptions<TItem, TKey>;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options<
     TItem extends ItemLike<TKey> = any,
     TKey = any,

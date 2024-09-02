@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/multi_view.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22,59 +22,85 @@ import CollectionWidget, {
     SelectionChangedInfo,
 } from './collection/ui.collection_widget.base';
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type ItemLike = string | Item | any;
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_multi_view_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxMultiView<TItem, TKey>>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_multi_view_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxMultiView<TItem, TKey>>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_multi_view_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent<TItem extends ItemLike = any, TKey = any> = InitializedEventInfo<dxMultiView<TItem, TKey>>;
 
 /**
- * The type of the itemClick event handler&apos;s argument.
+ * @docid _ui_multi_view_ItemClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemClickEvent<TItem extends ItemLike = any, TKey = any> = NativeEventInfo<dxMultiView<TItem, TKey>, KeyboardEvent | MouseEvent | PointerEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the itemContextMenu event handler&apos;s argument.
+ * @docid _ui_multi_view_ItemContextMenuEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemContextMenuEvent<TItem extends ItemLike = any, TKey = any> = NativeEventInfo<dxMultiView<TItem, TKey>, MouseEvent | PointerEvent | TouchEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the itemHold event handler&apos;s argument.
+ * @docid _ui_multi_view_ItemHoldEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemHoldEvent<TItem extends ItemLike = any, TKey = any> = NativeEventInfo<dxMultiView<TItem, TKey>, MouseEvent | PointerEvent | TouchEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the itemRendered event handler&apos;s argument.
+ * @docid _ui_multi_view_ItemRenderedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ItemInfo
  */
 export type ItemRenderedEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxMultiView<TItem, TKey>> & ItemInfo<TItem>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_multi_view_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxMultiView<TItem, TKey>> & ChangedOptionInfo;
 
 /**
- * The type of the selectionChanged event handler&apos;s argument.
+ * @docid _ui_multi_view_SelectionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,SelectionChangedInfo
  */
 export type SelectionChangedEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxMultiView<TItem, TKey>> & SelectionChangedInfo<TItem>;
 
 /**
- * 
- * @deprecated 
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @public
+ * @docid
  */
 export interface dxMultiViewOptions<
     TItem extends ItemLike = any,
@@ -82,9 +108,9 @@ export interface dxMultiViewOptions<
 > extends dxMultiViewBaseOptions<dxMultiView<TItem, TKey>, TItem, TKey> {}
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid dxMultiViewOptions
  */
 export interface dxMultiViewBaseOptions<
     TComponent extends dxMultiView<TItem, TKey> = dxMultiView<any, any>,
@@ -92,55 +118,81 @@ export interface dxMultiViewBaseOptions<
     TKey = any,
 > extends CollectionWidgetOptions<TComponent, TItem, TKey> {
     /**
-     * Specifies whether or not to animate the displayed item change.
+     * @docid dxMultiViewOptions.animationEnabled
+     * @default true
+     * @public
      */
     animationEnabled?: boolean;
     /**
-     * Binds the UI component to data.
+     * @docid dxMultiViewOptions.dataSource
+     * @type string | Array<string | dxMultiViewItem | any> | Store | DataSource | DataSourceOptions | null
+     * @default null
+     * @public
      */
     dataSource?: DataSourceLike<TItem, TKey> | null;
     /**
-     * Specifies whether to render the view&apos;s content when it is displayed. If false, the content is rendered immediately.
+     * @docid dxMultiViewOptions.deferRendering
+     * @default true
+     * @public
      */
     deferRendering?: boolean;
     /**
-     * Specifies whether the UI component can be focused using keyboard navigation.
+     * @docid dxMultiViewOptions.focusStateEnabled
+     * @default true &for(desktop)
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * An array of items displayed by the UI component.
+     * @docid dxMultiViewOptions.items
+     * @type Array<string | dxMultiViewItem | any>
+     * @fires dxMultiViewOptions.onOptionChanged
+     * @public
      */
     items?: Array<TItem>;
     /**
-     * A Boolean value specifying whether or not to scroll back to the first item after the last item is swiped.
+     * @docid dxMultiViewOptions.loop
+     * @default false
+     * @public
      */
     loop?: boolean;
     /**
-     * The index of the currently displayed item.
+     * @docid dxMultiViewOptions.selectedIndex
+     * @default 0
+     * @public
      */
     selectedIndex?: number;
     /**
-     * A Boolean value specifying whether or not to allow users to change the selected index by swiping.
+     * @docid dxMultiViewOptions.swipeEnabled
+     * @default true
+     * @public
      */
     swipeEnabled?: boolean;
 }
 
 /**
- * The MultiView is a UI component that contains several views. An end user navigates through the views by swiping them in the horizontal direction.
+ * @docid
+ * @inherits CollectionWidget
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxMultiView<
     TItem extends ItemLike = any,
     TKey = any,
 > extends CollectionWidget<Properties<TItem, TKey>, TItem, TKey> { }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxMultiView
+ */
 export type Item = dxMultiViewItem;
 
  /**
- * @deprecated Use Item instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+  * @deprecated Use Item instead
+  * @namespace DevExpress.ui
+  */
 export interface dxMultiViewItem extends CollectionWidgetItem {}
 
+/** @public */
 export type ExplicitTypes<
     TItem extends ItemLike,
     TKey,
@@ -157,15 +209,13 @@ export type ExplicitTypes<
     SelectionChangedEvent: SelectionChangedEvent<TItem, TKey>;
 };
 
+/** @public */
 export type Properties<
     TItem extends ItemLike = any,
     TKey = any,
 > = dxMultiViewOptions<TItem, TKey>;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options<
     TItem extends ItemLike = any,
     TKey = any,

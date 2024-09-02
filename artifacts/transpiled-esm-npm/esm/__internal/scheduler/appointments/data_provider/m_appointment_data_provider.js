@@ -1,8 +1,8 @@
 import config from '../../../../core/config';
-import { combineRemoteFilter } from '../../__migration/filterting/index';
+import { combineRemoteFilter } from '../../../scheduler/r1/filterting/index';
 import { AppointmentDataSource } from './m_appointment_data_source';
 import { AppointmentFilterBaseStrategy, AppointmentFilterVirtualStrategy } from './m_appointment_filter';
-var FilterStrategies = {
+const FilterStrategies = {
   virtual: 'virtual',
   standard: 'standard'
 };
@@ -31,7 +31,7 @@ export class AppointmentDataProvider {
     return this.filterStrategy;
   }
   initFilterStrategy() {
-    var filterOptions = {
+    const filterOptions = {
       resources: this.options.resources,
       dataAccessors: this.dataAccessors,
       startDayHour: this.options.startDayHour,
@@ -69,8 +69,8 @@ export class AppointmentDataProvider {
     if (!this.dataSource || !remoteFiltering) {
       return;
     }
-    var dataSourceFilter = this.dataSource.filter();
-    var filter = combineRemoteFilter({
+    const dataSourceFilter = this.dataSource.filter();
+    const filter = combineRemoteFilter({
       dataSourceFilter,
       dataAccessors: this.dataAccessors,
       min,

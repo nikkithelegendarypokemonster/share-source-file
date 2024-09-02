@@ -1,4 +1,4 @@
-var nextDataKey = 1;
+let nextDataKey = 1;
 export function generateDataKey() {
   return 'vectormap-data-' + nextDataKey++;
 }

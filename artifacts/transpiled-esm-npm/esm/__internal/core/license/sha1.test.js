@@ -242,7 +242,7 @@ describe('sha1', () => {
     message: 'TLRjJXN6bJmps3iUprU2ULJ6c50lMa6gImI2PZzFlaLZs1uvxyWzk48idVh6LsS13E3Lk95DY9WkKNWtLkFwOkVzMGCcU080Vq+9npYlOymReowrmEDKV83AzWBxaWGSnGh/O192KSctQDMytGFBS5RoUYlo2jglVJ5/r0VSJ2jSj9heJV+dbsyYUp2xd71MIFN4P7aLnrUzgJeuWnpz3GXfV6mvi6dZt7RAwaaN1sdpa1i5WJDR4lCn4L9HzF2jQyNMnnk2pdVxkrHg0rfWduN9hZzfxDGmV0rZp38tUDgyzyJRRVpQmZQjgbEgsKeoQFnMR3d1lQ==',
     expected: '82627fd1f0fff026671b23498855c7b1046771ed'
   }])('computes [%#]', _ref => {
-    var {
+    let {
       message,
       expected
     } = _ref;
@@ -267,7 +267,7 @@ describe('sha1', () => {
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     expected: [1282372197, 1830840688, 1937075488, 1685023855, 1914729321, 1948279149, 1702112288, 1668247155, 1701016677, 1953853984, 1633970544, 1769169769, 1852252261, 1818850350, 2147483648, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 448] // eslint-disable-line max-len
   }])('prepares text [%#]', _ref2 => {
-    var {
+    let {
       message,
       expected
     } = _ref2;

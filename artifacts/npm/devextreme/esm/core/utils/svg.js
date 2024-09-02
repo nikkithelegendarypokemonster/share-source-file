@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/utils/svg.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,10 +9,11 @@
 import domAdapter from '../../core/dom_adapter';
 import { getWindow } from './window';
 import $ from '../../core/renderer';
-var window = getWindow();
+import { isRenderer, isString } from './type';
+const window = getWindow();
 function getMarkup(element, backgroundColor) {
-  var temp = domAdapter.createElement('div');
-  var clone = element.cloneNode(true);
+  const temp = domAdapter.createElement('div');
+  const clone = element.cloneNode(true);
   if (backgroundColor) {
     $(clone).css('backgroundColor', backgroundColor);
   }
@@ -20,7 +21,7 @@ function getMarkup(element, backgroundColor) {
   return temp.innerHTML;
 }
 function fixNamespaces(markup) {
-  var first = true;
+  let first = true;
   if (markup.indexOf('xmlns:xlink') === -1) {
     markup = markup.replace('<svg', '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
   }
@@ -37,10 +38,17 @@ function fixNamespaces(markup) {
 function decodeHtmlEntities(markup) {
   return markup.replace(/&quot;/gi, '&#34;').replace(/&amp;/gi, '&#38;').replace(/&apos;/gi, '&#39;').replace(/&lt;/gi, '&#60;').replace(/&gt;/gi, '&#62;').replace(/&nbsp;/gi, '&#160;').replace(/&shy;/gi, '&#173;');
 }
-export var HIDDEN_FOR_EXPORT = 'hidden-for-export';
+export const HIDDEN_FOR_EXPORT = 'hidden-for-export';
 export function getSvgMarkup(element, backgroundColor) {
   return fixNamespaces(decodeHtmlEntities(getMarkup(element, backgroundColor)));
 }
 export function getSvgElement(markup) {
-  return domAdapter.isNode(markup) ? markup : new window.DOMParser().parseFromString(markup, 'image/svg+xml').childNodes[0];
+  if (isString(markup)) {
+    const parsedMarkup = new window.DOMParser().parseFromString(markup, 'image/svg+xml').childNodes[0];
+    return parsedMarkup;
+  } else if (domAdapter.isNode(markup)) {
+    return markup;
+  } else if (isRenderer(markup)) {
+    return markup.get(0);
+  }
 }

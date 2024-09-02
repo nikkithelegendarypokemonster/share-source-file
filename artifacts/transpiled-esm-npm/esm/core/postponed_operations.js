@@ -8,7 +8,7 @@ export class PostponedOperations {
     if (key in this._postponedOperations) {
       postponedPromise && this._postponedOperations[key].promises.push(postponedPromise);
     } else {
-      var completePromise = new Deferred();
+      const completePromise = new Deferred();
       this._postponedOperations[key] = {
         fn: fn,
         completePromise: completePromise,
@@ -18,8 +18,8 @@ export class PostponedOperations {
     return this._postponedOperations[key].completePromise.promise();
   }
   callPostponedOperations() {
-    for (var key in this._postponedOperations) {
-      var operation = this._postponedOperations[key];
+    for (const key in this._postponedOperations) {
+      const operation = this._postponedOperations[key];
       if (isDefined(operation)) {
         if (operation.promises && operation.promises.length) {
           when(...operation.promises).done(operation.fn).then(operation.completePromise.resolve);

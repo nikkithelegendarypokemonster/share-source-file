@@ -1,7 +1,7 @@
 /**
 * DevExtreme (viz/bullet.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -23,109 +23,162 @@ import BaseSparkline, {
 } from './sparklines/base_sparkline';
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _viz_bullet_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxBullet>;
 
 /**
- * The type of the drawn event handler&apos;s argument.
+ * @docid _viz_bullet_DrawnEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DrawnEvent = EventInfo<dxBullet>;
 
 /**
- * The type of the exported event handler&apos;s argument.
+ * @docid _viz_bullet_ExportedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ExportedEvent = EventInfo<dxBullet>;
 
 /**
- * The type of the exporting event handler&apos;s argument.
+ * @docid _viz_bullet_ExportingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ExportInfo
  */
 export type ExportingEvent = EventInfo<dxBullet> & ExportInfo;
 
 /**
- * The type of the fileSaving event handler&apos;s argument.
+ * @docid _viz_bullet_FileSavingEvent
+ * @public
+ * @type object
+ * @inherits FileSavingEventInfo
  */
 export type FileSavingEvent = FileSavingEventInfo<dxBullet>;
 
 /**
- * The type of the incidentOccurred event handler&apos;s argument.
+ * @docid _viz_bullet_IncidentOccurredEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,IncidentInfo
  */
 export type IncidentOccurredEvent = EventInfo<dxBullet> & IncidentInfo;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _viz_bullet_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxBullet>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _viz_bullet_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxBullet> & ChangedOptionInfo;
 
 /**
- * The type of the tooltipHidden event handler&apos;s argument.
+ * @docid _viz_bullet_TooltipHiddenEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type TooltipHiddenEvent = EventInfo<dxBullet>;
 
 /**
- * The type of the tooltipShown event handler&apos;s argument.
+ * @docid _viz_bullet_TooltipShownEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type TooltipShownEvent = EventInfo<dxBullet>;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.viz
+ * @docid
  */
 export interface dxBulletOptions extends BaseSparklineOptions<dxBullet> {
     /**
-     * Specifies a color for the bullet bar.
+     * @docid
+     * @default '#e8c267'
+     * @public
      */
     color?: string;
     /**
-     * Specifies an end value for the invisible scale.
+     * @docid
+     * @default undefined
+     * @notUsedInTheme
+     * @public
      */
     endScaleValue?: number;
     /**
-     * Specifies whether or not to show the target line.
+     * @docid
+     * @default true
+     * @public
      */
     showTarget?: boolean;
     /**
-     * Specifies whether or not to show the line indicating zero on the invisible scale.
+     * @docid
+     * @default true
+     * @public
      */
     showZeroLevel?: boolean;
     /**
-     * Specifies a start value for the invisible scale.
+     * @docid
+     * @default 0
+     * @notUsedInTheme
+     * @public
      */
     startScaleValue?: number;
     /**
-     * Specifies the value indicated by the target line.
+     * @docid
+     * @default 0
+     * @notUsedInTheme
+     * @public
      */
     target?: number;
     /**
-     * Specifies a color for both the target and zero level lines.
+     * @docid
+     * @default '#666666'
+     * @public
      */
     targetColor?: string;
     /**
-     * Specifies the width of the target line.
+     * @docid
+     * @default 4
+     * @public
      */
     targetWidth?: number;
     /**
-     * Specifies the primary value indicated by the bullet bar.
+     * @docid
+     * @default 0
+     * @notUsedInTheme
+     * @public
      */
     value?: number;
 }
 /**
- * The Bullet UI component is useful when you need to compare a single measure to a target value. The UI component comprises a horizontal bar indicating the measure and a vertical line indicating the target value.
+ * @docid
+ * @inherits BaseSparkline
+ * @namespace DevExpress.viz
+ * @public
  */
 export default class dxBullet extends BaseSparkline<dxBulletOptions> { }
 
+/** @public */
 export type Properties = dxBulletOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxBulletOptions;
 
 

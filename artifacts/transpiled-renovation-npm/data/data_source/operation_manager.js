@@ -1,35 +1,12 @@
 "use strict";
 
-exports.default = void 0;
-var _utils = require("./utils");
-let OperationManager = exports.default = /*#__PURE__*/function () {
-  function OperationManager() {
-    this._counter = -1;
-    this._deferreds = {};
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    return _m_operation_manager.default;
   }
-  var _proto = OperationManager.prototype;
-  _proto.add = function add(deferred) {
-    this._counter++;
-    this._deferreds[this._counter] = deferred;
-    return this._counter;
-  };
-  _proto.remove = function remove(operationId) {
-    return delete this._deferreds[operationId];
-  };
-  _proto.cancel = function cancel(operationId) {
-    if (operationId in this._deferreds) {
-      this._deferreds[operationId].reject(_utils.CANCELED_TOKEN);
-      return true;
-    }
-    return false;
-  };
-  _proto.cancelAll = function cancelAll() {
-    while (this._counter > -1) {
-      this.cancel(this._counter);
-      this._counter--;
-    }
-  };
-  return OperationManager;
-}();
+});
+var _m_operation_manager = _interopRequireDefault(require("../../__internal/data/data_source/m_operation_manager"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 module.exports = exports.default;
 module.exports.default = exports.default;

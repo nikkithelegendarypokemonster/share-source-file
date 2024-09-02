@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/file_management/provider_base.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -18,8 +18,8 @@ var _deferred = require("../core/utils/deferred");
 var _file_system_item = _interopRequireDefault(require("./file_system_item"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const DEFAULT_FILE_UPLOAD_CHUNK_SIZE = 200000;
-let FileSystemProviderBase = /*#__PURE__*/function () {
-  function FileSystemProviderBase(options) {
+class FileSystemProviderBase {
+  constructor(options) {
     options = (0, _common.ensureDefined)(options, {});
     this._keyGetter = (0, _data.compileGetter)(this._getKeyExpr(options));
     this._nameGetter = (0, _data.compileGetter)(this._getNameExpr(options));
@@ -28,31 +28,30 @@ let FileSystemProviderBase = /*#__PURE__*/function () {
     this._dateModifiedGetter = (0, _data.compileGetter)(this._getDateModifiedExpr(options));
     this._thumbnailGetter = (0, _data.compileGetter)(options.thumbnailExpr || 'thumbnail');
   }
-  var _proto = FileSystemProviderBase.prototype;
-  _proto.getItems = function getItems(parentDirectory) {
+  getItems(parentDirectory) {
     return [];
-  };
-  _proto.renameItem = function renameItem(item, name) {};
-  _proto.createDirectory = function createDirectory(parentDirectory, name) {};
-  _proto.deleteItems = function deleteItems(items) {};
-  _proto.moveItems = function moveItems(items, destinationDirectory) {};
-  _proto.copyItems = function copyItems(items, destinationDirectory) {};
-  _proto.uploadFileChunk = function uploadFileChunk(fileData, chunksInfo, destinationDirectory) {};
-  _proto.abortFileUpload = function abortFileUpload(fileData, chunksInfo, destinationDirectory) {};
-  _proto.downloadItems = function downloadItems(items) {};
-  _proto.getItemsContent = function getItemsContent(items) {};
-  _proto.getFileUploadChunkSize = function getFileUploadChunkSize() {
+  }
+  renameItem(item, name) {}
+  createDirectory(parentDirectory, name) {}
+  deleteItems(items) {}
+  moveItems(items, destinationDirectory) {}
+  copyItems(items, destinationDirectory) {}
+  uploadFileChunk(fileData, chunksInfo, destinationDirectory) {}
+  abortFileUpload(fileData, chunksInfo, destinationDirectory) {}
+  downloadItems(items) {}
+  getItemsContent(items) {}
+  getFileUploadChunkSize() {
     return DEFAULT_FILE_UPLOAD_CHUNK_SIZE;
-  };
-  _proto._convertDataObjectsToFileItems = function _convertDataObjectsToFileItems(entries, pathInfo) {
+  }
+  _convertDataObjectsToFileItems(entries, pathInfo) {
     const result = [];
     (0, _iterator.each)(entries, (_, entry) => {
       const fileItem = this._createFileItem(entry, pathInfo);
       result.push(fileItem);
     });
     return result;
-  };
-  _proto._createFileItem = function _createFileItem(dataObj, pathInfo) {
+  }
+  _createFileItem(dataObj, pathInfo) {
     const key = this._keyGetter(dataObj);
     const fileItem = new _file_system_item.default(pathInfo, this._nameGetter(dataObj), !!this._isDirGetter(dataObj), key);
     fileItem.size = this._sizeGetter(dataObj);
@@ -72,33 +71,33 @@ let FileSystemProviderBase = /*#__PURE__*/function () {
     fileItem.thumbnail = this._thumbnailGetter(dataObj) || '';
     fileItem.dataItem = dataObj;
     return fileItem;
-  };
-  _proto._hasSubDirs = function _hasSubDirs(dataObj) {
+  }
+  _hasSubDirs(dataObj) {
     return true;
-  };
-  _proto._getKeyExpr = function _getKeyExpr(options) {
+  }
+  _getKeyExpr(options) {
     return options.keyExpr || this._defaultKeyExpr;
-  };
-  _proto._defaultKeyExpr = function _defaultKeyExpr(fileItem) {
+  }
+  _defaultKeyExpr(fileItem) {
     if (arguments.length === 2) {
       fileItem.__KEY__ = arguments[1];
       return;
     }
     return Object.prototype.hasOwnProperty.call(fileItem, '__KEY__') ? fileItem.__KEY__ : null;
-  };
-  _proto._getNameExpr = function _getNameExpr(options) {
+  }
+  _getNameExpr(options) {
     return options.nameExpr || 'name';
-  };
-  _proto._getIsDirExpr = function _getIsDirExpr(options) {
+  }
+  _getIsDirExpr(options) {
     return options.isDirectoryExpr || 'isDirectory';
-  };
-  _proto._getSizeExpr = function _getSizeExpr(options) {
+  }
+  _getSizeExpr(options) {
     return options.sizeExpr || 'size';
-  };
-  _proto._getDateModifiedExpr = function _getDateModifiedExpr(options) {
+  }
+  _getDateModifiedExpr(options) {
     return options.dateModifiedExpr || 'dateModified';
-  };
-  _proto._executeActionAsDeferred = function _executeActionAsDeferred(action, keepResult) {
+  }
+  _executeActionAsDeferred(action, keepResult) {
     const deferred = new _deferred.Deferred();
     try {
       const result = action();
@@ -111,9 +110,8 @@ let FileSystemProviderBase = /*#__PURE__*/function () {
       return deferred.reject(error);
     }
     return deferred.promise();
-  };
-  return FileSystemProviderBase;
-}();
+  }
+}
 var _default = exports.default = FileSystemProviderBase;
 module.exports = exports.default;
 module.exports.default = exports.default;

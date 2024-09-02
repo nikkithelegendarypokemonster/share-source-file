@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/notify.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -41,22 +41,46 @@ interface Stack {
 }
 
 /**
- * Creates a toast message.
+ * @docid ui.notify
+ * @static
+ * @publicName notify(message,type,displayTime)
+ * @param2 type:string|undefined
+ * @param3 displayTime:integer|undefined
+ * @public
  */
 declare function notify(message: string, type?: string, displayTime?: number): void;
 
 /**
- * Creates a toast message.
+ * @docid ui.notify
+ * @static
+ * @publicName notify(options,type,displayTime)
+ * @param1 options:object
+ * @param2 type:string|undefined
+ * @param3 displayTime:integer|undefined
+ * @public
  */
 declare function notify(options: any, type?: string, displayTime?: number): void;
 
 /**
- * Creates a stackable toast message.
+ * @docid ui.notify
+ * @static
+ * @publicName notify(message,stack)
+ * @param2 stack:object
+ * @param2_field direction:string
+ * @param2_field position:string
+ * @public
  */
 declare function notify(message: string, stack?: Stack): void;
 
 /**
- * Creates a stackable toast message.
+ * @docid ui.notify
+ * @static
+ * @publicName notify(options,stack)
+ * @param1 options:object
+ * @param2 stack:object
+ * @param2_field direction:string
+ * @param2_field position:string
+ * @public
  */
 declare function notify(options: any, stack?: Stack): void;
 

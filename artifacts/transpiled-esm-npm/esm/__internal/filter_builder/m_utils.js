@@ -13,12 +13,12 @@ import filterUtils from '../../ui/shared/filtering';
 import errors from '../../ui/widget/ui.errors';
 import { getConfig } from './m_between';
 import filterOperationsDictionary from './m_filter_operations_dictionary';
-var DEFAULT_DATA_TYPE = 'string';
-var EMPTY_MENU_ICON = 'icon-none';
-var AND_GROUP_OPERATION = 'and';
-var EQUAL_OPERATION = '=';
-var NOT_EQUAL_OPERATION = '<>';
-var DATATYPE_OPERATIONS = {
+const DEFAULT_DATA_TYPE = 'string';
+const EMPTY_MENU_ICON = 'icon-none';
+const AND_GROUP_OPERATION = 'and';
+const EQUAL_OPERATION = '=';
+const NOT_EQUAL_OPERATION = '<>';
+const DATATYPE_OPERATIONS = {
   number: ['=', '<>', '<', '>', '<=', '>=', 'isblank', 'isnotblank'],
   string: ['contains', 'notcontains', 'startswith', 'endswith', '=', '<>', 'isblank', 'isnotblank'],
   date: ['=', '<>', '<', '>', '<=', '>=', 'isblank', 'isnotblank'],
@@ -26,19 +26,19 @@ var DATATYPE_OPERATIONS = {
   boolean: ['=', '<>', 'isblank', 'isnotblank'],
   object: ['isblank', 'isnotblank']
 };
-var DEFAULT_FORMAT = {
+const DEFAULT_FORMAT = {
   date: 'shortDate',
   datetime: 'shortDateShortTime'
 };
-var LOOKUP_OPERATIONS = ['=', '<>', 'isblank', 'isnotblank'];
-var AVAILABLE_FIELD_PROPERTIES = ['caption', 'customizeText', 'dataField', 'dataType', 'editorTemplate', 'falseText', 'editorOptions', 'filterOperations', 'format', 'lookup', 'trueText', 'calculateFilterExpression', 'name'];
-var FILTER_BUILDER_CLASS = 'dx-filterbuilder';
-var FILTER_BUILDER_ITEM_TEXT_CLASS = "".concat(FILTER_BUILDER_CLASS, "-text");
-var FILTER_BUILDER_ITEM_TEXT_PART_CLASS = "".concat(FILTER_BUILDER_ITEM_TEXT_CLASS, "-part");
-var FILTER_BUILDER_ITEM_TEXT_SEPARATOR_CLASS = "".concat(FILTER_BUILDER_ITEM_TEXT_CLASS, "-separator");
-var FILTER_BUILDER_ITEM_TEXT_SEPARATOR_EMPTY_CLASS = "".concat(FILTER_BUILDER_ITEM_TEXT_SEPARATOR_CLASS, "-empty");
+const LOOKUP_OPERATIONS = ['=', '<>', 'isblank', 'isnotblank'];
+const AVAILABLE_FIELD_PROPERTIES = ['caption', 'customizeText', 'dataField', 'dataType', 'editorTemplate', 'falseText', 'editorOptions', 'filterOperations', 'format', 'lookup', 'trueText', 'calculateFilterExpression', 'name'];
+const FILTER_BUILDER_CLASS = 'dx-filterbuilder';
+const FILTER_BUILDER_ITEM_TEXT_CLASS = `${FILTER_BUILDER_CLASS}-text`;
+const FILTER_BUILDER_ITEM_TEXT_PART_CLASS = `${FILTER_BUILDER_ITEM_TEXT_CLASS}-part`;
+const FILTER_BUILDER_ITEM_TEXT_SEPARATOR_CLASS = `${FILTER_BUILDER_ITEM_TEXT_CLASS}-separator`;
+const FILTER_BUILDER_ITEM_TEXT_SEPARATOR_EMPTY_CLASS = `${FILTER_BUILDER_ITEM_TEXT_SEPARATOR_CLASS}-empty`;
 function getFormattedValueText(field, value) {
-  var fieldFormat = field.format || DEFAULT_FORMAT[field.dataType];
+  const fieldFormat = field.format || DEFAULT_FORMAT[field.dataType];
   return formatHelper.format(value, fieldFormat);
 }
 function isNegationGroup(group) {
@@ -56,16 +56,16 @@ function setGroupCriteria(group, criteria) {
   return group;
 }
 function convertGroupToNewStructure(group, value) {
-  var isNegationValue = function isNegationValue(value) {
+  const isNegationValue = function (value) {
     return value.indexOf('!') !== -1;
   };
-  var convertGroupToNegationGroup = function convertGroupToNegationGroup(group) {
-    var criteria = group.slice(0);
+  const convertGroupToNegationGroup = function (group) {
+    const criteria = group.slice(0);
     group.length = 0;
     group.push('!', criteria);
   };
-  var convertNegationGroupToGroup = function convertNegationGroupToGroup(group) {
-    var criteria = getGroupCriteria(group);
+  const convertNegationGroupToGroup = function (group) {
+    const criteria = getGroupCriteria(group);
     group.length = 0;
     [].push.apply(group, criteria);
   };
@@ -79,12 +79,12 @@ function convertGroupToNewStructure(group, value) {
 }
 export function setGroupValue(group, value) {
   convertGroupToNewStructure(group, value);
-  var criteria = getGroupCriteria(group);
-  var i;
-  var getNormalizedGroupValue = function getNormalizedGroupValue(value) {
+  const criteria = getGroupCriteria(group);
+  let i;
+  const getNormalizedGroupValue = function (value) {
     return value.indexOf('!') === -1 ? value : value.substring(1);
   };
-  var changeCriteriaValue = function changeCriteriaValue(criteria, value) {
+  const changeCriteriaValue = function (criteria, value) {
     for (i = 0; i < criteria.length; i++) {
       if (!Array.isArray(criteria[i])) {
         criteria[i] = value;
@@ -96,16 +96,16 @@ export function setGroupValue(group, value) {
   return group;
 }
 export function getGroupMenuItem(group, availableGroups) {
-  var groupValue = getGroupValue(group);
+  const groupValue = getGroupValue(group);
   return availableGroups.filter(item => item.value === groupValue)[0];
 }
 function getCriteriaOperation(criteria) {
   if (isCondition(criteria)) {
     return AND_GROUP_OPERATION;
   }
-  var value = '';
-  for (var i = 0; i < criteria.length; i++) {
-    var item = criteria[i];
+  let value = '';
+  for (let i = 0; i < criteria.length; i++) {
+    const item = criteria[i];
     if (!Array.isArray(item)) {
       if (value && value !== item) {
         throw new dataErrors.Error('E4019');
@@ -118,13 +118,13 @@ function getCriteriaOperation(criteria) {
   return value;
 }
 export function getGroupValue(group) {
-  var criteria = getGroupCriteria(group);
-  var value = getCriteriaOperation(criteria);
+  const criteria = getGroupCriteria(group);
+  let value = getCriteriaOperation(criteria);
   if (!value) {
     value = AND_GROUP_OPERATION;
   }
   if (criteria !== group) {
-    value = "!".concat(value);
+    value = `!${value}`;
   }
   return value;
 }
@@ -135,15 +135,15 @@ function containItems(entity) {
   return Array.isArray(entity) && entity.length;
 }
 export function getFilterOperations(field) {
-  var result = containItems(field.filterOperations) ? field.filterOperations : getDefaultFilterOperations(field);
+  const result = containItems(field.filterOperations) ? field.filterOperations : getDefaultFilterOperations(field);
   return extend([], result);
 }
 export function getCaptionByOperation(operation, filterOperationDescriptions) {
-  var operationName = filterOperationsDictionary.getNameByFilterOperation(operation);
+  const operationName = filterOperationsDictionary.getNameByFilterOperation(operation);
   return filterOperationDescriptions && filterOperationDescriptions[operationName] ? filterOperationDescriptions[operationName] : operationName;
 }
 export function getOperationFromAvailable(operation, availableOperations) {
-  for (var i = 0; i < availableOperations.length; i++) {
+  for (let i = 0; i < availableOperations.length; i++) {
     if (availableOperations[i].value === operation) {
       return availableOperations[i];
     }
@@ -152,23 +152,23 @@ export function getOperationFromAvailable(operation, availableOperations) {
   throw new errors.Error('E1048', operation);
 }
 export function getCustomOperation(customOperations, name) {
-  var filteredOperations = customOperations.filter(item => item.name === name);
+  const filteredOperations = customOperations.filter(item => item.name === name);
   return filteredOperations.length ? filteredOperations[0] : null;
 }
 export function getAvailableOperations(field, filterOperationDescriptions, customOperations) {
-  var filterOperations = getFilterOperations(field);
-  var isLookupField = !!field.lookup;
+  const filterOperations = getFilterOperations(field);
+  const isLookupField = !!field.lookup;
   customOperations.forEach(customOperation => {
     if (!field.filterOperations && filterOperations.indexOf(customOperation.name) === -1) {
-      var dataTypes = customOperation && customOperation.dataTypes;
-      var isOperationForbidden = isLookupField ? !!customOperation.notForLookup : false;
+      const dataTypes = customOperation && customOperation.dataTypes;
+      const isOperationForbidden = isLookupField ? !!customOperation.notForLookup : false;
       if (!isOperationForbidden && dataTypes && dataTypes.indexOf(field.dataType || DEFAULT_DATA_TYPE) >= 0) {
         filterOperations.push(customOperation.name);
       }
     }
   });
   return filterOperations.map(operation => {
-    var customOperation = getCustomOperation(customOperations, operation);
+    const customOperation = getCustomOperation(customOperations, operation);
     if (customOperation) {
       return {
         icon: customOperation.icon || EMPTY_MENU_ICON,
@@ -188,14 +188,14 @@ export function getDefaultOperation(field) {
   return field.defaultFilterOperation || getFilterOperations(field)[0];
 }
 export function createCondition(field, customOperations) {
-  var condition = [field.dataField, '', ''];
-  var filterOperation = getDefaultOperation(field);
+  const condition = [field.dataField, '', ''];
+  const filterOperation = getDefaultOperation(field);
   updateConditionByOperation(condition, filterOperation, customOperations);
   return condition;
 }
 export function removeItem(group, item) {
-  var criteria = getGroupCriteria(group);
-  var index = criteria.indexOf(item);
+  const criteria = getGroupCriteria(group);
+  const index = criteria.indexOf(item);
   criteria.splice(index, 1);
   if (criteria.length !== 1) {
     criteria.splice(index, 1);
@@ -203,26 +203,26 @@ export function removeItem(group, item) {
   return group;
 }
 export function createEmptyGroup(value) {
-  var isNegation = isNegationGroupOperation(value);
-  var groupOperation = isNegation ? getGroupOperationFromNegationOperation(value) : value;
+  const isNegation = isNegationGroupOperation(value);
+  const groupOperation = isNegation ? getGroupOperationFromNegationOperation(value) : value;
   return isNegation ? ['!', [groupOperation]] : [groupOperation];
 }
 export function isEmptyGroup(group) {
-  var criteria = getGroupCriteria(group);
+  const criteria = getGroupCriteria(group);
   if (isCondition(criteria)) {
     return false;
   }
-  var hasConditions = criteria.some(item => isCondition(item));
+  const hasConditions = criteria.some(item => isCondition(item));
   return !hasConditions;
 }
 export function addItem(item, group) {
-  var criteria = getGroupCriteria(group);
-  var groupValue = getGroupValue(criteria);
+  const criteria = getGroupCriteria(group);
+  const groupValue = getGroupValue(criteria);
   criteria.length === 1 ? criteria.unshift(item) : criteria.push(item, groupValue);
   return group;
 }
 export function getField(dataField, fields) {
-  for (var i = 0; i < fields.length; i++) {
+  for (let i = 0; i < fields.length; i++) {
     if (fields[i].name === dataField) {
       return fields[i];
     }
@@ -230,7 +230,7 @@ export function getField(dataField, fields) {
       return fields[i];
     }
   }
-  var extendedFields = getItems(fields, true).filter(item => item.dataField.toLowerCase() === dataField.toLowerCase());
+  const extendedFields = getItems(fields, true).filter(item => item.dataField.toLowerCase() === dataField.toLowerCase());
   if (extendedFields.length > 0) {
     return extendedFields[0];
   }
@@ -251,9 +251,9 @@ export function isCondition(criteria) {
 }
 function convertToInnerGroup(group, customOperations, defaultGroupOperation) {
   defaultGroupOperation = defaultGroupOperation || AND_GROUP_OPERATION;
-  var groupOperation = getCriteriaOperation(group).toLowerCase() || defaultGroupOperation;
-  var innerGroup = [];
-  for (var i = 0; i < group.length; i++) {
+  const groupOperation = getCriteriaOperation(group).toLowerCase() || defaultGroupOperation;
+  let innerGroup = [];
+  for (let i = 0; i < group.length; i++) {
     if (isGroup(group[i])) {
       innerGroup.push(convertToInnerStructure(group[i], customOperations, defaultGroupOperation));
       innerGroup = appendGroupOperationToGroup(innerGroup, groupOperation);
@@ -268,7 +268,7 @@ function convertToInnerGroup(group, customOperations, defaultGroupOperation) {
   return innerGroup;
 }
 function conditionHasCustomOperation(condition, customOperations) {
-  var customOperation = getCustomOperation(customOperations, condition[1]);
+  const customOperation = getCustomOperation(customOperations, condition[1]);
   return customOperation && customOperation.name === condition[1];
 }
 function convertToInnerCondition(condition, customOperations) {
@@ -289,15 +289,15 @@ function getGroupOperationFromNegationOperation(operation) {
   return operation.substring(3).toLowerCase();
 }
 function appendGroupOperationToCriteria(criteria, groupOperation) {
-  var isNegation = isNegationGroupOperation(groupOperation);
+  const isNegation = isNegationGroupOperation(groupOperation);
   groupOperation = isNegation ? getGroupOperationFromNegationOperation(groupOperation) : groupOperation;
   return isNegation ? ['!', criteria, groupOperation] : [criteria, groupOperation];
 }
 function appendGroupOperationToGroup(group, groupOperation) {
-  var isNegation = isNegationGroupOperation(groupOperation);
+  const isNegation = isNegationGroupOperation(groupOperation);
   groupOperation = isNegation ? getGroupOperationFromNegationOperation(groupOperation) : groupOperation;
   group.push(groupOperation);
-  var result = group;
+  let result = group;
   if (isNegation) {
     result = ['!', result];
   }
@@ -320,9 +320,9 @@ export function convertToInnerStructure(value, customOperations, defaultGroupOpe
 export function getNormalizedFields(fields) {
   return fields.reduce((result, field) => {
     if (isDefined(field.dataField)) {
-      var normalizedField = {};
+      const normalizedField = {};
       // eslint-disable-next-line no-restricted-syntax
-      for (var key in field) {
+      for (const key in field) {
         if (field[key] && AVAILABLE_FIELD_PROPERTIES.includes(key)) {
           normalizedField[key] = field[key];
         }
@@ -343,9 +343,9 @@ export function getNormalizedFields(fields) {
   }, []);
 }
 function getConditionFilterExpression(condition, fields, customOperations, target) {
-  var field = getField(condition[0], fields);
-  var filterExpression = convertToInnerCondition(condition, customOperations);
-  var customOperation = customOperations.length && getCustomOperation(customOperations, filterExpression[1]);
+  const field = getField(condition[0], fields);
+  const filterExpression = convertToInnerCondition(condition, customOperations);
+  const customOperation = customOperations.length && getCustomOperation(customOperations, filterExpression[1]);
   if (customOperation && customOperation.calculateFilterExpression) {
     return customOperation.calculateFilterExpression.apply(customOperation, [filterExpression[2], field, fields]);
   }
@@ -362,17 +362,17 @@ export function getFilterExpression(value, fields, customOperations, target) {
     return null;
   }
   if (isNegationGroup(value)) {
-    var _filterExpression = getFilterExpression(value[1], fields, customOperations, target);
-    return ['!', _filterExpression];
+    const filterExpression = getFilterExpression(value[1], fields, customOperations, target);
+    return ['!', filterExpression];
   }
-  var criteria = getGroupCriteria(value);
+  const criteria = getGroupCriteria(value);
   if (isCondition(criteria)) {
     return getConditionFilterExpression(criteria, fields, customOperations, target) || null;
   }
-  var result = [];
-  var filterExpression;
-  var groupValue = getGroupValue(criteria);
-  for (var i = 0; i < criteria.length; i++) {
+  let result = [];
+  let filterExpression;
+  const groupValue = getGroupValue(criteria);
+  for (let i = 0; i < criteria.length; i++) {
     if (isGroup(criteria[i])) {
       filterExpression = getFilterExpression(criteria[i], fields, customOperations, target);
       if (filterExpression) {
@@ -394,15 +394,15 @@ export function getFilterExpression(value, fields, customOperations, target) {
   return result.length ? result : null;
 }
 export function getNormalizedFilter(group) {
-  var criteria = getGroupCriteria(group);
-  var i;
+  const criteria = getGroupCriteria(group);
+  let i;
   if (criteria.length === 0) {
     return null;
   }
-  var itemsForRemove = [];
+  const itemsForRemove = [];
   for (i = 0; i < criteria.length; i++) {
     if (isGroup(criteria[i])) {
-      var normalizedGroupValue = getNormalizedFilter(criteria[i]);
+      const normalizedGroupValue = getNormalizedFilter(criteria[i]);
       if (normalizedGroupValue) {
         criteria[i] = normalizedGroupValue;
       } else {
@@ -434,17 +434,17 @@ export function getCurrentLookupValueText(field, value, handler) {
     handler('');
     return;
   }
-  var {
+  const {
     lookup
   } = field;
   if (lookup.items) {
     handler(lookup.calculateCellValue(value) || '');
   } else {
-    var lookupDataSource = isFunction(lookup.dataSource) ? lookup.dataSource({}) : lookup.dataSource;
-    var dataSource = new DataSource(lookupDataSource);
+    const lookupDataSource = isFunction(lookup.dataSource) ? lookup.dataSource({}) : lookup.dataSource;
+    const dataSource = new DataSource(lookupDataSource);
     // @ts-expect-error DataSource is badly typed.
     dataSource.loadSingle(lookup.valueExpr, value).done(result => {
-      var valueText = '';
+      let valueText = '';
       if (result) {
         // @ts-expect-error compileGetter has unknown return type
         valueText = lookup.displayExpr ? compileGetter(lookup.displayExpr)(result) : result;
@@ -462,7 +462,7 @@ export function getCurrentLookupValueText(field, value, handler) {
   }
 }
 function getPrimitiveValueText(field, value, customOperation, target, options) {
-  var valueText;
+  let valueText;
   if (value === true) {
     valueText = field.trueText || messageLocalization.format('dxDataGrid-trueText');
   } else if (value === false) {
@@ -488,7 +488,7 @@ function getPrimitiveValueText(field, value, customOperation, target, options) {
   return valueText;
 }
 function getArrayValueText(field, value, customOperation, target) {
-  var options = {
+  const options = {
     values: value
   };
   return value.map(v => getPrimitiveValueText(field, v, customOperation, target, options));
@@ -497,18 +497,18 @@ function checkDefaultValue(value) {
   return value === '' || value === null;
 }
 export function getCurrentValueText(field, value, customOperation) {
-  var target = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'filterBuilder';
+  let target = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'filterBuilder';
   if (checkDefaultValue(value)) {
     return '';
   }
   if (Array.isArray(value)) {
     // @ts-expect-error Deferred has badly typed ctor function
-    var result = new Deferred();
+    const result = new Deferred();
     when.apply(this, getArrayValueText(field, value, customOperation, target)).done(function () {
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
-      var text = args.some(item => !checkDefaultValue(item)) ? args.map(item => !checkDefaultValue(item) ? item : '?') : '';
+      const text = args.some(item => !checkDefaultValue(item)) ? args.map(item => !checkDefaultValue(item) ? item : '?') : '';
       result.resolve(text);
     });
     return result;
@@ -519,7 +519,7 @@ function itemExists(plainItems, parentId) {
   return plainItems.some(item => item.dataField === parentId);
 }
 function pushItemAndCheckParent(originalItems, plainItems, item) {
-  var {
+  const {
     dataField
   } = item;
   if (hasParent(dataField)) {
@@ -538,7 +538,7 @@ function pushItemAndCheckParent(originalItems, plainItems, item) {
   plainItems.push(item);
 }
 function generateCaptionByDataField(dataField, allowHierarchicalFields) {
-  var caption = '';
+  let caption = '';
   if (allowHierarchicalFields) {
     dataField = dataField.substring(dataField.lastIndexOf('.') + 1);
   } else if (hasParent(dataField)) {
@@ -553,9 +553,9 @@ function generateCaptionByDataField(dataField, allowHierarchicalFields) {
   return captionize(dataField);
 }
 export function getItems(fields, allowHierarchicalFields) {
-  var items = [];
-  for (var i = 0; i < fields.length; i++) {
-    var item = extend(true, {
+  const items = [];
+  for (let i = 0; i < fields.length; i++) {
+    const item = extend(true, {
       caption: generateCaptionByDataField(fields[i].dataField, allowHierarchicalFields)
     }, fields[i]);
     item.id = item.name || item.dataField;
@@ -575,17 +575,17 @@ function getParentIdFromItemDataField(dataField) {
 }
 export function getCaptionWithParents(item, plainItems) {
   if (hasParent(item.dataField)) {
-    var parentId = getParentIdFromItemDataField(item.dataField);
-    for (var i = 0; i < plainItems.length; i++) {
+    const parentId = getParentIdFromItemDataField(item.dataField);
+    for (let i = 0; i < plainItems.length; i++) {
       if (plainItems[i].dataField === parentId) {
-        return "".concat(getCaptionWithParents(plainItems[i], plainItems), ".").concat(item.caption);
+        return `${getCaptionWithParents(plainItems[i], plainItems)}.${item.caption}`;
       }
     }
   }
   return item.caption;
 }
 export function updateConditionByOperation(condition, operation, customOperations) {
-  var customOperation = getCustomOperation(customOperations, operation);
+  let customOperation = getCustomOperation(customOperations, operation);
   if (customOperation) {
     if (customOperation.hasValue === false) {
       condition[1] = operation;
@@ -612,7 +612,7 @@ export function updateConditionByOperation(condition, operation, customOperation
   return condition;
 }
 export function getOperationValue(condition) {
-  var caption;
+  let caption;
   if (condition[2] === null) {
     if (condition[1] === EQUAL_OPERATION) {
       caption = 'isblank';
@@ -629,8 +629,8 @@ export function isValidCondition(condition) {
   return condition[2] !== '';
 }
 export function getMergedOperations(customOperations, betweenCaption, context) {
-  var result = extend(true, [], customOperations);
-  var betweenIndex = -1;
+  const result = extend(true, [], customOperations);
+  let betweenIndex = -1;
   result.some((customOperation, index) => {
     if (customOperation.name === 'between') {
       betweenIndex = index;
@@ -653,13 +653,13 @@ export function removeFieldConditionsFromFilter(filter, dataField) {
     return null;
   }
   if (isCondition(filter)) {
-    var hasMatchedCondition = isMatchedCondition(filter, dataField);
+    const hasMatchedCondition = isMatchedCondition(filter, dataField);
     return !hasMatchedCondition ? filter : null;
   }
   return syncConditionIntoGroup(filter, [dataField], false);
 }
 function syncConditionIntoGroup(filter, addedFilter, canPush) {
-  var result = [];
+  const result = [];
   filter.forEach(item => {
     if (isCondition(item)) {
       if (isMatchedCondition(item, addedFilter[0])) {
@@ -695,7 +695,7 @@ export function syncFilters(filter, addedFilter) {
     }
     return [filter, AND_GROUP_OPERATION, addedFilter];
   }
-  var groupValue = getGroupValue(filter);
+  const groupValue = getGroupValue(filter);
   if (groupValue !== AND_GROUP_OPERATION) {
     return [addedFilter, 'and', filter];
   }
@@ -709,11 +709,11 @@ export function getMatchedConditions(filter, dataField) {
     }
     return [];
   }
-  var groupValue = getGroupValue(filter);
+  const groupValue = getGroupValue(filter);
   if (groupValue !== AND_GROUP_OPERATION) {
     return [];
   }
-  var result = filter.filter(item => isCondition(item) && isMatchedCondition(item, dataField));
+  const result = filter.filter(item => isCondition(item) && isMatchedCondition(item, dataField));
   return result;
 }
 export function filterHasField(filter, dataField) {
@@ -723,9 +723,9 @@ export function filterHasField(filter, dataField) {
   }
   return filter.some(item => (isCondition(item) || isGroup(item)) && filterHasField(item, dataField));
 }
-export var renderValueText = function renderValueText($container, value, customOperation) {
+export const renderValueText = function ($container, value, customOperation) {
   if (Array.isArray(value)) {
-    var lastItemIndex = value.length - 1;
+    const lastItemIndex = value.length - 1;
     $container.empty();
     value.forEach((t, i) => {
       $('<span>').addClass(FILTER_BUILDER_ITEM_TEXT_PART_CLASS).text(t).appendTo($container);

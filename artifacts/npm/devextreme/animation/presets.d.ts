@@ -1,7 +1,7 @@
 /**
 * DevExtreme (animation/presets.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,35 +15,51 @@ import {
 } from './fx';
 
 /**
- * A repository of animations.
+ * @docid
+ * @namespace DevExpress
+ * @public
  */
 declare const animationPresets: {
     /**
-     * Applies the changes made in the animation repository.
+     * @docid
+     * @publicName applyChanges()
+     * @public
      */
     applyChanges(): void;
     /**
-     * Removes all animations from the repository.
+     * @docid
+     * @publicName clear()
+     * @public
      */
     clear(): void;
     /**
-     * Deletes an animation with a specific name.
+     * @docid
+     * @publicName clear(name)
+     * @public
      */
     clear(name: string): void;
     /**
-     * Gets the configuration of an animation with a specific name.
+     * @docid
+     * @publicName getPreset(name)
+     * @public
      */
     getPreset(name: string): AnimationConfig;
     /**
-     * Registers predefined animations in the animation repository.
+     * @docid
+     * @publicName registerDefaultPresets()
+     * @public
      */
     registerDefaultPresets(): void;
     /**
-     * Adds an animation with a specific name to the animation repository.
+     * @docid
+     * @publicName registerPreset(name, config)
+     * @public
      */
     registerPreset(name: string, config: { animation: AnimationConfig; device?: Device }): void;
     /**
-     * Deletes all custom animations.
+     * @docid
+     * @publicName resetToDefaults()
+     * @public
      */
     resetToDefaults(): void;
 };

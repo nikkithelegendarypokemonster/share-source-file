@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/grid_core/keyboard_navigation/m_keyboard_navigation_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,6 +14,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.isCellInHeaderRow = isCellInHeaderRow;
 exports.isDataRow = isDataRow;
 exports.isDetailRow = isDetailRow;
+exports.isEditForm = isEditForm;
 exports.isEditorCell = isEditorCell;
 exports.isElementDefined = isElementDefined;
 exports.isFixedColumnIndexOffsetRequired = isFixedColumnIndexOffsetRequired;
@@ -37,6 +38,9 @@ function isGroupFooterRow($row) {
 function isDetailRow($row) {
   return $row && $row.hasClass(_const2.MASTER_DETAIL_ROW_CLASS);
 }
+function isEditForm($row) {
+  return $row && $row.hasClass(_const2.MASTER_DETAIL_ROW_CLASS) && $row.hasClass(_const2.EDIT_FORM_CLASS);
+}
 function isDataRow($row) {
   return $row && $row.hasClass(_const2.DATA_ROW_CLASS);
 }
@@ -53,7 +57,7 @@ function isMobile() {
   return _devices.default.current().deviceType !== 'desktop';
 }
 function isCellInHeaderRow($cell) {
-  return !!$cell.parent(".".concat(_const2.HEADER_ROW_CLASS)).length;
+  return !!$cell.parent(`.${_const2.HEADER_ROW_CLASS}`).length;
 }
 function isFixedColumnIndexOffsetRequired(that, column) {
   const rtlEnabled = that.option('rtlEnabled');

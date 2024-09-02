@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/utils/math.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -55,7 +55,7 @@ function getExponentialNotation(value) {
 }
 function multiplyInExponentialForm(value, exponentShift) {
   const exponentialNotation = getExponentialNotation(value);
-  return parseFloat("".concat(exponentialNotation.mantissa, "e").concat(exponentialNotation.exponent + exponentShift));
+  return parseFloat(`${exponentialNotation.mantissa}e${exponentialNotation.exponent + exponentShift}`);
 }
 
 // T570217

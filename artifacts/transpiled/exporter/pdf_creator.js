@@ -61,13 +61,13 @@ let getBase64 = function (binaryData) {
 function getTwoDigitValue(value) {
   const stringValue = value.toString();
   if (stringValue.length === 1) {
-    return "0".concat(value);
+    return `0${value}`;
   }
   return value;
 }
 function convertToPdfDateFormat(date) {
   const dateUnits = [date.getUTCFullYear(), getTwoDigitValue(date.getUTCMonth()), getTwoDigitValue(date.getUTCDate()), getTwoDigitValue(date.getUTCHours()), getTwoDigitValue(date.getUTCMinutes()), getTwoDigitValue(date.getUTCSeconds())];
-  return "(D:".concat(dateUnits.join(''), "Z00'00')");
+  return `(D:${dateUnits.join('')}Z00'00')`;
 }
 function getData(data, options) {
   return _image_creator.imageCreator.getImageData(data, (0, _extend.extend)({}, options, {

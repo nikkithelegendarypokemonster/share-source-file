@@ -1,7 +1,7 @@
 /**
 * DevExtreme (integration/jquery.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,6 +15,7 @@ import dxButtonGroup, { Properties as ButtonGroupProperties } from '../ui/button
 import dxCalendar, { Properties as CalendarProperties } from '../ui/calendar';
 import dxCheckBox, { Properties as CheckBoxProperties } from '../ui/check_box';
 import dxColorBox, { Properties as ColorBoxProperties } from '../ui/color_box';
+import dxChat, { Properties as ChatProperties } from '../ui/chat';
 import dxContextMenu, { Properties as ContextMenuProperties } from '../ui/context_menu';
 import dxDataGrid, { Properties as DataGridProperties } from '../ui/data_grid';
 import dxDateBox, { Properties as DateBoxProperties } from '../ui/date_box';
@@ -191,6 +192,12 @@ declare global {
         dxColorBox(options: ColorBoxProperties): JQuery;
         dxColorBox(options: string): any;
         dxColorBox(options: string, ...params: any[]): any;
+
+        dxChat(): JQuery;
+        dxChat(options: 'instance'): dxChat;
+        dxChat(options: ChatProperties): JQuery;
+        dxChat(options: string): any;
+        dxChat(options: string, ...params: any[]): any;
 
         dxContextMenu(): JQuery;
         dxContextMenu(options: 'instance'): dxContextMenu;

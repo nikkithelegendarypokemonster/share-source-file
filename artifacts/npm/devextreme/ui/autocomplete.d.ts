@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/autocomplete.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -32,148 +32,220 @@ import {
 } from './popup';
 
 /**
- * The type of the change event handler&apos;s argument.
+ * @docid _ui_autocomplete_ChangeEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ChangeEvent = NativeEventInfo<dxAutocomplete, Event>;
 
 /**
- * The type of the closed event handler&apos;s argument.
+ * @docid _ui_autocomplete_ClosedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ClosedEvent = EventInfo<dxAutocomplete>;
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_autocomplete_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxAutocomplete>;
 
 /**
- * The type of the copy event handler&apos;s argument.
+ * @docid _ui_autocomplete_CopyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CopyEvent = NativeEventInfo<dxAutocomplete, ClipboardEvent>;
 
 /**
- * The type of the cut event handler&apos;s argument.
+ * @docid _ui_autocomplete_CutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CutEvent = NativeEventInfo<dxAutocomplete, ClipboardEvent>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_autocomplete_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxAutocomplete>;
 
 /**
- * The type of the enterKey event handler&apos;s argument.
+ * @docid _ui_autocomplete_EnterKeyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type EnterKeyEvent = NativeEventInfo<dxAutocomplete, KeyboardEvent>;
 
 /**
- * The type of the focusIn event handler&apos;s argument.
+ * @docid _ui_autocomplete_FocusInEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusInEvent = NativeEventInfo<dxAutocomplete, FocusEvent>;
 
 /**
- * The type of the focusOut event handler&apos;s argument.
+ * @docid _ui_autocomplete_FocusOutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusOutEvent = NativeEventInfo<dxAutocomplete, FocusEvent>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_autocomplete_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxAutocomplete>;
 
 /**
- * The type of the input event handler&apos;s argument.
+ * @docid _ui_autocomplete_InputEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type InputEvent = NativeEventInfo<dxAutocomplete, UIEvent & { target: HTMLInputElement }>;
 
 /**
- * The type of the itemClick event handler&apos;s argument.
+ * @docid _ui_autocomplete_ItemClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemClickEvent = NativeEventInfo<dxAutocomplete, KeyboardEvent | MouseEvent | PointerEvent> & ItemInfo;
 
 /**
- * The type of the keyDown event handler&apos;s argument.
+ * @docid _ui_autocomplete_KeyDownEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyDownEvent = NativeEventInfo<dxAutocomplete, KeyboardEvent>;
 
+/** @public */
 export type KeyPressEvent = NativeEventInfo<dxAutocomplete, KeyboardEvent>;
 
 /**
- * The type of the keyUp event handler&apos;s argument.
+ * @docid _ui_autocomplete_KeyUpEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyUpEvent = NativeEventInfo<dxAutocomplete, KeyboardEvent>;
 
 /**
- * The type of the opened event handler&apos;s argument.
+ * @docid _ui_autocomplete_OpenedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type OpenedEvent = EventInfo<dxAutocomplete>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_autocomplete_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxAutocomplete> & ChangedOptionInfo;
 
 /**
- * The type of the paste event handler&apos;s argument.
+ * @docid _ui_autocomplete_PasteEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type PasteEvent = NativeEventInfo<dxAutocomplete, ClipboardEvent>;
 
 /**
- * The type of the selectionChanged event handler&apos;s argument.
+ * @docid _ui_autocomplete_SelectionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,_ui_drop_down_editor_ui_drop_down_list_SelectionChangedInfo
  */
 export type SelectionChangedEvent = EventInfo<dxAutocomplete> & SelectionChangedInfo;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_autocomplete_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxAutocomplete, KeyboardEvent | MouseEvent | PointerEvent | Event> & ValueChangedInfo;
 
+/** @public */
 export type DropDownButtonTemplateData = DropDownButtonTemplateDataModel;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxAutocompleteOptions extends dxDropDownListOptions<dxAutocomplete> {
     /**
-     * Specifies the maximum count of items displayed by the UI component.
+     * @docid
+     * @default 10
+     * @public
      */
     maxItemCount?: number;
     /**
-     * The minimum number of characters that must be entered into the text box to begin a search.
+     * @docid
+     * @default 1
+     * @public
      */
     minSearchLength?: number;
     /**
-     * Specifies whether the drop-down button is visible.
+     * @docid
+     * @default false
+     * @public
      */
     showDropDownButton?: boolean;
     /**
-     * Specifies the current value displayed by the UI component.
+     * @docid
+     * @default null
+     * @public
      */
     value?: string;
 
     /**
-     * Configures the drop-down field which holds the content.
+     * @docid
+     * @type dxPopupOptions
      */
     dropDownOptions?: PopupProperties;
 }
 /**
- * The Autocomplete UI component is a textbox that provides suggestions while a user types into it.
+ * @docid
+ * @isEditor
+ * @inherits dxDropDownList
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxAutocomplete extends dxDropDownList<dxAutocompleteOptions> {
     /**
-     * Resets the value property to the value passed as an argument.
+     * @docid
+     * @publicName reset(value)
+     * @public
      */
     reset(value?: string | null): void;
 }
 
+/** @public */
 export type Properties = dxAutocompleteOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxAutocompleteOptions;
 
 

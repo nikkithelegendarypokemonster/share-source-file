@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/sortable.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -42,310 +42,225 @@ export {
 };
 
 /**
- * The type of the add event handler&apos;s argument.
+ * @docid _ui_sortable_AddEvent
+ * @public
+ * @type object
  */
 export interface AddEvent {
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_AddEvent.component */
     readonly component: dxSortable;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_AddEvent.element */
     readonly element: DxElement;
     /**
-     * 
+     * @docid _ui_sortable_AddEvent.model
+     * @hidden
      */
     readonly model?: any;
     /**
-     * 
+     * @docid _ui_sortable_AddEvent.event
+     * @type event
      */
     readonly event: DxEvent<PointerEvent | MouseEvent | TouchEvent>;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_AddEvent.itemData */
     readonly itemData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_AddEvent.itemElement */
     readonly itemElement: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_AddEvent.fromIndex */
     readonly fromIndex: number;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_AddEvent.toIndex */
     readonly toIndex: number;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_AddEvent.fromComponent */
     readonly fromComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_AddEvent.toComponent */
     readonly toComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_AddEvent.fromData */
     readonly fromData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_AddEvent.toData */
     readonly toData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_AddEvent.dropInsideItem */
     readonly dropInsideItem: boolean;
 }
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_sortable_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxSortable>;
 
 /**
- * The type of the dragChange event handler&apos;s argument.
+ * @docid _ui_sortable_DragChangeEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,NativeEventInfo
  */
 export type DragChangeEvent = Cancelable & NativeEventInfo<dxSortable, PointerEvent | MouseEvent | TouchEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragChangeEvent.itemData */
     readonly itemData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragChangeEvent.itemElement */
     readonly itemElement: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragChangeEvent.fromIndex */
     readonly fromIndex?: number;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragChangeEvent.toIndex */
     readonly toIndex?: number;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragChangeEvent.fromComponent */
     readonly fromComponent?: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragChangeEvent.toComponent */
     readonly toComponent?: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragChangeEvent.fromData */
     readonly fromData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragChangeEvent.toData */
     readonly toData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragChangeEvent.dropInsideItem */
     readonly dropInsideItem?: boolean;
 };
 
 /**
- * The type of the dragEnd event handler&apos;s argument.
+ * @docid _ui_sortable_DragEndEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,NativeEventInfo
  */
 export type DragEndEvent = Cancelable & NativeEventInfo<dxSortable, PointerEvent | MouseEvent | TouchEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragEndEvent.itemData */
     readonly itemData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragEndEvent.itemElement */
     readonly itemElement: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragEndEvent.fromIndex */
     readonly fromIndex: number;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragEndEvent.toIndex */
     readonly toIndex: number;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragEndEvent.fromComponent */
     readonly fromComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragEndEvent.toComponent */
     readonly toComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragEndEvent.fromData */
     readonly fromData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragEndEvent.toData */
     readonly toData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragEndEvent.dropInsideItem */
     readonly dropInsideItem: boolean;
 };
 
 /**
- * The type of the dragMove event handler&apos;s argument.
+ * @docid _ui_sortable_DragMoveEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,NativeEventInfo
  */
 export type DragMoveEvent = Cancelable & NativeEventInfo<dxSortable, PointerEvent | MouseEvent | TouchEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragMoveEvent.itemData */
     readonly itemData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragMoveEvent.itemElement */
     readonly itemElement: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragMoveEvent.fromIndex */
     readonly fromIndex: number;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragMoveEvent.toIndex */
     readonly toIndex: number;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragMoveEvent.fromComponent */
     readonly fromComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragMoveEvent.toComponent */
     readonly toComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragMoveEvent.fromData */
     readonly fromData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragMoveEvent.toData */
     readonly toData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragMoveEvent.dropInsideItem */
     readonly dropInsideItem: boolean;
 };
 
 /**
- * The type of the dragStart event handler&apos;s argument.
+ * @docid _ui_sortable_DragStartEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,NativeEventInfo
  */
 export type DragStartEvent = Cancelable & NativeEventInfo<dxSortable, PointerEvent | MouseEvent | TouchEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragStartEvent.itemData */
     itemData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragStartEvent.itemElement */
     readonly itemElement: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragStartEvent.fromIndex */
     readonly fromIndex: number;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_DragStartEvent.fromData */
     readonly fromData?: any;
 };
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_sortable_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxSortable>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_sortable_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxSortable> & ChangedOptionInfo;
 
 /**
- * The type of the remove event handler&apos;s argument.
+ * @docid _ui_sortable_RemoveEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type RemoveEvent = NativeEventInfo<dxSortable, PointerEvent | MouseEvent | TouchEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_RemoveEvent.itemData */
     readonly itemData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_RemoveEvent.itemElement */
     readonly itemElement: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_RemoveEvent.fromIndex */
     readonly fromIndex: number;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_RemoveEvent.toIndex */
     readonly toIndex: number;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_RemoveEvent.fromComponent */
     readonly fromComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_RemoveEvent.toComponent */
     readonly toComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_RemoveEvent.fromData */
     readonly fromData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_RemoveEvent.toData */
     readonly toData?: any;
 };
 
 /**
- * The type of the reorder event handler&apos;s argument.
+ * @docid _ui_sortable_ReorderEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ReorderEvent = NativeEventInfo<dxSortable, PointerEvent | MouseEvent | TouchEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_ReorderEvent.itemData */
     readonly itemData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_ReorderEvent.itemElement */
     readonly itemElement: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_ReorderEvent.fromIndex */
     readonly fromIndex: number;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_ReorderEvent.toIndex */
     readonly toIndex: number;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_ReorderEvent.fromComponent */
     readonly fromComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_ReorderEvent.toComponent */
     readonly toComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_ReorderEvent.fromData */
     readonly fromData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_ReorderEvent.toData */
     readonly toData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_sortable_ReorderEvent.dropInsideItem */
     readonly dropInsideItem: boolean;
     /**
-     * 
+     * @docid _ui_sortable_ReorderEvent.promise
+     * @type Promise<void>
      */
     promise?: PromiseLike<void>;
 };
 
+/** @public */
 export interface DragTemplateData {
     readonly itemData?: any;
     readonly itemElement: DxElement;
@@ -353,84 +268,132 @@ export interface DragTemplateData {
 }
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxSortableOptions extends DraggableBaseOptions<dxSortable> {
     /**
-     * Allows a user to drop an item inside another item.
+     * @docid
+     * @default false
+     * @public
      */
     allowDropInsideItem?: boolean;
     /**
-     * Allows a user to reorder sortable items.
+     * @docid
+     * @default true
+     * @public
      */
     allowReordering?: boolean;
     /**
-     * Specifies custom markup to be shown instead of the item being dragged.
+     * @docid
+     * @type_function_param1 dragInfo:object
+     * @type_function_return string|Element|jQuery
+     * @default undefined
+     * @public
      */
     dragTemplate?: template | ((dragInfo: DragTemplateData, containerElement: DxElement) => string | UserDefinedElement);
     /**
-     * Specifies how to highlight the item&apos;s drop position.
+     * @docid
+     * @default "push"
+     * @public
      */
     dropFeedbackMode?: DragHighlight;
     /**
-     * Specifies a CSS selector for the items that can be dragged.
+     * @docid
+     * @default "> *"
+     * @public
      */
     filter?: string;
     /**
-     * Notifies the UI component of the items&apos; orientation.
+     * @docid
+     * @default "vertical"
+     * @public
      */
     itemOrientation?: Orientation;
     /**
-     * Moves an element in the HTML markup when it is dropped.
+     * @docid
+     * @default false
+     * @public
      */
     moveItemOnDrop?: boolean;
     /**
-     * A function that is called when a new item is added.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/sortable:AddEvent}
+     * @action
+     * @public
      */
     onAdd?: ((e: AddEvent) => void);
     /**
-     * A function that is called when the dragged item&apos;s position in the list is changed.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/sortable:DragChangeEvent}
+     * @action
+     * @public
      */
     onDragChange?: ((e: DragChangeEvent) => void);
     /**
-     * A function that is called when the drag gesture is finished.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/sortable:DragEndEvent}
+     * @action
+     * @public
      */
     onDragEnd?: ((e: DragEndEvent) => void);
     /**
-     * A function that is called every time a draggable item is moved.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/sortable:DragMoveEvent}
+     * @action
+     * @public
      */
     onDragMove?: ((e: DragMoveEvent) => void);
     /**
-     * A function that is called when a drag gesture is initialized.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/sortable:DragStartEvent}
+     * @action
+     * @public
      */
     onDragStart?: ((e: DragStartEvent) => void);
     /**
-     * A function that is called when a draggable item is removed.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/sortable:RemoveEvent}
+     * @action
+     * @public
      */
     onRemove?: ((e: RemoveEvent) => void);
     /**
-     * A function that is called when the draggable items are reordered.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/sortable:ReorderEvent}
+     * @action
+     * @public
      */
     onReorder?: ((e: ReorderEvent) => void);
 }
 /**
- * Sortable is a user interface utility that allows a UI component&apos;s items to be reordered via drag and drop gestures.
+ * @docid
+ * @inherits DraggableBase
+ * @hasTranscludedContent
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxSortable extends DOMComponent<dxSortableOptions> implements DraggableBase {
     /**
-     * Updates Sortable&apos;s dimensions. Call this method after items are added or their dimensions are changed during dragging.
+     * @docid
+     * @publicName update()
+     * @public
      */
     update(): void;
 }
 
+/** @public */
 export type Properties = dxSortableOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxSortableOptions;
 
 

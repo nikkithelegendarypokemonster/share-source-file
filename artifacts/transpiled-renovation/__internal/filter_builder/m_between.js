@@ -8,9 +8,9 @@ var _renderer = _interopRequireDefault(require("../../core/renderer"));
 var _extend = require("../../core/utils/extend");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const FILTER_BUILDER_RANGE_CLASS = 'dx-filterbuilder-range';
-const FILTER_BUILDER_RANGE_START_CLASS = "".concat(FILTER_BUILDER_RANGE_CLASS, "-start");
-const FILTER_BUILDER_RANGE_END_CLASS = "".concat(FILTER_BUILDER_RANGE_CLASS, "-end");
-const FILTER_BUILDER_RANGE_SEPARATOR_CLASS = "".concat(FILTER_BUILDER_RANGE_CLASS, "-separator");
+const FILTER_BUILDER_RANGE_START_CLASS = `${FILTER_BUILDER_RANGE_CLASS}-start`;
+const FILTER_BUILDER_RANGE_END_CLASS = `${FILTER_BUILDER_RANGE_CLASS}-end`;
+const FILTER_BUILDER_RANGE_SEPARATOR_CLASS = `${FILTER_BUILDER_RANGE_CLASS}-separator`;
 const SEPARATOR = '\u2013';
 function editorTemplate(conditionInfo, container) {
   const $editorStart = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_RANGE_START_CLASS);

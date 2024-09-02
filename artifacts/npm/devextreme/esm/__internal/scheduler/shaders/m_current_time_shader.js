@@ -1,13 +1,13 @@
 /**
 * DevExtreme (esm/__internal/scheduler/shaders/m_current_time_shader.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import $ from '../../../core/renderer';
-var DATE_TIME_SHADER_CLASS = 'dx-scheduler-date-time-shader';
+const DATE_TIME_SHADER_CLASS = 'dx-scheduler-date-time-shader';
 class CurrentTimeShader {
   constructor(_workSpace) {
     this._workSpace = _workSpace;
@@ -30,7 +30,7 @@ class CurrentTimeShader {
     return $('<div>').addClass(DATE_TIME_SHADER_CLASS);
   }
   clean() {
-    this._$container && this._$container.find(".".concat(DATE_TIME_SHADER_CLASS)).remove();
+    this._$container && this._$container.find(`.${DATE_TIME_SHADER_CLASS}`).remove();
   }
 }
 export default CurrentTimeShader;

@@ -1,7 +1,7 @@
 import { compileGetter } from '../../core/utils/data';
 import { GanttDataCache } from './ui.gantt.cache';
 import { GanttHelper } from './ui.gantt.helper';
-var GANTT_TASKS = 'tasks';
+const GANTT_TASKS = 'tasks';
 export class GanttCustomFieldsManager {
   constructor(gantt) {
     this._gantt = gantt;
@@ -9,9 +9,9 @@ export class GanttCustomFieldsManager {
     this.cache = new GanttDataCache();
   }
   _getTaskCustomFields() {
-    var columns = this._gantt.option('columns');
-    var columnFields = columns && columns.map(c => c.dataField);
-    var mappedFields = this._mappingHelper.getTaskMappedFieldNames();
+    const columns = this._gantt.option('columns');
+    const columnFields = columns && columns.map(c => c.dataField);
+    const mappedFields = this._mappingHelper.getTaskMappedFieldNames();
     return columnFields ? columnFields.filter(f => mappedFields.indexOf(f) < 0) : [];
   }
   _getCustomFieldsData(data) {
@@ -24,13 +24,13 @@ export class GanttCustomFieldsManager {
   }
   addCustomFieldsData(key, data) {
     if (data) {
-      var modelData = this._gantt._tasksOption && this._gantt._tasksOption._getItems();
-      var keyGetter = compileGetter(this._gantt.option("".concat(GANTT_TASKS, ".keyExpr")));
-      var modelItem = modelData && modelData.filter(obj => keyGetter(obj) === key)[0];
-      var customFields = this._getTaskCustomFields();
+      const modelData = this._gantt._tasksOption && this._gantt._tasksOption._getItems();
+      const keyGetter = compileGetter(this._gantt.option(`${GANTT_TASKS}.keyExpr`));
+      const modelItem = modelData && modelData.filter(obj => keyGetter(obj) === key)[0];
+      const customFields = this._getTaskCustomFields();
       if (modelItem) {
-        for (var i = 0; i < customFields.length; i++) {
-          var field = customFields[i];
+        for (let i = 0; i < customFields.length; i++) {
+          const field = customFields[i];
           if (Object.prototype.hasOwnProperty.call(modelItem, field)) {
             data[field] = modelItem[field];
           }
@@ -39,17 +39,17 @@ export class GanttCustomFieldsManager {
     }
   }
   appendCustomFields(data) {
-    var modelData = this._gantt._tasksOption && this._gantt._tasksOption._getItems();
-    var keyGetter = this._gantt._getTaskKeyGetter();
-    var invertedData = GanttHelper.getInvertedData(modelData, keyGetter);
+    const modelData = this._gantt._tasksOption && this._gantt._tasksOption._getItems();
+    const keyGetter = this._gantt._getTaskKeyGetter();
+    const invertedData = GanttHelper.getInvertedData(modelData, keyGetter);
     return data.reduce((previous, item) => {
-      var key = keyGetter(item);
-      var modelItem = invertedData[key];
+      const key = keyGetter(item);
+      const modelItem = invertedData[key];
       if (!modelItem) {
         previous.push(item);
       } else {
-        var updatedItem = {};
-        for (var field in modelItem) {
+        const updatedItem = {};
+        for (const field in modelItem) {
           updatedItem[field] = Object.prototype.hasOwnProperty.call(item, field) ? item[field] : modelItem[field];
         }
         previous.push(updatedItem);
@@ -61,20 +61,20 @@ export class GanttCustomFieldsManager {
     this.cache.pullDataFromCache(key, data);
   }
   saveCustomFieldsDataToCache(key, data) {
-    var forceUpdateOnKeyExpire = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-    var isCustomFieldsUpdateOnly = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-    var customFieldsData = this._getCustomFieldsData(data);
+    let forceUpdateOnKeyExpire = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    let isCustomFieldsUpdateOnly = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+    const customFieldsData = this._getCustomFieldsData(data);
     if (Object.keys(customFieldsData).length > 0) {
-      var updateCallback = (key, data) => {
-        var dataOption = this._gantt["_".concat(GANTT_TASKS, "Option")];
+      const updateCallback = (key, data) => {
+        const dataOption = this._gantt[`_${GANTT_TASKS}Option`];
         if (dataOption && data) {
           dataOption.update(key, data, (data, key) => {
-            var updatedCustomFields = {};
+            const updatedCustomFields = {};
             this.addCustomFieldsData(key, updatedCustomFields);
             dataOption._reloadDataSource().done(data => {
-              this._gantt._ganttTreeList.updateDataSource(data !== null && data !== void 0 ? data : dataOption._dataSource, false, isCustomFieldsUpdateOnly);
+              this._gantt._ganttTreeList.updateDataSource(data ?? dataOption._dataSource, false, isCustomFieldsUpdateOnly);
             });
-            var selectedRowKey = this._gantt.option('selectedRowKey');
+            const selectedRowKey = this._gantt.option('selectedRowKey');
             this._gantt._ganttView._selectTask(selectedRowKey);
             this._gantt._actionsManager.raiseUpdatedAction(GANTT_TASKS, updatedCustomFields, key);
           });

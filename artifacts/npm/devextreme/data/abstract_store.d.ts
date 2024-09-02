@@ -1,7 +1,7 @@
 /**
 * DevExtreme (data/abstract_store.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -17,29 +17,29 @@ import {
   LoadOptions,
 } from './index';
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type Options<
   TItem = any,
   TKey = any,
   > = AbstractStoreOptions<TItem, TKey>;
 
 /**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.data
  */
 interface AbstractStoreOptions<
   TItem = any,
   TKey = any,
   > extends BaseStoreOptions<TItem, TKey> {
   /**
-   * A function that is executed after data is loaded to the store.
+   * @docid StoreOptions.onLoaded
+   * @type_function_param2 loadOptions:LoadOptions
+   * @action
+   * @public
    */
   onLoaded?: ((result: Array<TItem>, loadOptions: LoadOptions<TItem>) => void);
 }
 
 /**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.data
  */
 export default class AbstractStore<
   TItem = any,
@@ -47,23 +47,30 @@ export default class AbstractStore<
   > extends BaseStore<TItem, TKey> {
   constructor(options?: Options<TItem, TKey>);
   /**
-   * Starts loading data.
+   * @docid Store.load()
+   * @publicName load()
+   * @return Promise<any>
+   * @public
    */
   load(): DxExtendedPromise<Array<TItem>>;
   /**
-   * Starts loading data.
+   * @docid Store.load(options)
+   * @publicName load(options)
+   * @param1 options:LoadOptions
+   * @return Promise<any>
+   * @public
    */
   load(options: LoadOptions<TItem>): DxExtendedPromise<Array<TItem>>;
 }
 
 /**
+ * @namespace DevExpress.data
  * @deprecated Use Options from data/store instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type StoreOptions<TItem = any, TKey = any> = BaseStoreOptions<TItem, TKey>;
 
 /**
+ * @namespace DevExpress.data
  * @deprecated Use Store from data/store instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type Store<TItem = any, TKey = any> = BaseStore<TItem, TKey>;

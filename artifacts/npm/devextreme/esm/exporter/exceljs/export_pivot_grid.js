@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/exporter/exceljs/export_pivot_grid.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,7 +12,7 @@ import { Export } from './export';
 import { getDefaultAlignment } from '../../core/utils/position';
 import { camelize } from '../../core/utils/inflector';
 import { MergedRangesManager } from './export_merged_ranges_manager';
-var FIELD_HEADERS_SEPARATOR = ', ';
+const FIELD_HEADERS_SEPARATOR = ', ';
 class PivotGridHelpers {
   constructor(component, dataProvider, worksheet, options) {
     this.component = component;
@@ -39,7 +39,7 @@ class PivotGridHelpers {
     return this.topLeftCell.column;
   }
   _getWorksheetFrozenState(cellRange) {
-    var {
+    const {
       x,
       y
     } = this.dataProvider.getFrozenArea();
@@ -79,7 +79,7 @@ class PivotGridHelpers {
   }
   _getFieldHeaderStyles() {
     // eslint-disable-next-line spellcheck/spell-checker
-    var borderStyle = {
+    const borderStyle = {
       style: 'thin',
       color: {
         argb: 'FF7E7E7E'
@@ -101,10 +101,10 @@ class PivotGridHelpers {
     return this.dataProvider._exportController.getDataSource()._descriptions;
   }
   _tryGetFieldHeaders(area) {
-    if (!this["export".concat(camelize(area, true), "FieldHeaders")]) {
+    if (!this[`export${camelize(area, true)}FieldHeaders`]) {
       return [];
     }
-    var fields = this._getAllFieldHeaders()[area === 'data' ? 'values' : "".concat(area, "s")].filter(fieldHeader => fieldHeader.area === area);
+    const fields = this._getAllFieldHeaders()[area === 'data' ? 'values' : `${area}s`].filter(fieldHeader => fieldHeader.area === area);
     if (getDefaultAlignment(this.rtlEnabled) === 'right') {
       fields.sort((a, b) => b.areaIndex - a.areaIndex);
     }
@@ -119,13 +119,13 @@ class PivotGridHelpers {
     }
   }
   _isRowFieldHeadersRow(rowIndex) {
-    var isLastInfoRangeCell = this._isInfoCell(rowIndex, 0) && this.dataProvider.getCellData(rowIndex + 1, 0, true).cellSourceData.area === 'row';
+    const isLastInfoRangeCell = this._isInfoCell(rowIndex, 0) && this.dataProvider.getCellData(rowIndex + 1, 0, true).cellSourceData.area === 'row';
     return this._allowExportRowFieldHeaders() && isLastInfoRangeCell;
   }
   _exportAllFieldHeaders(columns, setAlignment) {
-    var totalCellsCount = columns.length;
-    var rowAreaColCount = this.dataProvider.getRowAreaColCount();
-    var rowIndex = this.topLeftCell.row;
+    const totalCellsCount = columns.length;
+    const rowAreaColCount = this.dataProvider.getRowAreaColCount();
+    let rowIndex = this.topLeftCell.row;
     if (this._allowExportFilterFieldHeaders()) {
       this._exportFieldHeaders('filter', rowIndex, 0, totalCellsCount, setAlignment);
       rowIndex++;
@@ -144,17 +144,17 @@ class PivotGridHelpers {
     }
   }
   _exportFieldHeaders(area, rowIndex, startColumnIndex, totalColumnsCount, setAlignment) {
-    var fieldHeaders = this["".concat(area, "FieldHeaders")];
-    var row = this.worksheet.getRow(rowIndex);
-    var shouldMergeHeaderField = area !== 'row' || area === 'row' && this.rowHeaderLayout === 'tree';
+    const fieldHeaders = this[`${area}FieldHeaders`];
+    const row = this.worksheet.getRow(rowIndex);
+    const shouldMergeHeaderField = area !== 'row' || area === 'row' && this.rowHeaderLayout === 'tree';
     if (shouldMergeHeaderField) {
       this.mergedRangesManager.addMergedRange(row.getCell(this.topLeftCell.column + startColumnIndex), 0, totalColumnsCount - 1);
     }
-    for (var cellIndex = 0; cellIndex < totalColumnsCount; cellIndex++) {
-      var excelCell = row.getCell(this.topLeftCell.column + startColumnIndex + cellIndex);
-      var values = fieldHeaders;
-      var cellData = [];
-      var value = values.length > totalColumnsCount || shouldMergeHeaderField ? values.join(FIELD_HEADERS_SEPARATOR) : values[cellIndex];
+    for (let cellIndex = 0; cellIndex < totalColumnsCount; cellIndex++) {
+      const excelCell = row.getCell(this.topLeftCell.column + startColumnIndex + cellIndex);
+      const values = fieldHeaders;
+      let cellData = [];
+      const value = values.length > totalColumnsCount || shouldMergeHeaderField ? values.join(FIELD_HEADERS_SEPARATOR) : values[cellIndex];
       cellData = _extends({}, this._getDefaultFieldHeaderCellsData(value), {
         headerType: area
       });
@@ -164,7 +164,7 @@ class PivotGridHelpers {
     }
   }
   _applyHeaderStyles(excelCell, setAlignment) {
-    var {
+    const {
       bold,
       alignment,
       border

@@ -1,8 +1,8 @@
 import registerComponent from '../../../core/component_registrator';
-import { getWeekendsCount } from '../__migration/utils/index';
+import { getWeekendsCount } from '../../scheduler/r1/utils/index';
 import { VIEWS } from '../m_constants';
 import SchedulerWorkSpaceWeek from './m_work_space_week';
-var WORK_WEEK_CLASS = 'dx-scheduler-work-space-work-week';
+const WORK_WEEK_CLASS = 'dx-scheduler-work-space-work-week';
 class SchedulerWorkSpaceWorkWeek extends SchedulerWorkSpaceWeek {
   get type() {
     return VIEWS.WORK_WEEK;

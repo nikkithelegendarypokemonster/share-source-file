@@ -1,11 +1,11 @@
 import { isDefined } from '../../../../core/utils/type';
-var COLLECTOR_DEFAULT_WIDTH = 24;
-var COLLECTOR_DEFAULT_OFFSET = 3;
-var COMPACT_THEME_APPOINTMENT_DEFAULT_OFFSET = 22;
-var APPOINTMENT_MIN_COUNT = 1;
-var APPOINTMENT_DEFAULT_WIDTH = 40;
-var COLLECTOR_WIDTH_IN_PERCENTS = 75;
-var APPOINTMENT_INCREASED_WIDTH = 50;
+const COLLECTOR_DEFAULT_WIDTH = 24;
+const COLLECTOR_DEFAULT_OFFSET = 3;
+const COMPACT_THEME_APPOINTMENT_DEFAULT_OFFSET = 22;
+const APPOINTMENT_MIN_COUNT = 1;
+const APPOINTMENT_DEFAULT_WIDTH = 40;
+const COLLECTOR_WIDTH_IN_PERCENTS = 75;
+const APPOINTMENT_INCREASED_WIDTH = 50;
 class AppointmentPositioningStrategy {
   constructor(renderingStrategy) {
     this._renderingStrategy = renderingStrategy;
@@ -30,11 +30,11 @@ class AppointmentPositioningStrategy {
     return this._renderingStrategy.appointmentOffset;
   }
   getDynamicAppointmentCountPerCell() {
-    var renderingStrategy = this._renderingStrategy;
-    var {
+    const renderingStrategy = this._renderingStrategy;
+    const {
       cellHeight
     } = renderingStrategy;
-    var allDayCount = Math.floor((cellHeight - renderingStrategy._getAppointmentDefaultOffset()) / renderingStrategy._getAppointmentDefaultHeight()) || this._getAppointmentMinCount();
+    const allDayCount = Math.floor((cellHeight - renderingStrategy._getAppointmentDefaultOffset()) / renderingStrategy._getAppointmentDefaultHeight()) || this._getAppointmentMinCount();
     // NOTE: Simplify using only object
     if (renderingStrategy.allDaySupported()) {
       return {

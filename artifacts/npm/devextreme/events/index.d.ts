@@ -1,7 +1,7 @@
 /**
 * DevExtreme (events/index.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,276 +11,340 @@ import {
 } from '../core/element';
 
 /* eslint-disable @typescript-eslint/no-empty-interface */
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export interface EventExtension { }
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export interface EventType { }
 /* eslint-enable @typescript-eslint/no-empty-interface */
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type EventObject|jQuery.Event
  */
 export type DxEvent<TNativeEvent = Event> = {} extends EventType ? (EventObject & TNativeEvent) : EventType;
 
 /**
- * Specifies arguments of `initialized` event.
+ * @docid
+ * @public
  */
 export interface InitializedEventInfo<TComponent> {
     /**
-     * The UI component&apos;s instance.
+     * @docid
+     * @type this
      */
     readonly component?: TComponent;
-    /**
-     * The UI component&apos;s container.
-     */
+    /** @docid */
     readonly element?: DxElement;
 }
 
 /**
- * A type that contains fields common for all events (`component`, `element`, `model`).
+ * @docid
+ * @public
  */
 export interface EventInfo<TComponent> {
     /**
-     * The UI component&apos;s instance.
+     * @docid
+     * @type this
      */
     readonly component: TComponent;
-    /**
-     * The UI component&apos;s container.
-     */
+    /** @docid */
     readonly element: DxElement;
     /**
-     * Model data. Available only if you use Knockout.
+     * @docid
+     * @hidden
      */
     readonly model?: any;
 }
 
 /**
- * A type that contains fields common for all events (`component`, `element`, `model`) and the `event` field.
+ * @docid
+ * @public
  */
 export interface NativeEventInfo<TComponent, TNativeEvent = Event> {
     /**
-     * The UI component&apos;s instance.
+     * @docid
+     * @type this
      */
     readonly component: TComponent;
-    /**
-     * The UI component&apos;s container.
-     */
+    /** @docid */
     readonly element: DxElement;
     /**
-     * Model data. Available only if you use Knockout.
+     * @docid
+     * @hidden
      */
     readonly model?: any;
     /**
-     * Specifies the executed event.
+     * @docid
+     * @type event
      */
     readonly event?: DxEvent<TNativeEvent>;
 }
 
 /**
- * Specifies arguments of `optionChanged` event.
+ * @docid
+ * @public
  */
 export interface ChangedOptionInfo {
-    /**
-     * The modified property if it belongs to the first level. Otherwise, the first-level property into which it is nested.
-     */
+    /** @docid */
     readonly name: string;
-    /**
-     * The path to the modified property that includes all parent properties.
-     */
+    /** @docid */
     readonly fullName: string;
-    /**
-     * The modified property&apos;s new value.
-     */
+    /** @docid */
     readonly value?: any;
-    /**
-     * The UI component&apos;s previous value.
-     */
+    /** @docid */
     readonly previousValue?: any;
 }
 
 /**
- * Specifies item information used in events related to a component&apos;s items.
+ * @docid
+ * @public
  */
 export interface ItemInfo<TItemData = any> {
     /**
-     * The item&apos;s data.
+     * @docid
+     * @type object
      */
     readonly itemData?: TItemData;
-    /**
-     * The item&apos;s container.
-     */
+    /** @docid */
     readonly itemElement: DxElement;
-    /**
-     * The item&apos;s index.
-     */
+    /** @docid */
     readonly itemIndex: number;
 }
 
 /**
- * A type used in events. Specifies whether the event is cancelable.
+ * @docid
+ * @public
  */
 export interface Cancelable {
-    /**
-     * Specifies whether the event is cancelable.
-     */
+    /** @docid */
     cancel?: boolean;
 }
 
-/**
- * @deprecated EventObject
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated EventObject */
 export type dxEvent = EventObject;
 
 /**
- * Describes EventObject, a counterpart of the jQuery.Event to be used without jQuery.
+ * @docid
+ * @section commonObjectStructures
+ * @public
  */
 export type EventObject = {
     /**
-     * The DOM element within the current event propagation stage.
+     * @docid
+     * @public
      */
     currentTarget: Element;
 
     /**
-     * Data passed to the event handler.
+     * @docid
+     * @public
      */
     data: any;
 
     /**
-     * The DOM element to which the currently-called event handler was attached.
+     * @docid
+     * @public
      */
     delegateTarget: Element;
 
     /**
-     * The DOM element that initiated the event.
+     * @docid
+     * @public
      */
     target: Element;
     /**
-     * Checks if the preventDefault() method was called on this event object.
+     * @docid
+     * @publicName isDefaultPrevented()
+     * @public
      */
     isDefaultPrevented(): boolean;
     /**
-     * Checks if the stopImmediatePropagation() method was called on this event object.
+     * @docid
+     * @publicName isImmediatePropagationStopped()
+     * @public
      */
     isImmediatePropagationStopped(): boolean;
     /**
-     * Checks if the stopPropagation() method was called on this event object.
+     * @docid
+     * @publicName isPropagationStopped()
+     * @public
      */
     isPropagationStopped(): boolean;
     /**
-     * Prevents the event&apos;s default action from triggering.
+     * @docid
+     * @publicName preventDefault()
+     * @public
      */
     preventDefault(): void;
     /**
-     * Stops the event&apos;s propagation up the DOM tree, preventing the rest of the handlers from being executed.
+     * @docid
+     * @publicName stopImmediatePropagation()
+     * @public
      */
     stopImmediatePropagation(): void;
     /**
-     * Stops the event&apos;s propagation up the DOM tree, keeping parent handlers unnotified of the event.
+     * @docid
+     * @publicName stopPropagation()
+     * @public
      */
     stopPropagation(): void;
 };
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type EventObject|jQuery.Event
+ * @hidden
+ * @deprecated DxEvent
  */
 export type event = DxEvent;
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @publicName handler(event, extraParameters)
+ * @param2 extraParameters:object
+ * @hidden
  */
 export function eventsHandler(event: DxEvent, extraParameters: any): boolean;
 
 /**
- * Detaches all handlers from the specified elements.
+ * @docid eventsMethods.off
+ * @publicName off(element)
+ * @namespace DevExpress.events
+ * @public
  */
 export function off(element: Element | Array<Element>): void;
 
 /**
- * Detaches all handlers of the specified event from the specified elements.
+ * @docid eventsMethods.off
+ * @publicName off(element, eventName)
+ * @namespace DevExpress.events
+ * @public
  */
 export function off(element: Element | Array<Element>, eventName: string): void;
 
 /**
- * Detaches an event handler from the specified elements.
+ * @docid eventsMethods.off
+ * @publicName off(element, eventName, handler)
+ * @namespace DevExpress.events
+ * @public
  */
 export function off(element: Element | Array<Element>, eventName: string, handler: Function): void;
 
 /**
- * Detaches all event handlers of the specified type attached using the on(element, eventName, selector, data, handler) or on(element, eventName, selector, handler) method.
+ * @docid eventsMethods.off
+ * @publicName off(element, eventName, selector)
+ * @namespace DevExpress.events
+ * @public
  */
 export function off(element: Element | Array<Element>, eventName: string, selector: string): void;
 
 /**
- * Detaches the specified event handler attached using the on(element, eventName, selector, data, handler) or on(element, eventName, selector, handler) method.
+ * @docid eventsMethods.off
+ * @publicName off(element, eventName, selector, handler)
+ * @namespace DevExpress.events
+ * @public
  */
 export function off(element: Element | Array<Element>, eventName: string, selector: string, handler: Function): void;
 
 /**
- * Attaches an event handler to the specified elements. Allows you to pass custom data to the handler.
+ * @docid eventsMethods.on
+ * @publicName on(element, eventName, data, handler)
+ * @namespace DevExpress.events
+ * @param3 data:object
+ * @public
  */
 export function on(element: Element | Array<Element>, eventName: string, data: any, handler: Function): void;
 
 /**
- * Attaches an event handler to the specified elements.
+ * @docid eventsMethods.on
+ * @publicName on(element, eventName, handler)
+ * @namespace DevExpress.events
+ * @public
  */
 export function on(element: Element | Array<Element>, eventName: string, handler: Function): void;
 
 /**
- * Attaches an event handler to the specified elements&apos; descendants. Allows you to pass custom data to the handler.
+ * @docid eventsMethods.on
+ * @publicName on(element, eventName, selector, data, handler)
+ * @namespace DevExpress.events
+ * @param4 data:object
+ * @public
  */
 export function on(element: Element | Array<Element>, eventName: string, selector: string, data: any, handler: Function): void;
 
 /**
- * Attaches an event handler to the specified elements&apos; descendants.
+ * @docid eventsMethods.on
+ * @publicName on(element, eventName, selector, handler)
+ * @namespace DevExpress.events
+ * @public
  */
 export function on(element: Element | Array<Element>, eventName: string, selector: string, handler: Function): void;
 
 /**
- * Attaches an event handler that is executed only once to the specified elements. Allows you to pass custom data to the handler.
+ * @docid eventsMethods.one
+ * @publicName one(element, eventName, data, handler)
+ * @namespace DevExpress.events
+ * @param3 data:object
+ * @public
  */
 export function one(element: Element | Array<Element>, eventName: string, data: any, handler: Function): void;
 
 /**
- * Attaches an event handler that is executed only once to the specified elements.
+ * @docid eventsMethods.one
+ * @publicName one(element, eventName, handler)
+ * @namespace DevExpress.events
+ * @public
  */
 export function one(element: Element | Array<Element>, eventName: string, handler: Function): void;
 
 /**
- * Attaches an event handler that is executed only once to the specified elements&apos; descendants. Allows you to pass custom data to the handler.
+ * @docid eventsMethods.one
+ * @publicName one(element, eventName, selector, data, handler)
+ * @namespace DevExpress.events
+ * @param4 data:object
+ * @public
  */
 export function one(element: Element | Array<Element>, eventName: string, selector: string, data: any, handler: Function): void;
 
 /**
- * Attaches an event handler that is executed only once to the specified elements&apos; descendants.
+ * @docid eventsMethods.one
+ * @publicName one(element, eventName, selector, handler)
+ * @namespace DevExpress.events
+ * @public
  */
 export function one(element: Element | Array<Element>, eventName: string, selector: string, handler: Function): void;
 
 /**
- * Triggers an event for the specified elements.
+ * @docid eventsMethods.trigger
+ * @publicName trigger(element, event)
+ * @namespace DevExpress.events
+ * @param2 event:string|event
+ * @public
  */
 export function trigger(element: Element | Array<Element>, event: string | DxEvent): void;
 
 /**
- * Triggers an event for the specified elements. Allows you to pass custom parameters to event handlers.
+ * @docid eventsMethods.trigger
+ * @publicName trigger(element, event, extraParameters)
+ * @namespace DevExpress.events
+ * @param2 event:string|event
+ * @param3 extraParameters:object
+ * @public
  */
 export function trigger(element: Element | Array<Element>, event: string | DxEvent, extraParameters: any): void;
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid eventsMethods.triggerHandler
+ * @publicName triggerHandler(element, event)
+ * @namespace DevExpress.events
+ * @param2 event:string|event
+ * @hidden
  */
 export function triggerHandler(element: Element | Array<Element>, event: string | DxEvent): void;
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid eventsMethods.triggerHandler
+ * @publicName triggerHandler(element, event, extraParameters)
+ * @namespace DevExpress.events
+ * @param2 event:string|event
+ * @param3 extraParameters:object
+ * @hidden
  */
 export function triggerHandler(element: Element | Array<Element>, event: string | DxEvent, extraParameters: any): void;

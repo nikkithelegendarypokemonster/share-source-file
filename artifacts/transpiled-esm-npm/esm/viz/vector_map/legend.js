@@ -1,18 +1,18 @@
 import { extend } from '../../core/utils/extend';
 import { each } from '../../core/utils/iterator';
 import { clone } from '../../core/utils/object';
-var _extend = extend;
-var _each = each;
+const _extend = extend;
+const _each = each;
 import { Legend as _BaseLegend } from '../components/legend';
-var unknownSource = {
+const unknownSource = {
   category: 'UNKNOWN',
   name: 'UNKNOWN'
 };
 function buildData(partition, values, field) {
-  var i;
-  var ii = values.length;
-  var list = [];
-  var item;
+  let i;
+  const ii = values.length;
+  const list = [];
+  let item;
   for (i = 0; i < ii; ++i) {
     list[i] = item = {
       start: partition[i],
@@ -31,8 +31,8 @@ function buildData(partition, values, field) {
 }
 
 // 'var' because JSHint throws W021 error
-var Legend = function Legend(parameters) {
-  var that = this;
+let Legend = function (parameters) {
+  const that = this;
   that._params = parameters;
   that._root = parameters.renderer.g().attr({
     'class': 'dxm-legend'
@@ -48,7 +48,7 @@ var Legend = function Legend(parameters) {
     backgroundClass: null,
     itemsGroupClass: null,
     textField: 'text',
-    getFormatObject: function getFormatObject(data) {
+    getFormatObject: function (data) {
       return data;
     }
   });
@@ -58,8 +58,8 @@ var Legend = function Legend(parameters) {
 };
 Legend.prototype = _extend(clone(_BaseLegend.prototype), {
   constructor: Legend,
-  dispose: function dispose() {
-    var that = this;
+  dispose: function () {
+    const that = this;
     that._params.layoutControl.removeItem(that);
     that._unbindData();
     that._root.linkRemove().linkOff();
@@ -67,7 +67,7 @@ Legend.prototype = _extend(clone(_BaseLegend.prototype), {
     return _BaseLegend.prototype.dispose.apply(that, arguments);
   },
   // This method is called only by the layout
-  resize: function resize(size) {
+  resize: function (size) {
     this._params.notifyDirty();
     if (size === null) {
       this.erase();
@@ -77,25 +77,25 @@ Legend.prototype = _extend(clone(_BaseLegend.prototype), {
     this._params.notifyReady();
   },
   locate: _BaseLegend.prototype.shift,
-  _updateData: function _updateData(data) {
+  _updateData: function (data) {
     this._options.defaultColor = data && data.defaultColor;
     this.update(data ? buildData(data.partition, data.values, this._dataName) : [], this._options, this._params.themeManager.theme('legend').title);
     this.updateLayout();
   },
-  _unbindData: function _unbindData() {
+  _unbindData: function () {
     if (this._dataCategory) {
       this._params.dataExchanger.unbind(this._dataCategory, this._dataName, this._onDataChanged);
     }
   },
-  _bindData: function _bindData(arg) {
+  _bindData: function (arg) {
     this._params.dataExchanger.bind(this._dataCategory = arg.category, this._dataName = arg.name, this._onDataChanged);
   },
   // The `_root` should be appended or removed here but there is no way to check if core.Legend is actually enabled or not
-  setOptions: function setOptions(options) {
-    var that = this;
+  setOptions: function (options) {
+    const that = this;
     that.update(that._data, options, this._params.themeManager.theme('legend').title);
     that._unbindData();
-    var source = options.source;
+    const source = options.source;
     that._bindData(source ? {
       category: source.layer,
       name: source.grouping
@@ -111,19 +111,19 @@ export function LegendsControl(parameters) {
 }
 LegendsControl.prototype = {
   constructor: LegendsControl,
-  dispose: function dispose() {
+  dispose: function () {
     _each(this._items, function (_, item) {
       item.dispose();
     });
     this._params = this._items = null;
   },
-  setOptions: function setOptions(options) {
-    var optionList = options && options.length ? options : [];
-    var items = this._items;
-    var i;
-    var ii = optionList.length;
-    var params = this._params;
-    var theme = params.themeManager.theme('legend');
+  setOptions: function (options) {
+    const optionList = options && options.length ? options : [];
+    const items = this._items;
+    let i;
+    const ii = optionList.length;
+    const params = this._params;
+    const theme = params.themeManager.theme('legend');
     for (i = items.length; i < ii; ++i) {
       items[i] = new Legend(params);
     }

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/data_grid.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -179,937 +179,890 @@ export {
     ToolbarPreparingInfo,
 } from '../common/grids';
 
-/**
- * @deprecated Use Column instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated Use Column instead */
 export type ColumnBase<TRowData = any> = ComponentColumnBase<TRowData>;
-/**
- * @deprecated Use ColumnButton instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated Use ColumnButton instead */
 export type ColumnButtonBase = ComponentColumnButtonBase;
-/**
- * @deprecated Use Editing instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated Use Editing instead */
 export type EditingBase<TRowData = any, TKey = any> = ComponentEditingBase<TRowData, TKey>;
-/**
- * @deprecated Use EditingTexts instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated Use EditingTexts instead */
 export type EditingTextsBase = ComponentEditingTextsBase;
-/**
- * @deprecated Use Paging instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated Use Paging instead */
 export type PagingBase = ComponentPaging;
-/**
- * @deprecated Use Scrolling instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated Use Scrolling instead */
 export type ScrollingBase = ComponentScrollingBase;
-/**
- * @deprecated Use Selection instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated Use Selection instead */
 export type SelectionBase = ComponentSelectionBase;
 
+/** @public */
 export type DataGridCommandColumnType = 'adaptive' | 'buttons' | 'detailExpand' | 'groupExpand' | 'selection' | 'drag';
+/** @public */
 export type DataGridExportFormat = 'pdf' | 'xlsx';
+/** @public */
 export type DataGridScrollMode = 'infinite' | 'standard' | 'virtual';
+/** @public */
 export type DataGridPredefinedColumnButton = 'cancel' | 'delete' | 'edit' | 'save' | 'undelete';
+/** @public */
 export type DataGridPredefinedToolbarItem = 'addRowButton' | 'applyFilterButton' | 'columnChooserButton' | 'exportButton' | 'groupPanel' | 'revertButton' | 'saveButton' | 'searchPanel';
 
 type GroupKey = any[];
 
 /**
- * Specifies a group of elements in a template.
+ * @docid
+ * @public
  */
 export type GroupData<TRowData> = {
   key: any;
   items: Array<TRowData> | Array<GroupData<TRowData>> | null;
-  /**
-   * @deprecated Attention! This property is for internal purposes only.
-   */
+  /** @deprecated Attention! This property is for internal purposes only. */
   collapsedItems?: Array<TRowData> | Array<GroupData<TRowData>>;
-  /**
-   * @deprecated Attention! This property is for internal purposes only.
-   */
+  /** @deprecated Attention! This property is for internal purposes only. */
   aggregates?: Array<any>;
-  /**
-   * @deprecated Attention! This property is for internal purposes only.
-   */
+  /** @deprecated Attention! This property is for internal purposes only. */
   summary?: Array<any>;
-  /**
-   * @deprecated Attention! This property is for internal purposes only.
-   */
+  /** @deprecated Attention! This property is for internal purposes only. */
   isContinuation?: boolean;
-  /**
-   * @deprecated Attention! This property is for internal purposes only.
-   */
+  /** @deprecated Attention! This property is for internal purposes only. */
   isContinuationOnNextPage?: boolean;
 };
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use Editing instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type GridBaseEditing<TRowData = any, TKey = any> = EditingBase<TRowData, TKey>;
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use EditingTexts instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type GridBaseEditingTexts = EditingTextsBase;
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use Paging instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type GridBasePaging = ComponentPaging;
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use Scrolling instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type GridBaseScrolling = ScrollingBase;
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use Selection instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type GridBaseSelection = SelectionBase;
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use Column instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type GridBaseColumn<TRowData = any> = ColumnBase<TRowData>;
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use ColumnButton instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type GridBaseColumnButton = ColumnButtonBase;
 
 /**
- * The type of the adaptiveDetailRowPreparing event handler&apos;s argument.
+ * @docid _ui_data_grid_AdaptiveDetailRowPreparingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,AdaptiveDetailRowPreparingInfo
  */
 export type AdaptiveDetailRowPreparingEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & AdaptiveDetailRowPreparingInfo;
 
 /**
- * The type of the cellClick event handler&apos;s argument.
+ * @docid _ui_data_grid_CellClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CellClickEvent<TRowData = any, TKey = any> = NativeEventInfo<dxDataGrid<TRowData, TKey>, PointerEvent | MouseEvent> & {
   /**
-   * 
+   * @docid _ui_data_grid_CellClickEvent.data
+   * @type object
    */
   readonly data: TRowData;
   /**
-   * 
+   * @docid _ui_data_grid_CellClickEvent.key
+   * @type any
    */
   readonly key: TKey;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellClickEvent.value */
   readonly value?: any;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellClickEvent.displayValue */
   readonly displayValue?: any;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellClickEvent.text */
   readonly text: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellClickEvent.columnIndex */
   readonly columnIndex: number;
   /**
-   * 
+   * @docid _ui_data_grid_CellClickEvent.column
+   * @type object
    */
   readonly column: Column<TRowData, TKey>;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellClickEvent.rowIndex */
   readonly rowIndex: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellClickEvent.rowType */
   readonly rowType: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellClickEvent.cellElement */
   readonly cellElement: DxElement;
   /**
-   * 
+   * @docid _ui_data_grid_CellClickEvent.row
+   * @type dxDataGridRowObject
    */
   readonly row: Row<TRowData, TKey>;
 };
 
 /**
- * The type of the cellDblClick event handler&apos;s argument.
+ * @docid _ui_data_grid_CellDblClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CellDblClickEvent<TRowData = any, TKey = any> = NativeEventInfo<dxDataGrid<TRowData, TKey>, PointerEvent | MouseEvent> & {
   /**
-   * 
+   * @docid _ui_data_grid_CellDblClickEvent.data
+   * @type object
    */
   readonly data: TRowData;
   /**
-   * 
+   * @docid _ui_data_grid_CellDblClickEvent.key
+   * @type any
    */
   readonly key: TKey;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellDblClickEvent.value */
   readonly value?: any;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellDblClickEvent.displayValue */
   readonly displayValue?: any;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellDblClickEvent.text */
   readonly text: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellDblClickEvent.columnIndex */
   readonly columnIndex: number;
   /**
-   * 
+   * @docid _ui_data_grid_CellDblClickEvent.column
+   * @type dxDataGridColumn
    */
   readonly column: Column<TRowData, TKey>;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellDblClickEvent.rowIndex */
   readonly rowIndex: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellDblClickEvent.rowType */
   readonly rowType: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellDblClickEvent.cellElement */
   readonly cellElement: DxElement;
   /**
-   * 
+   * @docid _ui_data_grid_CellDblClickEvent.row
+   * @type dxDataGridRowObject
    */
   readonly row: Row<TRowData, TKey>;
 };
 
 /**
- * The type of the cellHoverChanged event handler&apos;s argument.
+ * @docid _ui_data_grid_CellHoverChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type CellHoverChangedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & {
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellHoverChangedEvent.eventType */
   readonly eventType: string;
   /**
-   * 
+   * @docid _ui_data_grid_CellHoverChangedEvent.data
+   * @type object
    */
   readonly data: TRowData;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellHoverChangedEvent.key */
   readonly key: TKey;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellHoverChangedEvent.value */
   readonly value?: any;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellHoverChangedEvent.text */
   readonly text: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellHoverChangedEvent.displayValue */
   readonly displayValue?: any;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellHoverChangedEvent.columnIndex */
   readonly columnIndex: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellHoverChangedEvent.rowIndex */
   readonly rowIndex: number;
   /**
-   * 
+   * @docid _ui_data_grid_CellHoverChangedEvent.column
+   * @type dxDataGridColumn
    */
   readonly column: Column<TRowData, TKey>;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellHoverChangedEvent.rowType */
   readonly rowType: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellHoverChangedEvent.cellElement */
   readonly cellElement: DxElement;
   /**
-   * 
+   * @docid _ui_data_grid_CellHoverChangedEvent.row
+   * @type dxDataGridRowObject
    */
   readonly row: Row<TRowData, TKey>;
 };
 
 /**
- * The type of the cellPrepared event handler&apos;s argument.
+ * @docid _ui_data_grid_CellPreparedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type CellPreparedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & {
   /**
-   * 
+   * @docid _ui_data_grid_CellPreparedEvent.data
+   * @type object
    */
   readonly data: TRowData;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellPreparedEvent.key */
   readonly key: TKey;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellPreparedEvent.value */
   readonly value?: any;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellPreparedEvent.displayValue */
   readonly displayValue?: any;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellPreparedEvent.text */
   readonly text: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellPreparedEvent.columnIndex */
   readonly columnIndex: number;
   /**
-   * 
+   * @docid _ui_data_grid_CellPreparedEvent.column
+   * @type dxDataGridColumn
    */
   readonly column: Column<TRowData, TKey>;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellPreparedEvent.rowIndex */
   readonly rowIndex: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellPreparedEvent.rowType */
   readonly rowType: string;
   /**
-   * 
+   * @docid _ui_data_grid_CellPreparedEvent.row
+   * @type dxDataGridRowObject
    */
   readonly row: Row<TRowData, TKey>;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellPreparedEvent.isSelected */
   readonly isSelected?: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellPreparedEvent.isExpanded */
   readonly isExpanded?: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellPreparedEvent.isNewRow */
   readonly isNewRow?: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellPreparedEvent.cellElement */
   readonly cellElement: DxElement;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellPreparedEvent.watch */
   readonly watch?: Function;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_CellPreparedEvent.oldValue */
   readonly oldValue?: any;
 };
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_data_grid_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>>;
 
 /**
- * The type of the contextMenuPreparing event handler&apos;s argument.
+ * @docid _ui_data_grid_ContextMenuPreparingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContextMenuPreparingEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & {
   /**
-   * 
+   * @docid _ui_data_grid_ContextMenuPreparingEvent.items
+   * @type Array<Object>
    */
   items?: Array<any>;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_ContextMenuPreparingEvent.target */
   readonly target: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_ContextMenuPreparingEvent.targetElement */
   readonly targetElement: DxElement;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_ContextMenuPreparingEvent.columnIndex */
   readonly columnIndex: number;
   /**
-   * 
+   * @docid _ui_data_grid_ContextMenuPreparingEvent.column
+   * @type dxDataGridColumn
    */
   readonly column?: Column<TRowData, TKey>;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_ContextMenuPreparingEvent.rowIndex */
   readonly rowIndex: number;
   /**
-   * 
+   * @docid _ui_data_grid_ContextMenuPreparingEvent.row
+   * @type dxDataGridRowObject
    */
   readonly row?: Row<TRowData, TKey>;
 };
 
 /**
- * The type of the dataErrorOccurred event handler&apos;s argument.
+ * @docid _ui_data_grid_DataErrorOccurredEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,DataErrorOccurredInfo
  */
 export type DataErrorOccurredEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & DataErrorOccurredInfo;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_data_grid_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>>;
 
 /**
- * The type of the editCanceled event handler&apos;s argument.
+ * @docid _ui_data_grid_EditCanceledEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,DataChangeInfo
  */
 export type EditCanceledEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & DataChangeInfo<TRowData, TKey>;
 
 /**
- * The type of the editCanceling event handler&apos;s argument.
+ * @docid _ui_data_grid_EditCancelingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo,DataChangeInfo
  */
 export type EditCancelingEvent<TRowData = any, TKey = any> = Cancelable & EventInfo<dxDataGrid<TRowData, TKey>> & DataChangeInfo<TRowData, TKey>;
 
 /**
- * The type of the editingStart event handler&apos;s argument.
+ * @docid _ui_data_grid_EditingStartEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type EditingStartEvent<TRowData = any, TKey = any> = Cancelable & EventInfo<dxDataGrid<TRowData, TKey>> & {
   /**
-   * 
+   * @docid _ui_data_grid_EditingStartEvent.data
+   * @type object
    */
   readonly data: TRowData;
   /**
-   * 
+   * @docid _ui_data_grid_EditingStartEvent.key
+   * @type any
    */
   readonly key: TKey;
   /**
-   * 
+   * @docid _ui_data_grid_EditingStartEvent.column
+   * @type object
    */
   readonly column?: Column<TRowData, TKey>;
 };
 
 /**
- * The type of the editorPrepared event handler&apos;s argument.
+ * @docid _ui_data_grid_EditorPreparedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type EditorPreparedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & {
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparedEvent.parentType */
   readonly parentType: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparedEvent.value */
   readonly value?: any;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparedEvent.setValue */
   readonly setValue?: any;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparedEvent.updateValueTimeout */
   readonly updateValueTimeout?: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparedEvent.width */
   readonly width?: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparedEvent.disabled */
   readonly disabled: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparedEvent.rtlEnabled */
   readonly rtlEnabled: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparedEvent.editorElement */
   readonly editorElement: DxElement;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparedEvent.readOnly */
   readonly readOnly: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparedEvent.dataField */
   readonly dataField?: string;
   /**
-   * 
+   * @docid _ui_data_grid_EditorPreparedEvent.row
+   * @type dxDataGridRowObject
    */
   readonly row?: Row<TRowData, TKey>;
 };
 
 /**
- * The type of the editorPreparing event handler&apos;s argument.
+ * @docid _ui_data_grid_EditorPreparingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type EditorPreparingEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & {
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparingEvent.parentType */
   readonly parentType: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparingEvent.value */
   readonly value?: any;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparingEvent.setValue */
   readonly setValue?: any;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparingEvent.updateValueTimeout */
   readonly updateValueTimeout?: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparingEvent.width */
   readonly width?: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparingEvent.disabled */
   readonly disabled: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparingEvent.rtlEnabled */
   readonly rtlEnabled: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparingEvent.cancel */
   cancel: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparingEvent.editorElement */
   readonly editorElement: DxElement;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparingEvent.readOnly */
   readonly readOnly: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparingEvent.editorName */
   editorName: string;
   /**
-   * 
+   * @docid _ui_data_grid_EditorPreparingEvent.editorOptions
+   * @type object
    */
   editorOptions: any;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_EditorPreparingEvent.dataField */
   readonly dataField?: string;
   /**
-   * 
+   * @docid _ui_data_grid_EditorPreparingEvent.row
+   * @type dxDataGridRowObject
    */
   readonly row?: Row<TRowData, TKey>;
 };
 
 /**
- * The type of the exporting event handler&apos;s argument.
+ * @docid _ui_data_grid_ExportingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type ExportingEvent<TRowData = any, TKey = any> = Cancelable & EventInfo<dxDataGrid<TRowData, TKey>> & {
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_ExportingEvent.fileName */
   fileName?: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_ExportingEvent.selectedRowsOnly */
   selectedRowsOnly: boolean;
   /**
-   * 
+   * @docid _ui_data_grid_ExportingEvent.format
+   * @type Enums.DataGridExportFormat|string
    */
   format: DataGridExportFormat | string;
 };
 
 /**
- * The type of the focusedCellChanged event handler&apos;s argument.
+ * @docid _ui_data_grid_FocusedCellChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type FocusedCellChangedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & {
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedCellChangedEvent.cellElement */
   readonly cellElement: DxElement;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedCellChangedEvent.columnIndex */
   readonly columnIndex: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedCellChangedEvent.rowIndex */
   readonly rowIndex: number;
   /**
-   * 
+   * @docid _ui_data_grid_FocusedCellChangedEvent.row
+   * @type dxDataGridRowObject
    */
   readonly row?: Row<TRowData, TKey>;
   /**
-   * 
+   * @docid _ui_data_grid_FocusedCellChangedEvent.column
+   * @type dxDataGridColumn
    */
   readonly column?: Column<TRowData, TKey>;
 };
 
 /**
- * The type of the focusedCellChanging event handler&apos;s argument.
+ * @docid _ui_data_grid_FocusedCellChangingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,NativeEventInfo
  */
 export type FocusedCellChangingEvent<TRowData = any, TKey = any> = Cancelable & NativeEventInfo<dxDataGrid<TRowData, TKey>, KeyboardEvent | PointerEvent | MouseEvent | TouchEvent> & {
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedCellChangingEvent.cellElement */
   readonly cellElement: DxElement;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedCellChangingEvent.prevColumnIndex */
   readonly prevColumnIndex: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedCellChangingEvent.prevRowIndex */
   readonly prevRowIndex: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedCellChangingEvent.newColumnIndex */
   newColumnIndex: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedCellChangingEvent.newRowIndex */
   newRowIndex: number;
   /**
-   * 
+   * @docid _ui_data_grid_FocusedCellChangingEvent.rows
+   * @type Array<dxDataGridRowObject>
    */
   readonly rows: Array<Row<TRowData, TKey>>;
   /**
-   * 
+   * @docid _ui_data_grid_FocusedCellChangingEvent.columns
+   * @type Array<dxDataGridColumn>
    */
   readonly columns: Array<Column<TRowData, TKey>>;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedCellChangingEvent.isHighlighted */
   isHighlighted: boolean;
 };
 
 /**
- * The type of the focusedRowChanged event handler&apos;s argument.
+ * @docid _ui_data_grid_FocusedRowChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type FocusedRowChangedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & {
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedRowChangedEvent.rowElement */
   readonly rowElement: DxElement;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedRowChangedEvent.rowIndex */
   readonly rowIndex: number;
   /**
-   * 
+   * @docid _ui_data_grid_FocusedRowChangedEvent.row
+   * @type dxDataGridRowObject
    */
   readonly row?: Row<TRowData, TKey>;
 };
 
 /**
- * The type of the focusedRowChanging event handler&apos;s argument.
+ * @docid _ui_data_grid_FocusedRowChangingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,NativeEventInfo
  */
 export type FocusedRowChangingEvent<TRowData = any, TKey = any> = Cancelable & NativeEventInfo<dxDataGrid<TRowData, TKey>, KeyboardEvent | PointerEvent | MouseEvent | TouchEvent> & {
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedRowChangingEvent.rowElement */
   readonly rowElement: DxElement;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedRowChangingEvent.prevRowIndex */
   readonly prevRowIndex: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_FocusedRowChangingEvent.newRowIndex */
   newRowIndex: number;
   /**
-   * 
+   * @docid _ui_data_grid_FocusedRowChangingEvent.rows
+   * @type Array<dxDataGridRowObject>
    */
   readonly rows: Array<Row<TRowData, TKey>>;
 };
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_data_grid_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent<TRowData = any, TKey = any> = InitializedEventInfo<dxDataGrid<TRowData, TKey>>;
 
 /**
- * The type of the initNewRow event handler&apos;s argument.
+ * @docid _ui_data_grid_InitNewRowEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,NewRowInfo
  */
 export type InitNewRowEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & NewRowInfo<TRowData>;
 
 /**
- * The type of the keyDown event handler&apos;s argument.
+ * @docid _ui_data_grid_KeyDownEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,KeyDownInfo
  */
 export type KeyDownEvent<TRowData = any, TKey = any> = NativeEventInfo<dxDataGrid<TRowData, TKey>, KeyboardEvent> & KeyDownInfo;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_data_grid_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & ChangedOptionInfo;
 
 /**
- * The type of the rowClick event handler&apos;s argument.
+ * @docid _ui_data_grid_RowClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type RowClickEvent<TRowData = any, TKey = any> = NativeEventInfo<dxDataGrid<TRowData, TKey>, PointerEvent | MouseEvent> & {
   /**
-   * 
+   * @docid _ui_data_grid_RowClickEvent.data
+   * @type object
    */
   readonly data: TRowData;
   /**
-   * 
+   * @docid _ui_data_grid_RowClickEvent.key
+   * @type any
    */
   readonly key: TKey;
   /**
-   * 
+   * @docid _ui_data_grid_RowClickEvent.values
+   * @type Array<any>
    */
   readonly values: Array<any>;
   /**
-   * 
+   * @docid _ui_data_grid_RowClickEvent.columns
+   * @type Array<Object>
    */
   readonly columns: Array<Column<TRowData, TKey>>;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowClickEvent.rowIndex */
   readonly rowIndex: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowClickEvent.rowType */
   readonly rowType: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowClickEvent.isSelected */
   readonly isSelected?: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowClickEvent.isExpanded */
   readonly isExpanded?: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowClickEvent.isNewRow */
   readonly isNewRow?: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowClickEvent.groupIndex */
   readonly groupIndex?: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowClickEvent.rowElement */
   readonly rowElement: DxElement;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowClickEvent.handled */
   readonly handled: boolean;
 };
 
 /**
- * The type of the rowCollapsed event handler&apos;s argument.
+ * @docid _ui_data_grid_RowCollapsedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,RowKeyInfo
  */
 export type RowCollapsedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & RowKeyInfo<TKey>;
 
 /**
- * The type of the rowCollapsing event handler&apos;s argument.
+ * @docid _ui_data_grid_RowCollapsingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo,RowKeyInfo
  */
 export type RowCollapsingEvent<TRowData = any, TKey = any> = Cancelable & EventInfo<dxDataGrid<TRowData, TKey>> & RowKeyInfo<TKey>;
 
 /**
- * The type of the rowDblClick event handler&apos;s argument.
+ * @docid _ui_data_grid_RowDblClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type RowDblClickEvent<TRowData = any, TKey = any> = NativeEventInfo<dxDataGrid<TRowData, TKey>, PointerEvent | MouseEvent> & {
   /**
-   * 
+   * @docid _ui_data_grid_RowDblClickEvent.data
+   * @type object
    */
   readonly data: TRowData;
   /**
-   * 
+   * @docid _ui_data_grid_RowDblClickEvent.key
+   * @type any
    */
   readonly key: TKey;
   /**
-   * 
+   * @docid _ui_data_grid_RowDblClickEvent.values
+   * @type Array<any>
    */
   readonly values: Array<any>;
   /**
-   * 
+   * @docid _ui_data_grid_RowDblClickEvent.columns
+   * @type Array<dxDataGridColumn>
    */
   readonly columns: Array<Column<TRowData, TKey>>;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowDblClickEvent.rowIndex */
   readonly rowIndex: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowDblClickEvent.rowType */
   readonly rowType: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowDblClickEvent.isSelected */
   readonly isSelected?: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowDblClickEvent.isExpanded */
   readonly isExpanded?: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowDblClickEvent.isNewRow */
   readonly isNewRow?: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowDblClickEvent.groupIndex */
   readonly groupIndex?: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowDblClickEvent.rowElement */
   readonly rowElement: DxElement;
 };
 
 /**
- * The type of the rowExpanded event handler&apos;s argument.
+ * @docid _ui_data_grid_RowExpandedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,RowKeyInfo
  */
 export type RowExpandedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & RowKeyInfo<TKey>;
 
 /**
- * The type of the rowExpanding event handler&apos;s argument.
+ * @docid _ui_data_grid_RowExpandingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo,RowKeyInfo
  */
 export type RowExpandingEvent<TRowData = any, TKey = any> = Cancelable & EventInfo<dxDataGrid<TRowData, TKey>> & RowKeyInfo<TKey>;
 
 /**
- * The type of the rowInserted event handler&apos;s argument.
+ * @docid _ui_data_grid_RowInsertedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,RowInsertedInfo
  */
 export type RowInsertedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & RowInsertedInfo<TRowData, TKey>;
 
 /**
- * The type of the rowInserting event handler&apos;s argument.
+ * @docid _ui_data_grid_RowInsertingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,RowInsertingInfo
  */
 export type RowInsertingEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & RowInsertingInfo<TRowData>;
 
 /**
- * The type of the rowPrepared event handler&apos;s argument.
+ * @docid _ui_data_grid_RowPreparedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type RowPreparedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & {
   /**
-   * 
+   * @docid _ui_data_grid_RowPreparedEvent.data
+   * @type object
    */
   readonly data: TRowData;
   /**
-   * 
+   * @docid _ui_data_grid_RowPreparedEvent.key
+   * @type any
    */
   readonly key: TKey;
   /**
-   * 
+   * @docid _ui_data_grid_RowPreparedEvent.values
+   * @type Array<any>
    */
   readonly values: Array<any>;
   /**
-   * 
+   * @docid _ui_data_grid_RowPreparedEvent.columns
+   * @type Array<dxDataGridColumn>
    */
   readonly columns: Array<Column<TRowData, TKey>>;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowPreparedEvent.rowIndex */
   readonly rowIndex: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowPreparedEvent.rowType */
   readonly rowType: string;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowPreparedEvent.groupIndex */
   readonly groupIndex?: number;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowPreparedEvent.isSelected */
   readonly isSelected?: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowPreparedEvent.isExpanded */
   readonly isExpanded?: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowPreparedEvent.isNewRow */
   readonly isNewRow?: boolean;
-  /**
-   * 
-   */
+  /** @docid _ui_data_grid_RowPreparedEvent.rowElement */
   readonly rowElement: DxElement;
 };
 
 /**
- * The type of the rowRemoved event handler&apos;s argument.
+ * @docid _ui_data_grid_RowRemovedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,RowRemovedInfo
  */
 export type RowRemovedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & RowRemovedInfo<TRowData, TKey>;
 
 /**
- * The type of the rowRemoving event handler&apos;s argument.
+ * @docid _ui_data_grid_RowRemovingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,RowRemovingInfo
  */
 export type RowRemovingEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & RowRemovingInfo<TRowData, TKey>;
 
 /**
- * The type of the rowUpdated event handler&apos;s argument.
+ * @docid _ui_data_grid_RowUpdatedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,RowUpdatedInfo
  */
 export type RowUpdatedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & RowUpdatedInfo<TRowData, TKey>;
 
 /**
- * The type of the rowUpdating event handler&apos;s argument.
+ * @docid _ui_data_grid_RowUpdatingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,RowUpdatingInfo
  */
 export type RowUpdatingEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & RowUpdatingInfo<TRowData, TKey>;
 
 /**
- * The type of the rowValidating event handler&apos;s argument.
+ * @docid _ui_data_grid_RowValidatingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,RowValidatingInfo
  */
 export type RowValidatingEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & RowValidatingInfo<TRowData, TKey>;
 
 /**
- * The type of the saved event handler&apos;s argument.
+ * @docid _ui_data_grid_SavedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,DataChangeInfo
  */
 export type SavedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & DataChangeInfo<TRowData, TKey>;
 
 /**
- * The type of the saving event handler&apos;s argument.
+ * @docid _ui_data_grid_SavingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,SavingInfo
  */
 export type SavingEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & SavingInfo<TRowData, TKey>;
 
 /**
- * The type of the selectionChanged event handler&apos;s argument.
+ * @docid _ui_data_grid_SelectionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,_common_grids_SelectionChangedInfo
  */
 export type SelectionChangedEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & SelectionChangedInfo<TRowData, TKey>;
 
 /**
- * The type of the toolbarPreparing event handler&apos;s argument.
+ * @docid _ui_data_grid_ToolbarPreparingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ToolbarPreparingInfo
  */
 export type ToolbarPreparingEvent<TRowData = any, TKey = any> = EventInfo<dxDataGrid<TRowData, TKey>> & ToolbarPreparingInfo;
 
+/** @public */
 export type RowDraggingAddEvent<TRowData = any, TKey = any> = ReducedNativeEventInfo<dxDataGrid<TRowData, TKey>> & RowDraggingEventInfo<TRowData> & DragDropInfo;
 
+/** @public */
 export type RowDraggingChangeEvent<TRowData = any, TKey = any> = Cancelable & ReducedNativeEventInfo<dxDataGrid<TRowData, TKey>> & RowDraggingEventInfo<TRowData> & DragDropInfo;
 
+/** @public */
 export type RowDraggingEndEvent<TRowData = any, TKey = any> = Cancelable & ReducedNativeEventInfo<dxDataGrid<TRowData, TKey>> & RowDraggingEventInfo<TRowData> & DragDropInfo;
 
+/** @public */
 export type RowDraggingMoveEvent<TRowData = any, TKey = any> = Cancelable & ReducedNativeEventInfo<dxDataGrid<TRowData, TKey>> & RowDraggingEventInfo<TRowData> & DragDropInfo;
 
+/** @public */
 export type RowDraggingStartEvent<TRowData = any, TKey = any> = Cancelable & ReducedNativeEventInfo<dxDataGrid<TRowData, TKey>> & DragStartEventInfo<TRowData>;
 
+/** @public */
 export type RowDraggingRemoveEvent<TRowData = any, TKey = any> = ReducedNativeEventInfo<dxDataGrid<TRowData, TKey>> & RowDraggingEventInfo<TRowData>;
 
+/** @public */
 export type RowDraggingReorderEvent<TRowData = any, TKey = any> = ReducedNativeEventInfo<dxDataGrid<TRowData, TKey>> & RowDraggingEventInfo<TRowData> & DragReorderInfo;
 
 /**
- * 
+ * @docid _ui_data_grid_ColumnButtonClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ColumnButtonClickEvent<TRowData = any, TKey = any> = NativeEventInfo<dxDataGrid<TRowData, TKey>, PointerEvent | MouseEvent> & {
   /**
-   * 
+   * @docid _ui_data_grid_ColumnButtonClickEvent.row
+   * @type dxDataGridRowObject
    */
   row?: Row<TRowData, TKey>;
   /**
-   * 
+   * @docid _ui_data_grid_ColumnButtonClickEvent.column
+   * @type dxDataGridColumn
    */
   column?: Column<TRowData, TKey>;
 };
 
+/** @public */
 export type ColumnButtonTemplateData<TRowData = any, TKey = any> = {
   readonly component: dxDataGrid<TRowData, TKey>;
   readonly data?: TRowData;
@@ -1121,6 +1074,7 @@ export type ColumnButtonTemplateData<TRowData = any, TKey = any> = {
   readonly row: Row<TRowData, TKey>;
 };
 
+/** @public */
 export type ColumnCellTemplateData<TRowData = any, TKey = any> = {
   readonly data?: TRowData;
   readonly component: dxDataGrid<TRowData, TKey>;
@@ -1136,6 +1090,7 @@ export type ColumnCellTemplateData<TRowData = any, TKey = any> = {
   readonly watch?: Function;
 };
 
+/** @public */
 export type ColumnEditCellTemplateData<TRowData = any, TKey = any> = {
   readonly setValue?: any;
   readonly data?: TRowData;
@@ -1151,6 +1106,7 @@ export type ColumnEditCellTemplateData<TRowData = any, TKey = any> = {
   readonly watch?: Function;
 };
 
+/** @public */
 export type ColumnGroupCellTemplateData<TRowData = any, TKey = any> = {
   readonly data?: GroupData<TRowData>;
   readonly component: dxDataGrid<TRowData, TKey>;
@@ -1166,18 +1122,21 @@ export type ColumnGroupCellTemplateData<TRowData = any, TKey = any> = {
   readonly groupContinuedMessage?: string;
 };
 
+/** @public */
 export type ColumnHeaderCellTemplateData<TRowData = any, TKey = any> = {
   readonly component: dxDataGrid<TRowData, TKey>;
   readonly columnIndex: number;
   readonly column: Column<TRowData, TKey>;
 };
 
+/** @public */
 export type MasterDetailTemplateData<TRowData = any, TKey = any> = {
   readonly key: TKey;
   readonly data: TRowData;
   readonly watch?: Function;
 };
 
+/** @public */
 export type RowTemplateData<TRowData = any, TKey = any> = {
   readonly key: TKey;
   readonly data: TRowData;
@@ -1191,6 +1150,7 @@ export type RowTemplateData<TRowData = any, TKey = any> = {
   readonly isExpanded?: boolean;
 };
 
+/** @public */
 export type DataRowTemplateData<TRowData = any, TKey = any> = {
   readonly key: TKey;
   readonly data: TRowData;
@@ -1205,320 +1165,482 @@ export type DataRowTemplateData<TRowData = any, TKey = any> = {
 type OverriddenKeys = 'columns' | 'customizeColumns' | 'dataRowTemplate' | 'editing' | 'export' | 'grouping' | 'groupPanel' | 'keyExpr' | 'masterDetail' | 'onCellClick' | 'onCellDblClick' | 'onCellHoverChanged' | 'onCellPrepared' | 'onContextMenuPreparing' | 'onEditingStart' | 'onEditorPrepared' | 'onEditorPreparing' | 'onExporting' | 'onFocusedCellChanged' | 'onFocusedCellChanging' | 'onFocusedRowChanged' | 'onFocusedRowChanging' | 'onRowClick' | 'onRowDblClick' | 'onRowPrepared' | 'remoteOperations' | 'rowTemplate' | 'scrolling' | 'selection' | 'selectionFilter' | 'sortByGroupSummaryInfo' | 'summary' | 'toolbar';
 
 /**
- * 
- * @deprecated 
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @public
+ * @docid
+ * @type object
  */
 export type dxDataGridOptions<TRowData = any, TKey = any> = Omit<GridBaseOptions<dxDataGrid<TRowData, TKey>, TRowData, TKey>, OverriddenKeys> & {
     /**
-     * An array of grid columns.
+     * @docid
+     * @type Array<dxDataGridColumn|string>
+     * @default undefined
+     * @public
      */
     columns?: Array<Column<TRowData, TKey> | string>;
     /**
-     * Customizes columns after they are created.
+     * @docid
+     * @type_function_param1 columns:Array<dxDataGridColumn>
+     * @public
      */
     customizeColumns?: ((columns: Array<Column<TRowData, TKey>>) => void);
     /**
-     * Configures editing.
+     * @docid
+     * @public
+     * @type object
      */
     editing?: Editing<TRowData, TKey>;
     /**
-     * Configures client-side exporting.
+     * @docid
+     * @type object
+     * @public
      */
     export?: Export;
     /**
-     * Configures the group panel.
+     * @docid
+     * @type object
+     * @public
      */
     groupPanel?: GroupPanel;
     /**
-     * Configures grouping.
+     * @docid
+     * @type object
+     * @public
      */
     grouping?: Grouping;
     /**
-     * Specifies the key property (or properties) that provide(s) key values to access data items. Each key value must be unique. This property applies only if data is a simple array.
+     * @docid
+     * @default undefined
+     * @public
      */
     keyExpr?: string | Array<string>;
     /**
-     * Allows you to build a master-detail interface in the grid.
+     * @docid
+     * @type object
+     * @public
      */
     masterDetail?: MasterDetail<TRowData, TKey>;
     /**
-     * A function that is executed when a cell is clicked or tapped. Executed before onRowClick.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:CellClickEvent}
+     * @default null
+     * @action
+     * @public
      */
     onCellClick?: ((e: CellClickEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed when a cell is double-clicked or double-tapped. Executed before onRowDblClick.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:CellDblClickEvent}
+     * @default null
+     * @action
+     * @public
      */
     onCellDblClick?: ((e: CellDblClickEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed after the pointer enters or leaves a cell.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:CellHoverChangedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onCellHoverChanged?: ((e: CellHoverChangedEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed after a grid cell is created.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:CellPreparedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onCellPrepared?: ((e: CellPreparedEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed before the context menu is rendered.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:ContextMenuPreparingEvent}
+     * @default null
+     * @action
+     * @public
      */
     onContextMenuPreparing?: ((e: ContextMenuPreparingEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed before a cell or row switches to the editing state.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:EditingStartEvent}
+     * @default null
+     * @action
+     * @public
      */
     onEditingStart?: ((e: EditingStartEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed after an editor is created. Not executed for cells with an editCellTemplate.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:EditorPreparedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onEditorPrepared?: ((options: EditorPreparedEvent<TRowData, TKey>) => void);
     /**
-     * A function used to customize a cell&apos;s editor. Not executed for cells with an editCellTemplate.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:EditorPreparingEvent}
+     * @default null
+     * @action
+     * @public
      */
     onEditorPreparing?: ((e: EditorPreparingEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed before data is exported.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:ExportingEvent}
+     * @default null
+     * @action
+     * @public
      */
     onExporting?: ((e: ExportingEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed after the focused cell changes. Applies only to cells in data or group rows.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:FocusedCellChangedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onFocusedCellChanged?: ((e: FocusedCellChangedEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed before the focused cell changes. Applies only to cells in data or group rows.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:FocusedCellChangingEvent}
+     * @default null
+     * @action
+     * @public
      */
     onFocusedCellChanging?: ((e: FocusedCellChangingEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed after the focused row changes. Applies only to data or group rows. focusedRowEnabled should be true.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:FocusedRowChangedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onFocusedRowChanged?: ((e: FocusedRowChangedEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed before the focused row changes. Applies only to data or group rows. focusedRowEnabled should be true.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:FocusedRowChangingEvent}
+     * @default null
+     * @action
+     * @public
      */
     onFocusedRowChanging?: ((e: FocusedRowChangingEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed when a row is clicked or tapped.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:RowClickEvent}
+     * @default null
+     * @action
+     * @public
      */
     onRowClick?: ((e: RowClickEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed when a row is double-clicked or double-tapped. Executed after onCellDblClick.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:RowDblClickEvent}
+     * @default null
+     * @action
+     * @public
      */
     onRowDblClick?: ((e: RowDblClickEvent<TRowData, TKey>) => void);
     /**
-     * A function that is executed after a row is created.
+     * @docid
+     * @type_function_param1 e:{ui/data_grid:RowPreparedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onRowPrepared?: ((e: RowPreparedEvent<TRowData, TKey>) => void);
     /**
-     * Notifies the DataGrid of the server&apos;s data processing operations.
+     * @docid
+     * @default "auto"
+     * @public
      */
     remoteOperations?: boolean | {
       /**
-       * Specifies whether or not filtering must be performed on the server side.
+       * @docid
+       * @default false
        */
       filtering?: boolean;
       /**
-       * Specifies whether paging by groups should be performed on the server side.
+       * @docid
+       * @default false
        */
       groupPaging?: boolean;
       /**
-       * Specifies whether or not grouping must be performed on the server side.
+       * @docid
+       * @default false
        */
       grouping?: boolean;
       /**
-       * Specifies whether or not paging must be performed on the server side.
+       * @docid
+       * @default false
        */
       paging?: boolean;
       /**
-       * Specifies whether or not sorting must be performed on the server side.
+       * @docid
+       * @default false
        */
       sorting?: boolean;
       /**
-       * Specifies whether or not summaries summaries are calculated on the server-side.
+       * @docid
+       * @default false
        */
       summary?: boolean;
     } | Mode;
     /**
-     * Specifies a custom template for rows.
-     * @deprecated Use the dataRowTemplate option instead.
+     * @docid
+     * @type_function_param2 rowInfo:object
+     * @type_function_param2_field key:any
+     * @type_function_param2_field data:any
+     * @type_function_param2_field values:Array<any>
+     * @type_function_param2_field columns:Array<dxDataGridColumn>
+     * @public
+     * @deprecated dxDataGridOptions.dataRowTemplate
      */
     rowTemplate?: template | ((rowElement: DxElement, rowInfo: RowTemplateData<TRowData, TKey>) => any);
         /**
-     * Specifies a custom template for data rows.
+     * @docid
+     * @type_function_param2 rowInfo:object
+     * @type_function_param2_field key:any
+     * @type_function_param2_field data:any
+     * @type_function_param2_field values:Array<any>
+     * @type_function_param2_field columns:Array<dxDataGridColumn>
+     * @public
      */
     dataRowTemplate?: template | ((rowElement: DxElement, rowInfo: DataRowTemplateData<TRowData, TKey>) => any);
     /**
-     * Configures scrolling.
+     * @docid
+     * @public
+     * @type object
      */
     scrolling?: Scrolling;
     /**
-     * Configures runtime selection.
+     * @docid
+     * @public
+     * @type object
      */
     selection?: Selection;
     /**
-     * Specifies filters for the rows that must be selected initially. Applies only if selection.deferred is true.
+     * @docid
+     * @type Filter expression
+     * @default []
+     * @fires dxDataGridOptions.onOptionChanged
+     * @public
      */
     selectionFilter?: string | Array<any> | Function;
     /**
-     * Allows you to sort groups according to the values of group summary items.
+     * @docid
+     * @type Array<object>
+     * @default undefined
+     * @public
      */
     sortByGroupSummaryInfo?: Array<SortByGroupSummaryInfoItem>;
     /**
-     * Specifies the properties of the grid summary.
+     * @docid
+     * @type object
+     * @public
      */
     summary?: Summary<TRowData, TKey>;
     /**
-     * Configures the toolbar.
+     * @docid
+     * @type dxDataGridToolbar
+     * @default undefined
+     * @public
      */
     toolbar?: Toolbar;
 };
 
 /**
- * Configures client-side exporting.
+ * @docid
+ * @public
  */
 export type Export = {
   /**
-   * Allows users to export selected rows only.
+   * @docid dxDataGridOptions.export.allowExportSelectedData
+   * @default false
    */
   allowExportSelectedData?: boolean;
   /**
-   * Adds the Export button to the DataGrid&apos;s toolbar.
+   * @docid dxDataGridOptions.export.enabled
+   * @default false
    */
   enabled?: boolean;
   /**
-   * Specifies the availability and captions of data export buttons.
+   * @docid dxDataGridOptions.export.formats
+   * @type Array<Enums.DataGridExportFormat,string>
+   * @default "DataGrid"
    */
   formats?: ('xlsx' | 'pdf' | string)[];
   /**
-   * Configures the texts of export commands, buttons, and hints.
+   * @docid dxDataGridOptions.export.texts
+   * @type object
    */
   texts?: ExportTexts;
 };
 
 /**
- * Configures the texts of export commands, buttons, and hints.
+ * @docid
+ * @public
  */
 export type ExportTexts = {
   /**
-   * The text or hint of the command that exports all data.
+   * @docid dxDataGridOptions.export.texts.exportAll
+   * @default "Export all data to {0}"
    */
   exportAll?: string;
   /**
-   * The text of the command that exports selected rows. Applies when the allowExportSelectedData property is true.
+   * @docid dxDataGridOptions.export.texts.exportSelectedRows
+   * @default "Export selected rows to {0}"
    */
   exportSelectedRows?: string;
   /**
-   * The hint of the Export button when the allowExportSelectedData property is true.
+   * @docid dxDataGridOptions.export.texts.exportTo
+   * @default "Export"
    */
   exportTo?: string;
 };
 
+/** @public */
 export type FilterPanel<TRowData = any, TKey = any> = ComponentFilterPanel<dxDataGrid, TRowData, TKey>;
 
+/** @public */
 export type FilterPanelCustomizeTextArg = ComponentFilterPanelCustomizeTextArg<dxDataGrid>;
 
 /**
- * Configures the group panel.
+ * @docid
+ * @public
  */
 export type GroupPanel = {
   /**
-   * Specifies whether columns can be dragged onto or from the group panel.
+   * @docid dxDataGridOptions.groupPanel.allowColumnDragging
+   * @default true
    */
   allowColumnDragging?: boolean;
   /**
-   * Specifies text displayed by the group panel when it does not contain any columns.
+   * @docid dxDataGridOptions.groupPanel.emptyPanelText
+   * @default "Drag a column header here to group by that column"
    */
   emptyPanelText?: string;
   /**
-   * Specifies whether the group panel is visible or not.
+   * @docid dxDataGridOptions.groupPanel.visible
+   * @fires dxDataGridOptions.onOptionChanged
+   * @default false
    */
   visible?: boolean | Mode;
 };
 
 /**
- * Configures grouping.
+ * @docid
+ * @public
  */
 export type Grouping = {
   /**
-   * Specifies whether the user can collapse grouped records in a grid or not.
+   * @docid dxDataGridOptions.grouping.allowCollapsing
+   * @default true
    */
   allowCollapsing?: boolean;
   /**
-   * Specifies whether groups appear expanded or not.
+   * @docid dxDataGridOptions.grouping.autoExpandAll
+   * @default true
    */
   autoExpandAll?: boolean;
   /**
-   * Enables the user to group data using the context menu.
+   * @docid dxDataGridOptions.grouping.contextMenuEnabled
+   * @default false
    */
   contextMenuEnabled?: boolean;
   /**
-   * Specifies the event on which a group will be expanded/collapsed.
+   * @docid dxDataGridOptions.grouping.expandMode
+   * @default 'rowClick' &for(mobile_devices)
+   * @default "buttonClick"
    */
   expandMode?: GroupExpandMode;
   /**
-   * Defines the texts of grouping-related visual elements.
+   * @docid dxDataGridOptions.grouping.texts
+   * @type object
    */
   texts?: GroupingTexts;
 };
 
 /**
- * Defines the texts of grouping-related visual elements.
+ * @docid
+ * @public
  */
 export type GroupingTexts = {
   /**
-   * Specifies the text of the context menu item that groups data by a specific column.
+   * @docid dxDataGridOptions.grouping.texts.groupByThisColumn
+   * @default "Group by This Column"
    */
   groupByThisColumn?: string;
   /**
-   * Specifies the message displayed in a group row when the corresponding group is continued from the previous page.
+   * @docid dxDataGridOptions.grouping.texts.groupContinuedMessage
+   * @default "Continued from the previous page"
    */
   groupContinuedMessage?: string;
   /**
-   * Specifies the message displayed in a group row when the corresponding group continues on the next page.
+   * @docid dxDataGridOptions.grouping.texts.groupContinuesMessage
+   * @default "Continues on the next page"
    */
   groupContinuesMessage?: string;
   /**
-   * Specifies the text of the context menu item that clears grouping settings of a specific column.
+   * @docid dxDataGridOptions.grouping.texts.ungroup
+   * @default "Ungroup"
    */
   ungroup?: string;
   /**
-   * Specifies the text of the context menu item that clears grouping settings of all columns.
+   * @docid dxDataGridOptions.grouping.texts.ungroupAll
+   * @default "Ungroup All"
    */
   ungroupAll?: string;
 };
 
 /**
- * Allows you to build a master-detail interface in the grid.
+ * @docid
+ * @public
  */
 export type MasterDetail<TRowData = any, TKey = any> = {
   /**
-   * Specifies whether detail sections appear expanded or collapsed.
+   * @docid dxDataGridOptions.masterDetail.autoExpandAll
+   * @default false
    */
   autoExpandAll?: boolean;
   /**
-   * Enables an end-user to expand/collapse detail sections.
+   * @docid dxDataGridOptions.masterDetail.enabled
+   * @default false
    */
   enabled?: boolean;
   /**
-   * Specifies a custom template for detail sections.
+   * @docid dxDataGridOptions.masterDetail.template
+   * @type_function_param2 detailInfo:object
+   * @type_function_param2_field key:any
+   * @type_function_param2_field data:object
    */
   template?: template | ((detailElement: DxElement, detailInfo: MasterDetailTemplateData<TRowData, TKey>) => any);
 };
 
 /**
- * Allows you to sort groups according to the values of group summary items.
+ * @public
+ * @docid dxDataGridSortByGroupSummaryInfoItem
  */
 export type SortByGroupSummaryInfoItem = {
     /**
-     * Specifies the identifier of the column that must be used in grouping so that sorting by group summary item values be applied.
+     * @docid dxDataGridOptions.sortByGroupSummaryInfo.groupColumn
+     * @default undefined
      */
     groupColumn?: string;
     /**
-     * Specifies the sort order of group summary item values.
+     * @docid dxDataGridOptions.sortByGroupSummaryInfo.sortOrder
+     * @default undefined
+     * @acceptValues undefined
      */
     sortOrder?: SortOrder;
     /**
-     * Specifies the group summary item whose values must be used to sort groups.
+     * @docid dxDataGridOptions.sortByGroupSummaryInfo.summaryItem
+     * @default undefined
      */
     summaryItem?: string | number;
 };
 
+/** @public */
 export type CustomSummaryInfo<TRowData = any, TKey = any> = {
   readonly component: dxDataGrid<TRowData, TKey>;
   readonly name?: string;
@@ -1528,357 +1650,499 @@ export type CustomSummaryInfo<TRowData = any, TKey = any> = {
   readonly groupIndex?: number;
 };
 
+/**
+ * @public
+ */
 export type Paging = ComponentPaging;
 
+/** @public */
 export type RowDragging<TRowData = any, TKey = any> = ComponentRowDragging<dxDataGrid, TRowData, TKey>;
 
 /**
- * Specifies the properties of the grid summary.
+ * @docid
+ * @public
  */
 export type Summary<TRowData = any, TKey = any> = {
   /**
-   * Specifies a custom aggregate function. This function is called for summary items whose summaryType is &apos;custom&apos;.
+   * @docid dxDataGridOptions.summary.calculateCustomSummary
+   * @type_function_param1 options:object
    */
   calculateCustomSummary?: ((options: CustomSummaryInfo<TRowData, TKey>) => void);
   /**
-   * Specifies items of the group summary.
+   * @docid dxDataGridOptions.summary.groupItems
+   * @type Array<object>
+   * @default undefined
    */
   groupItems?: Array<SummaryGroupItem>;
   /**
-   * Specifies whether to recalculate summaries while a user edits data.
+   * @docid dxDataGridOptions.summary.recalculateWhileEditing
+   * @default false
    */
   recalculateWhileEditing?: boolean;
   /**
-   * Specifies whether to skip empty strings, null and undefined values when calculating a summary. Does not apply when you use a remote data source.
+   * @docid dxDataGridOptions.summary.skipEmptyValues
+   * @default true
    */
   skipEmptyValues?: boolean;
   /**
-   * Contains properties that specify text patterns for summary items.
+   * @docid dxDataGridOptions.summary.texts
+   * @type object
    */
   texts?: SummaryTexts;
   /**
-   * Specifies items of the total summary.
+   * @docid dxDataGridOptions.summary.totalItems
+   * @type Array<object>
+   * @default undefined
    */
   totalItems?: Array<SummaryTotalItem>;
 };
 
+/** @public */
 export type SummaryItemTextInfo = {
   readonly value?: string | number | Date;
   readonly valueText: string;
 };
 
 /**
- * Specifies items of the group summary.
+ * @docid
+ * @public
  */
 export type SummaryGroupItem = {
     /**
-     * Indicates whether to display group summary items in parentheses after the group row header or to align them by the corresponding columns within the group row.
+     * @docid dxDataGridOptions.summary.groupItems.alignByColumn
+     * @default false
      */
     alignByColumn?: boolean;
     /**
-     * Specifies the column that provides data for a group summary item.
+     * @docid dxDataGridOptions.summary.groupItems.column
+     * @default undefined
      */
     column?: string;
     /**
-     * Customizes the text to be displayed in the summary item.
+     * @docid dxDataGridOptions.summary.groupItems.customizeText
+     * @type_function_param1 itemInfo:object
      */
     customizeText?: ((itemInfo: SummaryItemTextInfo) => string);
     /**
-     * Specifies the summary item&apos;s text.
+     * @docid dxDataGridOptions.summary.groupItems.displayFormat
+     * @default undefined
      */
     displayFormat?: string;
     /**
-     * Specifies the group summary item&apos;s identifier.
+     * @docid dxDataGridOptions.summary.groupItems.name
+     * @default undefined
      */
     name?: string;
     /**
-     * Specifies the column that must hold the summary item when this item is displayed in the group footer or aligned by a column in the group row.
+     * @docid dxDataGridOptions.summary.groupItems.showInColumn
+     * @default undefined
      */
     showInColumn?: string;
     /**
-     * Specifies whether or not a summary item must be displayed in the group footer.
+     * @docid dxDataGridOptions.summary.groupItems.showInGroupFooter
+     * @default false
      */
     showInGroupFooter?: boolean;
     /**
-     * Specifies whether to skip empty strings, null, and undefined values when calculating a summary. Does not apply when you use a remote data source.
+     * @docid dxDataGridOptions.summary.groupItems.skipEmptyValues
      */
     skipEmptyValues?: boolean;
     /**
-     * Specifies how to aggregate data for the group summary item.
+     * @docid dxDataGridOptions.summary.groupItems.summaryType
+     * @default undefined
      */
     summaryType?: SummaryType | string;
     /**
-     * Specifies a summary item value&apos;s display format.
+     * @docid dxDataGridOptions.summary.groupItems.valueFormat
+     * @default undefined
      */
     valueFormat?: Format;
 };
 
 /**
- * Specifies items of the total summary.
+ * @docid
+ * @public
  */
 export type SummaryTotalItem = {
   /**
-   * Specifies the alignment of a summary item.
+   * @docid dxDataGridOptions.summary.totalItems.alignment
+   * @default undefined
    */
   alignment?: HorizontalAlignment;
   /**
-   * Specifies the column that provides data for a summary item.
+   * @docid dxDataGridOptions.summary.totalItems.column
+   * @default undefined
    */
   column?: string;
   /**
-   * Specifies a CSS class to be applied to a summary item.
+   * @docid dxDataGridOptions.summary.totalItems.cssClass
+   * @default undefined
    */
   cssClass?: string;
   /**
-   * Customizes the text to be displayed in the summary item.
+   * @docid dxDataGridOptions.summary.totalItems.customizeText
+   * @type_function_param1 itemInfo:object
    */
   customizeText?: ((itemInfo: SummaryItemTextInfo) => string);
   /**
-   * Specifies the summary item&apos;s text.
+   * @docid dxDataGridOptions.summary.totalItems.displayFormat
+   * @default undefined
    */
   displayFormat?: string;
   /**
-   * Specifies the total summary item&apos;s identifier.
+   * @docid dxDataGridOptions.summary.totalItems.name
+   * @default undefined
    */
   name?: string;
   /**
-   * Specifies the column that must hold the summary item.
+   * @docid dxDataGridOptions.summary.totalItems.showInColumn
+   * @default undefined
    */
   showInColumn?: string;
   /**
-   * 
+   * @docid dxDataGridOptions.summary.totalItems.skipEmptyValues
    */
   skipEmptyValues?: boolean;
   /**
-   * Specifies how to aggregate data for the total summary item.
+   * @docid dxDataGridOptions.summary.totalItems.summaryType
+   * @default undefined
    */
   summaryType?: SummaryType | string;
   /**
-   * Specifies a summary item value&apos;s display format.
+   * @docid dxDataGridOptions.summary.totalItems.valueFormat
+   * @default undefined
    */
   valueFormat?: Format;
 };
 
 /**
- * Contains properties that specify text patterns for summary items.
+ * @docid
+ * @public
  */
 export type SummaryTexts = {
     /**
-     * Specifies a pattern for the &apos;avg&apos; summary items when they are displayed in the parent column.
+     * @docid dxDataGridOptions.summary.texts.avg
+     * @default "Avg={0}"
      */
     avg?: string;
     /**
-     * Specifies a pattern for the &apos;avg&apos; summary items displayed in a group row or in any other column rather than the parent one.
+     * @docid dxDataGridOptions.summary.texts.avgOtherColumn
+     * @default "Avg of {1} is {0}"
      */
     avgOtherColumn?: string;
     /**
-     * Specifies a pattern for the &apos;count&apos; summary items.
+     * @docid dxDataGridOptions.summary.texts.count
+     * @default "Count={0}"
      */
     count?: string;
     /**
-     * Specifies a pattern for the &apos;max&apos; summary items when they are displayed in the parent column.
+     * @docid dxDataGridOptions.summary.texts.max
+     * @default "Max={0}"
      */
     max?: string;
     /**
-     * Specifies a pattern for the &apos;max&apos; summary items displayed in a group row or in any other column rather than the parent one.
+     * @docid dxDataGridOptions.summary.texts.maxOtherColumn
+     * @default "Max of {1} is {0}"
      */
     maxOtherColumn?: string;
     /**
-     * Specifies a pattern for the &apos;min&apos; summary items when they are displayed in the parent column.
+     * @docid dxDataGridOptions.summary.texts.min
+     * @default "Min={0}"
      */
     min?: string;
     /**
-     * Specifies a pattern for the &apos;min&apos; summary items displayed in a group row or in any other column rather than the parent one.
+     * @docid dxDataGridOptions.summary.texts.minOtherColumn
+     * @default "Min of {1} is {0}"
      */
     minOtherColumn?: string;
     /**
-     * Specifies a pattern for the &apos;sum&apos; summary items when they are displayed in the parent column.
+     * @docid dxDataGridOptions.summary.texts.sum
+     * @default "Sum={0}"
      */
     sum?: string;
     /**
-     * Specifies a pattern for the &apos;sum&apos; summary items displayed in a group row or in any other column rather than the parent one.
+     * @docid dxDataGridOptions.summary.texts.sumOtherColumn
+     * @default "Sum of {1} is {0}"
      */
     sumOtherColumn?: string;
 };
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type dxDataGridToolbar = Toolbar;
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type dxDataGridToolbarItem = ToolbarItem;
 
 /**
- * Configures toolbar items.
+ * @docid dxDataGridToolbarItem
+ * @inherits dxToolbarItem
+ * @namespace DevExpress.ui.dxDataGrid
+ * @public
  */
 export type ToolbarItem = dxToolbarItem & {
   /**
-   * A name used to identify the toolbar item.
+   * @docid dxDataGridToolbarItem.name
+   * @public
    */
   name?: DataGridPredefinedToolbarItem | string;
   /**
-   * Specifies a location for the item on the toolbar.
+   * @docid dxDataGridToolbarItem.location
+   * @default 'after'
+   * @public
    */
   location?: ToolbarItemLocation;
 };
 
 /**
- * Configures the toolbar.
+ * @public
+ * @docid dxDataGridToolbar
+ * @namespace DevExpress.ui.dxDataGrid
  */
 export type Toolbar = {
   /**
-   * Configures toolbar items.
+   * @docid dxDataGridToolbar.items
+   * @type Array<dxDataGridToolbarItem,Enums.DataGridPredefinedToolbarItem>
+   * @public
    */
   items?: Array<DataGridPredefinedToolbarItem | ToolbarItem>;
   /**
-   * Specifies whether the toolbar is visible.
+   * @docid dxDataGridToolbar.visible
+   * @default undefined
+   * @public
    */
   visible?: boolean;
   /**
-   * Specifies whether the toolbar responds to user interaction.
+   * @docid dxDataGridToolbar.disabled
+   * @default false
+   * @public
    */
   disabled?: boolean;
 };
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use Editing instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type dxDataGridEditing<TRowData, TKey = any> = Editing<TRowData, TKey>;
 
 /**
- * Configures editing.
+ * @docid dxDataGridEditing
+ * @public
+ * @type object
  */
 export type Editing<TRowData = any, TKey = any> = EditingBase<TRowData, TKey> & {
     /**
-     * Specifies whether a user can add new rows.
+     * @docid dxDataGridOptions.editing.allowAdding
+     * @default false
+     * @public
      */
     allowAdding?: boolean;
     /**
-     * Specifies whether a user can delete rows. It is called for each data row when defined as a function.
+     * @docid dxDataGridOptions.editing.allowDeleting
+     * @default false
+     * @type boolean|function
+     * @type_function_param1_field component:dxDataGrid
+     * @type_function_param1_field row:dxDataGridRowObject
+     * @public
      */
     allowDeleting?: boolean | ((options: { component?: dxDataGrid<TRowData, TKey>; row?: Row<TRowData, TKey> }) => boolean);
     /**
-     * Specifies whether a user can update rows. It is called for each data row when defined as a function.
+     * @docid dxDataGridOptions.editing.allowUpdating
+     * @default false
+     * @type boolean|function
+     * @type_function_param1_field component:dxDataGrid
+     * @type_function_param1_field row:dxDataGridRowObject
+     * @public
      */
     allowUpdating?: boolean | ((options: { component?: dxDataGrid<TRowData, TKey>; row?: Row<TRowData, TKey> }) => boolean);
     /**
-     * Contains properties that specify texts for editing-related UI elements.
+     * @docid dxDataGridOptions.editing.texts
+     * @public
      */
     texts?: any;
     /**
-     * Specifies a position for a new row.
+     * @docid dxDataGridOptions.editing.newRowPosition
+     * @default "viewportTop"
+     * @public
      */
     newRowPosition?: NewRowPosition;
 };
 
+/**
+ * @public
+ */
 export type EditingTexts = ComponentEditingTextsBase;
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use Scrolling instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type dxDataGridScrolling = Scrolling;
 
 /**
- * Configures scrolling.
+ * @docid dxDataGridScrolling
+ * @public
+ * @type object
  */
 export type Scrolling = ScrollingBase & {
     /**
-     * Specifies the scrolling mode.
+     * @docid dxDataGridOptions.scrolling.mode
+     * @default "standard"
+     * @public
      */
     mode?: DataGridScrollMode;
 };
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use Selection instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type dxDataGridSelection = Selection;
 
+/** @public */
+export type SelectionSensitivity = 'base' | 'accent' | 'case' | 'variant';
+
+/** @public */
 export type Selection = SelectionBase & {
     /**
-     * Makes selection deferred.
+     * @docid dxDataGridOptions.selection.deferred
+     * @default false
+     * @public
      */
     deferred?: boolean;
     /**
-     * Specifies the mode in which all the records are selected. Applies only if selection.allowSelectAll is true.
+      * @docid dxDataGridOptions.selection.sensitivity
+      * @default "base"
+      * @public
+    */
+    sensitivity?: SelectionSensitivity;
+    /**
+     * @docid dxDataGridOptions.selection.selectAllMode
+     * @default "allPages"
+     * @public
      */
     selectAllMode?: SelectAllMode;
     /**
-     * Specifies when to display the selection column and row selection checkboxes. Applies only if selection.mode is &apos;multiple&apos;.
+     * @docid dxDataGridOptions.selection.showCheckBoxesMode
+     * @default "onClick"
+     * @default "always" &for(Material)
+     * @default "always" &for(Fluent)
+     * @public
      */
     showCheckBoxesMode?: SelectionColumnDisplayMode;
 };
 /**
- * The DataGrid is a UI component that represents data from a local or remote source in the form of a grid. This UI component offers such basic features as sorting, grouping, filtering, as well as more advanced capabilities, like state storing, client-side exporting, master-detail interface, and many others.
+ * @docid
+ * @inherits GridBase
+ * @namespace DevExpress.ui
+ * @public
+ * @options dxDataGridOptions
  */
 export default class dxDataGrid<TRowData = any, TKey = any> extends Widget<dxDataGridOptions<TRowData, TKey>> implements GridBase<TRowData, TKey> {
     /**
-     * Adds a new column.
+     * @docid
+     * @publicName addColumn(columnOptions)
+     * @param1 columnOptions:object|string
+     * @public
      */
     addColumn(columnOptions: Column<TRowData, TKey> | string): void;
     /**
-     * Adds an empty data row and switches it to the editing state.
+     * @docid
+     * @publicName addRow()
+     * @return Promise<void>
+     * @public
      */
     addRow(): DxPromise<void>;
     /**
-     * Ungroups grid records.
+     * @docid
+     * @publicName clearGrouping()
+     * @public
      */
     clearGrouping(): void;
     /**
-     * Collapses master rows or groups of a specific level.
+     * @docid
+     * @publicName collapseAll(groupIndex)
+     * @param1 groupIndex:number | undefined
+     * @public
      */
     collapseAll(groupIndex?: number): void;
     /**
-     * Collapses a group or a master row with a specific key.
+     * @docid
+     * @publicName collapseRow(key)
+     * @return Promise<void>
+     * @public
      */
     collapseRow(key: TKey): DxPromise<void>;
     /**
-     * Expands master rows or groups of a specific level. Does not apply if data is remote.
+     * @docid
+     * @publicName expandAll(groupIndex)
+     * @param1 groupIndex:number | undefined
+     * @public
      */
     expandAll(groupIndex?: number): void;
     /**
-     * Expands a group or a master row with a specific key.
+     * @docid
+     * @publicName expandRow(key)
+     * @return Promise<void>
+     * @public
      */
     expandRow(key: TKey): DxPromise<void>;
     /**
-     * Gets the currently selected rows&apos; keys.
+     * @docid
+     * @publicName getSelectedRowKeys()
+     * @return Array<any> | Promise<any>
+     * @public
      */
     getSelectedRowKeys(): Array<TKey> & DxPromise<Array<TKey>>;
     /**
-     * Gets the selected rows&apos; data objects.
+     * @docid
+     * @publicName getSelectedRowsData()
+     * @return Array<any> | Promise<any>
+     * @public
      */
     getSelectedRowsData(): Array<TRowData> & DxPromise<Array<TRowData>>;
     /**
-     * Gets the value of a total summary item.
+     * @docid
+     * @publicName getTotalSummaryValue(summaryItemName)
+     * @public
      */
     getTotalSummaryValue(summaryItemName: string): any;
     /**
-     * Gets all visible columns.
+     * @docid
+     * @publicName getVisibleColumns()
+     * @return Array<dxDataGridColumn>
+     * @public
      */
     getVisibleColumns(): Array<Column<TRowData, TKey>>;
     /**
-     * Gets all visible columns at a specific hierarchical level of column headers. Use it to access banded columns.
+     * @docid
+     * @publicName getVisibleColumns(headerLevel)
+     * @return Array<dxDataGridColumn>
+     * @public
      */
     getVisibleColumns(headerLevel: number): Array<Column<TRowData, TKey>>;
     /**
-     * Gets currently rendered rows.
+     * @docid
+     * @publicName getVisibleRows()
+     * @return Array<dxDataGridRowObject>
+     * @public
      */
     getVisibleRows(): Array<Row<TRowData, TKey>>;
     /**
-     * Checks whether a specific group or master row is expanded or collapsed.
+     * @docid
+     * @publicName isRowExpanded(key)
+     * @public
      */
     isRowExpanded(key: TKey): boolean;
     /**
-     * Checks whether a row found using its data object is selected. Takes effect only if selection.deferred is true.
+     * @docid
+     * @publicName isRowSelected(data)
+     * @public
      */
     isRowSelected(data: TRowData): boolean;
     isRowSelected(key: TKey): boolean;
     /**
-     * Gets the total row count.
+     * @docid
+     * @publicName totalCount()
+     * @return numeric
+     * @public
      */
     totalCount(): number;
 
@@ -1949,147 +2213,228 @@ export default class dxDataGrid<TRowData = any, TKey = any> extends Widget<dxDat
     updateDimensions(): void;
 }
 
+/**
+ * @public
+ */
 export type Column<TRowData = any, TKey = any> = dxDataGridColumn<TRowData, TKey>;
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use the Column type instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export interface dxDataGridColumn<TRowData = any, TKey = any> extends ColumnBase<TRowData> {
     /**
-     * Specifies whether data from this column should be exported. Applies only if the column is visible.
+     * @docid dxDataGridColumn.allowExporting
+     * @default true
+     * @public
      */
     allowExporting?: boolean;
     /**
-     * Specifies whether the user can group data by values of this column. Applies only when grouping is enabled.
+     * @docid dxDataGridColumn.allowGrouping
+     * @default true
+     * @public
      */
     allowGrouping?: boolean;
     /**
-     * Specifies whether groups appear expanded or not when records are grouped by a specific column. Setting this property makes sense only when grouping is allowed for this column.
+     * @docid dxDataGridColumn.autoExpandGroup
+     * @default true
+     * @public
      */
     autoExpandGroup?: boolean;
     /**
-     * Allows you to customize buttons in the edit column or create a custom command column. Applies only if the column&apos;s type is &apos;buttons&apos;.
+     * @docid dxDataGridColumn.buttons
+     * @type Array<Enums.DataGridPredefinedColumnButton,dxDataGridColumnButton>
+     * @public
      */
     buttons?: Array<DataGridPredefinedColumnButton | ColumnButton<TRowData, TKey>>;
     /**
-     * Sets custom column values used to group grid records.
+     * @docid dxDataGridColumn.calculateGroupValue
+     * @type_function_context GridBaseColumn
+     * @type_function_param1 rowData:object
+     * @public
      */
     calculateGroupValue?: string | ((this: ColumnBase, rowData: TRowData) => any);
     /**
-     * Specifies a custom template for data cells.
+     * @docid dxDataGridColumn.cellTemplate
+     * @type_function_param2 cellInfo:object
+     * @type_function_param2_field data:object
+     * @type_function_param2_field column:dxDataGridColumn
+     * @type_function_param2_field row:dxDataGridRowObject
+     * @public
      */
     cellTemplate?: template | ((cellElement: DxElement, cellInfo: ColumnCellTemplateData<TRowData, TKey>) => any);
     /**
-     * An array of grid columns.
+     * @docid dxDataGridColumn.columns
+     * @type Array<dxDataGridColumn|string>
+     * @default undefined
+     * @public
      */
     columns?: Array<Column<TRowData, TKey> | string>;
     /**
-     * Specifies a custom template for data cells in editing state.
+     * @docid dxDataGridColumn.editCellTemplate
+     * @type_function_param2 cellInfo:object
+     * @type_function_param2_field setValue(newValue, newText):any
+     * @type_function_param2_field data:object
+     * @type_function_param2_field column:dxDataGridColumn
+     * @type_function_param2_field row:dxDataGridRowObject
+     * @public
      */
     editCellTemplate?: template | ((cellElement: DxElement, cellInfo: ColumnEditCellTemplateData<TRowData, TKey>) => any);
     /**
-     * Specifies a custom template for group cells (group rows).
+     * @docid dxDataGridColumn.groupCellTemplate
+     * @type_function_param2 cellInfo:object
+     * @type_function_param2_field data:object
+     * @type_function_param2_field column:dxDataGridColumn
+     * @type_function_param2_field row:dxDataGridRowObject
+     * @type_function_param2_field summaryItems:Array<any>
+     * @public
      */
     groupCellTemplate?: template | ((cellElement: DxElement, cellInfo: ColumnGroupCellTemplateData<TRowData, TKey>) => any);
     /**
-     * Specifies the index of a column when grid records are grouped by the values of this column.
+     * @docid dxDataGridColumn.groupIndex
+     * @default undefined
+     * @fires dxDataGridOptions.onOptionChanged
+     * @public
      */
     groupIndex?: number;
     /**
-     * Specifies a custom template for column headers.
+     * @docid dxDataGridColumn.headerCellTemplate
+     * @type_function_param2 headerInfo:object
+     * @type_function_param2_field column:dxDataGridColumn
+     * @public
      */
     headerCellTemplate?: template | ((columnHeader: DxElement, headerInfo: ColumnHeaderCellTemplateData<TRowData, TKey>) => any);
     /**
-     * Specifies whether or not to display the column when grid records are grouped by it.
+     * @docid dxDataGridColumn.showWhenGrouped
+     * @default false
+     * @public
      */
     showWhenGrouped?: boolean;
     /**
-     * Specifies the command column that this object customizes.
+     * @docid dxDataGridColumn.type
+     * @publicName type
+     * @public
      */
     type?: DataGridCommandColumnType;
 }
 
+/**
+ * @public
+ */
 export type ColumnButton<TRowData = any, TKey = any> = dxDataGridColumnButton<TRowData, TKey>;
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use the DataGrid's ColumnButton type instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export interface dxDataGridColumnButton<TRowData = any, TKey = any> extends ColumnButtonBase {
     /**
-     * The name used to identify a built-in button.
+     * @docid dxDataGridColumnButton.name
+     * @public
      */
     name?: DataGridPredefinedColumnButton | string;
     /**
-     * A function that is executed when the button is clicked or tapped.
+     * @docid dxDataGridColumnButton.onClick
+     * @type_function_param1 e:{ui/data_grid:ColumnButtonClickEvent}
+     * @public
      */
     onClick?: ((e: ColumnButtonClickEvent<TRowData, TKey>) => void);
     /**
-     * Specifies a custom button template.
+     * @docid dxDataGridColumnButton.template
+     * @type_function_param2 cellInfo:object
+     * @type_function_param2_field data:object
+     * @type_function_param2_field key:any
+     * @type_function_param2_field column:dxDataGridColumn
+     * @type_function_param2_field row:dxDataGridRowObject
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     template?: template | ((cellElement: DxElement, cellInfo: ColumnButtonTemplateData<TRowData, TKey>) => string | UserDefinedElement);
     /**
-     * Specifies the button&apos;s visibility.
+     * @docid dxDataGridColumnButton.visible
+     * @default true
+     * @type boolean | function
+     * @type_function_param1_field component:dxDataGrid
+     * @type_function_param1_field row:dxDataGridRowObject
+     * @type_function_param1_field column:dxDataGridColumn
+     * @public
      */
     visible?: boolean | ((options: { component?: dxDataGrid<TRowData, TKey>; row?: Row<TRowData, TKey>; column?: Column<TRowData, TKey> }) => boolean);
     /**
-     * Specifies whether the button is disabled.
+     * @docid dxDataGridColumnButton.disabled
+     * @default false
+     * @type boolean | function
+     * @type_function_param1_field component:dxDataGrid
+     * @type_function_param1_field row:dxDataGridRowObject
+     * @type_function_param1_field column:dxDataGridColumn
+     * @public
      */
     disabled?: boolean | ((options: { component?: dxDataGrid<TRowData, TKey>; row?: Row<TRowData, TKey>; column?: Column<TRowData, TKey> }) => boolean);
 }
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use Row instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type dxDataGridRowObject<TRowData = any, TKey = any> = Row<TRowData, TKey>;
 
 /**
- * A grid row.
+ * @public
+ * @docid dxDataGridRowObject
  */
 export type Row<TRowData = any, TKey = any> = {
     /**
-     * The data object represented by the row.
+     * @docid dxDataGridRowObject.data
+     * @public
      */
     readonly data: TRowData;
     /**
-     * The group index of the row. Available when the rowType is &apos;group&apos;.
+     * @docid dxDataGridRowObject.groupIndex
+     * @public
      */
     readonly groupIndex?: number;
     /**
-     * Indicates whether the row is in the editing state.
+     * @docid dxDataGridRowObject.isEditing
+     * @public
      */
     readonly isEditing?: boolean;
     /**
-     * Indicates whether the row is expanded or collapsed. Available if rowType is &apos;data&apos; or &apos;group&apos;.
+     * @docid dxDataGridRowObject.isExpanded
+     * @public
      */
     readonly isExpanded?: boolean;
     /**
-     * Indicates that the row is added, but not yet saved. Available if rowType is &apos;data&apos;.
+     * @docid dxDataGridRowObject.isNewRow
+     * @public
      */
     readonly isNewRow?: boolean;
     /**
-     * Indicates whether the row is selected. Available if rowType is &apos;data&apos;.
+     * @docid dxDataGridRowObject.isSelected
+     * @public
      */
     readonly isSelected?: boolean;
     /**
-     * The key of the data object represented by the row.
+     * @docid dxDataGridRowObject.key
+     * @public
      */
     readonly key: TKey;
     /**
-     * The visible index of the row.
+     * @docid dxDataGridRowObject.rowIndex
+     * @public
      */
     readonly rowIndex: number;
     /**
-     * The row&apos;s type.
+     * @docid dxDataGridRowObject.rowType
+     * @public
      */
     readonly rowType: string;
     /**
-     * Values of the row as they exist in the data source.
+     * @docid dxDataGridRowObject.values
+     * @public
      */
     readonly values: Array<any>;
 };
 
+/** @public */
 export type ExplicitTypes<TRowData, TKey> = {
   AdaptiveDetailRowPreparingEvent: AdaptiveDetailRowPreparingEvent<TRowData, TKey>;
   CellClickEvent: CellClickEvent<TRowData, TKey>;
@@ -2173,18 +2518,13 @@ export type ExplicitTypes<TRowData, TKey> = {
   ToolbarPreparingEvent: ToolbarPreparingEvent<TRowData, TKey>;
 };
 
-/**
- * @deprecated RowDraggingTemplateData from 'devextreme/common/grids' instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated RowDraggingTemplateData from 'devextreme/common/grids' instead */
 export type RowDraggingTemplateDataModel = RowDraggingTemplateData;
 
+/** @public */
 export type Properties<TRowData = any, TKey = any> = dxDataGridOptions<TRowData, TKey>;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options<TRowData = any, TKey = any> = dxDataGridOptions<TRowData, TKey>;
 
 

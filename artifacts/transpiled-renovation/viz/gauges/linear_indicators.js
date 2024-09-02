@@ -325,11 +325,11 @@ const textCloud = exports.textcloud = _base_indicators.BaseTextCloudMarker.inher
     } = _ref2;
     if (type === 'right-top' || type === 'right-bottom') {
       if (x - width < this._translator.getCodomainStart()) {
-        type = "left-".concat(type.split('-')[1]);
+        type = `left-${type.split('-')[1]}`;
       }
     } else if (type === 'top-left' || type === 'top-right') {
       if (y + height > this._translator.getCodomainStart()) {
-        type = "bottom-".concat(type.split('-')[1]);
+        type = `bottom-${type.split('-')[1]}`;
       }
     }
     return type;

@@ -1,24 +1,24 @@
 /**
 * DevExtreme (esm/ui/diagram/ui.diagram.menu_helper.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import $ from '../../core/renderer';
 import { getImageContainer } from '../../core/utils/icon';
-var DIAGRAM_CONTEXT_MENU_CLASS = 'dx-diagram-contextmenu';
-var DiagramMenuHelper = {
+const DIAGRAM_CONTEXT_MENU_CLASS = 'dx-diagram-contextmenu';
+const DiagramMenuHelper = {
   getContextMenuItemTemplate(contextMenu, itemData, itemIndex, itemElement) {
-    var $itemElement = $(itemElement);
+    const $itemElement = $(itemElement);
     $itemElement.empty();
-    var itemKey = itemData.rootCommand !== undefined ? itemData.rootCommand : -1;
+    const itemKey = itemData.rootCommand !== undefined ? itemData.rootCommand : -1;
     if (itemData.icon && !itemData.checked) {
-      var $iconElement = getImageContainer(itemData.icon);
+      const $iconElement = getImageContainer(itemData.icon);
       $itemElement.append($iconElement);
     } else if (contextMenu._menuHasCheckedItems && contextMenu._menuHasCheckedItems[itemKey] === true) {
-      var $checkElement = getImageContainer('check');
+      const $checkElement = getImageContainer('check');
       $checkElement.css('visibility', !itemData.checked ? 'hidden' : 'visible');
       $itemElement.append($checkElement);
     }
@@ -32,11 +32,11 @@ var DiagramMenuHelper = {
   },
   onContextMenuItemClick(widget, itemData, actionHandler) {
     if ((itemData.command !== undefined || itemData.name !== undefined) && (!Array.isArray(itemData.items) || !itemData.items.length)) {
-      var parameter = DiagramMenuHelper.getItemCommandParameter(widget, itemData);
+      const parameter = DiagramMenuHelper.getItemCommandParameter(widget, itemData);
       actionHandler.call(this, itemData.command, itemData.name, parameter);
     } else if (itemData.rootCommand !== undefined && itemData.value !== undefined) {
-      var _parameter = DiagramMenuHelper.getItemCommandParameter(widget, itemData, itemData.value);
-      actionHandler.call(this, itemData.rootCommand, undefined, _parameter);
+      const parameter = DiagramMenuHelper.getItemCommandParameter(widget, itemData, itemData.value);
+      actionHandler.call(this, itemData.rootCommand, undefined, parameter);
     }
   },
   getItemValue(item) {
@@ -45,7 +45,7 @@ var DiagramMenuHelper = {
   getItemOptionText(contextMenu, indexPath) {
     if (contextMenu) {
       indexPath = indexPath.slice();
-      var parentItemOptionText = this._getParentItemOptionText(indexPath);
+      const parentItemOptionText = this._getParentItemOptionText(indexPath);
       if (contextMenu._originalItemsInfo && contextMenu._originalItemsInfo[parentItemOptionText]) {
         indexPath[indexPath.length - 1] += contextMenu._originalItemsInfo[parentItemOptionText].indexPathCorrection;
       }
@@ -53,12 +53,12 @@ var DiagramMenuHelper = {
     return this._getItemOptionTextCore(indexPath);
   },
   _getParentItemOptionText(indexPath) {
-    var parentIndexPath = indexPath.slice(0, indexPath.length - 1);
+    const parentIndexPath = indexPath.slice(0, indexPath.length - 1);
     return this._getItemOptionTextCore(parentIndexPath);
   },
   _getItemOptionTextCore(indexPath) {
     return indexPath.reduce((r, i) => {
-      return r + "items[".concat(i, "].");
+      return r + `items[${i}].`;
     }, '');
   },
   getItemCommandParameter(widget, item, value) {
@@ -85,7 +85,7 @@ var DiagramMenuHelper = {
         'rootCommand': rootCommandKey
       };
     });
-    var originalItems = contextMenu._originalItemsInfo[itemOptionText].items;
+    const originalItems = contextMenu._originalItemsInfo[itemOptionText].items;
     contextMenu.option(itemOptionText + 'items', items.concat(originalItems));
     if (contextMenu._originalItemsInfo[itemOptionText] && originalItems.length) {
       contextMenu._originalItemsInfo[itemOptionText].indexPathCorrection = items.length;
@@ -95,7 +95,7 @@ var DiagramMenuHelper = {
     contextMenu.option(itemOptionText + 'visible', visible);
   },
   updateContextMenuItemValue(contextMenu, itemOptionText, rootCommandKey, value) {
-    var items = contextMenu.option(itemOptionText + 'items');
+    const items = contextMenu.option(itemOptionText + 'items');
     if (typeof value === 'boolean' && (!items || !items.length)) {
       this._setContextMenuHasCheckedItems(contextMenu, -1);
       contextMenu.option(itemOptionText + 'checked', value);

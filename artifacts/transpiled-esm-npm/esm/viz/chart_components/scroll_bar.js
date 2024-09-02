@@ -5,16 +5,16 @@ import { Translator2D } from '../translators/translator2d';
 import { isDefined } from '../../core/utils/type';
 import { noop } from '../../core/utils/common';
 import { start as dragEventStart, move as dragEventMove, end as dragEventEnd } from '../../events/drag';
-var _min = Math.min;
-var _max = Math.max;
-var MIN_SCROLL_BAR_SIZE = 2;
-export var ScrollBar = function ScrollBar(renderer, group) {
+const _min = Math.min;
+const _max = Math.max;
+const MIN_SCROLL_BAR_SIZE = 2;
+export const ScrollBar = function (renderer, group) {
   this._translator = new Translator2D({}, {}, {});
   this._scroll = renderer.rect().append(group);
   this._addEvents();
 };
 function _getXCoord(canvas, pos, offset, width) {
-  var x = 0;
+  let x = 0;
   if (pos === 'right') {
     x = canvas.width - canvas.right + offset;
   } else if (pos === 'left') {
@@ -23,7 +23,7 @@ function _getXCoord(canvas, pos, offset, width) {
   return x;
 }
 function _getYCoord(canvas, pos, offset, width) {
-  var y = 0;
+  let y = 0;
   if (pos === 'top') {
     y = canvas.top - offset;
   } else if (pos === 'bottom') {
@@ -32,8 +32,8 @@ function _getYCoord(canvas, pos, offset, width) {
   return y;
 }
 ScrollBar.prototype = {
-  _addEvents: function _addEvents() {
-    var scrollElement = this._scroll.element;
+  _addEvents: function () {
+    const scrollElement = this._scroll.element;
     eventsEngine.on(scrollElement, dragEventStart, e => {
       fireEvent({
         type: 'dxc-scroll-start',
@@ -42,9 +42,9 @@ ScrollBar.prototype = {
       });
     });
     eventsEngine.on(scrollElement, dragEventMove, e => {
-      var dX = -e.offset.x * this._scale;
-      var dY = -e.offset.y * this._scale;
-      var lx = this._offset - (this._layoutOptions.vertical ? dY : dX) / this._scale;
+      const dX = -e.offset.x * this._scale;
+      const dY = -e.offset.y * this._scale;
+      const lx = this._offset - (this._layoutOptions.vertical ? dY : dX) / this._scale;
       this._applyPosition(lx, lx + this._translator.canvasLength / this._scale);
       fireEvent({
         type: 'dxc-scroll-move',
@@ -68,12 +68,12 @@ ScrollBar.prototype = {
       });
     });
   },
-  update: function update(options) {
-    var that = this;
-    var position = options.position;
-    var isVertical = options.rotated;
-    var defaultPosition = isVertical ? 'right' : 'top';
-    var secondaryPosition = isVertical ? 'left' : 'bottom';
+  update: function (options) {
+    const that = this;
+    let position = options.position;
+    const isVertical = options.rotated;
+    const defaultPosition = isVertical ? 'right' : 'top';
+    const secondaryPosition = isVertical ? 'left' : 'bottom';
     if (position !== defaultPosition && position !== secondaryPosition) {
       position = defaultPosition;
     }
@@ -93,9 +93,9 @@ ScrollBar.prototype = {
     };
     return that;
   },
-  init: function init(range, stick) {
-    var that = this;
-    var isDiscrete = range.axisType === 'discrete';
+  init: function (range, stick) {
+    const that = this;
+    const isDiscrete = range.axisType === 'discrete';
     that._translateWithOffset = isDiscrete && !stick && 1 || 0;
     that._translator.update(extend({}, range, {
       minVisible: null,
@@ -110,12 +110,12 @@ ScrollBar.prototype = {
     });
     return that;
   },
-  getOptions: function getOptions() {
+  getOptions: function () {
     return this._layoutOptions;
   },
-  setPane: function setPane(panes) {
-    var position = this._layoutOptions.position;
-    var pane;
+  setPane: function (panes) {
+    const position = this._layoutOptions.position;
+    let pane;
     if (position === 'left' || position === 'top') {
       pane = panes[0];
     } else {
@@ -124,26 +124,26 @@ ScrollBar.prototype = {
     this.pane = pane.name;
     return this;
   },
-  updateSize: function updateSize(canvas) {
+  updateSize: function (canvas) {
     this._canvas = extend({}, canvas);
-    var options = this._layoutOptions;
-    var pos = options.position;
-    var offset = options.offset;
-    var width = options.width;
+    const options = this._layoutOptions;
+    const pos = options.position;
+    const offset = options.offset;
+    const width = options.width;
     this._scroll.attr({
       translateX: _getXCoord(canvas, pos, offset, width),
       translateY: _getYCoord(canvas, pos, offset, width)
     });
   },
-  getMultipleAxesSpacing: function getMultipleAxesSpacing() {
+  getMultipleAxesSpacing: function () {
     return 0;
   },
-  estimateMargins: function estimateMargins() {
+  estimateMargins: function () {
     return this.getMargins();
   },
-  getMargins: function getMargins() {
-    var options = this._layoutOptions;
-    var margins = {
+  getMargins: function () {
+    const options = this._layoutOptions;
+    const margins = {
       left: 0,
       top: 0,
       right: 0,
@@ -152,17 +152,16 @@ ScrollBar.prototype = {
     margins[options.position] = options.width + options.offset;
     return margins;
   },
-  shift: function shift(margins) {
-    var _that$_scroll$attr, _that$_scroll$attr2;
-    var that = this;
-    var options = that._layoutOptions;
-    var side = options.position;
-    var isVertical = options.vertical;
-    var attr = {
-      translateX: (_that$_scroll$attr = that._scroll.attr('translateX')) !== null && _that$_scroll$attr !== void 0 ? _that$_scroll$attr : 0,
-      translateY: (_that$_scroll$attr2 = that._scroll.attr('translateY')) !== null && _that$_scroll$attr2 !== void 0 ? _that$_scroll$attr2 : 0
+  shift: function (margins) {
+    const that = this;
+    const options = that._layoutOptions;
+    const side = options.position;
+    const isVertical = options.vertical;
+    const attr = {
+      translateX: that._scroll.attr('translateX') ?? 0,
+      translateY: that._scroll.attr('translateY') ?? 0
     };
-    var shift = margins[side];
+    const shift = margins[side];
     attr[isVertical ? 'translateX' : 'translateY'] += (side === 'left' || side === 'top' ? -1 : 1) * shift;
     that._scroll.attr(attr);
   },
@@ -171,11 +170,11 @@ ScrollBar.prototype = {
   hideOuterElements: noop,
   // Axis like functions
 
-  setPosition: function setPosition(min, max) {
-    var that = this;
-    var translator = that._translator;
-    var minPoint = isDefined(min) ? translator.translate(min, -that._translateWithOffset) : translator.translate('canvas_position_start');
-    var maxPoint = isDefined(max) ? translator.translate(max, that._translateWithOffset) : translator.translate('canvas_position_end');
+  setPosition: function (min, max) {
+    const that = this;
+    const translator = that._translator;
+    const minPoint = isDefined(min) ? translator.translate(min, -that._translateWithOffset) : translator.translate('canvas_position_start');
+    const maxPoint = isDefined(max) ? translator.translate(max, that._translateWithOffset) : translator.translate('canvas_position_end');
     that._offset = _min(minPoint, maxPoint);
     that._scale = translator.getScale(min, max);
     that._applyPosition(_min(minPoint, maxPoint), _max(minPoint, maxPoint));
@@ -183,18 +182,18 @@ ScrollBar.prototype = {
   customPositionIsAvailable() {
     return false;
   },
-  dispose: function dispose() {
+  dispose: function () {
     this._scroll.dispose();
     this._scroll = this._translator = null;
   },
-  _applyPosition: function _applyPosition(x1, x2) {
-    var that = this;
-    var visibleArea = that._translator.getCanvasVisibleArea();
+  _applyPosition: function (x1, x2) {
+    const that = this;
+    const visibleArea = that._translator.getCanvasVisibleArea();
     x1 = _max(x1, visibleArea.min);
     x1 = _min(x1, visibleArea.max);
     x2 = _min(x2, visibleArea.max);
     x2 = _max(x2, visibleArea.min);
-    var height = Math.abs(x2 - x1);
+    const height = Math.abs(x2 - x1);
     that._scroll.attr({
       y: x1,
       height: height < MIN_SCROLL_BAR_SIZE ? MIN_SCROLL_BAR_SIZE : height

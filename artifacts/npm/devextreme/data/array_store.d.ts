@@ -1,7 +1,7 @@
 /**
 * DevExtreme (data/array_store.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,28 +12,33 @@ import Store, {
 import { Query } from './query';
 import { DxPromise } from '../core/utils/deferred';
 
+/** @public */
 export type Options<
     TItem = any,
     TKey = any,
 > = ArrayStoreOptions<TItem, TKey>;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.data
+ * @deprecated Use Options instead
  */
 export interface ArrayStoreOptions<
     TItem = any,
     TKey = any,
 > extends StoreOptions<TItem, TKey> {
     /**
-     * Specifies the store&apos;s associated array.
+     * @docid
+     * @public
      */
     data?: Array<TItem>;
 }
 
 /**
- * The ArrayStore is a store that provides an interface for loading and editing an in-memory array and handling related events.
+ * @docid
+ * @inherits Store
+ * @public
+ * @options ArrayStoreOptions
  */
 export default class ArrayStore<
     TItem = any,
@@ -41,15 +46,24 @@ export default class ArrayStore<
 > extends Store<TItem, TKey> {
     constructor(options?: Options<TItem, TKey>);
     /**
-     * Gets a data item with a specific key.
+     * @docid
+     * @publicName byKey(key)
+     * @param1 key:object|string|number
+     * @return Promise<any>
+     * @public
      */
     byKey(key: TKey): DxPromise<TItem>;
     /**
-     * Clears all the ArrayStore&apos;s associated data.
+     * @docid
+     * @publicName clear()
+     * @public
      */
     clear(): void;
     /**
-     * Creates a Query for the underlying array.
+     * @docid
+     * @publicName createQuery()
+     * @return object
+     * @public
      */
     createQuery(): Query;
 }

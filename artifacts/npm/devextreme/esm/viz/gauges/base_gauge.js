@@ -1,16 +1,16 @@
 /**
 * DevExtreme (esm/viz/gauges/base_gauge.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-var _Number = Number;
+const _Number = Number;
 import { getAppropriateFormat as _getAppropriateFormat } from '../core/utils';
 import { extend } from '../../core/utils/extend';
 import { Translator1D } from '../translators/translator1d';
-var _extend = extend;
+const _extend = extend;
 import BaseWidget from '../../__internal/viz/core/m_base_widget';
 import themeManagerModule from './theme_manager';
 import Tracker from './tracker';
@@ -20,16 +20,16 @@ import { plugin as titlePlugin } from '../core/title';
 import { plugin as tooltipPlugin } from '../core/tooltip';
 import { plugin as loadingIndicatorPlugin } from '../core/loading_indicator';
 import { noop } from '../../core/utils/common';
-var _format = formatHelper.format;
-export var BaseGauge = BaseWidget.inherit({
+const _format = formatHelper.format;
+export const BaseGauge = BaseWidget.inherit({
   _rootClassPrefix: 'dxg',
   _themeSection: 'gauge',
-  _createThemeManager: function _createThemeManager() {
+  _createThemeManager: function () {
     return new themeManagerModule.ThemeManager(this._getThemeManagerOptions());
   },
-  _initCore: function _initCore() {
-    var that = this;
-    var root = that._renderer.root;
+  _initCore: function () {
+    const that = this;
+    const root = that._renderer.root;
     that._valueChangingLocker = 0;
     that._translator = that._factory.createTranslator();
     that._tracker = that._factory.createTracker({
@@ -38,25 +38,25 @@ export var BaseGauge = BaseWidget.inherit({
     });
     that._setTrackerCallbacks();
   },
-  _beginValueChanging: function _beginValueChanging() {
+  _beginValueChanging: function () {
     this._resetIsReady();
     this._onBeginUpdate();
     ++this._valueChangingLocker;
   },
-  _endValueChanging: function _endValueChanging() {
+  _endValueChanging: function () {
     if (--this._valueChangingLocker === 0) {
       this._drawn();
     }
   },
-  _setTrackerCallbacks: function _setTrackerCallbacks() {
-    var that = this;
-    var renderer = that._renderer;
-    var tooltip = that._tooltip;
+  _setTrackerCallbacks: function () {
+    const that = this;
+    const renderer = that._renderer;
+    const tooltip = that._tooltip;
     that._tracker.setCallbacks({
-      'tooltip-show': function tooltipShow(target, info, callback) {
-        var tooltipParameters = target.getTooltipParameters();
-        var offset = renderer.getRootOffset();
-        var formatObject = _extend({
+      'tooltip-show': function (target, info, callback) {
+        const tooltipParameters = target.getTooltipParameters();
+        const offset = renderer.getRootOffset();
+        const formatObject = _extend({
           value: tooltipParameters.value,
           valueText: tooltip.formatValue(tooltipParameters.value),
           color: tooltipParameters.color
@@ -69,28 +69,28 @@ export var BaseGauge = BaseWidget.inherit({
           target: info
         }, undefined, callback);
       },
-      'tooltip-hide': function tooltipHide() {
+      'tooltip-hide': function () {
         return tooltip.hide();
       }
     });
   },
-  _dispose: function _dispose() {
+  _dispose: function () {
     this._cleanCore();
     this.callBase.apply(this, arguments);
   },
-  _disposeCore: function _disposeCore() {
-    var that = this;
+  _disposeCore: function () {
+    const that = this;
     that._themeManager.dispose();
     that._tracker.dispose();
     that._translator = that._tracker = null;
   },
-  _cleanCore: function _cleanCore() {
-    var that = this;
+  _cleanCore: function () {
+    const that = this;
     that._tracker.deactivate();
     that._cleanContent();
   },
-  _renderCore: function _renderCore() {
-    var that = this;
+  _renderCore: function () {
+    const that = this;
     if (!that._isValidDomain) return;
     that._renderContent();
     that._renderGraphicObjects();
@@ -98,17 +98,17 @@ export var BaseGauge = BaseWidget.inherit({
     that._tracker.activate();
     that._noAnimation = false;
   },
-  _applyChanges: function _applyChanges() {
+  _applyChanges: function () {
     this.callBase.apply(this, arguments);
     this._resizing = this._noAnimation = false;
   },
-  _setContentSize: function _setContentSize() {
-    var that = this;
+  _setContentSize: function () {
+    const that = this;
     that._resizing = that._noAnimation = that._changes.count() === 2;
     that.callBase.apply(that, arguments);
   },
-  _applySize: function _applySize(rect) {
-    var that = this;
+  _applySize: function (rect) {
+    const that = this;
     that._innerRect = {
       left: rect[0],
       top: rect[1],
@@ -121,7 +121,7 @@ export var BaseGauge = BaseWidget.inherit({
     // The following code dirtily preserves layout cache for the outer backward.
     // The appropriate solution is to remove heavy rendering from "_applySize" - it should be done later during some other change processing.
     // It would be even better to somehow defer any inside option changes - so they all are applied after all changes are processed.
-    var layoutCache = that._layout._cache;
+    const layoutCache = that._layout._cache;
     that._cleanCore();
     that._renderCore();
     that._layout._cache = that._layout._cache || layoutCache;
@@ -138,15 +138,15 @@ export var BaseGauge = BaseWidget.inherit({
     endValue: 'DOMAIN'
   },
   _optionChangesOrder: ['DOMAIN', 'MOSTLY_TOTAL'],
-  _change_DOMAIN: function _change_DOMAIN() {
+  _change_DOMAIN: function () {
     this._setupDomain();
   },
-  _change_MOSTLY_TOTAL: function _change_MOSTLY_TOTAL() {
+  _change_MOSTLY_TOTAL: function () {
     this._applyMostlyTotalChange();
   },
   _updateExtraElements: noop,
-  _setupDomain: function _setupDomain() {
-    var that = this;
+  _setupDomain: function () {
+    const that = this;
     that._setupDomainCore();
     // T130599
     that._isValidDomain = isFinite(1 / (that._translator.getDomain()[1] - that._translator.getDomain()[0]));
@@ -155,16 +155,16 @@ export var BaseGauge = BaseWidget.inherit({
     }
     that._change(['MOSTLY_TOTAL']);
   },
-  _applyMostlyTotalChange: function _applyMostlyTotalChange() {
-    var that = this;
+  _applyMostlyTotalChange: function () {
+    const that = this;
     that._setupCodomain();
     that._setupAnimationSettings();
     that._setupDefaultFormat();
     that._change(['LAYOUT']);
   },
-  _setupAnimationSettings: function _setupAnimationSettings() {
-    var that = this;
-    var option = that.option('animation');
+  _setupAnimationSettings: function () {
+    const that = this;
+    let option = that.option('animation');
     that._animationSettings = null;
     if (option === undefined || option) {
       option = _extend({
@@ -182,8 +182,8 @@ export var BaseGauge = BaseWidget.inherit({
     //  It is better to place it here than to create separate function for one line of code
     that._containerBackgroundColor = that.option('containerBackgroundColor') || that._themeManager.theme().containerBackgroundColor;
   },
-  _setupDefaultFormat: function _setupDefaultFormat() {
-    var domain = this._translator.getDomain();
+  _setupDefaultFormat: function () {
+    const domain = this._translator.getDomain();
     this._defaultFormatOptions = _getAppropriateFormat(domain[0], domain[1], this._getApproximateScreenRange());
   },
   _setupDomainCore: null,
@@ -193,23 +193,23 @@ export var BaseGauge = BaseWidget.inherit({
   _setupCodomain: null,
   _getApproximateScreenRange: null,
   _factory: {
-    createTranslator: function createTranslator() {
+    createTranslator: function () {
       return new Translator1D();
     },
-    createTracker: function createTracker(parameters) {
+    createTracker: function (parameters) {
       return new Tracker(parameters);
     }
   }
 });
 
 //  TODO: find a better place for it
-export var formatValue = function formatValue(value, options, extra) {
+export const formatValue = function (value, options, extra) {
   if (Object.is(value, -0)) {
     value = 0;
   }
   options = options || {};
-  var text = _format(value, options.format);
-  var formatObject;
+  const text = _format(value, options.format);
+  let formatObject;
   if (typeof options.customizeText === 'function') {
     formatObject = _extend({
       value: value,
@@ -221,19 +221,19 @@ export var formatValue = function formatValue(value, options, extra) {
 };
 
 //  TODO: find a better place for it
-export var getSampleText = function getSampleText(translator, options) {
-  var text1 = formatValue(translator.getDomainStart(), options);
-  var text2 = formatValue(translator.getDomainEnd(), options);
+export const getSampleText = function (translator, options) {
+  const text1 = formatValue(translator.getDomainStart(), options);
+  const text2 = formatValue(translator.getDomainEnd(), options);
   return text1.length >= text2.length ? text1 : text2;
 };
 export function compareArrays(array1, array2) {
   return array1 && array2 && array1.length === array2.length && compareArraysElements(array1, array2);
 }
 function compareArraysElements(array1, array2) {
-  var i;
-  var ii = array1.length;
-  var array1ValueIsNaN;
-  var array2ValueIsNaN;
+  let i;
+  const ii = array1.length;
+  let array1ValueIsNaN;
+  let array2ValueIsNaN;
   for (i = 0; i < ii; ++i) {
     array1ValueIsNaN = array1[i] !== array1[i];
     array2ValueIsNaN = array2[i] !== array2[i];
@@ -252,7 +252,7 @@ BaseGauge.addPlugin(tooltipPlugin);
 BaseGauge.addPlugin(loadingIndicatorPlugin);
 
 // These are gauges specifics on using tooltip - they require refactoring.
-var _setTooltipOptions = BaseGauge.prototype._setTooltipOptions;
+const _setTooltipOptions = BaseGauge.prototype._setTooltipOptions;
 BaseGauge.prototype._setTooltipOptions = function () {
   _setTooltipOptions.apply(this, arguments);
   this._tracker && this._tracker.setTooltipState(this._tooltip.isEnabled());

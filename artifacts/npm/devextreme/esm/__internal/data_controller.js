@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/data_controller.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,7 +14,7 @@ import { DataSource } from '../data/data_source/data_source';
 import { normalizeDataSourceOptions } from '../data/data_source/utils';
 class DataController {
   constructor(dataSourceOptions, _ref) {
-    var {
+    let {
       key
     } = _ref;
     this._isSharedDataSource = false;
@@ -29,7 +29,8 @@ class DataController {
       this._isSharedDataSource = true;
       this._dataSource = dataSourceOptions;
     } else {
-      var normalizedDataSourceOptions = normalizeDataSourceOptions(dataSourceOptions);
+      // @ts-expect-error
+      const normalizedDataSourceOptions = normalizeDataSourceOptions(dataSourceOptions);
       this._dataSource = new DataSource(extend(true, {}, {}, normalizedDataSourceOptions));
     }
   }
@@ -65,8 +66,8 @@ class DataController {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return new Deferred().reject();
     }
-    var pName = propName;
-    var pValue = propValue;
+    let pName = propName;
+    let pValue = propValue;
     if (arguments.length < 2) {
       pValue = propName;
       pName = this.key();
@@ -127,7 +128,7 @@ class DataController {
     }
   }
   updateDataSource(items, key) {
-    var dataSourceOptions = items !== null && items !== void 0 ? items : this.items();
+    const dataSourceOptions = items ?? this.items();
     if (key) {
       this._keyExpr = key;
     }
@@ -166,8 +167,8 @@ class DataController {
     return this._dataSource.select(args);
   }
   key() {
-    var _a;
-    var storeKey = (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.key();
+    var _this$_dataSource;
+    const storeKey = (_this$_dataSource = this._dataSource) === null || _this$_dataSource === void 0 ? void 0 : _this$_dataSource.key();
     return isDefined(storeKey) && this._keyExpr === 'this' ? storeKey : this._keyExpr;
   }
   keyOf(item) {
@@ -177,15 +178,14 @@ class DataController {
     return this._dataSource.store();
   }
   items() {
-    var _a;
-    return (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.items();
+    var _this$_dataSource2;
+    return (_this$_dataSource2 = this._dataSource) === null || _this$_dataSource2 === void 0 ? void 0 : _this$_dataSource2.items();
   }
   applyMapFunction(data) {
     return this._dataSource._applyMapFunction(data);
   }
   getDataSource() {
-    var _a;
-    return (_a = this._dataSource) !== null && _a !== void 0 ? _a : null;
+    return this._dataSource ?? null;
   }
   reload() {
     return this._dataSource.reload();

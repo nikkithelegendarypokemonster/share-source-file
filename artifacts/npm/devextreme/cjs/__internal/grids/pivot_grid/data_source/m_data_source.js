@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/pivot_grid/data_source/m_data_source.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -45,12 +45,12 @@ function createCaption(field) {
   let caption = field.dataField || field.groupName || '';
   let summaryType = (field.summaryType || '').toLowerCase();
   if ((0, _type.isString)(field.groupInterval)) {
-    caption += "_".concat(field.groupInterval);
+    caption += `_${field.groupInterval}`;
   }
   if (summaryType && summaryType !== 'custom') {
     summaryType = summaryType.replace(/^./, summaryType[0].toUpperCase());
     if (caption.length) {
-      summaryType = " (".concat(summaryType, ")");
+      summaryType = ` (${summaryType})`;
     }
   } else {
     summaryType = '';
@@ -216,6 +216,7 @@ const PivotGridDataSource = exports.PivotGridDataSource = _class.default.inherit
   };
   function createLocalOrRemoteStore(dataSourceOptions, notifyProgress) {
     const StoreConstructor = dataSourceOptions.remoteOperations || dataSourceOptions.paginate ? _m_remote_store.RemoteStore : _m_local_store.LocalStore;
+    // @ts-expect-error
     return new StoreConstructor((0, _extend.extend)((0, _utils.normalizeDataSourceOptions)(dataSourceOptions), {
       onChanged: null,
       onLoadingChanged: null,
@@ -300,7 +301,7 @@ const PivotGridDataSource = exports.PivotGridDataSource = _class.default.inherit
     if (field.name) {
       return field.name;
     }
-    return "".concat(field.dataField);
+    return `${field.dataField}`;
   }
   function getFieldsById(fields, id) {
     const result = [];
@@ -475,7 +476,7 @@ const PivotGridDataSource = exports.PivotGridDataSource = _class.default.inherit
       that._loadingCount = 0;
       that._isFieldsModified = false;
       (0, _iterator.each)(['changed', 'loadError', 'loadingChanged', 'progressChanged', 'fieldsPrepared', 'expandValueChanging'], (_, eventName) => {
-        const optionName = "on".concat(eventName[0].toUpperCase()).concat(eventName.slice(1));
+        const optionName = `on${eventName[0].toUpperCase()}${eventName.slice(1)}`;
         if (Object.prototype.hasOwnProperty.call(options, optionName)) {
           this.on(eventName, options[optionName]);
         }
@@ -502,6 +503,9 @@ const PivotGridDataSource = exports.PivotGridDataSource = _class.default.inherit
         areaFields = descriptions[DESCRIPTION_NAME_BY_AREA[area]] || [];
       }
       return areaFields;
+    },
+    getSummaryFields() {
+      return this.getAreaFields('data').filter(field => (0, _type.isDefined)(field.summaryType));
     },
     fields(fields) {
       const that = this;
@@ -734,12 +738,12 @@ const PivotGridDataSource = exports.PivotGridDataSource = _class.default.inherit
       }
     },
     _hasPagingValues(options, area, oppositeIndex) {
-      const takeField = "".concat(area, "Take");
-      const skipField = "".concat(area, "Skip");
+      const takeField = `${area}Take`;
+      const skipField = `${area}Skip`;
       const {
         values
       } = this._data;
-      let items = this._data["".concat(area, "s")];
+      let items = this._data[`${area}s`];
       const oppositeArea = area === 'row' ? 'column' : 'row';
       const indices = [];
       if (options.path && options.area === area) {
@@ -772,9 +776,9 @@ const PivotGridDataSource = exports.PivotGridDataSource = _class.default.inherit
       });
     },
     _processPagingCacheByArea(options, pageSize, area) {
-      const takeField = "".concat(area, "Take");
-      const skipField = "".concat(area, "Skip");
-      let items = this._data["".concat(area, "s")];
+      const takeField = `${area}Take`;
+      const skipField = `${area}Skip`;
+      let items = this._data[`${area}s`];
       const oppositeArea = area === 'row' ? 'column' : 'row';
       let item;
       if (options[takeField]) {
@@ -954,7 +958,7 @@ const PivotGridDataSource = exports.PivotGridDataSource = _class.default.inherit
           f.expanded = false;
         });
       }
-      (0, _m_widget_utils.foreachTree)(this._data["".concat(field.area, "s")], items => {
+      (0, _m_widget_utils.foreachTree)(this._data[`${field.area}s`], items => {
         const item = items[0];
         const path = (0, _m_widget_utils.createPath)(items);
         if (item && item.children && areaOffsets.includes(path.length - 1)) {

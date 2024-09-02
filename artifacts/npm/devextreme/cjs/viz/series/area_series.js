@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/viz/series/area_series.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -87,7 +87,6 @@ const baseAreaMethods = {
     });
   },
   _parseStyle: function (options, defaultColor, defaultBorderColor) {
-    var _options$highlight;
     const borderOptions = options.border || {};
     const borderStyle = chartLineSeries._parseLineOptions(borderOptions, defaultBorderColor);
     borderStyle.stroke = borderOptions.visible && borderStyle['stroke-width'] ? borderStyle.stroke : 'none';
@@ -99,7 +98,7 @@ const baseAreaMethods = {
         fill: (0, _utils.extractColor)(options.color) || defaultColor,
         hatching: options.hatching,
         opacity: options.opacity,
-        filter: (_options$highlight = options.highlight) !== null && _options$highlight !== void 0 ? _options$highlight : null
+        filter: options.highlight ?? null
       }
     };
   },

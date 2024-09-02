@@ -1,23 +1,23 @@
 /**
 * DevExtreme (esm/localization/ldml/date.format.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import numberLocalization from '../number';
-var ARABIC_COMMA = '\u060C';
-var FORMAT_SEPARATORS = ' .,:;/\\<>()-[]' + ARABIC_COMMA;
-var AM_PM_PATTERN = '. m.';
-var checkDigit = function checkDigit(char) {
-  var code = char && numberLocalization.convertDigits(char, false).charCodeAt(0);
-  var zeroCode = numberLocalization.convertDigits('0', false).charCodeAt(0);
+const ARABIC_COMMA = '\u060C';
+const FORMAT_SEPARATORS = ' .,:;/\\<>()-[]' + ARABIC_COMMA;
+const AM_PM_PATTERN = '. m.';
+const checkDigit = function (char) {
+  const code = char && numberLocalization.convertDigits(char, false).charCodeAt(0);
+  const zeroCode = numberLocalization.convertDigits('0', false).charCodeAt(0);
   return zeroCode <= code && code < zeroCode + 10;
 };
-var checkPatternContinue = function checkPatternContinue(text, patterns, index, isDigit) {
-  var char = text[index];
-  var nextChar = text[index + 1];
+const checkPatternContinue = function (text, patterns, index, isDigit) {
+  const char = text[index];
+  const nextChar = text[index + 1];
   if (!isDigit) {
     if (char === '.' || char === ' ' && text.slice(index - 1, index + 3) === AM_PM_PATTERN) {
       return true;
@@ -26,10 +26,10 @@ var checkPatternContinue = function checkPatternContinue(text, patterns, index, 
       return true;
     }
   }
-  var isDigitChanged = isDigit && patterns.some(pattern => text[index] !== pattern[index]);
+  const isDigitChanged = isDigit && patterns.some(pattern => text[index] !== pattern[index]);
   return FORMAT_SEPARATORS.indexOf(char) < 0 && isDigit === checkDigit(char) && (!isDigit || isDigitChanged);
 };
-var getPatternStartIndex = function getPatternStartIndex(defaultPattern, index) {
+const getPatternStartIndex = function (defaultPattern, index) {
   if (!checkDigit(defaultPattern[index])) {
     while (index > 0 && !checkDigit(defaultPattern[index - 1]) && (defaultPattern[index - 1] === '.' || FORMAT_SEPARATORS.indexOf(defaultPattern[index - 1]) < 0)) {
       index--;
@@ -37,10 +37,10 @@ var getPatternStartIndex = function getPatternStartIndex(defaultPattern, index) 
   }
   return index;
 };
-var getDifference = function getDifference(defaultPattern, patterns, processedIndexes, isDigit) {
-  var i = 0;
-  var result = [];
-  var patternsFilter = function patternsFilter(pattern) {
+const getDifference = function (defaultPattern, patterns, processedIndexes, isDigit) {
+  let i = 0;
+  const result = [];
+  const patternsFilter = function (pattern) {
     return defaultPattern[i] !== pattern[i] && (isDigit === undefined || checkDigit(defaultPattern[i]) === isDigit);
   };
   if (!Array.isArray(patterns)) {
@@ -66,9 +66,9 @@ var getDifference = function getDifference(defaultPattern, patterns, processedIn
   }
   return result;
 };
-var replaceCharsCore = function replaceCharsCore(pattern, indexes, char, patternPositions) {
-  var baseCharIndex = indexes[0];
-  var patternIndex = baseCharIndex < patternPositions.length ? patternPositions[baseCharIndex] : baseCharIndex;
+const replaceCharsCore = function (pattern, indexes, char, patternPositions) {
+  const baseCharIndex = indexes[0];
+  const patternIndex = baseCharIndex < patternPositions.length ? patternPositions[baseCharIndex] : baseCharIndex;
   indexes.forEach(function (_, index) {
     pattern = pattern.substr(0, patternIndex + index) + (char.length > 1 ? char[index] : char) + pattern.substr(patternIndex + index + 1);
   });
@@ -78,12 +78,12 @@ var replaceCharsCore = function replaceCharsCore(pattern, indexes, char, pattern
   }
   return pattern;
 };
-var replaceChars = function replaceChars(pattern, indexes, char, patternPositions) {
-  var i;
-  var index;
-  var patternIndex;
+const replaceChars = function (pattern, indexes, char, patternPositions) {
+  let i;
+  let index;
+  let patternIndex;
   if (!checkDigit(pattern[indexes[0]] || '0')) {
-    var letterCount = Math.max(indexes.length <= 3 ? 3 : 4, char.length);
+    const letterCount = Math.max(indexes.length <= 3 ? 3 : 4, char.length);
     while (indexes.length > letterCount) {
       index = indexes.pop();
       patternIndex = patternPositions[index];
@@ -105,7 +105,7 @@ var replaceChars = function replaceChars(pattern, indexes, char, patternPosition
   pattern = replaceCharsCore(pattern, indexes, char, patternPositions);
   return pattern;
 };
-var formatValue = function formatValue(value, formatter) {
+const formatValue = function (value, formatter) {
   if (Array.isArray(value)) {
     return value.map(function (value) {
       return (formatter(value) || '').toString();
@@ -113,19 +113,19 @@ var formatValue = function formatValue(value, formatter) {
   }
   return (formatter(value) || '').toString();
 };
-var ESCAPE_CHARS_REGEXP = /[a-zA-Z]/g;
-var escapeChars = function escapeChars(pattern, defaultPattern, processedIndexes, patternPositions) {
-  var escapeIndexes = defaultPattern.split('').map(function (char, index) {
+const ESCAPE_CHARS_REGEXP = /[a-zA-Z]/g;
+const escapeChars = function (pattern, defaultPattern, processedIndexes, patternPositions) {
+  const escapeIndexes = defaultPattern.split('').map(function (char, index) {
     if (processedIndexes.indexOf(index) < 0 && (char.match(ESCAPE_CHARS_REGEXP) || char === '\'')) {
       return patternPositions[index];
     }
     return -1;
   });
   pattern = pattern.split('').map(function (char, index) {
-    var result = char;
-    var isCurrentCharEscaped = escapeIndexes.indexOf(index) >= 0;
-    var isPrevCharEscaped = index > 0 && escapeIndexes.indexOf(index - 1) >= 0;
-    var isNextCharEscaped = escapeIndexes.indexOf(index + 1) >= 0;
+    let result = char;
+    const isCurrentCharEscaped = escapeIndexes.indexOf(index) >= 0;
+    const isPrevCharEscaped = index > 0 && escapeIndexes.indexOf(index - 1) >= 0;
+    const isNextCharEscaped = escapeIndexes.indexOf(index + 1) >= 0;
     if (isCurrentCharEscaped) {
       if (!isPrevCharEscaped) {
         result = '\'' + result;
@@ -138,15 +138,15 @@ var escapeChars = function escapeChars(pattern, defaultPattern, processedIndexes
   }).join('');
   return pattern;
 };
-export var getFormat = function getFormat(formatter) {
-  var processedIndexes = [];
-  var defaultPattern = formatValue(new Date(2009, 8, 8, 6, 5, 4), formatter);
-  var patternPositions = defaultPattern.split('').map(function (_, index) {
+export const getFormat = function (formatter) {
+  const processedIndexes = [];
+  const defaultPattern = formatValue(new Date(2009, 8, 8, 6, 5, 4), formatter);
+  const patternPositions = defaultPattern.split('').map(function (_, index) {
     return index;
   });
-  var result = defaultPattern;
-  var replacedPatterns = {};
-  var datePatterns = [{
+  let result = defaultPattern;
+  const replacedPatterns = {};
+  const datePatterns = [{
     date: new Date(2009, 8, 8, 6, 5, 4, 111),
     pattern: 'S'
   }, {
@@ -182,8 +182,8 @@ export var getFormat = function getFormat(formatter) {
   }];
   if (!result) return;
   datePatterns.forEach(function (test) {
-    var diff = getDifference(defaultPattern, formatValue(test.date, formatter), processedIndexes, test.isDigit);
-    var pattern = test.pattern === 'M' && !replacedPatterns['d'] ? 'L' : test.pattern;
+    const diff = getDifference(defaultPattern, formatValue(test.date, formatter), processedIndexes, test.isDigit);
+    const pattern = test.pattern === 'M' && !replacedPatterns['d'] ? 'L' : test.pattern;
     result = replaceChars(result, diff, pattern, patternPositions);
     replacedPatterns[pattern] = diff.length;
   });

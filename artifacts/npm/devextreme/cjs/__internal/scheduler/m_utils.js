@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/m_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -64,12 +64,12 @@ const utils = exports.utils = {
           }
           dataAccessors.getter[name] = dateGetter || getter;
           dataAccessors.setter[name] = dateSetter || setter;
-          dataAccessors.expr["".concat(name, "Expr")] = expr;
+          dataAccessors.expr[`${name}Expr`] = expr;
         } else {
           /* eslint-disable @typescript-eslint/no-dynamic-delete */
           delete dataAccessors.getter[name];
           delete dataAccessors.setter[name];
-          delete dataAccessors.expr["".concat(name, "Expr")];
+          delete dataAccessors.expr[`${name}Expr`];
           /* eslint-enable @typescript-eslint/no-dynamic-delete */
         }
       });

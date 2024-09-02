@@ -1,14 +1,14 @@
 /**
 * DevExtreme (esm/renovation/ui/scroll_view/scrollable.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["addWidgetClass", "aria", "bounceEnabled", "children", "classes", "direction", "disabled", "forceGeneratePockets", "height", "inertiaEnabled", "loadPanelTemplate", "needRenderScrollbars", "needScrollViewContentWrapper", "onBounce", "onEnd", "onPullDown", "onReachBottom", "onScroll", "onStart", "onUpdated", "onVisibilityChange", "pullDownEnabled", "pulledDownText", "pullingDownText", "reachBottomEnabled", "reachBottomText", "refreshStrategy", "refreshingText", "rtlEnabled", "scrollByContent", "scrollByThumb", "scrollLocationChange", "showScrollbar", "useKeyboard", "useNative", "useSimulatedScrollbar", "visible", "width"];
+const _excluded = ["addWidgetClass", "aria", "bounceEnabled", "children", "classes", "direction", "disabled", "forceGeneratePockets", "height", "inertiaEnabled", "loadPanelTemplate", "needRenderScrollbars", "needScrollViewContentWrapper", "onBounce", "onEnd", "onPullDown", "onReachBottom", "onScroll", "onStart", "onUpdated", "onVisibilityChange", "pullDownEnabled", "pulledDownText", "pullingDownText", "reachBottomEnabled", "reachBottomText", "refreshStrategy", "refreshingText", "rtlEnabled", "scrollByContent", "scrollByThumb", "scrollLocationChange", "showScrollbar", "useKeyboard", "useNative", "useSimulatedScrollbar", "visible", "width"];
 import { createComponentVNode, normalizeProps } from "inferno";
 import { InfernoWrapperComponent } from '@devextreme/runtime/inferno';
 import { ScrollableNative } from './strategy/native';
@@ -20,10 +20,10 @@ import { isDefined, isNumeric } from '../../../core/utils/type';
 import { hasWindow } from '../../../core/utils/window';
 import { DIRECTION_HORIZONTAL, DIRECTION_VERTICAL } from './common/consts';
 import { ScrollableProps } from './common/scrollable_props';
-import { resolveRtlEnabled } from '../../utils/resolve_rtl';
-import { ConfigContext } from '../../common/config_context';
-export var viewFunction = viewModel => {
-  var {
+import { resolveRtlEnabled } from '../../../__internal/core/r1/utils/resolve_rtl';
+import { ConfigContext } from '../../../__internal/core/r1/config_context';
+export const viewFunction = viewModel => {
+  const {
     isServerSide,
     props: {
       aria,
@@ -134,8 +134,14 @@ export var viewFunction = viewModel => {
 };
 import { createReRenderEffect } from '@devextreme/runtime/inferno';
 import { createRef as infernoCreateRef } from 'inferno';
-var getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => normalizeProps(createComponentVNode(2, TemplateProp, _extends({}, props))) : TemplateProp);
+const getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => normalizeProps(createComponentVNode(2, TemplateProp, _extends({}, props))) : TemplateProp);
 export class Scrollable extends InfernoWrapperComponent {
+  get config() {
+    if (this.context[ConfigContext.id]) {
+      return this.context[ConfigContext.id];
+    }
+    return ConfigContext.defaultValue;
+  }
   constructor(props) {
     super(props);
     this.state = {};
@@ -161,12 +167,6 @@ export class Scrollable extends InfernoWrapperComponent {
     this.finishLoading = this.finishLoading.bind(this);
     this.validate = this.validate.bind(this);
   }
-  get config() {
-    if (this.context[ConfigContext.id]) {
-      return this.context[ConfigContext.id];
-    }
-    return ConfigContext.defaultValue;
-  }
   createEffects() {
     return [createReRenderEffect()];
   }
@@ -180,7 +180,7 @@ export class Scrollable extends InfernoWrapperComponent {
     return this.scrollableSimulatedRef.current;
   }
   get rtlEnabled() {
-    var {
+    const {
       rtlEnabled
     } = this.props;
     return !!resolveRtlEnabled(rtlEnabled, this.config);
@@ -189,7 +189,7 @@ export class Scrollable extends InfernoWrapperComponent {
     return !hasWindow();
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
@@ -203,15 +203,15 @@ export class Scrollable extends InfernoWrapperComponent {
     if (!this.props.useNative) {
       this.updateHandler();
     }
-    var currentScrollOffset = this.props.useNative ? this.scrollOffset() : {
+    const currentScrollOffset = this.props.useNative ? this.scrollOffset() : {
       top: this.container().scrollTop,
       left: this.container().scrollLeft
     };
-    var distance = getOffsetDistance(convertToLocation(targetLocation, this.props.direction), currentScrollOffset);
+    const distance = getOffsetDistance(convertToLocation(targetLocation, this.props.direction), currentScrollOffset);
     this.scrollBy(distance);
   }
   scrollBy(distance) {
-    var {
+    let {
       left,
       top
     } = convertToLocation(distance, this.props.direction);
@@ -246,11 +246,11 @@ export class Scrollable extends InfernoWrapperComponent {
     if (!this.content().contains(element)) {
       return;
     }
-    var scrollPosition = {
+    const scrollPosition = {
       top: 0,
       left: 0
     };
-    var {
+    const {
       direction
     } = this.props;
     if (direction !== DIRECTION_VERTICAL) {
@@ -289,7 +289,7 @@ export class Scrollable extends InfernoWrapperComponent {
     return this.scrollableRef.clientWidth();
   }
   getScrollElementPosition(targetElement, direction, offset) {
-    var scrollOffset = this.scrollOffset();
+    const scrollOffset = this.scrollOffset();
     return getElementLocationInternal(targetElement, direction, this.container(), scrollOffset, offset);
   }
   startLoading() {
@@ -301,7 +301,7 @@ export class Scrollable extends InfernoWrapperComponent {
     }
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
         loadPanelTemplate: getTemplate(props.loadPanelTemplate)

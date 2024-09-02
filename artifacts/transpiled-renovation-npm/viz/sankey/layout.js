@@ -287,7 +287,7 @@ const layout = exports.layout = {
       y: rectRight.y + rectRight.height
     };
     const curve_width = _SPLINE_TENSION * (p_UpRight.x - p_UpLeft.x);
-    const result = "M ".concat(p_UpLeft.x, " ").concat(p_UpLeft.y, " C ").concat(p_UpLeft.x + curve_width, " ").concat(p_UpLeft.y, " ").concat(p_UpRight.x - curve_width, " ").concat(p_UpRight.y, " ").concat(p_UpRight.x, " ").concat(p_UpRight.y, " L ").concat(p_DownRight.x, " ").concat(p_DownRight.y, " C ").concat(p_DownRight.x - curve_width, " ").concat(p_DownRight.y, " ").concat(p_DownLeft.x + curve_width, " ").concat(p_DownLeft.y, " ").concat(p_DownLeft.x, " ").concat(p_DownLeft.y, " Z");
+    const result = `M ${p_UpLeft.x} ${p_UpLeft.y} C ${p_UpLeft.x + curve_width} ${p_UpLeft.y} ${p_UpRight.x - curve_width} ${p_UpRight.y} ${p_UpRight.x} ${p_UpRight.y} L ${p_DownRight.x} ${p_DownRight.y} C ${p_DownRight.x - curve_width} ${p_DownRight.y} ${p_DownLeft.x + curve_width} ${p_DownLeft.y} ${p_DownLeft.x} ${p_DownLeft.y} Z`;
     return result;
   },
   computeLayout: function (linksData, sortData, options, incidentOccurred) {

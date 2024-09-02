@@ -1,64 +1,55 @@
 /**
 * DevExtreme (common/data/custom-store.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /**
- * An additional type for LoadResult.
+ * @docid
+ * @public
  */
 export type GroupItem<
     TItem = any,
 > = {
-  /**
-   * A key to group items by.
-   */
+  /** @docid */
   key: any | string | number;
   /**
-   * Contains an array of items or GroupItems, or nothing.
+   * @docid
+   * @type Array<any>|Array<GroupItem>|null
    */
   items: Array<TItem> | Array<GroupItem<TItem>> | null;
-  /**
-   * A total number of items.
-   */
+  /** @docid */
   count?: number;
-  /**
-   * A summary array that contains the resulting values in the same order as the summary definitions.
-   */
+  /** @docid */
   summary?: Array<any>;
 };
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 type LoadResultArray<TItem = any> = Array<TItem> | Array<GroupItem<TItem>>;
 
 /**
- * An additional type for LoadResult.
+ * @docid
+ * @public
  */
 export type LoadResultObject<TItem = any> = {
     /**
-     * Contains an array of items or GroupItems.
-     */
+     * @docid
+     * @type Array<any>|Array<GroupItem>
+    */
     data: Array<TItem> | Array<GroupItem<TItem>>;
-    /**
-     * A total number of items.
-     */
+    /** @docid */
     totalCount?: number;
-    /**
-     * A summary array that contains the resulting values in the same order as the summary definitions.
-     */
+    /** @docid */
     summary?: Array<any>;
-    /**
-     * A number of groups.
-     */
+    /** @docid */
     groupCount?: number;
   };
 
 /**
- * Specifies returned data of the `load()` method in CustomStore.
+ * @docid
+ * @public
+ * @type object
  */
 export type LoadResult<
     TItem = any,
@@ -68,16 +59,19 @@ export type LoadResult<
   | LoadResultObject<TItem>;
 
 /**
- * A type guard function that checks whether LoadResult is a LoadResultObject.
+ * @docid
+ * @public
  */
 export function isLoadResultObject<TItem>(res: LoadResult<TItem>): res is LoadResultObject<TItem>;
 
 /**
- * A type guard function that checks whether LoadResult is an array of GroupItems.
+ * @docid
+ * @public
  */
 export function isGroupItemsArray<TItem>(res: LoadResult<TItem>): res is Array<GroupItem<TItem>>;
 
 /**
- * A type guard function that checks whether LoadResult is an array of items.
+ * @docid
+ * @public
  */
 export function isItemsArray<TItem>(res: LoadResult<TItem>): res is Array<TItem>;

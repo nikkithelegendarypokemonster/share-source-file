@@ -1,26 +1,25 @@
 /**
 * DevExtreme (esm/renovation/ui/toolbar/toolbar_props.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-import _extends from "@babel/runtime/helpers/esm/extends";
 import { BaseWidgetProps } from '../common/base_props';
-export var CollectionWidgetItem = {};
-export var BaseToolbarItemProps = {};
-export var ToolbarTextBoxProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(BaseToolbarItemProps), Object.getOwnPropertyDescriptors({
+export const CollectionWidgetItem = {};
+export const BaseToolbarItemProps = {};
+export const ToolbarTextBoxProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(BaseToolbarItemProps), Object.getOwnPropertyDescriptors({
   value: ''
 })));
-export var ToolbarCheckBoxProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(BaseToolbarItemProps), Object.getOwnPropertyDescriptors({
+export const ToolbarCheckBoxProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(BaseToolbarItemProps), Object.getOwnPropertyDescriptors({
   value: false
 })));
-export var ToolbarButtonGroupProps = BaseToolbarItemProps;
-export var ToolbarButtonProps = BaseToolbarItemProps;
-export var ToolbarDropDownButtonItemProps = CollectionWidgetItem;
-export var ToolbarDropDownButtonItemPropsType = {};
-export var ToolbarDropDownButtonProps = BaseToolbarItemProps;
-export var ToolbarItem = CollectionWidgetItem;
-export var ToolbarItemType = {};
-export var ToolbarProps = BaseWidgetProps;
+export const ToolbarButtonGroupProps = BaseToolbarItemProps;
+export const ToolbarButtonProps = BaseToolbarItemProps;
+export const ToolbarDropDownButtonItemProps = CollectionWidgetItem;
+export const ToolbarDropDownButtonItemPropsType = {};
+export const ToolbarDropDownButtonProps = BaseToolbarItemProps;
+export const ToolbarItem = CollectionWidgetItem;
+export const ToolbarItemType = {};
+export const ToolbarProps = BaseWidgetProps;

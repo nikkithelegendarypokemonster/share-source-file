@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/grid_core/views/m_columns_view.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -37,10 +37,10 @@ var _m_column_state_mixin = require("../../../grids/grid_core/column_state_mixin
 var _m_modules = _interopRequireDefault(require("../m_modules"));
 var _m_utils = _interopRequireDefault(require("../m_utils"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 const SCROLL_CONTAINER_CLASS = 'scroll-container';
 const SCROLLABLE_SIMULATED_CLASS = 'scrollable-simulated';
 const GROUP_SPACE_CLASS = 'group-space';
@@ -108,7 +108,7 @@ const subscribeToRowEvents = function (that, $table) {
 };
 const getWidthStyle = function (width) {
   if (width === 'auto') return '';
-  return (0, _type.isNumeric)(width) ? "".concat(width, "px") : width;
+  return (0, _type.isNumeric)(width) ? `${width}px` : width;
 };
 const setCellWidth = function (cell, column, width) {
   cell.style.width = cell.style.maxWidth = column.width === 'auto' ? '' : width;
@@ -133,7 +133,7 @@ const removeHandler = function (templateDeferred) {
 };
 const normalizeWidth = width => {
   if (typeof width === 'number') {
-    return "".concat(width.toFixed(3), "px");
+    return `${width.toFixed(3)}px`;
   }
   if (width === 'adaptiveHidden') {
     return HIDDEN_COLUMNS_WIDTH;
@@ -141,13 +141,8 @@ const normalizeWidth = width => {
   return width;
 };
 exports.normalizeWidth = normalizeWidth;
-let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin) {
-  _inheritsLoose(ColumnsView, _ColumnStateMixin);
-  function ColumnsView() {
-    return _ColumnStateMixin.apply(this, arguments) || this;
-  }
-  var _proto = ColumnsView.prototype;
-  _proto.init = function init() {
+class ColumnsView extends (0, _m_column_state_mixin.ColumnStateMixin)(_m_modules.default.View) {
+  init() {
     this._scrollLeft = -1;
     this._columnsController = this.getController('columns');
     this._dataController = this.getController('data');
@@ -180,17 +175,17 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
     });
     this._columnsController.columnsChanged.add(this._columnOptionChanged.bind(this));
     this._dataController && this._dataController.changed.add(this._handleDataChanged.bind(this));
-  };
-  _proto.dispose = function dispose() {
-    var _a, _b;
+  }
+  dispose() {
     if ((0, _window.hasWindow)()) {
+      var _this$_templateTimeou, _this$_templateTimeou2;
       const window = (0, _window.getWindow)();
-      (_a = this._templateTimeouts) === null || _a === void 0 ? void 0 : _a.forEach(templateTimeout => window.clearTimeout(templateTimeout));
-      (_b = this._templateTimeouts) === null || _b === void 0 ? void 0 : _b.clear();
+      (_this$_templateTimeou = this._templateTimeouts) === null || _this$_templateTimeou === void 0 || _this$_templateTimeou.forEach(templateTimeout => window.clearTimeout(templateTimeout));
+      (_this$_templateTimeou2 = this._templateTimeouts) === null || _this$_templateTimeou2 === void 0 || _this$_templateTimeou2.clear();
     }
-  };
-  _proto.optionChanged = function optionChanged(args) {
-    _ColumnStateMixin.prototype.optionChanged.call(this, args);
+  }
+  optionChanged(args) {
+    super.optionChanged(args);
     // eslint-disable-next-line default-case
     switch (args.name) {
       case 'cellHintEnabled':
@@ -207,8 +202,8 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
         args.handled = true;
         break;
     }
-  };
-  _proto._createScrollableOptions = function _createScrollableOptions() {
+  }
+  _createScrollableOptions() {
     const that = this;
     const scrollingOptions = that.option('scrolling');
     let useNativeScrolling = that.option('scrolling.useNative');
@@ -229,20 +224,24 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
       options.useSimulatedScrollbar = !useNativeScrolling;
     }
     return options;
-  };
-  _proto._updateCell = function _updateCell($cell, parameters) {
+  }
+  _updateCell($cell, parameters) {
     if (parameters.rowType) {
       this._cellPrepared($cell, parameters);
     }
   }
+  _needToSetCellWidths() {
+    return this.option('columnAutoWidth');
+  }
   /**
    * @extended: column_fixing, editing
-   */;
-  _proto._createCell = function _createCell(options) {
+   */
+  _createCell(options) {
     const {
       column
     } = options;
     const alignment = column.alignment || (0, _position.getDefaultAlignment)(this.option('rtlEnabled'));
+    const needToSetCellWidths = this._needToSetCellWidths();
     const cell = _dom_adapter.default.createElement('td');
     cell.style.textAlign = alignment;
     const $cell = (0, _renderer.default)(cell);
@@ -269,7 +268,7 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
     }
     if (column.colspan > 1) {
       $cell.attr('colSpan', column.colspan);
-    } else if (!column.isBand && column.visibleWidth !== 'auto' && this.option('columnAutoWidth')) {
+    } else if (!column.isBand && column.visibleWidth !== 'auto' && needToSetCellWidths) {
       if (column.width || column.minWidth) {
         cell.style.minWidth = getWidthStyle(column.minWidth || column.width);
       }
@@ -281,25 +280,25 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: selection
-   */;
-  _proto._createRow = function _createRow(rowObject, tagName) {
+   */
+  _createRow(rowObject, tagName) {
     tagName = tagName || 'tr';
-    const $element = (0, _renderer.default)("<".concat(tagName, ">")).addClass(ROW_CLASS);
+    const $element = (0, _renderer.default)(`<${tagName}>`).addClass(ROW_CLASS);
     if (tagName === 'tr') {
       this.setAria('role', 'row', $element);
     }
     return $element;
-  };
-  _proto._isAltRow = function _isAltRow(row) {
+  }
+  _isAltRow(row) {
     return row && row.dataIndex % 2 === 1;
   }
   /**
    * @extended: selection
-   */;
-  _proto._createTable = function _createTable(columns, isAppend) {
+   */
+  _createTable(columns, isAppend) {
     const $table = (0, _renderer.default)('<table>').addClass(this.addWidgetPrefix(TABLE_CLASS)).addClass(this.addWidgetPrefix(TABLE_FIXED_CLASS));
     if (columns && !isAppend) {
-      $table.attr('id', "dx-".concat(new _guid.default())).append(this._createColGroup(columns));
+      $table.attr('id', `dx-${new _guid.default()}`).append(this._createColGroup(columns));
       if (_browser.default.safari) {
         // T198380, T809552
         // @ts-expect-error
@@ -358,7 +357,7 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
     }
     const getOptions = event => {
       const $cell = (0, _renderer.default)(event.currentTarget);
-      const $fieldItemContent = (0, _renderer.default)(event.target).closest(".".concat(FORM_FIELD_ITEM_CONTENT_CLASS));
+      const $fieldItemContent = (0, _renderer.default)(event.target).closest(`.${FORM_FIELD_ITEM_CONTENT_CLASS}`);
       const $row = $cell.parent();
       const rowOptions = $row.data('options');
       const options = rowOptions && rowOptions.cells && rowOptions.cells[$cell.index()];
@@ -399,11 +398,11 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: editing
-   */;
-  _proto._rowPointerDown = function _rowPointerDown(e) {};
-  _proto._rowClick = function _rowClick() {};
-  _proto._rowDblClick = function _rowDblClick() {};
-  _proto._createColGroup = function _createColGroup(columns) {
+   */
+  _rowPointerDown(e) {}
+  _rowClick() {}
+  _rowDblClick() {}
+  _createColGroup(columns) {
     const colgroupElement = (0, _renderer.default)('<colgroup>');
     for (let i = 0; i < columns.length; i++) {
       const colspan = columns[i].colspan || 1;
@@ -415,8 +414,8 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: column_fixing
-   */;
-  _proto._createCol = function _createCol(column) {
+   */
+  _createCol(column) {
     let width = column.visibleWidth || column.width;
     if (width === 'adaptiveHidden') {
       width = HIDDEN_COLUMNS_WIDTH;
@@ -427,16 +426,16 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: keyboard_navigation, virtual_scrolling
-   */;
-  _proto.renderDelayedTemplates = function renderDelayedTemplates(change) {
+   */
+  renderDelayedTemplates(change) {
     const delayedTemplates = this._delayedTemplates;
     const syncTemplates = delayedTemplates.filter(template => !template.async);
     const asyncTemplates = delayedTemplates.filter(template => template.async);
     this._delayedTemplates = [];
     this._renderDelayedTemplatesCore(syncTemplates, false, change);
     this._renderDelayedTemplatesCoreAsync(asyncTemplates);
-  };
-  _proto._renderDelayedTemplatesCoreAsync = function _renderDelayedTemplatesCoreAsync(templates) {
+  }
+  _renderDelayedTemplatesCoreAsync(templates) {
     if (templates.length) {
       const templateTimeout = (0, _window.getWindow)().setTimeout(() => {
         this._templateTimeouts.delete(templateTimeout);
@@ -444,8 +443,8 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
       });
       this._templateTimeouts.add(templateTimeout);
     }
-  };
-  _proto._renderDelayedTemplatesCore = function _renderDelayedTemplatesCore(templates, isAsync, change) {
+  }
+  _renderDelayedTemplatesCore(templates, isAsync, change) {
     const date = new Date();
     while (templates.length) {
       const templateParameters = templates.shift();
@@ -471,8 +470,8 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
     if (!templates.length && this._delayedTemplates.length) {
       this.renderDelayedTemplates();
     }
-  };
-  _proto._processTemplate = function _processTemplate(template, options) {
+  }
+  _processTemplate(template, options) {
     const that = this;
     let renderingTemplate;
     if (template && template.render && !(0, _type.isRenderer)(template)) {
@@ -505,9 +504,8 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
       }
     }
     return renderingTemplate;
-  };
-  _proto.renderTemplate = function renderTemplate(container, template, options, allowRenderToDetachedContainer, change) {
-    var _a;
+  }
+  renderTemplate(container, template, options, allowRenderToDetachedContainer, change) {
     const renderingTemplate = this._processTemplate(template, options);
     const {
       column
@@ -530,7 +528,7 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
     if (renderingTemplate) {
       options.component = this.component;
       const columnAsync = column && (column.renderAsync && isDataRow || this.option('renderAsync') && (column.renderAsync !== false && (column.command || column.showEditorAlways) && isDataRow || options.rowType === 'filter'));
-      const async = (_a = options.renderAsync) !== null && _a !== void 0 ? _a : columnAsync;
+      const async = options.renderAsync ?? columnAsync;
       if ((renderingTemplate.allowRenderToDetachedContainer || allowRenderToDetachedContainer) && !async) {
         renderingTemplate.render(templateOptions);
       } else {
@@ -548,16 +546,16 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
     return templateDeferred.promise().always(() => {
       this._templateDeferreds.delete(templateDeferred);
     });
-  };
-  _proto._getBodies = function _getBodies(tableElement) {
+  }
+  _getBodies(tableElement) {
     return (0, _renderer.default)(tableElement).children('tbody').not('.dx-header').not('.dx-footer');
-  };
-  _proto._needWrapRow = function _needWrapRow($tableElement) {
-    var _a;
+  }
+  _needWrapRow($tableElement) {
+    var _this$_getBodies;
     const hasRowTemplate = !!this.option().rowTemplate;
-    return hasRowTemplate && !!((_a = this._getBodies($tableElement)) === null || _a === void 0 ? void 0 : _a.filter(".".concat(ROW_CLASS)).length);
-  };
-  _proto._wrapRowIfNeed = function _wrapRowIfNeed($table, $row, isRefreshing) {
+    return hasRowTemplate && !!((_this$_getBodies = this._getBodies($tableElement)) !== null && _this$_getBodies !== void 0 && _this$_getBodies.filter(`.${ROW_CLASS}`).length);
+  }
+  _wrapRowIfNeed($table, $row, isRefreshing) {
     const $tableElement = isRefreshing ? $table || this._tableElement : this._tableElement || $table;
     const needWrapRow = this._needWrapRow($tableElement);
     if (needWrapRow) {
@@ -566,8 +564,8 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
       return $tbody.append($row);
     }
     return $row;
-  };
-  _proto._appendRow = function _appendRow($table, $row, appendTemplate) {
+  }
+  _appendRow($table, $row, appendTemplate) {
     appendTemplate = appendTemplate || appendElementTemplate;
     appendTemplate.render({
       content: $row,
@@ -576,8 +574,8 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: column_fixing, filter_row, row_dragging, virtual_columns
-   */;
-  _proto._resizeCore = function _resizeCore() {
+   */
+  _resizeCore() {
     const scrollLeft = this._scrollLeft;
     if (scrollLeft >= 0) {
       this._scrollLeft = 0;
@@ -588,8 +586,8 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: column_fixing, header_panel, virtual_column
-   */;
-  _proto._renderCore = function _renderCore(e) {
+   */
+  _renderCore(e) {
     const $root = this.element().parent();
     if (!$root || $root.parent().length) {
       this.renderDelayedTemplates(e);
@@ -597,16 +595,16 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: column_fixing
-   */;
-  _proto._renderTable = function _renderTable(options) {
+   */
+  _renderTable(options) {
     options = options || {};
     options.columns = this._columnsController.getVisibleColumns();
     const changeType = options.change && options.change.changeType;
     const $table = this._createTable(options.columns, changeType === 'append' || changeType === 'prepend' || changeType === 'update');
     this._renderRows($table, options);
     return $table;
-  };
-  _proto._renderRows = function _renderRows($table, options) {
+  }
+  _renderRows($table, options) {
     const that = this;
     const rows = that._getRows(options.change);
     const columnIndices = options.change && options.change.columnIndices || [];
@@ -621,8 +619,8 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: column_fixing
-   */;
-  _proto._renderRow = function _renderRow($table, options) {
+   */
+  _renderRow($table, options) {
     if (!options.columnIndices) {
       options.row.cells = [];
     }
@@ -637,11 +635,11 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
     }, options.row);
     this._addWatchMethod(rowOptions, options.row);
     this._rowPrepared($wrappedRow, rowOptions, options.row);
-  };
-  _proto._needRenderCell = function _needRenderCell(columnIndex, columnIndices) {
+  }
+  _needRenderCell(columnIndex, columnIndices) {
     return !columnIndices || columnIndices.indexOf(columnIndex) >= 0;
-  };
-  _proto._renderCells = function _renderCells($row, options) {
+  }
+  _renderCells($row, options) {
     const that = this;
     let columnIndex = 0;
     const {
@@ -665,12 +663,19 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
         columnIndex++;
       }
     }
-  };
-  _proto._updateCells = function _updateCells($rowElement, $newRowElement, columnIndices) {
+  }
+  _updateCells($rowElement, $newRowElement, columnIndices, options) {
+    var _options$node;
+    const that = this;
     const $cells = $rowElement.children();
     const $newCells = $newRowElement.children();
     const highlightChanges = this.option('highlightChanges');
     const cellUpdatedClass = this.addWidgetPrefix(CELL_UPDATED_ANIMATION_CLASS);
+    if (options !== null && options !== void 0 && (_options$node = options.node) !== null && _options$node !== void 0 && _options$node.hasChildren) {
+      $cells.each(function () {
+        that.setAria('expanded', options.isExpanded, (0, _renderer.default)(this));
+      });
+    }
     columnIndices.forEach((columnIndex, index) => {
       const $cell = $cells.eq(columnIndex);
       const $newCell = $newCells.eq(index);
@@ -683,16 +688,23 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: editing
-   */;
-  _proto._setCellAriaAttributes = function _setCellAriaAttributes($cell, cellOptions) {
+   */
+  _setCellAriaAttributes($cell, cellOptions, options) {
     if (cellOptions.rowType !== 'freeSpace') {
+      var _options$row;
       this.setAria('role', 'gridcell', $cell);
+      if (options !== null && options !== void 0 && (_options$row = options.row) !== null && _options$row !== void 0 && (_options$row = _options$row.node) !== null && _options$row !== void 0 && _options$row.hasChildren) {
+        const {
+          row
+        } = options;
+        this.setAria('expanded', row.isExpanded, $cell);
+      }
       const columnIndexOffset = this._columnsController.getColumnIndexOffset();
       const ariaColIndex = cellOptions.columnIndex + columnIndexOffset + 1;
       this.setAria('colindex', ariaColIndex, $cell);
     }
-  };
-  _proto._renderCell = function _renderCell($row, options) {
+  }
+  _renderCell($row, options) {
     const cellOptions = this._getCellOptions(options);
     if (options.columnIndices) {
       if (options.row.cells) {
@@ -703,25 +715,25 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
       options.row.cells.push(cellOptions);
     }
     const $cell = this._createCell(cellOptions);
-    this._setCellAriaAttributes($cell, cellOptions);
+    this._setCellAriaAttributes($cell, cellOptions, options);
     this._renderCellContent($cell, cellOptions, options);
     $row.get(0).appendChild($cell.get(0));
     return $cell;
   }
   /**
    * @extended: column_fixing, editing_form_based, filter_row, header_filter
-   */;
-  _proto._renderCellContent = function _renderCellContent($cell, options, renderOptions) {
+   */
+  _renderCellContent($cell, options, renderOptions) {
     const template = this._getCellTemplate(options);
     (0, _deferred.when)(!template || this.renderTemplate($cell, template, options, undefined, renderOptions.change)).done(() => {
       this._updateCell($cell, options);
     });
-  };
-  _proto._getCellTemplate = function _getCellTemplate(options) {};
-  _proto._getRows = function _getRows(change) {
+  }
+  _getCellTemplate(options) {}
+  _getRows(change) {
     return [];
-  };
-  _proto._getCellOptions = function _getCellOptions(options) {
+  }
+  _getCellOptions(options) {
     const cellOptions = {
       column: options.column,
       columnIndex: options.columnIndex,
@@ -730,8 +742,8 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
     };
     this._addWatchMethod(cellOptions);
     return cellOptions;
-  };
-  _proto._addWatchMethod = function _addWatchMethod(options, source) {
+  }
+  _addWatchMethod(options, source) {
     if (!this.option('repaintChangesOnly')) return;
     const watchers = [];
     source = source || options;
@@ -779,17 +791,17 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: adaptivity, editing, validating
-   */;
-  _proto._cellPrepared = function _cellPrepared(cell, options) {
+   */
+  _cellPrepared(cell, options) {
     options.cellElement = (0, _element.getPublicElement)((0, _renderer.default)(cell));
     this.executeAction('onCellPrepared', options);
-  };
-  _proto._rowPrepared = function _rowPrepared($row, options, row) {
+  }
+  _rowPrepared($row, options, row) {
     (0, _element_data.data)($row.get(0), 'options', options);
     options.rowElement = (0, _element.getPublicElement)($row);
     this.executeAction('onRowPrepared', options);
-  };
-  _proto._columnOptionChanged = function _columnOptionChanged(e) {
+  }
+  _columnOptionChanged(e) {
     const {
       optionNames
     } = e;
@@ -808,39 +820,39 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: column_fixing, editing
-   */;
-  _proto.getCellIndex = function getCellIndex($cell, rowIndex) {
+   */
+  getCellIndex($cell, rowIndex) {
     const cellIndex = $cell.length ? $cell[0].cellIndex : -1;
     return cellIndex;
   }
   /**
    * @extended: column_fixing
-   */;
-  _proto.getTableElements = function getTableElements() {
+   */
+  getTableElements() {
     // @ts-expect-error
     return this._tableElement || (0, _renderer.default)();
   }
   /**
    * @extended: column_fixing
-   */;
-  _proto.getTableElement = function getTableElement(isFixedTableRendering) {
+   */
+  getTableElement(isFixedTableRendering) {
     return this._tableElement;
   }
   /**
    * @extended: column_fixing
-   */;
-  _proto.setTableElement = function setTableElement(tableElement, isFixedTableRendering) {
+   */
+  setTableElement(tableElement, isFixedTableRendering) {
     this._tableElement = tableElement;
-  };
-  _proto._afterRowPrepared = function _afterRowPrepared(e) {}
+  }
+  _afterRowPrepared(e) {}
   /**
    * @extended: header_panel
-   */;
-  _proto._handleDataChanged = function _handleDataChanged(e) {};
-  _proto.callbackNames = function callbackNames() {
+   */
+  _handleDataChanged(e) {}
+  callbackNames() {
     return ['scrollChanged'];
-  };
-  _proto._updateScrollLeftPosition = function _updateScrollLeftPosition() {
+  }
+  _updateScrollLeftPosition() {
     const scrollLeft = this._scrollLeft;
     if (scrollLeft >= 0) {
       this._scrollLeft = 0;
@@ -848,10 +860,10 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
         left: scrollLeft
       });
     }
-  };
-  _proto.scrollTo = function scrollTo(pos) {
+  }
+  scrollTo(pos) {
     const $element = this.element();
-    const $scrollContainer = $element && $element.children(".".concat(this.addWidgetPrefix(SCROLL_CONTAINER_CLASS))).not(".".concat(this.addWidgetPrefix(CONTENT_FIXED_CLASS)));
+    const $scrollContainer = $element && $element.children(`.${this.addWidgetPrefix(SCROLL_CONTAINER_CLASS)}`).not(`.${this.addWidgetPrefix(CONTENT_FIXED_CLASS)}`);
     if ((0, _type.isDefined)(pos) && (0, _type.isDefined)(pos.left) && this._scrollLeft !== pos.left) {
       this._scrollLeft = pos.left;
       $scrollContainer && $scrollContainer.scrollLeft(pos.left);
@@ -859,21 +871,21 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: column_fixing
-   */;
-  _proto._getContent = function _getContent(isFixedTableRendering) {
-    var _a;
-    return (_a = this._tableElement) === null || _a === void 0 ? void 0 : _a.parent();
-  };
-  _proto._removeContent = function _removeContent(isFixedTableRendering) {
+   */
+  _getContent(isFixedTableRendering) {
+    var _this$_tableElement;
+    return (_this$_tableElement = this._tableElement) === null || _this$_tableElement === void 0 ? void 0 : _this$_tableElement.parent();
+  }
+  _removeContent(isFixedTableRendering) {
     const $scrollContainer = this._getContent(isFixedTableRendering);
-    if ($scrollContainer === null || $scrollContainer === void 0 ? void 0 : $scrollContainer.length) {
+    if ($scrollContainer !== null && $scrollContainer !== void 0 && $scrollContainer.length) {
       $scrollContainer.remove();
     }
   }
   /**
    * @extended: column_fixing
-   */;
-  _proto._wrapTableInScrollContainer = function _wrapTableInScrollContainer($table, isFixedTableRendering) {
+   */
+  _wrapTableInScrollContainer($table, isFixedTableRendering) {
     const $scrollContainer = (0, _renderer.default)('<div>');
     const useNative = this.option('scrolling.useNative');
     if (useNative === false || useNative === 'auto' && !_support.nativeScrolling) {
@@ -890,12 +902,12 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
     $scrollContainer.addClass(this.addWidgetPrefix(CONTENT_CLASS)).addClass(this.addWidgetPrefix(SCROLL_CONTAINER_CLASS)).append($table).appendTo(this.element());
     this.setAria('role', 'presentation', $scrollContainer);
     return $scrollContainer;
-  };
-  _proto.needWaitAsyncTemplates = function needWaitAsyncTemplates() {
+  }
+  needWaitAsyncTemplates() {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
     return this.option('templatesRenderAsynchronously') && this.option('renderAsync') === false;
-  };
-  _proto.waitAsyncTemplates = function waitAsyncTemplates() {
+  }
+  waitAsyncTemplates() {
     let forceWaiting = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
     // @ts-expect-error
     const result = new _deferred.Deferred();
@@ -914,16 +926,16 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
     }).fail(result.reject);
     waitTemplatesRecursion();
     return result.promise();
-  };
-  _proto._updateContent = function _updateContent($newTableElement, change, isFixedTableRendering) {
+  }
+  _updateContent($newTableElement, change, isFixedTableRendering) {
     return this.waitAsyncTemplates().done(() => {
       this._removeContent(isFixedTableRendering);
       this.setTableElement($newTableElement, isFixedTableRendering);
       this._wrapTableInScrollContainer($newTableElement, isFixedTableRendering);
     });
-  };
-  _proto._findContentElement = function _findContentElement(isFixedTableRendering) {};
-  _proto._getWidths = function _getWidths($cellElements) {
+  }
+  _findContentElement(isFixedTableRendering) {}
+  _getWidths($cellElements) {
     if (!$cellElements) {
       return [];
     }
@@ -945,10 +957,10 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: column_fixing
-   */;
-  _proto.getColumnWidths = function getColumnWidths($tableElement) {
+   */
+  getColumnWidths($tableElement) {
     (this.option('forceApplyBindings') || _common.noop)();
-    $tableElement = $tableElement !== null && $tableElement !== void 0 ? $tableElement : this.getTableElement();
+    $tableElement = $tableElement ?? this.getTableElement();
     if ($tableElement) {
       const $rows = $tableElement.children('tbody:not(.dx-header)').children();
       for (let i = 0; i < $rows.length; i++) {
@@ -966,21 +978,21 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
       }
     }
     return [];
-  };
-  _proto.getVisibleColumnIndex = function getVisibleColumnIndex(columnIndex, rowIndex) {
+  }
+  getVisibleColumnIndex(columnIndex, rowIndex) {
     return columnIndex;
-  };
-  _proto.setColumnWidths = function setColumnWidths(_ref2) {
+  }
+  setColumnWidths(_ref2) {
     let {
       widths,
       optionNames
     } = _ref2;
     const $tableElement = this.getTableElement();
-    if (!($tableElement === null || $tableElement === void 0 ? void 0 : $tableElement.length) || !widths) {
+    if (!($tableElement !== null && $tableElement !== void 0 && $tableElement.length) || !widths) {
       return;
     }
     const columns = this.getColumns();
-    const columnAutoWidth = this.option('columnAutoWidth');
+    const needToSetCellWidths = this._needToSetCellWidths();
     const $cols = $tableElement.children('colgroup').children('col');
     $cols.toArray().forEach(col => col.removeAttribute('style'));
     columns.forEach((column, columnIndex) => {
@@ -990,15 +1002,15 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
       Style for cols applies to all td elements.
               Also check _createCell method because min-width, width and max-width are also set there.
       */
-      if (columnAutoWidth && column.width && !column.command) {
+      if (needToSetCellWidths && column.width && !column.command) {
         const width = getWidthStyle(column.visibleWidth || column.width);
         const minWidth = getWidthStyle(column.minWidth || width);
-        const $rows = $tableElement.children().children('.dx-row').not(".".concat(DETAIL_ROW_CLASS));
+        const $rows = $tableElement.children().children('.dx-row').not(`.${DETAIL_ROW_CLASS}`);
         for (let rowIndex = 0; rowIndex < $rows.length; rowIndex++) {
           const visibleIndex = this.getVisibleColumnIndex(columnIndex, rowIndex);
           if (visibleIndex >= 0) {
             const $row = $rows.eq(rowIndex);
-            const $cell = $row.hasClass(GROUP_ROW_CLASS) ? $row.find("td[aria-colindex='".concat(visibleIndex + 1, "']:not(.").concat(GROUP_CELL_CLASS, ")")) : $row.find('td').eq(visibleIndex);
+            const $cell = $row.hasClass(GROUP_ROW_CLASS) ? $row.find(`td[aria-colindex='${visibleIndex + 1}']:not(.${GROUP_CELL_CLASS})`) : $row.find('td').eq(visibleIndex);
             if ($cell.length) {
               const cell = $cell.get(0);
               setCellWidth(cell, column, width);
@@ -1015,11 +1027,11 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: editing_form_based
-   */;
-  _proto.getCellElements = function getCellElements(rowIndex) {
+   */
+  getCellElements(rowIndex) {
     return this._getCellElementsCore(rowIndex);
-  };
-  _proto._getCellElementsCore = function _getCellElementsCore(rowIndex) {
+  }
+  _getCellElementsCore(rowIndex) {
     if (rowIndex < 0) {
       return undefined;
     }
@@ -1028,17 +1040,17 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: adaptivity
-   */;
-  _proto._getCellElement = function _getCellElement(rowIndex, columnIdentifier) {
+   */
+  _getCellElement(rowIndex, columnIdentifier) {
     const $cells = this.getCellElements(rowIndex);
     const columnVisibleIndex = this._getVisibleColumnIndex($cells, rowIndex, columnIdentifier);
-    if (!($cells === null || $cells === void 0 ? void 0 : $cells.length) || columnVisibleIndex < 0) {
+    if (!($cells !== null && $cells !== void 0 && $cells.length) || columnVisibleIndex < 0) {
       return undefined;
     }
     const $cell = $cells.eq(columnVisibleIndex);
     return $cell.length > 0 ? $cell : undefined;
-  };
-  _proto._getRowElement = function _getRowElement(rowIndex) {
+  }
+  _getRowElement(rowIndex) {
     const that = this;
     // @ts-expect-error
     let $rowElement = (0, _renderer.default)();
@@ -1050,15 +1062,15 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
       return $rowElement;
     }
     return undefined;
-  };
-  _proto.getCellElement = function getCellElement(rowIndex, columnIdentifier) {
+  }
+  getCellElement(rowIndex, columnIdentifier) {
     const $cell = this._getCellElement(rowIndex, columnIdentifier);
     if ($cell) {
       return (0, _element.getPublicElement)($cell);
     }
     return undefined;
-  };
-  _proto.getRowElement = function getRowElement(rowIndex) {
+  }
+  getRowElement(rowIndex) {
     const $rows = this._getRowElement(rowIndex);
     let elements = [];
     // @ts-expect-error
@@ -1073,67 +1085,68 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
   }
   /**
    * @extended: editing_form_based
-   */;
-  _proto._getVisibleColumnIndex = function _getVisibleColumnIndex($cells, rowIndex, columnIdentifier) {
+   */
+  _getVisibleColumnIndex($cells, rowIndex, columnIdentifier) {
     if ((0, _type.isString)(columnIdentifier)) {
       const columnIndex = this._columnsController.columnOption(columnIdentifier, 'index');
       return this._columnsController.getVisibleIndex(columnIndex);
     }
     return columnIdentifier;
-  };
-  _proto.getColumnElements = function getColumnElements() {};
-  _proto.getColumns = function getColumns(rowIndex, $tableElement) {
+  }
+  getColumnElements() {}
+  getColumns(rowIndex, $tableElement) {
     return this._columnsController.getVisibleColumns(rowIndex);
   }
   /**
    * @extended: adaptivity
-   */;
-  _proto.getCell = function getCell(cellPosition, rows, cells) {
+   */
+  getCell(cellPosition, rows, cells) {
     const $rows = rows || this._getRowElements();
     let $cells;
     if ($rows.length > 0 && cellPosition.rowIndex >= 0) {
+      var _$cells;
       if (this.option('scrolling.mode') !== 'virtual' && this.option('scrolling.rowRenderingMode') !== 'virtual') {
         cellPosition.rowIndex = cellPosition.rowIndex < $rows.length ? cellPosition.rowIndex : $rows.length - 1;
       }
       $cells = cells || this.getCellElements(cellPosition.rowIndex);
-      if (($cells === null || $cells === void 0 ? void 0 : $cells.length) > 0) {
+      if (((_$cells = $cells) === null || _$cells === void 0 ? void 0 : _$cells.length) > 0) {
         return $cells.eq($cells.length > cellPosition.columnIndex ? cellPosition.columnIndex : $cells.length - 1);
       }
     }
-  };
-  _proto.getRowsCount = function getRowsCount() {
+  }
+  getRowsCount() {
     const tableElement = this.getTableElement();
     if (tableElement && tableElement.length === 1) {
       return tableElement[0].rows.length;
     }
     return 0;
-  };
-  _proto._getRowElementsCore = function _getRowElementsCore(tableElement) {
+  }
+  _getRowElementsCore(tableElement) {
     tableElement = tableElement || this.getTableElement();
     if (tableElement) {
       const hasRowTemplate = this.option().rowTemplate || this.option('dataRowTemplate');
-      const tBodies = hasRowTemplate && tableElement.find("> tbody.".concat(ROW_CLASS));
+      const tBodies = hasRowTemplate && tableElement.find(`> tbody.${ROW_CLASS}`);
       // eslint-disable-next-line no-useless-concat
-      return tBodies && tBodies.length ? tBodies : tableElement.find('> tbody > ' + ".".concat(ROW_CLASS, ", > .").concat(ROW_CLASS));
+      return tBodies && tBodies.length ? tBodies : tableElement.find('> tbody > ' + `.${ROW_CLASS}, > .${ROW_CLASS}`);
     }
     // @ts-expect-error
     return (0, _renderer.default)();
-  };
-  _proto._getRowElements = function _getRowElements(tableElement) {
+  }
+  _getRowElements(tableElement) {
     return this._getRowElementsCore(tableElement);
   }
   /**
    * @extended: column_fixing
-   */;
-  _proto.getRowIndex = function getRowIndex($row) {
+   */
+  getRowIndex($row) {
     return this._getRowElements().index($row);
-  };
-  _proto.getBoundingRect = function getBoundingRect() {};
-  _proto.getName = function getName() {}
+  }
+  getBoundingRect() {}
+  getName() {}
   /**
    * @extended: column_fixing
-   */;
-  _proto.setScrollerSpacing = function setScrollerSpacing(width) {
+   */
+  setScrollerSpacing(width) {
     const that = this;
     const $element = that.element();
     const rtlEnabled = that.option('rtlEnabled');
@@ -1141,18 +1154,18 @@ let ColumnsView = exports.ColumnsView = /*#__PURE__*/function (_ColumnStateMixin
       paddingLeft: rtlEnabled ? width : '',
       paddingRight: !rtlEnabled ? width : ''
     });
-  };
-  _proto.isScrollbarVisible = function isScrollbarVisible(isHorizontal) {
+  }
+  isScrollbarVisible(isHorizontal) {
     const $element = this.element();
     const $tableElement = this._tableElement;
     if ($element && $tableElement) {
       return isHorizontal ? (0, _size.getOuterWidth)($tableElement) - (0, _size.getWidth)($element) > 0 : (0, _size.getOuterHeight)($tableElement) - (0, _size.getHeight)($element) > 0;
     }
     return false;
-  };
-  _proto.isDisposed = function isDisposed() {
-    var _a;
-    return (_a = this.component) === null || _a === void 0 ? void 0 : _a._disposed;
-  };
-  return ColumnsView;
-}((0, _m_column_state_mixin.ColumnStateMixin)(_m_modules.default.View));
+  }
+  isDisposed() {
+    var _this$component;
+    return (_this$component = this.component) === null || _this$component === void 0 ? void 0 : _this$component._disposed;
+  }
+}
+exports.ColumnsView = ColumnsView;

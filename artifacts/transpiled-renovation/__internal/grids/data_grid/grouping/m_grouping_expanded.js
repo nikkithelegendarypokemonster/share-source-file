@@ -15,9 +15,10 @@ var _m_core = _interopRequireDefault(require("../m_core"));
 var _m_utils = require("../m_utils");
 var _m_grouping_core = require("./m_grouping_core");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } // @ts-expect-error
 // @ts-expect-error
+
+// @ts-expect-error
+
 const loadTotalCount = function (dataSource, options) {
   // @ts-expect-error
   const d = new _deferred.Deferred();
@@ -183,16 +184,8 @@ const getGroupCount = function (item, groupCount) {
   }
   return count;
 };
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
-let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHelperCore) {
-  _inheritsLoose(GroupingHelper, _GroupingHelperCore);
-  function GroupingHelper() {
-    return _GroupingHelperCore.apply(this, arguments) || this;
-  }
-  var _proto = GroupingHelper.prototype;
-  _proto.handleDataLoading = function handleDataLoading(options) {
+class GroupingHelper extends _m_grouping_core.GroupingHelper {
+  handleDataLoading(options) {
     const that = this;
     const {
       storeLoadOptions
@@ -241,8 +234,8 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHe
     options.skip = loadOptions.skip || 0;
     options.skipFirstItem = skipFirstItem;
     options.take = take;
-  };
-  _proto.handleDataLoaded = function handleDataLoaded(options, callBase) {
+  }
+  handleDataLoaded(options, callBase) {
     const that = this;
     const {
       collapsedGroups
@@ -296,20 +289,20 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHe
       }
       options.data = data;
     }
-  };
-  _proto.isGroupItemCountable = function isGroupItemCountable(item) {
+  }
+  isGroupItemCountable(item) {
     return item.items === null;
-  };
-  _proto.updateTotalItemsCount = function updateTotalItemsCount() {
+  }
+  updateTotalItemsCount() {
     let itemsCountCorrection = 0;
     foreachCollapsedGroups(this, groupInfo => {
       if (groupInfo.count) {
         itemsCountCorrection -= groupInfo.count - 1;
       }
     });
-    _GroupingHelperCore.prototype.updateTotalItemsCount.call(this, itemsCountCorrection);
-  };
-  _proto.changeRowExpand = function changeRowExpand(path) {
+    super.updateTotalItemsCount(itemsCountCorrection);
+  }
+  changeRowExpand(path) {
     const that = this;
     const dataSource = that._dataSource;
     const beginPageIndex = dataSource.beginPageIndex ? dataSource.beginPageIndex() : dataSource.pageIndex();
@@ -351,18 +344,18 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHe
     }).fail(function () {
       dataSource._eventsStrategy.fireEvent('loadError', arguments);
     });
-  };
-  _proto.allowCollapseAll = function allowCollapseAll() {
+  }
+  allowCollapseAll() {
     return false;
-  };
-  _proto.refresh = function refresh(options, operationTypes) {
+  }
+  refresh(options, operationTypes) {
     const that = this;
     const {
       storeLoadOptions
     } = options;
     const dataSource = that._dataSource;
     // @ts-expect-error
-    _GroupingHelperCore.prototype.refresh.apply(this, arguments);
+    super.refresh.apply(this, arguments);
     if (operationTypes.reload) {
       return foreachCollapsedGroups(that, groupInfo => {
         const groupCountQuery = loadTotalCount(dataSource, {
@@ -384,6 +377,6 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHe
         });
       }, true);
     }
-  };
-  return GroupingHelper;
-}(_m_grouping_core.GroupingHelper);
+  }
+}
+exports.GroupingHelper = GroupingHelper;

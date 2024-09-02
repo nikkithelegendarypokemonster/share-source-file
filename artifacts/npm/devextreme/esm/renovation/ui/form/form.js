@@ -1,14 +1,14 @@
 /**
 * DevExtreme (esm/renovation/ui/form/form.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["screenByWidth", "scrollingEnabled", "useNativeScrolling"];
+const _excluded = ["screenByWidth", "scrollingEnabled", "useNativeScrolling"];
 import { createComponentVNode, normalizeProps } from "inferno";
 import { InfernoWrapperComponent } from '@devextreme/runtime/inferno';
 import { FormProps } from './form_props';
@@ -16,21 +16,21 @@ import { combineClasses } from '../../utils/combine_classes';
 import { Widget } from '../common/widget';
 import { LayoutManager } from './layout_manager';
 import { Scrollable } from '../scroll_view/scrollable';
-export var viewFunction = viewModel => {
-  var aria = {
+export const viewFunction = viewModel => {
+  const aria = {
     role: 'form'
   };
-  var cssClasses = combineClasses({
+  const cssClasses = combineClasses({
     'dx-form': true
   });
-  var {
+  const {
     props: {
       scrollingEnabled,
       useNativeScrolling
     },
     restAttributes
   } = viewModel;
-  var rootLayoutManager = createComponentVNode(2, LayoutManager, {
+  const rootLayoutManager = createComponentVNode(2, LayoutManager, {
     "screenByWidth": viewModel.props.screenByWidth
   });
   return scrollingEnabled ? createComponentVNode(2, Scrollable, {
@@ -59,12 +59,12 @@ export class Form extends InfernoWrapperComponent {
     return [createReRenderEffect()];
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       restAttributes: this.restAttributes

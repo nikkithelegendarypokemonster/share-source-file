@@ -4,7 +4,7 @@ import eventsEngine from '../../events/core/events_engine';
 import useJQueryFn from './use_jquery';
 import registerEventCallbacks from '../../events/core/event_registrator_callbacks';
 import domAdapter from '../../core/dom_adapter';
-var useJQuery = useJQueryFn();
+const useJQuery = useJQueryFn();
 if (useJQuery) {
   registerEventCallbacks.add(function (name, eventObject) {
     jQuery.event.special[name] = eventObject;
@@ -12,7 +12,7 @@ if (useJQuery) {
   if (eventsEngine.passiveEventHandlersSupported()) {
     eventsEngine.forcePassiveFalseEventNames.forEach(function (eventName) {
       jQuery.event.special[eventName] = {
-        setup: function setup(data, namespaces, handler) {
+        setup: function (data, namespaces, handler) {
           domAdapter.listen(this, eventName, handler, {
             passive: false
           });
@@ -21,19 +21,19 @@ if (useJQuery) {
     });
   }
   eventsEngine.set({
-    on: function on(element) {
+    on: function (element) {
       jQuery(element).on.apply(jQuery(element), Array.prototype.slice.call(arguments, 1));
     },
-    one: function one(element) {
+    one: function (element) {
       jQuery(element).one.apply(jQuery(element), Array.prototype.slice.call(arguments, 1));
     },
-    off: function off(element) {
+    off: function (element) {
       jQuery(element).off.apply(jQuery(element), Array.prototype.slice.call(arguments, 1));
     },
-    trigger: function trigger(element) {
+    trigger: function (element) {
       jQuery(element).trigger.apply(jQuery(element), Array.prototype.slice.call(arguments, 1));
     },
-    triggerHandler: function triggerHandler(element) {
+    triggerHandler: function (element) {
       jQuery(element).triggerHandler.apply(jQuery(element), Array.prototype.slice.call(arguments, 1));
     },
     Event: jQuery.Event

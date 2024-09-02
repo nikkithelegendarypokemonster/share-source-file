@@ -9,9 +9,9 @@ import eventsEngine from '../events/core/events_engine';
 import FileSystemProviderBase from './provider_base';
 import { compileGetter } from '../core/utils/data';
 import { isDefined, isEmptyObject, isFunction } from '../core/utils/type';
-var window = getWindow();
-var FILE_CHUNK_BLOB_NAME = 'chunk';
-var FILE_SYSTEM_COMMNAD = {
+const window = getWindow();
+const FILE_CHUNK_BLOB_NAME = 'chunk';
+const FILE_SYSTEM_COMMNAD = {
   GET_DIR_CONTENTS: 'GetDirContents',
   CREATE_DIR: 'CreateDir',
   RENAME: 'Rename',
@@ -22,7 +22,7 @@ var FILE_SYSTEM_COMMNAD = {
   ABORT_UPLOAD: 'AbortUpload',
   DOWLOAD: 'Download'
 };
-var REQUEST_METHOD = {
+const REQUEST_METHOD = {
   GET: 'GET',
   POST: 'POST'
 };
@@ -37,7 +37,7 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
     this._hasSubDirsGetter = compileGetter(options.hasSubDirectoriesExpr || 'hasSubDirectories');
   }
   getItems(parentDir) {
-    var pathInfo = parentDir.getFullPathInfo();
+    const pathInfo = parentDir.getFullPathInfo();
     return this._executeRequest(FILE_SYSTEM_COMMNAD.GET_DIR_CONTENTS, {
       pathInfo
     }).then(result => this._convertDataObjectsToFileItems(result.result, pathInfo));
@@ -79,7 +79,7 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
     if (chunksInfo.chunkIndex === 0) {
       chunksInfo.customData.uploadId = new Guid();
     }
-    var args = {
+    const args = {
       destinationPathInfo: destinationDirectory.getFullPathInfo(),
       chunkMetadata: JSON.stringify({
         UploadId: chunksInfo.customData.uploadId,
@@ -89,7 +89,7 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
         FileSize: fileData.size
       })
     };
-    var ajaxSettings = {
+    const ajaxSettings = {
       url: this._endpointUrl,
       headers: this._requestHeaders || {},
       method: REQUEST_METHOD.POST,
@@ -107,7 +107,7 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
       xhrFields: {},
       cache: false
     };
-    var deferred = new Deferred();
+    const deferred = new Deferred();
     this._beforeSendInternal(ajaxSettings);
     ajax.sendRequest(ajaxSettings).done(result => {
       !result.success && deferred.reject(result) || deferred.resolve();
@@ -120,14 +120,14 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
     });
   }
   downloadItems(items) {
-    var args = this._getDownloadArgs(items);
-    var $form = $('<form>').css({
+    const args = this._getDownloadArgs(items);
+    const $form = $('<form>').css({
       display: 'none'
     }).attr({
       method: REQUEST_METHOD.POST,
       action: args.url
     });
-    var formDataEntries = {
+    const formDataEntries = {
       command: args.command,
       arguments: args.arguments
     };
@@ -138,8 +138,8 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
     setTimeout(() => $form.remove());
   }
   getItemsContent(items) {
-    var args = this._getDownloadArgs(items);
-    var ajaxSettings = {
+    const args = this._getDownloadArgs(items);
+    const ajaxSettings = {
       url: args.url,
       headers: this._requestHeaders || {},
       method: REQUEST_METHOD.POST,
@@ -160,11 +160,11 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
     return ajax.sendRequest(ajaxSettings);
   }
   _getDownloadArgs(items) {
-    var pathInfoList = items.map(item => item.getFullPathInfo());
-    var args = {
+    const pathInfoList = items.map(item => item.getFullPathInfo());
+    const args = {
       pathInfoList
     };
-    var argsStr = JSON.stringify(args);
+    const argsStr = JSON.stringify(args);
     return {
       url: this._endpointUrl,
       arguments: argsStr,
@@ -175,9 +175,9 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
     return items.map(it => it.relativeName);
   }
   _executeRequest(command, args) {
-    var method = command === FILE_SYSTEM_COMMNAD.GET_DIR_CONTENTS ? REQUEST_METHOD.GET : REQUEST_METHOD.POST;
-    var deferred = new Deferred();
-    var ajaxSettings = {
+    const method = command === FILE_SYSTEM_COMMNAD.GET_DIR_CONTENTS ? REQUEST_METHOD.GET : REQUEST_METHOD.POST;
+    const deferred = new Deferred();
+    const ajaxSettings = {
       url: this._getEndpointUrl(command, args),
       headers: this._requestHeaders || {},
       method,
@@ -201,7 +201,7 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
   }
   _beforeSendInternal(ajaxSettings) {
     if (isFunction(this._beforeAjaxSend)) {
-      var ajaxArguments = {
+      const ajaxArguments = {
         headers: ajaxSettings.headers,
         formData: ajaxSettings.data,
         xhrFields: ajaxSettings.xhrFields
@@ -222,8 +222,8 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
     }
   }
   _createFormData(formDataEntries) {
-    var formData = new window.FormData();
-    for (var entryName in formDataEntries) {
+    const formData = new window.FormData();
+    for (const entryName in formDataEntries) {
       if (Object.prototype.hasOwnProperty.call(formDataEntries, entryName) && isDefined(formDataEntries[entryName])) {
         formData.append(entryName, formDataEntries[entryName]);
       }
@@ -231,7 +231,7 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
     return formData;
   }
   _appendFormDataInputsToForm(formDataEntries, formElement) {
-    for (var entryName in formDataEntries) {
+    for (const entryName in formDataEntries) {
       if (Object.prototype.hasOwnProperty.call(formDataEntries, entryName) && isDefined(formDataEntries[entryName])) {
         $('<input>').attr({
           type: 'hidden',
@@ -242,19 +242,19 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
     }
   }
   _getEndpointUrl(command, args) {
-    var queryString = this._getQueryString({
+    const queryString = this._getQueryString({
       command,
       arguments: JSON.stringify(args)
     });
-    var separator = this._endpointUrl && this._endpointUrl.indexOf('?') > 0 ? '&' : '?';
+    const separator = this._endpointUrl && this._endpointUrl.indexOf('?') > 0 ? '&' : '?';
     return this._endpointUrl + separator + queryString;
   }
   _getQueryString(params) {
-    var pairs = [];
-    var keys = Object.keys(params);
-    for (var i = 0; i < keys.length; i++) {
-      var key = keys[i];
-      var value = params[key];
+    const pairs = [];
+    const keys = Object.keys(params);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      let value = params[key];
       if (value === undefined) {
         continue;
       }
@@ -264,7 +264,7 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
       if (Array.isArray(value)) {
         this._processQueryStringArrayParam(key, value, pairs);
       } else {
-        var pair = this._getQueryStringPair(key, value);
+        const pair = this._getQueryStringPair(key, value);
         pairs.push(pair);
       }
     }
@@ -272,7 +272,7 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
   }
   _processQueryStringArrayParam(key, array, pairs) {
     each(array, (_, item) => {
-      var pair = this._getQueryStringPair(key, item);
+      const pair = this._getQueryStringPair(key, item);
       pairs.push(pair);
     });
   }
@@ -280,7 +280,7 @@ class RemoteFileSystemProvider extends FileSystemProviderBase {
     return encodeURIComponent(key) + '=' + encodeURIComponent(value);
   }
   _hasSubDirs(dataObj) {
-    var hasSubDirs = this._hasSubDirsGetter(dataObj);
+    const hasSubDirs = this._hasSubDirsGetter(dataObj);
     return typeof hasSubDirs === 'boolean' ? hasSubDirs : true;
   }
   _getKeyExpr(options) {

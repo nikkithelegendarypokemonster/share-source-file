@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/gantt/ui.gantt.templates.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,9 +13,9 @@ export class GanttTemplatesManager {
     this._gantt = gantt;
   }
   getTaskTooltipContentTemplateFunc(taskTooltipContentTemplateOption) {
-    var isTooltipShowing = true;
-    var template = taskTooltipContentTemplateOption && this._gantt._getTemplate(taskTooltipContentTemplateOption);
-    var createTemplateFunction = template && ((container, item, callback) => {
+    const isTooltipShowing = true;
+    const template = taskTooltipContentTemplateOption && this._gantt._getTemplate(taskTooltipContentTemplateOption);
+    const createTemplateFunction = template && ((container, item, callback) => {
       template.render({
         model: this._gantt.getTaskDataByCoreData(item),
         container: getPublicElement($(container)),
@@ -28,9 +28,9 @@ export class GanttTemplatesManager {
     return createTemplateFunction;
   }
   getTaskProgressTooltipContentTemplateFunc(taskTooltipContentTemplateOption) {
-    var isTooltipShowing = true;
-    var template = taskTooltipContentTemplateOption && this._gantt._getTemplate(taskTooltipContentTemplateOption);
-    var createTemplateFunction = template && ((container, item, callback) => {
+    const isTooltipShowing = true;
+    const template = taskTooltipContentTemplateOption && this._gantt._getTemplate(taskTooltipContentTemplateOption);
+    const createTemplateFunction = template && ((container, item, callback) => {
       template.render({
         model: item,
         container: getPublicElement($(container)),
@@ -43,9 +43,9 @@ export class GanttTemplatesManager {
     return createTemplateFunction;
   }
   getTaskTimeTooltipContentTemplateFunc(taskTooltipContentTemplateOption) {
-    var isTooltipShowing = true;
-    var template = taskTooltipContentTemplateOption && this._gantt._getTemplate(taskTooltipContentTemplateOption);
-    var createTemplateFunction = template && ((container, item, callback) => {
+    const isTooltipShowing = true;
+    const template = taskTooltipContentTemplateOption && this._gantt._getTemplate(taskTooltipContentTemplateOption);
+    const createTemplateFunction = template && ((container, item, callback) => {
       template.render({
         model: item,
         container: getPublicElement($(container)),
@@ -58,9 +58,9 @@ export class GanttTemplatesManager {
     return createTemplateFunction;
   }
   getTaskContentTemplateFunc(taskContentTemplateOption) {
-    var isTaskShowing = true;
-    var template = taskContentTemplateOption && this._gantt._getTemplate(taskContentTemplateOption);
-    var createTemplateFunction = template && ((container, item, callback, index) => {
+    const isTaskShowing = true;
+    const template = taskContentTemplateOption && this._gantt._getTemplate(taskContentTemplateOption);
+    const createTemplateFunction = template && ((container, item, callback, index) => {
       item.taskData = this._gantt.getTaskDataByCoreData(item.taskData);
       template.render({
         model: item,

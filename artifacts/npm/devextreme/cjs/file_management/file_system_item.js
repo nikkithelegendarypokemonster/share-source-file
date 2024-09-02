@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/file_management/file_system_item.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,13 +11,12 @@
 exports.default = void 0;
 var _type = require("../core/utils/type");
 var _utils = require("./utils");
-let FileSystemItem = /*#__PURE__*/function () {
-  function FileSystemItem() {
+class FileSystemItem {
+  constructor() {
     const ctor = (0, _type.isString)(arguments[0]) ? this._publicCtor : this._internalCtor;
     ctor.apply(this, arguments);
   }
-  var _proto = FileSystemItem.prototype;
-  _proto._internalCtor = function _internalCtor(pathInfo, name, isDirectory, key) {
+  _internalCtor(pathInfo, name, isDirectory, key) {
     this.name = name || '';
     this.pathInfo = pathInfo && [...pathInfo] || [];
     this.parentPath = this._getPathByPathInfo(this.pathInfo);
@@ -34,8 +33,8 @@ let FileSystemItem = /*#__PURE__*/function () {
       this.pathKeys.push(this.key);
     }
     this._initialize(isDirectory);
-  };
-  _proto._publicCtor = function _publicCtor(path, isDirectory, pathKeys) {
+  }
+  _publicCtor(path, isDirectory, pathKeys) {
     this.path = path || '';
     this.pathKeys = pathKeys || [];
     const pathInfo = [];
@@ -54,15 +53,15 @@ let FileSystemItem = /*#__PURE__*/function () {
     this.key = this.pathKeys.length ? this.pathKeys[this.pathKeys.length - 1] : path;
     this.parentPath = parts.length > 1 ? parts[parts.length - 2] : '';
     this._initialize(isDirectory);
-  };
-  _proto._initialize = function _initialize(isDirectory) {
+  }
+  _initialize(isDirectory) {
     this.isDirectory = !!isDirectory;
     this.size = 0;
     this.dateModified = new Date();
     this.thumbnail = '';
     this.tooltipText = '';
-  };
-  _proto.getFullPathInfo = function getFullPathInfo() {
+  }
+  getFullPathInfo() {
     const pathInfo = [...this.pathInfo];
     if (!this.isRoot()) {
       pathInfo.push({
@@ -71,17 +70,17 @@ let FileSystemItem = /*#__PURE__*/function () {
       });
     }
     return pathInfo;
-  };
-  _proto.isRoot = function isRoot() {
+  }
+  isRoot() {
     return this.path === '';
-  };
-  _proto.getFileExtension = function getFileExtension() {
+  }
+  getFileExtension() {
     return this.isDirectory ? '' : (0, _utils.getFileExtension)(this.name);
-  };
-  _proto.equals = function equals(item) {
+  }
+  equals(item) {
     return item && this.key === item.key;
-  };
-  _proto.createClone = function createClone() {
+  }
+  createClone() {
     const result = new FileSystemItem(this.pathInfo, this.name, this.isDirectory, this.key);
     result.key = this.key;
     result.size = this.size;
@@ -91,12 +90,11 @@ let FileSystemItem = /*#__PURE__*/function () {
     result.hasSubDirectories = this.hasSubDirectories;
     result.dataItem = this.dataItem;
     return result;
-  };
-  _proto._getPathByPathInfo = function _getPathByPathInfo(pathInfo, escape) {
+  }
+  _getPathByPathInfo(pathInfo, escape) {
     return pathInfo.map(info => escape ? (0, _utils.getEscapedFileName)(info.name) : info.name).join(_utils.PATH_SEPARATOR);
-  };
-  return FileSystemItem;
-}();
+  }
+}
 var _default = exports.default = FileSystemItem;
 module.exports = exports.default;
 module.exports.default = exports.default;

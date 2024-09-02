@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/load_indicator.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -17,47 +17,62 @@ import Widget, {
 } from './widget/ui.widget';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_load_indicator_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxLoadIndicator>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_load_indicator_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxLoadIndicator>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_load_indicator_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxLoadIndicator>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_load_indicator_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxLoadIndicator> & ChangedOptionInfo;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxLoadIndicatorOptions extends WidgetOptions<dxLoadIndicator> {
     /**
-     * Specifies the path to an image used as the indicator.
+     * @docid
+     * @default ""
+     * @public
      */
     indicatorSrc?: string;
 }
 /**
- * The LoadIndicator is a UI element notifying the viewer that a process is in progress.
+ * @docid
+ * @inherits Widget
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxLoadIndicator extends Widget<dxLoadIndicatorOptions> { }
 
+/** @public */
 export type Properties = dxLoadIndicatorOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxLoadIndicatorOptions;
 
 

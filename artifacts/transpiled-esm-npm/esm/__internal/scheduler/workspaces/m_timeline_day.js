@@ -1,7 +1,7 @@
 import registerComponent from '../../../core/component_registrator';
 import { VIEWS } from '../m_constants';
 import SchedulerTimeline from './m_timeline';
-var TIMELINE_CLASS = 'dx-scheduler-timeline-day';
+const TIMELINE_CLASS = 'dx-scheduler-timeline-day';
 class SchedulerTimelineDay extends SchedulerTimeline {
   get type() {
     return VIEWS.TIMELINE_DAY;

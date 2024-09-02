@@ -5,32 +5,36 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _component_registrator = _interopRequireDefault(require("../../../core/component_registrator"));
+var _dom_adapter = _interopRequireDefault(require("../../../core/dom_adapter"));
 var _element = require("../../../core/element");
-var _guid = _interopRequireDefault(require("../../../core/guid"));
 var _renderer = _interopRequireDefault(require("../../../core/renderer"));
 var _resize_observer = _interopRequireDefault(require("../../../core/resize_observer"));
+var _deferred = require("../../../core/utils/deferred");
+var _dom = require("../../../core/utils/dom");
 var _extend = require("../../../core/utils/extend");
-var _iterator = require("../../../core/utils/iterator");
 var _size = require("../../../core/utils/size");
+var _type = require("../../../core/utils/type");
 var _window = require("../../../core/utils/window");
-var _item = _interopRequireDefault(require("../../../ui/collection/item"));
-var _uiCollection_widget = _interopRequireDefault(require("../../../ui/collection/ui.collection_widget.live_update"));
-var _resize_handle = _interopRequireWildcard(require("./resize_handle"));
+var _emitter = require("../../../events/core/emitter.feedback");
+var _live_update = _interopRequireDefault(require("../../ui/collection/live_update"));
+var _resize_handle = require("./resize_handle");
+var _splitter_item = _interopRequireDefault(require("./splitter_item"));
 var _component = require("./utils/component");
 var _event = require("./utils/event");
 var _layout = require("./utils/layout");
-function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+var _layout_default = require("./utils/layout_default");
+var _number_comparison = require("./utils/number_comparison");
+var _types = require("./utils/types");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const SPLITTER_CLASS = 'dx-splitter';
 const SPLITTER_ITEM_CLASS = 'dx-splitter-item';
+const SPLITTER_ITEM_HIDDEN_CONTENT_CLASS = 'dx-splitter-item-hidden-content';
 const SPLITTER_ITEM_DATA_KEY = 'dxSplitterItemData';
 const HORIZONTAL_ORIENTATION_CLASS = 'dx-splitter-horizontal';
 const VERTICAL_ORIENTATION_CLASS = 'dx-splitter-vertical';
 const INVISIBLE_STATE_CLASS = 'dx-state-invisible';
-const INACTIVE_RESIZE_HANDLE_SIZE = 2;
+const DEFAULT_RESIZE_HANDLE_SIZE = 8;
 const FLEX_PROPERTY = {
   flexGrow: 'flexGrow',
   flexShrink: 'flexShrink',
@@ -42,127 +46,152 @@ const ORIENTATION = {
   horizontal: 'horizontal',
   vertical: 'vertical'
 };
-let SplitterItem = /*#__PURE__*/function (_CollectionWidgetItem) {
-  _inheritsLoose(SplitterItem, _CollectionWidgetItem);
-  function SplitterItem() {
-    return _CollectionWidgetItem.apply(this, arguments) || this;
+class Splitter extends _live_update.default {
+  constructor() {
+    super(...arguments);
+    this._renderQueue = [];
+    this._panesCacheSize = [];
+    this._itemRestrictions = [];
   }
-  return SplitterItem;
-}(_item.default); // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let Splitter = /*#__PURE__*/function (_CollectionWidget) {
-  _inheritsLoose(Splitter, _CollectionWidget);
-  function Splitter() {
-    return _CollectionWidget.apply(this, arguments) || this;
-  }
-  var _proto = Splitter.prototype;
-  _proto._getDefaultOptions = function _getDefaultOptions() {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return (0, _extend.extend)(_CollectionWidget.prototype._getDefaultOptions.call(this), {
+  _getDefaultOptions() {
+    const defaultOptions = super._getDefaultOptions();
+    return _extends({}, defaultOptions, {
       orientation: ORIENTATION.horizontal,
-      onItemCollapsed: null,
-      onItemExpanded: null,
-      onResize: null,
-      onResizeEnd: null,
-      onResizeStart: null,
+      onItemCollapsed: undefined,
+      onItemExpanded: undefined,
+      onResize: undefined,
+      onResizeEnd: undefined,
+      onResizeStart: undefined,
       allowKeyboardNavigation: true,
-      separatorSize: 8
+      separatorSize: DEFAULT_RESIZE_HANDLE_SIZE,
+      _itemAttributes: _extends({}, defaultOptions._itemAttributes, {
+        role: 'group'
+      }),
+      _renderQueue: undefined
     });
   }
-  // eslint-disable-next-line class-methods-use-this
-  ;
-  _proto._itemClass = function _itemClass() {
+  _itemClass() {
     return SPLITTER_ITEM_CLASS;
   }
-  // eslint-disable-next-line class-methods-use-this
-  ;
-  _proto._itemDataKey = function _itemDataKey() {
+  _itemDataKey() {
     return SPLITTER_ITEM_DATA_KEY;
-  };
-  _proto._initMarkup = function _initMarkup() {
-    this.$element().addClass(SPLITTER_CLASS);
+  }
+  _init() {
+    super._init();
+    this._initializeRenderQueue();
+  }
+  _initializeRenderQueue() {
+    this._renderQueue = this.option('_renderQueue') ?? [];
+  }
+  _isRenderQueueEmpty() {
+    return this._renderQueue.length <= 0;
+  }
+  _pushItemToRenderQueue(itemContent, splitterConfig) {
+    this._renderQueue.push({
+      itemContent,
+      splitterConfig
+    });
+  }
+  _shiftItemFromQueue() {
+    return this._renderQueue.shift();
+  }
+  _initMarkup() {
+    (0, _renderer.default)(this.element()).addClass(SPLITTER_CLASS);
     this._toggleOrientationClass();
-    _CollectionWidget.prototype._initMarkup.call(this);
-    this._panesCacheSize = {};
+    super._initMarkup();
+    this._panesCacheSize = [];
     this._attachResizeObserverSubscription();
-  };
-  _proto._getItemDimension = function _getItemDimension(element) {
+  }
+  _getItemDimension(element) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return this._isHorizontalOrientation() ? (0, _size.getOuterWidth)(element) : (0, _size.getOuterHeight)(element);
-  };
-  _proto._shouldUpdateLayout = function _shouldUpdateLayout() {
-    const size = this._getDimension(this.$element().get(0));
-    return size === 0;
-  };
-  _proto._render = function _render() {
-    _CollectionWidget.prototype._render.call(this);
-  };
-  _proto._attachResizeObserverSubscription = function _attachResizeObserverSubscription() {
+  }
+  _attachResizeObserverSubscription() {
     if ((0, _window.hasWindow)()) {
-      const formRootElement = this.$element().get(0);
-      _resize_observer.default.unobserve(formRootElement);
-      _resize_observer.default.observe(formRootElement, () => {
+      const element = (0, _renderer.default)(this.element()).get(0);
+      _resize_observer.default.unobserve(element);
+      _resize_observer.default.observe(element, () => {
         this._resizeHandler();
       });
     }
-  };
-  _proto._resizeHandler = function _resizeHandler() {
-    if (!this._shouldRecalculateLayout) {
-      return;
+  }
+  _attachHoldEvent() {}
+  _isAttached() {
+    return !!(0, _dom.contains)(_dom_adapter.default.getBody(), (0, _renderer.default)(this.element()).get(0));
+  }
+  _isVisible() {
+    return (0, _layout.isElementVisible)((0, _renderer.default)(this.element())[0]);
+  }
+  _resizeHandler() {
+    if (this._shouldRecalculateLayout && this._isAttached() && this._isVisible()) {
+      this._layout = this._getDefaultLayoutBasedOnSize();
+      this._applyStylesFromLayout(this._layout);
+      this._updateItemSizes();
+      this._shouldRecalculateLayout = false;
     }
-    this._layout = this._getDefaultLayoutBasedOnSize();
-    this._applyFlexGrowFromLayout(this._layout);
-    this._updatePaneSizesWithOuterWidth();
-    this._shouldRecalculateLayout = false;
-  };
-  _proto._renderItems = function _renderItems(items) {
-    this._resizeHandles = [];
-    _CollectionWidget.prototype._renderItems.call(this, items);
+  }
+  _renderItems(items) {
+    super._renderItems(items);
     this._updateResizeHandlesResizableState();
     this._updateResizeHandlesCollapsibleState();
-    if ((0, _layout.isElementVisible)(this.$element().get(0))) {
+    if (this._isVisible()) {
       this._layout = this._getDefaultLayoutBasedOnSize();
-      this._applyFlexGrowFromLayout(this._layout);
+      this._applyStylesFromLayout(this._layout);
+      this._updateItemSizes();
     } else {
       this._shouldRecalculateLayout = true;
     }
+    this._processRenderQueue();
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ;
-  _proto._itemElements = function _itemElements() {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return this._itemContainer().children(this._itemSelector());
-  };
-  _proto._isLastVisibleItem = function _isLastVisibleItem(index) {
-    return index === (0, _layout.findLastIndexOfVisibleItem)(this.option('items'));
-  };
-  _proto._renderItem = function _renderItem(index, itemData, $container, $itemToReplace) {
-    const $itemFrame = _CollectionWidget.prototype._renderItem.call(this, index, itemData, $container, $itemToReplace);
+  _processRenderQueue() {
+    if (this._isRenderQueueEmpty()) {
+      return;
+    }
+    const item = this._shiftItemFromQueue();
+    if (!item) {
+      return;
+    }
+    this._createComponent((0, _renderer.default)(item.itemContent), Splitter, (0, _extend.extend)({
+      itemTemplate: this.option('itemTemplate'),
+      onResize: this.option('onResize'),
+      onResizeStart: this.option('onResizeStart'),
+      onResizeEnd: this.option('onResizeEnd'),
+      onItemClick: this.option('onItemClick'),
+      onItemContextMenu: this.option('onItemContextMenu'),
+      onItemRendered: this.option('onItemRendered'),
+      onItemExpanded: this.option('onItemExpanded'),
+      onItemCollapsed: this.option('onItemCollapsed'),
+      separatorSize: this.option('separatorSize'),
+      allowKeyboardNavigation: this.option('allowKeyboardNavigation'),
+      rtlEnabled: this.option('rtlEnabled'),
+      _renderQueue: this._renderQueue
+    }, item.splitterConfig));
+    this._processRenderQueue();
+  }
+  _itemElements() {
+    return (0, _renderer.default)(this._itemContainer()).children(this._itemSelector());
+  }
+  _isLastVisibleItem(index) {
+    const {
+      items = []
+    } = this.option();
+    return index === (0, _layout.findLastIndexOfVisibleItem)(items);
+  }
+  _renderItem(index, itemData, $container, $itemToReplace) {
+    const $itemFrame = super._renderItem(index, itemData, $container, $itemToReplace);
     const itemElement = $itemFrame.get(0);
-    (0, _layout.setFlexProp)(itemElement, FLEX_PROPERTY.flexGrow, 100 / (0, _layout.getVisibleItemsCount)(this.option('items')));
     (0, _layout.setFlexProp)(itemElement, FLEX_PROPERTY.flexShrink, DEFAULT_FLEX_SHRINK_PROP);
     (0, _layout.setFlexProp)(itemElement, FLEX_PROPERTY.flexBasis, DEFAULT_FLEX_BASIS_PROP);
-    const groupAriaAttributes = {
-      role: 'group'
-    };
-    if (itemData.visible !== false && !this._isLastVisibleItem(index)) {
-      const itemId = "dx_".concat(new _guid.default());
-      groupAriaAttributes.id = itemId;
-      const itemProps = {
-        paneId: itemId
-      };
-      this._renderResizeHandle(itemProps);
-    }
-    this.setAria(groupAriaAttributes, $itemFrame);
+    this._getItemInstance($itemFrame)._renderResizeHandle();
     return $itemFrame;
-  };
-  _proto._renderResizeHandle = function _renderResizeHandle(itemProps) {
-    const $resizeHandle = (0, _renderer.default)('<div>').appendTo(this.$element());
-    const config = this._getResizeHandleConfig(itemProps);
-    const resizeHandle = this._createComponent($resizeHandle, _resize_handle.default, config);
-    this._resizeHandles.push(resizeHandle);
-  };
-  _proto._updateResizeHandlesResizableState = function _updateResizeHandlesResizableState() {
-    this._resizeHandles.forEach(resizeHandle => {
+  }
+  _getItemInstance($item) {
+    // @ts-expect-error badly typed base class
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return Splitter.ItemClass.getInstance($item);
+  }
+  _updateResizeHandlesResizableState() {
+    this._getResizeHandles().forEach(resizeHandle => {
       const $resizeHandle = resizeHandle.$element();
       const $leftItem = this._getResizeHandleLeftItem($resizeHandle);
       const $rightItem = this._getResizeHandleRightItem($resizeHandle);
@@ -170,53 +199,75 @@ let Splitter = /*#__PURE__*/function (_CollectionWidget) {
       const rightItemData = this._getItemData($rightItem);
       const resizable = leftItemData.resizable !== false && rightItemData.resizable !== false && leftItemData.collapsed !== true && rightItemData.collapsed !== true;
       resizeHandle.option('resizable', resizable);
+      resizeHandle.option('disabled', resizeHandle.isInactive());
     });
-  };
-  _proto._updateResizeHandlesCollapsibleState = function _updateResizeHandlesCollapsibleState() {
-    this._resizeHandles.forEach(resizeHandle => {
-      const $resizeHandle = resizeHandle.$element();
+  }
+  _updateResizeHandlesCollapsibleState() {
+    this._getResizeHandles().forEach(resizeHandle => {
+      const $resizeHandle = (0, _renderer.default)(resizeHandle.element());
       const $leftItem = this._getResizeHandleLeftItem($resizeHandle);
       const $rightItem = this._getResizeHandleRightItem($resizeHandle);
       const leftItemData = this._getItemData($leftItem);
       const rightItemData = this._getItemData($rightItem);
       const showCollapsePrev = rightItemData.collapsed === true ? rightItemData.collapsible === true && leftItemData.collapsed !== true : leftItemData.collapsible === true && leftItemData.collapsed !== true;
-      const showCollapseNext = leftItemData.collapsed === true ? leftItemData.collapsible === true && rightItemData.collapsed !== true : rightItemData.collapsible === true && rightItemData.collapsed !== true;
+      const showCollapseNext = leftItemData.collapsed === true ? leftItemData.collapsible === true : rightItemData.collapsible === true && rightItemData.collapsed !== true;
       resizeHandle.option({
         showCollapsePrev,
         showCollapseNext
       });
+      resizeHandle.option('disabled', resizeHandle.isInactive());
     });
-  };
-  _proto._updateResizeHandlesOption = function _updateResizeHandlesOption(optionName, optionValue) {
-    this._resizeHandles.forEach(resizeHandle => {
+  }
+  _updateNestedSplitterOption(optionName, optionValue) {
+    const {
+      items = []
+    } = this.option();
+    items.forEach(item => {
+      if (item !== null && item !== void 0 && item.splitter) {
+        const $nestedSplitter = this._findItemElementByItem(item).find(`.${SPLITTER_CLASS}`).eq(0);
+        if ($nestedSplitter.length) {
+          (0, _component.getComponentInstance)($nestedSplitter).option(optionName, optionValue);
+        }
+      }
+    });
+  }
+  _updateResizeHandlesOption(optionName, optionValue) {
+    this._getResizeHandles().forEach(resizeHandle => {
       resizeHandle.option(optionName, optionValue);
     });
-  };
-  _proto._getNextVisibleItemData = function _getNextVisibleItemData(index) {
+  }
+  _getNextVisibleItemData(index) {
     const {
-      items
+      items = []
     } = this.option();
     return this._getItemDataByIndex((0, _layout.findIndexOfNextVisibleItem)(items, index));
-  };
-  _proto._getItemDataByIndex = function _getItemDataByIndex(index) {
+  }
+  _getItemDataByIndex(index) {
+    // @ts-expect-error badly typed base class
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return this._editStrategy.getItemDataByIndex(index);
-  };
-  _proto._getAction = function _getAction(eventName) {
-    var _a;
+  }
+  _createEventAction(eventName) {
+    const actionName = (0, _event.getActionNameByEventName)(eventName);
+    this[actionName] = this._createActionByOption(eventName, {
+      excludeValidators: ['disabled', 'readOnly']
+    });
+  }
+  _getAction(eventName) {
+    const actionName = (0, _event.getActionNameByEventName)(eventName);
+    if (!this[actionName]) {
+      this._createEventAction(eventName);
+    }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return (_a = this[(0, _event.getActionNameByEventName)(eventName)]) !== null && _a !== void 0 ? _a : this._createActionByOption(eventName);
-  };
-  _proto._getResizeHandleConfig = function _getResizeHandleConfig(itemProps) {
+    return this[actionName];
+  }
+  _getResizeHandleConfig(paneId) {
     const {
       orientation,
       rtlEnabled,
       allowKeyboardNavigation,
       separatorSize
     } = this.option();
-    const {
-      paneId
-    } = itemProps;
     return {
       direction: orientation,
       focusStateEnabled: allowKeyboardNavigation,
@@ -226,158 +277,130 @@ let Splitter = /*#__PURE__*/function (_CollectionWidget) {
         'aria-controls': paneId
       },
       onCollapsePrev: e => {
-        const $resizeHandle = (0, _renderer.default)(e.element);
-        const $leftItem = this._getResizeHandleLeftItem($resizeHandle);
-        const leftItemData = this._getItemData($leftItem);
-        const leftItemIndex = this._getIndexByItem(leftItemData);
-        const $rightItem = this._getResizeHandleRightItem($resizeHandle);
-        const rightItemData = this._getItemData($rightItem);
-        const rightItemIndex = this._getIndexByItem(rightItemData);
-        const isRightItemCollapsed = rightItemData.collapsed === true;
-        if (isRightItemCollapsed) {
-          this._options.silent("items[".concat(rightItemIndex, "].size"), this._panesCacheSize[rightItemIndex]);
-          this.option("items[".concat(rightItemIndex, "].collapsed"), false);
-          this._getAction(_event.ITEM_EXPANDED_EVENT)({
-            event: e.event,
-            itemData: rightItemData,
-            itemElement: $rightItem
-          });
-          return;
-        }
-        this._panesCacheSize[leftItemIndex] = this._getItemDimension($leftItem.get(0));
-        this.option("items[".concat(leftItemIndex, "].collapsed"), true);
-        this._getAction(_event.ITEM_COLLAPSED_EVENT)({
-          event: e.event,
-          itemData: leftItemData,
-          itemElement: $leftItem
-        });
+        var _e$event;
+        (_e$event = e.event) === null || _e$event === void 0 || _e$event.stopPropagation();
+        this._savedCollapsingEvent = e.event;
+        this.handleCollapseEvent(this._getResizeHandleLeftItem((0, _renderer.default)(e.element)), _types.CollapseExpandDirection.Previous);
       },
       onCollapseNext: e => {
-        const $resizeHandle = (0, _renderer.default)(e.element);
-        const $leftItem = this._getResizeHandleLeftItem($resizeHandle);
-        const leftItemData = this._getItemData($leftItem);
-        const leftItemIndex = this._getIndexByItem(leftItemData);
-        const $rightItem = this._getResizeHandleRightItem($resizeHandle);
-        const rightItemData = this._getItemData($rightItem);
-        const rightItemIndex = this._getIndexByItem(rightItemData);
-        const isLeftItemCollapsed = leftItemData.collapsed === true;
-        if (isLeftItemCollapsed) {
-          this._options.silent("items[".concat(leftItemIndex, "].size"), this._panesCacheSize[leftItemIndex]);
-          this.option("items[".concat(leftItemIndex, "].collapsed"), false);
-          this._getAction(_event.ITEM_EXPANDED_EVENT)({
-            event: e.event,
-            itemData: leftItemData,
-            itemElement: $leftItem
-          });
-          return;
-        }
-        this._panesCacheSize[rightItemIndex] = this._getItemDimension($rightItem.get(0));
-        this.option("items[".concat(rightItemIndex, "].collapsed"), true);
-        this._getAction(_event.ITEM_COLLAPSED_EVENT)({
-          event: e.event,
-          itemData: rightItemData,
-          itemElement: $rightItem
-        });
+        var _e$event2;
+        (_e$event2 = e.event) === null || _e$event2 === void 0 || _e$event2.stopPropagation();
+        this._savedCollapsingEvent = e.event;
+        this.handleCollapseEvent(this._getResizeHandleLeftItem((0, _renderer.default)(e.element)), _types.CollapseExpandDirection.Next);
       },
       onResizeStart: e => {
         const {
           element,
           event
         } = e;
-        this._$visibleItems = this._getVisibleItems();
-        this._currentLayout = (0, _layout.getCurrentLayout)(this._$visibleItems);
-        this._activeResizeHandleIndex = this._getResizeHandleItems().index(element);
-        this._splitterItemsSize = this._getSummaryItemsSize((0, _layout.getDimensionByOrientation)(this.option('orientation')), this._$visibleItems, true);
+        if (!event) {
+          return;
+        }
+        const $resizeHandle = (0, _renderer.default)(element);
+        const eventArgs = {
+          event,
+          handleElement: (0, _element.getPublicElement)($resizeHandle)
+        };
+        this._getAction(_event.RESIZE_EVENT.onResizeStart)(eventArgs);
+        if (eventArgs.cancel) {
+          // @ts-expect-error ts-error
+          event.cancel = true;
+          return;
+        }
+        this._feedbackDeferred = (0, _deferred.Deferred)();
+        (0, _emitter.lock)(this._feedbackDeferred);
+        this._toggleActiveState($resizeHandle, true);
+        const $leftItem = this._getResizeHandleLeftItem($resizeHandle);
+        const leftItemData = this._getItemData($leftItem);
+        const leftItemIndex = this._getIndexByItem(leftItemData);
+        this._activeResizeHandleIndex = leftItemIndex;
+        this._currentOnePxRatio = (0, _layout.convertSizeToRatio)(1, (0, _layout.getElementSize)((0, _renderer.default)(this.element()), orientation), this._getResizeHandlesSize());
+        this._currentLayout = this.getLayout();
+        this._updateItemsRestrictions();
+      },
+      onResize: e => {
         const {
-          items,
-          width,
-          height
-        } = this.option();
-        const handlesSizeSum = this._getResizeHandlesSize();
-        const elementSize = (0, _layout.getElementSize)(this.$element(), orientation, width, height, handlesSizeSum);
-        this._itemRestrictions = [];
-        (0, _layout.getVisibleItems)(items).forEach(item => {
-          this._itemRestrictions.push({
-            resizable: item.resizable !== false,
-            visible: item.visible,
-            size: (0, _layout.convertSizeToRatio)(item.size, elementSize),
-            maxSize: (0, _layout.convertSizeToRatio)(item.maxSize, elementSize),
-            minSize: (0, _layout.convertSizeToRatio)(item.minSize, elementSize)
-          });
-        });
-        this._getAction(_event.RESIZE_EVENT.onResizeStart)({
-          event,
-          handleElement: (0, _element.getPublicElement)((0, _renderer.default)(element))
-        });
-      },
-      onResize: _ref => {
-        let {
           element,
           event
-        } = _ref;
-        const newLayout = (0, _layout.getNewLayout)(this._currentLayout, (0, _layout.calculateDelta)(event.offset, this.option('orientation'), rtlEnabled, this._splitterItemsSize), this._activeResizeHandleIndex, this._itemRestrictions);
-        (0, _layout.updateItemsSize)(this._$visibleItems, newLayout);
-        this._getAction(_event.RESIZE_EVENT.onResize)({
+        } = e;
+        if (!event) {
+          return;
+        }
+        const eventArgs = {
           event,
           handleElement: (0, _element.getPublicElement)((0, _renderer.default)(element))
-        });
+        };
+        this._getAction(_event.RESIZE_EVENT.onResize)(eventArgs);
+        if (eventArgs.cancel) {
+          // @ts-expect-error ts-error
+          event.cancel = true;
+          return;
+        }
+        const newLayout = (0, _layout.getNextLayout)(this._currentLayout ?? [], (0, _layout.calculateDelta)(
+        // @ts-expect-error ts-error
+        event.offset, this.option('orientation'), rtlEnabled, this._currentOnePxRatio), this._activeResizeHandleIndex, this._itemRestrictions);
+        this._applyStylesFromLayout(newLayout);
+        this._layout = newLayout;
       },
-      onResizeEnd: _ref2 => {
-        let {
+      onResizeEnd: e => {
+        var _this$_feedbackDeferr;
+        const {
           element,
           event
-        } = _ref2;
-        (0, _iterator.each)(this._itemElements(), (index, itemElement) => {
-          this._options.silent("items[".concat(index, "].size"), this._getItemDimension(itemElement));
-        });
-        this._getAction(_event.RESIZE_EVENT.onResizeEnd)({
+        } = e;
+        this._activeResizeHandleIndex = undefined;
+        if (!event) {
+          return;
+        }
+        const $resizeHandle = (0, _renderer.default)(element);
+        const eventArgs = {
           event,
-          handleElement: (0, _element.getPublicElement)((0, _renderer.default)(element))
-        });
+          handleElement: (0, _element.getPublicElement)($resizeHandle)
+        };
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        (_this$_feedbackDeferr = this._feedbackDeferred) === null || _this$_feedbackDeferr === void 0 || _this$_feedbackDeferr.resolve();
+        this._toggleActiveState($resizeHandle, false);
+        this._updateItemSizes();
+        this._getAction(_event.RESIZE_EVENT.onResizeEnd)(eventArgs);
       }
     };
   }
-  // eslint-disable-next-line class-methods-use-this
-  ;
-  _proto._getResizeHandleLeftItem = function _getResizeHandleLeftItem($resizeHandle) {
-    let $leftItem = $resizeHandle.prev();
-    while ($leftItem.hasClass(INVISIBLE_STATE_CLASS)) {
+  handleCollapseEvent($resizeHandle, direction, isItemCollapsed) {
+    const $leftItem = $resizeHandle;
+    const leftItemData = this._getItemData($leftItem);
+    const leftItemIndex = this._getIndexByItem(leftItemData);
+    const $rightItem = this._getResizeHandleRightItem($leftItem);
+    const rightItemData = this._getItemData($rightItem);
+    const rightItemIndex = this._getIndexByItem(rightItemData);
+    this._activeResizeHandleIndex = leftItemIndex;
+    this._collapseDirection = direction;
+    const isCollapsed = isItemCollapsed ?? (direction === _types.CollapseExpandDirection.Previous ? rightItemData.collapsed : leftItemData.collapsed);
+    let index = 0;
+    if (direction === _types.CollapseExpandDirection.Previous) {
+      index = isCollapsed ? rightItemIndex : leftItemIndex;
+    } else {
+      index = isCollapsed ? leftItemIndex : rightItemIndex;
+    }
+    this._updateItemData('collapsed', index, !isCollapsed, false);
+  }
+  _getResizeHandleLeftItem($element) {
+    let $leftItem = $element.prev();
+    while ($leftItem.hasClass(INVISIBLE_STATE_CLASS) || $leftItem.hasClass(_resize_handle.RESIZE_HANDLE_CLASS)) {
       $leftItem = $leftItem.prev();
     }
     return $leftItem;
   }
-  // eslint-disable-next-line class-methods-use-this
-  ;
-  _proto._getResizeHandleRightItem = function _getResizeHandleRightItem($resizeHandle) {
-    // @ts-expect-error renderer d.ts issue
-    let $rightItem = $resizeHandle.next();
-    while ($rightItem.hasClass(INVISIBLE_STATE_CLASS)) {
-      // @ts-expect-error renderer d.ts issue
+  _getResizeHandleRightItem($element) {
+    let $rightItem = $element.next();
+    while ($rightItem.hasClass(INVISIBLE_STATE_CLASS) || $rightItem.hasClass(_resize_handle.RESIZE_HANDLE_CLASS)) {
       $rightItem = $rightItem.next();
     }
     return $rightItem;
-  };
-  _proto._getResizeHandlesSize = function _getResizeHandlesSize() {
-    var _a;
-    let size = 0;
-    (_a = this._resizeHandles) === null || _a === void 0 ? void 0 : _a.forEach(resizeHandle => {
-      const {
-        disabled,
-        separatorSize
-      } = resizeHandle.option();
-      size += disabled ? INACTIVE_RESIZE_HANDLE_SIZE : separatorSize;
-    });
-    return size;
-  };
-  _proto._renderItemContent = function _renderItemContent(args) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return _CollectionWidget.prototype._renderItemContent.call(this, args);
-  };
-  _proto._createItemByTemplate = function _createItemByTemplate(
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  itemTemplate,
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  args) {
+  }
+  _getResizeHandlesSize() {
+    return this._getResizeHandles().reduce((size, resizeHandle) => size + resizeHandle.getSize(), 0);
+  }
+  _createItemByTemplate(itemTemplate, args) {
     const {
       itemData
     } = args;
@@ -386,49 +409,33 @@ let Splitter = /*#__PURE__*/function (_CollectionWidget) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       : (0, _renderer.default)();
     }
-    return _CollectionWidget.prototype._createItemByTemplate.call(this, itemTemplate, args);
+    return super._createItemByTemplate(itemTemplate, args);
   }
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  ;
-  _proto._postprocessRenderItem = function _postprocessRenderItem(args) {
+  _postprocessRenderItem(args) {
     const splitterConfig = args.itemData.splitter;
     if (!splitterConfig) {
       return;
     }
-    this._createComponent((0, _renderer.default)(args.itemContent), Splitter, (0, _extend.extend)({
-      itemTemplate: this.option('itemTemplate'),
-      onResize: this.option('onResize'),
-      onResizeStart: this.option('onResizeStart'),
-      onResizeEnd: this.option('onResizeEnd'),
-      onItemClick: this.option('onItemClick'),
-      onItemContextMenu: this.option('onItemContextMenu'),
-      onItemRendered: this.option('onItemRendered'),
-      onItemExpanded: this.option('onItemExpanded'),
-      onItemCollapsed: this.option('onItemCollapsed')
-    }, splitterConfig));
-  };
-  _proto._isHorizontalOrientation = function _isHorizontalOrientation() {
+    this._pushItemToRenderQueue(args.itemContent, splitterConfig);
+  }
+  _isHorizontalOrientation() {
     return this.option('orientation') === ORIENTATION.horizontal;
-  };
-  _proto._toggleOrientationClass = function _toggleOrientationClass() {
-    this.$element().toggleClass(HORIZONTAL_ORIENTATION_CLASS, this._isHorizontalOrientation());
-    this.$element().toggleClass(VERTICAL_ORIENTATION_CLASS, !this._isHorizontalOrientation());
-  };
-  _proto._itemOptionChanged = function _itemOptionChanged(item, property, value) {
+  }
+  _toggleOrientationClass() {
+    (0, _renderer.default)(this.element()).toggleClass(HORIZONTAL_ORIENTATION_CLASS, this._isHorizontalOrientation()).toggleClass(VERTICAL_ORIENTATION_CLASS, !this._isHorizontalOrientation());
+  }
+  _itemOptionChanged(item, property, value, prevValue) {
     switch (property) {
       case 'size':
       case 'maxSize':
       case 'minSize':
+      case 'collapsedSize':
         this._layout = this._getDefaultLayoutBasedOnSize();
-        this._applyFlexGrowFromLayout(this._layout);
-        this._updatePaneSizesWithOuterWidth();
+        this._applyStylesFromLayout(this.getLayout());
+        this._updateItemSizes();
         break;
       case 'collapsed':
-        this._updateResizeHandlesResizableState();
-        this._updateResizeHandlesCollapsibleState();
-        this._layout = this._getDefaultLayoutBasedOnSize();
-        this._applyFlexGrowFromLayout(this._layout);
-        this._updatePaneSizesWithOuterWidth();
+        this._itemCollapsedOptionChanged(item, value, prevValue);
         break;
       case 'resizable':
         this._updateResizeHandlesResizableState();
@@ -436,67 +443,233 @@ let Splitter = /*#__PURE__*/function (_CollectionWidget) {
       case 'collapsible':
         this._updateResizeHandlesCollapsibleState();
         break;
+      case 'visible':
+        this._invalidate();
+        break;
       default:
-        _CollectionWidget.prototype._itemOptionChanged.call(this, item, property, value);
+        super._itemOptionChanged(item, property, value, prevValue);
     }
-  };
-  _proto._getDefaultLayoutBasedOnSize = function _getDefaultLayoutBasedOnSize() {
+  }
+  _itemCollapsedOptionChanged(item, value, prevValue) {
+    if (Boolean(value) === Boolean(prevValue)) {
+      return;
+    }
+    const itemIndex = this._getIndexByItem(item);
+    const $item = (0, _renderer.default)(this._itemElements()[itemIndex]);
     const {
-      items,
+      items = []
+    } = this.option();
+    if (!(0, _type.isDefined)(this._activeResizeHandleIndex)) {
+      if (value) {
+        const isLastNonCollapsedItem = itemIndex > (0, _layout.findLastIndexOfNonCollapsedItem)(items);
+        if (this._isLastVisibleItem(itemIndex) || isLastNonCollapsedItem) {
+          this.handleCollapseEvent(this._getResizeHandleLeftItem($item), _types.CollapseExpandDirection.Next, !!prevValue);
+        } else {
+          this.handleCollapseEvent($item, _types.CollapseExpandDirection.Previous, !!prevValue);
+        }
+      } else {
+        var _this$_panesCacheSize;
+        const isLastNonCollapsedItem = itemIndex >= (0, _layout.findLastIndexOfNonCollapsedItem)(items);
+        if (this._isLastVisibleItem(itemIndex) || isLastNonCollapsedItem) {
+          this.handleCollapseEvent(this._getResizeHandleLeftItem($item), _types.CollapseExpandDirection.Previous, !!prevValue);
+        } else if (((_this$_panesCacheSize = this._panesCacheSize[itemIndex]) === null || _this$_panesCacheSize === void 0 ? void 0 : _this$_panesCacheSize.direction) === _types.CollapseExpandDirection.Previous) {
+          this.handleCollapseEvent(this._getResizeHandleLeftItem($item), _types.CollapseExpandDirection.Previous, !!prevValue);
+        } else {
+          this.handleCollapseEvent($item, _types.CollapseExpandDirection.Next, !!prevValue);
+        }
+      }
+    }
+    this._updateItemsRestrictions();
+    const collapsedDelta = this._getCollapseDelta(item, value);
+    this._itemRestrictions.map(pane => {
+      pane.maxSize = undefined;
+      pane.resizable = undefined;
+      return item;
+    });
+    this._layout = (0, _layout.getNextLayout)(this.getLayout(), collapsedDelta, this._activeResizeHandleIndex, this._itemRestrictions);
+    this._applyStylesFromLayout(this.getLayout());
+    this._updateItemSizes();
+    this._updateResizeHandlesResizableState();
+    this._updateResizeHandlesCollapsibleState();
+    this._fireCollapsedStateChanged(!value, $item, this._savedCollapsingEvent);
+    this._savedCollapsingEvent = undefined;
+    this._collapseDirection = undefined;
+    this._activeResizeHandleIndex = undefined;
+  }
+  _calculateExpandToLeftSize(leftItemIndex) {
+    const {
+      items = []
+    } = this.option();
+    for (let i = leftItemIndex; i >= 0; i -= 1) {
+      const {
+        collapsed,
+        visible
+      } = items[i];
+      if (collapsed !== true && visible !== false) {
+        return this.getLayout()[i] / 2;
+      }
+    }
+    return 0;
+  }
+  _calculateExpandToRightSize(rightItemIndex) {
+    const {
+      items = []
+    } = this.option();
+    for (let i = rightItemIndex; i <= items.length - 1; i += 1) {
+      const {
+        collapsed,
+        visible
+      } = items[i];
+      if (collapsed !== true && visible !== false) {
+        return this.getLayout()[i] / 2;
+      }
+    }
+    return 0;
+  }
+  _getCollapseDelta(item, newCollapsedState) {
+    const itemIndex = this._getIndexByItem(item);
+    const {
+      collapsedSize = 0,
+      minSize = 0,
+      maxSize = 100
+    } = this._itemRestrictions[itemIndex];
+    const currentPaneSize = this.getLayout()[itemIndex];
+    if (newCollapsedState) {
+      const targetPaneSize = collapsedSize;
+      if (currentPaneSize > targetPaneSize) {
+        this._panesCacheSize[itemIndex] = {
+          size: currentPaneSize,
+          direction: this._collapseDirection === _types.CollapseExpandDirection.Next ? _types.CollapseExpandDirection.Previous : _types.CollapseExpandDirection.Next
+        };
+      }
+      const delta = this._collapseDirection === _types.CollapseExpandDirection.Previous ? targetPaneSize - currentPaneSize : currentPaneSize - targetPaneSize;
+      return delta;
+    }
+    const paneCache = this._panesCacheSize[itemIndex];
+    this._panesCacheSize[itemIndex] = undefined;
+    let targetPaneSize = 0;
+    if (paneCache && paneCache.direction === this._collapseDirection) {
+      targetPaneSize = paneCache.size - collapsedSize;
+    } else {
+      targetPaneSize = this._collapseDirection === _types.CollapseExpandDirection.Previous ? this._calculateExpandToLeftSize(itemIndex - 1) : this._calculateExpandToRightSize(itemIndex + 1);
+    }
+    let adjustedSize = (0, _number_comparison.compareNumbersWithPrecision)(targetPaneSize, minSize) < 0 ? minSize : targetPaneSize;
+    adjustedSize = Math.min(maxSize, adjustedSize);
+    const deltaSign = this._collapseDirection === _types.CollapseExpandDirection.Previous ? -1 : 1;
+    const delta = adjustedSize * deltaSign;
+    return delta;
+  }
+  _fireCollapsedStateChanged(isExpanded, $item, e) {
+    const eventName = isExpanded ? _event.ITEM_EXPANDED_EVENT : _event.ITEM_COLLAPSED_EVENT;
+    this._itemEventHandler($item, eventName, {
+      event: e
+    });
+  }
+  _getDefaultLayoutBasedOnSize() {
+    this._updateItemsRestrictions();
+    return (0, _layout_default.getDefaultLayout)(this._itemRestrictions);
+  }
+  _updateItemsRestrictions() {
+    const {
       orientation,
-      width,
-      height
+      items = []
     } = this.option();
     const handlesSizeSum = this._getResizeHandlesSize();
-    const elementSize = (0, _layout.getElementSize)(this.$element(), orientation, width, height, handlesSizeSum);
+    const elementSize = (0, _layout.getElementSize)((0, _renderer.default)(this.element()), orientation);
     this._itemRestrictions = [];
     items.forEach(item => {
       this._itemRestrictions.push({
-        visible: item.visible,
+        resizable: item.resizable !== false,
+        visible: item.visible !== false,
         collapsed: item.collapsed === true,
-        size: (0, _layout.convertSizeToRatio)(item.size, elementSize),
-        maxSize: (0, _layout.convertSizeToRatio)(item.maxSize, elementSize),
-        minSize: (0, _layout.convertSizeToRatio)(item.minSize, elementSize)
+        collapsedSize: (0, _layout.convertSizeToRatio)(item.collapsedSize, elementSize, handlesSizeSum),
+        size: (0, _layout.convertSizeToRatio)(item.size, elementSize, handlesSizeSum),
+        maxSize: (0, _layout.convertSizeToRatio)(item.maxSize, elementSize, handlesSizeSum),
+        minSize: (0, _layout.convertSizeToRatio)(item.minSize, elementSize, handlesSizeSum)
       });
     });
-    const defaultLayout = (0, _layout.getDefaultLayout)(this._itemRestrictions);
-    return (0, _layout.validateLayout)(defaultLayout, this._itemRestrictions);
-  };
-  _proto._applyFlexGrowFromLayout = function _applyFlexGrowFromLayout(layout) {
+  }
+  _applyStylesFromLayout(layout) {
     this._iterateItems((index, itemElement) => {
-      (0, _layout.setFlexProp)(itemElement, FLEX_PROPERTY.flexGrow, layout[index]);
+      (0, _layout.setFlexProp)((0, _renderer.default)(itemElement)[0], FLEX_PROPERTY.flexGrow, layout[index]);
+      const itemData = this._getItemData(itemElement);
+      const shouldHideContent = layout[index] === 0 && itemData.visible !== false;
+      (0, _renderer.default)(itemElement).toggleClass(SPLITTER_ITEM_HIDDEN_CONTENT_CLASS, shouldHideContent);
     });
-  };
-  _proto._updatePaneSizesWithOuterWidth = function _updatePaneSizesWithOuterWidth() {
+  }
+  _updateItemSizes() {
     this._iterateItems((index, itemElement) => {
-      this._options.silent("items[".concat(index, "].size"), this._getItemDimension(itemElement));
+      this._updateItemData('size', index, this._getItemDimension(itemElement));
     });
-  };
-  _proto._iterateItems = function _iterateItems(callback) {
-    (0, _iterator.each)(this._itemElements(), (index, itemElement) => {
+  }
+  _updateItemData(prop, itemIndex, value) {
+    let silent = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+    const itemPath = `items[${itemIndex}]`;
+    const itemData = this.option(itemPath);
+    if ((0, _type.isObject)(itemData)) {
+      this._updateItemOption(`${itemPath}.${prop}`, value, silent);
+    } else {
+      this._updateItemOption(itemPath, {
+        text: itemData,
+        [prop]: value
+      }, silent);
+    }
+  }
+  _updateItemOption(path, value) {
+    let silent = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    if (silent) {
+      // @ts-expect-error badly typed base class
+      this._options.silent(path, value);
+    } else {
+      this.option(path, value);
+    }
+  }
+  _iterateItems(callback) {
+    this._itemElements().each((index, itemElement) => {
       callback(index, itemElement);
+      return true;
     });
-  };
-  _proto._getResizeHandleItems = function _getResizeHandleItems() {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return this.$element().children(".".concat(_resize_handle.RESIZE_HANDLE_CLASS));
-  };
-  _proto._iterateResizeHandles = function _iterateResizeHandles(callback) {
+  }
+  _getResizeHandles() {
+    const handles = [];
+    this._iterateItems((_, itemElement) => {
+      const instance = this._getItemInstance((0, _renderer.default)(itemElement));
+      const resizeHandle = instance.getResizeHandle();
+      if (resizeHandle) {
+        handles.push(resizeHandle);
+      }
+    });
+    return handles;
+  }
+  _getResizeHandleItems() {
+    return (0, _renderer.default)(this.element()).children(`.${_resize_handle.RESIZE_HANDLE_CLASS}`);
+  }
+  _iterateResizeHandles(callback) {
     this._getResizeHandleItems().each((index, element) => {
       callback((0, _component.getComponentInstance)((0, _renderer.default)(element)));
       return true;
     });
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _dimensionChanged() {
+    this._updateItemSizes();
+    this._layout = this._getDefaultLayoutBasedOnSize();
+  }
+  _optionChanged(args) {
     const {
       name,
       value
     } = args;
     switch (name) {
+      case 'width':
+      case 'height':
+        super._optionChanged(args);
+        this._dimensionChanged();
+        break;
       case 'allowKeyboardNavigation':
         this._iterateResizeHandles(instance => {
-          instance.option('focusStateEnabled', value);
+          instance.option('focusStateEnabled', !!value);
         });
+        this._updateNestedSplitterOption(name, value);
         break;
       case 'orientation':
         this._toggleOrientationClass();
@@ -507,23 +680,31 @@ let Splitter = /*#__PURE__*/function (_CollectionWidget) {
       case 'onResize':
       case 'onItemCollapsed':
       case 'onItemExpanded':
-        this[(0, _event.getActionNameByEventName)(name)] = this._createActionByOption(name);
+        this._createEventAction(name);
+        this._updateNestedSplitterOption(name, value);
         break;
       case 'separatorSize':
         this._updateResizeHandlesOption(name, value);
+        this._updateNestedSplitterOption(name, value);
+        break;
+      case '_renderQueue':
+        this._invalidate();
         break;
       default:
-        _CollectionWidget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  _proto.registerKeyHandler = function registerKeyHandler(key, handler) {
-    this._iterateResizeHandles(instance => {
-      instance.registerKeyHandler(key, handler);
+  }
+  registerKeyHandler(key, handler) {
+    (0, _renderer.default)(this.element()).find(`.${_resize_handle.RESIZE_HANDLE_CLASS}`).each((index, element) => {
+      (0, _component.getComponentInstance)((0, _renderer.default)(element)).registerKeyHandler(key, handler);
+      return true;
     });
-  };
-  return Splitter;
-}(_uiCollection_widget.default);
-Splitter.ItemClass = SplitterItem;
-// @ts-expect-error // temp fix
+  }
+  getLayout() {
+    return this._layout ?? [];
+  }
+}
+Splitter.ItemClass = _splitter_item.default;
+// @ts-expect-error ts-error
 (0, _component_registrator.default)('dxSplitter', Splitter);
 var _default = exports.default = Splitter;

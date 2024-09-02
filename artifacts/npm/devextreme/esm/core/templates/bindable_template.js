@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/templates/bindable_template.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,17 +11,17 @@ import { TemplateBase } from './template_base';
 import eventsEngine from '../../events/core/events_engine';
 import { removeEvent } from '../../events/remove';
 import { isPrimitive } from '../utils/type';
-var watchChanges = function () {
-  var globalWatch = (data, watchMethod, callback) => watchMethod(() => data, callback);
-  var fieldsWatch = function fieldsWatch(data, watchMethod, fields, fieldsMap, callback) {
-    var resolvedData = {};
-    var missedFields = fields.slice();
-    var watchHandlers = fields.map(function (name) {
-      var fieldGetter = fieldsMap[name];
+const watchChanges = function () {
+  const globalWatch = (data, watchMethod, callback) => watchMethod(() => data, callback);
+  const fieldsWatch = function (data, watchMethod, fields, fieldsMap, callback) {
+    const resolvedData = {};
+    const missedFields = fields.slice();
+    const watchHandlers = fields.map(function (name) {
+      const fieldGetter = fieldsMap[name];
       return watchMethod(fieldGetter ? () => fieldGetter(data) : () => data[name], function (value) {
         resolvedData[name] = value;
         if (missedFields.length) {
-          var index = missedFields.indexOf(name);
+          const index = missedFields.indexOf(name);
           if (index >= 0) {
             missedFields.splice(index, 1);
           }
@@ -36,8 +36,8 @@ var watchChanges = function () {
     };
   };
   return function (rawData, watchMethod, fields, fieldsMap, callback) {
-    var fieldsDispose;
-    var globalDispose = globalWatch(rawData, watchMethod, function (dataWithRawFields) {
+    let fieldsDispose;
+    const globalDispose = globalWatch(rawData, watchMethod, function (dataWithRawFields) {
       fieldsDispose && fieldsDispose();
       if (isPrimitive(dataWithRawFields)) {
         callback(dataWithRawFields);
@@ -60,8 +60,8 @@ export class BindableTemplate extends TemplateBase {
     this._watchMethod = watchMethod;
   }
   _renderCore(options) {
-    var $container = $(options.container);
-    var dispose = watchChanges(options.model, this._watchMethod, this._fields, this._fieldsMap, data => {
+    const $container = $(options.container);
+    const dispose = watchChanges(options.model, this._watchMethod, this._fields, this._fieldsMap, data => {
       $container.empty();
       this._render($container, data, options.model);
     });

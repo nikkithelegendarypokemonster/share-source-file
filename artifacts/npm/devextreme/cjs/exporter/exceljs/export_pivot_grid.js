@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/exporter/exceljs/export_pivot_grid.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -16,8 +16,8 @@ var _inflector = require("../../core/utils/inflector");
 var _export_merged_ranges_manager = require("./export_merged_ranges_manager");
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const FIELD_HEADERS_SEPARATOR = ', ';
-let PivotGridHelpers = /*#__PURE__*/function () {
-  function PivotGridHelpers(component, dataProvider, worksheet, options) {
+class PivotGridHelpers {
+  constructor(component, dataProvider, worksheet, options) {
     this.component = component;
     this.dataProvider = dataProvider;
     this.worksheet = worksheet;
@@ -38,11 +38,10 @@ let PivotGridHelpers = /*#__PURE__*/function () {
     this.columnFieldHeaders = this._tryGetFieldHeaders('column');
     this.rowFieldHeaders = this._tryGetFieldHeaders('row');
   }
-  var _proto = PivotGridHelpers.prototype;
-  _proto._getFirstColumnIndex = function _getFirstColumnIndex() {
+  _getFirstColumnIndex() {
     return this.topLeftCell.column;
-  };
-  _proto._getWorksheetFrozenState = function _getWorksheetFrozenState(cellRange) {
+  }
+  _getWorksheetFrozenState(cellRange) {
     const {
       x,
       y
@@ -52,36 +51,36 @@ let PivotGridHelpers = /*#__PURE__*/function () {
       xSplit: cellRange.from.column + x - 1,
       ySplit: cellRange.from.row + y + this._getFieldHeaderRowsCount() - 1
     };
-  };
-  _proto._getFieldHeaderRowsCount = function _getFieldHeaderRowsCount() {
+  }
+  _getFieldHeaderRowsCount() {
     return 0 + this._allowExportFilterFieldHeaders() + (this._allowExportDataFieldHeaders() || this._allowExportColumnFieldHeaders());
-  };
-  _proto._isFrozenZone = function _isFrozenZone() {
+  }
+  _isFrozenZone() {
     return true;
-  };
-  _proto._isHeaderCell = function _isHeaderCell(rowIndex, cellIndex) {
+  }
+  _isHeaderCell(rowIndex, cellIndex) {
     return rowIndex < this.dataProvider.getColumnAreaRowCount() || cellIndex < this.dataProvider.getRowAreaColCount();
-  };
-  _proto._getDefaultFieldHeaderCellsData = function _getDefaultFieldHeaderCellsData(value) {
+  }
+  _getDefaultFieldHeaderCellsData(value) {
     return {
       text: value,
       value: value
     };
-  };
-  _proto._isInfoCell = function _isInfoCell(rowIndex, cellIndex) {
+  }
+  _isInfoCell(rowIndex, cellIndex) {
     return rowIndex < this.dataProvider.getColumnAreaRowCount() && cellIndex < this.dataProvider.getRowAreaColCount();
-  };
-  _proto._allowToMergeRange = function _allowToMergeRange(rowIndex, cellIndex, rowspan, colspan) {
+  }
+  _allowToMergeRange(rowIndex, cellIndex, rowspan, colspan) {
     return !(this.dataProvider.isColumnAreaCell(rowIndex, cellIndex) && !this.mergeColumnFieldValues && !!colspan || this.dataProvider.isRowAreaCell(rowIndex, cellIndex) && !this.mergeRowFieldValues && !!rowspan);
-  };
-  _proto._trySetAutoFilter = function _trySetAutoFilter() {};
-  _proto._trySetFont = function _trySetFont(excelCell, bold) {
+  }
+  _trySetAutoFilter() {}
+  _trySetFont(excelCell, bold) {
     if ((0, _type.isDefined)(bold)) {
       excelCell.font = excelCell.font || {};
       excelCell.font.bold = bold;
     }
-  };
-  _proto._getFieldHeaderStyles = function _getFieldHeaderStyles() {
+  }
+  _getFieldHeaderStyles() {
     // eslint-disable-next-line spellcheck/spell-checker
     const borderStyle = {
       style: 'thin',
@@ -99,34 +98,34 @@ let PivotGridHelpers = /*#__PURE__*/function () {
         top: borderStyle
       }
     };
-  };
-  _proto._trySetOutlineLevel = function _trySetOutlineLevel() {};
-  _proto._getAllFieldHeaders = function _getAllFieldHeaders() {
+  }
+  _trySetOutlineLevel() {}
+  _getAllFieldHeaders() {
     return this.dataProvider._exportController.getDataSource()._descriptions;
-  };
-  _proto._tryGetFieldHeaders = function _tryGetFieldHeaders(area) {
-    if (!this["export".concat((0, _inflector.camelize)(area, true), "FieldHeaders")]) {
+  }
+  _tryGetFieldHeaders(area) {
+    if (!this[`export${(0, _inflector.camelize)(area, true)}FieldHeaders`]) {
       return [];
     }
-    const fields = this._getAllFieldHeaders()[area === 'data' ? 'values' : "".concat(area, "s")].filter(fieldHeader => fieldHeader.area === area);
+    const fields = this._getAllFieldHeaders()[area === 'data' ? 'values' : `${area}s`].filter(fieldHeader => fieldHeader.area === area);
     if ((0, _position.getDefaultAlignment)(this.rtlEnabled) === 'right') {
       fields.sort((a, b) => b.areaIndex - a.areaIndex);
     }
     return fields.map(field => field.caption);
-  };
-  _proto._customizeCell = function _customizeCell(excelCell, pivotCell, shouldPreventCall) {
+  }
+  _customizeCell(excelCell, pivotCell, shouldPreventCall) {
     if ((0, _type.isFunction)(this.customizeCell) && !shouldPreventCall) {
       this.customizeCell({
         excelCell,
         pivotCell
       });
     }
-  };
-  _proto._isRowFieldHeadersRow = function _isRowFieldHeadersRow(rowIndex) {
+  }
+  _isRowFieldHeadersRow(rowIndex) {
     const isLastInfoRangeCell = this._isInfoCell(rowIndex, 0) && this.dataProvider.getCellData(rowIndex + 1, 0, true).cellSourceData.area === 'row';
     return this._allowExportRowFieldHeaders() && isLastInfoRangeCell;
-  };
-  _proto._exportAllFieldHeaders = function _exportAllFieldHeaders(columns, setAlignment) {
+  }
+  _exportAllFieldHeaders(columns, setAlignment) {
     const totalCellsCount = columns.length;
     const rowAreaColCount = this.dataProvider.getRowAreaColCount();
     let rowIndex = this.topLeftCell.row;
@@ -146,9 +145,9 @@ let PivotGridHelpers = /*#__PURE__*/function () {
       }
       this._exportFieldHeaders('column', rowIndex, rowAreaColCount, totalCellsCount - rowAreaColCount, setAlignment);
     }
-  };
-  _proto._exportFieldHeaders = function _exportFieldHeaders(area, rowIndex, startColumnIndex, totalColumnsCount, setAlignment) {
-    const fieldHeaders = this["".concat(area, "FieldHeaders")];
+  }
+  _exportFieldHeaders(area, rowIndex, startColumnIndex, totalColumnsCount, setAlignment) {
+    const fieldHeaders = this[`${area}FieldHeaders`];
     const row = this.worksheet.getRow(rowIndex);
     const shouldMergeHeaderField = area !== 'row' || area === 'row' && this.rowHeaderLayout === 'tree';
     if (shouldMergeHeaderField) {
@@ -166,8 +165,8 @@ let PivotGridHelpers = /*#__PURE__*/function () {
       this._applyHeaderStyles(excelCell, setAlignment);
       this._customizeCell(excelCell, cellData);
     }
-  };
-  _proto._applyHeaderStyles = function _applyHeaderStyles(excelCell, setAlignment) {
+  }
+  _applyHeaderStyles(excelCell, setAlignment) {
     const {
       bold,
       alignment,
@@ -176,21 +175,20 @@ let PivotGridHelpers = /*#__PURE__*/function () {
     this._trySetFont(excelCell, bold);
     setAlignment(excelCell, this.wrapText, alignment);
     excelCell.border = border;
-  };
-  _proto._allowExportRowFieldHeaders = function _allowExportRowFieldHeaders() {
+  }
+  _allowExportRowFieldHeaders() {
     return this.rowFieldHeaders.length > 0;
-  };
-  _proto._allowExportFilterFieldHeaders = function _allowExportFilterFieldHeaders() {
+  }
+  _allowExportFilterFieldHeaders() {
     return this.filterFieldHeaders.length > 0;
-  };
-  _proto._allowExportDataFieldHeaders = function _allowExportDataFieldHeaders() {
+  }
+  _allowExportDataFieldHeaders() {
     return this.dataFieldHeaders.length > 0;
-  };
-  _proto._allowExportColumnFieldHeaders = function _allowExportColumnFieldHeaders() {
+  }
+  _allowExportColumnFieldHeaders() {
     return this.columnFieldHeaders.length > 0;
-  };
-  return PivotGridHelpers;
-}();
+  }
+}
 function exportPivotGrid(options) {
   return _export.Export.export(_getFullOptions(options), PivotGridHelpers, _getLoadPanelTargetElement, _getLoadPanelContainer);
 }

@@ -28,7 +28,7 @@ export default class ScrollView extends ScrollViewWrapper {
   }
   scrollToElement(element, offset) {
     var _this$viewRef7;
-    var params = [this._patchElementParam(element), offset];
+    const params = [this._patchElementParam(element), offset];
     return (_this$viewRef7 = this.viewRef) === null || _this$viewRef7 === void 0 ? void 0 : _this$viewRef7.scrollToElement(...params.slice(0, arguments.length));
   }
   scrollHeight() {

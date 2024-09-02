@@ -1,7 +1,7 @@
 /**
 * DevExtreme (animation/fx.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,108 +14,147 @@ import {
     Direction,
 } from '../common';
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type AnimationType = 'css' | 'fade' | 'fadeIn' | 'fadeOut' | 'pop' | 'slide' | 'slideIn' | 'slideOut';
 
 /**
- * Describes an animation state.
+ * @docid
+ * @public
+ * @type object
  */
 export type AnimationState = string | number | {
     /**
-     * Element opacity.
+     * @docid
+     * @public
      */
     opacity: number;
 } | {
     /**
-     * A value that controls element size.
+     * @docid
+     * @public
      */
     scale: number;
 } | {
     /**
-     * Element position.
+     * @docid
+     * @public
      */
     position: PositionConfig;
 } | {
     /**
-     * A shortcut that positions the element&apos;s left side relative to the parent element.
-     */
+    * @docid
+    * @public
+    */
     left: number;
 } | {
     /**
-     * A shortcut that positions the element&apos;s top side relative to the parent element.
-     */
+    * @docid
+    * @public
+    */
     top: number;
 };
 
 /**
- * Defines animation properties.
+ * @docid
+ * @namespace DevExpress
+ * @type object|number|string
+ * @public
  */
 export type AnimationConfig = {
     /**
-     * A function called after animation is completed.
+     * @docid
+     * @public
      */
     complete?: (($element: DxElement, config: AnimationConfig) => void);
     /**
-     * A number specifying wait time before animation execution.
+     * @docid
+     * @default 0
+     * @public
      */
     delay?: number;
     /**
-     * Specifies the animation direction for the &apos;slideIn&apos; and &apos;slideOut&apos; animation types.
+     * @docid
+     * @default undefined
+     * @public
      */
     direction?: Direction;
     /**
-     * A number specifying the time in milliseconds spent on animation.
+     * @docid
+     * @default 400
+     * @public
      */
     duration?: number;
     /**
-     * A string specifying the easing function for animation.
+     * @docid
+     * @default 'ease'
+     * @public
      */
     easing?: string;
     /**
-     * Specifies an initial animation state. Use the to property to specify the final state.
+     * @docid
+     * @default {}
+     * @public
      */
     from?: AnimationState;
     /**
-     * A number specifying the time period to wait before the animation of the next stagger item starts.
+     * @docid
+     * @default undefined
+     * @public
      */
     staggerDelay?: number;
     /**
-     * A function called before animation is started.
+     * @docid
+     * @public
      */
     start?: (($element: DxElement, config: AnimationConfig) => void);
     /**
-     * Specifies a final animation state. Use the from property to specify an initial state.
+     * @docid
+     * @default {}
+     * @public
      */
     to?: AnimationState;
     /**
-     * A string value specifying the animation type.
+     * @docid
+     * @default 'custom'
+     * @public
      */
     type?: AnimationType;
 };
 
 /**
+ * @public
  * @deprecated Use the AnimationConfig type instead
  */
 export type animationConfig = AnimationConfig;
 
 /**
- * An object that serves as a namespace for the methods that are used to animate UI elements.
+ * @public
+ * @docid
+ * @section utils
+ * @namespace DevExpress
  */
 declare const fx: {
     /**
-     * Animates an element.
+     * @docid
+     * @publicName animate(element, config)
+     * @return Promise<void>
+     * @namespace DevExpress.fx
+     * @public
      */
     animate(element: Element, config: AnimationConfig): DxPromise<void>;
 
     /**
-     * Checks whether an element is being animated.
+     * @docid
+     * @publicName isAnimating(element)
+     * @namespace DevExpress.fx
+     * @public
      */
     isAnimating(element: Element): boolean;
 
     /**
-     * Stops an element&apos;s animation.
+     * @docid
+     * @publicName stop(element, jumpToEnd)
+     * @namespace DevExpress.fx
+     * @public
      */
     stop(element: Element, jumpToEnd: boolean): void;
 };

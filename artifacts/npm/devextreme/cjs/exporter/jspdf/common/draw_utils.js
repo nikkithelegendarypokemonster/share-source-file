@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/exporter/jspdf/common/draw_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22,7 +22,7 @@ var _type = require("../../../core/utils/type");
 var _extend = require("../../../core/utils/extend");
 var _pdf_utils = require("./pdf_utils");
 const _excluded = ["_rect", "gridCell"];
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -55,7 +55,7 @@ function drawCellsContent(doc, customDrawCell, cellsArray, docStyles) {
       gridCell,
       cancel: false
     };
-    customDrawCell === null || customDrawCell === void 0 ? void 0 : customDrawCell(eventArg);
+    customDrawCell === null || customDrawCell === void 0 || customDrawCell(eventArg);
     if (!eventArg.cancel) {
       drawCellBackground(doc, cell);
       drawCellText(doc, cell, docStyles);
@@ -85,8 +85,8 @@ function drawTextInRect(doc, text, rect, verticalAlign, horizontalAlign, jsPDFTe
     wordWrapEnabled: false,
     targetRectWidth: 1000000000
   });
-  const vAlign = verticalAlign !== null && verticalAlign !== void 0 ? verticalAlign : 'middle';
-  const hAlign = horizontalAlign !== null && horizontalAlign !== void 0 ? horizontalAlign : 'left';
+  const vAlign = verticalAlign ?? 'middle';
+  const hAlign = horizontalAlign ?? 'left';
   const verticalAlignCoefficientsMap = {
     top: 0,
     middle: 0.5,
@@ -131,9 +131,8 @@ function drawCellText(doc, cell, docStyles) {
       h: _rect.h - (padding.top + padding.bottom)
     };
     if ((0, _type.isDefined)(cell._textLeftOffset) || (0, _type.isDefined)(cell._textTopOffset)) {
-      var _cell$_textLeftOffset, _cell$_textTopOffset;
-      textRect.x = textRect.x + ((_cell$_textLeftOffset = cell._textLeftOffset) !== null && _cell$_textLeftOffset !== void 0 ? _cell$_textLeftOffset : 0);
-      textRect.y = textRect.y + ((_cell$_textTopOffset = cell._textTopOffset) !== null && _cell$_textTopOffset !== void 0 ? _cell$_textTopOffset : 0);
+      textRect.x = textRect.x + (cell._textLeftOffset ?? 0);
+      textRect.y = textRect.y + (cell._textTopOffset ?? 0);
       doc.saveGraphicsState(); // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#saveGraphicsState
       clipOutsideRectContent(doc, cell._rect.x, cell._rect.y, cell._rect.w, cell._rect.h);
     }
@@ -221,8 +220,8 @@ function setLinesStyles(doc, _ref3, docStyles) {
   trySetColor(doc, 'draw', (0, _type.isDefined)(borderColor) ? borderColor : docStyles.borderColor);
 }
 function trySetColor(doc, target, color) {
-  const getterName = "get".concat(capitalizeFirstLetter(target), "Color");
-  const setterName = "set".concat(capitalizeFirstLetter(target), "Color");
+  const getterName = `get${capitalizeFirstLetter(target)}Color`;
+  const setterName = `set${capitalizeFirstLetter(target)}Color`;
   const {
     ch1 = color,
     ch2,
@@ -283,12 +282,11 @@ function addNewPage(doc) {
   resetDocBorderWidth(doc);
 }
 function getDocBorderWidth(doc) {
-  var _doc$__borderWidth;
   // The 'getLineWidth' method was implemented in 2.5.0 version - https://github.com/parallax/jsPDF/pull/3324
   if ((0, _type.isDefined)(doc.getLineWidth)) {
     return doc.getLineWidth();
   }
-  return (_doc$__borderWidth = doc.__borderWidth) !== null && _doc$__borderWidth !== void 0 ? _doc$__borderWidth : 0.200025; // // https://github.com/parallax/jsPDF/blob/a56c882e2c139e74a9adaea0baa78fb1386cbf23/src/jspdf.js#L4946
+  return doc.__borderWidth ?? 0.200025; // // https://github.com/parallax/jsPDF/blob/a56c882e2c139e74a9adaea0baa78fb1386cbf23/src/jspdf.js#L4946
 }
 function setDocBorderWidth(doc, width) {
   doc.setLineWidth(width);

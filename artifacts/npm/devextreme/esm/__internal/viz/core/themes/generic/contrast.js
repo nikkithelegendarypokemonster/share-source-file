@@ -1,16 +1,16 @@
 /**
 * DevExtreme (esm/__internal/viz/core/themes/generic/contrast.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-var WHITE = '#ffffff';
-var BLACK = '#000000';
-var CONTRAST_ACTIVE = '#cf00da';
-var MARKER_COLOR = '#f8ca00';
-var AREA_LAYER_COLOR = '#686868';
+const WHITE = '#ffffff';
+const BLACK = '#000000';
+const CONTRAST_ACTIVE = '#cf00da';
+const MARKER_COLOR = '#f8ca00';
+const AREA_LAYER_COLOR = '#686868';
 export default [{
   baseThemeName: 'generic.light',
   theme: {

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/localization.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -16,13 +16,13 @@ import './localization/currency';
  * @name localization
  */
 
-export var locale = core.locale.bind(core);
-export var loadMessages = message.load.bind(message);
-export var formatMessage = message.format.bind(message);
-export var formatNumber = number.format.bind(number);
-export var parseNumber = number.parse.bind(number);
-export var formatDate = date.format.bind(date);
-export var parseDate = date.parse.bind(date);
+export const locale = core.locale.bind(core);
+export const loadMessages = message.load.bind(message);
+export const formatMessage = message.format.bind(message);
+export const formatNumber = number.format.bind(number);
+export const parseNumber = number.parse.bind(number);
+export const formatDate = date.format.bind(date);
+export const parseDate = date.parse.bind(date);
 export { message, number, date };
 export function disableIntl() {
   if (number.engine() === 'intl') {

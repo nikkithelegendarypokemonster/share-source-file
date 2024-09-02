@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/renovation/ui/scroll_view/scrollable.j.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -40,7 +40,7 @@ export default class Scrollable extends ScrollableWrapper {
   }
   scrollToElement(element, offset) {
     var _this$viewRef8;
-    var params = [this._patchElementParam(element), offset];
+    const params = [this._patchElementParam(element), offset];
     return (_this$viewRef8 = this.viewRef) === null || _this$viewRef8 === void 0 ? void 0 : _this$viewRef8.scrollToElement(...params.slice(0, arguments.length));
   }
   scrollHeight() {
@@ -73,7 +73,7 @@ export default class Scrollable extends ScrollableWrapper {
   }
   getScrollElementPosition(targetElement, direction, offset) {
     var _this$viewRef16;
-    var params = [this._patchElementParam(targetElement), direction, offset];
+    const params = [this._patchElementParam(targetElement), direction, offset];
     return (_this$viewRef16 = this.viewRef) === null || _this$viewRef16 === void 0 ? void 0 : _this$viewRef16.getScrollElementPosition(...params.slice(0, arguments.length));
   }
   startLoading() {

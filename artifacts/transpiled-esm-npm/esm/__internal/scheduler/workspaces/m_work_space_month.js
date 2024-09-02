@@ -5,18 +5,17 @@ import dateUtils from '../../../core/utils/date';
 import { getBoundingRect } from '../../../core/utils/position';
 import { hasWindow } from '../../../core/utils/window';
 // NOTE: Renovation component import.
-// @ts-expect-error
-import dxrMonthDateTableLayout from '../../../renovation/ui/scheduler/workspaces/month/date_table/layout.j';
-import { formatWeekday, monthUtils } from '../__migration/utils/index';
+import { DateTableMonthComponent } from '../../scheduler/r1/components/index';
+import { formatWeekday, monthUtils } from '../../scheduler/r1/utils/index';
 import { VIEWS } from '../m_constants';
 import { utils } from '../m_utils';
 import SchedulerWorkSpace from './m_work_space_indicator';
-var MONTH_CLASS = 'dx-scheduler-work-space-month';
-var DATE_TABLE_CURRENT_DATE_CLASS = 'dx-scheduler-date-table-current-date';
-var DATE_TABLE_CELL_TEXT_CLASS = 'dx-scheduler-date-table-cell-text';
-var DATE_TABLE_FIRST_OF_MONTH_CLASS = 'dx-scheduler-date-table-first-of-month';
-var DATE_TABLE_OTHER_MONTH_DATE_CLASS = 'dx-scheduler-date-table-other-month';
-var toMs = dateUtils.dateToMilliseconds;
+const MONTH_CLASS = 'dx-scheduler-work-space-month';
+const DATE_TABLE_CURRENT_DATE_CLASS = 'dx-scheduler-date-table-current-date';
+const DATE_TABLE_CELL_TEXT_CLASS = 'dx-scheduler-date-table-cell-text';
+const DATE_TABLE_FIRST_OF_MONTH_CLASS = 'dx-scheduler-date-table-first-of-month';
+const DATE_TABLE_OTHER_MONTH_DATE_CLASS = 'dx-scheduler-date-table-other-month';
+const toMs = dateUtils.dateToMilliseconds;
 class SchedulerWorkSpaceMonth extends SchedulerWorkSpace {
   get type() {
     return VIEWS.MONTH;
@@ -28,12 +27,12 @@ class SchedulerWorkSpaceMonth extends SchedulerWorkSpace {
     return formatWeekday;
   }
   _getIntervalBetween(currentDate) {
-    var firstViewDate = this.getStartViewDate();
-    var timeZoneOffset = dateUtils.getTimezonesDifference(firstViewDate, currentDate);
+    const firstViewDate = this.getStartViewDate();
+    const timeZoneOffset = dateUtils.getTimezonesDifference(firstViewDate, currentDate);
     return currentDate.getTime() - (firstViewDate.getTime() - this.option('startDayHour') * 3600000) - timeZoneOffset;
   }
   _getDateGenerationOptions() {
-    return _extends(_extends({}, super._getDateGenerationOptions()), {
+    return _extends({}, super._getDateGenerationOptions(), {
       cellCountInDay: 1
     });
   }
@@ -41,9 +40,9 @@ class SchedulerWorkSpaceMonth extends SchedulerWorkSpace {
   // TODO: there is a test for this bug, when changing the layout, the test will also be useless
   getCellWidth() {
     return this.cache.get('cellWidth', () => {
-      var DAYS_IN_WEEK = 7;
-      var averageWidth = 0;
-      var cells = this._getCells().slice(0, DAYS_IN_WEEK);
+      const DAYS_IN_WEEK = 7;
+      let averageWidth = 0;
+      const cells = this._getCells().slice(0, DAYS_IN_WEEK);
       cells.each((index, element) => {
         averageWidth += hasWindow() ? getBoundingRect(element).width : 0;
       });
@@ -54,8 +53,8 @@ class SchedulerWorkSpaceMonth extends SchedulerWorkSpace {
     return false;
   }
   _getCellCoordinatesByIndex(index) {
-    var rowIndex = Math.floor(index / this._getCellCount());
-    var columnIndex = index - this._getCellCount() * rowIndex;
+    const rowIndex = Math.floor(index / this._getCellCount());
+    const columnIndex = index - this._getCellCount() * rowIndex;
     return {
       rowIndex,
       columnIndex
@@ -101,7 +100,7 @@ class SchedulerWorkSpaceMonth extends SchedulerWorkSpace {
   renderRAllDayPanel() {}
   renderRTimeTable() {}
   renderRDateTable() {
-    utils.renovation.renderComponent(this, this._$dateTable, dxrMonthDateTableLayout, 'renovatedDateTable', this._getRDateTableProps());
+    utils.renovation.renderComponent(this, this._$dateTable, DateTableMonthComponent, 'renovatedDateTable', this._getRDateTableProps());
   }
   // -------------
   // We need these methods for now but they are useless for renovation
@@ -134,7 +133,7 @@ class SchedulerWorkSpaceMonth extends SchedulerWorkSpace {
   _createAllDayPanelElements() {}
   _renderTableBody(options) {
     options.getCellText = (rowIndex, columnIndex) => {
-      var date = this.viewDataProvider.completeViewDataMap[rowIndex][columnIndex].startDate;
+      const date = this.viewDataProvider.completeViewDataMap[rowIndex][columnIndex].startDate;
       return monthUtils.getCellText(date, this.option('intervalCount'));
     };
     options.getCellTextClass = DATE_TABLE_CELL_TEXT_CLASS;

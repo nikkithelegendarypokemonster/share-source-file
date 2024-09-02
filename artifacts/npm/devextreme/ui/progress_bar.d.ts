@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/progress_bar.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22,74 +22,105 @@ import dxTrackBar, {
 } from './track_bar';
 
 /**
- * The type of the complete event handler&apos;s argument.
+ * @docid _ui_progress_bar_CompleteEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CompleteEvent = NativeEventInfo<dxProgressBar>;
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_progress_bar_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxProgressBar>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_progress_bar_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxProgressBar>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_progress_bar_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxProgressBar>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_progress_bar_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxProgressBar> & ChangedOptionInfo;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_progress_bar_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxProgressBar> & ValueChangedInfo;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxProgressBarOptions extends dxTrackBarOptions<dxProgressBar> {
     /**
-     * A function that is executed when the value reaches the maximum.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/progress_bar:CompleteEvent}
+     * @action
+     * @public
      */
     onComplete?: ((e: CompleteEvent) => void);
     /**
-     * Specifies whether or not the UI component displays a progress status.
+     * @docid
+     * @default true
+     * @public
      */
     showStatus?: boolean;
     /**
-     * Specifies a format for the progress status.
+     * @docid
+     * @default function(ratio, value) { return "Progress: " + Math.round(ratio * 100) + "%" }
+     * @public
      */
     statusFormat?: string | ((ratio: number, value: number) => string);
     /**
-     * The current UI component value.
+     * @docid
+     * @default 0
+     * @public
      */
     value?: number | false;
 }
 /**
- * The ProgressBar is a UI component that shows current progress.
+ * @docid
+ * @inherits dxTrackBar
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxProgressBar extends dxTrackBar<dxProgressBarOptions> {
     /**
-     * Resets the value property to the value passed as an argument.
+     * @docid
+     * @publicName reset(value)
+     * @public
      */
     reset(value?: Number | false): void;
 }
 
+/** @public */
 export type Properties = dxProgressBarOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxProgressBarOptions;
 
 

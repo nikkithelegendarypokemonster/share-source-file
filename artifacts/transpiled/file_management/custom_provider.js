@@ -6,72 +6,65 @@ var _type = require("../core/utils/type");
 var _data = require("../core/utils/data");
 var _provider_base = _interopRequireDefault(require("./provider_base"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-let CustomFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
-  _inheritsLoose(CustomFileSystemProvider, _FileSystemProviderBa);
-  function CustomFileSystemProvider(options) {
-    var _this;
+class CustomFileSystemProvider extends _provider_base.default {
+  constructor(options) {
     options = (0, _common.ensureDefined)(options, {});
-    _this = _FileSystemProviderBa.call(this, options) || this;
-    _this._hasSubDirsGetter = (0, _data.compileGetter)(options.hasSubDirectoriesExpr || 'hasSubDirectories');
-    _this._getItemsFunction = _this._ensureFunction(options.getItems, () => []);
-    _this._renameItemFunction = _this._ensureFunction(options.renameItem);
-    _this._createDirectoryFunction = _this._ensureFunction(options.createDirectory);
-    _this._deleteItemFunction = _this._ensureFunction(options.deleteItem);
-    _this._moveItemFunction = _this._ensureFunction(options.moveItem);
-    _this._copyItemFunction = _this._ensureFunction(options.copyItem);
-    _this._uploadFileChunkFunction = _this._ensureFunction(options.uploadFileChunk);
-    _this._abortFileUploadFunction = _this._ensureFunction(options.abortFileUpload);
-    _this._downloadItemsFunction = _this._ensureFunction(options.downloadItems);
-    _this._getItemsContentFunction = _this._ensureFunction(options.getItemsContent);
-    return _this;
+    super(options);
+    this._hasSubDirsGetter = (0, _data.compileGetter)(options.hasSubDirectoriesExpr || 'hasSubDirectories');
+    this._getItemsFunction = this._ensureFunction(options.getItems, () => []);
+    this._renameItemFunction = this._ensureFunction(options.renameItem);
+    this._createDirectoryFunction = this._ensureFunction(options.createDirectory);
+    this._deleteItemFunction = this._ensureFunction(options.deleteItem);
+    this._moveItemFunction = this._ensureFunction(options.moveItem);
+    this._copyItemFunction = this._ensureFunction(options.copyItem);
+    this._uploadFileChunkFunction = this._ensureFunction(options.uploadFileChunk);
+    this._abortFileUploadFunction = this._ensureFunction(options.abortFileUpload);
+    this._downloadItemsFunction = this._ensureFunction(options.downloadItems);
+    this._getItemsContentFunction = this._ensureFunction(options.getItemsContent);
   }
-  var _proto = CustomFileSystemProvider.prototype;
-  _proto.getItems = function getItems(parentDir) {
+  getItems(parentDir) {
     const pathInfo = parentDir.getFullPathInfo();
     return this._executeActionAsDeferred(() => this._getItemsFunction(parentDir), true).then(dataItems => this._convertDataObjectsToFileItems(dataItems, pathInfo));
-  };
-  _proto.renameItem = function renameItem(item, name) {
+  }
+  renameItem(item, name) {
     return this._executeActionAsDeferred(() => this._renameItemFunction(item, name));
-  };
-  _proto.createDirectory = function createDirectory(parentDir, name) {
+  }
+  createDirectory(parentDir, name) {
     return this._executeActionAsDeferred(() => this._createDirectoryFunction(parentDir, name));
-  };
-  _proto.deleteItems = function deleteItems(items) {
+  }
+  deleteItems(items) {
     return items.map(item => this._executeActionAsDeferred(() => this._deleteItemFunction(item)));
-  };
-  _proto.moveItems = function moveItems(items, destinationDirectory) {
+  }
+  moveItems(items, destinationDirectory) {
     return items.map(item => this._executeActionAsDeferred(() => this._moveItemFunction(item, destinationDirectory)));
-  };
-  _proto.copyItems = function copyItems(items, destinationFolder) {
+  }
+  copyItems(items, destinationFolder) {
     return items.map(item => this._executeActionAsDeferred(() => this._copyItemFunction(item, destinationFolder)));
-  };
-  _proto.uploadFileChunk = function uploadFileChunk(fileData, chunksInfo, destinationDirectory) {
+  }
+  uploadFileChunk(fileData, chunksInfo, destinationDirectory) {
     return this._executeActionAsDeferred(() => this._uploadFileChunkFunction(fileData, chunksInfo, destinationDirectory));
-  };
-  _proto.abortFileUpload = function abortFileUpload(fileData, chunksInfo, destinationDirectory) {
+  }
+  abortFileUpload(fileData, chunksInfo, destinationDirectory) {
     return this._executeActionAsDeferred(() => this._abortFileUploadFunction(fileData, chunksInfo, destinationDirectory));
-  };
-  _proto.downloadItems = function downloadItems(items) {
+  }
+  downloadItems(items) {
     return this._executeActionAsDeferred(() => this._downloadItemsFunction(items));
-  };
-  _proto.getItemsContent = function getItemsContent(items) {
+  }
+  getItemsContent(items) {
     return this._executeActionAsDeferred(() => this._getItemsContentFunction(items));
-  };
-  _proto._hasSubDirs = function _hasSubDirs(dataObj) {
+  }
+  _hasSubDirs(dataObj) {
     const hasSubDirs = this._hasSubDirsGetter(dataObj);
     return typeof hasSubDirs === 'boolean' ? hasSubDirs : true;
-  };
-  _proto._getKeyExpr = function _getKeyExpr(options) {
+  }
+  _getKeyExpr(options) {
     return options.keyExpr || 'key';
-  };
-  _proto._ensureFunction = function _ensureFunction(functionObject, defaultFunction) {
+  }
+  _ensureFunction(functionObject, defaultFunction) {
     defaultFunction = defaultFunction || _common.noop;
     return (0, _type.isFunction)(functionObject) ? functionObject : defaultFunction;
-  };
-  return CustomFileSystemProvider;
-}(_provider_base.default);
+  }
+}
 var _default = exports.default = CustomFileSystemProvider;
 module.exports = exports.default;
 module.exports.default = exports.default;

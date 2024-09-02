@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/diagram/ui.diagram.context_toolbox.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,16 +11,16 @@ import Widget from '../widget/ui.widget';
 import Popover from '../popover/ui.popover';
 import { getDiagram } from './diagram.importer';
 import { getWindow } from '../../core/utils/window';
-var DIAGRAM_CONTEXT_TOOLBOX_TARGET_CLASS = 'dx-diagram-context-toolbox-target';
-var DIAGRAM_CONTEXT_TOOLBOX_CLASS = 'dx-diagram-context-toolbox';
-var DIAGRAM_TOUCH_CONTEXT_TOOLBOX_CLASS = 'dx-diagram-touch-context-toolbox';
-var DIAGRAM_CONTEXT_TOOLBOX_CONTENT_CLASS = 'dx-diagram-context-toolbox-content';
-var DIAGRAM_CONTEXT_TOOLBOX_MINHEIGHT = 150;
+const DIAGRAM_CONTEXT_TOOLBOX_TARGET_CLASS = 'dx-diagram-context-toolbox-target';
+const DIAGRAM_CONTEXT_TOOLBOX_CLASS = 'dx-diagram-context-toolbox';
+const DIAGRAM_TOUCH_CONTEXT_TOOLBOX_CLASS = 'dx-diagram-touch-context-toolbox';
+const DIAGRAM_CONTEXT_TOOLBOX_CONTENT_CLASS = 'dx-diagram-context-toolbox-content';
+const DIAGRAM_CONTEXT_TOOLBOX_MINHEIGHT = 150;
 class DiagramContextToolbox extends Widget {
   _init() {
     super._init();
     this._onShownAction = this._createActionByOption('onShown');
-    var window = getWindow();
+    const window = getWindow();
     this._popoverPositionData = [{
       my: {
         x: 'center',
@@ -82,7 +82,7 @@ class DiagramContextToolbox extends Widget {
   _initMarkup() {
     super._initMarkup();
     this._$popoverTargetElement = $('<div>').addClass(DIAGRAM_CONTEXT_TOOLBOX_TARGET_CLASS).appendTo(this.$element());
-    var $popoverElement = $('<div>').addClass(DIAGRAM_CONTEXT_TOOLBOX_CLASS).appendTo(this.$element());
+    const $popoverElement = $('<div>').addClass(DIAGRAM_CONTEXT_TOOLBOX_CLASS).appendTo(this.$element());
     if (this._isTouchMode()) {
       $popoverElement.addClass(DIAGRAM_TOUCH_CONTEXT_TOOLBOX_CLASS);
     }
@@ -92,7 +92,7 @@ class DiagramContextToolbox extends Widget {
     });
   }
   _isTouchMode() {
-    var {
+    const {
       Browser
     } = getDiagram();
     return Browser.TouchUI;
@@ -105,13 +105,13 @@ class DiagramContextToolbox extends Widget {
     }).show();
 
     // correct offset when parent has position absolute, relative, etc (T1010677)
-    var window = getWindow();
-    var targetDiv = this._$popoverTargetElement.get(0);
+    const window = getWindow();
+    const targetDiv = this._$popoverTargetElement.get(0);
     this._$popoverTargetElement.css({
       left: targetDiv.offsetLeft - (targetDiv.getBoundingClientRect().left + window.scrollX - targetDiv.offsetLeft),
       top: targetDiv.offsetTop - (targetDiv.getBoundingClientRect().top + window.scrollY - targetDiv.offsetTop)
     });
-    var posRect = targetDiv.getBoundingClientRect();
+    const posRect = targetDiv.getBoundingClientRect();
     this._popoverInstance.option({
       maxHeight: this._popoverPositionData[side].calcMaxHeight(posRect),
       width: this.option('toolboxWidth') !== undefined ? this.option('toolboxWidth') : undefined,
@@ -127,7 +127,7 @@ class DiagramContextToolbox extends Widget {
         });
       },
       onContentReady: () => {
-        var $element = this.$element().find('.' + DIAGRAM_CONTEXT_TOOLBOX_CONTENT_CLASS);
+        const $element = this.$element().find('.' + DIAGRAM_CONTEXT_TOOLBOX_CONTENT_CLASS);
         this._onShownAction({
           category,
           callback,

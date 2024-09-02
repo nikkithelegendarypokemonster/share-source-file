@@ -1,4 +1,4 @@
-export var convertToScreenSizeQualifier = width => {
+export const convertToScreenSizeQualifier = width => {
   if (width < 768) {
     return 'xs';
   }

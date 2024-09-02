@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/options_validator/options_validator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,25 +13,25 @@ export class SchedulerOptionsValidator extends OptionsValidator {
   constructor() {
     super({
       startDayHour: new Validator(_ref => {
-        var {
+        let {
           startDayHour
         } = _ref;
         return startDayHour;
       }, [mustBeInteger, mustBeInRange([0, 24])]),
       endDayHour: new Validator(_ref2 => {
-        var {
+        let {
           endDayHour
         } = _ref2;
         return endDayHour;
       }, [mustBeInteger, mustBeInRange([0, 24])]),
       offset: new Validator(_ref3 => {
-        var {
+        let {
           offset
         } = _ref3;
         return offset;
       }, [mustBeInteger, mustBeInRange([-1440, 1440]), mustBeDivisibleBy(5)]),
       cellDuration: new Validator(_ref4 => {
-        var {
+        let {
           cellDuration
         } = _ref4;
         return cellDuration;

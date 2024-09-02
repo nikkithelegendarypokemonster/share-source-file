@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/ui/splitter/resize_handle.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,16 +14,16 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = exports.RESIZE_HANDLE_CLASS = void 0;
 var _guid = _interopRequireDefault(require("../../../core/guid"));
 var _renderer = _interopRequireDefault(require("../../../core/renderer"));
-var _extend = require("../../../core/utils/extend");
 var _click = require("../../../events/click");
 var _events_engine = _interopRequireDefault(require("../../../events/core/events_engine"));
+var _double_click = require("../../../events/double_click");
 var _drag = require("../../../events/drag");
 var _index = require("../../../events/utils/index");
-var _ui = _interopRequireDefault(require("../../../ui/widget/ui.widget"));
+var _message = _interopRequireDefault(require("../../../localization/message"));
+var _widget = _interopRequireDefault(require("../widget"));
 var _event = require("./utils/event");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const RESIZE_HANDLE_CLASS = exports.RESIZE_HANDLE_CLASS = 'dx-resize-handle';
 const RESIZE_HANDLE_RESIZABLE_CLASS = 'dx-resize-handle-resizable';
 const HORIZONTAL_DIRECTION_CLASS = 'dx-resize-handle-horizontal';
@@ -34,33 +34,35 @@ const RESIZE_HANDLE_COLLAPSE_NEXT_PANE_CLASS = 'dx-resize-handle-collapse-next-p
 const ICON_CLASS = 'dx-icon';
 const STATE_INVISIBLE_CLASS = 'dx-state-invisible';
 const RESIZE_HANDLER_MODULE_NAMESPACE = 'dxResizeHandle';
+const KEYBOARD_DELTA = 5;
+const DEFAULT_RESIZE_HANDLE_SIZE = 8;
+const INACTIVE_RESIZE_HANDLE_SIZE = 2;
 const RESIZE_DIRECTION = {
   horizontal: 'horizontal',
   vertical: 'vertical'
 };
-const KEYBOARD_DELTA = 5;
-const INACTIVE_RESIZE_HANDLE_SIZE = 2;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let ResizeHandle = /*#__PURE__*/function (_Widget) {
-  _inheritsLoose(ResizeHandle, _Widget);
-  function ResizeHandle() {
-    return _Widget.apply(this, arguments) || this;
-  }
-  var _proto = ResizeHandle.prototype;
-  _proto._supportedKeys = function _supportedKeys() {
-    return (0, _extend.extend)(_Widget.prototype._supportedKeys.call(this), {
+class ResizeHandle extends _widget.default {
+  _supportedKeys() {
+    return _extends({}, super._supportedKeys(), {
       rightArrow(e) {
         e.preventDefault();
         e.stopPropagation();
         const {
           direction,
-          showCollapseNext
+          showCollapseNext,
+          showCollapsePrev,
+          rtlEnabled
         } = this.option();
+        const forbidCollapseNext = rtlEnabled ? showCollapsePrev === false : showCollapseNext === false;
         if ((0, _index.isCommandKeyPressed)(e)) {
-          if (direction === RESIZE_DIRECTION.vertical || showCollapseNext === false) {
+          if (direction === RESIZE_DIRECTION.vertical || forbidCollapseNext) {
             return;
           }
-          this._collapseNextHandler(e);
+          if (rtlEnabled) {
+            this._collapsePrevHandler(e);
+          } else {
+            this._collapseNextHandler(e);
+          }
         } else {
           this._resizeBy(e, {
             x: KEYBOARD_DELTA
@@ -72,13 +74,20 @@ let ResizeHandle = /*#__PURE__*/function (_Widget) {
         e.stopPropagation();
         const {
           direction,
-          showCollapsePrev
+          showCollapsePrev,
+          showCollapseNext,
+          rtlEnabled
         } = this.option();
+        const forbidCollapsePrev = rtlEnabled ? showCollapseNext === false : showCollapsePrev === false;
         if ((0, _index.isCommandKeyPressed)(e)) {
-          if (direction === RESIZE_DIRECTION.vertical || showCollapsePrev === false) {
+          if (direction === RESIZE_DIRECTION.vertical || forbidCollapsePrev) {
             return;
           }
-          this._collapsePrevHandler(e);
+          if (rtlEnabled) {
+            this._collapseNextHandler(e);
+          } else {
+            this._collapsePrevHandler(e);
+          }
         } else {
           this._resizeBy(e, {
             x: -KEYBOARD_DELTA
@@ -122,159 +131,156 @@ let ResizeHandle = /*#__PURE__*/function (_Widget) {
         }
       }
     });
-  };
-  _proto._getDefaultOptions = function _getDefaultOptions() {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return (0, _extend.extend)(_Widget.prototype._getDefaultOptions.call(this), {
+  }
+  _getDefaultOptions() {
+    return _extends({}, super._getDefaultOptions(), {
       direction: RESIZE_DIRECTION.horizontal,
       hoverStateEnabled: true,
       focusStateEnabled: true,
-      onResize: null,
-      onResizeEnd: null,
-      onResizeStart: null,
+      activeStateEnabled: true,
+      onResize: undefined,
+      onResizeEnd: undefined,
+      onResizeStart: undefined,
       resizable: true,
       showCollapsePrev: true,
       showCollapseNext: true,
-      onCollapsePrev: null,
-      onCollapseNext: null,
-      separatorSize: 8
+      onCollapsePrev: undefined,
+      onCollapseNext: undefined,
+      separatorSize: DEFAULT_RESIZE_HANDLE_SIZE
     });
-  };
-  _proto._init = function _init() {
-    _Widget.prototype._init.call(this);
-    const namespace = "".concat(RESIZE_HANDLER_MODULE_NAMESPACE).concat(new _guid.default());
+  }
+  _init() {
+    super._init();
+    const namespace = `${RESIZE_HANDLER_MODULE_NAMESPACE}${new _guid.default()}`;
     this.RESIZE_START_EVENT_NAME = (0, _index.addNamespace)(_drag.start, namespace);
     this.RESIZE_EVENT_NAME = (0, _index.addNamespace)(_drag.move, namespace);
     this.RESIZE_END_EVENT_NAME = (0, _index.addNamespace)(_drag.end, namespace);
-  };
-  _proto._initMarkup = function _initMarkup() {
-    _Widget.prototype._initMarkup.call(this);
+    this.CLICK_EVENT_NAME = (0, _index.addNamespace)(_click.name, namespace);
+    this.DOUBLE_CLICK_EVENT_NAME = (0, _index.addNamespace)(_double_click.name, namespace);
+  }
+  _initMarkup() {
+    super._initMarkup();
     this._renderResizeHandleContent();
     this._setAriaAttributes();
-  };
-  _proto._renderResizeHandleContent = function _renderResizeHandleContent() {
+  }
+  _renderResizeHandleContent() {
     const {
       resizable
     } = this.option();
-    this.$element().addClass(RESIZE_HANDLE_CLASS);
-    this.$element().toggleClass(RESIZE_HANDLE_RESIZABLE_CLASS, resizable);
+    (0, _renderer.default)(this.element()).addClass(RESIZE_HANDLE_CLASS);
+    (0, _renderer.default)(this.element()).toggleClass(RESIZE_HANDLE_RESIZABLE_CLASS, resizable);
     this._toggleDirectionClass();
-    this._setResizeHandleSize();
+    this._updateDimensions();
     this._$collapsePrevButton = (0, _renderer.default)('<div>').addClass(this._getIconClass('prev')).appendTo(this.$element());
     this._$resizeHandle = (0, _renderer.default)('<div>').addClass(this._getIconClass('icon')).appendTo(this.$element());
     this._$collapseNextButton = (0, _renderer.default)('<div>').addClass(this._getIconClass('next')).appendTo(this.$element());
     this._setCollapseButtonsVisibility();
     this._setResizeIconVisibility();
-  };
-  _proto._updateIconsClasses = function _updateIconsClasses() {
+  }
+  _updateIconsClasses() {
+    var _this$_$collapsePrevB, _this$_$resizeHandle, _this$_$collapseNextB;
     const isHorizontal = this._isHorizontalDirection();
-    this._$collapsePrevButton.removeClass(this._getCollapseIconClass(false, !isHorizontal)).addClass(this._getCollapseIconClass(false, isHorizontal));
-    this._$resizeHandle.removeClass(this._getResizeIconClass(!isHorizontal)).addClass(this._getResizeIconClass(isHorizontal));
-    this._$collapseNextButton.removeClass(this._getCollapseIconClass(true, !isHorizontal)).addClass(this._getCollapseIconClass(true, isHorizontal));
-  };
-  _proto._setResizeHandleSize = function _setResizeHandleSize() {
+    const rtlEnabled = this.option('rtlEnabled');
+    (_this$_$collapsePrevB = this._$collapsePrevButton) === null || _this$_$collapsePrevB === void 0 || _this$_$collapsePrevB.removeClass(this._getCollapseIconClass(false, !isHorizontal, !!rtlEnabled)).addClass(this._getCollapseIconClass(false, isHorizontal, !!rtlEnabled));
+    (_this$_$resizeHandle = this._$resizeHandle) === null || _this$_$resizeHandle === void 0 || _this$_$resizeHandle.removeClass(this._getResizeIconClass(!isHorizontal)).addClass(this._getResizeIconClass(isHorizontal));
+    (_this$_$collapseNextB = this._$collapseNextButton) === null || _this$_$collapseNextB === void 0 || _this$_$collapseNextB.removeClass(this._getCollapseIconClass(true, !isHorizontal, !!rtlEnabled)).addClass(this._getCollapseIconClass(true, isHorizontal, !!rtlEnabled));
+  }
+  _updateDimensions() {
+    const isHorizontal = this._isHorizontalDirection();
+    const dimension = isHorizontal ? 'width' : 'height';
+    const inverseDimension = isHorizontal ? 'height' : 'width';
+    // @ts-expect-error ts-error
+    this.option(inverseDimension, null);
+    this.option(dimension, this.getSize());
+  }
+  _isInactive() {
     const {
-      separatorSize,
       resizable,
       showCollapseNext,
       showCollapsePrev
     } = this.option();
+    return resizable === false && showCollapseNext === false && showCollapsePrev === false;
+  }
+  _getIconClass(iconType) {
     const isHorizontal = this._isHorizontalDirection();
-    const dimension = isHorizontal ? 'width' : 'height';
-    const inverseDimension = isHorizontal ? 'height' : 'width';
-    if (resizable === false && showCollapseNext === false && showCollapsePrev === false) {
-      this.option('disabled', true);
-      this.option(dimension, INACTIVE_RESIZE_HANDLE_SIZE);
-      this.option(inverseDimension, null);
-    } else {
-      this.option(dimension, separatorSize);
-      this.option(inverseDimension, null);
-      this.option('disabled', false);
-    }
-  };
-  _proto._getIconClass = function _getIconClass(iconType) {
-    const isHorizontal = this._isHorizontalDirection();
+    const rtlEnabled = this.option('rtlEnabled');
     switch (iconType) {
       case 'prev':
-        return "".concat(RESIZE_HANDLE_COLLAPSE_PREV_PANE_CLASS, " ").concat(ICON_CLASS, " ").concat(this._getCollapseIconClass(false, isHorizontal));
+        return `${RESIZE_HANDLE_COLLAPSE_PREV_PANE_CLASS} ${ICON_CLASS} ${this._getCollapseIconClass(false, isHorizontal, !!rtlEnabled)}`;
       case 'next':
-        return "".concat(RESIZE_HANDLE_COLLAPSE_NEXT_PANE_CLASS, " ").concat(ICON_CLASS, " ").concat(this._getCollapseIconClass(true, isHorizontal));
+        return `${RESIZE_HANDLE_COLLAPSE_NEXT_PANE_CLASS} ${ICON_CLASS} ${this._getCollapseIconClass(true, isHorizontal, !!rtlEnabled)}`;
       case 'icon':
-        return "".concat(RESIZE_HANDLE_ICON_CLASS, " ").concat(ICON_CLASS, " ").concat(this._getResizeIconClass(isHorizontal));
+        return `${RESIZE_HANDLE_ICON_CLASS} ${ICON_CLASS} ${this._getResizeIconClass(isHorizontal)}`;
       default:
         return '';
     }
   }
-  // eslint-disable-next-line class-methods-use-this
-  ;
-  _proto._getResizeIconClass = function _getResizeIconClass(isHorizontal) {
-    return "dx-icon-handle".concat(isHorizontal ? 'vertical' : 'horizontal');
+  _getResizeIconClass(isHorizontal) {
+    return `dx-icon-handle${isHorizontal ? 'vertical' : 'horizontal'}`;
   }
-  // eslint-disable-next-line class-methods-use-this
-  ;
-  _proto._getCollapseIconClass = function _getCollapseIconClass(isNextButton, isHorizontal) {
-    if (isNextButton) {
-      return "dx-icon-triangle".concat(isHorizontal ? 'right' : 'down');
-    }
-    return "dx-icon-triangle".concat(isHorizontal ? 'left' : 'up');
-  };
-  _proto._setCollapseButtonsVisibility = function _setCollapseButtonsVisibility() {
+  _getCollapseIconClass(isNextButton, isHorizontal, rtlEnabled) {
+    const horizontalDirection = isNextButton === rtlEnabled ? 'left' : 'right';
+    const verticalDirection = isNextButton ? 'down' : 'up';
+    return `dx-icon-triangle${isHorizontal ? horizontalDirection : verticalDirection}`;
+  }
+  _setCollapseButtonsVisibility() {
+    var _this$_$collapsePrevB2, _this$_$collapseNextB2;
     const {
       showCollapsePrev,
       showCollapseNext
     } = this.option();
-    this._$collapsePrevButton.toggleClass(STATE_INVISIBLE_CLASS, !showCollapsePrev);
-    this._$collapseNextButton.toggleClass(STATE_INVISIBLE_CLASS, !showCollapseNext);
-  };
-  _proto._setResizeIconVisibility = function _setResizeIconVisibility() {
+    (_this$_$collapsePrevB2 = this._$collapsePrevButton) === null || _this$_$collapsePrevB2 === void 0 || _this$_$collapsePrevB2.toggleClass(STATE_INVISIBLE_CLASS, !showCollapsePrev);
+    (_this$_$collapseNextB2 = this._$collapseNextButton) === null || _this$_$collapseNextB2 === void 0 || _this$_$collapseNextB2.toggleClass(STATE_INVISIBLE_CLASS, !showCollapseNext);
+  }
+  _setResizeIconVisibility() {
+    var _this$_$resizeHandle2;
     const {
       resizable
     } = this.option();
-    this._$resizeHandle.toggleClass(STATE_INVISIBLE_CLASS, !resizable);
-  };
-  _proto._setAriaAttributes = function _setAriaAttributes() {
+    (_this$_$resizeHandle2 = this._$resizeHandle) === null || _this$_$resizeHandle2 === void 0 || _this$_$resizeHandle2.toggleClass(STATE_INVISIBLE_CLASS, !resizable);
+  }
+  _setAriaAttributes() {
     this.setAria({
       role: 'application',
       // eslint-disable-next-line spellcheck/spell-checker
       roledescription: 'separator',
-      orientation: this._isHorizontalDirection() ? 'vertical' : 'horizontal',
-      label: 'Split bar'
+      label: _message.default.format('dxSplitter-resizeHandleAriaLabel')
     });
-  };
-  _proto._toggleDirectionClass = function _toggleDirectionClass() {
-    this.$element().toggleClass(HORIZONTAL_DIRECTION_CLASS, this._isHorizontalDirection());
-    this.$element().toggleClass(VERTICAL_DIRECTION_CLASS, !this._isHorizontalDirection());
-  };
-  _proto._render = function _render() {
-    _Widget.prototype._render.call(this);
+  }
+  _toggleDirectionClass() {
+    (0, _renderer.default)(this.element()).toggleClass(HORIZONTAL_DIRECTION_CLASS, this._isHorizontalDirection());
+    (0, _renderer.default)(this.element()).toggleClass(VERTICAL_DIRECTION_CLASS, !this._isHorizontalDirection());
+  }
+  _render() {
+    super._render();
     this._attachEventHandlers();
-  };
-  _proto._resizeStartHandler = function _resizeStartHandler(e) {
+  }
+  _resizeStartHandler(e) {
     this._getAction(_event.RESIZE_EVENT.onResizeStart)({
       event: e
     });
-  };
-  _proto._resizeHandler = function _resizeHandler(e) {
+  }
+  _resizeHandler(e) {
     this._getAction(_event.RESIZE_EVENT.onResize)({
       event: e
     });
-  };
-  _proto._resizeEndHandler = function _resizeEndHandler(e) {
+  }
+  _resizeEndHandler(e) {
     this._getAction(_event.RESIZE_EVENT.onResizeEnd)({
       event: e
     });
-  };
-  _proto._collapsePrevHandler = function _collapsePrevHandler(e) {
+  }
+  _collapsePrevHandler(e) {
     this._getAction(_event.COLLAPSE_EVENT.onCollapsePrev)({
       event: e
     });
-  };
-  _proto._collapseNextHandler = function _collapseNextHandler(e) {
+  }
+  _collapseNextHandler(e) {
     this._getAction(_event.COLLAPSE_EVENT.onCollapseNext)({
       event: e
     });
-  };
-  _proto._resizeBy = function _resizeBy(e) {
+  }
+  _resizeBy(e) {
     let offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
       x: 0,
       y: 0
@@ -288,45 +294,89 @@ let ResizeHandle = /*#__PURE__*/function (_Widget) {
     this._resizeStartHandler(e);
     this._resizeHandler(e);
     this._resizeEndHandler(e);
-  };
-  _proto._getAction = function _getAction(eventName) {
-    var _a;
+  }
+  _createEventAction(eventName) {
+    const actionName = (0, _event.getActionNameByEventName)(eventName);
+    this[actionName] = this._createActionByOption(eventName, {
+      excludeValidators: ['disabled', 'readOnly']
+    });
+  }
+  _getAction(eventName) {
+    const actionName = (0, _event.getActionNameByEventName)(eventName);
+    if (!this[actionName]) {
+      this._createEventAction(eventName);
+    }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return (_a = this[(0, _event.getActionNameByEventName)(eventName)]) !== null && _a !== void 0 ? _a : this._createActionByOption(eventName);
-  };
-  _proto._attachEventHandlers = function _attachEventHandlers() {
+    return this[actionName];
+  }
+  _attachEventHandlers() {
+    this._attachResizeEventHandlers();
+    this._attachPointerEventHandlers();
+  }
+  _attachResizeEventHandlers() {
     const {
       resizable,
       direction
     } = this.option();
-    const eventData = {
-      direction,
-      immediate: true
-    };
     if (resizable) {
+      const eventData = {
+        direction,
+        immediate: true
+      };
       _events_engine.default.on(this.$element(), this.RESIZE_START_EVENT_NAME, eventData, this._resizeStartHandler.bind(this));
       _events_engine.default.on(this.$element(), this.RESIZE_EVENT_NAME, eventData, this._resizeHandler.bind(this));
       _events_engine.default.on(this.$element(), this.RESIZE_END_EVENT_NAME, eventData, this._resizeEndHandler.bind(this));
     }
-    _events_engine.default.on(this._$collapsePrevButton, _click.name, this._collapsePrevHandler.bind(this));
-    _events_engine.default.on(this._$collapseNextButton, _click.name, this._collapseNextHandler.bind(this));
-  };
-  _proto._detachEventHandlers = function _detachEventHandlers() {
-    // @ts-expect-error todo: make optional parameters for eventsEngine
+  }
+  _attachPointerEventHandlers() {
+    const {
+      showCollapsePrev,
+      showCollapseNext
+    } = this.option();
+    if (showCollapsePrev === true || showCollapseNext === true) {
+      _events_engine.default.on(this.$element(), this.DOUBLE_CLICK_EVENT_NAME, this._doubleClickHandler.bind(this));
+    }
+    if (showCollapsePrev === true) {
+      _events_engine.default.on(this._$collapsePrevButton, this.CLICK_EVENT_NAME, this._collapsePrevHandler.bind(this));
+    }
+    if (showCollapseNext === true) {
+      _events_engine.default.on(this._$collapseNextButton, this.CLICK_EVENT_NAME, this._collapseNextHandler.bind(this));
+    }
+  }
+  _detachEventHandlers() {
+    this._detachResizeEventHandlers();
+    this._detachPointerEventHandlers();
+  }
+  _detachResizeEventHandlers() {
     _events_engine.default.off(this.$element(), this.RESIZE_START_EVENT_NAME);
-    // @ts-expect-error todo: make optional parameters for eventsEngine
     _events_engine.default.off(this.$element(), this.RESIZE_EVENT_NAME);
-    // @ts-expect-error todo: make optional parameters for eventsEngine
     _events_engine.default.off(this.$element(), this.RESIZE_END_EVENT_NAME);
-    // @ts-expect-error todo: make optional parameters for eventsEngine
-    _events_engine.default.off(this._$collapsePrevButton, _click.name);
-    // @ts-expect-error todo: make optional parameters for eventsEngine
-    _events_engine.default.off(this._$collapseNextButton, _click.name);
-  };
-  _proto._isHorizontalDirection = function _isHorizontalDirection() {
+  }
+  _detachPointerEventHandlers() {
+    _events_engine.default.off(this.$element(), this.DOUBLE_CLICK_EVENT_NAME);
+    _events_engine.default.off(this._$collapsePrevButton, this.CLICK_EVENT_NAME);
+    _events_engine.default.off(this._$collapseNextButton, this.CLICK_EVENT_NAME);
+  }
+  _doubleClickHandler(e) {
+    const {
+      showCollapsePrev,
+      showCollapseNext
+    } = this.option();
+    if (showCollapsePrev === true) {
+      this._collapsePrevHandler(e);
+    } else if (showCollapseNext === true) {
+      this._collapseNextHandler(e);
+    }
+  }
+  _isHorizontalDirection() {
     return this.option('direction') === RESIZE_DIRECTION.horizontal;
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _clean() {
+    this._detachResizeEventHandlers();
+    this._detachPointerEventHandlers();
+    super._clean();
+  }
+  _optionChanged(args) {
     const {
       name,
       value
@@ -334,40 +384,51 @@ let ResizeHandle = /*#__PURE__*/function (_Widget) {
     switch (name) {
       case 'direction':
         this._toggleDirectionClass();
-        this._detachEventHandlers();
-        this._attachEventHandlers();
-        this._setResizeHandleSize();
+        this._detachResizeEventHandlers();
+        this._attachResizeEventHandlers();
+        this._updateDimensions();
         this._updateIconsClasses();
         break;
       case 'resizable':
         this._setResizeIconVisibility();
-        this.$element().toggleClass(RESIZE_HANDLE_RESIZABLE_CLASS, value);
-        this._detachEventHandlers();
-        this._attachEventHandlers();
-        this._setResizeHandleSize();
+        (0, _renderer.default)(this.element()).toggleClass(RESIZE_HANDLE_RESIZABLE_CLASS, !!value);
+        this._detachResizeEventHandlers();
+        this._attachResizeEventHandlers();
+        this._updateDimensions();
         break;
       case 'separatorSize':
-        this._setResizeHandleSize();
+        this._updateDimensions();
         break;
       case 'showCollapsePrev':
       case 'showCollapseNext':
         this._setCollapseButtonsVisibility();
-        this._setResizeHandleSize();
+        this._setResizeIconVisibility();
+        this._updateDimensions();
+        this._detachPointerEventHandlers();
+        this._attachPointerEventHandlers();
         break;
       case 'onCollapsePrev':
       case 'onCollapseNext':
-        this._detachEventHandlers();
-        this._attachEventHandlers();
-        break;
       case 'onResize':
       case 'onResizeStart':
       case 'onResizeEnd':
-        this[(0, _event.getActionNameByEventName)(name)] = this._createActionByOption(name);
+        this._createEventAction(name);
         break;
       default:
-        _Widget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  return ResizeHandle;
-}(_ui.default);
+  }
+  getSize() {
+    const {
+      separatorSize
+    } = this.option();
+    if (this._isInactive()) {
+      return INACTIVE_RESIZE_HANDLE_SIZE;
+    }
+    return separatorSize !== undefined && Number.isFinite(separatorSize) && separatorSize >= 0 ? separatorSize : DEFAULT_RESIZE_HANDLE_SIZE;
+  }
+  isInactive() {
+    return this._isInactive();
+  }
+}
 var _default = exports.default = ResizeHandle;

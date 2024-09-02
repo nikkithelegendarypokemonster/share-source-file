@@ -1,36 +1,47 @@
 /**
 * DevExtreme (ui/pivot_grid/xmla_store.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.data
+ * @docid
+ * @type object
  */
 export interface XmlaStoreOptions {
     /**
-     * Specifies a function that customizes the request before it is sent to the server.
+     * @docid
+     * @type_function_param1_field headers:object
+     * @type_function_param1_field xhrFields:object
+     * @public
      */
     beforeSend?: ((options: { url?: string; method?: string; headers?: any; xhrFields?: any; data?: string; dataType?: string }) => void);
     /**
-     * Specifies the database (or initial catalog) that contains the OLAP cube to use.
+     * @docid
+     * @public
      */
     catalog?: string;
     /**
-     * Specifies the name of the OLAP cube to use from the catalog.
+     * @docid
+     * @public
      */
     cube?: string;
     /**
-     * Specifies the OLAP server&apos;s URL.
+     * @docid
+     * @public
      */
     url?: string;
 }
 /**
-                                                                     * The XmlaStore is a store that provides an interface for accessing an OLAP cube according to the XMLA standard.
-                                                                     */
-                                                                    export default class XmlaStore {
+ * @docid
+ * @namespace DevExpress.data
+ * @public
+ * @options XmlaStoreOptions
+ */
+ // eslint-disable-next-line @typescript-eslint/no-extraneous-class
+export default class XmlaStore {
     constructor(options?: XmlaStoreOptions);
 }

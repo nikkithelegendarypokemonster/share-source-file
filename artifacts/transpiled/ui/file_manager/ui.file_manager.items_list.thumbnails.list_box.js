@@ -12,10 +12,8 @@ var _events_engine = _interopRequireDefault(require("../../events/core/events_en
 var _bindable_template = require("../../core/templates/bindable_template");
 var _scroll_view = _interopRequireDefault(require("../scroll_view"));
 var _uiCollection_widget = _interopRequireDefault(require("../collection/ui.collection_widget.edit"));
-var _selection = _interopRequireDefault(require("../selection/selection"));
+var _m_selection = _interopRequireDefault(require("../../__internal/ui/selection/m_selection"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const FILE_MANAGER_THUMBNAILS_VIEW_PORT_CLASS = 'dx-filemanager-thumbnails-view-port';
 const FILE_MANAGER_THUMBNAILS_ITEM_LIST_CONTAINER_CLASS = 'dx-filemanager-thumbnails-container';
 const FILE_MANAGER_THUMBNAILS_ITEM_CLASS = 'dx-filemanager-thumbnails-item';
@@ -24,32 +22,27 @@ const FILE_MANAGER_THUMBNAILS_ITEM_SPACER_CLASS = 'dx-filemanager-thumbnails-ite
 const FILE_MANAGER_THUMBNAILS_ITEM_DATA_KEY = 'dxFileManagerItemData';
 const FILE_MANAGER_THUMBNAILS_LIST_BOX_NAMESPACE = 'dxFileManagerThumbnailsListBox';
 const FILE_MANAGER_THUMBNAILS_LIST_BOX_HOLD_EVENT_NAME = (0, _index.addNamespace)(_hold.default.name, FILE_MANAGER_THUMBNAILS_LIST_BOX_NAMESPACE);
-let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
-  _inheritsLoose(FileManagerThumbnailListBox, _CollectionWidget);
-  function FileManagerThumbnailListBox() {
-    return _CollectionWidget.apply(this, arguments) || this;
-  }
-  var _proto = FileManagerThumbnailListBox.prototype;
-  _proto._initMarkup = function _initMarkup() {
+class FileManagerThumbnailListBox extends _uiCollection_widget.default {
+  _initMarkup() {
     this._initActions();
     this._lockFocusedItemProcessing = false;
     this.$element().addClass(FILE_MANAGER_THUMBNAILS_VIEW_PORT_CLASS);
     this._renderScrollView();
     this._renderItemsContainer();
     this._createScrollViewControl();
-    _CollectionWidget.prototype._initMarkup.call(this);
+    super._initMarkup();
     this.onFocusedItemChanged = this._onFocusedItemChanged.bind(this);
     this._layoutUtils = new ListBoxLayoutUtils(this._scrollView, this.$element(), this._$itemContainer, this.itemElements().first());
     this._syncFocusedItemKey();
-  };
-  _proto._initActions = function _initActions() {
+  }
+  _initActions() {
     this._actions = {
       onItemEnterKeyPressed: this._createActionByOption('onItemEnterKeyPressed'),
       onFocusedItemChanged: this._createActionByOption('onFocusedItemChanged')
     };
-  };
-  _proto._initTemplates = function _initTemplates() {
-    _CollectionWidget.prototype._initTemplates.call(this);
+  }
+  _initTemplates() {
+    super._initTemplates();
     this._itemThumbnailTemplate = this.option('itemThumbnailTemplate');
     this._getTooltipText = this.option('getTooltipText');
     this._templateManager.addDefaultTemplates({
@@ -58,8 +51,8 @@ let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
         $container.append($itemElement);
       }.bind(this), ['fileItem'], this.option('integrationOptions.watchMethod'))
     });
-  };
-  _proto._createScrollViewControl = function _createScrollViewControl() {
+  }
+  _createScrollViewControl() {
     if (!this._scrollView) {
       this._scrollView = this._createComponent(this._$scrollView, _scroll_view.default, {
         scrollByContent: true,
@@ -68,31 +61,31 @@ let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
         showScrollbar: 'onHover'
       });
     }
-  };
-  _proto._renderScrollView = function _renderScrollView() {
+  }
+  _renderScrollView() {
     if (!this._$scrollView) {
       this._$scrollView = (0, _renderer.default)('<div>').appendTo(this.$element());
     }
-  };
-  _proto.getScrollable = function getScrollable() {
+  }
+  getScrollable() {
     return this._scrollView;
-  };
-  _proto._renderItemsContainer = function _renderItemsContainer() {
+  }
+  _renderItemsContainer() {
     if (!this._$itemContainer) {
       this._$itemContainer = (0, _renderer.default)('<div>').addClass(FILE_MANAGER_THUMBNAILS_ITEM_LIST_CONTAINER_CLASS).appendTo(this._$scrollView);
     }
-  };
-  _proto._render = function _render() {
-    _CollectionWidget.prototype._render.call(this);
+  }
+  _render() {
+    super._render();
     this._detachEventHandlers();
     this._attachEventHandlers();
-  };
-  _proto._clean = function _clean() {
+  }
+  _clean() {
     this._detachEventHandlers();
-    _CollectionWidget.prototype._clean.call(this);
-  };
-  _proto._supportedKeys = function _supportedKeys() {
-    return (0, _extend.extend)(_CollectionWidget.prototype._supportedKeys.call(this), {
+    super._clean();
+  }
+  _supportedKeys() {
+    return (0, _extend.extend)(super._supportedKeys(), {
       upArrow(e) {
         this._beforeKeyProcessing(e);
         this._processArrowKeys(-1, false, e);
@@ -128,12 +121,12 @@ let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
         }
       }
     });
-  };
-  _proto._beforeKeyProcessing = function _beforeKeyProcessing(e) {
+  }
+  _beforeKeyProcessing(e) {
     e.preventDefault();
     this._layoutUtils.reset();
-  };
-  _proto._processArrowKeys = function _processArrowKeys(offset, horizontal, eventArgs) {
+  }
+  _processArrowKeys(offset, horizontal, eventArgs) {
     const item = this._getFocusedItem();
     if (item) {
       if (!horizontal) {
@@ -146,11 +139,11 @@ let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
       const newItemIndex = this._getIndexByItem(item) + offset;
       this._focusItemByIndex(newItemIndex, true, eventArgs);
     }
-  };
-  _proto._processHomeEndKeys = function _processHomeEndKeys(index, scrollToItem, eventArgs) {
+  }
+  _processHomeEndKeys(index, scrollToItem, eventArgs) {
     this._focusItemByIndex(index, scrollToItem, eventArgs);
-  };
-  _proto._processPageChange = function _processPageChange(pageUp, eventArgs) {
+  }
+  _processPageChange(pageUp, eventArgs) {
     const item = this._getFocusedItem();
     if (!item) {
       return;
@@ -171,17 +164,17 @@ let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
       newItemIndex = this._getItemsLength() - 1;
     }
     this._focusItemByIndex(newItemIndex, true, eventArgs);
-  };
-  _proto._processLongTap = function _processLongTap(e) {
+  }
+  _processLongTap(e) {
     const $targetItem = this._closestItemElement((0, _renderer.default)(e.target));
     const itemIndex = this._getIndexByItemElement($targetItem);
     this._selection.changeItemSelection(itemIndex, {
       control: true
     });
-  };
-  _proto._attachEventHandlers = function _attachEventHandlers() {
+  }
+  _attachEventHandlers() {
     if (this.option('selectionMode') === 'multiple') {
-      _events_engine.default.on(this._itemContainer(), FILE_MANAGER_THUMBNAILS_LIST_BOX_HOLD_EVENT_NAME, ".".concat(this._itemContentClass()), e => {
+      _events_engine.default.on(this._itemContainer(), FILE_MANAGER_THUMBNAILS_LIST_BOX_HOLD_EVENT_NAME, `.${this._itemContentClass()}`, e => {
         this._processLongTap(e);
         e.stopPropagation();
       });
@@ -191,28 +184,28 @@ let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
         e.preventDefault();
       }
     });
-  };
-  _proto._detachEventHandlers = function _detachEventHandlers() {
+  }
+  _detachEventHandlers() {
     _events_engine.default.off(this._itemContainer(), FILE_MANAGER_THUMBNAILS_LIST_BOX_HOLD_EVENT_NAME);
     _events_engine.default.off(this._itemContainer(), 'mousedown selectstart');
-  };
-  _proto._itemContainer = function _itemContainer() {
+  }
+  _itemContainer() {
     return this._$itemContainer;
-  };
-  _proto._itemClass = function _itemClass() {
+  }
+  _itemClass() {
     return FILE_MANAGER_THUMBNAILS_ITEM_CLASS;
-  };
-  _proto._itemDataKey = function _itemDataKey() {
+  }
+  _itemDataKey() {
     return FILE_MANAGER_THUMBNAILS_ITEM_DATA_KEY;
-  };
-  _proto._getDefaultItemTemplate = function _getDefaultItemTemplate(fileItemInfo, $itemElement) {
+  }
+  _getDefaultItemTemplate(fileItemInfo, $itemElement) {
     $itemElement.attr('title', this._getTooltipText(fileItemInfo));
     const $itemThumbnail = this._itemThumbnailTemplate(fileItemInfo);
     const $itemSpacer = (0, _renderer.default)('<div>').addClass(FILE_MANAGER_THUMBNAILS_ITEM_SPACER_CLASS);
     const $itemName = (0, _renderer.default)('<div>').addClass(FILE_MANAGER_THUMBNAILS_ITEM_NAME_CLASS).text(fileItemInfo.fileItem.name);
     $itemElement.append($itemThumbnail, $itemSpacer, $itemName);
-  };
-  _proto._itemSelectHandler = function _itemSelectHandler(e) {
+  }
+  _itemSelectHandler(e) {
     let options = {};
     if (this.option('selectionMode') === 'multiple') {
       if (!this._isPreserveSelectionMode) {
@@ -225,9 +218,9 @@ let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
     }
     const index = this._getIndexByItemElement(e.currentTarget);
     this._selection.changeItemSelection(index, options);
-  };
-  _proto._initSelectionModule = function _initSelectionModule() {
-    _CollectionWidget.prototype._initSelectionModule.call(this);
+  }
+  _initSelectionModule() {
+    super._initSelectionModule();
     const options = (0, _extend.extend)(this._selection.options, {
       selectedKeys: this.option('selectedItemKeys'),
       onSelectionChanged: args => {
@@ -235,9 +228,9 @@ let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
         this._updateSelectedItems(args);
       }
     });
-    this._selection = new _selection.default(options);
-  };
-  _proto._updateSelectedItems = function _updateSelectedItems(args) {
+    this._selection = new _m_selection.default(options);
+  }
+  _updateSelectedItems(args) {
     const addedItemKeys = args.addedItemKeys;
     const removedItemKeys = args.removedItemKeys;
     if (this._rendered && (addedItemKeys.length || removedItemKeys.length)) {
@@ -262,55 +255,55 @@ let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
       }
       (0, _deferred.when)(selectionChangePromise).done(() => this._fireSelectionChangeEvent(args));
     }
-  };
-  _proto._fireSelectionChangeEvent = function _fireSelectionChangeEvent(args) {
+  }
+  _fireSelectionChangeEvent(args) {
     this._createActionByOption('onSelectionChanged', {
       excludeValidators: ['disabled', 'readOnly']
     })(args);
-  };
-  _proto._updateSelection = function _updateSelection(addedSelection, removedSelection) {
+  }
+  _updateSelection(addedSelection, removedSelection) {
     const selectedItemsCount = this.getSelectedItems().length;
     if (selectedItemsCount === 0) {
       this._isPreserveSelectionMode = false;
     }
-  };
-  _proto._normalizeSelectedItems = function _normalizeSelectedItems() {
+  }
+  _normalizeSelectedItems() {
     const newKeys = this._getKeysByItems(this.option('selectedItems'));
     const oldKeys = this._selection.getSelectedItemKeys();
     if (!this._compareKeys(oldKeys, newKeys)) {
       this._selection.setSelection(newKeys);
     }
     return new _deferred.Deferred().resolve().promise();
-  };
-  _proto._focusOutHandler = function _focusOutHandler() {};
-  _proto._getItems = function _getItems() {
+  }
+  _focusOutHandler() {}
+  _getItems() {
     return this.option('items') || [];
-  };
-  _proto._getItemsLength = function _getItemsLength() {
+  }
+  _getItemsLength() {
     return this._getItems().length;
-  };
-  _proto._getIndexByItemElement = function _getIndexByItemElement(itemElement) {
+  }
+  _getIndexByItemElement(itemElement) {
     return this._editStrategy.getNormalizedIndex(itemElement);
-  };
-  _proto._getItemByIndex = function _getItemByIndex(index) {
+  }
+  _getItemByIndex(index) {
     return this._getItems()[index];
-  };
-  _proto._getFocusedItem = function _getFocusedItem() {
+  }
+  _getFocusedItem() {
     return this.getItemByItemElement(this.option('focusedElement'));
-  };
-  _proto._focusItem = function _focusItem(item, scrollToItem) {
+  }
+  _focusItem(item, scrollToItem) {
     this.option('focusedElement', this.getItemElementByItem(item));
     if (scrollToItem) {
       this._layoutUtils.scrollToItem(this._getIndexByItem(item));
     }
-  };
-  _proto._focusItemByIndex = function _focusItemByIndex(index, scrollToItem, eventArgs) {
+  }
+  _focusItemByIndex(index, scrollToItem, eventArgs) {
     if (index >= 0 && index < this._getItemsLength()) {
       const item = this._getItemByIndex(index);
       this._focusItem(item, scrollToItem, eventArgs);
     }
-  };
-  _proto._syncFocusedItemKey = function _syncFocusedItemKey() {
+  }
+  _syncFocusedItemKey() {
     if (!this._syncFocusedItemKeyDeferred) {
       this._syncFocusedItemKeyDeferred = new _deferred.Deferred();
     }
@@ -334,8 +327,8 @@ let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
     }
     this._syncFocusedItemKeyDeferred = null;
     return deferred.promise();
-  };
-  _proto._onFocusedItemChanged = function _onFocusedItemChanged() {
+  }
+  _onFocusedItemChanged() {
     const focusedItem = this._getFocusedItem();
     const newFocusedItemKey = this.keyOf(focusedItem);
     const oldFocusedItemKey = this.option('focusedItemKey');
@@ -345,15 +338,15 @@ let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
       this._lockFocusedItemProcessing = false;
       this._raiseFocusedItemChanged(focusedItem);
     }
-  };
-  _proto._raiseFocusedItemChanged = function _raiseFocusedItemChanged(focusedItem) {
+  }
+  _raiseFocusedItemChanged(focusedItem) {
     const args = {
       item: focusedItem,
       itemElement: this.option('focusedElement')
     };
     this._actions.onFocusedItemChanged(args);
-  };
-  _proto._changeItemSelection = function _changeItemSelection(item, select) {
+  }
+  _changeItemSelection(item, select) {
     if (this.isItemSelected(item) === select) {
       return;
     }
@@ -362,40 +355,40 @@ let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
     this._selection.changeItemSelection(index, {
       control: this._isPreserveSelectionMode
     });
-  };
-  _proto._chooseSelectOption = function _chooseSelectOption() {
+  }
+  _chooseSelectOption() {
     return 'selectedItemKeys';
-  };
-  _proto.getSelectedItems = function getSelectedItems() {
+  }
+  getSelectedItems() {
     return this._selection.getSelectedItems();
-  };
-  _proto.getItemElementByItem = function getItemElementByItem(item) {
+  }
+  getItemElementByItem(item) {
     return this._editStrategy.getItemElement(item);
-  };
-  _proto.getItemByItemElement = function getItemByItemElement(itemElement) {
+  }
+  getItemByItemElement(itemElement) {
     return this._getItemByIndex(this._getIndexByItemElement(itemElement));
-  };
-  _proto.selectAll = function selectAll() {
+  }
+  selectAll() {
     if (this.option('selectionMode') !== 'multiple') return;
     this._selection.selectAll();
     this._isPreserveSelectionMode = true;
-  };
-  _proto.selectItem = function selectItem(item) {
+  }
+  selectItem(item) {
     this._changeItemSelection(item, true);
-  };
-  _proto.deselectItem = function deselectItem(item) {
+  }
+  deselectItem(item) {
     this._changeItemSelection(item, false);
-  };
-  _proto.clearSelection = function clearSelection() {
+  }
+  clearSelection() {
     this._selection.deselectAll();
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _optionChanged(args) {
     switch (args.name) {
       case 'items':
         if (this._layoutUtils) {
           this._layoutUtils.updateItems(this.itemElements().first());
         }
-        _CollectionWidget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
         break;
       case 'focusedItemKey':
         if (this._lockFocusedItemProcessing) {
@@ -416,33 +409,31 @@ let FileManagerThumbnailListBox = /*#__PURE__*/function (_CollectionWidget) {
         this._actions[args.name] = this._createActionByOption(args.name);
         break;
       default:
-        _CollectionWidget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  return FileManagerThumbnailListBox;
-}(_uiCollection_widget.default);
-let ListBoxLayoutUtils = /*#__PURE__*/function () {
-  function ListBoxLayoutUtils(scrollView, $viewPort, $itemContainer, $item) {
+  }
+}
+class ListBoxLayoutUtils {
+  constructor(scrollView, $viewPort, $itemContainer, $item) {
     this._layoutModel = null;
     this._scrollView = scrollView;
     this._$viewPort = $viewPort;
     this._$itemContainer = $itemContainer;
     this._$item = $item;
   }
-  var _proto2 = ListBoxLayoutUtils.prototype;
-  _proto2.updateItems = function updateItems($item) {
+  updateItems($item) {
     this._$item = $item;
-  };
-  _proto2.reset = function reset() {
+  }
+  reset() {
     this._layoutModel = null;
-  };
-  _proto2.getLayoutModel = function getLayoutModel() {
+  }
+  getLayoutModel() {
     if (!this._layoutModel) {
       this._layoutModel = this._createLayoutModel();
     }
     return this._layoutModel;
-  };
-  _proto2._createLayoutModel = function _createLayoutModel() {
+  }
+  _createLayoutModel() {
     if (!this._$item) {
       return null;
     }
@@ -467,8 +458,8 @@ let ListBoxLayoutUtils = /*#__PURE__*/function () {
       itemPerRowCount: itemPerRowCount,
       rowPerPageRate: rowPerPageRate
     };
-  };
-  _proto2.createItemLayoutModel = function createItemLayoutModel(index) {
+  }
+  createItemLayoutModel(index) {
     const layout = this.getLayoutModel();
     if (!layout) {
       return null;
@@ -483,8 +474,8 @@ let ListBoxLayoutUtils = /*#__PURE__*/function () {
       itemTop: itemTop,
       itemBottom: itemBottom
     };
-  };
-  _proto2.scrollToItem = function scrollToItem(index) {
+  }
+  scrollToItem(index) {
     const layout = this.getLayoutModel();
     if (!layout) {
       return;
@@ -499,9 +490,8 @@ let ListBoxLayoutUtils = /*#__PURE__*/function () {
       newScrollTop = itemBottom - layout.viewPortHeight;
     }
     this._scrollView.scrollTo(newScrollTop);
-  };
-  return ListBoxLayoutUtils;
-}();
+  }
+}
 var _default = exports.default = FileManagerThumbnailListBox;
 module.exports = exports.default;
 module.exports.default = exports.default;

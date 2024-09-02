@@ -14,8 +14,6 @@ var _tooltip = _interopRequireDefault(require("../tooltip"));
 var _diagram = require("./diagram.importer");
 var _uiDiagram = _interopRequireDefault(require("./ui.diagram.floating_panel"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const DIAGRAM_TOOLBOX_MIN_HEIGHT = 130;
 const DIAGRAM_TOOLBOX_POPUP_CLASS = 'dx-diagram-toolbox-popup';
 const DIAGRAM_TOOLBOX_PANEL_CLASS = 'dx-diagram-toolbox-panel';
@@ -23,32 +21,27 @@ const DIAGRAM_TOOLBOX_INPUT_CONTAINER_CLASS = 'dx-diagram-toolbox-input-containe
 const DIAGRAM_TOOLBOX_INPUT_CLASS = 'dx-diagram-toolbox-input';
 const DIAGRAM_TOOLTIP_DATATOGGLE = 'shape-toolbox-tooltip';
 const DIAGRAM_TOOLBOX_START_DRAG_CLASS = '.dxdi-tb-start-drag-flag';
-let DiagramToolbox = /*#__PURE__*/function (_DiagramFloatingPanel) {
-  _inheritsLoose(DiagramToolbox, _DiagramFloatingPanel);
-  function DiagramToolbox() {
-    return _DiagramFloatingPanel.apply(this, arguments) || this;
-  }
-  var _proto = DiagramToolbox.prototype;
-  _proto._init = function _init() {
-    _DiagramFloatingPanel.prototype._init.call(this);
+class DiagramToolbox extends _uiDiagram.default {
+  _init() {
+    super._init();
     this._toolboxes = [];
     this._filterText = '';
     this._createOnShapeCategoryRenderedAction();
     this._createOnFilterChangedAction();
-  };
-  _proto._getPopupClass = function _getPopupClass() {
+  }
+  _getPopupClass() {
     return DIAGRAM_TOOLBOX_POPUP_CLASS;
-  };
-  _proto._getPopupHeight = function _getPopupHeight() {
-    return this.isMobileView() ? '100%' : _DiagramFloatingPanel.prototype._getPopupHeight.call(this);
-  };
-  _proto._getPopupMaxHeight = function _getPopupMaxHeight() {
-    return this.isMobileView() ? '100%' : _DiagramFloatingPanel.prototype._getPopupMaxHeight.call(this);
-  };
-  _proto._getPopupMinHeight = function _getPopupMinHeight() {
+  }
+  _getPopupHeight() {
+    return this.isMobileView() ? '100%' : super._getPopupHeight();
+  }
+  _getPopupMaxHeight() {
+    return this.isMobileView() ? '100%' : super._getPopupMaxHeight();
+  }
+  _getPopupMinHeight() {
     return DIAGRAM_TOOLBOX_MIN_HEIGHT;
-  };
-  _proto._getPopupPosition = function _getPopupPosition() {
+  }
+  _getPopupPosition() {
     const $parent = this.option('offsetParent');
     const position = {
       my: 'left top',
@@ -61,8 +54,8 @@ let DiagramToolbox = /*#__PURE__*/function (_DiagramFloatingPanel) {
       });
     }
     return position;
-  };
-  _proto._getPopupAnimation = function _getPopupAnimation() {
+  }
+  _getPopupAnimation() {
     const $parent = this.option('offsetParent');
     if (this.isMobileView()) {
       return {
@@ -102,10 +95,10 @@ let DiagramToolbox = /*#__PURE__*/function (_DiagramFloatingPanel) {
         })
       };
     }
-    return _DiagramFloatingPanel.prototype._getPopupAnimation.call(this);
-  };
-  _proto._getPopupOptions = function _getPopupOptions() {
-    const options = _DiagramFloatingPanel.prototype._getPopupOptions.call(this);
+    return super._getPopupAnimation();
+  }
+  _getPopupOptions() {
+    const options = super._getPopupOptions();
     if (!this.isMobileView()) {
       return (0, _extend.extend)(options, {
         showTitle: true,
@@ -124,8 +117,8 @@ let DiagramToolbox = /*#__PURE__*/function (_DiagramFloatingPanel) {
       });
     }
     return options;
-  };
-  _proto._renderPopupContent = function _renderPopupContent($parent) {
+  }
+  _renderPopupContent($parent) {
     let panelHeight = '100%';
     if (this.option('showSearch')) {
       const $inputContainer = (0, _renderer.default)('<div>').addClass(DIAGRAM_TOOLBOX_INPUT_CONTAINER_CLASS).appendTo($parent);
@@ -139,13 +132,13 @@ let DiagramToolbox = /*#__PURE__*/function (_DiagramFloatingPanel) {
     (0, _size.setHeight)($panel, panelHeight);
     this._updateElementWidth($panel);
     this._renderScrollView($panel);
-  };
-  _proto._updateElementWidth = function _updateElementWidth($element) {
+  }
+  _updateElementWidth($element) {
     if (this.option('toolboxWidth') !== undefined) {
       $element.css('width', this.option('toolboxWidth'));
     }
-  };
-  _proto.updateMaxHeight = function updateMaxHeight() {
+  }
+  updateMaxHeight() {
     if (this.isMobileView()) return;
     let maxHeight = 6;
     if (this._popup) {
@@ -159,8 +152,8 @@ let DiagramToolbox = /*#__PURE__*/function (_DiagramFloatingPanel) {
       maxHeight += (0, _size.getOuterHeight)(this._searchInput.$element());
     }
     this.option('maxHeight', maxHeight);
-  };
-  _proto._renderSearchInput = function _renderSearchInput($parent) {
+  }
+  _renderSearchInput($parent) {
     const $input = (0, _renderer.default)('<div>').addClass(DIAGRAM_TOOLBOX_INPUT_CLASS).appendTo($parent);
     this._searchInput = this._createComponent($input, _text_box.default, {
       stylingMode: 'outlined',
@@ -185,8 +178,8 @@ let DiagramToolbox = /*#__PURE__*/function (_DiagramFloatingPanel) {
         }
       }]
     });
-  };
-  _proto._renderScrollView = function _renderScrollView($parent) {
+  }
+  _renderScrollView($parent) {
     const $scrollViewWrapper = (0, _renderer.default)('<div>').appendTo($parent);
     this._scrollView = this._createComponent($scrollViewWrapper, _scroll_view.default);
 
@@ -204,8 +197,8 @@ let DiagramToolbox = /*#__PURE__*/function (_DiagramFloatingPanel) {
     const $accordion = (0, _renderer.default)('<div>').appendTo(this._scrollView.content());
     this._updateElementWidth($accordion);
     this._renderAccordion($accordion);
-  };
-  _proto._getAccordionDataSource = function _getAccordionDataSource() {
+  }
+  _getAccordionDataSource() {
     const result = [];
     const toolboxGroups = this.option('toolboxGroups');
     for (let i = 0; i < toolboxGroups.length; i++) {
@@ -239,8 +232,8 @@ let DiagramToolbox = /*#__PURE__*/function (_DiagramFloatingPanel) {
       result.push(groupObj);
     }
     return result;
-  };
-  _proto._createTooltips = function _createTooltips($toolboxElement) {
+  }
+  _createTooltips($toolboxElement) {
     if (this._isTouchMode()) return;
     const targets = $toolboxElement.find('[data-toggle="' + DIAGRAM_TOOLTIP_DATATOGGLE + '"]');
     const $container = this.$element();
@@ -271,14 +264,14 @@ let DiagramToolbox = /*#__PURE__*/function (_DiagramFloatingPanel) {
         });
       }
     });
-  };
-  _proto._isTouchMode = function _isTouchMode() {
+  }
+  _isTouchMode() {
     const {
       Browser
     } = (0, _diagram.getDiagram)();
     return Browser.TouchUI;
-  };
-  _proto._renderAccordion = function _renderAccordion($container) {
+  }
+  _renderAccordion($container) {
     this._accordion = this._createComponent($container, _accordion.default, {
       multiple: true,
       animationDuration: 0,
@@ -312,16 +305,16 @@ let DiagramToolbox = /*#__PURE__*/function (_DiagramFloatingPanel) {
         this._updateScrollAnimateSubscription(e.component);
       }
     });
-  };
-  _proto._updateScrollAnimateSubscription = function _updateScrollAnimateSubscription(component) {
+  }
+  _updateScrollAnimateSubscription(component) {
     component._deferredAnimate = new _deferred.Deferred();
     component._deferredAnimate.done(() => {
       this.updateMaxHeight();
       this._scrollView.update();
       this._updateScrollAnimateSubscription(component);
     });
-  };
-  _proto._onInputChanged = function _onInputChanged(text) {
+  }
+  _onInputChanged(text) {
     this._filterText = text;
     this._onFilterChangedAction({
       text: this._filterText,
@@ -330,23 +323,23 @@ let DiagramToolbox = /*#__PURE__*/function (_DiagramFloatingPanel) {
     this.updateTooltips();
     this.updateMaxHeight();
     this._scrollView.update();
-  };
-  _proto.updateFilter = function updateFilter() {
+  }
+  updateFilter() {
     this._onInputChanged(this._filterText);
-  };
-  _proto.updateTooltips = function updateTooltips() {
+  }
+  updateTooltips() {
     this._toolboxes.forEach($element => {
       const $tooltipContainer = (0, _renderer.default)($element);
       this._createTooltips($tooltipContainer);
     });
-  };
-  _proto._createOnShapeCategoryRenderedAction = function _createOnShapeCategoryRenderedAction() {
+  }
+  _createOnShapeCategoryRenderedAction() {
     this._onShapeCategoryRenderedAction = this._createActionByOption('onShapeCategoryRendered');
-  };
-  _proto._createOnFilterChangedAction = function _createOnFilterChangedAction() {
+  }
+  _createOnFilterChangedAction() {
     this._onFilterChangedAction = this._createActionByOption('onFilterChanged');
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _optionChanged(args) {
     switch (args.name) {
       case 'onShapeCategoryRendered':
         this._createOnShapeCategoryRenderedAction();
@@ -362,11 +355,10 @@ let DiagramToolbox = /*#__PURE__*/function (_DiagramFloatingPanel) {
         this._accordion.option('dataSource', this._getAccordionDataSource());
         break;
       default:
-        _DiagramFloatingPanel.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  return DiagramToolbox;
-}(_uiDiagram.default);
+  }
+}
 var _default = exports.default = DiagramToolbox;
 module.exports = exports.default;
 module.exports.default = exports.default;

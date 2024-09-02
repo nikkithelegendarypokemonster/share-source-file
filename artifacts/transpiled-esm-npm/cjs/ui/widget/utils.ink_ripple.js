@@ -27,7 +27,7 @@ const initConfig = function () {
     waveSizeCoefficient: waveSizeCoefficient || DEFAULT_WAVE_SIZE_COEFFICIENT,
     isCentered: isCentered || false,
     wavesNumber: wavesNumber || 1,
-    durations: getDurations(useHoldAnimation !== null && useHoldAnimation !== void 0 ? useHoldAnimation : true)
+    durations: getDurations(useHoldAnimation ?? true)
   };
 };
 exports.initConfig = initConfig;

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/utils/array.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,8 +15,7 @@ var _config = _interopRequireDefault(require("../config"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function createOccurrenceMap(array) {
   return array.reduce((map, value) => {
-    var _map$get;
-    const count = ((_map$get = map.get(value)) !== null && _map$get !== void 0 ? _map$get : 0) + 1;
+    const count = (map.get(value) ?? 0) + 1;
     map.set(value, count);
     return map;
   }, new Map());
@@ -99,9 +98,8 @@ const normalizeIndexes = function (items, indexPropName, currentItem, needIndexC
 exports.normalizeIndexes = normalizeIndexes;
 const groupBy = (array, getGroupName) => {
   return array.reduce((groupedResult, item) => {
-    var _groupedResult$groupN;
     const groupName = getGroupName(item);
-    groupedResult[groupName] = (_groupedResult$groupN = groupedResult[groupName]) !== null && _groupedResult$groupN !== void 0 ? _groupedResult$groupN : [];
+    groupedResult[groupName] = groupedResult[groupName] ?? [];
     groupedResult[groupName].push(item);
     return groupedResult;
   }, {});

@@ -1,6 +1,6 @@
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["addWidgetClass", "aria", "bounceEnabled", "children", "classes", "direction", "disabled", "forceGeneratePockets", "height", "loadPanelTemplate", "needRenderScrollbars", "needScrollViewContentWrapper", "onPullDown", "onReachBottom", "onScroll", "onUpdated", "pullDownEnabled", "pulledDownText", "pullingDownText", "reachBottomEnabled", "reachBottomText", "refreshStrategy", "refreshingText", "rtlEnabled", "scrollByContent", "showScrollbar", "useSimulatedScrollbar", "visible", "width"];
+const _excluded = ["addWidgetClass", "aria", "bounceEnabled", "children", "classes", "direction", "disabled", "forceGeneratePockets", "height", "loadPanelTemplate", "needRenderScrollbars", "needScrollViewContentWrapper", "onPullDown", "onReachBottom", "onScroll", "onUpdated", "pullDownEnabled", "pulledDownText", "pullingDownText", "reachBottomEnabled", "reachBottomText", "refreshStrategy", "refreshingText", "rtlEnabled", "scrollByContent", "showScrollbar", "useSimulatedScrollbar", "visible", "width"];
 import { createVNode, createComponentVNode, normalizeProps } from "inferno";
 import { InfernoEffect, InfernoComponent } from '@devextreme/runtime/inferno';
 import { normalizeStyles } from '@devextreme/runtime/inferno';
@@ -25,8 +25,8 @@ import { ScrollableNativeProps } from '../common/native_strategy_props';
 import { allowedDirection } from '../utils/get_allowed_direction';
 import { getScrollTopMax } from '../utils/get_scroll_top_max';
 import { subscribeToResize } from '../utils/subscribe_to_resize';
-export var viewFunction = viewModel => {
-  var {
+export const viewFunction = viewModel => {
+  const {
     bottomPocketRef,
     containerClientHeight,
     containerClientWidth,
@@ -133,7 +133,7 @@ export var viewFunction = viewModel => {
   })));
 };
 import { createRef as infernoCreateRef } from 'inferno';
-var getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => normalizeProps(createComponentVNode(2, TemplateProp, _extends({}, props))) : TemplateProp);
+const getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => normalizeProps(createComponentVNode(2, TemplateProp, _extends({}, props))) : TemplateProp);
 export class ScrollableNative extends InfernoComponent {
   constructor(props) {
     super(props);
@@ -243,13 +243,13 @@ export class ScrollableNative extends InfernoComponent {
   }
   updateEffects() {
     var _this$_effects$, _this$_effects$2, _this$_effects$3, _this$_effects$4, _this$_effects$5, _this$_effects$6, _this$_effects$7;
-    (_this$_effects$ = this._effects[1]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([this.props.useSimulatedScrollbar, this.props.onScroll, this.props.rtlEnabled, this.props.direction, this.props.forceGeneratePockets, this.state.topPocketState, this.props.refreshStrategy, this.props.reachBottomEnabled, this.state.contentClientHeight, this.state.contentScrollHeight, this.state.containerClientHeight, this.props.onReachBottom, this.props.pullDownEnabled, this.state.topPocketHeight]);
-    (_this$_effects$2 = this._effects[2]) === null || _this$_effects$2 === void 0 ? void 0 : _this$_effects$2.update([this.props.disabled]);
-    (_this$_effects$3 = this._effects[3]) === null || _this$_effects$3 === void 0 ? void 0 : _this$_effects$3.update([this.props.direction]);
-    (_this$_effects$4 = this._effects[4]) === null || _this$_effects$4 === void 0 ? void 0 : _this$_effects$4.update([this.props.forceGeneratePockets, this.props.refreshStrategy, this.state.topPocketState, this.props.direction, this.props.disabled]);
-    (_this$_effects$5 = this._effects[5]) === null || _this$_effects$5 === void 0 ? void 0 : _this$_effects$5.update([this.props.direction, this.props.forceGeneratePockets, this.props.refreshStrategy, this.state.topPocketState, this.props.pullDownEnabled, this.state.topPocketHeight]);
-    (_this$_effects$6 = this._effects[6]) === null || _this$_effects$6 === void 0 ? void 0 : _this$_effects$6.update([this.props.forceGeneratePockets, this.props.refreshStrategy, this.props.pullDownEnabled, this.state.topPocketState, this.state.topPocketHeight, this.props.onPullDown]);
-    (_this$_effects$7 = this._effects[7]) === null || _this$_effects$7 === void 0 ? void 0 : _this$_effects$7.update([this.props.forceGeneratePockets, this.props.refreshStrategy, this.state.topPocketState, this.state.topPocketHeight, this.props.onPullDown]);
+    (_this$_effects$ = this._effects[1]) === null || _this$_effects$ === void 0 || _this$_effects$.update([this.props.useSimulatedScrollbar, this.props.onScroll, this.props.rtlEnabled, this.props.direction, this.props.forceGeneratePockets, this.state.topPocketState, this.props.refreshStrategy, this.props.reachBottomEnabled, this.state.contentClientHeight, this.state.contentScrollHeight, this.state.containerClientHeight, this.props.onReachBottom, this.props.pullDownEnabled, this.state.topPocketHeight]);
+    (_this$_effects$2 = this._effects[2]) === null || _this$_effects$2 === void 0 || _this$_effects$2.update([this.props.disabled]);
+    (_this$_effects$3 = this._effects[3]) === null || _this$_effects$3 === void 0 || _this$_effects$3.update([this.props.direction]);
+    (_this$_effects$4 = this._effects[4]) === null || _this$_effects$4 === void 0 || _this$_effects$4.update([this.props.forceGeneratePockets, this.props.refreshStrategy, this.state.topPocketState, this.props.direction, this.props.disabled]);
+    (_this$_effects$5 = this._effects[5]) === null || _this$_effects$5 === void 0 || _this$_effects$5.update([this.props.direction, this.props.forceGeneratePockets, this.props.refreshStrategy, this.state.topPocketState, this.props.pullDownEnabled, this.state.topPocketHeight]);
+    (_this$_effects$6 = this._effects[6]) === null || _this$_effects$6 === void 0 || _this$_effects$6.update([this.props.forceGeneratePockets, this.props.refreshStrategy, this.props.pullDownEnabled, this.state.topPocketState, this.state.topPocketHeight, this.props.onPullDown]);
+    (_this$_effects$7 = this._effects[7]) === null || _this$_effects$7 === void 0 || _this$_effects$7.update([this.props.forceGeneratePockets, this.props.refreshStrategy, this.state.topPocketState, this.state.topPocketHeight, this.props.onPullDown]);
   }
   disposeReleaseTimer() {
     return () => this.clearReleaseTimer();
@@ -319,7 +319,7 @@ export class ScrollableNative extends InfernoComponent {
   }
   onUpdated() {
     var _this$props$onUpdated, _this$props;
-    (_this$props$onUpdated = (_this$props = this.props).onUpdated) === null || _this$props$onUpdated === void 0 ? void 0 : _this$props$onUpdated.call(_this$props, this.getEventArgs());
+    (_this$props$onUpdated = (_this$props = this.props).onUpdated) === null || _this$props$onUpdated === void 0 || _this$props$onUpdated.call(_this$props, this.getEventArgs());
   }
   startLoading() {
     if (this.loadingIndicatorEnabled && isElementVisible(this.scrollableRef.current)) {
@@ -352,7 +352,7 @@ export class ScrollableNative extends InfernoComponent {
         scrolling: false
       }));
     }
-    (_this$props$onScroll = (_this$props2 = this.props).onScroll) === null || _this$props$onScroll === void 0 ? void 0 : _this$props$onScroll.call(_this$props2, this.getEventArgs());
+    (_this$props$onScroll = (_this$props2 = this.props).onScroll) === null || _this$props$onScroll === void 0 || _this$props$onScroll.call(_this$props2, this.getEventArgs());
     this.handlePocketState();
   }
   handlePocketState() {
@@ -360,10 +360,10 @@ export class ScrollableNative extends InfernoComponent {
       if (this.state.topPocketState === TopPocketState.STATE_REFRESHING) {
         return;
       }
-      var {
+      const {
         scrollTop
       } = this.containerRef.current;
-      var scrollDelta = this.locationTop + scrollTop;
+      const scrollDelta = this.locationTop + scrollTop;
       this.locationTop = -scrollTop;
       if (this.isSwipeDownStrategy && scrollDelta > 0 && this.isReachBottom()) {
         this.onReachBottom();
@@ -393,11 +393,11 @@ export class ScrollableNative extends InfernoComponent {
   }
   onReachBottom() {
     var _this$props$onReachBo, _this$props3;
-    (_this$props$onReachBo = (_this$props3 = this.props).onReachBottom) === null || _this$props$onReachBo === void 0 ? void 0 : _this$props$onReachBo.call(_this$props3, {});
+    (_this$props$onReachBo = (_this$props3 = this.props).onReachBottom) === null || _this$props$onReachBo === void 0 || _this$props$onReachBo.call(_this$props3, {});
   }
   onPullDown() {
     var _this$props$onPullDow, _this$props4;
-    (_this$props$onPullDow = (_this$props4 = this.props).onPullDown) === null || _this$props$onPullDow === void 0 ? void 0 : _this$props$onPullDow.call(_this$props4, {});
+    (_this$props$onPullDow = (_this$props4 = this.props).onPullDown) === null || _this$props$onPullDow === void 0 || _this$props$onPullDow.call(_this$props4, {});
   }
   stateReleased() {
     if (this.state.topPocketState === TopPocketState.STATE_RELEASED) {
@@ -406,7 +406,7 @@ export class ScrollableNative extends InfernoComponent {
     this.releaseState();
   }
   getEventArgs() {
-    var scrollOffset = this.scrollOffset();
+    const scrollOffset = this.scrollOffset();
     return _extends({
       event: this.eventForUserAction,
       scrollOffset
@@ -467,7 +467,7 @@ export class ScrollableNative extends InfernoComponent {
     }));
   }
   syncScrollbarsWithContent() {
-    var {
+    const {
       left,
       top
     } = this.scrollOffset();
@@ -488,7 +488,7 @@ export class ScrollableNative extends InfernoComponent {
   }
   handleInit(event) {
     if (this.props.forceGeneratePockets && this.isSwipeDownStrategy) {
-      var {
+      const {
         scrollTop
       } = this.containerRef.current;
       if (this.state.topPocketState === TopPocketState.STATE_RELEASED && scrollTop === 0) {
@@ -571,9 +571,9 @@ export class ScrollableNative extends InfernoComponent {
     this.onPullDown();
   }
   movePullDown() {
-    var pullDownHeight = this.getPullDownHeight();
-    var top = Math.min(pullDownHeight * 3, this.deltaY + this.getPullDownStartPosition());
-    var angle = 180 * top / pullDownHeight / 3;
+    const pullDownHeight = this.getPullDownHeight();
+    const top = Math.min(pullDownHeight * 3, this.deltaY + this.getPullDownStartPosition());
+    const angle = 180 * top / pullDownHeight / 3;
     this.setState(__state_argument => ({
       pullDownOpacity: 1
     }));
@@ -611,30 +611,30 @@ export class ScrollableNative extends InfernoComponent {
     return this.pullDownEnabled && this.state.topPocketState === TopPocketState.STATE_PULLED && this.deltaY >= this.getPullDownHeight() - this.getPullDownStartPosition();
   }
   pulledDown() {
-    var {
+    const {
       scrollTop
     } = this.containerRef.current;
     return this.pullDownEnabled && scrollTop <= -this.state.topPocketHeight;
   }
   isReachBottom() {
-    var {
+    const {
       scrollTop
     } = this.containerRef.current;
     return this.props.reachBottomEnabled && Math.round(-scrollTop - this.vScrollOffsetMax) <= 1;
   }
   tryGetAllowedDirection() {
-    var containerEl = this.containerRef.current;
+    const containerEl = this.containerRef.current;
     return allowedDirection(this.props.direction, getScrollTopMax(containerEl), getScrollLeftMax(containerEl), false);
   }
   isLocked() {
     return this.locked;
   }
   isScrollingOutOfBound(event) {
-    var {
+    const {
       delta,
       shiftKey
     } = event;
-    var {
+    const {
       clientHeight,
       clientWidth,
       scrollHeight,
@@ -648,15 +648,15 @@ export class ScrollableNative extends InfernoComponent {
     return shiftKey ? clientWidth >= scrollWidth - scrollLeft : clientHeight >= scrollHeight - scrollTop;
   }
   get cssClasses() {
-    var {
+    const {
       classes,
       direction,
       disabled,
       showScrollbar
     } = this.props;
-    var classesMap = {
-      ["dx-scrollable dx-scrollable-native dx-scrollable-native-".concat(devices.real().platform)]: true,
-      ["dx-scrollable-".concat(direction)]: true,
+    const classesMap = {
+      [`dx-scrollable dx-scrollable-native dx-scrollable-native-${devices.real().platform}`]: true,
+      [`dx-scrollable-${direction}`]: true,
       [SCROLLABLE_DISABLED_CLASS]: !!disabled,
       [SCROLLABLE_SCROLLBAR_SIMULATED]: showScrollbar !== 'never' && this.props.useSimulatedScrollbar,
       [SCROLLABLE_SCROLLBARS_HIDDEN]: showScrollbar === 'never',
@@ -682,7 +682,7 @@ export class ScrollableNative extends InfernoComponent {
     return this.__getterCache['contentStyles'] = (() => {
       if (this.props.forceGeneratePockets && this.isPullDownStrategy) {
         return {
-          transform: "translate(0px, ".concat(this.state.contentTranslateTop, "px)")
+          transform: `translate(0px, ${this.state.contentTranslateTop}px)`
         };
       }
       return undefined;
@@ -703,7 +703,7 @@ export class ScrollableNative extends InfernoComponent {
     return -Math.max(this.contentHeight - this.state.containerClientHeight, 0);
   }
   get restAttributes() {
-    var _this$props5 = this.props,
+    const _this$props5 = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props5, _excluded);
     return restProps;
   }
@@ -754,8 +754,8 @@ export class ScrollableNative extends InfernoComponent {
     return this.containerRef.current.scrollTop;
   }
   scrollLeft() {
-    var containerEl = this.containerRef.current;
-    var scrollLeftMax = getScrollLeftMax(containerEl);
+    const containerEl = this.containerRef.current;
+    const scrollLeftMax = getScrollLeftMax(containerEl);
     return normalizeOffsetLeft(containerEl.scrollLeft, scrollLeftMax, !!this.props.rtlEnabled);
   }
   clientHeight() {
@@ -781,7 +781,7 @@ export class ScrollableNative extends InfernoComponent {
     this.onUpdated();
   }
   scrollByLocation(location) {
-    var containerEl = this.containerRef.current;
+    const containerEl = this.containerRef.current;
     if (this.direction.isVertical) {
       containerEl.scrollTop += location.top;
     }
@@ -799,7 +799,7 @@ export class ScrollableNative extends InfernoComponent {
     }
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
         loadPanelTemplate: getTemplate(props.loadPanelTemplate)

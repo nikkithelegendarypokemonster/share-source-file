@@ -1,24 +1,24 @@
 /**
 * DevExtreme (esm/ui/shared/filtering.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { isDate, isDefined } from '../../core/utils/type';
 import { map } from '../../core/utils/iterator';
-var DEFAULT_DATE_INTERVAL = ['year', 'month', 'day'];
-var DEFAULT_DATETIME_INTERVAL = ['year', 'month', 'day', 'hour', 'minute'];
-var isDateType = function isDateType(dataType) {
+const DEFAULT_DATE_INTERVAL = ['year', 'month', 'day'];
+const DEFAULT_DATETIME_INTERVAL = ['year', 'month', 'day', 'hour', 'minute'];
+const isDateType = function (dataType) {
   return dataType === 'date' || dataType === 'datetime';
 };
-var getGroupInterval = function getGroupInterval(column) {
-  var index;
-  var result = [];
-  var dateIntervals = ['year', 'month', 'day', 'hour', 'minute', 'second'];
-  var groupInterval = column.headerFilter && column.headerFilter.groupInterval;
-  var interval = groupInterval === 'quarter' ? 'month' : groupInterval;
+const getGroupInterval = function (column) {
+  let index;
+  let result = [];
+  const dateIntervals = ['year', 'month', 'day', 'hour', 'minute', 'second'];
+  const groupInterval = column.headerFilter && column.headerFilter.groupInterval;
+  const interval = groupInterval === 'quarter' ? 'month' : groupInterval;
   if (isDateType(column.dataType) && groupInterval !== null) {
     result = column.dataType === 'datetime' ? DEFAULT_DATETIME_INTERVAL : DEFAULT_DATE_INTERVAL;
     index = dateIntervals.indexOf(interval);
@@ -33,17 +33,17 @@ var getGroupInterval = function getGroupInterval(column) {
   }
 };
 export default (function () {
-  var getFilterSelector = function getFilterSelector(column, target) {
-    var selector = column.dataField || column.selector;
+  const getFilterSelector = function (column, target) {
+    let selector = column.dataField || column.selector;
     if (target === 'search') {
       selector = column.displayField || column.calculateDisplayValue || selector;
     }
     return selector;
   };
-  var isZeroTime = function isZeroTime(date) {
+  const isZeroTime = function (date) {
     return date.getHours() + date.getMinutes() + date.getSeconds() + date.getMilliseconds() < 1;
   };
-  var getDateValues = function getDateValues(dateValue) {
+  const getDateValues = function (dateValue) {
     if (isDate(dateValue)) {
       return [dateValue.getFullYear(), dateValue.getMonth(), dateValue.getDate(), dateValue.getHours(), dateValue.getMinutes(), dateValue.getSeconds()];
     }
@@ -51,12 +51,12 @@ export default (function () {
       return index === 1 ? Number(value) - 1 : Number(value);
     });
   };
-  var getFilterExpressionByRange = function getFilterExpressionByRange(filterValue, target) {
-    var column = this;
-    var endFilterValue;
-    var startFilterExpression;
-    var endFilterExpression;
-    var selector = getFilterSelector(column, target);
+  const getFilterExpressionByRange = function (filterValue, target) {
+    const column = this;
+    let endFilterValue;
+    let startFilterExpression;
+    let endFilterExpression;
+    const selector = getFilterSelector(column, target);
     if (Array.isArray(filterValue) && isDefined(filterValue[0]) && isDefined(filterValue[1])) {
       startFilterExpression = [selector, '>=', filterValue[0]];
       endFilterExpression = [selector, '<=', filterValue[1]];
@@ -70,13 +70,13 @@ export default (function () {
       return [startFilterExpression, 'and', endFilterExpression];
     }
   };
-  var getFilterExpressionForDate = function getFilterExpressionForDate(filterValue, selectedFilterOperation, target) {
-    var column = this;
-    var dateStart;
-    var dateEnd;
-    var dateInterval;
-    var values = getDateValues(filterValue);
-    var selector = getFilterSelector(column, target);
+  const getFilterExpressionForDate = function (filterValue, selectedFilterOperation, target) {
+    const column = this;
+    let dateStart;
+    let dateEnd;
+    let dateInterval;
+    const values = getDateValues(filterValue);
+    const selector = getFilterSelector(column, target);
     if (target === 'headerFilter') {
       dateInterval = getGroupInterval(column)[values.length - 1];
     } else if (column.dataType === 'datetime') {
@@ -126,28 +126,28 @@ export default (function () {
         return [[selector, '>=', dateStart], 'and', [selector, '<', dateEnd]];
     }
   };
-  var getFilterExpressionForNumber = function getFilterExpressionForNumber(filterValue, selectedFilterOperation, target) {
-    var column = this;
-    var selector = getFilterSelector(column, target);
-    var groupInterval = getGroupInterval(column);
+  const getFilterExpressionForNumber = function (filterValue, selectedFilterOperation, target) {
+    const column = this;
+    const selector = getFilterSelector(column, target);
+    const groupInterval = getGroupInterval(column);
     if (target === 'headerFilter' && groupInterval && isDefined(filterValue)) {
-      var values = ('' + filterValue).split('/');
-      var value = Number(values[values.length - 1]);
-      var interval = groupInterval[values.length - 1];
-      var startFilterValue = [selector, '>=', value];
-      var endFilterValue = [selector, '<', value + interval];
-      var condition = [startFilterValue, 'and', endFilterValue];
+      const values = ('' + filterValue).split('/');
+      const value = Number(values[values.length - 1]);
+      const interval = groupInterval[values.length - 1];
+      const startFilterValue = [selector, '>=', value];
+      const endFilterValue = [selector, '<', value + interval];
+      const condition = [startFilterValue, 'and', endFilterValue];
       return condition;
     }
     return [selector, selectedFilterOperation || '=', filterValue];
   };
   return {
-    defaultCalculateFilterExpression: function defaultCalculateFilterExpression(filterValue, selectedFilterOperation, target) {
-      var column = this;
-      var selector = getFilterSelector(column, target);
-      var isSearchByDisplayValue = column.calculateDisplayValue && target === 'search';
-      var dataType = isSearchByDisplayValue && column.lookup && column.lookup.dataType || column.dataType;
-      var filter = null;
+    defaultCalculateFilterExpression: function (filterValue, selectedFilterOperation, target) {
+      const column = this;
+      const selector = getFilterSelector(column, target);
+      const isSearchByDisplayValue = column.calculateDisplayValue && target === 'search';
+      const dataType = isSearchByDisplayValue && column.lookup && column.lookup.dataType || column.dataType;
+      let filter = null;
       if ((target === 'headerFilter' || target === 'filterBuilder') && filterValue === null) {
         filter = [selector, selectedFilterOperation || '=', null];
         if (dataType === 'string') {

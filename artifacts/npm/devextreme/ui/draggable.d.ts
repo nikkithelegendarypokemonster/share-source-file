@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/draggable.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -34,202 +34,237 @@ import {
 } from '../common';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
+ * @docid
+ * @type object
  */
 export interface DraggableBaseOptions<TComponent> extends DOMComponentOptions<TComponent> {
     /**
-     * Enables automatic scrolling while dragging an item beyond the viewport.
+     * @docid
+     * @default true
+     * @public
      */
     autoScroll?: boolean;
     /**
-     * Specifies a DOM element that limits the dragging area.
+     * @docid
+     * @default undefined
+     * @public
      */
     boundary?: string | UserDefinedElement;
     /**
-     * Specifies a custom container in which the draggable item should be rendered.
+     * @docid
+     * @default undefined
+     * @public
      */
     container?: string | UserDefinedElement;
     /**
-     * Specifies the cursor offset from the dragged item.
+     * @docid
+     * @public
      */
     cursorOffset?: string | {
       /**
-       * Specifies the horizontal cursor offset from the dragged item in pixels.
+       * @docid
+       * @default 0
        */
       x?: number;
       /**
-       * Specifies the vertical cursor offset from the dragged item in pixels.
+       * @docid
+       * @default 0
        */
       y?: number;
     };
     /**
-     * A container for custom data.
+     * @docid
+     * @default undefined
+     * @public
      */
     data?: any;
     /**
-     * Specifies the directions in which an item can be dragged.
+     * @docid
+     * @default "both"
+     * @public
      */
     dragDirection?: DragDirection;
     /**
-     * Allows you to group several UI components, so that users can drag and drop items between them.
+     * @docid
+     * @default undefined
+     * @public
      */
     group?: string;
     /**
-     * Specifies a CSS selector (ID or class) that should act as the drag handle(s) for the item(s).
+     * @docid
+     * @default ""
+     * @public
      */
     handle?: string;
     /**
-     * Specifies the distance in pixels from the edge of viewport at which scrolling should start. Applies only if autoScroll is true.
+     * @docid
+     * @default 60
+     * @public
      */
     scrollSensitivity?: number;
     /**
-     * Specifies the scrolling speed when dragging an item beyond the viewport. Applies only if autoScroll is true.
+     * @docid
+     * @default 30
+     * @public
      */
     scrollSpeed?: number;
 }
 /**
-                                                                   * 
-                                                                   * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-                                                                   */
-                                                                  export interface DraggableBase { }
+ * @docid
+ * @inherits DOMComponent
+ * @hidden
+ * @namespace DevExpress.ui
+ * @options DraggableBaseOptions
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface DraggableBase { }
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_draggable_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxDraggable>;
 
 /**
- * The type of the dragEnd event handler&apos;s argument.
+ * @docid _ui_draggable_DragEndEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,NativeEventInfo
  */
 export type DragEndEvent = Cancelable & NativeEventInfo<dxDraggable, PointerEvent | MouseEvent | TouchEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragEndEvent.itemData */
     readonly itemData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragEndEvent.itemElement */
     readonly itemElement?: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragEndEvent.fromComponent */
     readonly fromComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragEndEvent.toComponent */
     readonly toComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragEndEvent.fromData */
     readonly fromData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragEndEvent.toData */
     readonly toData?: any;
 };
 
 /**
- * The type of the dragMove event handler&apos;s argument.
+ * @docid _ui_draggable_DragMoveEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,NativeEventInfo
  */
 export type DragMoveEvent = Cancelable & NativeEventInfo<dxDraggable, PointerEvent | MouseEvent | TouchEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragMoveEvent.itemData */
     readonly itemData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragMoveEvent.itemElement */
     readonly itemElement?: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragMoveEvent.fromComponent */
     readonly fromComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragMoveEvent.toComponent */
     readonly toComponent: dxSortable | dxDraggable;
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragMoveEvent.fromData */
     readonly fromData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragMoveEvent.toData */
     readonly toData?: any;
 };
 
 /**
- * The type of the dragStart event handler&apos;s argument.
+ * @docid _ui_draggable_DragStartEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,NativeEventInfo
  */
 export type DragStartEvent = Cancelable & NativeEventInfo<dxDraggable, PointerEvent | MouseEvent | TouchEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragStartEvent.itemData */
     itemData?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragStartEvent.itemElement */
     readonly itemElement?: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_draggable_DragStartEvent.fromData */
     readonly fromData?: any;
 };
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_draggable_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxDraggable>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_draggable_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxDraggable> & ChangedOptionInfo;
 
+/** @public */
 export type DragTemplateData = {
     readonly itemData?: any;
     readonly itemElement: DxElement;
 };
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxDraggableOptions extends DraggableBaseOptions<dxDraggable> {
     /**
-     * Allows a user to drag clones of items instead of actual items.
+     * @docid
+     * @default false
+     * @public
      */
     clone?: boolean;
     /**
-     * Specifies custom markup to be shown instead of the item being dragged.
+     * @docid
+     * @type_function_param1 dragInfo:object
+     * @type_function_return string|Element|jQuery
+     * @default undefined
+     * @public
      */
     dragTemplate?: template | ((dragInfo: DragTemplateData, containerElement: DxElement) => string | UserDefinedElement);
     /**
-     * A function that is called when a drag gesture is finished.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/draggable:DragEndEvent}
+     * @action
+     * @public
      */
     onDragEnd?: ((e: DragEndEvent) => void);
     /**
-     * A function that is called every time a draggable item is moved.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/draggable:DragMoveEvent}
+     * @action
+     * @public
      */
     onDragMove?: ((e: DragMoveEvent) => void);
     /**
-     * A function that is called when a drag gesture is initialized.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/draggable:DragStartEvent}
+     * @action
+     * @public
      */
     onDragStart?: ((e: DragStartEvent) => void);
 }
 /**
- * Draggable is a user interface utility that allows UI component elements to be dragged and dropped.
+ * @docid
+ * @inherits DraggableBase
+ * @hasTranscludedContent
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxDraggable extends DOMComponent<dxDraggableOptions> implements DraggableBase { }
 
+/** @public */
 export type Properties = dxDraggableOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxDraggableOptions;
 
 

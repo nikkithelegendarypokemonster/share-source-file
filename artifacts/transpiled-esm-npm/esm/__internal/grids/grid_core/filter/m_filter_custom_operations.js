@@ -6,16 +6,16 @@ import messageLocalization from '../../../../localization/message';
 import errors from '../../../../ui/widget/ui.errors';
 import { getFilterExpression, isCondition, isGroup, renderValueText } from '../../../filter_builder/m_utils';
 function baseOperation(grid) {
-  var calculateFilterExpression = function calculateFilterExpression(filterValue, field, fields) {
-    var result = [];
-    var lastIndex = filterValue.length - 1;
+  const calculateFilterExpression = function (filterValue, field, fields) {
+    const result = [];
+    const lastIndex = filterValue.length - 1;
     filterValue && filterValue.forEach((value, index) => {
       if (isCondition(value) || isGroup(value)) {
-        var filterExpression = getFilterExpression(value, fields, [], 'headerFilter');
+        const filterExpression = getFilterExpression(value, fields, [], 'headerFilter');
         result.push(filterExpression);
       } else {
-        var _filterExpression = getFilterExpression([field.dataField, '=', value], fields, [], 'headerFilter');
-        result.push(_filterExpression);
+        const filterExpression = getFilterExpression([field.dataField, '=', value], fields, [], 'headerFilter');
+        result.push(filterExpression);
       }
       index !== lastIndex && result.push('or');
     });
@@ -24,50 +24,51 @@ function baseOperation(grid) {
     }
     return result;
   };
-  var getFullText = function getFullText(itemText, parentText) {
-    return parentText ? "".concat(parentText, "/").concat(itemText) : itemText;
+  const getFullText = function (itemText, parentText) {
+    return parentText ? `${parentText}/${itemText}` : itemText;
   };
-  var getSelectedItemsTexts = function getSelectedItemsTexts(items, parentText) {
-    var result = [];
+  const getSelectedItemsTexts = function (items, parentText) {
+    let result = [];
     items.forEach(item => {
       if (item.items) {
-        var selectedItemsTexts = getSelectedItemsTexts(item.items, getFullText(item.text, parentText));
+        const selectedItemsTexts = getSelectedItemsTexts(item.items, getFullText(item.text, parentText));
         result = result.concat(selectedItemsTexts);
       }
       item.selected && result.push(getFullText(item.text, parentText));
     });
     return result;
   };
-  var headerFilterController = grid && grid.getController('headerFilter');
-  var customizeText = function customizeText(fieldInfo, options) {
+  const headerFilterController = grid && grid.getController('headerFilter');
+  // Override in the private API WA [T1232532]
+  const customizeText = function (fieldInfo, options) {
     options = options || {};
-    var {
+    const {
       value
     } = fieldInfo;
-    var column = grid.columnOption(fieldInfo.field.dataField);
-    var headerFilter = column && column.headerFilter;
-    var lookup = column && column.lookup;
-    var values = options.values || [value];
+    let column = grid.columnOption(fieldInfo.field.dataField);
+    const headerFilter = column && column.headerFilter;
+    const lookup = column && column.lookup;
+    const values = options.values || [value];
     if (headerFilter && headerFilter.dataSource || lookup && lookup.dataSource) {
       // @ts-expect-error
-      var result = new Deferred();
+      const result = new Deferred();
       // @ts-expect-error
-      var itemsDeferred = options.items || new Deferred();
+      const itemsDeferred = options.items || new Deferred();
       if (!options.items) {
         column = extend({}, column, {
           filterType: 'include',
           filterValues: values
         });
-        var dataSourceOptions = headerFilterController.getDataSource(column);
+        const dataSourceOptions = headerFilterController.getDataSource(column);
         dataSourceOptions.paginate = false;
-        var dataSource = new DataSource(dataSourceOptions);
-        var key = dataSource.store().key();
+        const dataSource = new DataSource(dataSourceOptions);
+        const key = dataSource.store().key();
         if (key) {
-          var {
-            values: _values
+          const {
+            values
           } = options;
-          if (_values && _values.length > 1) {
-            var filter = _values.reduce((result, value) => {
+          if (values && values.length > 1) {
+            const filter = values.reduce((result, value) => {
               if (result.length) {
                 result.push('or');
               }
@@ -85,22 +86,22 @@ function baseOperation(grid) {
         dataSource.load().done(itemsDeferred.resolve);
       }
       itemsDeferred.done(items => {
-        var index = values.indexOf(fieldInfo.value);
+        const index = values.indexOf(fieldInfo.value);
         result.resolve(getSelectedItemsTexts(items, null)[index]);
       });
       return result;
     }
-    var text = headerFilterController.getHeaderItemText(value, column, 0, grid.option('headerFilter'));
+    const text = headerFilterController.getHeaderItemText(value, column, 0, grid.option('headerFilter'));
     return text;
   };
   return {
     dataTypes: ['string', 'date', 'datetime', 'number', 'boolean', 'object'],
     calculateFilterExpression,
     editorTemplate(conditionInfo, container) {
-      var div = $('<div>').addClass('dx-filterbuilder-item-value-text').appendTo(container);
-      var column = extend(true, {}, grid.columnOption(conditionInfo.field.dataField));
+      const div = $('<div>').addClass('dx-filterbuilder-item-value-text').appendTo(container);
+      const column = extend(true, {}, grid.columnOption(conditionInfo.field.dataField));
       renderValueText(div, conditionInfo.text && conditionInfo.text.split('|'));
-      var setValue = function setValue(value) {
+      const setValue = function (value) {
         conditionInfo.setValue(value);
       };
       column.filterType = 'include';
@@ -131,10 +132,10 @@ export function anyOf(grid) {
   });
 }
 export function noneOf(grid) {
-  var baseOp = baseOperation(grid);
+  const baseOp = baseOperation(grid);
   return extend({}, baseOp, {
     calculateFilterExpression(filterValue, field, fields) {
-      var baseFilter = baseOp.calculateFilterExpression(filterValue, field, fields);
+      const baseFilter = baseOp.calculateFilterExpression(filterValue, field, fields);
       if (!baseFilter || baseFilter.length === 0) return null;
       return baseFilter[0] === '!' ? baseFilter : ['!', baseFilter];
     },

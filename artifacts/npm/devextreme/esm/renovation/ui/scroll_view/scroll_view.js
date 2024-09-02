@@ -1,22 +1,22 @@
 /**
 * DevExtreme (esm/renovation/ui/scroll_view/scroll_view.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["addWidgetClass", "aria", "bounceEnabled", "children", "classes", "direction", "disabled", "forceGeneratePockets", "height", "inertiaEnabled", "loadPanelTemplate", "needRenderScrollbars", "needScrollViewContentWrapper", "onBounce", "onEnd", "onPullDown", "onReachBottom", "onScroll", "onStart", "onUpdated", "onVisibilityChange", "pullDownEnabled", "pulledDownText", "pullingDownText", "reachBottomEnabled", "reachBottomText", "refreshStrategy", "refreshingText", "rtlEnabled", "scrollByContent", "scrollByThumb", "scrollLocationChange", "showScrollbar", "useKeyboard", "useNative", "useSimulatedScrollbar", "visible", "width"];
+const _excluded = ["addWidgetClass", "aria", "bounceEnabled", "children", "classes", "direction", "disabled", "forceGeneratePockets", "height", "inertiaEnabled", "loadPanelTemplate", "needRenderScrollbars", "needScrollViewContentWrapper", "onBounce", "onEnd", "onPullDown", "onReachBottom", "onScroll", "onStart", "onUpdated", "onVisibilityChange", "pullDownEnabled", "pulledDownText", "pullingDownText", "reachBottomEnabled", "reachBottomText", "refreshStrategy", "refreshingText", "rtlEnabled", "scrollByContent", "scrollByThumb", "scrollLocationChange", "showScrollbar", "useKeyboard", "useNative", "useSimulatedScrollbar", "visible", "width"];
 import { createComponentVNode, normalizeProps } from "inferno";
 import { InfernoWrapperComponent } from '@devextreme/runtime/inferno';
 import { isDefined } from '../../../core/utils/type';
 import { Scrollable } from './scrollable';
 import { ScrollViewProps } from './common/scrollview_props';
 import { ScrollViewLoadPanel } from './internal/load_panel';
-export var viewFunction = viewModel => {
-  var {
+export const viewFunction = viewModel => {
+  const {
     props: {
       aria,
       bounceEnabled,
@@ -92,7 +92,7 @@ export var viewFunction = viewModel => {
 };
 import { createReRenderEffect } from '@devextreme/runtime/inferno';
 import { createRef as infernoCreateRef } from 'inferno';
-var getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => normalizeProps(createComponentVNode(2, TemplateProp, _extends({}, props))) : TemplateProp);
+const getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => normalizeProps(createComponentVNode(2, TemplateProp, _extends({}, props))) : TemplateProp);
 export class ScrollView extends InfernoWrapperComponent {
   constructor(props) {
     super(props);
@@ -129,7 +129,7 @@ export class ScrollView extends InfernoWrapperComponent {
     return this.props.reachBottomEnabled;
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
@@ -195,7 +195,7 @@ export class ScrollView extends InfernoWrapperComponent {
     this.scrollableRef.current.updateHandler();
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
         loadPanelTemplate: getTemplate(props.loadPanelTemplate)

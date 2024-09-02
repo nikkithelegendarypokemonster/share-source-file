@@ -1,7 +1,7 @@
 /**
 * DevExtreme (localization.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,83 +9,125 @@
 import { Format as PredefinedFormat } from './common';
 
 /**
- * Converts a Date object to a string using the specified format.
+ * @docid localization.formatDate
+ * @publicName formatDate(value, format)
+ * @static
+ * @namespace DevExpress.localization
+ * @public
  */
 export function formatDate(value: Date, format: Format): string;
 
 /**
- * Substitutes the provided value(s) for placeholders in a message that the key specifies.
+ * @docid localization.formatMessage
+ * @publicName formatMessage(key, value)
+ * @param2 value:string|Array<string>
+ * @static
+ * @namespace DevExpress.localization
+ * @public
  */
 export function formatMessage(key: string, ...values: Array<string>): string;
 
 /**
- * Converts a numeric value to a string using the specified format.
+ * @docid localization.formatNumber
+ * @publicName formatNumber(value, format)
+ * @static
+ * @namespace DevExpress.localization
+ * @public
  */
 export function formatNumber(value: number, format: Format): string;
 
 /**
- * Loads localized messages.
+ * @docid localization.loadMessages
+ * @publicName loadMessages(messages)
+ * @param1 messages:object
+ * @static
+ * @namespace DevExpress.localization
+ * @public
  */
 export function loadMessages(messages: any): void;
 
 /**
- * Gets the current locale identifier.
+ * @docid localization.locale
+ * @publicName locale()
+ * @static
+ * @namespace DevExpress.localization
+ * @public
  */
 export function locale(): string;
 
 /**
-                                                          * Sets the current locale identifier.
-                                                          */
-                                                         export function locale(locale: string): void;
+ * @docid localization.locale
+ * @publicName locale(locale)
+ * @static
+ * @namespace DevExpress.localization
+ * @public
+ */
+// eslint-disable-next-line @typescript-eslint/no-shadow
+export function locale(locale: string): void;
 
 /**
- * Parses a string into a Date object.
+ * @docid localization.parseDate
+ * @publicName parseDate(text, format)
+ * @static
+ * @namespace DevExpress.localization
+ * @public
  */
 export function parseDate(text: string, format: Format): Date;
 
 /**
- * Parses a string into a numeric value.
+ * @docid localization.parseNumber
+ * @publicName parseNumber(text, format)
+ * @static
+ * @namespace DevExpress.localization
+ * @public
  */
 export function parseNumber(text: string, format: Format): number;
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export interface FormatObject {
     /**
-    * Specifies a 3-letter ISO 4217 code for currency. Applies only if the type is &apos;currency&apos;.
-    */
+     * @docid Format.currency
+     * @public
+     */
    currency?: string;
    /**
-     * Specifies whether to apply the accounting style to formatted numbers of the `currency` type.
+     * @docid Format.useCurrencyAccountingStyle
+     * @type boolean
+     * @default true
+     * @public
      */
     useCurrencyAccountingStyle?: boolean;
    /**
-    * A function that converts numeric or date-time values to a string.
+    * @docid Format.formatter
+    * @public
     */
    formatter?: ((value: number | Date) => string);
    /**
-    * Parses string values into numeric or date-time values. Should be used with formatter or one of the predefined formats.
+    * @docid Format.parser
+    * @public
     */
    parser?: ((value: string) => number | Date);
    /**
-    * Specifies a precision for values of numeric or currency format types.
+    * @docid Format.precision
+    * @public
     */
    precision?: number;
    /**
-    * Specifies a predefined format. Does not apply if you have specified the formatter function.
+    * @docid Format.type
+    * @public
     */
    type?: PredefinedFormat | string;
 }
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 type ExternalFormat =
   Intl.DateTimeFormatOptions |
   Intl.NumberFormatOptions;
 
 /**
- * Formats values.
+ * @docid
+ * @type Object|Enums.Format|string|function
+ * @default undefined
+ * @section Common
+ * @namespace DevExpress.ui
+ * @public
  */
 export type Format =
   FormatObject |

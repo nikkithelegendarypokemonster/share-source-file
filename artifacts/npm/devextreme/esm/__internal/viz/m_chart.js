@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/viz/m_chart.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -28,19 +28,19 @@ import { Range } from '../../viz/translators/range';
 import { prepareSegmentRectPoints } from '../../viz/utils';
 import { AdvancedChart } from './chart_components/m_advanced_chart';
 import { overlapping } from './chart_components/m_base_chart';
-var DEFAULT_PANE_NAME = 'default';
-var VISUAL_RANGE = 'VISUAL_RANGE';
-var DEFAULT_PANES = [{
+const DEFAULT_PANE_NAME = 'default';
+const VISUAL_RANGE = 'VISUAL_RANGE';
+const DEFAULT_PANES = [{
   name: DEFAULT_PANE_NAME,
   border: {}
 }];
-var DISCRETE = 'discrete';
-var {
+const DISCRETE = 'discrete';
+const {
   isArray
 } = Array;
 function getFirstAxisNameForPane(axes, paneName, defaultPane) {
-  var result;
-  for (var i = 0; i < axes.length; i += 1) {
+  let result;
+  for (let i = 0; i < axes.length; i += 1) {
     if (axes[i].pane === paneName || axes[i].pane === undefined && paneName === defaultPane) {
       result = axes[i].name;
       break;
@@ -52,28 +52,28 @@ function getFirstAxisNameForPane(axes, paneName, defaultPane) {
   return result;
 }
 function changeVisibilityAxisGrids(axis, gridVisibility, minorGridVisibility) {
-  var gridOpt = axis.getOptions().grid;
-  var minorGridOpt = axis.getOptions().minorGrid;
+  const gridOpt = axis.getOptions().grid;
+  const minorGridOpt = axis.getOptions().minorGrid;
   gridOpt.visible = gridVisibility;
   minorGridOpt && (minorGridOpt.visible = minorGridVisibility);
 }
 function hideGridsOnNonFirstValueAxisForPane(axesForPane) {
-  var axisShown = false;
-  var hiddenStubAxis = [];
-  var minorGridVisibility = axesForPane.some(axis => {
-    var minorGridOptions = axis.getOptions().minorGrid;
+  let axisShown = false;
+  const hiddenStubAxis = [];
+  const minorGridVisibility = axesForPane.some(axis => {
+    const minorGridOptions = axis.getOptions().minorGrid;
     return minorGridOptions === null || minorGridOptions === void 0 ? void 0 : minorGridOptions.visible;
   });
-  var gridVisibility = axesForPane.some(axis => {
-    var gridOptions = axis.getOptions().grid;
+  const gridVisibility = axesForPane.some(axis => {
+    const gridOptions = axis.getOptions().grid;
     return gridOptions === null || gridOptions === void 0 ? void 0 : gridOptions.visible;
   });
   if (axesForPane.length > 1) {
     axesForPane.forEach(axis => {
-      var gridOpt = axis.getOptions().grid;
+      const gridOpt = axis.getOptions().grid;
       if (axisShown) {
         changeVisibilityAxisGrids(axis, false, false);
-      } else if (gridOpt === null || gridOpt === void 0 ? void 0 : gridOpt.visible) {
+      } else if (gridOpt !== null && gridOpt !== void 0 && gridOpt.visible) {
         if (axis.getTranslator().getBusinessRange().isEmpty()) {
           changeVisibilityAxisGrids(axis, false, false);
           hiddenStubAxis.push(axis);
@@ -89,8 +89,8 @@ function hideGridsOnNonFirstValueAxisForPane(axesForPane) {
   }
 }
 function findAxisOptions(valueAxes, valueAxesOptions, axisName) {
-  var result;
-  var axInd;
+  let result;
+  let axInd;
   for (axInd = 0; axInd < valueAxesOptions.length; axInd += 1) {
     if (valueAxesOptions[axInd].name === axisName) {
       result = valueAxesOptions[axInd];
@@ -110,7 +110,7 @@ function findAxisOptions(valueAxes, valueAxesOptions, axisName) {
   return result;
 }
 function findAxis(paneName, axisName, axes) {
-  var axisByName = axes.find(axis => axis.name === axisName && axis.pane === paneName);
+  const axisByName = axes.find(axis => axis.name === axisName && axis.pane === paneName);
   if (axisByName) {
     return axisByName;
   }
@@ -123,7 +123,7 @@ function compareAxes(a, b) {
 }
 // checks if pane with provided name exists in this panes array
 function doesPaneExist(panes, paneName) {
-  var found = false;
+  let found = false;
   _each(panes, (_, pane) => {
     if (pane.name === paneName) {
       found = true;
@@ -135,8 +135,8 @@ function doesPaneExist(panes, paneName) {
 }
 // utilities used in axes rendering
 function accumulate(field, src1, src2, auxSpacing) {
-  var val1 = src1[field] || 0;
-  var val2 = src2[field] || 0;
+  const val1 = src1[field] || 0;
+  const val2 = src2[field] || 0;
   return val1 + val2 + (val1 && val2 ? auxSpacing : 0);
 }
 function pickMax(field, src1, src2) {
@@ -150,10 +150,10 @@ function getAxisMargins(axis) {
 }
 function getHorizontalAxesMargins(axes, getMarginsFunc) {
   return axes.reduce((margins, axis) => {
-    var _a;
-    var axisMargins = getMarginsFunc(axis);
-    var paneMargins = margins.panes[axis.pane] = margins.panes[axis.pane] || {};
-    var spacing = axis.getMultipleAxesSpacing();
+    var _axis$getOrthogonalAx;
+    const axisMargins = getMarginsFunc(axis);
+    const paneMargins = margins.panes[axis.pane] = margins.panes[axis.pane] || {};
+    const spacing = axis.getMultipleAxesSpacing();
     paneMargins.top = accumulate('top', paneMargins, axisMargins, spacing);
     paneMargins.bottom = accumulate('bottom', paneMargins, axisMargins, spacing);
     paneMargins.left = pickMax('left', paneMargins, axisMargins);
@@ -162,8 +162,8 @@ function getHorizontalAxesMargins(axes, getMarginsFunc) {
     margins.bottom = pickMax('bottom', paneMargins, margins);
     margins.left = pickMax('left', paneMargins, margins);
     margins.right = pickMax('right', paneMargins, margins);
-    var orthogonalAxis = (_a = axis.getOrthogonalAxis) === null || _a === void 0 ? void 0 : _a.call(axis);
-    var shouldResetPositionMargin = (orthogonalAxis === null || orthogonalAxis === void 0 ? void 0 : orthogonalAxis.customPositionIsAvailable()) && (!axis.customPositionIsBoundaryOrthogonalAxis() || !orthogonalAxis.customPositionEqualsToPredefined());
+    const orthogonalAxis = (_axis$getOrthogonalAx = axis.getOrthogonalAxis) === null || _axis$getOrthogonalAx === void 0 ? void 0 : _axis$getOrthogonalAx.call(axis);
+    const shouldResetPositionMargin = (orthogonalAxis === null || orthogonalAxis === void 0 ? void 0 : orthogonalAxis.customPositionIsAvailable()) && (!axis.customPositionIsBoundaryOrthogonalAxis() || !orthogonalAxis.customPositionEqualsToPredefined());
     if (shouldResetPositionMargin) {
       margins[orthogonalAxis.getResolvedBoundaryPosition()] = 0;
     }
@@ -174,9 +174,9 @@ function getHorizontalAxesMargins(axes, getMarginsFunc) {
 }
 function getVerticalAxesMargins(axes) {
   return axes.reduce((margins, axis) => {
-    var axisMargins = axis.getMargins();
-    var paneMargins = margins.panes[axis.pane] = margins.panes[axis.pane] || {};
-    var spacing = axis.getMultipleAxesSpacing();
+    const axisMargins = axis.getMargins();
+    const paneMargins = margins.panes[axis.pane] = margins.panes[axis.pane] || {};
+    const spacing = axis.getMultipleAxesSpacing();
     paneMargins.top = pickMax('top', paneMargins, axisMargins);
     paneMargins.bottom = pickMax('bottom', paneMargins, axisMargins);
     paneMargins.left = accumulate('left', paneMargins, axisMargins, spacing);
@@ -197,36 +197,36 @@ function performActionOnAxes(axes, action, actionArgument1, actionArgument2, act
 }
 function shrinkCanvases(isRotated, canvases, sizes, verticalMargins, horizontalMargins) {
   function getMargin(side, margins, pane) {
-    var m = !(isRotated ? ['left', 'right'] : ['top', 'bottom']).includes(side) ? margins : margins.panes[pane] || {};
+    const m = !(isRotated ? ['left', 'right'] : ['top', 'bottom']).includes(side) ? margins : margins.panes[pane] || {};
     return m[side];
   }
   function getMaxMargin(side, margins1, margins2, pane) {
     return pickMaxValue(getMargin(side, margins1, pane), getMargin(side, margins2, pane));
   }
-  var getOriginalField = field => "original".concat(field[0].toUpperCase()).concat(field.slice(1));
+  const getOriginalField = field => `original${field[0].toUpperCase()}${field.slice(1)}`;
   function shrink(canvases, paneNames, sizeField, startMargin, endMargin, oppositeMargins) {
     paneNames = paneNames.sort((p1, p2) => canvases[p2][startMargin] - canvases[p1][startMargin]);
     paneNames.forEach(pane => {
-      var canvas = canvases[pane];
+      const canvas = canvases[pane];
       oppositeMargins.forEach(margin => {
         canvas[margin] = canvas[getOriginalField(margin)] + getMaxMargin(margin, verticalMargins, horizontalMargins, pane);
       });
     });
-    var firstPane = canvases[paneNames[0]];
-    var initialEmptySpace = firstPane[sizeField] - firstPane[getOriginalField(endMargin)] - canvases[paneNames.at(-1)][getOriginalField(startMargin)];
-    var emptySpace = paneNames.reduce((space, paneName) => {
-      var maxStartMargin = getMaxMargin(startMargin, verticalMargins, horizontalMargins, paneName);
-      var maxEndMargin = getMaxMargin(endMargin, verticalMargins, horizontalMargins, paneName);
+    const firstPane = canvases[paneNames[0]];
+    const initialEmptySpace = firstPane[sizeField] - firstPane[getOriginalField(endMargin)] - canvases[paneNames.at(-1)][getOriginalField(startMargin)];
+    let emptySpace = paneNames.reduce((space, paneName) => {
+      const maxStartMargin = getMaxMargin(startMargin, verticalMargins, horizontalMargins, paneName);
+      const maxEndMargin = getMaxMargin(endMargin, verticalMargins, horizontalMargins, paneName);
       return space - maxStartMargin - maxEndMargin;
     }, initialEmptySpace) - PANE_PADDING * (paneNames.length - 1);
     emptySpace -= Object.keys(sizes).reduce((prev, key) => {
-      var currentHeight = !isRelativeHeightPane(sizes[key]) ? sizes[key].height : 0;
+      const currentHeight = !isRelativeHeightPane(sizes[key]) ? sizes[key].height : 0;
       return prev + currentHeight;
     }, 0);
-    var initialOffset = firstPane[sizeField] - firstPane[getOriginalField(endMargin)] - (emptySpace < 0 ? emptySpace : 0);
+    const initialOffset = firstPane[sizeField] - firstPane[getOriginalField(endMargin)] - (emptySpace < 0 ? emptySpace : 0);
     paneNames.reduce((offset, pane) => {
-      var canvas = canvases[pane];
-      var paneSize = sizes[pane];
+      const canvas = canvases[pane];
+      const paneSize = sizes[pane];
       offset -= getMaxMargin(endMargin, verticalMargins, horizontalMargins, pane);
       canvas[endMargin] = firstPane[sizeField] - offset;
       offset -= !isRelativeHeightPane(paneSize) ? paneSize.height : Math.floor(emptySpace * paneSize.height);
@@ -235,7 +235,7 @@ function shrinkCanvases(isRotated, canvases, sizes, verticalMargins, horizontalM
       return offset;
     }, initialOffset);
   }
-  var paneNames = Object.keys(canvases);
+  const paneNames = Object.keys(canvases);
   if (!isRotated) {
     shrink(canvases, paneNames, 'height', 'top', 'bottom', ['left', 'right']);
   } else {
@@ -251,17 +251,17 @@ function drawAxesWithTicks(axes, condition, canvases, panesBorderOptions) {
   performActionOnAxes(axes, 'draw', !condition && canvases, panesBorderOptions);
 }
 function shiftAxis(side1, side2) {
-  var shifts = {};
+  const shifts = {};
   return function (axis) {
     if (!axis.customPositionIsAvailable() || axis.customPositionEqualsToPredefined()) {
-      var shift = shifts[axis.pane] = shifts[axis.pane] || {
+      const shift = shifts[axis.pane] = shifts[axis.pane] || {
         top: 0,
         left: 0,
         bottom: 0,
         right: 0
       };
-      var spacing = axis.getMultipleAxesSpacing();
-      var margins = axis.getMargins();
+      const spacing = axis.getMultipleAxesSpacing();
+      const margins = axis.getMargins();
       axis.shift(shift);
       shift[side1] = accumulate(side1, shift, margins, spacing);
       shift[side2] = accumulate(side2, shift, margins, spacing);
@@ -276,8 +276,8 @@ function shiftAxis(side1, side2) {
   };
 }
 function getCommonSize(side, margins) {
-  var size = 0;
-  var paneMargins;
+  let size = 0;
+  let paneMargins;
   Object.keys(margins.panes).forEach(pane => {
     paneMargins = margins.panes[pane];
     size += side === 'height' ? paneMargins.top + paneMargins.bottom : paneMargins.left + paneMargins.right;
@@ -285,7 +285,7 @@ function getCommonSize(side, margins) {
   return size;
 }
 function checkUsedSpace(sizeShortage, side, axes, getMarginFunc) {
-  var size = 0;
+  let size = 0;
   if (sizeShortage[side] > 0) {
     size = getCommonSize(side, getMarginFunc(axes, getAxisMargins));
     performActionOnAxes(axes, 'hideTitle');
@@ -296,29 +296,29 @@ function checkUsedSpace(sizeShortage, side, axes, getMarginFunc) {
   }
 }
 function axisAnimationEnabled(drawOptions, pointsToAnimation) {
-  var pointsCount = pointsToAnimation.reduce((sum, count) => sum + count, 0) / pointsToAnimation.length;
+  const pointsCount = pointsToAnimation.reduce((sum, count) => sum + count, 0) / pointsToAnimation.length;
   return drawOptions.animate && pointsCount <= drawOptions.animationPointsLimit;
 }
 function collectMarkersInfoBySeries(allSeries, filteredSeries, argAxis) {
-  var series = [];
-  var overloadedSeries = {};
-  var argVisualRange = argAxis.visualRange();
-  var argTranslator = argAxis.getTranslator();
-  var argViewPortFilter = rangeDataCalculator.getViewPortFilter(argVisualRange || {});
+  const series = [];
+  const overloadedSeries = {};
+  const argVisualRange = argAxis.visualRange();
+  const argTranslator = argAxis.getTranslator();
+  const argViewPortFilter = rangeDataCalculator.getViewPortFilter(argVisualRange || {});
   filteredSeries.forEach(s => {
-    var valAxis = s.getValueAxis();
-    var valVisualRange = valAxis.getCanvasRange();
-    var valTranslator = valAxis.getTranslator();
-    var seriesIndex = allSeries.indexOf(s);
-    var valViewPortFilter = rangeDataCalculator.getViewPortFilter(valVisualRange || {});
+    const valAxis = s.getValueAxis();
+    const valVisualRange = valAxis.getCanvasRange();
+    const valTranslator = valAxis.getTranslator();
+    const seriesIndex = allSeries.indexOf(s);
+    const valViewPortFilter = rangeDataCalculator.getViewPortFilter(valVisualRange || {});
     overloadedSeries[seriesIndex] = {};
     filteredSeries.forEach(sr => {
       overloadedSeries[seriesIndex][allSeries.indexOf(sr)] = 0;
     });
-    var seriesPoints = [];
-    var pointsInViewport = s.getPoints().filter(p => p.getOptions().visible && argViewPortFilter(p.argument) && (valViewPortFilter(p.getMinValue(true)) || valViewPortFilter(p.getMaxValue(true))));
+    const seriesPoints = [];
+    const pointsInViewport = s.getPoints().filter(p => p.getOptions().visible && argViewPortFilter(p.argument) && (valViewPortFilter(p.getMinValue(true)) || valViewPortFilter(p.getMaxValue(true))));
     pointsInViewport.forEach(p => {
-      var tp = {
+      const tp = {
         seriesIndex,
         argument: p.argument,
         value: p.getMaxValue(true),
@@ -327,7 +327,7 @@ function collectMarkersInfoBySeries(allSeries, filteredSeries, argAxis) {
         y: undefined
       };
       if (p.getMinValue(true) !== p.getMaxValue(true)) {
-        var mp = _extend({}, tp);
+        const mp = _extend({}, tp);
         mp.value = p.getMinValue(true);
         mp.x = argTranslator.to(mp.argument, 1);
         mp.y = valTranslator.to(mp.value, 1);
@@ -351,21 +351,21 @@ function collectMarkersInfoBySeries(allSeries, filteredSeries, argAxis) {
     overloadedSeries
   };
 }
-var isOverlay = (currentPoint, overlayPoint, pointRadius) => {
-  var pointHitsLeftBorder = overlayPoint.x - pointRadius <= currentPoint.x;
-  var pointHitsRightBorder = overlayPoint.x + pointRadius >= currentPoint.x;
-  var pointHitsTopBorder = overlayPoint.y - pointRadius <= currentPoint.y;
-  var pointHitsBottomBorder = overlayPoint.y + pointRadius >= currentPoint.y;
-  var isPointOverlappedHorizontally = pointHitsLeftBorder && pointHitsRightBorder;
-  var isPointOverlappedVertically = pointHitsTopBorder && pointHitsBottomBorder;
+const isOverlay = (currentPoint, overlayPoint, pointRadius) => {
+  const pointHitsLeftBorder = overlayPoint.x - pointRadius <= currentPoint.x;
+  const pointHitsRightBorder = overlayPoint.x + pointRadius >= currentPoint.x;
+  const pointHitsTopBorder = overlayPoint.y - pointRadius <= currentPoint.y;
+  const pointHitsBottomBorder = overlayPoint.y + pointRadius >= currentPoint.y;
+  const isPointOverlappedHorizontally = pointHitsLeftBorder && pointHitsRightBorder;
+  const isPointOverlappedVertically = pointHitsTopBorder && pointHitsBottomBorder;
   return isPointOverlappedHorizontally && isPointOverlappedVertically;
 };
-var isPointOverlapped = (currentPoint, points, skipSamePointsComparing) => {
-  var radiusPoint = currentPoint.getOptions().size / 2;
-  for (var i = 0; i < points.length; i += 1) {
+const isPointOverlapped = (currentPoint, points, skipSamePointsComparing) => {
+  const radiusPoint = currentPoint.getOptions().size / 2;
+  for (let i = 0; i < points.length; i += 1) {
     if (!skipSamePointsComparing) {
-      var isXCoordinateSame = points[i].x === currentPoint.x;
-      var isYCoordinateSame = points[i].y === currentPoint.y;
+      const isXCoordinateSame = points[i].x === currentPoint.x;
+      const isYCoordinateSame = points[i].y === currentPoint.y;
       if (isXCoordinateSame && isYCoordinateSame) {
         continue;
       }
@@ -377,17 +377,17 @@ var isPointOverlapped = (currentPoint, points, skipSamePointsComparing) => {
   return false;
 };
 function fastHidingPointMarkersByArea(canvas, markersInfo, series) {
-  var area = canvas.width * canvas.height;
-  var seriesPoints = markersInfo.series;
-  var _loop = function _loop(i) {
-    var currentSeries = series.filter(s => s.name === seriesPoints[i].name)[0];
-    var {
+  const area = canvas.width * canvas.height;
+  const seriesPoints = markersInfo.series;
+  for (let i = seriesPoints.length - 1; i >= 0; i -= 1) {
+    const currentSeries = series.filter(s => s.name === seriesPoints[i].name)[0];
+    const {
       points
     } = seriesPoints[i];
-    var pointSize = points.length ? points[0].size : 0;
-    var pointsArea = pointSize * pointSize * points.length;
+    const pointSize = points.length ? points[0].size : 0;
+    const pointsArea = pointSize * pointSize * points.length;
     if (currentSeries.autoHidePointMarkersEnabled() && pointsArea >= area / seriesPoints.length) {
-      var {
+      const {
         index
       } = seriesPoints[i];
       currentSeries.autoHidePointMarkers = true;
@@ -395,28 +395,25 @@ function fastHidingPointMarkersByArea(canvas, markersInfo, series) {
       series.splice(series.indexOf(currentSeries), 1);
       markersInfo.overloadedSeries[index] = null;
     }
-  };
-  for (var i = seriesPoints.length - 1; i >= 0; i -= 1) {
-    _loop(i);
   }
 }
 function updateMarkersInfo(points, overloadedSeries) {
-  var isContinuousSeries = false;
-  for (var i = 0; i < points.length - 1; i += 1) {
-    var curPoint = points[i];
-    var {
+  let isContinuousSeries = false;
+  for (let i = 0; i < points.length - 1; i += 1) {
+    const curPoint = points[i];
+    const {
       size
     } = curPoint;
     if (_isDefined(curPoint.x) && _isDefined(curPoint.y)) {
-      for (var j = i + 1; j < points.length; j += 1) {
-        var nextPoint = points[j];
-        var nextX = nextPoint === null || nextPoint === void 0 ? void 0 : nextPoint.x;
-        var nextY = nextPoint === null || nextPoint === void 0 ? void 0 : nextPoint.y;
+      for (let j = i + 1; j < points.length; j += 1) {
+        const nextPoint = points[j];
+        const nextX = nextPoint === null || nextPoint === void 0 ? void 0 : nextPoint.x;
+        const nextY = nextPoint === null || nextPoint === void 0 ? void 0 : nextPoint.y;
         if (!_isDefined(nextX) || Math.abs(curPoint.x - nextX) >= size) {
           isContinuousSeries = isContinuousSeries && j !== i + 1;
           break;
         } else {
-          var distance = _isDefined(nextX) && _isDefined(nextY) && Math.sqrt((curPoint.x - nextX) ** 2 + (curPoint.y - nextY) ** 2);
+          const distance = _isDefined(nextX) && _isDefined(nextY) && Math.sqrt((curPoint.x - nextX) ** 2 + (curPoint.y - nextY) ** 2);
           if (distance && distance < size) {
             overloadedSeries[curPoint.seriesIndex][nextPoint.seriesIndex] += 1;
             overloadedSeries[curPoint.seriesIndex].total += 1;
@@ -431,7 +428,7 @@ function updateMarkersInfo(points, overloadedSeries) {
   }
 }
 // utilities used in axes rendering
-var dxChart = AdvancedChart.inherit({
+const dxChart = AdvancedChart.inherit({
   _themeSection: 'chart',
   _fontFields: ['crosshair.label.font'],
   _initCore() {
@@ -456,9 +453,9 @@ var dxChart = AdvancedChart.inherit({
   },
   _getExtraOptions: noop,
   _createPanes() {
-    var panes = this.option('panes');
-    var panesNameCounter = 0;
-    var defaultPane;
+    let panes = this.option('panes');
+    let panesNameCounter = 0;
+    let defaultPane;
     if (!panes || isArray(panes) && !panes.length) {
       panes = DEFAULT_PANES;
     }
@@ -493,14 +490,14 @@ var dxChart = AdvancedChart.inherit({
     };
   },
   _checkPaneName(seriesTheme) {
-    var paneList = _map(this.panes, pane => pane.name);
+    const paneList = _map(this.panes, pane => pane.name);
     seriesTheme.pane = seriesTheme.pane || this.defaultPane;
     return paneList.includes(seriesTheme.pane);
   },
   _initCustomPositioningAxes() {
-    var argumentAxis = this.getArgumentAxis();
-    var valueAxisName = argumentAxis.getOptions().customPositionAxis;
-    var valueAxis = this._valueAxes.find(v => v.pane === argumentAxis.pane && (!valueAxisName || valueAxisName === v.name));
+    const argumentAxis = this.getArgumentAxis();
+    const valueAxisName = argumentAxis.getOptions().customPositionAxis;
+    const valueAxis = this._valueAxes.find(v => v.pane === argumentAxis.pane && (!valueAxisName || valueAxisName === v.name));
     this._valueAxes.forEach(v => {
       if (argumentAxis !== v.getOrthogonalAxis()) {
         v.getOrthogonalAxis = () => argumentAxis;
@@ -518,7 +515,7 @@ var dxChart = AdvancedChart.inherit({
     return this._argumentAxes.concat(this._valueAxes);
   },
   _resetAxesAnimation(isFirstDrawing, isHorizontal) {
-    var axes;
+    let axes;
     if (_isDefined(isHorizontal)) {
       axes = isHorizontal ^ this._isRotated() ? this._argumentAxes : this._valueAxes;
     } else {
@@ -529,37 +526,37 @@ var dxChart = AdvancedChart.inherit({
     });
   },
   _axesBoundaryPositioning() {
-    var allAxes = this._getAllAxes();
-    var boundaryStateChanged = false;
+    const allAxes = this._getAllAxes();
+    let boundaryStateChanged = false;
     allAxes.forEach(a => {
       if (!a.customPositionIsAvailable()) {
         return;
       }
-      var prevBoundaryState = a.customPositionIsBoundary();
+      const prevBoundaryState = a.customPositionIsBoundary();
       a._customBoundaryPosition = a.getCustomBoundaryPosition();
       boundaryStateChanged = boundaryStateChanged || prevBoundaryState !== a.customPositionIsBoundary();
     });
     return boundaryStateChanged;
   },
   _getCrosshairMargins() {
-    var crosshairOptions = this._getCrosshairOptions() || {};
-    var crosshairEnabled = crosshairOptions.enabled;
-    var margins = getMargins();
-    var horizontalLabel = _extend(true, {}, crosshairOptions.label, crosshairOptions.horizontalLine.label);
-    var verticalLabel = _extend(true, {}, crosshairOptions.label, crosshairOptions.verticalLine.label);
+    const crosshairOptions = this._getCrosshairOptions() || {};
+    const crosshairEnabled = crosshairOptions.enabled;
+    const margins = getMargins();
+    const horizontalLabel = _extend(true, {}, crosshairOptions.label, crosshairOptions.horizontalLine.label);
+    const verticalLabel = _extend(true, {}, crosshairOptions.label, crosshairOptions.verticalLine.label);
     return {
       x: crosshairEnabled && crosshairOptions.horizontalLine.visible && horizontalLabel.visible ? margins.x : 0,
       y: crosshairEnabled && crosshairOptions.verticalLine.visible && verticalLabel.visible ? margins.y : 0
     };
   },
   _getValueAxis(paneName, axisName) {
-    var valueAxes = this._valueAxes;
-    var valueAxisOptions = this.option('valueAxis') || {};
-    var valueAxesOptions = isArray(valueAxisOptions) ? valueAxisOptions : [valueAxisOptions];
-    var rotated = this._isRotated();
-    var crosshairMargins = this._getCrosshairMargins();
-    var axisOptions;
-    var axis;
+    const valueAxes = this._valueAxes;
+    const valueAxisOptions = this.option('valueAxis') || {};
+    const valueAxesOptions = isArray(valueAxisOptions) ? valueAxisOptions : [valueAxisOptions];
+    const rotated = this._isRotated();
+    const crosshairMargins = this._getCrosshairMargins();
+    let axisOptions;
+    let axis;
     axisName = axisName || getFirstAxisNameForPane(valueAxes, paneName, this.defaultPane);
     axis = findAxis(paneName, axisName, valueAxes);
     if (!axis) {
@@ -574,7 +571,7 @@ var dxChart = AdvancedChart.inherit({
       axis = this._createAxis(false, this._populateAxesOptions('valueAxis', axisOptions, {
         pane: paneName,
         name: axisName,
-        optionPath: isArray(valueAxisOptions) ? "valueAxis[".concat(axisOptions.priority, "]") : 'valueAxis',
+        optionPath: isArray(valueAxisOptions) ? `valueAxis[${axisOptions.priority}]` : 'valueAxis',
         crosshairMargin: rotated ? crosshairMargins.y : crosshairMargins.x
       }, rotated));
       axis.applyVisualRangeSetter(this._getVisualRangeSetter());
@@ -584,15 +581,15 @@ var dxChart = AdvancedChart.inherit({
     return axis;
   },
   _correctValueAxes(needHideGrids) {
-    var synchronizeMultiAxes = this._themeManager.getOptions('synchronizeMultiAxes');
-    var valueAxes = this._valueAxes;
-    var paneWithAxis = {};
+    const synchronizeMultiAxes = this._themeManager.getOptions('synchronizeMultiAxes');
+    const valueAxes = this._valueAxes;
+    const paneWithAxis = {};
     this.series.forEach(series => {
-      var axis = series.getValueAxis();
+      const axis = series.getValueAxis();
       paneWithAxis[axis.pane] = true;
     });
     this.panes.forEach(pane => {
-      var paneName = pane.name;
+      const paneName = pane.name;
       if (!paneWithAxis[paneName]) {
         this._getValueAxis(paneName); // creates an value axis if there is no one for pane
       }
@@ -604,20 +601,20 @@ var dxChart = AdvancedChart.inherit({
       if (!axis.pane) {
         axis.setPane(this.defaultPane);
       }
-      var paneExists = doesPaneExist(this.panes, axis.pane);
+      const paneExists = doesPaneExist(this.panes, axis.pane);
       if (!paneExists) {
         axis.dispose();
         axis = null;
       }
       return paneExists;
     }).sort(compareAxes);
-    var defaultAxis = this.getValueAxis();
+    const defaultAxis = this.getValueAxis();
     this._valueAxes.forEach(axis => {
-      var {
+      const {
         optionPath
       } = axis.getOptions();
       if (optionPath) {
-        var axesWithSamePath = this._valueAxes.filter(a => a.getOptions().optionPath === optionPath);
+        const axesWithSamePath = this._valueAxes.filter(a => a.getOptions().optionPath === optionPath);
         if (axesWithSamePath.length > 1) {
           if (axesWithSamePath.some(a => a === defaultAxis)) {
             axesWithSamePath.forEach(a => {
@@ -637,7 +634,7 @@ var dxChart = AdvancedChart.inherit({
     });
   },
   _getSeriesForPane(paneName) {
-    var paneSeries = [];
+    const paneSeries = [];
     _each(this.series, (_, oneSeries) => {
       if (oneSeries.pane === paneName) {
         paneSeries.push(oneSeries);
@@ -646,23 +643,23 @@ var dxChart = AdvancedChart.inherit({
     return paneSeries;
   },
   _createPanesBorderOptions() {
-    var commonBorderOptions = this._themeManager.getOptions('commonPaneSettings').border;
-    var panesBorderOptions = {};
+    const commonBorderOptions = this._themeManager.getOptions('commonPaneSettings').border;
+    const panesBorderOptions = {};
     this.panes.forEach(pane => {
       panesBorderOptions[pane.name] = _extend(true, {}, commonBorderOptions, pane.border);
     });
     return panesBorderOptions;
   },
   _createScrollBar() {
-    var _a;
-    var scrollBarOptions = this._themeManager.getOptions('scrollBar') || {};
-    var scrollBarGroup = this._scrollBarGroup;
+    const scrollBarOptions = this._themeManager.getOptions('scrollBar') || {};
+    const scrollBarGroup = this._scrollBarGroup;
     if (scrollBarOptions.visible) {
       scrollBarOptions.rotated = this._isRotated();
       this._scrollBar = (this._scrollBar || new ScrollBar(this._renderer, scrollBarGroup)).update(scrollBarOptions);
     } else {
+      var _this$_scrollBar;
       scrollBarGroup.linkRemove();
-      (_a = this._scrollBar) === null || _a === void 0 ? void 0 : _a.dispose();
+      (_this$_scrollBar = this._scrollBar) === null || _this$_scrollBar === void 0 || _this$_scrollBar.dispose();
       this._scrollBar = null;
     }
   },
@@ -670,23 +667,23 @@ var dxChart = AdvancedChart.inherit({
     append();
   },
   _prepareToRender() {
-    var panesBorderOptions = this._createPanesBorderOptions();
+    const panesBorderOptions = this._createPanesBorderOptions();
     this._createPanesBackground();
     this._appendAxesGroups();
     this._adjustViewport();
     return panesBorderOptions;
   },
   _adjustViewport() {
-    var adjustOnZoom = this._themeManager.getOptions('adjustOnZoom');
+    const adjustOnZoom = this._themeManager.getOptions('adjustOnZoom');
     if (!adjustOnZoom) {
       return;
     }
     this._valueAxes.forEach(axis => axis.adjust());
   },
   _recreateSizeDependentObjects(isCanvasChanged) {
-    var series = this._getVisibleSeries();
-    var useAggregation = series.some(s => s.useAggregation());
-    var zoomChanged = this._isZooming();
+    const series = this._getVisibleSeries();
+    const useAggregation = series.some(s => s.useAggregation());
+    const zoomChanged = this._isZooming();
     if (!useAggregation) {
       return;
     }
@@ -701,27 +698,27 @@ var dxChart = AdvancedChart.inherit({
     this._processSeriesFamilies();
   },
   _isZooming() {
-    var argumentAxis = this.getArgumentAxis();
-    if (!(argumentAxis === null || argumentAxis === void 0 ? void 0 : argumentAxis.getTranslator())) {
+    const argumentAxis = this.getArgumentAxis();
+    if (!(argumentAxis !== null && argumentAxis !== void 0 && argumentAxis.getTranslator())) {
       return false;
     }
-    var businessRange = argumentAxis.getTranslator().getBusinessRange();
-    var zoomRange = argumentAxis.getViewport();
-    var min = zoomRange ? zoomRange.min : 0;
-    var max = zoomRange ? zoomRange.max : 0;
+    const businessRange = argumentAxis.getTranslator().getBusinessRange();
+    const zoomRange = argumentAxis.getViewport();
+    let min = zoomRange ? zoomRange.min : 0;
+    let max = zoomRange ? zoomRange.max : 0;
     if (businessRange.axisType === 'logarithmic') {
       min = getLog(min, businessRange.base);
       max = getLog(max, businessRange.base);
     }
-    var viewportDistance = businessRange.axisType === DISCRETE ? getCategoriesInfo(businessRange.categories, min, max).categories.length : Math.abs(max - min);
-    var precision = getPrecision(viewportDistance);
+    const viewportDistance = businessRange.axisType === DISCRETE ? getCategoriesInfo(businessRange.categories, min, max).categories.length : Math.abs(max - min);
+    let precision = getPrecision(viewportDistance);
     precision = precision > 1 ? 10 ** (precision - 2) : 1;
-    var zoomChanged = Math.round((this._zoomLength - viewportDistance) * precision) / precision !== 0;
+    const zoomChanged = Math.round((this._zoomLength - viewportDistance) * precision) / precision !== 0;
     this._zoomLength = viewportDistance;
     return zoomChanged;
   },
   _handleSeriesDataUpdated() {
-    var viewport = new Range();
+    const viewport = new Range();
     this.series.forEach(s => {
       viewport.addRange(s.getArgumentRange());
     });
@@ -748,11 +745,11 @@ var dxChart = AdvancedChart.inherit({
   },
   _updateLegendPosition(drawOptions, legendHasInsidePosition) {
     if (drawOptions.drawLegend && this._legend && legendHasInsidePosition) {
-      var {
+      const {
         panes
       } = this;
-      var newCanvas = _extend({}, panes[0].canvas);
-      var layoutManager = new LayoutManager();
+      const newCanvas = _extend({}, panes[0].canvas);
+      const layoutManager = new LayoutManager();
       newCanvas.right = panes[panes.length - 1].canvas.right;
       newCanvas.bottom = panes[panes.length - 1].canvas.bottom;
       layoutManager.layoutInsideLegend(this._legend, newCanvas);
@@ -762,9 +759,9 @@ var dxChart = AdvancedChart.inherit({
     return true;
   },
   _applyExtraSettings(series) {
-    var paneIndex = this._getPaneIndex(series.pane);
-    var panesClipRects = this._panesClipRects;
-    var wideClipRect = panesClipRects.wide[paneIndex];
+    const paneIndex = this._getPaneIndex(series.pane);
+    const panesClipRects = this._panesClipRects;
+    const wideClipRect = panesClipRects.wide[paneIndex];
     series.setClippingParams(panesClipRects.base[paneIndex].id, wideClipRect === null || wideClipRect === void 0 ? void 0 : wideClipRect.id, this._getPaneBorderVisibility(paneIndex));
   },
   _updatePanesCanvases(drawOptions) {
@@ -785,11 +782,11 @@ var dxChart = AdvancedChart.inherit({
     return rangeDataCalculator.getViewPortFilter(this.getArgumentAxis().visualRange() || {});
   },
   _hidePointsForSingleSeriesIfNeeded(series) {
-    var seriesPoints = series.getPoints();
-    var overlappedPointsCount = 0;
-    for (var i = 0; i < seriesPoints.length; i += 1) {
-      var currentPoint = seriesPoints[i];
-      var overlappingPoints = seriesPoints.slice(i + 1);
+    const seriesPoints = series.getPoints();
+    let overlappedPointsCount = 0;
+    for (let i = 0; i < seriesPoints.length; i += 1) {
+      const currentPoint = seriesPoints[i];
+      const overlappingPoints = seriesPoints.slice(i + 1);
       overlappedPointsCount += Number(isPointOverlapped(currentPoint, overlappingPoints));
       if (overlappedPointsCount > seriesPoints.length / 2) {
         series.autoHidePointMarkers = true;
@@ -798,18 +795,18 @@ var dxChart = AdvancedChart.inherit({
     }
   },
   _applyAutoHidePointMarkers(filteredSeries) {
-    var overlappingPoints = [];
-    var overlappedPointsCalculator = (pointsCount, currentPoint) => pointsCount + isPointOverlapped(currentPoint, overlappingPoints, true);
-    for (var i = filteredSeries.length - 1; i >= 0; i -= 1) {
-      var currentSeries = filteredSeries[i];
+    let overlappingPoints = [];
+    const overlappedPointsCalculator = (pointsCount, currentPoint) => pointsCount + isPointOverlapped(currentPoint, overlappingPoints, true);
+    for (let i = filteredSeries.length - 1; i >= 0; i -= 1) {
+      const currentSeries = filteredSeries[i];
       if (!currentSeries.autoHidePointMarkersEnabled()) {
         continue;
       }
       currentSeries.autoHidePointMarkers = false;
       this._hidePointsForSingleSeriesIfNeeded(currentSeries);
       if (!currentSeries.autoHidePointMarkers) {
-        var seriesPoints = currentSeries.getPoints();
-        var overlappingPointsCount = seriesPoints.reduce(overlappedPointsCalculator, 0);
+        const seriesPoints = currentSeries.getPoints();
+        const overlappingPointsCount = seriesPoints.reduce(overlappedPointsCalculator, 0);
         if (overlappingPointsCount < seriesPoints.length) {
           overlappingPoints = overlappingPoints.concat(seriesPoints);
         } else {
@@ -819,7 +816,7 @@ var dxChart = AdvancedChart.inherit({
     }
   },
   _applyPointMarkersAutoHiding() {
-    var allSeries = this.series;
+    const allSeries = this.series;
     if (!this._themeManager.getOptions('autoHidePointMarkers')) {
       allSeries.forEach(s => {
         s.autoHidePointMarkers = false;
@@ -827,22 +824,22 @@ var dxChart = AdvancedChart.inherit({
       return;
     }
     this.panes.forEach(_ref => {
-      var {
+      let {
         borderCoords,
         name
       } = _ref;
-      var series = allSeries.filter(s => s.pane === name && s.usePointsToDefineAutoHiding());
+      const series = allSeries.filter(s => s.pane === name && s.usePointsToDefineAutoHiding());
       series.forEach(singleSeries => {
         singleSeries.prepareCoordinatesForPoints();
       });
-      var argAxis = this.getArgumentAxis();
-      var markersInfo = collectMarkersInfoBySeries(allSeries, series, argAxis);
+      const argAxis = this.getArgumentAxis();
+      const markersInfo = collectMarkersInfoBySeries(allSeries, series, argAxis);
       fastHidingPointMarkersByArea(borderCoords, markersInfo, series);
       if (markersInfo.series.length) {
-        var argVisualRange = argAxis.visualRange();
-        var argAxisIsDiscrete = argAxis.getOptions().type === DISCRETE;
-        var sortingCallback = argAxisIsDiscrete ? (p1, p2) => argVisualRange.categories.indexOf(p1.argument) - argVisualRange.categories.indexOf(p2.argument) : (p1, p2) => p1.argument - p2.argument;
-        var points = [];
+        const argVisualRange = argAxis.visualRange();
+        const argAxisIsDiscrete = argAxis.getOptions().type === DISCRETE;
+        const sortingCallback = argAxisIsDiscrete ? (p1, p2) => argVisualRange.categories.indexOf(p1.argument) - argVisualRange.categories.indexOf(p2.argument) : (p1, p2) => p1.argument - p2.argument;
+        let points = [];
         markersInfo.series.forEach(s => {
           points = points.concat(s.points);
         });
@@ -856,37 +853,37 @@ var dxChart = AdvancedChart.inherit({
     function calculateTitlesWidth(axes) {
       return axes.map(axis => {
         if (!axis.getTitle) return 0;
-        var title = axis.getTitle();
+        const title = axis.getTitle();
         return title ? title.bBox.width : 0;
       });
     }
-    var rotated = this._isRotated();
-    var synchronizeMultiAxes = this._themeManager.getOptions('synchronizeMultiAxes');
-    var scrollBar = this._scrollBar ? [this._scrollBar] : [];
-    var extendedArgAxes = this._isArgumentAxisBeforeScrollBar() ? this._argumentAxes.concat(scrollBar) : scrollBar.concat(this._argumentAxes);
-    var verticalAxes = rotated ? this._argumentAxes : this._valueAxes;
-    var verticalElements = rotated ? extendedArgAxes : this._valueAxes;
-    var horizontalAxes = rotated ? this._valueAxes : this._argumentAxes;
-    var horizontalElements = rotated ? this._valueAxes : extendedArgAxes;
-    var allAxes = verticalAxes.concat(horizontalAxes);
-    var allElements = allAxes.concat(scrollBar);
-    var verticalAxesFirstDrawing = verticalAxes.some(v => v.isFirstDrawing());
+    const rotated = this._isRotated();
+    const synchronizeMultiAxes = this._themeManager.getOptions('synchronizeMultiAxes');
+    const scrollBar = this._scrollBar ? [this._scrollBar] : [];
+    const extendedArgAxes = this._isArgumentAxisBeforeScrollBar() ? this._argumentAxes.concat(scrollBar) : scrollBar.concat(this._argumentAxes);
+    const verticalAxes = rotated ? this._argumentAxes : this._valueAxes;
+    const verticalElements = rotated ? extendedArgAxes : this._valueAxes;
+    const horizontalAxes = rotated ? this._valueAxes : this._argumentAxes;
+    const horizontalElements = rotated ? this._valueAxes : extendedArgAxes;
+    const allAxes = verticalAxes.concat(horizontalAxes);
+    const allElements = allAxes.concat(scrollBar);
+    const verticalAxesFirstDrawing = verticalAxes.some(v => v.isFirstDrawing());
     this._normalizePanesHeight();
     this._updatePanesCanvases(drawOptions);
-    var panesCanvases = this.panes.reduce((canvases, pane) => {
+    let panesCanvases = this.panes.reduce((canvases, pane) => {
       canvases[pane.name] = _extend({}, pane.canvas);
       return canvases;
     }, {});
-    var paneSizes = this.panes.reduce((sizes, pane) => {
+    const paneSizes = this.panes.reduce((sizes, pane) => {
       sizes[pane.name] = {
         height: pane.height,
         unit: pane.unit
       };
       return sizes;
     }, {});
-    var cleanPanesCanvases = _extend(true, {}, panesCanvases);
+    const cleanPanesCanvases = _extend(true, {}, panesCanvases);
     this._initCustomPositioningAxes();
-    var needCustomAdjustAxes = this._axesBoundaryPositioning();
+    const needCustomAdjustAxes = this._axesBoundaryPositioning();
     if (!drawOptions.adjustAxes && !needCustomAdjustAxes) {
       drawAxesWithTicks(verticalAxes, !rotated && synchronizeMultiAxes, panesCanvases, panesBorderOptions);
       drawAxesWithTicks(horizontalAxes, rotated && synchronizeMultiAxes, panesCanvases, panesBorderOptions);
@@ -907,16 +904,16 @@ var dxChart = AdvancedChart.inherit({
     if (this._scrollBar) {
       this._scrollBar.setPane(this.panes);
     }
-    var vAxesMargins = {
+    let vAxesMargins = {
       panes: {},
       left: 0,
       right: 0
     };
-    var hAxesMargins = getHorizontalAxesMargins(horizontalElements, axis => axis.estimateMargins(panesCanvases[axis.pane]));
+    let hAxesMargins = getHorizontalAxesMargins(horizontalElements, axis => axis.estimateMargins(panesCanvases[axis.pane]));
     panesCanvases = shrinkCanvases(rotated, panesCanvases, paneSizes, vAxesMargins, hAxesMargins);
-    var drawAxesAndSetCanvases = isHorizontal => {
-      var axes = isHorizontal ? horizontalAxes : verticalAxes;
-      var condition = (isHorizontal ? rotated : !rotated) && synchronizeMultiAxes;
+    const drawAxesAndSetCanvases = isHorizontal => {
+      const axes = isHorizontal ? horizontalAxes : verticalAxes;
+      const condition = (isHorizontal ? rotated : !rotated) && synchronizeMultiAxes;
       drawAxesWithTicks(axes, condition, panesCanvases, panesBorderOptions);
       if (isHorizontal) {
         hAxesMargins = getHorizontalAxesMargins(horizontalElements, getAxisMargins);
@@ -930,10 +927,10 @@ var dxChart = AdvancedChart.inherit({
     if (!this._changesApplying && this._estimateTickIntervals(verticalAxes, panesCanvases)) {
       drawAxesAndSetCanvases(false);
     }
-    var oldTitlesWidth = calculateTitlesWidth(verticalAxes);
-    var visibleSeries = this._getVisibleSeries();
-    var pointsToAnimation = this._getPointsToAnimation(visibleSeries);
-    var axesIsAnimated = axisAnimationEnabled(drawOptions, pointsToAnimation);
+    let oldTitlesWidth = calculateTitlesWidth(verticalAxes);
+    const visibleSeries = this._getVisibleSeries();
+    const pointsToAnimation = this._getPointsToAnimation(visibleSeries);
+    const axesIsAnimated = axisAnimationEnabled(drawOptions, pointsToAnimation);
     performActionOnAxes(allElements, 'updateSize', panesCanvases, axesIsAnimated);
     horizontalElements.forEach(shiftAxis('top', 'bottom'));
     verticalElements.forEach(shiftAxis('left', 'right'));
@@ -945,17 +942,17 @@ var dxChart = AdvancedChart.inherit({
       axis.setInitRange();
     });
     verticalAxes.forEach((axis, i) => {
-      var _a;
-      if ((_a = axis.hasWrap) === null || _a === void 0 ? void 0 : _a.call(axis)) {
-        var title = axis.getTitle();
-        var newTitleWidth = title ? title.bBox.width : 0;
-        var offset = newTitleWidth - oldTitlesWidth[i];
+      var _axis$hasWrap;
+      if ((_axis$hasWrap = axis.hasWrap) !== null && _axis$hasWrap !== void 0 && _axis$hasWrap.call(axis)) {
+        const title = axis.getTitle();
+        const newTitleWidth = title ? title.bBox.width : 0;
+        const offset = newTitleWidth - oldTitlesWidth[i];
         if (axis.getOptions().position === 'right') {
           vAxesMargins.right += offset;
         } else {
           vAxesMargins.left += offset;
           this.panes.forEach(_ref2 => {
-            var {
+            let {
               name
             } = _ref2;
             vAxesMargins.panes[name].left += offset;
@@ -975,8 +972,8 @@ var dxChart = AdvancedChart.inherit({
     return cleanPanesCanvases;
   },
   _getExtraTemplatesItems() {
-    var allAxes = (this._argumentAxes || []).concat(this._valueAxes || []);
-    var elements = this._collectTemplatesFromItems(allAxes);
+    const allAxes = (this._argumentAxes || []).concat(this._valueAxes || []);
+    const elements = this._collectTemplatesFromItems(allAxes);
     return {
       items: elements.items,
       groups: elements.groups,
@@ -996,19 +993,19 @@ var dxChart = AdvancedChart.inherit({
     return axes.some(axis => axis.estimateTickInterval(canvases[axis.pane]));
   },
   checkForMoreSpaceForPanesCanvas() {
-    var rotated = this._isRotated();
-    var panesAreCustomSized = this.panes.filter(p => p.unit).length === this.panes.length;
-    var needSpace = false;
+    const rotated = this._isRotated();
+    const panesAreCustomSized = this.panes.filter(p => p.unit).length === this.panes.length;
+    let needSpace = false;
     if (panesAreCustomSized) {
-      var needHorizontalSpace = 0;
-      var needVerticalSpace = 0;
+      let needHorizontalSpace = 0;
+      let needVerticalSpace = 0;
       if (rotated) {
-        var argAxisRightMargin = this.getArgumentAxis().getMargins().right;
-        var rightPanesIndent = Math.min(...this.panes.map(p => p.canvas.right));
+        const argAxisRightMargin = this.getArgumentAxis().getMargins().right;
+        const rightPanesIndent = Math.min(...this.panes.map(p => p.canvas.right));
         needHorizontalSpace = this._canvas.right + argAxisRightMargin - rightPanesIndent;
       } else {
-        var argAxisBottomMargin = this.getArgumentAxis().getMargins().bottom;
-        var bottomPanesIndent = Math.min(...this.panes.map(p => p.canvas.bottom));
+        const argAxisBottomMargin = this.getArgumentAxis().getMargins().bottom;
+        const bottomPanesIndent = Math.min(...this.panes.map(p => p.canvas.bottom));
         needVerticalSpace = this._canvas.bottom + argAxisBottomMargin - bottomPanesIndent;
       }
       needSpace = needHorizontalSpace > 0 || needVerticalSpace > 0 ? {
@@ -1016,11 +1013,11 @@ var dxChart = AdvancedChart.inherit({
         height: needVerticalSpace
       } : false;
       if (needVerticalSpace !== 0) {
-        var realSize = this.getSize();
-        var customSize = this.option('size');
-        var container = this._$element[0];
-        var containerHasStyledHeight = !!parseInt(container.style.height, 10) || this._containerInitialHeight !== 0;
-        if (!rotated && !(customSize === null || customSize === void 0 ? void 0 : customSize.height) && !containerHasStyledHeight) {
+        const realSize = this.getSize();
+        const customSize = this.option('size');
+        const container = this._$element[0];
+        const containerHasStyledHeight = !!parseInt(container.style.height, 10) || this._containerInitialHeight !== 0;
+        if (!rotated && !(customSize !== null && customSize !== void 0 && customSize.height) && !containerHasStyledHeight) {
           this._forceResize(realSize.width, realSize.height + needVerticalSpace);
           needSpace = false;
         }
@@ -1045,17 +1042,17 @@ var dxChart = AdvancedChart.inherit({
       return;
     }
     this._renderer.stopAllAnimations(true);
-    var rotated = this._isRotated();
-    var scrollBar = this._scrollBar ? [this._scrollBar] : [];
-    var extendedArgAxes = this._isArgumentAxisBeforeScrollBar() ? this._argumentAxes.concat(scrollBar) : scrollBar.concat(this._argumentAxes);
-    var verticalAxes = rotated ? extendedArgAxes : this._valueAxes;
-    var horizontalAxes = rotated ? this._valueAxes : extendedArgAxes;
-    var allAxes = verticalAxes.concat(horizontalAxes);
+    const rotated = this._isRotated();
+    const scrollBar = this._scrollBar ? [this._scrollBar] : [];
+    const extendedArgAxes = this._isArgumentAxisBeforeScrollBar() ? this._argumentAxes.concat(scrollBar) : scrollBar.concat(this._argumentAxes);
+    const verticalAxes = rotated ? extendedArgAxes : this._valueAxes;
+    const horizontalAxes = rotated ? this._valueAxes : extendedArgAxes;
+    const allAxes = verticalAxes.concat(horizontalAxes);
     if (sizeShortage.width || sizeShortage.height) {
       checkUsedSpace(sizeShortage, 'height', horizontalAxes, getHorizontalAxesMargins);
       checkUsedSpace(sizeShortage, 'width', verticalAxes, getVerticalAxesMargins);
       performActionOnAxes(allAxes, 'updateSize', panesCanvases);
-      var paneSizes = this.panes.reduce((sizes, pane) => {
+      const paneSizes = this.panes.reduce((sizes, pane) => {
         sizes[pane.name] = {
           height: pane.height,
           unit: pane.unit
@@ -1070,22 +1067,22 @@ var dxChart = AdvancedChart.inherit({
     }
   },
   _isArgumentAxisBeforeScrollBar() {
-    var _a;
-    var argumentAxis = this.getArgumentAxis();
+    const argumentAxis = this.getArgumentAxis();
     if (this._scrollBar) {
-      var argAxisPosition = argumentAxis.getResolvedBoundaryPosition();
-      var argAxisLabelPosition = (_a = argumentAxis.getOptions().label) === null || _a === void 0 ? void 0 : _a.position;
-      var scrollBarPosition = this._scrollBar.getOptions().position;
+      var _argumentAxis$getOpti;
+      const argAxisPosition = argumentAxis.getResolvedBoundaryPosition();
+      const argAxisLabelPosition = (_argumentAxis$getOpti = argumentAxis.getOptions().label) === null || _argumentAxis$getOpti === void 0 ? void 0 : _argumentAxis$getOpti.position;
+      const scrollBarPosition = this._scrollBar.getOptions().position;
       return argumentAxis.hasNonBoundaryPosition() || scrollBarPosition === argAxisPosition && argAxisLabelPosition !== scrollBarPosition;
     }
     return false;
   },
   _getPanesParameters() {
-    var {
+    const {
       panes
     } = this;
-    var params = [];
-    for (var i = 0; i < panes.length; i += 1) {
+    const params = [];
+    for (let i = 0; i < panes.length; i += 1) {
       if (this._getPaneBorderVisibility(i)) {
         params.push({
           coords: panes[i].borderCoords,
@@ -1096,15 +1093,15 @@ var dxChart = AdvancedChart.inherit({
     return params;
   },
   _createCrosshairCursor() {
-    var options = this._themeManager.getOptions('crosshair') || {};
-    var argumentAxis = this.getArgumentAxis();
-    var axes = this._isRotated() ? [this._valueAxes, [argumentAxis]] : [[argumentAxis], this._valueAxes];
-    var parameters = {
+    const options = this._themeManager.getOptions('crosshair') || {};
+    const argumentAxis = this.getArgumentAxis();
+    const axes = this._isRotated() ? [this._valueAxes, [argumentAxis]] : [[argumentAxis], this._valueAxes];
+    const parameters = {
       canvas: this._getCommonCanvas(),
       panes: this._getPanesParameters(),
       axes
     };
-    if (!(options === null || options === void 0 ? void 0 : options.enabled)) {
+    if (!(options !== null && options !== void 0 && options.enabled)) {
       return;
     }
     if (this._crosshair) {
@@ -1115,12 +1112,12 @@ var dxChart = AdvancedChart.inherit({
     this._crosshair.render();
   },
   _getCommonCanvas() {
-    var commonCanvas;
-    var {
+    let commonCanvas;
+    const {
       panes
     } = this;
-    for (var i = 0; i < panes.length; i += 1) {
-      var {
+    for (let i = 0; i < panes.length; i += 1) {
+      const {
         canvas
       } = panes[i];
       if (!commonCanvas) {
@@ -1134,17 +1131,17 @@ var dxChart = AdvancedChart.inherit({
     return commonCanvas;
   },
   _createPanesBackground() {
-    var defaultBackgroundColor = this._themeManager.getOptions('commonPaneSettings').backgroundColor;
-    var renderer = this._renderer;
-    var rects = [];
+    const defaultBackgroundColor = this._themeManager.getOptions('commonPaneSettings').backgroundColor;
+    const renderer = this._renderer;
+    const rects = [];
     this._panesBackgroundGroup.clear();
-    for (var i = 0; i < this.panes.length; i += 1) {
-      var backgroundColor = this.panes[i].backgroundColor || defaultBackgroundColor;
+    for (let i = 0; i < this.panes.length; i += 1) {
+      const backgroundColor = this.panes[i].backgroundColor || defaultBackgroundColor;
       if (!backgroundColor || backgroundColor === 'none') {
         rects.push(null);
         continue;
       }
-      var rect = renderer.rect(0, 0, 0, 0).attr({
+      const rect = renderer.rect(0, 0, 0, 0).attr({
         fill: extractColor(backgroundColor),
         'stroke-width': 0
       }).append(this._panesBackgroundGroup);
@@ -1154,7 +1151,7 @@ var dxChart = AdvancedChart.inherit({
   },
   _fillPanesBackground() {
     _each(this.panes, (i, pane) => {
-      var bc = pane.borderCoords;
+      const bc = pane.borderCoords;
       if (this.panesBackground[i] !== null) {
         this.panesBackground[i].attr({
           x: bc.left,
@@ -1166,10 +1163,10 @@ var dxChart = AdvancedChart.inherit({
     });
   },
   _calcPaneBorderCoords(pane) {
-    var {
+    const {
       canvas
     } = pane;
-    var bc = pane.borderCoords = pane.borderCoords || {};
+    const bc = pane.borderCoords = pane.borderCoords || {};
     bc.left = canvas.left;
     bc.top = canvas.top;
     bc.right = canvas.width - canvas.right;
@@ -1178,11 +1175,11 @@ var dxChart = AdvancedChart.inherit({
     bc.height = Math.max(bc.bottom - bc.top, 0);
   },
   _drawPanesBorders(panesBorderOptions) {
-    var rotated = this._isRotated();
+    const rotated = this._isRotated();
     this._panesBorderGroup.linkRemove().clear();
     _each(this.panes, (i, pane) => {
-      var borderOptions = panesBorderOptions[pane.name];
-      var attr = {
+      const borderOptions = panesBorderOptions[pane.name];
+      const attr = {
         fill: 'none',
         stroke: borderOptions.color,
         'stroke-opacity': borderOptions.opacity,
@@ -1194,14 +1191,14 @@ var dxChart = AdvancedChart.inherit({
       if (!borderOptions.visible) {
         return;
       }
-      var bc = pane.borderCoords;
-      var segmentRectParams = prepareSegmentRectPoints(bc.left, bc.top, bc.width, bc.height, borderOptions);
+      const bc = pane.borderCoords;
+      const segmentRectParams = prepareSegmentRectPoints(bc.left, bc.top, bc.width, bc.height, borderOptions);
       this._renderer.path(segmentRectParams.points, segmentRectParams.pathType).attr(attr).append(this._panesBorderGroup);
     });
     this._panesBorderGroup.linkAppend();
   },
   _createClipRect(clipArray, index, left, top, width, height) {
-    var clipRect = clipArray[index];
+    let clipRect = clipArray[index];
     if (!clipRect) {
       clipRect = this._renderer.clipRect(left, top, width, height);
       clipArray[index] = clipRect;
@@ -1215,23 +1212,23 @@ var dxChart = AdvancedChart.inherit({
     }
   },
   _createClipRectsForPanes() {
-    var canvas = this._canvas;
+    const canvas = this._canvas;
     _each(this.panes, (i, pane) => {
-      var needWideClipRect = false;
-      var bc = pane.borderCoords;
-      var {
+      let needWideClipRect = false;
+      const bc = pane.borderCoords;
+      let {
         left
       } = bc;
-      var {
+      let {
         top
       } = bc;
-      var {
+      let {
         width
       } = bc;
-      var {
+      let {
         height
       } = bc;
-      var panesClipRects = this._panesClipRects;
+      const panesClipRects = this._panesClipRects;
       this._createClipRect(panesClipRects.fixed, i, left, top, width, height);
       this._createClipRect(panesClipRects.base, i, left, top, width, height);
       _each(this.series, (_, series) => {
@@ -1254,23 +1251,23 @@ var dxChart = AdvancedChart.inherit({
     });
   },
   _applyClipRectsForAxes() {
-    var axes = this._getAllAxes();
-    var chartCanvasClipRectID = this._getCanvasClipRectID();
-    for (var i = 0; i < axes.length; i += 1) {
-      var elementsClipRectID = this._getElementsClipRectID(axes[i].pane);
+    const axes = this._getAllAxes();
+    const chartCanvasClipRectID = this._getCanvasClipRectID();
+    for (let i = 0; i < axes.length; i += 1) {
+      const elementsClipRectID = this._getElementsClipRectID(axes[i].pane);
       axes[i].applyClipRects(elementsClipRectID, chartCanvasClipRectID);
     }
   },
   _getPaneBorderVisibility(paneIndex) {
-    var _a;
-    var commonPaneBorderVisible = this._themeManager.getOptions('commonPaneSettings').border.visible;
-    var pane = this.panes[paneIndex];
-    var paneVisibility = (_a = pane === null || pane === void 0 ? void 0 : pane.border) === null || _a === void 0 ? void 0 : _a.visible;
+    var _pane$border;
+    const commonPaneBorderVisible = this._themeManager.getOptions('commonPaneSettings').border.visible;
+    const pane = this.panes[paneIndex];
+    const paneVisibility = pane === null || pane === void 0 || (_pane$border = pane.border) === null || _pane$border === void 0 ? void 0 : _pane$border.visible;
     return paneVisibility === undefined ? commonPaneBorderVisible : paneVisibility;
   },
   _getCanvasForPane(paneName) {
-    var _a;
-    return (_a = this.panes.find(pane => pane.name === paneName)) === null || _a === void 0 ? void 0 : _a.canvas;
+    var _this$panes$find;
+    return (_this$panes$find = this.panes.find(pane => pane.name === paneName)) === null || _this$panes$find === void 0 ? void 0 : _this$panes$find.canvas;
   },
   _getTrackerSettings() {
     return _extend(this.callBase(), {
@@ -1281,40 +1278,40 @@ var dxChart = AdvancedChart.inherit({
     });
   },
   _resolveLabelOverlappingStack() {
-    var isRotated = this._isRotated();
-    var shiftDirection = isRotated ? (box, length) => ({
+    const isRotated = this._isRotated();
+    const shiftDirection = isRotated ? (box, length) => ({
       x: box.x - length,
       y: box.y
     }) : (box, length) => ({
       x: box.x,
       y: box.y - length
     });
-    var processor = (a, b) => {
-      var coordPosition = isRotated ? 1 : 0;
-      var figureCenter1 = a.labels[0].getFigureCenter()[coordPosition];
-      var figureCenter12 = b.labels[0].getFigureCenter()[coordPosition];
+    const processor = (a, b) => {
+      const coordPosition = isRotated ? 1 : 0;
+      const figureCenter1 = a.labels[0].getFigureCenter()[coordPosition];
+      const figureCenter12 = b.labels[0].getFigureCenter()[coordPosition];
       if (figureCenter1 - figureCenter12 === 0) {
-        var translator = a.labels[0].getPoint().series.getValueAxis().getTranslator();
-        var direction = translator.isInverted() ? -1 : 1;
+        const translator = a.labels[0].getPoint().series.getValueAxis().getTranslator();
+        const direction = translator.isInverted() ? -1 : 1;
         return (a.value() - b.value()) * direction;
       }
       return 0;
     };
     _each(this._getStackPoints(), (_, stacks) => {
       _each(stacks, (_, points) => {
-        var isInverted = points[0].series.getValueAxis().getOptions().inverted;
+        const isInverted = points[0].series.getValueAxis().getOptions().inverted;
         overlapping.resolveLabelOverlappingInOneDirection(points, this._getCommonCanvas(), isRotated, isInverted, shiftDirection, processor);
       });
     });
   },
   _getStackPoints() {
-    var stackPoints = {};
-    var visibleSeries = this._getVisibleSeries();
+    const stackPoints = {};
+    const visibleSeries = this._getVisibleSeries();
     _each(visibleSeries, (_, singleSeries) => {
-      var points = singleSeries.getPoints();
-      var stackName = singleSeries.getStackName() || null;
+      const points = singleSeries.getPoints();
+      const stackName = singleSeries.getStackName() || null;
       _each(points, (_, point) => {
-        var {
+        const {
           argument
         } = point;
         if (!stackPoints[argument]) {
@@ -1339,8 +1336,8 @@ var dxChart = AdvancedChart.inherit({
     this.getArgumentAxis().visualRange([min, max]);
   },
   resetVisualRange() {
-    var axes = this._argumentAxes;
-    var nonVirtualArgumentAxis = this.getArgumentAxis();
+    const axes = this._argumentAxes;
+    const nonVirtualArgumentAxis = this.getArgumentAxis();
     axes.forEach(axis => {
       axis.resetVisualRange(nonVirtualArgumentAxis !== axis);
       this._applyCustomVisualRangeOption(axis);
@@ -1349,10 +1346,10 @@ var dxChart = AdvancedChart.inherit({
   },
   // T218011 for dashboards
   getVisibleArgumentBounds() {
-    var translator = this._argumentAxes[0].getTranslator();
-    var range = translator.getBusinessRange();
-    var isDiscrete = range.axisType === DISCRETE;
-    var {
+    const translator = this._argumentAxes[0].getTranslator();
+    const range = translator.getBusinessRange();
+    const isDiscrete = range.axisType === DISCRETE;
+    const {
       categories
     } = range;
     return {
@@ -1392,19 +1389,19 @@ var dxChart = AdvancedChart.inherit({
     });
   },
   option() {
-    var option = this.callBase(...arguments);
-    var valueAxis = this._options.silent('valueAxis');
+    const option = this.callBase(...arguments);
+    const valueAxis = this._options.silent('valueAxis');
     if (type(valueAxis) === 'array') {
-      for (var i = 0; i < valueAxis.length; i += 1) {
-        var optionPath = "valueAxis[".concat(i, "].visualRange");
+      for (let i = 0; i < valueAxis.length; i += 1) {
+        const optionPath = `valueAxis[${i}].visualRange`;
         this._optionsByReference[optionPath] = true;
       }
     }
     return option;
   },
   _notifyVisualRange() {
-    var argAxis = this._argumentAxes[0];
-    var argumentVisualRange = convertVisualRangeObject(argAxis.visualRange(), !isArray(this.option('argumentAxis.visualRange')));
+    const argAxis = this._argumentAxes[0];
+    const argumentVisualRange = convertVisualRangeObject(argAxis.visualRange(), !isArray(this.option('argumentAxis.visualRange')));
     if (!argAxis.skipEventRising || !rangesAreEqual(argumentVisualRange, this.option('argumentAxis.visualRange'))) {
       this.option('argumentAxis.visualRange', argumentVisualRange);
     } else {

@@ -2,7 +2,7 @@ import registerComponent from '../../../core/component_registrator';
 import { getBoundingRect } from '../../../core/utils/position';
 import { VIEWS } from '../m_constants';
 import SchedulerTimeline from './m_timeline';
-var TIMELINE_CLASS = 'dx-scheduler-timeline-week';
+const TIMELINE_CLASS = 'dx-scheduler-timeline-week';
 export default class SchedulerTimelineWeek extends SchedulerTimeline {
   get type() {
     return VIEWS.TIMELINE_WEEK;

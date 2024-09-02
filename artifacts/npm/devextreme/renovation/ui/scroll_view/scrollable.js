@@ -1,7 +1,7 @@
 /**
 * DevExtreme (renovation/ui/scroll_view/scrollable.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -20,17 +20,10 @@ var _type = require("../../../core/utils/type");
 var _window = require("../../../core/utils/window");
 var _consts = require("./common/consts");
 var _scrollable_props = require("./common/scrollable_props");
-var _resolve_rtl = require("../../utils/resolve_rtl");
-var _config_context = require("../../common/config_context");
+var _resolve_rtl = require("../../../__internal/core/r1/utils/resolve_rtl");
+var _config_context = require("../../../__internal/core/r1/config_context");
 const _excluded = ["addWidgetClass", "aria", "bounceEnabled", "children", "classes", "direction", "disabled", "forceGeneratePockets", "height", "inertiaEnabled", "loadPanelTemplate", "needRenderScrollbars", "needScrollViewContentWrapper", "onBounce", "onEnd", "onPullDown", "onReachBottom", "onScroll", "onStart", "onUpdated", "onVisibilityChange", "pullDownEnabled", "pulledDownText", "pullingDownText", "reachBottomEnabled", "reachBottomText", "refreshStrategy", "refreshingText", "rtlEnabled", "scrollByContent", "scrollByThumb", "scrollLocationChange", "showScrollbar", "useKeyboard", "useNative", "useSimulatedScrollbar", "visible", "width"];
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const viewFunction = viewModel => {
   const {
@@ -144,49 +137,71 @@ const viewFunction = viewModel => {
 };
 exports.viewFunction = viewFunction;
 const getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => (0, _inferno.normalizeProps)((0, _inferno.createComponentVNode)(2, TemplateProp, _extends({}, props))) : TemplateProp);
-let Scrollable = exports.Scrollable = /*#__PURE__*/function (_InfernoWrapperCompon) {
-  _inheritsLoose(Scrollable, _InfernoWrapperCompon);
-  function Scrollable(props) {
-    var _this;
-    _this = _InfernoWrapperCompon.call(this, props) || this;
-    _this.state = {};
-    _this.scrollableNativeRef = (0, _inferno.createRef)();
-    _this.scrollableSimulatedRef = (0, _inferno.createRef)();
-    _this.content = _this.content.bind(_assertThisInitialized(_this));
-    _this.container = _this.container.bind(_assertThisInitialized(_this));
-    _this.scrollTo = _this.scrollTo.bind(_assertThisInitialized(_this));
-    _this.scrollBy = _this.scrollBy.bind(_assertThisInitialized(_this));
-    _this.updateHandler = _this.updateHandler.bind(_assertThisInitialized(_this));
-    _this.release = _this.release.bind(_assertThisInitialized(_this));
-    _this.refresh = _this.refresh.bind(_assertThisInitialized(_this));
-    _this.scrollToElement = _this.scrollToElement.bind(_assertThisInitialized(_this));
-    _this.scrollHeight = _this.scrollHeight.bind(_assertThisInitialized(_this));
-    _this.scrollWidth = _this.scrollWidth.bind(_assertThisInitialized(_this));
-    _this.scrollOffset = _this.scrollOffset.bind(_assertThisInitialized(_this));
-    _this.scrollTop = _this.scrollTop.bind(_assertThisInitialized(_this));
-    _this.scrollLeft = _this.scrollLeft.bind(_assertThisInitialized(_this));
-    _this.clientHeight = _this.clientHeight.bind(_assertThisInitialized(_this));
-    _this.clientWidth = _this.clientWidth.bind(_assertThisInitialized(_this));
-    _this.getScrollElementPosition = _this.getScrollElementPosition.bind(_assertThisInitialized(_this));
-    _this.startLoading = _this.startLoading.bind(_assertThisInitialized(_this));
-    _this.finishLoading = _this.finishLoading.bind(_assertThisInitialized(_this));
-    _this.validate = _this.validate.bind(_assertThisInitialized(_this));
-    return _this;
+class Scrollable extends _inferno2.InfernoWrapperComponent {
+  get config() {
+    if (this.context[_config_context.ConfigContext.id]) {
+      return this.context[_config_context.ConfigContext.id];
+    }
+    return _config_context.ConfigContext.defaultValue;
   }
-  var _proto = Scrollable.prototype;
-  _proto.createEffects = function createEffects() {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.scrollableNativeRef = (0, _inferno.createRef)();
+    this.scrollableSimulatedRef = (0, _inferno.createRef)();
+    this.content = this.content.bind(this);
+    this.container = this.container.bind(this);
+    this.scrollTo = this.scrollTo.bind(this);
+    this.scrollBy = this.scrollBy.bind(this);
+    this.updateHandler = this.updateHandler.bind(this);
+    this.release = this.release.bind(this);
+    this.refresh = this.refresh.bind(this);
+    this.scrollToElement = this.scrollToElement.bind(this);
+    this.scrollHeight = this.scrollHeight.bind(this);
+    this.scrollWidth = this.scrollWidth.bind(this);
+    this.scrollOffset = this.scrollOffset.bind(this);
+    this.scrollTop = this.scrollTop.bind(this);
+    this.scrollLeft = this.scrollLeft.bind(this);
+    this.clientHeight = this.clientHeight.bind(this);
+    this.clientWidth = this.clientWidth.bind(this);
+    this.getScrollElementPosition = this.getScrollElementPosition.bind(this);
+    this.startLoading = this.startLoading.bind(this);
+    this.finishLoading = this.finishLoading.bind(this);
+    this.validate = this.validate.bind(this);
+  }
+  createEffects() {
     return [(0, _inferno2.createReRenderEffect)()];
-  };
-  _proto.validate = function validate(event) {
+  }
+  validate(event) {
     return this.scrollableRef.validate(event);
-  };
-  _proto.content = function content() {
+  }
+  get scrollableRef() {
+    if (this.props.useNative) {
+      return this.scrollableNativeRef.current;
+    }
+    return this.scrollableSimulatedRef.current;
+  }
+  get rtlEnabled() {
+    const {
+      rtlEnabled
+    } = this.props;
+    return !!(0, _resolve_rtl.resolveRtlEnabled)(rtlEnabled, this.config);
+  }
+  get isServerSide() {
+    return !(0, _window.hasWindow)();
+  }
+  get restAttributes() {
+    const _this$props = this.props,
+      restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
+    return restProps;
+  }
+  content() {
     return this.scrollableRef.content();
-  };
-  _proto.container = function container() {
+  }
+  container() {
     return this.scrollableRef.container();
-  };
-  _proto.scrollTo = function scrollTo(targetLocation) {
+  }
+  scrollTo(targetLocation) {
     if (!this.props.useNative) {
       this.updateHandler();
     }
@@ -196,8 +211,8 @@ let Scrollable = exports.Scrollable = /*#__PURE__*/function (_InfernoWrapperComp
     };
     const distance = (0, _get_offset_distance.getOffsetDistance)((0, _convert_location.convertToLocation)(targetLocation, this.props.direction), currentScrollOffset);
     this.scrollBy(distance);
-  };
-  _proto.scrollBy = function scrollBy(distance) {
+  }
+  scrollBy(distance) {
     let {
       left,
       top
@@ -215,21 +230,21 @@ let Scrollable = exports.Scrollable = /*#__PURE__*/function (_InfernoWrapperComp
       top,
       left
     });
-  };
-  _proto.updateHandler = function updateHandler() {
+  }
+  updateHandler() {
     this.scrollableRef.updateHandler();
-  };
-  _proto.release = function release() {
+  }
+  release() {
     if (!this.isServerSide) {
       this.scrollableRef.release();
     }
-  };
-  _proto.refresh = function refresh() {
+  }
+  refresh() {
     if (!this.isServerSide) {
       this.scrollableRef.refresh();
     }
-  };
-  _proto.scrollToElement = function scrollToElement(element, offset) {
+  }
+  scrollToElement(element, offset) {
     if (!this.content().contains(element)) {
       return;
     }
@@ -247,14 +262,14 @@ let Scrollable = exports.Scrollable = /*#__PURE__*/function (_InfernoWrapperComp
       scrollPosition.top = this.getScrollElementPosition(element, _consts.DIRECTION_VERTICAL, offset);
     }
     this.scrollTo(scrollPosition);
-  };
-  _proto.scrollHeight = function scrollHeight() {
+  }
+  scrollHeight() {
     return this.scrollableRef.scrollHeight();
-  };
-  _proto.scrollWidth = function scrollWidth() {
+  }
+  scrollWidth() {
     return this.scrollableRef.scrollWidth();
-  };
-  _proto.scrollOffset = function scrollOffset() {
+  }
+  scrollOffset() {
     if (!this.isServerSide) {
       return this.scrollableRef.scrollOffset();
     }
@@ -262,32 +277,32 @@ let Scrollable = exports.Scrollable = /*#__PURE__*/function (_InfernoWrapperComp
       top: 0,
       left: 0
     };
-  };
-  _proto.scrollTop = function scrollTop() {
+  }
+  scrollTop() {
     return this.scrollableRef.scrollTop();
-  };
-  _proto.scrollLeft = function scrollLeft() {
+  }
+  scrollLeft() {
     return this.scrollableRef.scrollLeft();
-  };
-  _proto.clientHeight = function clientHeight() {
+  }
+  clientHeight() {
     return this.scrollableRef.clientHeight();
-  };
-  _proto.clientWidth = function clientWidth() {
+  }
+  clientWidth() {
     return this.scrollableRef.clientWidth();
-  };
-  _proto.getScrollElementPosition = function getScrollElementPosition(targetElement, direction, offset) {
+  }
+  getScrollElementPosition(targetElement, direction, offset) {
     const scrollOffset = this.scrollOffset();
     return (0, _get_element_location_internal.getElementLocationInternal)(targetElement, direction, this.container(), scrollOffset, offset);
-  };
-  _proto.startLoading = function startLoading() {
+  }
+  startLoading() {
     this.scrollableRef.startLoading();
-  };
-  _proto.finishLoading = function finishLoading() {
+  }
+  finishLoading() {
     if (!this.isServerSide) {
       this.scrollableRef.finishLoading();
     }
-  };
-  _proto.render = function render() {
+  }
+  render() {
     const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
@@ -302,44 +317,7 @@ let Scrollable = exports.Scrollable = /*#__PURE__*/function (_InfernoWrapperComp
       isServerSide: this.isServerSide,
       restAttributes: this.restAttributes
     });
-  };
-  _createClass(Scrollable, [{
-    key: "config",
-    get: function () {
-      if (this.context[_config_context.ConfigContext.id]) {
-        return this.context[_config_context.ConfigContext.id];
-      }
-      return _config_context.ConfigContext.defaultValue;
-    }
-  }, {
-    key: "scrollableRef",
-    get: function () {
-      if (this.props.useNative) {
-        return this.scrollableNativeRef.current;
-      }
-      return this.scrollableSimulatedRef.current;
-    }
-  }, {
-    key: "rtlEnabled",
-    get: function () {
-      const {
-        rtlEnabled
-      } = this.props;
-      return !!(0, _resolve_rtl.resolveRtlEnabled)(rtlEnabled, this.config);
-    }
-  }, {
-    key: "isServerSide",
-    get: function () {
-      return !(0, _window.hasWindow)();
-    }
-  }, {
-    key: "restAttributes",
-    get: function () {
-      const _this$props = this.props,
-        restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
-      return restProps;
-    }
-  }]);
-  return Scrollable;
-}(_inferno2.InfernoWrapperComponent);
+  }
+}
+exports.Scrollable = Scrollable;
 Scrollable.defaultProps = _scrollable_props.ScrollableProps;

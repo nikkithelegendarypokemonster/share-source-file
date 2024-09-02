@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/gantt/ui.gantt.actions.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,7 +11,7 @@ import { getPublicElement } from '../../core/element';
 import { extend } from '../../core/utils/extend';
 
 /* eslint-disable spellcheck/spell-checker */
-var Actions = {
+const Actions = {
   onContextMenuPreparing: 'onContextMenuPreparing',
   onCustomCommand: 'onCustomCommand',
   onDependencyDeleted: 'onDependencyDeleted',
@@ -40,11 +40,11 @@ var Actions = {
   onTaskUpdating: 'onTaskUpdating',
   onScaleCellPrepared: 'onScaleCellPrepared'
 };
-var GANTT_TASKS = 'tasks';
-var GANTT_DEPENDENCIES = 'dependencies';
-var GANTT_RESOURCES = 'resources';
-var GANTT_RESOURCE_ASSIGNMENTS = 'resourceAssignments';
-var GANTT_NEW_TASK_CACHE_KEY = 'gantt_new_task_key';
+const GANTT_TASKS = 'tasks';
+const GANTT_DEPENDENCIES = 'dependencies';
+const GANTT_RESOURCES = 'resources';
+const GANTT_RESOURCE_ASSIGNMENTS = 'resourceAssignments';
+const GANTT_NEW_TASK_CACHE_KEY = 'gantt_new_task_key';
 export class GanttActionsManager {
   constructor(gantt) {
     this._gantt = gantt;
@@ -70,8 +70,8 @@ export class GanttActionsManager {
     return this._mappingHelper.convertCoreToMappedFields(optionName, fields);
   }
   _saveCustomFieldsDataToCache(key, data) {
-    var forceUpdateOnKeyExpire = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-    var isCustomFieldsUpdateOnly = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+    let forceUpdateOnKeyExpire = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    let isCustomFieldsUpdateOnly = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
     this._customFieldsManager.saveCustomFieldsDataToCache(key, data, forceUpdateOnKeyExpire, isCustomFieldsUpdateOnly);
   }
   createTaskDblClickAction() {
@@ -84,7 +84,7 @@ export class GanttActionsManager {
     this._taskDblClickAction(args);
   }
   raiseTaskDblClickAction(key, event) {
-    var args = {
+    const args = {
       cancel: false,
       data: this._getTaskData(key),
       event: event,
@@ -103,7 +103,7 @@ export class GanttActionsManager {
     this._taskClickAction(args);
   }
   raiseTaskClickAction(key, event) {
-    var args = {
+    const args = {
       key: key,
       event: event,
       data: this._getTaskData(key)
@@ -164,9 +164,9 @@ export class GanttActionsManager {
     return () => {};
   }
   raiseInsertingAction(optionName, coreArgs) {
-    var action = this._getInsertingAction(optionName);
+    const action = this._getInsertingAction(optionName);
     if (action) {
-      var args = {
+      const args = {
         cancel: false,
         values: this._convertCoreToMappedData(optionName, coreArgs.values)
       };
@@ -182,7 +182,7 @@ export class GanttActionsManager {
     this._taskInsertingAction = this._createActionByOption(Actions.onTaskInserting);
   }
   taskInsertingAction(args) {
-    var action = this._getTaskInsertingAction();
+    const action = this._getTaskInsertingAction();
     action(args);
   }
   _getTaskInsertingAction() {
@@ -195,7 +195,7 @@ export class GanttActionsManager {
     this._dependencyInsertingAction = this._createActionByOption(Actions.onDependencyInserting);
   }
   dependencyInsertingAction(args) {
-    var action = this._getDependencyInsertingAction();
+    const action = this._getDependencyInsertingAction();
     action(args);
   }
   _getDependencyInsertingAction() {
@@ -208,7 +208,7 @@ export class GanttActionsManager {
     this._resourceInsertingAction = this._createActionByOption(Actions.onResourceInserting);
   }
   resourceInsertingAction(args) {
-    var action = this._getResourceInsertingAction();
+    const action = this._getResourceInsertingAction();
     action(args);
   }
   _getResourceInsertingAction() {
@@ -221,7 +221,7 @@ export class GanttActionsManager {
     this._resourceAssigningAction = this._createActionByOption(Actions.onResourceAssigning);
   }
   resourceAssigningAction(args) {
-    var action = this._getResourceAssigningAction();
+    const action = this._getResourceAssigningAction();
     action(args);
   }
   _getResourceAssigningAction() {
@@ -244,9 +244,9 @@ export class GanttActionsManager {
     return () => {};
   }
   raiseInsertedAction(optionName, data, key) {
-    var action = this._getInsertedAction(optionName);
+    const action = this._getInsertedAction(optionName);
     if (action) {
-      var args = {
+      const args = {
         values: data,
         key: key
       };
@@ -257,7 +257,7 @@ export class GanttActionsManager {
     this._taskInsertedAction = this._createActionByOption(Actions.onTaskInserted);
   }
   taskInsertedAction(args) {
-    var action = this._getTaskInsertedAction();
+    const action = this._getTaskInsertedAction();
     action(args);
   }
   _getTaskInsertedAction() {
@@ -270,7 +270,7 @@ export class GanttActionsManager {
     this._dependencyInsertedAction = this._createActionByOption(Actions.onDependencyInserted);
   }
   dependencyInsertedAction(args) {
-    var action = this._getDependencyInsertedAction();
+    const action = this._getDependencyInsertedAction();
     action(args);
   }
   _getDependencyInsertedAction() {
@@ -283,7 +283,7 @@ export class GanttActionsManager {
     this._resourceInsertedAction = this._createActionByOption(Actions.onResourceInserted);
   }
   resourceInsertedAction(args) {
-    var action = this._getResourceInsertedAction();
+    const action = this._getResourceInsertedAction();
     action(args);
   }
   _getResourceInsertedAction() {
@@ -296,7 +296,7 @@ export class GanttActionsManager {
     this._resourceAssignedAction = this._createActionByOption(Actions.onResourceAssigned);
   }
   resourceAssignedAction(args) {
-    var action = this._getResourceAssignedAction();
+    const action = this._getResourceAssignedAction();
     action(args);
   }
   _getResourceAssignedAction() {
@@ -319,9 +319,9 @@ export class GanttActionsManager {
     return () => {};
   }
   raiseDeletingAction(optionName, coreArgs) {
-    var action = this._getDeletingAction(optionName);
+    const action = this._getDeletingAction(optionName);
     if (action) {
-      var args = {
+      const args = {
         cancel: false,
         key: coreArgs.key,
         values: this._convertCoreToMappedData(optionName, coreArgs.values)
@@ -334,7 +334,7 @@ export class GanttActionsManager {
     this._taskDeletingAction = this._createActionByOption(Actions.onTaskDeleting);
   }
   taskDeletingAction(args) {
-    var action = this._getTaskDeletingAction();
+    const action = this._getTaskDeletingAction();
     action(args);
   }
   _getTaskDeletingAction() {
@@ -347,7 +347,7 @@ export class GanttActionsManager {
     this._dependencyDeletingAction = this._createActionByOption(Actions.onDependencyDeleting);
   }
   dependencyDeletingAction(args) {
-    var action = this._getDependencyDeletingAction();
+    const action = this._getDependencyDeletingAction();
     action(args);
   }
   _getDependencyDeletingAction() {
@@ -360,7 +360,7 @@ export class GanttActionsManager {
     this._resourceDeletingAction = this._createActionByOption(Actions.onResourceDeleting);
   }
   resourceDeletingAction(args) {
-    var action = this._getResourceDeletingAction();
+    const action = this._getResourceDeletingAction();
     action(args);
   }
   _getResourceDeletingAction() {
@@ -373,7 +373,7 @@ export class GanttActionsManager {
     this._resourceUnassigningAction = this._createActionByOption(Actions.onResourceUnassigning);
   }
   resourceUnassigningAction(args) {
-    var action = this._getResourceUnassigningAction();
+    const action = this._getResourceUnassigningAction();
     action(args);
   }
   _getResourceUnassigningAction() {
@@ -396,9 +396,9 @@ export class GanttActionsManager {
     return () => {};
   }
   raiseDeletedAction(optionName, key, data) {
-    var action = this._getDeletedAction(optionName);
+    const action = this._getDeletedAction(optionName);
     if (action) {
-      var args = {
+      const args = {
         key: key,
         values: data
       };
@@ -409,7 +409,7 @@ export class GanttActionsManager {
     this._taskDeletedAction = this._createActionByOption(Actions.onTaskDeleted);
   }
   taskDeletedAction(args) {
-    var action = this._getTaskDeletedAction();
+    const action = this._getTaskDeletedAction();
     action(args);
   }
   _getTaskDeletedAction() {
@@ -422,7 +422,7 @@ export class GanttActionsManager {
     this._dependencyDeletedAction = this._createActionByOption(Actions.onDependencyDeleted);
   }
   dependencyDeletedAction(args) {
-    var action = this._getDependencyDeletedAction();
+    const action = this._getDependencyDeletedAction();
     action(args);
   }
   _getDependencyDeletedAction() {
@@ -435,7 +435,7 @@ export class GanttActionsManager {
     this._resourceDeletedAction = this._createActionByOption(Actions.onResourceDeleted);
   }
   resourceDeletedAction(args) {
-    var action = this._getResourceDeletedAction();
+    const action = this._getResourceDeletedAction();
     action(args);
   }
   _getResourceDeletedAction() {
@@ -448,7 +448,7 @@ export class GanttActionsManager {
     this._resourceUnassignedAction = this._createActionByOption(Actions.onResourceUnassigned);
   }
   resourceUnassignedAction(args) {
-    var action = this._getResourceUnassignedAction();
+    const action = this._getResourceUnassignedAction();
     action(args);
   }
   _getResourceUnassignedAction() {
@@ -467,8 +467,8 @@ export class GanttActionsManager {
   raiseUpdatingAction(optionName, coreArgs, action) {
     action = action || this._getUpdatingAction(optionName);
     if (action) {
-      var isTaskUpdating = optionName === GANTT_TASKS;
-      var args = {
+      const isTaskUpdating = optionName === GANTT_TASKS;
+      const args = {
         cancel: false,
         key: coreArgs.key,
         newValues: this._convertCoreToMappedData(optionName, coreArgs.newValues),
@@ -484,7 +484,7 @@ export class GanttActionsManager {
         if (args.cancel) {
           this._customFieldsManager.resetCustomFieldsDataCache(args.key);
         } else {
-          var forceUpdateOnKeyExpire = !Object.keys(coreArgs.newValues).length;
+          const forceUpdateOnKeyExpire = !Object.keys(coreArgs.newValues).length;
           this._saveCustomFieldsDataToCache(args.key, args.newValues, forceUpdateOnKeyExpire);
         }
       }
@@ -494,7 +494,7 @@ export class GanttActionsManager {
     this._taskUpdatingAction = this._createActionByOption(Actions.onTaskUpdating);
   }
   taskUpdatingAction(args) {
-    var action = this._getTaskUpdatingAction();
+    const action = this._getTaskUpdatingAction();
     action(args);
   }
   _getTaskUpdatingAction() {
@@ -511,9 +511,9 @@ export class GanttActionsManager {
     return () => {};
   }
   raiseUpdatedAction(optionName, data, key) {
-    var action = this._getUpdatedAction(optionName);
+    const action = this._getUpdatedAction(optionName);
     if (action) {
-      var args = {
+      const args = {
         values: data,
         key: key
       };
@@ -524,7 +524,7 @@ export class GanttActionsManager {
     this._taskUpdatedAction = this._createActionByOption(Actions.onTaskUpdated);
   }
   taskUpdatedAction(args) {
-    var action = this._getTaskUpdatedAction();
+    const action = this._getTaskUpdatedAction();
     action(args);
   }
   _getTaskUpdatedAction() {
@@ -537,7 +537,7 @@ export class GanttActionsManager {
     this._taskEditDialogShowingAction = this._createActionByOption(Actions.onTaskEditDialogShowing);
   }
   taskEditDialogShowingAction(args) {
-    var action = this._getTaskEditDialogShowingAction();
+    const action = this._getTaskEditDialogShowingAction();
     action(args);
   }
   _getTaskEditDialogShowingAction() {
@@ -547,9 +547,9 @@ export class GanttActionsManager {
     return this._taskEditDialogShowingAction;
   }
   raiseTaskEditDialogShowingAction(coreArgs) {
-    var action = this._getTaskEditDialogShowingAction();
+    const action = this._getTaskEditDialogShowingAction();
     if (action) {
-      var args = {
+      const args = {
         cancel: false,
         key: coreArgs.key,
         values: this._convertCoreToMappedData(GANTT_TASKS, coreArgs.values),
@@ -567,7 +567,7 @@ export class GanttActionsManager {
     this._resourceManagerDialogShowingAction = this._createActionByOption(Actions.onResourceManagerDialogShowing);
   }
   resourceManagerDialogShowingAction(args) {
-    var action = this._getResourceManagerDialogShowingAction();
+    const action = this._getResourceManagerDialogShowingAction();
     action(args);
   }
   _getResourceManagerDialogShowingAction() {
@@ -577,10 +577,10 @@ export class GanttActionsManager {
     return this._resourceManagerDialogShowingAction;
   }
   raiseResourceManagerDialogShowingAction(coreArgs) {
-    var action = this._getResourceManagerDialogShowingAction();
+    const action = this._getResourceManagerDialogShowingAction();
     if (action) {
-      var mappedResources = coreArgs.values.resources.items.map(r => this._convertMappedToCoreData(GANTT_RESOURCES, r));
-      var args = {
+      const mappedResources = coreArgs.values.resources.items.map(r => this._convertMappedToCoreData(GANTT_RESOURCES, r));
+      const args = {
         cancel: false,
         values: mappedResources
       };
@@ -592,7 +592,7 @@ export class GanttActionsManager {
     this._taskMovingAction = this._createActionByOption(Actions.onTaskMoving);
   }
   taskMovingAction(args) {
-    var action = this.getTaskMovingAction();
+    const action = this.getTaskMovingAction();
     action(args);
   }
   getTaskMovingAction() {
@@ -611,9 +611,9 @@ export class GanttActionsManager {
     this._scaleCellPreparedAction = this._createActionByOption(Actions.onScaleCellPrepared);
   }
   raiseScaleCellPreparedAction(data) {
-    var action = this.getScaleCellPreparedAction();
+    const action = this.getScaleCellPreparedAction();
     if (action) {
-      var args = {
+      const args = {
         scaleIndex: data.scaleIndex,
         scaleType: this._getScaleType(data.scaleType),
         scaleElement: getPublicElement($(data.scaleElement)),

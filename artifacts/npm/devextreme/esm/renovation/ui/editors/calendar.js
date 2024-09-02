@@ -1,14 +1,14 @@
 /**
 * DevExtreme (esm/renovation/ui/editors/calendar.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["_todayDate", "accessKey", "activeStateEnabled", "className", "defaultValue", "disabled", "firstDayOfWeek", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "max", "min", "onClick", "onKeyDown", "rtlEnabled", "skipFocusCheck", "tabIndex", "value", "valueChange", "visible", "width"];
+const _excluded = ["_todayDate", "accessKey", "activeStateEnabled", "className", "defaultValue", "disabled", "firstDayOfWeek", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "max", "min", "onClick", "onKeyDown", "rtlEnabled", "skipFocusCheck", "tabIndex", "value", "valueChange", "visible", "width"];
 import { createComponentVNode, normalizeProps } from "inferno";
 import { InfernoEffect, InfernoComponent } from '@devextreme/runtime/inferno';
 import LegacyCalendar from '../../../ui/calendar';
@@ -17,8 +17,8 @@ import { BaseWidgetProps } from '../common/base_props';
 function today() {
   return new Date();
 }
-export var viewFunction = _ref => {
-  var {
+export const viewFunction = _ref => {
+  let {
     componentProps,
     domComponentWrapperRef,
     restAttributes
@@ -29,7 +29,7 @@ export var viewFunction = _ref => {
     "templateNames": ['cellTemplate']
   }, restAttributes), null, domComponentWrapperRef));
 };
-export var CalendarProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(BaseWidgetProps), Object.getOwnPropertyDescriptors({
+export const CalendarProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(BaseWidgetProps), Object.getOwnPropertyDescriptors({
   _todayDate: today,
   skipFocusCheck: false,
   defaultValue: null,
@@ -51,7 +51,7 @@ export class Calendar extends InfernoComponent {
   }
   updateEffects() {
     var _this$_effects$;
-    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([]);
+    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 || _this$_effects$.update([]);
   }
   saveInstance() {
     var _this$domComponentWra;
@@ -63,7 +63,7 @@ export class Calendar extends InfernoComponent {
     });
   }
   get restAttributes() {
-    var _this$props$value = _extends({}, this.props, {
+    const _this$props$value = _extends({}, this.props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value
       }),
       restProps = _objectWithoutPropertiesLoose(_this$props$value, _excluded);
@@ -71,10 +71,10 @@ export class Calendar extends InfernoComponent {
   }
   focus() {
     var _this$instance;
-    (_this$instance = this.instance) === null || _this$instance === void 0 ? void 0 : _this$instance.focus();
+    (_this$instance = this.instance) === null || _this$instance === void 0 || _this$instance.focus();
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value

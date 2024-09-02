@@ -16,8 +16,8 @@ function getElementLocationInternal(targetElement, direction, containerElement, 
   const prop = isVertical ? 'top' : 'left';
   const inverseProp = isVertical ? 'bottom' : 'right';
   const dimension = isVertical ? 'height' : 'width';
-  const containerOffsetSize = containerElement["offset".concat((0, _inflector.titleize)(dimension))];
-  const containerClientSize = containerElement["client".concat((0, _inflector.titleize)(dimension))];
+  const containerOffsetSize = containerElement[`offset${(0, _inflector.titleize)(dimension)}`];
+  const containerClientSize = containerElement[`client${(0, _inflector.titleize)(dimension)}`];
   const containerSize = containerElement.getBoundingClientRect()[dimension];
   const elementSize = targetElement.getBoundingClientRect()[dimension];
   let scale = 1;

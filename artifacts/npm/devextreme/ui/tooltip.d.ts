@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/tooltip.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -18,62 +18,88 @@ import dxPopover, {
 } from './popover';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_tooltip_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxTooltip>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_tooltip_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxTooltip>;
 
 /**
- * The type of the hiding event handler&apos;s argument.
+ * @docid _ui_tooltip_HidingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type HidingEvent = Cancelable & EventInfo<dxTooltip>;
 
 /**
- * The type of the hidden event handler&apos;s argument.
+ * @docid _ui_tooltip_HiddenEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type HiddenEvent = EventInfo<dxTooltip>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_tooltip_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxTooltip>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_tooltip_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxTooltip> & ChangedOptionInfo;
 
 /**
- * The type of the showing event handler&apos;s argument.
+ * @docid _ui_tooltip_ShowingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type ShowingEvent = Cancelable & EventInfo<dxTooltip>;
 
 /**
- * The type of the shown event handler&apos;s argument.
+ * @docid _ui_tooltip_ShownEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ShownEvent = EventInfo<dxTooltip>;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxTooltipOptions extends dxPopoverOptions<dxTooltip> { }
 /**
- * The Tooltip UI component displays a tooltip for a specified element on the page.
+ * @docid
+ * @inherits dxPopover
+ * @hasTranscludedContent
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxTooltip extends dxPopover<dxTooltipOptions> { }
 
+/** @public */
 export type Properties = dxTooltipOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxTooltipOptions;
 
 

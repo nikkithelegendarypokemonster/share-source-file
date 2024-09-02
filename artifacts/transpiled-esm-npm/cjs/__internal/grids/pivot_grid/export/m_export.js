@@ -253,7 +253,7 @@ const DataProvider = exports.DataProvider = _class.default.inherit({
     const dataFieldStyles = [];
     if (dataFields.length) {
       dataFields.forEach(dataField => {
-        dataFieldStyles.push(_extends(_extends({}, dataItemStyle), {
+        dataFieldStyles.push(_extends({}, dataItemStyle, {
           format: dataField.format,
           dataType: this.getCellDataType(dataField)
         }));

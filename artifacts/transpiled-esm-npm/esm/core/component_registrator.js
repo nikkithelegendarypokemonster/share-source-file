@@ -2,7 +2,7 @@ import $ from './renderer';
 import callbacks from './component_registrator_callbacks';
 import errors from './errors';
 import { name as publicComponentName } from './utils/public_component';
-var registerComponent = function registerComponent(name, namespace, componentClass) {
+const registerComponent = function (name, namespace, componentClass) {
   if (!componentClass) {
     componentClass = namespace;
   } else {
@@ -11,27 +11,27 @@ var registerComponent = function registerComponent(name, namespace, componentCla
   publicComponentName(componentClass, name);
   callbacks.fire(name, componentClass);
 };
-var registerRendererComponent = function registerRendererComponent(name, componentClass) {
+const registerRendererComponent = function (name, componentClass) {
   $.fn[name] = function (options) {
-    var isMemberInvoke = typeof options === 'string';
-    var result;
+    const isMemberInvoke = typeof options === 'string';
+    let result;
     if (isMemberInvoke) {
-      var memberName = options;
-      var memberArgs = [].slice.call(arguments).slice(1);
+      const memberName = options;
+      const memberArgs = [].slice.call(arguments).slice(1);
       this.each(function () {
-        var instance = componentClass.getInstance(this);
+        const instance = componentClass.getInstance(this);
         if (!instance) {
           throw errors.Error('E0009', name);
         }
-        var member = instance[memberName];
-        var memberValue = member.apply(instance, memberArgs);
+        const member = instance[memberName];
+        const memberValue = member.apply(instance, memberArgs);
         if (result === undefined) {
           result = memberValue;
         }
       });
     } else {
       this.each(function () {
-        var instance = componentClass.getInstance(this);
+        const instance = componentClass.getInstance(this);
         if (instance) {
           instance.option(options);
         } else {

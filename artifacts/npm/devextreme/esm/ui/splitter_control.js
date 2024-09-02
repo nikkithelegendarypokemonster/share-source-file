@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/splitter_control.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,18 +14,18 @@ import pointerEvents from '../events/pointer';
 import { getWindow } from '../core/utils/window';
 import { addNamespace } from '../events/utils/index';
 import Guid from '../core/guid';
-var window = getWindow();
-var SPLITTER_CLASS = 'dx-splitter-bar';
-var SPLITTER_WRAPPER_CLASS = 'dx-splitter-wrapper';
-var SPLITTER_INACTIVE_CLASS = 'dx-splitter-inactive';
-var SPLITTER_BORDER_CLASS = 'dx-splitter-border';
-var SPLITTER_INITIAL_STATE_CLASS = 'dx-splitter-initial';
-var STATE_DISABLED_CLASS = 'dx-state-disabled';
-var SPLITTER_MODULE_NAMESPACE = 'dxSplitterResizing';
+const window = getWindow();
+const SPLITTER_CLASS = 'dx-splitter-bar';
+const SPLITTER_WRAPPER_CLASS = 'dx-splitter-wrapper';
+const SPLITTER_INACTIVE_CLASS = 'dx-splitter-inactive';
+const SPLITTER_BORDER_CLASS = 'dx-splitter-border';
+const SPLITTER_INITIAL_STATE_CLASS = 'dx-splitter-initial';
+const STATE_DISABLED_CLASS = 'dx-state-disabled';
+const SPLITTER_MODULE_NAMESPACE = 'dxSplitterResizing';
 export default class SplitterControl extends Widget {
   _init() {
     super._init();
-    var eventGuid = new Guid().toString();
+    const eventGuid = new Guid().toString();
     this.SPLITTER_POINTER_DOWN_EVENT_NAME = addNamespace(pointerEvents.down, SPLITTER_MODULE_NAMESPACE + eventGuid);
     this.SPLITTER_POINTER_MOVE_EVENT_NAME = addNamespace(pointerEvents.move, SPLITTER_MODULE_NAMESPACE + eventGuid);
     this.SPLITTER_POINTER_UP_EVENT_NAME = addNamespace(pointerEvents.up, SPLITTER_MODULE_NAMESPACE + eventGuid);
@@ -56,13 +56,13 @@ export default class SplitterControl extends Widget {
     super._clean();
   }
   _attachEventHandlers() {
-    var document = domAdapter.getDocument();
+    const document = domAdapter.getDocument();
     eventsEngine.on(this._$splitterBorder, this.SPLITTER_POINTER_DOWN_EVENT_NAME, this._onMouseDownHandler.bind(this));
     eventsEngine.on(document, this.SPLITTER_POINTER_MOVE_EVENT_NAME, this._onMouseMoveHandler.bind(this));
     eventsEngine.on(document, this.SPLITTER_POINTER_UP_EVENT_NAME, this._onMouseUpHandler.bind(this));
   }
   _detachEventHandlers() {
-    var document = domAdapter.getDocument();
+    const document = domAdapter.getDocument();
     eventsEngine.off(this._$splitterBorder, this.SPLITTER_POINTER_DOWN_EVENT_NAME);
     eventsEngine.off(document, this.SPLITTER_POINTER_MOVE_EVENT_NAME);
     eventsEngine.off(document, this.SPLITTER_POINTER_UP_EVENT_NAME);
@@ -107,17 +107,17 @@ export default class SplitterControl extends Widget {
     });
   }
   _getNewSplitterPositionLeft(e) {
-    var newSplitterPositionLeft = e.pageX - this._getContainerLeftOffset() - this._offsetX;
+    let newSplitterPositionLeft = e.pageX - this._getContainerLeftOffset() - this._offsetX;
     newSplitterPositionLeft = Math.max(0 - this._getSplitterOffset(), newSplitterPositionLeft);
     newSplitterPositionLeft = Math.min(this._containerWidth - this._getSplitterOffset() - this._getSplitterWidth(), newSplitterPositionLeft);
     return newSplitterPositionLeft;
   }
   _getContainerLeftOffset() {
-    var offsetLeft = this._$container.offset().left;
+    let offsetLeft = this._$container.offset().left;
     if (window) {
-      var style = window.getComputedStyle(this._$container.get(0));
-      var paddingLeft = parseFloat(style['paddingLeft']) || 0;
-      var borderLeft = parseFloat(style['borderLeftWidth']) || 0;
+      const style = window.getComputedStyle(this._$container.get(0));
+      const paddingLeft = parseFloat(style['paddingLeft']) || 0;
+      const borderLeft = parseFloat(style['borderLeftWidth']) || 0;
       offsetLeft += paddingLeft + borderLeft;
     }
     return offsetLeft;
@@ -156,25 +156,25 @@ export default class SplitterControl extends Widget {
     this._isSplitterCalculationDisabled = value;
   }
   _setSplitterPositionLeft() {
-    var {
+    let {
       splitterPositionLeft = null,
       needUpdatePanels = false,
       usePercentagePanelsWidth = false
     } = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     splitterPositionLeft = splitterPositionLeft || this._getLeftPanelWidth() - this._getSplitterOffset();
-    var leftPanelWidth = splitterPositionLeft + this._getSplitterOffset();
-    var rightPanelWidth = this._containerWidth - leftPanelWidth;
+    const leftPanelWidth = splitterPositionLeft + this._getSplitterOffset();
+    const rightPanelWidth = this._containerWidth - leftPanelWidth;
     if (!this._isSplitterCalculationDisabled) {
       this.$element().css('left', splitterPositionLeft);
     }
     this._leftPanelPercentageWidth = this._leftPanelPercentageWidth || this._convertToPercentage(leftPanelWidth);
-    var rightPanelPercentageWidth = this._convertToPercentage(this._containerWidth - this._convertToPixels(this._leftPanelPercentageWidth));
+    const rightPanelPercentageWidth = this._convertToPercentage(this._containerWidth - this._convertToPixels(this._leftPanelPercentageWidth));
     if (!needUpdatePanels) {
       return;
     }
     this._actions.onApplyPanelSize({
-      leftPanelWidth: usePercentagePanelsWidth ? "".concat(this._leftPanelPercentageWidth, "%") : leftPanelWidth,
-      rightPanelWidth: usePercentagePanelsWidth ? "".concat(rightPanelPercentageWidth, "%") : rightPanelWidth
+      leftPanelWidth: usePercentagePanelsWidth ? `${this._leftPanelPercentageWidth}%` : leftPanelWidth,
+      rightPanelWidth: usePercentagePanelsWidth ? `${rightPanelPercentageWidth}%` : rightPanelWidth
     });
   }
   _optionChanged(args) {

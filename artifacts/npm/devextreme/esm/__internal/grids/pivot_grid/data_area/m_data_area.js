@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/pivot_grid/data_area/m_data_area.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,12 +10,12 @@ import $ from '../../../../core/renderer';
 import { nativeScrolling } from '../../../../core/utils/support';
 import { AreaItem } from '../area_item/m_area_item';
 import { calculateScrollbarWidth } from '../m_widget_utils';
-var PIVOTGRID_AREA_CLASS = 'dx-pivotgrid-area';
-var PIVOTGRID_AREA_DATA_CLASS = 'dx-pivotgrid-area-data';
-var PIVOTGRID_TOTAL_CLASS = 'dx-total';
-var PIVOTGRID_GRAND_TOTAL_CLASS = 'dx-grandtotal';
-var PIVOTGRID_ROW_TOTAL_CLASS = 'dx-row-total';
-var DataArea = AreaItem.inherit({
+const PIVOTGRID_AREA_CLASS = 'dx-pivotgrid-area';
+const PIVOTGRID_AREA_DATA_CLASS = 'dx-pivotgrid-area-data';
+const PIVOTGRID_TOTAL_CLASS = 'dx-total';
+const PIVOTGRID_GRAND_TOTAL_CLASS = 'dx-grandtotal';
+const PIVOTGRID_ROW_TOTAL_CLASS = 'dx-row-total';
+const DataArea = AreaItem.inherit({
   _getAreaName() {
     return 'data';
   },
@@ -23,10 +23,10 @@ var DataArea = AreaItem.inherit({
     return $('<div>').addClass(PIVOTGRID_AREA_CLASS).addClass(PIVOTGRID_AREA_DATA_CLASS).css('borderTopWidth', 0);
   },
   _applyCustomStyles(options) {
-    var {
+    const {
       cell
     } = options;
-    var {
+    const {
       classArray
     } = options;
     if (cell.rowType === 'T' || cell.columnType === 'T') {
@@ -58,7 +58,7 @@ var DataArea = AreaItem.inherit({
     });
   },
   getUseNativeValue() {
-    var {
+    const {
       useNative
     } = this.component.option('scrolling');
     return useNative === 'auto' ? !!nativeScrolling : !!useNative;
@@ -67,11 +67,11 @@ var DataArea = AreaItem.inherit({
     return this.getUseNativeValue() ? calculateScrollbarWidth() : 0;
   },
   updateScrollableOptions(_ref) {
-    var {
+    let {
       direction,
       rtlEnabled
     } = _ref;
-    var scrollable = this._getScrollable();
+    const scrollable = this._getScrollable();
     scrollable.option('useNative', this.getUseNativeValue());
     scrollable.option({
       direction,

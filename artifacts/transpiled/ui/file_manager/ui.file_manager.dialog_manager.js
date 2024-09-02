@@ -8,8 +8,8 @@ var _uiFile_managerDialog = _interopRequireDefault(require("./ui.file_manager.di
 var _uiFile_managerDialog2 = _interopRequireDefault(require("./ui.file_manager.dialog.folder_chooser"));
 var _uiFile_managerDialog3 = _interopRequireDefault(require("./ui.file_manager.dialog.delete_item"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-let FileManagerDialogManager = /*#__PURE__*/function () {
-  function FileManagerDialogManager($element, options) {
+class FileManagerDialogManager {
+  constructor($element, options) {
     this._$element = $element;
     this._options = options;
     const baseDialogOptions = {
@@ -31,31 +31,29 @@ let FileManagerDialogManager = /*#__PURE__*/function () {
     const $deleteItemDialog = (0, _renderer.default)('<div>').appendTo(this._$element);
     this._deleteItemDialog = new _uiFile_managerDialog3.default($deleteItemDialog, baseDialogOptions);
   }
-  var _proto = FileManagerDialogManager.prototype;
-  _proto.getCopyDialog = function getCopyDialog(targetItemInfos) {
+  getCopyDialog(targetItemInfos) {
     this._chooseDirectoryDialog.switchToCopyDialog(targetItemInfos);
     return this._chooseDirectoryDialog;
-  };
-  _proto.getMoveDialog = function getMoveDialog(targetItemInfos) {
+  }
+  getMoveDialog(targetItemInfos) {
     this._chooseDirectoryDialog.switchToMoveDialog(targetItemInfos);
     return this._chooseDirectoryDialog;
-  };
-  _proto.getRenameItemDialog = function getRenameItemDialog() {
+  }
+  getRenameItemDialog() {
     return this._renameItemDialog;
-  };
-  _proto.getCreateItemDialog = function getCreateItemDialog() {
+  }
+  getCreateItemDialog() {
     return this._createItemDialog;
-  };
-  _proto.getDeleteItemDialog = function getDeleteItemDialog() {
+  }
+  getDeleteItemDialog() {
     return this._deleteItemDialog;
-  };
-  _proto.updateDialogRtl = function updateDialogRtl(value) {
+  }
+  updateDialogRtl(value) {
     [this._chooseDirectoryDialog, this._renameItemDialog, this._createItemDialog, this._deleteItemDialog].forEach(dialog => {
       dialog.option('rtlEnabled', value);
     });
-  };
-  return FileManagerDialogManager;
-}();
+  }
+}
 var _default = exports.default = FileManagerDialogManager;
 module.exports = exports.default;
 module.exports.default = exports.default;

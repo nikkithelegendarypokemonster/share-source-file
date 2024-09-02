@@ -5,8 +5,8 @@ import $ from '../../../../core/renderer';
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports,
 import gridCoreUtils from '../m_utils';
 import { CLASSES } from './const';
-var createHandleTemplateFunc = addWidgetPrefix => (container, options) => {
-  var $container = $(container);
+const createHandleTemplateFunc = addWidgetPrefix => (container, options) => {
+  const $container = $(container);
   if (options.rowType === 'data') {
     $container.addClass(CLASSES.cellFocusDisabled);
     return $('<span>').addClass(addWidgetPrefix(CLASSES.handleIcon));
@@ -14,6 +14,6 @@ var createHandleTemplateFunc = addWidgetPrefix => (container, options) => {
   gridCoreUtils.setEmptyText($container);
   return undefined;
 };
-export var GridCoreRowDraggingDom = {
+export const GridCoreRowDraggingDom = {
   createHandleTemplateFunc
 };

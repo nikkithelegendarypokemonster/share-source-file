@@ -1,7 +1,7 @@
 import { isDefined, isObject } from '../../core/utils/type';
 import errors from '../../core/errors';
 import { Export } from './common/export';
-var HOW_TO_MIGRATE_ARTICLE = 'https://supportcenter.devexpress.com/ticket/details/t1077554';
+const HOW_TO_MIGRATE_ARTICLE = 'https://supportcenter.devexpress.com/ticket/details/t1077554';
 function _getFullOptions(options) {
   if (!(isDefined(options) && isObject(options))) {
     throw Error('The "exportDataGrid" method requires a configuration object.');
@@ -13,7 +13,7 @@ function _getFullOptions(options) {
     throw Error('The "jsPDFDocument" field must contain a jsPDF instance.');
   }
   if (isDefined(options.autoTableOptions)) {
-    errors.log('W0001', 'Export', 'autoTableOptions', '22.1', "You can migrate from exporting to PDF with the AutoTable plugin to a new export system. See the following topic for more information: ".concat(HOW_TO_MIGRATE_ARTICLE));
+    errors.log('W0001', 'Export', 'autoTableOptions', '22.1', `You can migrate from exporting to PDF with the AutoTable plugin to a new export system. See the following topic for more information: ${HOW_TO_MIGRATE_ARTICLE}`);
   }
   return Export.getFullOptions(options);
 }

@@ -1,18 +1,18 @@
 /**
 * DevExtreme (esm/renovation/common/config_provider.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["children", "rtlEnabled"];
+const _excluded = ["children", "rtlEnabled"];
 import { BaseInfernoComponent } from '@devextreme/runtime/inferno';
-import { ConfigContext } from './config_context';
-export var viewFunction = viewModel => viewModel.props.children;
-export var ConfigProviderProps = {};
+import { ConfigContext } from '../../__internal/core/r1/config_context';
+export const viewFunction = viewModel => viewModel.props.children;
+export const ConfigProviderProps = {};
 export class ConfigProvider extends BaseInfernoComponent {
   constructor(props) {
     super(props);
@@ -35,7 +35,7 @@ export class ConfigProvider extends BaseInfernoComponent {
     })();
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
@@ -45,7 +45,7 @@ export class ConfigProvider extends BaseInfernoComponent {
     }
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       config: this.config,

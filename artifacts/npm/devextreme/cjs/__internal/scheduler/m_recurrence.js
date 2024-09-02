@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/m_recurrence.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -43,14 +43,13 @@ function getRecurrenceProcessor() {
   }
   return recurrence;
 }
-let RecurrenceProcessor = /*#__PURE__*/function () {
-  function RecurrenceProcessor() {
+class RecurrenceProcessor {
+  constructor() {
     this.rRule = null;
     this.rRuleSet = null;
     this.validator = new RecurrenceValidator();
   }
-  var _proto = RecurrenceProcessor.prototype;
-  _proto.generateDates = function generateDates(options) {
+  generateDates(options) {
     const recurrenceRule = this.evalRecurrenceRule(options.rule);
     const {
       rule
@@ -61,8 +60,8 @@ let RecurrenceProcessor = /*#__PURE__*/function () {
     const rruleIntervalParams = this._createRruleIntervalParams(options);
     this._initializeRRule(options, rruleIntervalParams.startIntervalDate, rule.until);
     return this.rRuleSet.between(rruleIntervalParams.minViewDate, rruleIntervalParams.maxViewDate, true).filter(date => date.getTime() + rruleIntervalParams.appointmentDuration >= rruleIntervalParams.minViewTime).map(date => this._convertRruleResult(rruleIntervalParams, options, date));
-  };
-  _proto._createRruleIntervalParams = function _createRruleIntervalParams(options) {
+  }
+  _createRruleIntervalParams(options) {
     const {
       start,
       min,
@@ -93,8 +92,8 @@ let RecurrenceProcessor = /*#__PURE__*/function () {
       startIntervalDateDSTShift: switchToSummerTime ? 0 : startDateDSTDifferenceMs,
       appointmentDuration: duration
     };
-  };
-  _proto._convertRruleResult = function _convertRruleResult(rruleIntervalParams, options, rruleDate) {
+  }
+  _convertRruleResult(rruleIntervalParams, options, rruleDate) {
     const convertedBackDate = _m_utils_time_zone.default.setOffsetsToDate(rruleDate, [...this._getLocalMachineOffset(rruleDate), -options.appointmentTimezoneOffset, rruleIntervalParams.startIntervalDateDSTShift]);
     const convertedDateDSTShift = _m_utils_time_zone.default.getDiffBetweenClientTimezoneOffsets(convertedBackDate, rruleDate);
     const switchToSummerTime = convertedDateDSTShift < 0;
@@ -104,8 +103,8 @@ let RecurrenceProcessor = /*#__PURE__*/function () {
       return new Date(resultDate.getTime() + resultDateDSTShift);
     }
     return resultDate;
-  };
-  _proto._getLocalMachineOffset = function _getLocalMachineOffset(rruleDate) {
+  }
+  _getLocalMachineOffset(rruleDate) {
     const machineTimezoneOffset = _m_utils_time_zone.default.getClientTimezoneOffset(rruleDate);
     const machineTimezoneName = _date.default.getMachineTimezoneName();
     const result = [machineTimezoneOffset];
@@ -121,11 +120,11 @@ let RecurrenceProcessor = /*#__PURE__*/function () {
       result.push(-MS_IN_DAY);
     }
     return result;
-  };
-  _proto.hasRecurrence = function hasRecurrence(options) {
+  }
+  hasRecurrence(options) {
     return !!this.generateDates(options).length;
-  };
-  _proto.evalRecurrenceRule = function evalRecurrenceRule(rule) {
+  }
+  evalRecurrenceRule(rule) {
     const result = {
       rule: {},
       isValid: false
@@ -135,11 +134,11 @@ let RecurrenceProcessor = /*#__PURE__*/function () {
       result.isValid = this.validator.validateRRule(result.rule, rule);
     }
     return result;
-  };
-  _proto.isValidRecurrenceRule = function isValidRecurrenceRule(rule) {
+  }
+  isValidRecurrenceRule(rule) {
     return this.evalRecurrenceRule(rule).isValid;
-  };
-  _proto.daysFromByDayRule = function daysFromByDayRule(rule) {
+  }
+  daysFromByDayRule(rule) {
     let result = [];
     if (rule.byday) {
       if (Array.isArray(rule.byday)) {
@@ -152,13 +151,13 @@ let RecurrenceProcessor = /*#__PURE__*/function () {
       const match = item.match(/[A-Za-z]+/);
       return !!match && match[0];
     }).filter(item => !!item);
-  };
-  _proto.getAsciiStringByDate = function getAsciiStringByDate(date) {
+  }
+  getAsciiStringByDate(date) {
     const currentOffset = date.getTimezoneOffset() * toMs('minute');
     const offsetDate = new Date(date.getTime() + currentOffset);
-    return "".concat(offsetDate.getFullYear() + "0".concat(offsetDate.getMonth() + 1).slice(-2) + "0".concat(offsetDate.getDate()).slice(-2), "T").concat("0".concat(offsetDate.getHours()).slice(-2)).concat("0".concat(offsetDate.getMinutes()).slice(-2)).concat("0".concat(offsetDate.getSeconds()).slice(-2), "Z");
-  };
-  _proto.getRecurrenceString = function getRecurrenceString(object) {
+    return `${offsetDate.getFullYear() + `0${offsetDate.getMonth() + 1}`.slice(-2) + `0${offsetDate.getDate()}`.slice(-2)}T${`0${offsetDate.getHours()}`.slice(-2)}${`0${offsetDate.getMinutes()}`.slice(-2)}${`0${offsetDate.getSeconds()}`.slice(-2)}Z`;
+  }
+  getRecurrenceString(object) {
     if (!object || !object.freq) {
       return;
     }
@@ -172,15 +171,15 @@ let RecurrenceProcessor = /*#__PURE__*/function () {
       if (field === 'until') {
         value = this.getAsciiStringByDate(value);
       }
-      result += "".concat(field, "=").concat(value, ";");
+      result += `${field}=${value};`;
     }
     result = result.substring(0, result.length - 1);
     return result.toUpperCase();
-  };
-  _proto._parseExceptionToRawArray = function _parseExceptionToRawArray(value) {
+  }
+  _parseExceptionToRawArray(value) {
     return value.match(/(\d{4})(\d{2})(\d{2})(T(\d{2})(\d{2})(\d{2}))?(Z)?/);
-  };
-  _proto.getDateByAsciiString = function getDateByAsciiString(exceptionText) {
+  }
+  getDateByAsciiString(exceptionText) {
     if (typeof exceptionText !== 'string') {
       return exceptionText;
     }
@@ -193,8 +192,8 @@ let RecurrenceProcessor = /*#__PURE__*/function () {
       return new Date(Date.UTC(year, month, date, hours, minutes, seconds));
     }
     return new Date(year, month, date, hours, minutes, seconds);
-  };
-  _proto._dispose = function _dispose() {
+  }
+  _dispose() {
     if (this.rRuleSet) {
       // @ts-expect-error
       delete this.rRuleSet;
@@ -205,11 +204,11 @@ let RecurrenceProcessor = /*#__PURE__*/function () {
       delete this.rRule;
       this.rRule = null;
     }
-  };
-  _proto._getTimeZoneOffset = function _getTimeZoneOffset() {
+  }
+  _getTimeZoneOffset() {
     return new Date().getTimezoneOffset();
-  };
-  _proto._initializeRRule = function _initializeRRule(options, startDateUtc, until) {
+  }
+  _initializeRRule(options, startDateUtc, until) {
     const ruleOptions = _rrule.RRule.parseString(options.rule);
     const {
       firstDayOfWeek
@@ -234,14 +233,14 @@ let RecurrenceProcessor = /*#__PURE__*/function () {
         this.rRuleSet.exdate(utcDate);
       });
     }
-  };
-  _proto._createRRule = function _createRRule(ruleOptions) {
+  }
+  _createRRule(ruleOptions) {
     this._dispose();
     this.rRuleSet = new _rrule.RRuleSet();
     this.rRule = new _rrule.RRule(ruleOptions);
     this.rRuleSet.rrule(this.rRule);
-  };
-  _proto._parseRecurrenceRule = function _parseRecurrenceRule(recurrence) {
+  }
+  _parseRecurrenceRule(recurrence) {
     const ruleObject = {};
     const ruleParts = recurrence.split(';');
     for (let i = 0, len = ruleParts.length; i < len; i++) {
@@ -268,8 +267,8 @@ let RecurrenceProcessor = /*#__PURE__*/function () {
       ruleObject.until = this.getDateByAsciiString(ruleObject.until);
     }
     return ruleObject;
-  };
-  _proto._createDateTuple = function _createDateTuple(parseResult) {
+  }
+  _createDateTuple(parseResult) {
     const isUtc = parseResult[8] !== undefined;
     parseResult.shift();
     if (parseResult[3] === undefined) {
@@ -283,20 +282,17 @@ let RecurrenceProcessor = /*#__PURE__*/function () {
     /* eslint-disable radix */
     return [parseInt(parseResult[1]), parseInt(parseResult[2]), parseInt(parseResult[3]), parseInt(parseResult[4]) || 0, parseInt(parseResult[5]) || 0, parseInt(parseResult[6]) || 0, isUtc];
     /* eslint-enable radix */
-  };
-  return RecurrenceProcessor;
-}();
-let RecurrenceValidator = /*#__PURE__*/function () {
-  function RecurrenceValidator() {}
-  var _proto2 = RecurrenceValidator.prototype;
-  _proto2.validateRRule = function validateRRule(rule, recurrence) {
+  }
+}
+class RecurrenceValidator {
+  validateRRule(rule, recurrence) {
     if (this._brokenRuleNameExists(rule) || !freqNames.includes(rule.freq) || this._wrongCountRule(rule) || this._wrongIntervalRule(rule) || this._wrongDayOfWeek(rule) || this._wrongByMonthDayRule(rule) || this._wrongByMonth(rule) || this._wrongUntilRule(rule)) {
       this._logBrokenRule(recurrence);
       return false;
     }
     return true;
-  };
-  _proto2._wrongUntilRule = function _wrongUntilRule(rule) {
+  }
+  _wrongUntilRule(rule) {
     let wrongUntil = false;
     const {
       until
@@ -305,8 +301,8 @@ let RecurrenceValidator = /*#__PURE__*/function () {
       wrongUntil = true;
     }
     return wrongUntil;
-  };
-  _proto2._wrongCountRule = function _wrongCountRule(rule) {
+  }
+  _wrongCountRule(rule) {
     let wrongCount = false;
     const {
       count
@@ -315,8 +311,8 @@ let RecurrenceValidator = /*#__PURE__*/function () {
       wrongCount = true;
     }
     return wrongCount;
-  };
-  _proto2._wrongByMonthDayRule = function _wrongByMonthDayRule(rule) {
+  }
+  _wrongByMonthDayRule(rule) {
     let wrongByMonthDay = false;
     const byMonthDay = rule.bymonthday;
     // eslint-disable-next-line radix
@@ -324,8 +320,8 @@ let RecurrenceValidator = /*#__PURE__*/function () {
       wrongByMonthDay = true;
     }
     return wrongByMonthDay;
-  };
-  _proto2._wrongByMonth = function _wrongByMonth(rule) {
+  }
+  _wrongByMonth(rule) {
     let wrongByMonth = false;
     const byMonth = rule.bymonth;
     // eslint-disable-next-line radix
@@ -333,8 +329,8 @@ let RecurrenceValidator = /*#__PURE__*/function () {
       wrongByMonth = true;
     }
     return wrongByMonth;
-  };
-  _proto2._wrongIntervalRule = function _wrongIntervalRule(rule) {
+  }
+  _wrongIntervalRule(rule) {
     let wrongInterval = false;
     const {
       interval
@@ -343,8 +339,8 @@ let RecurrenceValidator = /*#__PURE__*/function () {
       wrongInterval = true;
     }
     return wrongInterval;
-  };
-  _proto2._wrongDayOfWeek = function _wrongDayOfWeek(rule) {
+  }
+  _wrongDayOfWeek(rule) {
     const byDay = rule.byday;
     const daysByRule = getRecurrenceProcessor().daysFromByDayRule(rule);
     let brokenDaysExist = false;
@@ -359,8 +355,8 @@ let RecurrenceValidator = /*#__PURE__*/function () {
       return undefined;
     });
     return brokenDaysExist;
-  };
-  _proto2._brokenRuleNameExists = function _brokenRuleNameExists(rule) {
+  }
+  _brokenRuleNameExists(rule) {
     let brokenRuleExists = false;
     (0, _iterator.each)(rule, ruleName => {
       if (!ruleNames.includes(ruleName)) {
@@ -370,12 +366,11 @@ let RecurrenceValidator = /*#__PURE__*/function () {
       return undefined;
     });
     return brokenRuleExists;
-  };
-  _proto2._logBrokenRule = function _logBrokenRule(recurrence) {
+  }
+  _logBrokenRule(recurrence) {
     if (!loggedWarnings.includes(recurrence)) {
       _errors.default.log('W0006', recurrence);
       loggedWarnings.push(recurrence);
     }
-  };
-  return RecurrenceValidator;
-}();
+  }
+}

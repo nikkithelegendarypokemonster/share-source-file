@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/m_sortable.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -24,6 +24,7 @@ var _size = require("../core/utils/size");
 var _window = require("../core/utils/window");
 var _events_engine = _interopRequireDefault(require("../events/core/events_engine"));
 var _m_draggable = _interopRequireDefault(require("./m_draggable"));
+var _type = require("../core/utils/type");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const window = (0, _window.getWindow)();
 const SORTABLE = 'dxSortable';
@@ -31,12 +32,12 @@ const PLACEHOLDER_CLASS = 'placeholder';
 const CLONE_CLASS = 'clone';
 const isElementVisible = itemElement => (0, _renderer.default)(itemElement).is(':visible');
 const animate = (element, config) => {
-  var _a, _b;
+  var _config$to, _config$to2;
   if (!element) return;
-  const left = ((_a = config.to) === null || _a === void 0 ? void 0 : _a.left) || 0;
-  const top = ((_b = config.to) === null || _b === void 0 ? void 0 : _b.top) || 0;
-  element.style.transform = "translate(".concat(left, "px,").concat(top, "px)");
-  element.style.transition = _fx.default.off ? '' : "transform ".concat(config.duration, "ms ").concat(config.easing);
+  const left = ((_config$to = config.to) === null || _config$to === void 0 ? void 0 : _config$to.left) || 0;
+  const top = ((_config$to2 = config.to) === null || _config$to2 === void 0 ? void 0 : _config$to2.top) || 0;
+  element.style.transform = `translate(${left}px,${top}px)`;
+  element.style.transition = _fx.default.off ? '' : `transform ${config.duration}ms ${config.easing}`;
 };
 const stopAnimation = element => {
   if (!element) return;
@@ -308,7 +309,7 @@ const Sortable = _m_draggable.default.inherit({
   },
   _getItems() {
     const itemsSelector = this._getItemsSelector();
-    return this._$content().find(itemsSelector).not(".".concat(this._addWidgetPrefix(PLACEHOLDER_CLASS))).not(".".concat(this._addWidgetPrefix(CLONE_CLASS))).toArray();
+    return this._$content().find(itemsSelector).not(`.${this._addWidgetPrefix(PLACEHOLDER_CLASS)}`).not(`.${this._addWidgetPrefix(CLONE_CLASS)}`).toArray();
   },
   _allowReordering() {
     const sourceDraggable = this._getSourceDraggable();
@@ -531,7 +532,7 @@ const Sortable = _m_draggable.default.inherit({
       case 'onAdd':
       case 'onRemove':
       case 'onReorder':
-        this["_".concat(name, "Action")] = this._createActionByOption(name);
+        this[`_${name}Action`] = this._createActionByOption(name);
         break;
       case 'itemOrientation':
       case 'allowDropInsideItem':
@@ -746,7 +747,7 @@ const Sortable = _m_draggable.default.inherit({
       const position = positions[i];
       if (toIndex === null || fromIndex === null) {
         stopAnimation(itemElement);
-      } else if (prevPosition !== position || fullUpdate && position) {
+      } else if (prevPosition !== position || fullUpdate && (0, _type.isDefined)(position)) {
         animate(itemElement, (0, _extend.extend)({}, animationConfig, {
           to: {
             [positionPropName]: !isVerticalOrientation && rtlEnabled ? -position : position

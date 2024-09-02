@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/renovation/ui/scroll_view/scrollbar/animated_scrollbar.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -19,17 +19,10 @@ var _clamp_into_range = require("../utils/clamp_into_range");
 var _animated_scrollbar_props = require("../common/animated_scrollbar_props");
 var _index = require("../../../../events/utils/index");
 var _consts = require("../common/consts");
-var _config_context = require("../../../common/config_context");
+var _config_context = require("../../../../__internal/core/r1/config_context");
 const _excluded = ["bottomPocketSize", "bounceEnabled", "containerHasSizes", "containerSize", "contentPaddingBottom", "contentSize", "direction", "forceGeneratePockets", "inertiaEnabled", "maxOffset", "minOffset", "onBounce", "onEnd", "onLock", "onPullDown", "onReachBottom", "onScroll", "onUnlock", "pulledDown", "reachBottomEnabled", "rtlEnabled", "scrollByThumb", "scrollLocation", "scrollLocationChange", "showScrollbar", "visible"];
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 const OUT_BOUNDS_ACCELERATION = exports.OUT_BOUNDS_ACCELERATION = 0.5;
 const ACCELERATION = exports.ACCELERATION = 0.92;
 const MIN_VELOCITY_LIMIT = exports.MIN_VELOCITY_LIMIT = 1;
@@ -70,142 +63,78 @@ const viewFunction = viewModel => {
   }, null, scrollbarRef);
 };
 exports.viewFunction = viewFunction;
-const AnimatedScrollbarPropsType = Object.defineProperties({}, {
-  pulledDown: {
-    get: function () {
-      return _animated_scrollbar_props.AnimatedScrollbarProps.pulledDown;
-    },
-    configurable: true,
-    enumerable: true
+const AnimatedScrollbarPropsType = {
+  get pulledDown() {
+    return _animated_scrollbar_props.AnimatedScrollbarProps.pulledDown;
   },
-  bottomPocketSize: {
-    get: function () {
-      return _animated_scrollbar_props.AnimatedScrollbarProps.bottomPocketSize;
-    },
-    configurable: true,
-    enumerable: true
+  get bottomPocketSize() {
+    return _animated_scrollbar_props.AnimatedScrollbarProps.bottomPocketSize;
   },
-  contentPaddingBottom: {
-    get: function () {
-      return _animated_scrollbar_props.AnimatedScrollbarProps.contentPaddingBottom;
-    },
-    configurable: true,
-    enumerable: true
+  get contentPaddingBottom() {
+    return _animated_scrollbar_props.AnimatedScrollbarProps.contentPaddingBottom;
   },
-  direction: {
-    get: function () {
-      return _animated_scrollbar_props.AnimatedScrollbarProps.direction;
-    },
-    configurable: true,
-    enumerable: true
+  get direction() {
+    return _animated_scrollbar_props.AnimatedScrollbarProps.direction;
   },
-  containerSize: {
-    get: function () {
-      return _animated_scrollbar_props.AnimatedScrollbarProps.containerSize;
-    },
-    configurable: true,
-    enumerable: true
+  get containerSize() {
+    return _animated_scrollbar_props.AnimatedScrollbarProps.containerSize;
   },
-  contentSize: {
-    get: function () {
-      return _animated_scrollbar_props.AnimatedScrollbarProps.contentSize;
-    },
-    configurable: true,
-    enumerable: true
+  get contentSize() {
+    return _animated_scrollbar_props.AnimatedScrollbarProps.contentSize;
   },
-  visible: {
-    get: function () {
-      return _animated_scrollbar_props.AnimatedScrollbarProps.visible;
-    },
-    configurable: true,
-    enumerable: true
+  get visible() {
+    return _animated_scrollbar_props.AnimatedScrollbarProps.visible;
   },
-  containerHasSizes: {
-    get: function () {
-      return _animated_scrollbar_props.AnimatedScrollbarProps.containerHasSizes;
-    },
-    configurable: true,
-    enumerable: true
+  get containerHasSizes() {
+    return _animated_scrollbar_props.AnimatedScrollbarProps.containerHasSizes;
   },
-  scrollLocation: {
-    get: function () {
-      return _animated_scrollbar_props.AnimatedScrollbarProps.scrollLocation;
-    },
-    configurable: true,
-    enumerable: true
+  get scrollLocation() {
+    return _animated_scrollbar_props.AnimatedScrollbarProps.scrollLocation;
   },
-  minOffset: {
-    get: function () {
-      return _animated_scrollbar_props.AnimatedScrollbarProps.minOffset;
-    },
-    configurable: true,
-    enumerable: true
+  get minOffset() {
+    return _animated_scrollbar_props.AnimatedScrollbarProps.minOffset;
   },
-  maxOffset: {
-    get: function () {
-      return _animated_scrollbar_props.AnimatedScrollbarProps.maxOffset;
-    },
-    configurable: true,
-    enumerable: true
+  get maxOffset() {
+    return _animated_scrollbar_props.AnimatedScrollbarProps.maxOffset;
   },
-  inertiaEnabled: {
-    get: function () {
-      return _simulated_strategy_props.ScrollableSimulatedProps.inertiaEnabled;
-    },
-    configurable: true,
-    enumerable: true
+  get inertiaEnabled() {
+    return _simulated_strategy_props.ScrollableSimulatedProps.inertiaEnabled;
   },
-  showScrollbar: {
-    get: function () {
-      return _simulated_strategy_props.ScrollableSimulatedProps.showScrollbar;
-    },
-    configurable: true,
-    enumerable: true
+  get showScrollbar() {
+    return _simulated_strategy_props.ScrollableSimulatedProps.showScrollbar;
   },
-  scrollByThumb: {
-    get: function () {
-      return _simulated_strategy_props.ScrollableSimulatedProps.scrollByThumb;
-    },
-    configurable: true,
-    enumerable: true
+  get scrollByThumb() {
+    return _simulated_strategy_props.ScrollableSimulatedProps.scrollByThumb;
   },
-  bounceEnabled: {
-    get: function () {
-      return _simulated_strategy_props.ScrollableSimulatedProps.bounceEnabled;
-    },
-    configurable: true,
-    enumerable: true
+  get bounceEnabled() {
+    return _simulated_strategy_props.ScrollableSimulatedProps.bounceEnabled;
   },
-  reachBottomEnabled: {
-    get: function () {
-      return _simulated_strategy_props.ScrollableSimulatedProps.reachBottomEnabled;
-    },
-    configurable: true,
-    enumerable: true
+  get reachBottomEnabled() {
+    return _simulated_strategy_props.ScrollableSimulatedProps.reachBottomEnabled;
   },
-  forceGeneratePockets: {
-    get: function () {
-      return _simulated_strategy_props.ScrollableSimulatedProps.forceGeneratePockets;
-    },
-    configurable: true,
-    enumerable: true
+  get forceGeneratePockets() {
+    return _simulated_strategy_props.ScrollableSimulatedProps.forceGeneratePockets;
   }
-});
-let AnimatedScrollbar = exports.AnimatedScrollbar = /*#__PURE__*/function (_InfernoComponent) {
-  _inheritsLoose(AnimatedScrollbar, _InfernoComponent);
-  function AnimatedScrollbar(props) {
-    var _this;
-    _this = _InfernoComponent.call(this, props) || this;
-    _this.scrollbarRef = (0, _inferno.createRef)();
-    _this.rightScrollLocation = 0;
-    _this.prevScrollLocation = 0;
-    _this.thumbScrolling = false;
-    _this.crossThumbScrolling = false;
-    _this.stepAnimationFrame = 0;
-    _this.velocity = 0;
-    _this.refreshing = false;
-    _this.loading = false;
-    _this.state = {
+};
+class AnimatedScrollbar extends _inferno2.InfernoComponent {
+  get config() {
+    if (this.context[_config_context.ConfigContext.id]) {
+      return this.context[_config_context.ConfigContext.id];
+    }
+    return _config_context.ConfigContext.defaultValue;
+  }
+  constructor(props) {
+    super(props);
+    this.scrollbarRef = (0, _inferno.createRef)();
+    this.rightScrollLocation = 0;
+    this.prevScrollLocation = 0;
+    this.thumbScrolling = false;
+    this.crossThumbScrolling = false;
+    this.stepAnimationFrame = 0;
+    this.velocity = 0;
+    this.refreshing = false;
+    this.loading = false;
+    this.state = {
       canceled: false,
       newScrollLocation: 0,
       forceAnimationToBottomBound: false,
@@ -216,65 +145,63 @@ let AnimatedScrollbar = exports.AnimatedScrollbar = /*#__PURE__*/function (_Infe
       needRiseEnd: false,
       wasRelease: false
     };
-    _this.isThumb = _this.isThumb.bind(_assertThisInitialized(_this));
-    _this.isScrollbar = _this.isScrollbar.bind(_assertThisInitialized(_this));
-    _this.reachedMin = _this.reachedMin.bind(_assertThisInitialized(_this));
-    _this.reachedMax = _this.reachedMax.bind(_assertThisInitialized(_this));
-    _this.initHandler = _this.initHandler.bind(_assertThisInitialized(_this));
-    _this.moveHandler = _this.moveHandler.bind(_assertThisInitialized(_this));
-    _this.endHandler = _this.endHandler.bind(_assertThisInitialized(_this));
-    _this.stopHandler = _this.stopHandler.bind(_assertThisInitialized(_this));
-    _this.scrollTo = _this.scrollTo.bind(_assertThisInitialized(_this));
-    _this.releaseHandler = _this.releaseHandler.bind(_assertThisInitialized(_this));
-    _this.disposeAnimationFrame = _this.disposeAnimationFrame.bind(_assertThisInitialized(_this));
-    _this.risePullDown = _this.risePullDown.bind(_assertThisInitialized(_this));
-    _this.riseEnd = _this.riseEnd.bind(_assertThisInitialized(_this));
-    _this.riseReachBottom = _this.riseReachBottom.bind(_assertThisInitialized(_this));
-    _this.startAnimator = _this.startAnimator.bind(_assertThisInitialized(_this));
-    _this.updateScrollLocationInRTL = _this.updateScrollLocationInRTL.bind(_assertThisInitialized(_this));
-    _this.performAnimation = _this.performAnimation.bind(_assertThisInitialized(_this));
-    _this.updateLockedState = _this.updateLockedState.bind(_assertThisInitialized(_this));
-    _this.suppressVelocityBeforeBoundary = _this.suppressVelocityBeforeBoundary.bind(_assertThisInitialized(_this));
-    _this.scrollToNextStep = _this.scrollToNextStep.bind(_assertThisInitialized(_this));
-    _this.setActiveState = _this.setActiveState.bind(_assertThisInitialized(_this));
-    _this.moveTo = _this.moveTo.bind(_assertThisInitialized(_this));
-    _this.moveToMouseLocation = _this.moveToMouseLocation.bind(_assertThisInitialized(_this));
-    _this.resetThumbScrolling = _this.resetThumbScrolling.bind(_assertThisInitialized(_this));
-    _this.stop = _this.stop.bind(_assertThisInitialized(_this));
-    _this.cancel = _this.cancel.bind(_assertThisInitialized(_this));
-    _this.calcThumbScrolling = _this.calcThumbScrolling.bind(_assertThisInitialized(_this));
-    return _this;
+    this.isThumb = this.isThumb.bind(this);
+    this.isScrollbar = this.isScrollbar.bind(this);
+    this.reachedMin = this.reachedMin.bind(this);
+    this.reachedMax = this.reachedMax.bind(this);
+    this.initHandler = this.initHandler.bind(this);
+    this.moveHandler = this.moveHandler.bind(this);
+    this.endHandler = this.endHandler.bind(this);
+    this.stopHandler = this.stopHandler.bind(this);
+    this.scrollTo = this.scrollTo.bind(this);
+    this.releaseHandler = this.releaseHandler.bind(this);
+    this.disposeAnimationFrame = this.disposeAnimationFrame.bind(this);
+    this.risePullDown = this.risePullDown.bind(this);
+    this.riseEnd = this.riseEnd.bind(this);
+    this.riseReachBottom = this.riseReachBottom.bind(this);
+    this.startAnimator = this.startAnimator.bind(this);
+    this.updateScrollLocationInRTL = this.updateScrollLocationInRTL.bind(this);
+    this.performAnimation = this.performAnimation.bind(this);
+    this.updateLockedState = this.updateLockedState.bind(this);
+    this.suppressVelocityBeforeBoundary = this.suppressVelocityBeforeBoundary.bind(this);
+    this.scrollToNextStep = this.scrollToNextStep.bind(this);
+    this.setActiveState = this.setActiveState.bind(this);
+    this.moveTo = this.moveTo.bind(this);
+    this.moveToMouseLocation = this.moveToMouseLocation.bind(this);
+    this.resetThumbScrolling = this.resetThumbScrolling.bind(this);
+    this.stop = this.stop.bind(this);
+    this.cancel = this.cancel.bind(this);
+    this.calcThumbScrolling = this.calcThumbScrolling.bind(this);
   }
-  var _proto = AnimatedScrollbar.prototype;
-  _proto.createEffects = function createEffects() {
+  createEffects() {
     return [new _inferno2.InfernoEffect(this.disposeAnimationFrame, []), new _inferno2.InfernoEffect(this.risePullDown, [this.props.forceGeneratePockets, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.pulledDown, this.props.onPullDown]), new _inferno2.InfernoEffect(this.riseEnd, [this.props.scrollLocation, this.props.maxOffset, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.forceGeneratePockets, this.props.pulledDown, this.props.reachBottomEnabled, this.state.wasRelease, this.props.onEnd, this.props.direction]), new _inferno2.InfernoEffect(this.riseReachBottom, [this.props.forceGeneratePockets, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.onReachBottom]), new _inferno2.InfernoEffect(this.startAnimator, [this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.forceGeneratePockets, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.bounceEnabled, this.props.onBounce, this.props.inertiaEnabled]), new _inferno2.InfernoEffect(this.updateScrollLocationInRTL, [this.props.containerHasSizes, this.props.direction, this.props.rtlEnabled, this.props.maxOffset, this.props.scrollLocation, this.props.scrollLocationChange, this.props.onScroll]), new _inferno2.InfernoEffect(this.performAnimation, [this.state.pendingInertiaAnimator, this.state.canceled, this.state.pendingBounceAnimator, this.props.bounceEnabled, this.props.minOffset, this.props.scrollLocation, this.props.forceGeneratePockets, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.scrollLocationChange, this.props.direction, this.props.onScroll]), new _inferno2.InfernoEffect(this.updateLockedState, [this.state.pendingBounceAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.onLock, this.props.onUnlock])];
-  };
-  _proto.updateEffects = function updateEffects() {
+  }
+  updateEffects() {
     var _this$_effects$, _this$_effects$2, _this$_effects$3, _this$_effects$4, _this$_effects$5, _this$_effects$6, _this$_effects$7;
-    (_this$_effects$ = this._effects[1]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([this.props.forceGeneratePockets, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.pulledDown, this.props.onPullDown]);
-    (_this$_effects$2 = this._effects[2]) === null || _this$_effects$2 === void 0 ? void 0 : _this$_effects$2.update([this.props.scrollLocation, this.props.maxOffset, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.forceGeneratePockets, this.props.pulledDown, this.props.reachBottomEnabled, this.state.wasRelease, this.props.onEnd, this.props.direction]);
-    (_this$_effects$3 = this._effects[3]) === null || _this$_effects$3 === void 0 ? void 0 : _this$_effects$3.update([this.props.forceGeneratePockets, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.onReachBottom]);
-    (_this$_effects$4 = this._effects[4]) === null || _this$_effects$4 === void 0 ? void 0 : _this$_effects$4.update([this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.forceGeneratePockets, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.bounceEnabled, this.props.onBounce, this.props.inertiaEnabled]);
-    (_this$_effects$5 = this._effects[5]) === null || _this$_effects$5 === void 0 ? void 0 : _this$_effects$5.update([this.props.containerHasSizes, this.props.direction, this.props.rtlEnabled, this.props.maxOffset, this.props.scrollLocation, this.props.scrollLocationChange, this.props.onScroll]);
-    (_this$_effects$6 = this._effects[6]) === null || _this$_effects$6 === void 0 ? void 0 : _this$_effects$6.update([this.state.pendingInertiaAnimator, this.state.canceled, this.state.pendingBounceAnimator, this.props.bounceEnabled, this.props.minOffset, this.props.scrollLocation, this.props.forceGeneratePockets, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.scrollLocationChange, this.props.direction, this.props.onScroll]);
-    (_this$_effects$7 = this._effects[7]) === null || _this$_effects$7 === void 0 ? void 0 : _this$_effects$7.update([this.state.pendingBounceAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.onLock, this.props.onUnlock]);
-  };
-  _proto.disposeAnimationFrame = function disposeAnimationFrame() {
+    (_this$_effects$ = this._effects[1]) === null || _this$_effects$ === void 0 || _this$_effects$.update([this.props.forceGeneratePockets, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.pulledDown, this.props.onPullDown]);
+    (_this$_effects$2 = this._effects[2]) === null || _this$_effects$2 === void 0 || _this$_effects$2.update([this.props.scrollLocation, this.props.maxOffset, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.forceGeneratePockets, this.props.pulledDown, this.props.reachBottomEnabled, this.state.wasRelease, this.props.onEnd, this.props.direction]);
+    (_this$_effects$3 = this._effects[3]) === null || _this$_effects$3 === void 0 || _this$_effects$3.update([this.props.forceGeneratePockets, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.onReachBottom]);
+    (_this$_effects$4 = this._effects[4]) === null || _this$_effects$4 === void 0 || _this$_effects$4.update([this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.forceGeneratePockets, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.bounceEnabled, this.props.onBounce, this.props.inertiaEnabled]);
+    (_this$_effects$5 = this._effects[5]) === null || _this$_effects$5 === void 0 || _this$_effects$5.update([this.props.containerHasSizes, this.props.direction, this.props.rtlEnabled, this.props.maxOffset, this.props.scrollLocation, this.props.scrollLocationChange, this.props.onScroll]);
+    (_this$_effects$6 = this._effects[6]) === null || _this$_effects$6 === void 0 || _this$_effects$6.update([this.state.pendingInertiaAnimator, this.state.canceled, this.state.pendingBounceAnimator, this.props.bounceEnabled, this.props.minOffset, this.props.scrollLocation, this.props.forceGeneratePockets, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.scrollLocationChange, this.props.direction, this.props.onScroll]);
+    (_this$_effects$7 = this._effects[7]) === null || _this$_effects$7 === void 0 || _this$_effects$7.update([this.state.pendingBounceAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.onLock, this.props.onUnlock]);
+  }
+  disposeAnimationFrame() {
     return () => {
       this.cancel();
     };
-  };
-  _proto.risePullDown = function risePullDown() {
+  }
+  risePullDown() {
     if (this.props.forceGeneratePockets && this.isReadyToStart && this.inRange && this.props.pulledDown && !this.refreshing) {
       var _this$props$onPullDow, _this$props;
       this.refreshing = true;
       this.setState(__state_argument => ({
         pendingRefreshing: true
       }));
-      (_this$props$onPullDow = (_this$props = this.props).onPullDown) === null || _this$props$onPullDow === void 0 ? void 0 : _this$props$onPullDow.call(_this$props);
+      (_this$props$onPullDow = (_this$props = this.props).onPullDown) === null || _this$props$onPullDow === void 0 || _this$props$onPullDow.call(_this$props);
     }
-  };
-  _proto.riseEnd = function riseEnd() {
+  }
+  riseEnd() {
     const isInsideBounds = (0, _math.inRange)(this.props.scrollLocation, this.props.maxOffset, 0);
     if (isInsideBounds && this.isReadyToStart && this.finished && !this.pendingRelease) {
       var _this$props$onEnd, _this$props2;
@@ -287,20 +214,20 @@ let AnimatedScrollbar = exports.AnimatedScrollbar = /*#__PURE__*/function (_Infe
       this.setState(__state_argument => ({
         forceAnimationToBottomBound: false
       }));
-      (_this$props$onEnd = (_this$props2 = this.props).onEnd) === null || _this$props$onEnd === void 0 ? void 0 : _this$props$onEnd.call(_this$props2, this.props.direction);
+      (_this$props$onEnd = (_this$props2 = this.props).onEnd) === null || _this$props$onEnd === void 0 || _this$props$onEnd.call(_this$props2, this.props.direction);
     }
-  };
-  _proto.riseReachBottom = function riseReachBottom() {
+  }
+  riseReachBottom() {
     if (this.props.forceGeneratePockets && this.isReadyToStart && this.inRange && this.isReachBottom && !this.loading && this.finished) {
       var _this$props$onReachBo, _this$props3;
       this.loading = true;
       this.setState(__state_argument => ({
         pendingLoading: true
       }));
-      (_this$props$onReachBo = (_this$props3 = this.props).onReachBottom) === null || _this$props$onReachBo === void 0 ? void 0 : _this$props$onReachBo.call(_this$props3);
+      (_this$props$onReachBo = (_this$props3 = this.props).onReachBottom) === null || _this$props$onReachBo === void 0 || _this$props$onReachBo.call(_this$props3);
     }
-  };
-  _proto.startAnimator = function startAnimator() {
+  }
+  startAnimator() {
     if (this.isReadyToStart) {
       this.setState(__state_argument => ({
         canceled: false
@@ -309,7 +236,7 @@ let AnimatedScrollbar = exports.AnimatedScrollbar = /*#__PURE__*/function (_Infe
         var _this$props$onBounce, _this$props4;
         const distanceToBound = (0, _clamp_into_range.clampIntoRange)(this.props.scrollLocation, this.props.minOffset, this.maxOffset) - this.props.scrollLocation;
         this.velocity = distanceToBound / BOUNCE_ACCELERATION_SUM;
-        (_this$props$onBounce = (_this$props4 = this.props).onBounce) === null || _this$props$onBounce === void 0 ? void 0 : _this$props$onBounce.call(_this$props4);
+        (_this$props$onBounce = (_this$props4 = this.props).onBounce) === null || _this$props$onBounce === void 0 || _this$props$onBounce.call(_this$props4);
         this.setState(__state_argument => ({
           pendingBounceAnimator: true
         }));
@@ -323,16 +250,16 @@ let AnimatedScrollbar = exports.AnimatedScrollbar = /*#__PURE__*/function (_Infe
         }));
       }
     }
-  };
-  _proto.updateScrollLocationInRTL = function updateScrollLocationInRTL() {
+  }
+  updateScrollLocationInRTL() {
     if (this.props.containerHasSizes && this.isHorizontal && this.props.rtlEnabled) {
       if (this.props.maxOffset === 0 && this.props.scrollLocation) {
         this.rightScrollLocation = 0;
       }
       this.moveTo(this.props.maxOffset - this.rightScrollLocation);
     }
-  };
-  _proto.performAnimation = function performAnimation() {
+  }
+  performAnimation() {
     if (this.state.pendingInertiaAnimator) {
       if (this.state.canceled) {
         this.setState(__state_argument => ({
@@ -358,36 +285,42 @@ let AnimatedScrollbar = exports.AnimatedScrollbar = /*#__PURE__*/function (_Infe
       this.suppressVelocityBeforeBoundary();
       this.scrollToNextStep();
     }
-  };
-  _proto.updateLockedState = function updateLockedState() {
+  }
+  updateLockedState() {
     if (this.state.pendingBounceAnimator || this.state.pendingRefreshing || this.state.pendingLoading) {
       var _this$props$onLock, _this$props5;
-      (_this$props$onLock = (_this$props5 = this.props).onLock) === null || _this$props$onLock === void 0 ? void 0 : _this$props$onLock.call(_this$props5);
+      (_this$props$onLock = (_this$props5 = this.props).onLock) === null || _this$props$onLock === void 0 || _this$props$onLock.call(_this$props5);
     } else {
       var _this$props$onUnlock, _this$props6;
-      (_this$props$onUnlock = (_this$props6 = this.props).onUnlock) === null || _this$props$onUnlock === void 0 ? void 0 : _this$props$onUnlock.call(_this$props6);
+      (_this$props$onUnlock = (_this$props6 = this.props).onUnlock) === null || _this$props$onUnlock === void 0 || _this$props$onUnlock.call(_this$props6);
     }
-  };
-  _proto.suppressVelocityBeforeBoundary = function suppressVelocityBeforeBoundary() {
+  }
+  get isReadyToStart() {
+    return this.state.needRiseEnd && !this.inProgress && !(this.state.pendingRefreshing || this.state.pendingLoading);
+  }
+  get distanceToNearestBoundary() {
+    return Math.min(Math.abs(this.distanceToMin), Math.abs(this.distanceToMax));
+  }
+  suppressVelocityBeforeBoundary() {
     if (Math.abs(this.distanceToMin) - Math.abs(this.velocity) <= 0) {
       this.velocity = this.distanceToMin;
     }
     if (Math.abs(this.distanceToMax) - Math.abs(this.velocity) <= 0) {
       this.velocity = this.distanceToMax;
     }
-  };
-  _proto.scrollToNextStep = function scrollToNextStep() {
+  }
+  scrollToNextStep() {
     (0, _frame.cancelAnimationFrame)(this.stepAnimationFrame);
     this.stepAnimationFrame = (0, _frame.requestAnimationFrame)(() => {
       const prevVelocity = this.velocity;
       this.velocity *= this.acceleration;
       this.moveTo(this.props.scrollLocation + prevVelocity);
     });
-  };
-  _proto.setActiveState = function setActiveState() {
+  }
+  setActiveState() {
     this.scrollbarRef.current.setActiveState();
-  };
-  _proto.moveTo = function moveTo(value) {
+  }
+  moveTo(value) {
     var _this$props$scrollLoc, _this$props7;
     this.rightScrollLocation = this.props.maxOffset - value;
     this.setState(__state_argument => ({
@@ -395,26 +328,26 @@ let AnimatedScrollbar = exports.AnimatedScrollbar = /*#__PURE__*/function (_Infe
     }));
     const scrollDelta = Math.abs(this.prevScrollLocation - value);
     this.prevScrollLocation = value;
-    (_this$props$scrollLoc = (_this$props7 = this.props).scrollLocationChange) === null || _this$props$scrollLoc === void 0 ? void 0 : _this$props$scrollLoc.call(_this$props7, {
+    (_this$props$scrollLoc = (_this$props7 = this.props).scrollLocationChange) === null || _this$props$scrollLoc === void 0 || _this$props$scrollLoc.call(_this$props7, {
       fullScrollProp: this.fullScrollProp,
       location: -value
     });
     if (scrollDelta > 0) {
       var _this$props$onScroll, _this$props8;
-      (_this$props$onScroll = (_this$props8 = this.props).onScroll) === null || _this$props$onScroll === void 0 ? void 0 : _this$props$onScroll.call(_this$props8);
+      (_this$props$onScroll = (_this$props8 = this.props).onScroll) === null || _this$props$onScroll === void 0 || _this$props$onScroll.call(_this$props8);
     }
-  };
-  _proto.moveToMouseLocation = function moveToMouseLocation(event, offset) {
-    const mouseLocation = event["page".concat(this.axis.toUpperCase())] - offset;
+  }
+  moveToMouseLocation(event, offset) {
+    const mouseLocation = event[`page${this.axis.toUpperCase()}`] - offset;
     const containerToContentRatio = this.props.containerSize / this.props.contentSize;
     const delta = mouseLocation / containerToContentRatio - this.props.containerSize / 2;
     this.moveTo(Math.round(-delta));
-  };
-  _proto.resetThumbScrolling = function resetThumbScrolling() {
+  }
+  resetThumbScrolling() {
     this.thumbScrolling = false;
     this.crossThumbScrolling = false;
-  };
-  _proto.stop = function stop() {
+  }
+  stop() {
     this.velocity = 0;
     this.setState(__state_argument => ({
       pendingBounceAnimator: false
@@ -422,34 +355,81 @@ let AnimatedScrollbar = exports.AnimatedScrollbar = /*#__PURE__*/function (_Infe
     this.setState(__state_argument => ({
       pendingInertiaAnimator: false
     }));
-  };
-  _proto.cancel = function cancel() {
+  }
+  cancel() {
     this.setState(__state_argument => ({
       canceled: true
     }));
     this.stop();
     (0, _frame.cancelAnimationFrame)(this.stepAnimationFrame);
-  };
-  _proto.calcThumbScrolling = function calcThumbScrolling(event, currentCrossThumbScrolling, isScrollbarClicked) {
+  }
+  calcThumbScrolling(event, currentCrossThumbScrolling, isScrollbarClicked) {
     const {
       target
     } = event.originalEvent;
     this.thumbScrolling = isScrollbarClicked || this.props.scrollByThumb && this.isThumb(target);
     this.crossThumbScrolling = !this.thumbScrolling && currentCrossThumbScrolling;
-  };
-  _proto.isThumb = function isThumb(element) {
+  }
+  get distanceToMin() {
+    return this.props.minOffset - this.props.scrollLocation;
+  }
+  get distanceToMax() {
+    return this.maxOffset - this.props.scrollLocation;
+  }
+  get pendingRelease() {
+    return this.props.forceGeneratePockets && (this.props.pulledDown || this.isReachBottom) && !this.state.wasRelease;
+  }
+  get inProgress() {
+    return this.state.pendingBounceAnimator || this.state.pendingInertiaAnimator;
+  }
+  get inRange() {
+    return (0, _math.inRange)(this.props.scrollLocation, this.maxOffset, this.props.minOffset);
+  }
+  get isReachBottom() {
+    return this.props.reachBottomEnabled && this.props.maxOffset < 0 && Math.round(-Math.ceil(-this.props.scrollLocation) - this.props.maxOffset) <= 1;
+  }
+  get finished() {
+    if (this.state.pendingBounceAnimator) {
+      return Math.abs(this.velocity) <= BOUNCE_MIN_VELOCITY_LIMIT;
+    }
+    return Math.abs(this.velocity) <= MIN_VELOCITY_LIMIT;
+  }
+  get acceleration() {
+    return this.state.pendingBounceAnimator || this.inRange ? ACCELERATION : OUT_BOUNDS_ACCELERATION;
+  }
+  get maxOffset() {
+    if (this.props.forceGeneratePockets && this.props.reachBottomEnabled && !this.state.forceAnimationToBottomBound) {
+      return this.props.maxOffset - this.props.bottomPocketSize - this.props.contentPaddingBottom;
+    }
+    return this.props.maxOffset;
+  }
+  get isHorizontal() {
+    return this.props.direction === _consts.DIRECTION_HORIZONTAL;
+  }
+  get axis() {
+    return this.isHorizontal ? 'x' : 'y';
+  }
+  get fullScrollProp() {
+    return this.isHorizontal ? 'scrollLeft' : 'scrollTop';
+  }
+  get restAttributes() {
+    const _this$props9 = this.props,
+      restProps = _objectWithoutPropertiesLoose(_this$props9, _excluded);
+    return restProps;
+  }
+  isThumb(element) {
     return this.scrollbarRef.current.isThumb(element);
-  };
-  _proto.isScrollbar = function isScrollbar(element) {
+  }
+  isScrollbar(element) {
     return this.scrollbarRef.current.isScrollbar(element);
-  };
-  _proto.reachedMin = function reachedMin() {
+  }
+  reachedMin() {
     return this.props.scrollLocation <= this.maxOffset;
-  };
-  _proto.reachedMax = function reachedMax() {
+  }
+  reachedMax() {
     return this.props.scrollLocation >= this.props.minOffset;
-  };
-  _proto.initHandler = function initHandler(event, crossThumbScrolling, offset) {
+  }
+  initHandler(event, crossThumbScrolling, offset) {
     this.cancel();
     this.refreshing = false;
     this.loading = false;
@@ -466,8 +446,8 @@ let AnimatedScrollbar = exports.AnimatedScrollbar = /*#__PURE__*/function (_Infe
         this.setActiveState();
       }
     }
-  };
-  _proto.moveHandler = function moveHandler(delta, isDxMouseWheel) {
+  }
+  moveHandler(delta, isDxMouseWheel) {
     if (this.crossThumbScrolling) {
       return;
     }
@@ -481,31 +461,31 @@ let AnimatedScrollbar = exports.AnimatedScrollbar = /*#__PURE__*/function (_Infe
     }
     const scrollValue = this.props.scrollLocation + resultDelta;
     this.moveTo(this.props.bounceEnabled && !isDxMouseWheel ? scrollValue : (0, _clamp_into_range.clampIntoRange)(scrollValue, this.props.minOffset, this.maxOffset));
-  };
-  _proto.endHandler = function endHandler(receivedVelocity, needRiseEnd) {
+  }
+  endHandler(receivedVelocity, needRiseEnd) {
     this.velocity = this.props.inertiaEnabled && !this.thumbScrolling ? receivedVelocity : 0;
     this.setState(__state_argument => ({
       needRiseEnd: needRiseEnd
     }));
     this.resetThumbScrolling();
-  };
-  _proto.stopHandler = function stopHandler() {
+  }
+  stopHandler() {
     if (this.thumbScrolling) {
       this.setState(__state_argument => ({
         needRiseEnd: true
       }));
     }
     this.resetThumbScrolling();
-  };
-  _proto.scrollTo = function scrollTo(value, needRiseEnd) {
+  }
+  scrollTo(value, needRiseEnd) {
     this.loading = false;
     this.refreshing = false;
     this.moveTo(-(0, _clamp_into_range.clampIntoRange)(value, -this.maxOffset, 0));
     this.setState(__state_argument => ({
       needRiseEnd: needRiseEnd
     }));
-  };
-  _proto.releaseHandler = function releaseHandler() {
+  }
+  releaseHandler() {
     if (this.props.forceGeneratePockets && this.props.reachBottomEnabled && (0, _math.inRange)(this.props.scrollLocation, this.maxOffset, this.props.maxOffset)) {
       this.setState(__state_argument => ({
         forceAnimationToBottomBound: true
@@ -524,8 +504,8 @@ let AnimatedScrollbar = exports.AnimatedScrollbar = /*#__PURE__*/function (_Infe
     this.setState(__state_argument => ({
       pendingLoading: false
     }));
-  };
-  _proto.render = function render() {
+  }
+  render() {
     const props = this.props;
     return viewFunction({
       props: _extends({}, props),
@@ -565,99 +545,7 @@ let AnimatedScrollbar = exports.AnimatedScrollbar = /*#__PURE__*/function (_Infe
       fullScrollProp: this.fullScrollProp,
       restAttributes: this.restAttributes
     });
-  };
-  _createClass(AnimatedScrollbar, [{
-    key: "config",
-    get: function () {
-      if (this.context[_config_context.ConfigContext.id]) {
-        return this.context[_config_context.ConfigContext.id];
-      }
-      return _config_context.ConfigContext.defaultValue;
-    }
-  }, {
-    key: "isReadyToStart",
-    get: function () {
-      return this.state.needRiseEnd && !this.inProgress && !(this.state.pendingRefreshing || this.state.pendingLoading);
-    }
-  }, {
-    key: "distanceToNearestBoundary",
-    get: function () {
-      return Math.min(Math.abs(this.distanceToMin), Math.abs(this.distanceToMax));
-    }
-  }, {
-    key: "distanceToMin",
-    get: function () {
-      return this.props.minOffset - this.props.scrollLocation;
-    }
-  }, {
-    key: "distanceToMax",
-    get: function () {
-      return this.maxOffset - this.props.scrollLocation;
-    }
-  }, {
-    key: "pendingRelease",
-    get: function () {
-      return this.props.forceGeneratePockets && (this.props.pulledDown || this.isReachBottom) && !this.state.wasRelease;
-    }
-  }, {
-    key: "inProgress",
-    get: function () {
-      return this.state.pendingBounceAnimator || this.state.pendingInertiaAnimator;
-    }
-  }, {
-    key: "inRange",
-    get: function () {
-      return (0, _math.inRange)(this.props.scrollLocation, this.maxOffset, this.props.minOffset);
-    }
-  }, {
-    key: "isReachBottom",
-    get: function () {
-      return this.props.reachBottomEnabled && this.props.maxOffset < 0 && Math.round(-Math.ceil(-this.props.scrollLocation) - this.props.maxOffset) <= 1;
-    }
-  }, {
-    key: "finished",
-    get: function () {
-      if (this.state.pendingBounceAnimator) {
-        return Math.abs(this.velocity) <= BOUNCE_MIN_VELOCITY_LIMIT;
-      }
-      return Math.abs(this.velocity) <= MIN_VELOCITY_LIMIT;
-    }
-  }, {
-    key: "acceleration",
-    get: function () {
-      return this.state.pendingBounceAnimator || this.inRange ? ACCELERATION : OUT_BOUNDS_ACCELERATION;
-    }
-  }, {
-    key: "maxOffset",
-    get: function () {
-      if (this.props.forceGeneratePockets && this.props.reachBottomEnabled && !this.state.forceAnimationToBottomBound) {
-        return this.props.maxOffset - this.props.bottomPocketSize - this.props.contentPaddingBottom;
-      }
-      return this.props.maxOffset;
-    }
-  }, {
-    key: "isHorizontal",
-    get: function () {
-      return this.props.direction === _consts.DIRECTION_HORIZONTAL;
-    }
-  }, {
-    key: "axis",
-    get: function () {
-      return this.isHorizontal ? 'x' : 'y';
-    }
-  }, {
-    key: "fullScrollProp",
-    get: function () {
-      return this.isHorizontal ? 'scrollLeft' : 'scrollTop';
-    }
-  }, {
-    key: "restAttributes",
-    get: function () {
-      const _this$props9 = this.props,
-        restProps = _objectWithoutPropertiesLoose(_this$props9, _excluded);
-      return restProps;
-    }
-  }]);
-  return AnimatedScrollbar;
-}(_inferno2.InfernoComponent);
+  }
+}
+exports.AnimatedScrollbar = AnimatedScrollbar;
 AnimatedScrollbar.defaultProps = AnimatedScrollbarPropsType;

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/data_grid/m_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,9 +10,9 @@
 import { normalizeSortingInfo } from '../../../data/utils';
 import gridCoreUtils from '../../grids/grid_core/m_utils';
 export function createGroupFilter(path, storeLoadOptions) {
-  var groups = normalizeSortingInfo(storeLoadOptions.group);
-  var filter = [];
-  for (var i = 0; i < path.length; i++) {
+  const groups = normalizeSortingInfo(storeLoadOptions.group);
+  const filter = [];
+  for (let i = 0; i < path.length; i++) {
     filter.push([groups[i].selector, '=', path[i]]);
   }
   if (storeLoadOptions.filter) {

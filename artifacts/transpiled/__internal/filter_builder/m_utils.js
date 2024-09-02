@@ -75,10 +75,10 @@ const DEFAULT_FORMAT = {
 const LOOKUP_OPERATIONS = ['=', '<>', 'isblank', 'isnotblank'];
 const AVAILABLE_FIELD_PROPERTIES = ['caption', 'customizeText', 'dataField', 'dataType', 'editorTemplate', 'falseText', 'editorOptions', 'filterOperations', 'format', 'lookup', 'trueText', 'calculateFilterExpression', 'name'];
 const FILTER_BUILDER_CLASS = 'dx-filterbuilder';
-const FILTER_BUILDER_ITEM_TEXT_CLASS = "".concat(FILTER_BUILDER_CLASS, "-text");
-const FILTER_BUILDER_ITEM_TEXT_PART_CLASS = "".concat(FILTER_BUILDER_ITEM_TEXT_CLASS, "-part");
-const FILTER_BUILDER_ITEM_TEXT_SEPARATOR_CLASS = "".concat(FILTER_BUILDER_ITEM_TEXT_CLASS, "-separator");
-const FILTER_BUILDER_ITEM_TEXT_SEPARATOR_EMPTY_CLASS = "".concat(FILTER_BUILDER_ITEM_TEXT_SEPARATOR_CLASS, "-empty");
+const FILTER_BUILDER_ITEM_TEXT_CLASS = `${FILTER_BUILDER_CLASS}-text`;
+const FILTER_BUILDER_ITEM_TEXT_PART_CLASS = `${FILTER_BUILDER_ITEM_TEXT_CLASS}-part`;
+const FILTER_BUILDER_ITEM_TEXT_SEPARATOR_CLASS = `${FILTER_BUILDER_ITEM_TEXT_CLASS}-separator`;
+const FILTER_BUILDER_ITEM_TEXT_SEPARATOR_EMPTY_CLASS = `${FILTER_BUILDER_ITEM_TEXT_SEPARATOR_CLASS}-empty`;
 function getFormattedValueText(field, value) {
   const fieldFormat = field.format || DEFAULT_FORMAT[field.dataType];
   return _format_helper.default.format(value, fieldFormat);
@@ -166,7 +166,7 @@ function getGroupValue(group) {
     value = AND_GROUP_OPERATION;
   }
   if (criteria !== group) {
-    value = "!".concat(value);
+    value = `!${value}`;
   }
   return value;
 }
@@ -620,7 +620,7 @@ function getCaptionWithParents(item, plainItems) {
     const parentId = getParentIdFromItemDataField(item.dataField);
     for (let i = 0; i < plainItems.length; i++) {
       if (plainItems[i].dataField === parentId) {
-        return "".concat(getCaptionWithParents(plainItems[i], plainItems), ".").concat(item.caption);
+        return `${getCaptionWithParents(plainItems[i], plainItems)}.${item.caption}`;
       }
     }
   }

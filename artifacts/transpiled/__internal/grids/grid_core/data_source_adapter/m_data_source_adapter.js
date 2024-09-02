@@ -16,15 +16,12 @@ var _m_modules = _interopRequireDefault(require("../m_modules"));
 var _m_utils = _interopRequireDefault(require("../m_utils"));
 var _m_data_source_adapter_utils = require("./m_data_source_adapter_utils");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable @typescript-eslint/no-dynamic-delete */ // @ts-expect-error
-let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Controller) {
-  _inheritsLoose(DataSourceAdapter, _modules$Controller);
-  function DataSourceAdapter() {
-    return _modules$Controller.apply(this, arguments) || this;
-  }
-  var _proto = DataSourceAdapter.prototype;
-  _proto.init = function init(dataSource, remoteOperations) {
+/* eslint-disable @typescript-eslint/no-dynamic-delete */
+
+// @ts-expect-error
+
+class DataSourceAdapter extends _m_modules.default.Controller {
+  init(dataSource, remoteOperations) {
     const that = this;
     that._dataSource = dataSource;
     that._remoteOperations = remoteOperations || {};
@@ -63,8 +60,8 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
         };
       }
     });
-  };
-  _proto.dispose = function dispose(isSharedDataSource) {
+  }
+  dispose(isSharedDataSource) {
     const that = this;
     const dataSource = that._dataSource;
     const store = dataSource.store();
@@ -81,14 +78,14 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
   }
   /**
    * @extended: TreeLists's data_source_adapter
-   */;
-  _proto.remoteOperations = function remoteOperations() {
+   */
+  remoteOperations() {
     return this._remoteOperations;
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto.refresh = function refresh(options, operationTypes) {
+   */
+  refresh(options, operationTypes) {
     const that = this;
     const dataSource = that._dataSource;
     if (operationTypes.reload) {
@@ -96,12 +93,12 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
       that._isLastPage = !dataSource.paginate();
       that._hasLastPage = that._isLastPage;
     }
-  };
-  _proto.resetCurrentTotalCount = function resetCurrentTotalCount() {
+  }
+  resetCurrentTotalCount() {
     this._currentTotalCount = 0;
     this._totalCountCorrection = 0;
-  };
-  _proto.resetCache = function resetCache() {
+  }
+  resetCache() {
     this._cachedStoreData = undefined;
     this._cachedPagingData = undefined;
   }
@@ -109,17 +106,16 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
    * @extended: virtual_scrolling
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.resetPagesCache = function resetPagesCache(isLiveUpdate) {
+  resetPagesCache(isLiveUpdate) {
     this._cachedData = (0, _m_data_source_adapter_utils.createEmptyCachedData)();
-  };
-  _proto._needClearStoreDataCache = function _needClearStoreDataCache() {
+  }
+  _needClearStoreDataCache() {
     const remoteOperations = this.remoteOperations();
     const operationTypes = (0, _m_data_source_adapter_utils.calculateOperationTypes)(this._lastLoadOptions || {}, {});
     const isLocalOperations = Object.keys(remoteOperations).every(operationName => !operationTypes[operationName] || !remoteOperations[operationName]);
     return !isLocalOperations;
-  };
-  _proto.push = function push(changes, fromStore) {
+  }
+  push(changes, fromStore) {
     const store = this.store();
     if (this._needClearStoreDataCache()) {
       this._cachedStoreData = undefined;
@@ -138,8 +134,8 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
       this._applyBatch(changes);
     }
     this.pushed.fire(changes);
-  };
-  _proto.getDataIndexGetter = function getDataIndexGetter() {
+  }
+  getDataIndexGetter() {
     if (!this._dataIndexGetter) {
       let indexByKey;
       let storeData;
@@ -160,20 +156,20 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
   }
   /**
    * @extended: TreeLists's data_source_adapter
-   */;
-  _proto._getKeyInfo = function _getKeyInfo() {
+   */
+  _getKeyInfo() {
     return this.store();
   }
   /**
    * @extended: TreeLists's data_source_adapter
-   */;
-  _proto._needToCopyDataObject = function _needToCopyDataObject() {
+   */
+  _needToCopyDataObject() {
     return true;
   }
   /**
    * @extended: TreeLists's data_source_adapter
-   */;
-  _proto._applyBatch = function _applyBatch(changes, fromStore) {
+   */
+  _applyBatch(changes, fromStore) {
     const keyInfo = this._getKeyInfo();
     const dataSource = this._dataSource;
     const groupCount = _m_utils.default.normalizeSortingInfo(this.group()).length;
@@ -208,18 +204,18 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
   }
   /**
    * @extended: TreeLists's data_source_adapter
-   */;
-  _proto._handlePush = function _handlePush(_ref) {
+   */
+  _handlePush(_ref) {
     let {
       changes
     } = _ref;
     this.push(changes, true);
-  };
-  _proto._handleChanging = function _handleChanging(e) {
+  }
+  _handleChanging(e) {
     this.changing.fire(e);
     this._applyBatch(e.changes, true);
-  };
-  _proto._needCleanCacheByOperation = function _needCleanCacheByOperation(operationType, remoteOperations) {
+  }
+  _needCleanCacheByOperation(operationType, remoteOperations) {
     const operationTypesByOrder = ['filtering', 'sorting', 'paging'];
     const operationTypeIndex = operationTypesByOrder.indexOf(operationType);
     const currentOperationTypes = operationTypeIndex >= 0 ? operationTypesByOrder.slice(operationTypeIndex) : [operationType];
@@ -227,8 +223,8 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
   }
   /**
    * @extended: virtual_scrolling, TreeLists's data_source_adapter, DataGrid's m_grouping
-   */;
-  _proto._customizeRemoteOperations = function _customizeRemoteOperations(options, operationTypes) {
+   */
+  _customizeRemoteOperations(options, operationTypes) {
     let cachedStoreData = this._cachedStoreData;
     let cachedPagingData = this._cachedPagingData;
     let cachedData = this._cachedData;
@@ -267,19 +263,19 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
       this._cachedPagingData = cachedPagingData;
       this._cachedData = cachedData;
     }
-  };
-  _proto._handleCustomizeStoreLoadOptions = function _handleCustomizeStoreLoadOptions(options) {
-    var _a;
+  }
+  _handleCustomizeStoreLoadOptions(options) {
+    var _options$data;
     this._handleDataLoading(options);
-    if (!(((_a = options.data) === null || _a === void 0 ? void 0 : _a.length) === 0)) {
+    if (!(((_options$data = options.data) === null || _options$data === void 0 ? void 0 : _options$data.length) === 0)) {
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       options.data = (0, _m_data_source_adapter_utils.getPageDataFromCache)(options, true) || options.cachedStoreData;
     }
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto._handleDataLoading = function _handleDataLoading(options) {
+   */
+  _handleDataLoading(options) {
     const dataSource = this._dataSource;
     const lastLoadOptions = this._lastLoadOptions;
     this.customizeStoreLoadOptions.fire(options);
@@ -322,8 +318,8 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
       }
     }
     this._handleDataLoadingCore(options);
-  };
-  _proto._handleDataLoadingCore = function _handleDataLoadingCore(options) {
+  }
+  _handleDataLoadingCore(options) {
     const {
       remoteOperations
     } = options;
@@ -351,9 +347,8 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
   }
   /**
    * @extended: TreeLists's data_source_adapter
-   */;
-  _proto._handleDataLoaded = function _handleDataLoaded(options) {
-    var _a, _b;
+   */
+  _handleDataLoaded(options) {
     const {
       loadOptions
     } = options;
@@ -389,6 +384,7 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
       options.data = options.data.concat(options.cachedDataPartEnd);
     }
     if (!needPageCache || !(0, _m_data_source_adapter_utils.getPageDataFromCache)(options)) {
+      var _options$extra;
       if (needPagingCache && options.cachedPagingData) {
         options.data = (0, _m_data_source_adapter_utils.cloneItems)(options.cachedPagingData, groupCount);
       } else {
@@ -417,7 +413,7 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
       if (options.extra && options.extra.totalCount >= 0 && (storeLoadOptions.requireTotalCount === false || loadOptions.requireTotalCount === false)) {
         options.extra.totalCount = -1;
       }
-      if (!loadOptions.data && (storeLoadOptions.requireTotalCount || ((_b = (_a = options.extra) === null || _a === void 0 ? void 0 : _a.totalCount) !== null && _b !== void 0 ? _b : -1) >= 0)) {
+      if (!loadOptions.data && (storeLoadOptions.requireTotalCount || (((_options$extra = options.extra) === null || _options$extra === void 0 ? void 0 : _options$extra.totalCount) ?? -1) >= 0)) {
         this._totalCountCorrection = 0;
       }
       this._handleDataLoadedCore(options);
@@ -440,8 +436,8 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
   }
   /**
    * @extended: TreeLists's data_source_adapter
-   */;
-  _proto._handleDataLoadedCore = function _handleDataLoadedCore(options) {
+   */
+  _handleDataLoadedCore(options) {
     if (options.remoteOperations && !options.remoteOperations.paging && Array.isArray(options.data)) {
       if (options.skip !== undefined) {
         options.data = options.data.slice(options.skip);
@@ -453,14 +449,14 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
   }
   /**
    * @extended virtual_scrolling
-   */;
-  _proto._handleLoadingChanged = function _handleLoadingChanged(isLoading) {
+   */
+  _handleLoadingChanged(isLoading) {
     this.loadingChanged.fire(isLoading);
   }
   /**
    * @extended virtual_scrolling
-   */;
-  _proto._handleLoadError = function _handleLoadError(error) {
+   */
+  _handleLoadError(error) {
     this.loadError.fire(error);
     this.changed.fire({
       changeType: 'loadError',
@@ -469,14 +465,14 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto._loadPageSize = function _loadPageSize() {
+   */
+  _loadPageSize() {
     return this.pageSize();
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto._handleDataChanged = function _handleDataChanged(args) {
+   */
+  _handleDataChanged(args) {
     let currentTotalCount;
     const dataSource = this._dataSource;
     let isLoading = false;
@@ -519,76 +515,74 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
       this.changed.fire(args);
       this.component._optionCache = undefined;
     }
-  };
-  _proto._scheduleCustomLoadCallbacks = function _scheduleCustomLoadCallbacks(deferred) {
+  }
+  _scheduleCustomLoadCallbacks(deferred) {
     const that = this;
     that._isCustomLoading = true;
     deferred.always(() => {
       that._isCustomLoading = false;
     });
-  };
-  _proto.loadingOperationTypes = function loadingOperationTypes() {
+  }
+  loadingOperationTypes() {
     return this._loadingOperationTypes;
-  };
-  _proto.operationTypes = function operationTypes() {
+  }
+  operationTypes() {
     return this._operationTypes;
-  };
-  _proto.lastLoadOptions = function lastLoadOptions() {
+  }
+  lastLoadOptions() {
     return this._lastLoadOptions || {};
-  };
-  _proto.isLastPage = function isLastPage() {
+  }
+  isLastPage() {
     return this._isLastPage;
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto._dataSourceTotalCount = function _dataSourceTotalCount() {
+   */
+  _dataSourceTotalCount() {
     return this._dataSource.totalCount();
   }
   /**
    * @extended: virtual_scrolling, TreeLists's data_source_adapter
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._changeRowExpandCore = function _changeRowExpandCore(path) {}
+  _changeRowExpandCore(path) {}
   /**
    * @extended: TreeLists's data_source_adapter
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.changeRowExpand = function changeRowExpand(path) {};
-  _proto.totalCount = function totalCount() {
+  changeRowExpand(path) {}
+  totalCount() {
     // eslint-disable-next-line radix
     return parseInt((this._currentTotalCount || this._dataSourceTotalCount()) + this._totalCountCorrection);
-  };
-  _proto.totalCountCorrection = function totalCountCorrection() {
+  }
+  totalCountCorrection() {
     return this._totalCountCorrection;
   }
   /**
    * @extended: virtual_scrolling
    * @protected
-   */;
-  _proto.items = function items() {}
+   */
+  items() {}
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto.itemsCount = function itemsCount() {
+   */
+  itemsCount() {
     return this._dataSource.items().length;
   }
   /**
    * @extended: TreeLists's data_source_adapter
-   */;
-  _proto.totalItemsCount = function totalItemsCount() {
+   */
+  totalItemsCount() {
     return this.totalCount();
-  };
-  _proto.pageSize = function pageSize() {
+  }
+  pageSize() {
     const dataSource = this._dataSource;
     if (!arguments.length && !dataSource.paginate()) {
       return 0;
     }
     return dataSource.pageSize.apply(dataSource, arguments);
-  };
-  _proto.pageCount = function pageCount() {
+  }
+  pageCount() {
     const that = this;
     const count = that.totalItemsCount() - that._totalCountCorrection;
     const pageSize = that.pageSize();
@@ -596,11 +590,11 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
       return Math.max(1, Math.ceil(count / pageSize));
     }
     return 1;
-  };
-  _proto.hasKnownLastPage = function hasKnownLastPage() {
+  }
+  hasKnownLastPage() {
     return this._hasLastPage || this._dataSource.totalCount() >= 0;
-  };
-  _proto.loadFromStore = function loadFromStore(loadOptions, store) {
+  }
+  loadFromStore(loadOptions, store) {
     const dataSource = this._dataSource;
     // @ts-expect-error
     const d = new _deferred.Deferred();
@@ -614,14 +608,14 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
       d.resolve(data, extra);
     }).fail(d.reject);
     return d;
-  };
-  _proto.isCustomLoading = function isCustomLoading() {
+  }
+  isCustomLoading() {
     return !!this._isCustomLoading;
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto.load = function load(options) {
+   */
+  load(options) {
     const that = this;
     const dataSource = that._dataSource;
     // @ts-expect-error
@@ -672,22 +666,21 @@ let DataSourceAdapter = exports.default = /*#__PURE__*/function (_modules$Contro
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto.reload = function reload(full) {
+   */
+  reload(full) {
     return full ? this._dataSource.reload() : this._dataSource.load();
-  };
-  _proto.getCachedStoreData = function getCachedStoreData() {
+  }
+  getCachedStoreData() {
     return this._cachedStoreData;
   }
   /**
    * @exended: virtual_scrolling
-   */;
-  _proto.isLoaded = function isLoaded() {}
+   */
+  isLoaded() {}
   /**
    * @extended: virtual_scrolling
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.pageIndex = function pageIndex(_pageIndex) {};
-  return DataSourceAdapter;
-}(_m_modules.default.Controller);
+  pageIndex(pageIndex) {}
+}
+exports.default = DataSourceAdapter;

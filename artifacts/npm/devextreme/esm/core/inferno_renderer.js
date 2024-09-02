@@ -1,26 +1,26 @@
 /**
 * DevExtreme (esm/core/inferno_renderer.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-import { render as _render } from 'inferno';
+import { render } from 'inferno';
 import { InfernoEffectHost, hydrate } from '@devextreme/runtime/inferno';
-import { createElement as _createElement } from 'inferno-create-element';
+import { createElement } from 'inferno-create-element';
 import domAdapter from './dom_adapter';
 import { cleanDataRecursive } from './element_data';
 import injector from './utils/dependency_injector';
-var remove = element => {
-  var {
+const remove = element => {
+  const {
     parentNode
   } = element;
   if (parentNode) {
-    var nextSibling = element.nextSibling;
+    const nextSibling = element.nextSibling;
     cleanDataRecursive(element);
     parentNode.$V = element.$V;
-    _render(null, parentNode);
+    render(null, parentNode);
     parentNode.insertBefore(element, nextSibling);
     element.innerHTML = '';
     delete parentNode.$V;
@@ -28,7 +28,7 @@ var remove = element => {
   delete element.$V;
 };
 export default injector({
-  createElement: (component, props) => _createElement(component, props),
+  createElement: (component, props) => createElement(component, props),
   remove,
   onAfterRender: () => {
     InfernoEffectHost.callEffects();
@@ -38,22 +38,22 @@ export default injector({
   },
   render: (component, props, container, replace) => {
     if (!replace) {
-      var {
+      const {
         parentNode
       } = container;
-      var nextNode = container === null || container === void 0 ? void 0 : container.nextSibling;
-      var rootNode = domAdapter.createElement('div');
+      const nextNode = container === null || container === void 0 ? void 0 : container.nextSibling;
+      const rootNode = domAdapter.createElement('div');
       rootNode.appendChild(container);
-      var mountNode = domAdapter.createDocumentFragment().appendChild(rootNode);
-      var vNodeAlreadyExists = !!container.$V;
+      const mountNode = domAdapter.createDocumentFragment().appendChild(rootNode);
+      const vNodeAlreadyExists = !!container.$V;
       vNodeAlreadyExists && remove(container);
-      hydrate(_createElement(component, props), mountNode);
+      hydrate(createElement(component, props), mountNode);
       container.$V = mountNode.$V;
       if (parentNode) {
         parentNode.insertBefore(container, nextNode);
       }
     } else {
-      _render(_createElement(component, props), container);
+      render(createElement(component, props), container);
     }
   }
 });

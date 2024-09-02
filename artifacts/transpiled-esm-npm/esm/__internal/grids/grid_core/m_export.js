@@ -1,15 +1,15 @@
 import { extend } from '../../../core/utils/extend';
 function prepareItems(items, emptyCell) {
-  var defaultSetter = value => !value ? 1 : value;
-  var cloneItem = item => extend({}, item, emptyCell);
-  var resultItems = [];
-  var cols = (items[0] || []).reduce((sum, item) => sum + defaultSetter(item.colspan), 0);
-  var getItem = (items => {
-    var rowIndex = 0;
-    var cellIndex = 0;
+  const defaultSetter = value => !value ? 1 : value;
+  const cloneItem = item => extend({}, item, emptyCell);
+  const resultItems = [];
+  const cols = (items[0] || []).reduce((sum, item) => sum + defaultSetter(item.colspan), 0);
+  const getItem = (items => {
+    let rowIndex = 0;
+    let cellIndex = 0;
     return () => {
-      var row = items[rowIndex] || [];
-      var item = row[cellIndex++];
+      const row = items[rowIndex] || [];
+      const item = row[cellIndex++];
       if (cellIndex >= row.length) {
         rowIndex++;
         cellIndex = 0;
@@ -21,25 +21,25 @@ function prepareItems(items, emptyCell) {
       return item;
     };
   })(items);
-  var addItem = (rowIndex, cellIndex, item) => {
-    var row = resultItems[rowIndex] = resultItems[rowIndex] || [];
+  const addItem = (rowIndex, cellIndex, item) => {
+    const row = resultItems[rowIndex] = resultItems[rowIndex] || [];
     row[cellIndex] = item;
     if (item.colspan > 1 || item.rowspan > 1) {
-      var clone = cloneItem(item);
-      for (var c = 1; c < item.colspan; c++) {
+      const clone = cloneItem(item);
+      for (let c = 1; c < item.colspan; c++) {
         addItem(rowIndex, cellIndex + c, clone);
       }
-      for (var r = 1; r < item.rowspan; r++) {
-        for (var _c = 0; _c < item.colspan; _c++) {
-          addItem(rowIndex + r, cellIndex + _c, clone);
+      for (let r = 1; r < item.rowspan; r++) {
+        for (let c = 0; c < item.colspan; c++) {
+          addItem(rowIndex + r, cellIndex + c, clone);
         }
       }
     }
   };
-  var item = getItem();
-  var rowIndex = 0;
+  let item = getItem();
+  let rowIndex = 0;
   while (item) {
-    for (var cellIndex = 0; cellIndex < cols; cellIndex++) {
+    for (let cellIndex = 0; cellIndex < cols; cellIndex++) {
       if (!item) {
         break;
       }

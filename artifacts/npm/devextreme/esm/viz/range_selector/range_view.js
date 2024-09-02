@@ -1,25 +1,25 @@
 /**
 * DevExtreme (esm/viz/range_selector/range_view.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 // TODO: Move it inside the "SeriesDataSource"
 function drawSeriesView(root, seriesDataSource, canvas, isAnimationEnabled) {
-  var seriesList = seriesDataSource.getSeries();
+  const seriesList = seriesDataSource.getSeries();
   if (!seriesList.length) {
     return;
   }
-  var valueAxis = seriesList[0].getValueAxis();
+  const valueAxis = seriesList[0].getValueAxis();
   valueAxis.updateCanvas({
     top: canvas.top,
     bottom: 0,
     height: canvas.height + canvas.top
   });
   seriesDataSource.adjustSeriesDimensions();
-  var valueRange = seriesDataSource.getBoundRange().val;
+  const valueRange = seriesDataSource.getBoundRange().val;
   valueRange.sortCategories(valueAxis.getCategoriesSorter());
   valueAxis.setBusinessRange(valueRange);
   seriesList.forEach(series => {
@@ -39,11 +39,11 @@ export function RangeView(params) {
 }
 RangeView.prototype = {
   constructor: RangeView,
-  update: function update(backgroundOption, backgroundTheme, canvas, isCompactMode, isAnimationEnabled, seriesDataSource) {
-    var renderer = this._params.renderer;
-    var root = this._params.root;
-    var canvasWidth = canvas.width - canvas.left;
-    var seriesGroup;
+  update: function (backgroundOption, backgroundTheme, canvas, isCompactMode, isAnimationEnabled, seriesDataSource) {
+    const renderer = this._params.renderer;
+    const root = this._params.root;
+    const canvasWidth = canvas.width - canvas.left;
+    let seriesGroup;
     backgroundOption = backgroundOption || {};
     root.clear();
     this._clipRect.attr({

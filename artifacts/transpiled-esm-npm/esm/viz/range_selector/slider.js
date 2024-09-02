@@ -1,14 +1,14 @@
 import { utils, formatValue } from './common';
-var animationSettings = utils.animationSettings;
+const animationSettings = utils.animationSettings;
 import SliderMarker from './slider_marker';
 import { touchEvents, pointerEvents } from '../../core/utils/support';
-var SPLITTER_WIDTH = 8;
-var TOUCH_SPLITTER_WIDTH = 20;
+const SPLITTER_WIDTH = 8;
+const TOUCH_SPLITTER_WIDTH = 20;
 function getSliderTrackerWidth(sliderHandleWidth) {
   return touchEvents || pointerEvents ? TOUCH_SPLITTER_WIDTH : SPLITTER_WIDTH < sliderHandleWidth ? sliderHandleWidth : SPLITTER_WIDTH;
 }
 function Slider(params, index) {
-  var that = this;
+  const that = this;
   that._translator = params.translator;
   that._sliderGroup = params.renderer.g().attr({
     'class': 'slider'
@@ -25,15 +25,15 @@ function Slider(params, index) {
 }
 Slider.prototype = {
   constructor: Slider,
-  cancelAnimation: function cancelAnimation() {
+  cancelAnimation: function () {
     this._sliderGroup.stopAnimation();
     this._tracker.stopAnimation();
   },
-  applyPosition: function applyPosition(isAnimated) {
-    var that = this;
-    var slider = that._sliderGroup;
-    var tracker = that._tracker;
-    var attrs = {
+  applyPosition: function (isAnimated) {
+    const that = this;
+    const slider = that._sliderGroup;
+    const tracker = that._tracker;
+    const attrs = {
       translateX: that._position
     };
     that._marker.setPosition(that._position);
@@ -45,17 +45,17 @@ Slider.prototype = {
       tracker.attr(attrs);
     }
   },
-  _setValid: function _setValid(isValid) {
+  _setValid: function (isValid) {
     this._marker.setValid(isValid);
     this._line.attr({
       stroke: this._colors[Number(isValid)]
     });
   },
-  _setText: function _setText(text) {
+  _setText: function (text) {
     this._marker.setText(text);
   },
-  update: function update(verticalRange, sliderHandleOptions, sliderMarkerOptions) {
-    var that = this;
+  update: function (verticalRange, sliderHandleOptions, sliderMarkerOptions) {
+    const that = this;
     that._formatOptions = {
       format: sliderMarkerOptions.format,
       customizeText: sliderMarkerOptions.customizeText
@@ -72,7 +72,7 @@ Slider.prototype = {
       sharp: 'h',
       points: [0, 0, 0, verticalRange[1] - verticalRange[0]]
     });
-    var trackerWidth = getSliderTrackerWidth(sliderHandleOptions.width);
+    const trackerWidth = getSliderTrackerWidth(sliderHandleOptions.width);
     that._tracker.attr({
       x: -trackerWidth / 2,
       y: 0,
@@ -81,33 +81,33 @@ Slider.prototype = {
       translateY: verticalRange[0]
     });
   },
-  toForeground: function toForeground() {
+  toForeground: function () {
     this._sliderGroup.toForeground();
   },
-  getSliderTracker: function getSliderTracker() {
+  getSliderTracker: function () {
     return this._tracker;
   },
-  getPosition: function getPosition() {
+  getPosition: function () {
     return this._position;
   },
-  setDisplayValue: function setDisplayValue(value) {
+  setDisplayValue: function (value) {
     this._value = value;
     this._setText(formatValue(value, this._formatOptions));
   },
-  setOverlapped: function setOverlapped(isOverlapped) {
+  setOverlapped: function (isOverlapped) {
     this._marker.setOverlapped(isOverlapped);
   },
-  getValue: function getValue() {
+  getValue: function () {
     return this._value;
   },
-  on: function on(event, handler) {
+  on: function (event, handler) {
     this._tracker.on(event, handler);
     this._marker.getTracker().on(event, handler);
   },
-  getCloudBorder: function getCloudBorder() {
+  getCloudBorder: function () {
     return this._marker.getBorderPosition();
   },
-  dispose: function dispose() {
+  dispose: function () {
     this._marker.dispose();
   }
 };

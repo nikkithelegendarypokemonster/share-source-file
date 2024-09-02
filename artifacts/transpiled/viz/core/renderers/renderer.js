@@ -1824,7 +1824,7 @@ Renderer.prototype = {
     let rotationAngle = arguments.length > 2 ? arguments[2] : undefined;
     const gradient = this._createElement('linearGradient', {
       id,
-      gradientTransform: "rotate(".concat(rotationAngle || 0, ")")
+      gradientTransform: `rotate(${rotationAngle || 0})`
     }).append(this._defs);
     gradient.id = id;
     this._createGradientStops(stops, gradient);
@@ -1839,10 +1839,9 @@ Renderer.prototype = {
   },
   _createGradientStops: function (stops, group) {
     stops.forEach(stop => {
-      var _stop$stopColor;
       this._createElement('stop', {
         offset: stop.offset,
-        'stop-color': (_stop$stopColor = stop['stop-color']) !== null && _stop$stopColor !== void 0 ? _stop$stopColor : stop.color,
+        'stop-color': stop['stop-color'] ?? stop.color,
         'stop-opacity': stop.opacity
       }).append(group);
     });
@@ -2047,7 +2046,7 @@ Renderer.prototype = {
     }).append(this._defs);
     this._createElement('feColorMatrix', {
       type: 'matrix',
-      values: "".concat(coef, " 0 0 0 0 0 ").concat(coef, " 0 0 0 0 0 ").concat(coef, " 0 0 0 0 0 1 0")
+      values: `${coef} 0 0 0 0 0 ${coef} 0 0 0 0 0 ${coef} 0 0 0 0 0 1 0`
     }).append(filter);
     filter.id = id;
     return filter;
@@ -2071,10 +2070,10 @@ Renderer.prototype = {
       color,
       hatching
     } = _ref4;
-    return this.pattern(color, hatching, "".concat(storageId, "-hatching-").concat(nextId++));
+    return this.pattern(color, hatching, `${storageId}-hatching-${nextId++}`);
   },
   drawFilter: function (_, storageId, nextId) {
-    return this.lightenFilter("".concat(storageId, "-lightening-").concat(nextId++));
+    return this.lightenFilter(`${storageId}-lightening-${nextId++}`);
   },
   lockDefsElements: function (attrs, ref, type) {
     const storage = this._defsElementsStorage;

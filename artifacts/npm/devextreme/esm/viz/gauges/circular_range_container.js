@@ -1,18 +1,18 @@
 /**
 * DevExtreme (esm/viz/gauges/circular_range_container.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import BaseRangeContainer from './base_range_container';
-var _Number = Number;
-var _max = Math.max;
+const _Number = Number;
+const _max = Math.max;
 import { normalizeEnum as _normalizeEnum } from '../core/utils';
-var CircularRangeContainer = BaseRangeContainer.inherit({
-  _processOptions: function _processOptions() {
-    var that = this;
+const CircularRangeContainer = BaseRangeContainer.inherit({
+  _processOptions: function () {
+    const that = this;
     that._inner = that._outer = 0;
     switch (_normalizeEnum(that._options.orientation)) {
       case 'inside':
@@ -26,20 +26,20 @@ var CircularRangeContainer = BaseRangeContainer.inherit({
         break;
     }
   },
-  _isVisible: function _isVisible(layout) {
-    var width = this._options.width;
+  _isVisible: function (layout) {
+    let width = this._options.width;
     width = _Number(width) || _max(_Number(width.start), _Number(width.end));
     return layout.radius - this._inner * width > 0;
   },
-  _createRange: function _createRange(range, layout) {
-    var that = this;
-    var width = (range.startWidth + range.endWidth) / 2;
+  _createRange: function (range, layout) {
+    const that = this;
+    const width = (range.startWidth + range.endWidth) / 2;
     return that._renderer.arc(layout.x, layout.y, layout.radius - that._inner * width, layout.radius + that._outer * width, that._translator.translate(range.end), that._translator.translate(range.start)).attr({
       'stroke-linejoin': 'round'
     });
   },
-  measure: function measure(layout) {
-    var width = this._options.width;
+  measure: function (layout) {
+    let width = this._options.width;
     width = _Number(width) || _max(_Number(width.start), _Number(width.end));
     return {
       min: layout.radius - this._inner * width,

@@ -11,8 +11,8 @@ import { EventsStrategy } from './events_strategy';
 import { sessionStorage as SessionStorage } from './utils/storage';
 import { changeCallback, value as viewPort } from './utils/view_port';
 import Config from './config';
-var window = getWindow();
-var KNOWN_UA_TABLE = {
+const window = getWindow();
+const KNOWN_UA_TABLE = {
   'iPhone': 'iPhone',
   'iPhone5': 'iPhone',
   'iPhone6': 'iPhone',
@@ -24,7 +24,7 @@ var KNOWN_UA_TABLE = {
   'msSurface': 'Windows ARM Tablet PC',
   'desktop': 'desktop'
 };
-var DEFAULT_DEVICE = {
+const DEFAULT_DEVICE = {
   deviceType: 'desktop',
   platform: 'generic',
   version: [],
@@ -37,12 +37,12 @@ var DEFAULT_DEVICE = {
   // TODO: For internal use (draft, do not document these options!)
   mac: false
 };
-var UA_PARSERS = {
+const UA_PARSERS = {
   generic(userAgent) {
-    var isPhone = /windows phone/i.test(userAgent) || userAgent.match(/WPDesktop/);
-    var isTablet = !isPhone && /Windows(.*)arm(.*)Tablet PC/i.test(userAgent);
-    var isDesktop = !isPhone && !isTablet && /msapphost/i.test(userAgent);
-    var isMac = /((intel|ppc) mac os x)/.test(userAgent.toLowerCase());
+    const isPhone = /windows phone/i.test(userAgent) || userAgent.match(/WPDesktop/);
+    const isTablet = !isPhone && /Windows(.*)arm(.*)Tablet PC/i.test(userAgent);
+    const isDesktop = !isPhone && !isTablet && /msapphost/i.test(userAgent);
+    const isMac = /((intel|ppc) mac os x)/.test(userAgent.toLowerCase());
     if (!(isPhone || isTablet || isDesktop || isMac)) {
       return null;
     }
@@ -55,17 +55,17 @@ var UA_PARSERS = {
     };
   },
   appleTouchDevice(userAgent) {
-    var navigator = getNavigator();
-    var isIpadOs = /Macintosh/i.test(userAgent) && (navigator === null || navigator === void 0 ? void 0 : navigator.maxTouchPoints) > 2;
-    var isAppleDevice = /ip(hone|od|ad)/i.test(userAgent);
+    const navigator = getNavigator();
+    const isIpadOs = /Macintosh/i.test(userAgent) && (navigator === null || navigator === void 0 ? void 0 : navigator.maxTouchPoints) > 2;
+    const isAppleDevice = /ip(hone|od|ad)/i.test(userAgent);
     if (!isAppleDevice && !isIpadOs) {
       return null;
     }
-    var isPhone = /ip(hone|od)/i.test(userAgent);
-    var matches = userAgent.match(/os\s{0,}X? (\d+)_(\d+)_?(\d+)?/i);
-    var version = matches ? [parseInt(matches[1], 10), parseInt(matches[2], 10), parseInt(matches[3] || 0, 10)] : [];
-    var isIPhone4 = window.screen.height === 960 / 2;
-    var grade = isIPhone4 ? 'B' : 'A';
+    const isPhone = /ip(hone|od)/i.test(userAgent);
+    const matches = userAgent.match(/os\s{0,}X? (\d+)_(\d+)_?(\d+)?/i);
+    const version = matches ? [parseInt(matches[1], 10), parseInt(matches[2], 10), parseInt(matches[3] || 0, 10)] : [];
+    const isIPhone4 = window.screen.height === 960 / 2;
+    const grade = isIPhone4 ? 'B' : 'A';
     return {
       deviceType: isPhone ? 'phone' : 'tablet',
       platform: 'ios',
@@ -76,16 +76,16 @@ var UA_PARSERS = {
   android(userAgent) {
     // TODO: Check this RegExp.
     //  It looks like there may be missing android user agents.
-    var isAndroid = /android|htc_|silk/i.test(userAgent);
-    var isWinPhone = /windows phone/i.test(userAgent);
+    const isAndroid = /android|htc_|silk/i.test(userAgent);
+    const isWinPhone = /windows phone/i.test(userAgent);
     if (!isAndroid || isWinPhone) {
       return null;
     }
-    var isPhone = /mobile/i.test(userAgent);
-    var matches = userAgent.match(/android (\d+)\.?(\d+)?\.?(\d+)?/i);
-    var version = matches ? [parseInt(matches[1], 10), parseInt(matches[2] || 0, 10), parseInt(matches[3] || 0, 10)] : [];
-    var worseThan4_4 = version.length > 1 && (version[0] < 4 || version[0] === 4 && version[1] < 4);
-    var grade = worseThan4_4 ? 'B' : 'A';
+    const isPhone = /mobile/i.test(userAgent);
+    const matches = userAgent.match(/android (\d+)\.?(\d+)?\.?(\d+)?/i);
+    const version = matches ? [parseInt(matches[1], 10), parseInt(matches[2] || 0, 10), parseInt(matches[3] || 0, 10)] : [];
+    const worseThan4_4 = version.length > 1 && (version[0] < 4 || version[0] === 4 && version[1] < 4);
+    const grade = worseThan4_4 ? 'B' : 'A';
     return {
       deviceType: isPhone ? 'phone' : 'tablet',
       platform: 'android',
@@ -94,7 +94,7 @@ var UA_PARSERS = {
     };
   }
 };
-var UA_PARSERS_ARRAY = [UA_PARSERS.appleTouchDevice, UA_PARSERS.android, UA_PARSERS.generic];
+const UA_PARSERS_ARRAY = [UA_PARSERS.appleTouchDevice, UA_PARSERS.android, UA_PARSERS.generic];
 class Devices {
   /**
   * @name DevicesObject.ctor
@@ -153,20 +153,20 @@ class Devices {
     return !!this._window.tinyHippos;
   }
   _getCssClasses(device) {
-    var result = [];
-    var realDevice = this._realDevice;
+    const result = [];
+    const realDevice = this._realDevice;
     device = device || this.current();
 
     // TODO: use real device here?
     if (device.deviceType) {
-      result.push("dx-device-".concat(device.deviceType));
+      result.push(`dx-device-${device.deviceType}`);
       if (device.deviceType !== 'desktop') {
         result.push('dx-device-mobile');
       }
     }
-    result.push("dx-device-".concat(realDevice.platform));
+    result.push(`dx-device-${realDevice.platform}`);
     if (realDevice.version && realDevice.version.length) {
-      result.push("dx-device-".concat(realDevice.platform, "-").concat(realDevice.version[0]));
+      result.push(`dx-device-${realDevice.platform}-${realDevice.version[0]}`);
     }
     if (this.isSimulator()) {
       result.push('dx-simulator');
@@ -205,32 +205,32 @@ class Devices {
     if (isPlainObject(deviceName)) {
       return this._fromConfig(deviceName);
     } else {
-      var ua;
+      let ua;
       if (deviceName) {
         ua = KNOWN_UA_TABLE[deviceName];
         if (!ua) {
           throw errors.Error('E0005');
         }
       } else {
-        var navigator = getNavigator();
+        const navigator = getNavigator();
         ua = navigator.userAgent;
       }
       return this._fromUA(ua);
     }
   }
   _getDeviceOrNameFromWindowScope() {
-    var result;
+    let result;
     if (hasWindow() && (this._window.top['dx-force-device-object'] || this._window.top['dx-force-device'])) {
       result = this._window.top['dx-force-device-object'] || this._window.top['dx-force-device'];
     }
     return result;
   }
   _getDeviceNameFromSessionStorage() {
-    var sessionStorage = SessionStorage();
+    const sessionStorage = SessionStorage();
     if (!sessionStorage) {
       return;
     }
-    var deviceOrName = sessionStorage.getItem('dx-force-device');
+    const deviceOrName = sessionStorage.getItem('dx-force-device');
     try {
       return JSON.parse(deviceOrName);
     } catch (ex) {
@@ -238,8 +238,8 @@ class Devices {
     }
   }
   _fromConfig(config) {
-    var result = extend({}, DEFAULT_DEVICE, this._currentDevice, config);
-    var shortcuts = {
+    const result = extend({}, DEFAULT_DEVICE, this._currentDevice, config);
+    const shortcuts = {
       phone: result.deviceType === 'phone',
       tablet: result.deviceType === 'tablet',
       android: result.platform === 'android',
@@ -249,9 +249,9 @@ class Devices {
     return extend(result, shortcuts);
   }
   _fromUA(ua) {
-    for (var idx = 0; idx < UA_PARSERS_ARRAY.length; idx += 1) {
-      var parser = UA_PARSERS_ARRAY[idx];
-      var config = parser(ua);
+    for (let idx = 0; idx < UA_PARSERS_ARRAY.length; idx += 1) {
+      const parser = UA_PARSERS_ARRAY[idx];
+      const config = parser(ua);
       if (config) {
         return this._fromConfig(config);
       }
@@ -259,8 +259,8 @@ class Devices {
     return DEFAULT_DEVICE;
   }
   _changeOrientation() {
-    var $window = $(this._window);
-    var orientation = getHeight($window) > getWidth($window) ? 'portrait' : 'landscape';
+    const $window = $(this._window);
+    const orientation = getHeight($window) > getWidth($window) ? 'portrait' : 'landscape';
     if (this._currentOrientation === orientation) {
       return;
     }
@@ -270,7 +270,7 @@ class Devices {
     }]);
   }
   _recalculateOrientation() {
-    var windowWidth = getWidth(this._window);
+    const windowWidth = getWidth(this._window);
     if (this._currentWidth === windowWidth) {
       return;
     }
@@ -286,8 +286,8 @@ class Devices {
     return this;
   }
 }
-var devices = new Devices();
-var viewPortElement = viewPort();
+const devices = new Devices();
+const viewPortElement = viewPort();
 if (viewPortElement) {
   devices.attachCssClasses(viewPortElement);
 }

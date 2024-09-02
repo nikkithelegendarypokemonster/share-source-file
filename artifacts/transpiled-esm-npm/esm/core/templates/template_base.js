@@ -4,15 +4,15 @@ import Callbacks from '../utils/callbacks';
 import { contains } from '../utils/dom';
 import { triggerShownEvent } from '../../events/visibility_change';
 import errors from '../errors';
-export var renderedCallbacks = Callbacks({
+export const renderedCallbacks = Callbacks({
   syncStrategy: true
 });
 export class TemplateBase {
   render(options) {
     options = options || {};
-    var onRendered = options.onRendered;
+    const onRendered = options.onRendered;
     delete options.onRendered;
-    var $result;
+    let $result;
     if (options.renovated && options.transclude && this._element) {
       $result = $('<div>').append(this._element).contents();
     } else {
@@ -27,13 +27,13 @@ export class TemplateBase {
     if (!container) {
       return;
     }
-    var $container = $(container);
-    var resultInContainer = contains($container.get(0), $result.get(0));
+    const $container = $(container);
+    const resultInContainer = contains($container.get(0), $result.get(0));
     $container.append($result);
     if (resultInContainer) {
       return;
     }
-    var resultInBody = domAdapter.getBody().contains($container.get(0));
+    const resultInBody = contains(domAdapter.getBody(), $container.get(0));
     if (!resultInBody) {
       return;
     }

@@ -2,12 +2,27 @@
 
 var _math = require("../../core/utils/math");
 var _jestEach = _interopRequireDefault(require("jest-each"));
-var _templateObject;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 describe('Math utils tests', () => {
   describe('shiftIntegerByModule', () => {
-    (0, _jestEach.default)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      value         | module   | expectedResult\n      ", "          | ", "    | ", "\n      ", "          | ", "    | ", "\n      ", "          | ", "    | ", "\n      ", "          | ", " | ", "\n      ", "          | ", "    | ", "\n      ", "          | ", "    | ", "\n      ", "          | ", "    | ", "\n      ", "       | ", "   | ", "\n      ", "   | ", "   | ", "\n      ", "         | ", "    | ", "\n      ", "         | ", "    | ", "\n      ", "         | ", "    | ", "\n      ", "         | ", "    | ", "\n      ", "      | ", "   | ", "\n      ", "  | ", "   | ", "\n    "])), 0, 2, 0, 2, 2, 0, 2, 4, 2, 2, 1000, 2, 4, 2, 0, 5, 2, 1, 6, 2, 0, 1e10, 10, 0, 1e10 + 3, 10, 3, -9, 3, 0, -1, 6, 5, -3, 9, 6, -5, 9, 4, -1e10, 10, 0, -1e10 + 3, 10, 3).it('should return correct result', _ref => {
+    (0, _jestEach.default)`
+      value         | module   | expectedResult
+      ${0}          | ${2}    | ${0}
+      ${2}          | ${2}    | ${0}
+      ${2}          | ${4}    | ${2}
+      ${2}          | ${1000} | ${2}
+      ${4}          | ${2}    | ${0}
+      ${5}          | ${2}    | ${1}
+      ${6}          | ${2}    | ${0}
+      ${1e10}       | ${10}   | ${0}
+      ${1e10 + 3}   | ${10}   | ${3}
+      ${-9}         | ${3}    | ${0}
+      ${-1}         | ${6}    | ${5}
+      ${-3}         | ${9}    | ${6}
+      ${-5}         | ${9}    | ${4}
+      ${-1e10}      | ${10}   | ${0}
+      ${-1e10 + 3}  | ${10}   | ${3}
+    `.it('should return correct result', _ref => {
       let {
         value,
         module,

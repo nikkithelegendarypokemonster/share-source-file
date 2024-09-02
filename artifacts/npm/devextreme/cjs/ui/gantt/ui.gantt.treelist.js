@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/gantt/ui.gantt.treelist.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -23,14 +23,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const GANTT_TASKS = 'tasks';
 const GANTT_COLLAPSABLE_ROW = 'dx-gantt-collapsable-row';
 const GANTT_DEFAULT_ROW_HEIGHT = 34;
-const GANTT_SCROLL_ACTIVATION_LEVEL = 1;
-let GanttTreeList = exports.GanttTreeList = /*#__PURE__*/function () {
-  function GanttTreeList(gantt) {
+const GANTT_SCROLL_ACTIVATION_LEVEL = 2;
+class GanttTreeList {
+  constructor(gantt) {
     this._gantt = gantt;
     this._$treeList = this._gantt._$treeList;
   }
-  var _proto = GanttTreeList.prototype;
-  _proto.getTreeList = function getTreeList() {
+  getTreeList() {
     const {
       keyExpr,
       parentIdExpr
@@ -89,16 +88,16 @@ let GanttTreeList = exports.GanttTreeList = /*#__PURE__*/function () {
       _disableDeprecationWarnings: true
     });
     return this._treeList;
-  };
-  _proto.onAfterTreeListCreate = function onAfterTreeListCreate() {
+  }
+  onAfterTreeListCreate() {
     if (this._postponedGanttInitRequired) {
       this._initGanttOnContentReady({
         component: this._treeList
       });
       delete this._postponedGanttInitRequired;
     }
-  };
-  _proto._onContentReady = function _onContentReady(e) {
+  }
+  _onContentReady(e) {
     const hasTreeList = !!this._treeList;
     if (hasTreeList) {
       this._initGanttOnContentReady(e);
@@ -106,33 +105,33 @@ let GanttTreeList = exports.GanttTreeList = /*#__PURE__*/function () {
       this._postponedGanttInitRequired = true;
     }
     this._gantt._onTreeListContentReady(e);
-  };
-  _proto._initGanttOnContentReady = function _initGanttOnContentReady(e) {
+  }
+  _initGanttOnContentReady(e) {
     if (e.component.getDataSource()) {
       this._gantt._initGanttView();
       this._initScrollSync(e.component);
     }
     this._gantt._sortAndFilter();
     this._gantt._sizeHelper.updateGanttRowHeights();
-  };
-  _proto._onSelectionChanged = function _onSelectionChanged(e) {
+  }
+  _onSelectionChanged(e) {
     const selectedRowKey = e.currentSelectedRowKeys[0];
     this._gantt._setGanttViewOption('selectedRowKey', selectedRowKey);
     this._gantt._setOptionWithoutOptionChange('selectedRowKey', selectedRowKey);
     this._gantt._actionsManager.raiseSelectionChangedAction(selectedRowKey);
-  };
-  _proto._onRowCollapsed = function _onRowCollapsed(e) {
+  }
+  _onRowCollapsed(e) {
     this._gantt._onTreeListRowExpandChanged(e, false);
-  };
-  _proto._onRowExpanded = function _onRowExpanded(e) {
+  }
+  _onRowExpanded(e) {
     this._gantt._onTreeListRowExpandChanged(e, true);
-  };
-  _proto._onRowPrepared = function _onRowPrepared(e) {
+  }
+  _onRowPrepared(e) {
     if (e.rowType === 'data' && e.node.children.length > 0) {
       (0, _renderer.default)(e.rowElement).addClass(GANTT_COLLAPSABLE_ROW);
     }
-  };
-  _proto._onContextMenuPreparing = function _onContextMenuPreparing(e) {
+  }
+  _onContextMenuPreparing(e) {
     var _e$row, _e$row2;
     if (e.target === 'header') {
       return;
@@ -152,15 +151,15 @@ let GanttTreeList = exports.GanttTreeList = /*#__PURE__*/function () {
       }
     };
     this._gantt._showPopupMenu(info);
-  };
-  _proto._getHeight = function _getHeight() {
+  }
+  _getHeight() {
     if ((0, _size.getHeight)(this._$treeList)) {
       return (0, _size.getHeight)(this._$treeList);
     }
     this._gantt._hasHeight = (0, _type.isDefined)(this._gantt.option('height')) && this._gantt.option('height') !== '';
     return this._gantt._hasHeight ? '100%' : '';
-  };
-  _proto._initScrollSync = function _initScrollSync(treeList) {
+  }
+  _initScrollSync(treeList) {
     const treeListScrollable = treeList.getScrollable();
     if (treeListScrollable) {
       treeListScrollable.off('scroll');
@@ -168,26 +167,26 @@ let GanttTreeList = exports.GanttTreeList = /*#__PURE__*/function () {
         this._onScroll(e);
       });
     }
-  };
-  _proto._onScroll = function _onScroll(treeListScrollView) {
+  }
+  _onScroll(treeListScrollView) {
     const ganttViewTaskAreaContainer = this._gantt._ganttView.getTaskAreaContainer();
     if (ganttViewTaskAreaContainer.scrollTop !== treeListScrollView.component.scrollTop()) {
       ganttViewTaskAreaContainer.scrollTop = treeListScrollView.component.scrollTop();
     }
-  };
-  _proto._correctRowsViewRowHeight = function _correctRowsViewRowHeight(height) {
+  }
+  _correctRowsViewRowHeight(height) {
     const view = this._treeList._views && this._treeList._views['rowsView'];
     if ((view === null || view === void 0 ? void 0 : view._rowHeight) !== height) {
       view._rowHeight = height;
     }
-  };
-  _proto._skipUpdateTreeListDataSource = function _skipUpdateTreeListDataSource() {
+  }
+  _skipUpdateTreeListDataSource() {
     return this._gantt.option('validation.autoUpdateParentTasks');
-  };
-  _proto.selectRows = function selectRows(keys) {
+  }
+  selectRows(keys) {
     this.setOption('selectedRowKeys', keys);
-  };
-  _proto.scrollBy = function scrollBy(scrollTop) {
+  }
+  scrollBy(scrollTop) {
     const treeListScrollable = this._treeList.getScrollable();
     if (treeListScrollable) {
       const diff = scrollTop - treeListScrollable.scrollTop();
@@ -198,8 +197,8 @@ let GanttTreeList = exports.GanttTreeList = /*#__PURE__*/function () {
         });
       }
     }
-  };
-  _proto.updateDataSource = function updateDataSource(data) {
+  }
+  updateDataSource(data) {
     let forceUpdate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     let forceCustomData = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
     if (!this._skipUpdateTreeListDataSource() || forceUpdate) {
@@ -208,27 +207,27 @@ let GanttTreeList = exports.GanttTreeList = /*#__PURE__*/function () {
       const data = this._treeList.option('dataSource');
       this._gantt._onParentTasksRecalculated(data);
     }
-  };
-  _proto.setDataSource = function setDataSource(data) {
+  }
+  setDataSource(data) {
     this.setOption('dataSource', this.createDataSource(data));
-  };
-  _proto.createDataSource = function createDataSource(data, key) {
+  }
+  createDataSource(data, key) {
     return data && new _data_source.DataSource({
       store: new _array_store.default({
         data: data,
         key: key || this.getOption('keyExpr')
       })
     });
-  };
-  _proto.onRowClick = function onRowClick(e) {
+  }
+  onRowClick(e) {
     this._gantt._actionsManager.raiseTaskClickAction(e.key, e.event);
-  };
-  _proto.onRowDblClick = function onRowDblClick(e) {
+  }
+  onRowDblClick(e) {
     if (this._gantt._actionsManager.raiseTaskDblClickAction(e.key, e.event)) {
       this._gantt._ganttView._ganttViewCore.showTaskEditDialog();
     }
-  };
-  _proto.saveExpandedKeys = function saveExpandedKeys() {
+  }
+  saveExpandedKeys() {
     const treeList = this._treeList;
     const visibleRowCount = treeList === null || treeList === void 0 ? void 0 : treeList.getVisibleRows().length;
     if (visibleRowCount > 0) {
@@ -241,8 +240,8 @@ let GanttTreeList = exports.GanttTreeList = /*#__PURE__*/function () {
         state.saveExpandedState(keys);
       }
     }
-  };
-  _proto._onNodesInitialized = function _onNodesInitialized(e) {
+  }
+  _onNodesInitialized(e) {
     const state = this.getNodesState();
     const savedKeys = state.getExpandedKeys();
     const nodes = this.getAllNodes();
@@ -259,23 +258,23 @@ let GanttTreeList = exports.GanttTreeList = /*#__PURE__*/function () {
       this._gantt._ganttView.applyTasksExpandedState(expandedState);
     }
     state.clear();
-  };
-  _proto.getNodesState = function getNodesState() {
+  }
+  getNodesState() {
     if (!this._nodeState) {
       this._nodeState = new _uiGanttTreelist.GanttTreeListNodesState();
     }
     return this._nodeState;
-  };
-  _proto.getAllNodes = function getAllNodes() {
-    var _this$_treeList, _this$_treeList$getDa, _this$_treeList2;
-    const store = (_this$_treeList = this._treeList) === null || _this$_treeList === void 0 ? void 0 : (_this$_treeList$getDa = _this$_treeList.getDataSource()) === null || _this$_treeList$getDa === void 0 ? void 0 : _this$_treeList$getDa.store();
+  }
+  getAllNodes() {
+    var _this$_treeList, _this$_treeList2;
+    const store = (_this$_treeList = this._treeList) === null || _this$_treeList === void 0 || (_this$_treeList = _this$_treeList.getDataSource()) === null || _this$_treeList === void 0 ? void 0 : _this$_treeList.store();
     if (!store || !((_this$_treeList2 = this._treeList) !== null && _this$_treeList2 !== void 0 && _this$_treeList2.getNodeByKey)) {
       return [];
     }
     const keyGetter = (0, _data.compileGetter)(store.key());
     return store._array.map(item => this._treeList.getNodeByKey(keyGetter(item))).filter(item => !!item);
-  };
-  _proto.isExpandedStateChanged = function isExpandedStateChanged(keys1, keys2) {
+  }
+  isExpandedStateChanged(keys1, keys2) {
     if (keys1 === null && keys2 === null) {
       return false;
     }
@@ -283,11 +282,11 @@ let GanttTreeList = exports.GanttTreeList = /*#__PURE__*/function () {
       return true;
     }
     return keys1.some((key, index) => key !== keys2[index]);
-  };
-  _proto.getOffsetHeight = function getOffsetHeight() {
+  }
+  getOffsetHeight() {
     return this._gantt._treeList._$element.get(0).offsetHeight;
-  };
-  _proto.getRowHeight = function getRowHeight() {
+  }
+  getRowHeight() {
     const $row = this._treeList._$element.find('.dx-data-row');
     let height = $row.length ? (0, _position.getBoundingRect)($row.last().get(0)).height : GANTT_DEFAULT_ROW_HEIGHT;
     if (!height) {
@@ -295,24 +294,24 @@ let GanttTreeList = exports.GanttTreeList = /*#__PURE__*/function () {
     }
     this._correctRowsViewRowHeight(height);
     return height;
-  };
-  _proto.getHeaderHeight = function getHeaderHeight() {
+  }
+  getHeaderHeight() {
     return (0, _position.getBoundingRect)(this._treeList._$element.find('.dx-treelist-headers').get(0)).height;
-  };
-  _proto.getColumns = function getColumns() {
+  }
+  getColumns() {
     const columns = this._gantt.option('columns');
     if (columns) {
       for (let i = 0; i < columns.length; i++) {
         const column = columns[i];
-        const isKeyColumn = column.dataField === this._gantt.option("".concat(GANTT_TASKS, ".keyExpr")) || column.dataField === this._gantt.option("".concat(GANTT_TASKS, ".parentIdExpr"));
+        const isKeyColumn = column.dataField === this._gantt.option(`${GANTT_TASKS}.keyExpr`) || column.dataField === this._gantt.option(`${GANTT_TASKS}.parentIdExpr`);
         if (isKeyColumn && !column.dataType) {
           column.dataType = 'object';
         }
       }
     }
     return columns;
-  };
-  _proto.getSievedItems = function getSievedItems() {
+  }
+  getSievedItems() {
     const rootNode = this._treeList.getRootNode();
     if (!rootNode) {
       return undefined;
@@ -323,15 +322,15 @@ let GanttTreeList = exports.GanttTreeList = /*#__PURE__*/function () {
     const validatedData = this._gantt._validateSourceData(GANTT_TASKS, resultArray);
     const mappedData = validatedData.map(_uiGantt.GanttHelper.prepareMapHandler(getters));
     return mappedData;
-  };
-  _proto.setOption = function setOption(optionName, value) {
+  }
+  setOption(optionName, value) {
     this._treeList && this._treeList.option(optionName, value);
-  };
-  _proto.getOption = function getOption(optionName) {
+  }
+  getOption(optionName) {
     var _this$_treeList3;
     return (_this$_treeList3 = this._treeList) === null || _this$_treeList3 === void 0 ? void 0 : _this$_treeList3.option(optionName);
-  };
-  _proto.onTaskInserted = function onTaskInserted(insertedId, parentId) {
+  }
+  onTaskInserted(insertedId, parentId) {
     if ((0, _type.isDefined)(parentId)) {
       const expandedRowKeys = this.getOption('expandedRowKeys');
       if (expandedRowKeys.indexOf(parentId) === -1) {
@@ -341,10 +340,10 @@ let GanttTreeList = exports.GanttTreeList = /*#__PURE__*/function () {
     }
     this.selectRows(_uiGantt.GanttHelper.getArrayFromOneElement(insertedId));
     this.setOption('focusedRowKey', insertedId);
-  };
-  _proto.getDataSource = function getDataSource() {
+  }
+  getDataSource() {
     var _this$_treeList4;
     return (_this$_treeList4 = this._treeList) === null || _this$_treeList4 === void 0 ? void 0 : _this$_treeList4.getDataSource();
-  };
-  return GanttTreeList;
-}();
+  }
+}
+exports.GanttTreeList = GanttTreeList;

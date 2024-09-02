@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/drop_down_box.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -42,151 +42,225 @@ import {
 } from './popup';
 
 /**
- * The type of the change event handler&apos;s argument.
+ * @docid _ui_drop_down_box_ChangeEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ChangeEvent = NativeEventInfo<dxDropDownBox, Event>;
 
 /**
- * The type of the closed event handler&apos;s argument.
+ * @docid _ui_drop_down_box_ClosedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ClosedEvent = EventInfo<dxDropDownBox>;
 
 /**
- * The type of the copy event handler&apos;s argument.
+ * @docid _ui_drop_down_box_CopyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CopyEvent = NativeEventInfo<dxDropDownBox, ClipboardEvent>;
 
 /**
- * The type of the cut event handler&apos;s argument.
+ * @docid _ui_drop_down_box_CutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CutEvent = NativeEventInfo<dxDropDownBox, ClipboardEvent>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_drop_down_box_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxDropDownBox>;
 
 /**
- * The type of the enterKey event handler&apos;s argument.
+ * @docid _ui_drop_down_box_EnterKeyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type EnterKeyEvent = NativeEventInfo<dxDropDownBox, KeyboardEvent>;
 
 /**
- * The type of the focusIn event handler&apos;s argument.
+ * @docid _ui_drop_down_box_FocusInEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusInEvent = NativeEventInfo<dxDropDownBox, FocusEvent>;
 
 /**
- * The type of the focusOut event handler&apos;s argument.
+ * @docid _ui_drop_down_box_FocusOutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusOutEvent = NativeEventInfo<dxDropDownBox, FocusEvent>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_drop_down_box_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxDropDownBox>;
 
 /**
- * The type of the input event handler&apos;s argument.
+ * @docid _ui_drop_down_box_InputEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type InputEvent = NativeEventInfo<dxDropDownBox, UIEvent & { target: HTMLInputElement }>;
 
 /**
- * The type of the keyDown event handler&apos;s argument.
+ * @docid _ui_drop_down_box_KeyDownEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyDownEvent = NativeEventInfo<dxDropDownBox, KeyboardEvent>;
 
+/** @public */
 export type KeyPressEvent = NativeEventInfo<dxDropDownBox, KeyboardEvent>;
 
 /**
- * The type of the keyUp event handler&apos;s argument.
+ * @docid _ui_drop_down_box_KeyUpEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyUpEvent = NativeEventInfo<dxDropDownBox, KeyboardEvent>;
 
 /**
- * The type of the opened event handler&apos;s argument.
+ * @docid _ui_drop_down_box_OpenedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type OpenedEvent = EventInfo<dxDropDownBox>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_drop_down_box_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxDropDownBox> & ChangedOptionInfo;
 
 /**
- * The type of the paste event handler&apos;s argument.
+ * @docid _ui_drop_down_box_PasteEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type PasteEvent = NativeEventInfo<dxDropDownBox, ClipboardEvent>;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_drop_down_box_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxDropDownBox, KeyboardEvent | MouseEvent | PointerEvent | Event> & ValueChangedInfo;
 
+/** @public */
 export type ContentTemplateData = {
     component: dxDropDownBox;
     readonly value?: any;
 };
 
+/** @public */
 export type DropDownButtonTemplateData = DropDownButtonTemplateDataModel;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxDropDownBoxOptions extends DataExpressionMixinOptions<dxDropDownBox>, dxDropDownEditorOptions<dxDropDownBox> {
     /**
-     * Specifies whether the UI component allows a user to enter a custom value.
+     * @docid
+     * @default false
+     * @public
      */
     acceptCustomValue?: boolean;
     /**
-     * Specifies a custom template for the drop-down content.
+     * @docid
+     * @default 'content'
+     * @type_function_param1 templateData:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     contentTemplate?: template | ((templateData: ContentTemplateData, contentElement: DxElement) => string | UserDefinedElement);
     /**
-     * Binds the UI component to data.
+     * @docid
+     * @default null
+     * @public
+     * @type Store|DataSource|DataSourceOptions|string|Array<any>|null
      */
     dataSource?: DataSourceLike<any> | null;
     /**
-     * Customizes text before it is displayed in the input field.
+     * @docid
+     * @public
      */
     displayValueFormatter?: ((value: string | Array<any>) => string);
     /**
-     * Specifies a custom template for the text field. Must contain the TextBox UI component.
+     * @docid
+     * @default null
+     * @type_function_param1 value:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     fieldTemplate?: template | ((value: any, fieldElement: DxElement) => string | UserDefinedElement);
     /**
-     * An array of items used to synchronize the DropDownBox with an embedded UI component.
+     * @docid
+     * @public
      */
     items?: Array<any>;
     /**
-     * Specifies whether a user can open the drop-down list by clicking a text field.
+     * @docid
+     * @default true
+     * @public
      */
     openOnFieldClick?: boolean;
     /**
-     * Specifies the DOM events after which the UI component&apos;s value should be updated.
+     * @docid
+     * @default "change"
+     * @public
      */
     valueChangeEvent?: string;
 
     /**
-     * Configures the drop-down field which holds the content.
+     * @docid
+     * @type dxPopupOptions
      */
     dropDownOptions?: PopupProperties;
 }
 /**
- * The DropDownBox UI component consists of a text field, which displays the current value, and a drop-down field, which can contain any UI element.
+ * @docid
+ * @isEditor
+ * @inherits DataExpressionMixin, dxDropDownEditor
+ * @hasTranscludedContent
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxDropDownBox extends dxDropDownEditor<dxDropDownBoxOptions> {
     getDataSource(): DataSource;
 }
 
+/** @public */
 export type Properties = dxDropDownBoxOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxDropDownBoxOptions;
 
 

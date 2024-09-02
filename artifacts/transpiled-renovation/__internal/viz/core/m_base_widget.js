@@ -71,8 +71,8 @@ const getEmptyComponent = function () {
     ctor(element, options) {
       this.callBase(element, options);
       const sizedElement = _dom_adapter.default.createElement('div');
-      const width = options && (0, _type.isNumeric)(options.width) ? "".concat(options.width, "px") : '100%';
-      const height = options && (0, _type.isNumeric)(options.height) ? "".concat(options.height, "px") : "".concat(this._getDefaultSize().height, "px");
+      const width = options && (0, _type.isNumeric)(options.width) ? `${options.width}px` : '100%';
+      const height = options && (0, _type.isNumeric)(options.height) ? `${options.height}px` : `${this._getDefaultSize().height}px`;
       _dom_adapter.default.setStyle(sizedElement, 'width', width);
       _dom_adapter.default.setStyle(sizedElement, 'height', height);
       _dom_adapter.default.setClass(sizedElement, SIZED_ELEMENT_CLASS, false);
@@ -120,7 +120,7 @@ const baseWidget = isServerSide ? getEmptyComponent() : _dom_component.default.i
   },
   _useLinks: true,
   _init() {
-    this._$element.children(".".concat(SIZED_ELEMENT_CLASS)).remove();
+    this._$element.children(`.${SIZED_ELEMENT_CLASS}`).remove();
     this._graphicObjects = {};
     this.callBase(...arguments);
     this._changesLocker = 0;
@@ -293,7 +293,7 @@ const baseWidget = isServerSide ? getEmptyComponent() : _dom_component.default.i
     const changesOrderLength = order.length;
     for (let i = 0; i < changesOrderLength; i += 1) {
       if (changes.has(order[i])) {
-        this["_change_".concat(order[i])]();
+        this[`_change_${order[i]}`]();
       }
     }
   },
@@ -347,7 +347,7 @@ const baseWidget = isServerSide ? getEmptyComponent() : _dom_component.default.i
     const rawCanvas = this._calculateRawCanvas();
     this._canvas = (0, _utils2.floorCanvasDimensions)(rawCanvas);
     this._renderer = new _renderer2.Renderer({
-      cssClass: "".concat(this._rootClassPrefix, " ").concat(this._rootClass),
+      cssClass: `${this._rootClassPrefix} ${this._rootClass}`,
       pathModified: this.option('pathModified'),
       container: this._$element[0]
     });

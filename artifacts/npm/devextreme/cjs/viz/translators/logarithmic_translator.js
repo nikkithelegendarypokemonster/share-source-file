@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/viz/translators/logarithmic_translator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -23,7 +23,7 @@ var _default = exports.default = {
     const minValue = this.from(visibleArea.min + minBarSize);
     const canvasOptions = this._canvasOptions;
     const startValue = this.fromValue(this.from(visibleArea.min));
-    const endValue = this.fromValue(minValue !== null && minValue !== void 0 ? minValue : this.from(visibleArea.max));
+    const endValue = this.fromValue(minValue ?? this.from(visibleArea.max));
     const value = Math.abs(startValue - endValue);
     return Math.pow(canvasOptions.base, value);
   },

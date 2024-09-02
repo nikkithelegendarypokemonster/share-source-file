@@ -1,6 +1,6 @@
 import errors from '../../../ui/widget/ui.errors';
 import { OptionsValidatorErrorHandler } from './core/index';
-var GLOBAL_ERROR_HANDLER = {
+const GLOBAL_ERROR_HANDLER = {
   logError: errorCode => {
     errors.log(errorCode);
   },

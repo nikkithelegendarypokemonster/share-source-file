@@ -1,9 +1,9 @@
 import { expand } from '../core/helpers';
 import TreeMapBase from './tree_map.base';
-var proto = TreeMapBase.prototype;
+const proto = TreeMapBase.prototype;
 import './api';
 expand(proto, '_extendProxyType', function (proto) {
-  var that = this;
+  const that = this;
   proto.showTooltip = function (coords) {
     that._showTooltip(this._id, coords);
   };
@@ -20,18 +20,18 @@ expand(proto, '_onTilingPerformed', function () {
   }
 });
 function getCoords(coords, rect, renderer) {
-  var offset = renderer.getRootOffset();
+  const offset = renderer.getRootOffset();
   return coords || rect && [(rect[0] + rect[2]) / 2 + offset.left, (rect[1] + rect[3]) / 2 + offset.top] || [-1000, -1000];
 }
 proto._showTooltip = function (index, coords) {
-  var that = this;
-  var tooltip = that._tooltip;
-  var node = that._nodes[index];
+  const that = this;
+  const tooltip = that._tooltip;
+  const node = that._nodes[index];
   if (that._tooltipIndex === index) {
     that._moveTooltip(node, coords);
     return;
   }
-  var callback = result => {
+  const callback = result => {
     if (result === undefined) {
       return;
     }
@@ -40,7 +40,7 @@ proto._showTooltip = function (index, coords) {
     }
     that._tooltipIndex = result ? index : -1;
   };
-  var xy = getCoords(coords, node.rect, this._renderer);
+  const xy = getCoords(coords, node.rect, this._renderer);
   callback(tooltip.show({
     value: node.value,
     valueText: tooltip.formatValue(node.value),
@@ -54,7 +54,7 @@ proto._showTooltip = function (index, coords) {
   }, undefined, callback));
 };
 proto._moveTooltip = function (node, coords) {
-  var xy = getCoords(coords, node.rect, this._renderer);
+  const xy = getCoords(coords, node.rect, this._renderer);
   this._tooltip.move(xy[0], xy[1], 0);
 };
 proto.hideTooltip = function () {

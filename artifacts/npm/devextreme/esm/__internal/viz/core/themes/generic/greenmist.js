@@ -1,17 +1,17 @@
 /**
 * DevExtreme (esm/__internal/viz/core/themes/generic/greenmist.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-var ACCENT_COLOR = '#3cbab2';
-var BACKGROUND_COLOR = '#f5f5f5';
-var TITLE_COLOR = '#28484f';
-var SUBTITLE_COLOR = '#7eb2be';
-var TEXT_COLOR = '#657c80';
-var BORDER_COLOR = '#dedede';
+const ACCENT_COLOR = '#3cbab2';
+const BACKGROUND_COLOR = '#f5f5f5';
+const TITLE_COLOR = '#28484f';
+const SUBTITLE_COLOR = '#7eb2be';
+const TEXT_COLOR = '#657c80';
+const BORDER_COLOR = '#dedede';
 export default [{
   baseThemeName: 'generic.light',
   theme: {

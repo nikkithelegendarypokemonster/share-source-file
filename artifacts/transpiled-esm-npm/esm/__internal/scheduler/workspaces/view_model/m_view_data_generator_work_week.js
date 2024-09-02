@@ -1,4 +1,4 @@
-import { isDataOnWeekend, workWeekUtils } from '../../__migration/utils/index';
+import { isDataOnWeekend, workWeekUtils } from '../../../scheduler/r1/utils/index';
 import { ViewDataGeneratorWeek } from './m_view_data_generator_week';
 export class ViewDataGeneratorWorkWeek extends ViewDataGeneratorWeek {
   constructor() {

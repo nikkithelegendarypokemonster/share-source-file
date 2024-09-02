@@ -1,9 +1,9 @@
-var ACCENT_COLOR = '#3cbab2';
-var BACKGROUND_COLOR = '#f5f5f5';
-var TITLE_COLOR = '#28484f';
-var SUBTITLE_COLOR = '#7eb2be';
-var TEXT_COLOR = '#657c80';
-var BORDER_COLOR = '#dedede';
+const ACCENT_COLOR = '#3cbab2';
+const BACKGROUND_COLOR = '#f5f5f5';
+const TITLE_COLOR = '#28484f';
+const SUBTITLE_COLOR = '#7eb2be';
+const TEXT_COLOR = '#657c80';
+const BORDER_COLOR = '#dedede';
 export default [{
   baseThemeName: 'generic.light',
   theme: {

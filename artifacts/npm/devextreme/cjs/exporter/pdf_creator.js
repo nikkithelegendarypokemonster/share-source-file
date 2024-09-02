@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/exporter/pdf_creator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -68,13 +68,13 @@ let getBase64 = function (binaryData) {
 function getTwoDigitValue(value) {
   const stringValue = value.toString();
   if (stringValue.length === 1) {
-    return "0".concat(value);
+    return `0${value}`;
   }
   return value;
 }
 function convertToPdfDateFormat(date) {
   const dateUnits = [date.getUTCFullYear(), getTwoDigitValue(date.getUTCMonth()), getTwoDigitValue(date.getUTCDate()), getTwoDigitValue(date.getUTCHours()), getTwoDigitValue(date.getUTCMinutes()), getTwoDigitValue(date.getUTCSeconds())];
-  return "(D:".concat(dateUnits.join(''), "Z00'00')");
+  return `(D:${dateUnits.join('')}Z00'00')`;
 }
 function getData(data, options) {
   return _image_creator.imageCreator.getImageData(data, (0, _extend.extend)({}, options, {

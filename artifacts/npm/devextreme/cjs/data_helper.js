@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/data_helper.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,7 +12,7 @@ exports.default = void 0;
 var _data_source = require("./data/data_source/data_source");
 var _extend = require("./core/utils/extend");
 var _utils = require("./data/data_source/utils");
-var _data_controller = _interopRequireDefault(require("./ui/collection/data_controller"));
+var _m_data_controller = _interopRequireDefault(require("./__internal/ui/collection/m_data_controller"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const DATA_SOURCE_OPTIONS_METHOD = '_dataSourceOptions';
 const DATA_SOURCE_CHANGED_METHOD = '_dataSourceChangedHandler';
@@ -62,7 +62,7 @@ const DataHelperMixin = {
     if (dataController) {
       this._dataController = dataController;
     } else {
-      this._dataController = new _data_controller.default(dataSource);
+      this._dataController = new _m_data_controller.default(dataSource);
     }
   },
   _addDataSourceHandlers: function () {

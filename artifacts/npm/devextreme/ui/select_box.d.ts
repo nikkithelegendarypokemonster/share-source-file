@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/select_box.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -41,190 +41,274 @@ import {
 } from './popup';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @hidden
  */
 export interface CustomItemCreatingInfo {
-    /**
-     * 
-     */
+    /** @docid */
     readonly text?: string;
     /**
-     * 
+     * @docid
+     * @type string|object|Promise<any>
      */
     customItem?: string | any | PromiseLike<any>;
 }
 
 /**
- * The type of the change event handler&apos;s argument.
+ * @docid _ui_select_box_ChangeEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ChangeEvent = NativeEventInfo<dxSelectBox, Event>;
 
 /**
- * The type of the closed event handler&apos;s argument.
+ * @docid _ui_select_box_ClosedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ClosedEvent = EventInfo<dxSelectBox>;
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_select_box_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxSelectBox>;
 
 /**
- * The type of the copy event handler&apos;s argument.
+ * @docid _ui_select_box_CopyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CopyEvent = NativeEventInfo<dxSelectBox, ClipboardEvent>;
 
 /**
- * The type of the customItemCreating event handler&apos;s argument.
+ * @docid _ui_select_box_CustomItemCreatingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,CustomItemCreatingInfo
  */
 export type CustomItemCreatingEvent = EventInfo<dxSelectBox> & CustomItemCreatingInfo;
 
 /**
- * The type of the cut event handler&apos;s argument.
+ * @docid _ui_select_box_CutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CutEvent = NativeEventInfo<dxSelectBox, ClipboardEvent>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_select_box_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxSelectBox>;
 
 /**
- * The type of the enterKey event handler&apos;s argument.
+ * @docid _ui_select_box_EnterKeyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type EnterKeyEvent = NativeEventInfo<dxSelectBox, KeyboardEvent>;
 
 /**
- * The type of the focusIn event handler&apos;s argument.
+ * @docid _ui_select_box_FocusInEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusInEvent = NativeEventInfo<dxSelectBox, FocusEvent>;
 
 /**
- * The type of the focusOut event handler&apos;s argument.
+ * @docid _ui_select_box_FocusOutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusOutEvent = NativeEventInfo<dxSelectBox, FocusEvent>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_select_box_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxSelectBox>;
 
 /**
- * The type of the input event handler&apos;s argument.
+ * @docid _ui_select_box_InputEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type InputEvent = NativeEventInfo<dxSelectBox, UIEvent & { target: HTMLInputElement }>;
 
 /**
- * The type of the itemClick event handler&apos;s argument.
+ * @docid _ui_select_box_ItemClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemClickEvent = NativeEventInfo<dxSelectBox, KeyboardEvent | MouseEvent | PointerEvent> & ItemInfo;
 
 /**
- * The type of the keyDown event handler&apos;s argument.
+ * @docid _ui_select_box_KeyDownEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyDownEvent = NativeEventInfo<dxSelectBox, KeyboardEvent>;
 
+/** @public */
 export type KeyPressEvent = NativeEventInfo<dxSelectBox, KeyboardEvent>;
 
 /**
- * The type of the keyUp event handler&apos;s argument.
+ * @docid _ui_select_box_KeyUpEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyUpEvent = NativeEventInfo<dxSelectBox, KeyboardEvent>;
 
 /**
- * The type of the opened event handler&apos;s argument.
+ * @docid _ui_select_box_OpenedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type OpenedEvent = EventInfo<dxSelectBox>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_select_box_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxSelectBox> & ChangedOptionInfo;
 
 /**
- * The type of the paste event handler&apos;s argument.
+ * @docid _ui_select_box_PasteEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type PasteEvent = NativeEventInfo<dxSelectBox, ClipboardEvent>;
 
 /**
- * The type of the selectionChanged event handler&apos;s argument.
+ * @docid _ui_select_box_SelectionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,_ui_drop_down_editor_ui_drop_down_list_SelectionChangedInfo
  */
 export type SelectionChangedEvent = EventInfo<dxSelectBox> & SelectionChangedInfo;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_select_box_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxSelectBox, KeyboardEvent | MouseEvent | Event> & ValueChangedInfo;
 
+/** @public */
 export type DropDownButtonTemplateData = DropDownButtonTemplateDataModel;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxSelectBoxOptions<TComponent> extends dxDropDownListOptions<TComponent> {
     /**
-     * Specifies whether the UI component allows a user to enter a custom value. Requires the onCustomItemCreating handler implementation.
+     * @docid
+     * @default false
+     * @public
      */
     acceptCustomValue?: boolean;
     /**
-     * Specifies a custom template for the text field. Must contain the TextBox UI component.
+     * @docid
+     * @default null
+     * @type_function_param1 selectedItem:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     fieldTemplate?: template | ((selectedItem: any, fieldElement: DxElement) => string | UserDefinedElement);
     /**
-     * A function that is executed when a user adds a custom item. Requires acceptCustomValue to be set to true.
+     * @section Utils
+     * @type function
+     * @docid
+     * @type_function_param1 e:{ui/select_box:CustomItemCreatingEvent}
+     * @action
+     * @default function(e) { if(!e.customItem) { e.customItem = e.text; } }
+     * @public
      */
     onCustomItemCreating?: ((e: EventInfo<TComponent> & CustomItemCreatingInfo) => void);
     /**
-     * Specifies whether a user can open the drop-down list by clicking a text field.
+     * @docid
+     * @default true
+     * @public
      */
     openOnFieldClick?: boolean;
     /**
-     * The text that is provided as a hint in the select box editor.
+     * @docid
+     * @default "Select"
+     * @public
      */
     placeholder?: string;
     /**
-     * Specifies whether the drop-down button is visible.
+     * @docid
+     * @public
      */
     showDropDownButton?: boolean;
     /**
-     * Specifies whether or not to display selection controls.
+     * @docid
+     * @default false
+     * @public
      */
     showSelectionControls?: boolean;
     /**
-     * Specifies the DOM events after which the UI component&apos;s value should be updated. Applies only if acceptCustomValue is set to true.
-     * @deprecated Use the customItemCreateEvent option instead.
+     * @docid
+     * @default "change"
+     * @deprecated dxSelectBoxOptions.customItemCreateEvent
+     * @public
      */
     valueChangeEvent?: string;
 
     /**
-     * Specifies the DOM event after which the custom item should be created. Applies only if acceptCustomValue is enabled.
+     * @docid
+     * @default "change"
+     * @public
      */
     customItemCreateEvent?: string;
 
     /**
-     * Configures the drop-down field which holds the content.
+     * @docid
+     * @type dxPopupOptions
      */
     dropDownOptions?: PopupProperties;
 }
 /**
- * The SelectBox UI component is an editor that allows an end user to select an item from a drop-down list.
+ * @docid
+ * @isEditor
+ * @inherits dxDropDownList
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxSelectBox<TProperties = Properties> extends dxDropDownList<TProperties> { }
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 interface SelectBoxInstance extends dxSelectBox<Properties> { }
 
+/** @public */
 export type Properties = dxSelectBoxOptions<SelectBoxInstance>;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = Properties;
 
 

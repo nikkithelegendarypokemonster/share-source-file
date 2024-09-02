@@ -84,7 +84,7 @@ const AreaItem = exports.AreaItem = _class.default.inherit({
   _getRowClassNames() {},
   _applyCustomStyles(options) {
     if (options.cell.width) {
-      options.cssArray.push("min-width:".concat(options.cell.width, "px"));
+      options.cssArray.push(`min-width:${options.cell.width}px`);
     }
     if (options.cell.sorted) {
       options.classArray.push('dx-pivotgrid-sorted');
@@ -234,7 +234,7 @@ const AreaItem = exports.AreaItem = _class.default.inherit({
   _setRowHeight(index, value) {
     const row = this._getRowElement(index);
     if (row) {
-      row.style.height = "".concat(value, "px");
+      row.style.height = `${value}px`;
     }
   },
   getRowsLength() {
@@ -262,7 +262,7 @@ const AreaItem = exports.AreaItem = _class.default.inherit({
       that._setRowHeight(i, values[i]);
     }
     this._tableHeight = totalHeight;
-    this._tableElement[0].style.height = "".concat(totalHeight, "px");
+    this._tableElement[0].style.height = `${totalHeight}px`;
   },
   getColumnsWidth() {
     const rowsLength = this.getRowsLength();
@@ -311,11 +311,11 @@ const AreaItem = exports.AreaItem = _class.default.inherit({
     }
     for (i = 0; i < columnsCount; i += 1) {
       const col = _dom_adapter.default.createElement('col');
-      col.style.width = "".concat(columnWidth[i], "px");
+      col.style.width = `${columnWidth[i]}px`;
       this._colgroupElement.append(col);
     }
     this._tableWidth = columnWidth.reduce((sum, width) => sum + width, 0);
-    tableElement.style.width = "".concat(this._tableWidth, "px");
+    tableElement.style.width = `${this._tableWidth}px`;
     tableElement.style.tableLayout = 'fixed';
   },
   resetColumnsWidth() {
@@ -369,7 +369,7 @@ const AreaItem = exports.AreaItem = _class.default.inherit({
       height: params.height
     });
     const scrollable = this._getScrollable();
-    if (scrollable === null || scrollable === void 0 ? void 0 : scrollable.isRenovated()) {
+    if (scrollable !== null && scrollable !== void 0 && scrollable.isRenovated()) {
       this._getScrollable().option('classes', 'dx-virtual-mode');
     } else {
       this.groupElement().addClass('dx-virtual-mode');
@@ -377,7 +377,7 @@ const AreaItem = exports.AreaItem = _class.default.inherit({
   },
   disableVirtualMode() {
     const scrollable = this._getScrollable();
-    if (scrollable === null || scrollable === void 0 ? void 0 : scrollable.isRenovated()) {
+    if (scrollable !== null && scrollable !== void 0 && scrollable.isRenovated()) {
       this._getScrollable().option('classes', '');
     } else {
       this.groupElement().removeClass('dx-virtual-mode');
@@ -424,7 +424,7 @@ const AreaItem = exports.AreaItem = _class.default.inherit({
     const tableElementOffset = parseFloat(that.tableElement()[0].style[offsetStyleName]);
     const offset = getFakeTableOffset(scrollPos, tableElementOffset, that._tableWidth, that.getGroupWidth());
     if (parseFloat(that._fakeTable[0].style[offsetStyleName]) !== offset) {
-      that._fakeTable[0].style[offsetStyleName] = "".concat(offset, "px");
+      that._fakeTable[0].style[offsetStyleName] = `${offset}px`;
     }
   },
   _moveFakeTableTop(scrollPos) {
@@ -432,7 +432,7 @@ const AreaItem = exports.AreaItem = _class.default.inherit({
     const tableElementOffsetTop = parseFloat(that.tableElement()[0].style.top);
     const offsetTop = getFakeTableOffset(scrollPos, tableElementOffsetTop, that._tableHeight, that.getGroupHeight());
     if (parseFloat(that._fakeTable[0].style.top) !== offsetTop) {
-      that._fakeTable[0].style.top = "".concat(offsetTop, "px");
+      that._fakeTable[0].style.top = `${offsetTop}px`;
     }
   },
   _moveFakeTable() {
@@ -468,8 +468,7 @@ const AreaItem = exports.AreaItem = _class.default.inherit({
     return this.groupElement().data('dxScrollable');
   },
   _getMemoizeScrollTo() {
-    var _a;
-    this._memoizeScrollTo = (_a = this._memoizeScrollTo) !== null && _a !== void 0 ? _a : (0, _scroll.getMemoizeScrollTo)(() => this._getScrollable());
+    this._memoizeScrollTo = this._memoizeScrollTo ?? (0, _scroll.getMemoizeScrollTo)(() => this._getScrollable());
     return this._memoizeScrollTo;
   },
   _getMaxLeftOffset(scrollable) {
@@ -504,7 +503,7 @@ const AreaItem = exports.AreaItem = _class.default.inherit({
     }
     const rtlEnabled = this.option('rtlEnabled');
     const areaName = this._getAreaName();
-    const scrollablePos = _extends(_extends({}, pos), {
+    const scrollablePos = _extends({}, pos, {
       left: rtlEnabled && (areaName === 'column' || areaName === 'data') ? this._getMaxLeftOffset(scrollable) - pos.left : pos.left
     });
     const memoizeScrollTo = this._getMemoizeScrollTo();

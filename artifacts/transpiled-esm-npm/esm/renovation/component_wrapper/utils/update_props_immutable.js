@@ -5,8 +5,8 @@ function cloneObjectValue(value) {
   return Array.isArray(value) ? [...value] : _extends({}, value);
 }
 function cloneObjectProp(value, prevValue, fullNameParts) {
-  var result = fullNameParts.length > 0 && prevValue && value !== prevValue ? cloneObjectValue(prevValue) : cloneObjectValue(value);
-  var name = fullNameParts[0];
+  const result = fullNameParts.length > 0 && prevValue && value !== prevValue ? cloneObjectValue(prevValue) : cloneObjectValue(value);
+  const name = fullNameParts[0];
   if (fullNameParts.length > 1) {
     result[name] = cloneObjectProp(value[name], prevValue === null || prevValue === void 0 ? void 0 : prevValue[name], fullNameParts.slice(1));
   } else if (name) {
@@ -19,9 +19,9 @@ function cloneObjectProp(value, prevValue, fullNameParts) {
   return result;
 }
 export function updatePropsImmutable(props, option, name, fullName) {
-  var currentPropsValue = option[name];
-  var prevPropsValue = props[name];
-  var result = props;
+  const currentPropsValue = option[name];
+  const prevPropsValue = props[name];
+  const result = props;
   if (isPlainObject(currentPropsValue) || name !== fullName && Array.isArray(currentPropsValue)) {
     result[name] = cloneObjectProp(currentPropsValue, prevPropsValue, getPathParts(fullName).slice(1));
   } else {

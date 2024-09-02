@@ -1,12 +1,12 @@
 export function compareSignatures(args) {
   try {
-    var zero = BigInt(0);
-    var one = BigInt(1);
-    var eight = BigInt(8);
-    var modExp = (base, exponent, modulus) => {
-      var result = one;
-      var b = base;
-      var e = exponent;
+    const zero = BigInt(0);
+    const one = BigInt(1);
+    const eight = BigInt(8);
+    const modExp = (base, exponent, modulus) => {
+      let result = one;
+      let b = base;
+      let e = exponent;
       while (e) {
         if (e & one) {
           // eslint-disable-line no-bitwise
@@ -17,16 +17,16 @@ export function compareSignatures(args) {
       }
       return result;
     };
-    var bigIntFromBytes = bytes => bytes.reduce((acc, cur) => (acc << eight) + BigInt(cur),
+    const bigIntFromBytes = bytes => bytes.reduce((acc, cur) => (acc << eight) + BigInt(cur),
     // eslint-disable-line no-bitwise
     zero);
-    var actual = bigIntFromBytes(args.actual);
-    var signature = bigIntFromBytes(args.signature);
-    var exponent = BigInt(args.key.e);
-    var modulus = bigIntFromBytes(args.key.n);
-    var expected = modExp(signature, exponent, modulus);
+    const actual = bigIntFromBytes(args.actual);
+    const signature = bigIntFromBytes(args.signature);
+    const exponent = BigInt(args.key.e);
+    const modulus = bigIntFromBytes(args.key.n);
+    const expected = modExp(signature, exponent, modulus);
     return expected === actual;
-  } catch (_a) {
+  } catch {
     return true;
   }
 }

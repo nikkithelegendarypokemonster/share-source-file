@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/pivot_grid/xmla_store/m_xmla_store.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -25,7 +25,7 @@ var _errors = require("../../../../data/errors");
 var _language_codes = require("../../../../localization/language_codes");
 var _m_widget_utils = _interopRequireWildcard(require("../m_widget_utils"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 // @ts-expect-error
 
@@ -99,19 +99,19 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
   }
   function mdxDescendants(level, levelMember, nextLevel) {
     const memberExpression = levelMember || level;
-    return "Descendants({".concat(memberExpression, "}, ").concat(nextLevel, ", SELF_AND_BEFORE)");
+    return `Descendants({${memberExpression}}, ${nextLevel}, SELF_AND_BEFORE)`;
   }
   function getAllMember(dimension) {
-    return "".concat(dimension.hierarchyName || dimension.dataField, ".[All]");
+    return `${dimension.hierarchyName || dimension.dataField}.[All]`;
   }
   function getAllMembers(field) {
-    let result = "".concat(field.dataField, ".allMembers");
+    let result = `${field.dataField}.allMembers`;
     let {
       searchValue
     } = field;
     if (searchValue) {
       searchValue = searchValue.replace(/'/g, '\'\'');
-      result = "Filter(".concat(result, ", instr(").concat(field.dataField, ".currentmember.member_caption,'").concat(searchValue, "') > 0)");
+      result = `Filter(${result}, instr(${field.dataField}.currentmember.member_caption,'${searchValue}') > 0)`;
     }
     return result;
   }
@@ -121,7 +121,7 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
   }
   function union(elements) {
     const elementsString = elements.join(',');
-    return elements.length > 1 ? "Union(".concat(elementsString, ")") : elementsString;
+    return elements.length > 1 ? `Union(${elementsString})` : elementsString;
   }
   function generateCrossJoin(path, expandLevel, expandAllCount, expandIndex, slicePath, options, axisName, take) {
     const crossJoinArgs = [];
@@ -145,7 +145,7 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
       fields.push(field);
       if (i < path.length) {
         if (isLastDimensionInGroup) {
-          arg = "(".concat(dataField, ".").concat(preparePathValue(path[i], dataField), ")");
+          arg = `(${dataField}.${preparePathValue(path[i], dataField)})`;
         }
       } else if (i <= expandAllIndex) {
         if (i === 0 && expandAllCount === 0) {
@@ -153,7 +153,7 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
           if (!hierarchyName) {
             arg = getAllMembers(dimensions[expandIndex]);
           } else {
-            arg = "".concat(allMember, ",").concat(dimensions[expandIndex].dataField);
+            arg = `${allMember},${dimensions[expandIndex].dataField}`;
           }
         } else if (hierarchyName) {
           member = preparePathValue(slicePath[slicePath.length - 1]);
@@ -177,7 +177,7 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
       } else {
         const isFirstDimensionInGroup = !hierarchyName || prevHierarchyName !== hierarchyName;
         if (isFirstDimensionInGroup) {
-          arg = "(".concat(getAllMember(field), ")");
+          arg = `(${getAllMember(field)})`;
         }
       }
       if (arg) {
@@ -206,7 +206,7 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
     } while (dimensions[dimensionIndex] && dimensions[dimensionIndex + 1] && dimensions[dimensionIndex].expanded);
   }
   function declare(expression, withArray, name, type) {
-    name = name || "[DX_Set_".concat(withArray.length, "]");
+    name = name || `[DX_Set_${withArray.length}]`;
     type = type || 'set';
     withArray.push((0, _string.format)(mdxWith, type, name, expression));
     return name;
@@ -250,10 +250,10 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
       if (axisName === 'columns' && options.columnTake) {
         expression = (0, _string.format)(mdxSubset, expression, options.columnSkip > 0 ? options.columnSkip + 1 : 0, options.columnSkip > 0 ? options.columnTake : options.columnTake + 1);
       }
-      const axisSet = "[DX_".concat(axisName, "]");
+      const axisSet = `[DX_${axisName}]`;
       result.push(declare(expression, withArray, axisSet));
       if (options.totalsOnly) {
-        result.push(declare("COUNT(".concat(axisSet, ")"), withArray, "[DX_".concat(axisName, "_count]"), 'member'));
+        result.push(declare(`COUNT(${axisSet})`, withArray, `[DX_${axisName}_count]`, 'member'));
       }
     }
     if (axisName === 'columns' && cells.length && !options.skipValues) {
@@ -274,17 +274,17 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
         return;
       }
       (0, _iterator.each)(filterValues, (_, filterValue) => {
-        let filterMdx = "".concat(dataField, ".").concat(preparePathValue(Array.isArray(filterValue) ? filterValue[filterValue.length - 1] : filterValue, dataField));
+        let filterMdx = `${dataField}.${preparePathValue(Array.isArray(filterValue) ? filterValue[filterValue.length - 1] : filterValue, dataField)}`;
         if (field.filterType === 'exclude') {
-          filterExpression.push("".concat(filterMdx, ".parent"));
-          filterMdx = "Descendants(".concat(filterMdx, ")");
+          filterExpression.push(`${filterMdx}.parent`);
+          filterMdx = `Descendants(${filterMdx})`;
         }
         filterExpression.push(filterMdx);
       });
       if (filterValues.length) {
         filterStringExpression = (0, _string.format)(mdxSet, filterExpression.join(','));
         if (field.filterType === 'exclude') {
-          filterStringExpression = "Except(".concat(getAllMembers(field), ",").concat(filterStringExpression, ")");
+          filterStringExpression = `Except(${getAllMembers(field)},${filterStringExpression})`;
         }
         filterMembers.push(filterStringExpression);
       }
@@ -292,10 +292,10 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
     return filterMembers.length ? crossJoinElements(filterMembers) : '';
   }
   function generateFrom(columnsFilter, rowsFilter, filter, cubeName) {
-    let from = "[".concat(cubeName, "]");
+    let from = `[${cubeName}]`;
     (0, _iterator.each)([columnsFilter, rowsFilter, filter], (_, filter) => {
       if (filter) {
-        from = (0, _string.format)(mdxFilterSelect, "".concat(filter, "on 0"), from);
+        from = (0, _string.format)(mdxFilterSelect, `${filter}on 0`, from);
       }
     });
     return from;
@@ -303,7 +303,7 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
   function generateMdxCore(axisStrings, withArray, columns, rows, filters, slice, cubeName) {
     let options = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : {};
     let mdxString = '';
-    const withString = "".concat(withArray.length ? "with ".concat(withArray.join(' ')) : '', " ");
+    const withString = `${withArray.length ? `with ${withArray.join(' ')}` : ''} `;
     if (axisStrings.length) {
       let select;
       if (options.totalsOnly) {
@@ -314,7 +314,7 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
         if (columns.length) {
           countMembers.push('[DX_columns_count]');
         }
-        select = "{".concat(countMembers.join(','), "} on columns");
+        select = `{${countMembers.join(',')}} on columns`;
       } else {
         select = axisStrings.join(',');
       }
@@ -334,7 +334,7 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
     (0, _iterator.each)(path, (index, value) => {
       const dimension = options[headerName][index];
       if (!dimension.hierarchyName || dimension.hierarchyName !== options[headerName][index + 1].hierarchyName) {
-        slices.push("".concat(dimension.dataField, ".").concat(preparePathValue(value, dimension.dataField)));
+        slices.push(`${dimension.dataField}.${preparePathValue(value, dimension.dataField)}`);
       }
     });
   }
@@ -370,7 +370,7 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
       if (field.hierarchyName && (fields[index + 1] || {}).hierarchyName === field.hierarchyName) {
         return;
       }
-      slice.push("".concat(field.dataField, ".").concat(preparePathValue(value, field.dataField)));
+      slice.push(`${field.dataField}.${preparePathValue(value, field.dataField)}`);
     });
   }
   function generateDrillDownMDX(options, cubeName, params) {
@@ -387,14 +387,14 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
       maxRowCount
     } = params;
     const customColumns = params.customColumns || [];
-    const customColumnsString = customColumns.length > 0 ? " return ".concat(customColumns.join(',')) : '';
+    const customColumnsString = customColumns.length > 0 ? ` return ${customColumns.join(',')}` : '';
     createDrillDownAxisSlice(slice, columns, params.columnPath || []);
     createDrillDownAxisSlice(slice, rows, params.rowPath || []);
     if (columns.length || dataFields.length) {
-      axisStrings.push(["".concat(dataFields[params.dataIndex] || dataFields[0], " on 0")]);
+      axisStrings.push([`${dataFields[params.dataIndex] || dataFields[0]} on 0`]);
     }
     const coreMDX = generateMdxCore(axisStrings, withArray, columns, rows, options.filters, slice, cubeName);
-    return coreMDX ? "drillthrough".concat(maxRowCount > 0 ? " maxrows ".concat(maxRowCount) : '').concat(coreMDX).concat(customColumnsString) : coreMDX;
+    return coreMDX ? `drillthrough${maxRowCount > 0 ? ` maxrows ${maxRowCount}` : ''}${coreMDX}${customColumnsString}` : coreMDX;
   }
   function getNumber(str) {
     return parseInt(str, 10);
@@ -499,8 +499,8 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
   }
   function preparePathValue(pathValue, dataField) {
     if (pathValue) {
-      pathValue = (0, _type.isString)(pathValue) && pathValue.includes('&') ? pathValue : "[".concat(pathValue, "]");
-      if (dataField && pathValue.indexOf("".concat(dataField, ".")) === 0) {
+      pathValue = (0, _type.isString)(pathValue) && pathValue.includes('&') ? pathValue : `[${pathValue}]`;
+      if (dataField && pathValue.indexOf(`${dataField}.`) === 0) {
         pathValue = pathValue.slice(dataField.length + 1, pathValue.length);
       }
     }
@@ -644,7 +644,7 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
   function parseDiscoverRowSet(xml, schema, dimensions, translatedDisplayFolders) {
     const result = [];
     const isMeasure = schema === 'MEASURE';
-    const displayFolderField = isMeasure ? 'MEASUREGROUP_NAME' : "".concat(schema, "_DISPLAY_FOLDER");
+    const displayFolderField = isMeasure ? 'MEASUREGROUP_NAME' : `${schema}_DISPLAY_FOLDER`;
     (0, _iterator.each)(xml.getElementsByTagName('row'), (_, row) => {
       const hierarchyName = schema === 'LEVEL' ? getFirstChildText(row, 'HIERARCHY_UNIQUE_NAME') : undefined;
       const levelNumber = getFirstChildText(row, 'LEVEL_NUMBER');
@@ -652,14 +652,14 @@ const XmlaStore = exports.XmlaStore = _class.default.inherit(function () {
       if (isMeasure) {
         displayFolder = translatedDisplayFolders[displayFolder] || displayFolder;
       }
-      if ((levelNumber !== '0' || getFirstChildText(row, "".concat(schema, "_IS_VISIBLE")) !== 'true') && getFirstChildText(row, 'DIMENSION_TYPE') !== MD_DIMTYPE_MEASURE) {
+      if ((levelNumber !== '0' || getFirstChildText(row, `${schema}_IS_VISIBLE`) !== 'true') && getFirstChildText(row, 'DIMENSION_TYPE') !== MD_DIMTYPE_MEASURE) {
         const dimension = isMeasure ? MEASURE_DEMENSION_KEY : getFirstChildText(row, 'DIMENSION_UNIQUE_NAME');
-        const dataField = getFirstChildText(row, "".concat(schema, "_UNIQUE_NAME"));
+        const dataField = getFirstChildText(row, `${schema}_UNIQUE_NAME`);
         result.push({
           dimension: dimensions.names[dimension] || dimension,
           groupIndex: levelNumber ? getNumber(levelNumber) - 1 : undefined,
           dataField,
-          caption: getFirstChildText(row, "".concat(schema, "_CAPTION")),
+          caption: getFirstChildText(row, `${schema}_CAPTION`),
           hierarchyName,
           groupName: hierarchyName,
           displayFolder,

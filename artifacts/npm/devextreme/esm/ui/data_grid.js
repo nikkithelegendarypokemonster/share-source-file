@@ -1,11 +1,12 @@
 /**
 * DevExtreme (esm/ui/data_grid.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
+// STYLE dataGrid
 import DataGrid from '../__internal/grids/data_grid/m_widget';
 // NOTE: This redundant import allows to build
 // dependencies between components correctly by theme-builder

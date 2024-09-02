@@ -1,17 +1,17 @@
 // eslint-disable-next-line no-restricted-imports
 import ko from 'knockout';
 import $ from '../../core/renderer';
-export var getClosestNodeWithContext = node => {
-  var context = ko.contextFor(node);
+export const getClosestNodeWithContext = node => {
+  const context = ko.contextFor(node);
   if (!context && node.parentNode) {
     return getClosestNodeWithContext(node.parentNode);
   }
   return node;
 };
-export var getClosestNodeWithKoCreation = node => {
-  var $el = $(node);
-  var data = $el.data();
-  var hasFlag = data && data['dxKoCreation'];
+export const getClosestNodeWithKoCreation = node => {
+  const $el = $(node);
+  const data = $el.data();
+  const hasFlag = data && data['dxKoCreation'];
   if (hasFlag) {
     return node;
   }

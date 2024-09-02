@@ -6,60 +6,35 @@ var _get_default_option_value = require("../utils/get_default_option_value");
 var _themes = require("../../../../ui/themes");
 var _message = _interopRequireDefault(require("../../../../localization/message"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-const BaseScrollableProps = exports.BaseScrollableProps = Object.defineProperties({
+const BaseScrollableProps = exports.BaseScrollableProps = {
   aria: Object.freeze({}),
   addWidgetClass: false,
   disabled: false,
   visible: true,
   classes: '',
   direction: 'vertical',
+  get bounceEnabled() {
+    return (0, _get_default_option_value.getDefaultBounceEnabled)();
+  },
+  get scrollByContent() {
+    return (0, _get_default_option_value.isDesktop)() ? _support.touch : true;
+  },
   pullDownEnabled: false,
   reachBottomEnabled: false,
   forceGeneratePockets: false,
   needScrollViewContentWrapper: false,
   needRenderScrollbars: true,
-  refreshStrategy: 'simulated'
-}, {
-  bounceEnabled: {
-    get: function () {
-      return (0, _get_default_option_value.getDefaultBounceEnabled)();
-    },
-    configurable: true,
-    enumerable: true
+  refreshStrategy: 'simulated',
+  get pullingDownText() {
+    return (0, _themes.isMaterial)((0, _themes.current)()) ? '' : _message.default.format('dxScrollView-pullingDownText');
   },
-  scrollByContent: {
-    get: function () {
-      return (0, _get_default_option_value.isDesktop)() ? _support.touch : true;
-    },
-    configurable: true,
-    enumerable: true
+  get pulledDownText() {
+    return (0, _themes.isMaterial)((0, _themes.current)()) ? '' : _message.default.format('dxScrollView-pulledDownText');
   },
-  pullingDownText: {
-    get: function () {
-      return (0, _themes.isMaterial)((0, _themes.current)()) ? '' : _message.default.format('dxScrollView-pullingDownText');
-    },
-    configurable: true,
-    enumerable: true
+  get refreshingText() {
+    return (0, _themes.isMaterial)((0, _themes.current)()) ? '' : _message.default.format('dxScrollView-refreshingText');
   },
-  pulledDownText: {
-    get: function () {
-      return (0, _themes.isMaterial)((0, _themes.current)()) ? '' : _message.default.format('dxScrollView-pulledDownText');
-    },
-    configurable: true,
-    enumerable: true
-  },
-  refreshingText: {
-    get: function () {
-      return (0, _themes.isMaterial)((0, _themes.current)()) ? '' : _message.default.format('dxScrollView-refreshingText');
-    },
-    configurable: true,
-    enumerable: true
-  },
-  reachBottomText: {
-    get: function () {
-      return (0, _themes.isMaterial)((0, _themes.current)()) ? '' : _message.default.format('dxScrollView-reachBottomText');
-    },
-    configurable: true,
-    enumerable: true
+  get reachBottomText() {
+    return (0, _themes.isMaterial)((0, _themes.current)()) ? '' : _message.default.format('dxScrollView-reachBottomText');
   }
-});
+};

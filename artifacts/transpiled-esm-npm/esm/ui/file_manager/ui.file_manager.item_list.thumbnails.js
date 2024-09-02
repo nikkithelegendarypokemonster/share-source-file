@@ -10,21 +10,21 @@ import messageLocalization from '../../localization/message';
 import FileManagerThumbnailListBox from './ui.file_manager.items_list.thumbnails.list_box';
 import FileManagerItemListBase from './ui.file_manager.item_list';
 import { OPERATIONS } from './file_items_controller';
-var FILE_MANAGER_THUMBNAILS_ITEM_LIST_CLASS = 'dx-filemanager-thumbnails';
-var FILE_MANAGER_THUMBNAILS_ITEM_CLASS = 'dx-filemanager-thumbnails-item';
-var FILE_MANAGER_THUMBNAILS_ITEM_THUMBNAIL_CLASS = 'dx-filemanager-thumbnails-item-thumbnail';
-var FILE_MANAGER_THUMBNAILS_EVENT_NAMESPACE = 'dxFileManager_thumbnails';
+const FILE_MANAGER_THUMBNAILS_ITEM_LIST_CLASS = 'dx-filemanager-thumbnails';
+const FILE_MANAGER_THUMBNAILS_ITEM_CLASS = 'dx-filemanager-thumbnails-item';
+const FILE_MANAGER_THUMBNAILS_ITEM_THUMBNAIL_CLASS = 'dx-filemanager-thumbnails-item-thumbnail';
+const FILE_MANAGER_THUMBNAILS_EVENT_NAMESPACE = 'dxFileManager_thumbnails';
 class FileManagerThumbnailsItemList extends FileManagerItemListBase {
   _initMarkup() {
     super._initMarkup();
     this.$element().addClass(FILE_MANAGER_THUMBNAILS_ITEM_LIST_CLASS);
-    var contextMenuEvent = addNamespace(contextMenuEventName, FILE_MANAGER_THUMBNAILS_EVENT_NAMESPACE);
+    const contextMenuEvent = addNamespace(contextMenuEventName, FILE_MANAGER_THUMBNAILS_EVENT_NAMESPACE);
     eventsEngine.on(this.$element(), contextMenuEvent, this._onContextMenu.bind(this));
     this._createItemList();
   }
   _createItemList() {
-    var selectionMode = this._isMultipleSelectionMode() ? 'multiple' : 'single';
-    var $itemListContainer = $('<div>').appendTo(this.$element());
+    const selectionMode = this._isMultipleSelectionMode() ? 'multiple' : 'single';
+    const $itemListContainer = $('<div>').appendTo(this.$element());
     this._itemList = this._createComponent($itemListContainer, FileManagerThumbnailListBox, {
       dataSource: this._createDataSource(),
       selectionMode,
@@ -48,15 +48,15 @@ class FileManagerThumbnailsItemList extends FileManagerItemListBase {
     if (!this._isDesktop()) {
       return;
     }
-    var items = null;
-    var targetItemElement = $(e.target).closest(this._getItemSelector());
-    var targetItem = null;
+    let items = null;
+    const targetItemElement = $(e.target).closest(this._getItemSelector());
+    let targetItem = null;
     if (targetItemElement.length > 0) {
       targetItem = this._itemList.getItemByItemElement(targetItemElement);
       this._itemList.selectItem(targetItem);
       items = this._getFileItemsForContextMenu(targetItem);
     }
-    var target = {
+    const target = {
       itemData: targetItem,
       itemElement: targetItemElement.length ? targetItemElement : undefined
     };
@@ -66,23 +66,23 @@ class FileManagerThumbnailsItemList extends FileManagerItemListBase {
     return FILE_MANAGER_THUMBNAILS_ITEM_THUMBNAIL_CLASS;
   }
   _getItemSelector() {
-    return ".".concat(FILE_MANAGER_THUMBNAILS_ITEM_CLASS);
+    return `.${FILE_MANAGER_THUMBNAILS_ITEM_CLASS}`;
   }
   _getTooltipText(fileItemInfo) {
-    var item = fileItemInfo.fileItem;
+    const item = fileItemInfo.fileItem;
     if (item.tooltipText) {
       return item.tooltipText;
     }
-    var text = "".concat(item.name, "\r\n");
+    let text = `${item.name}\r\n`;
     if (!item.isDirectory) {
-      text += "".concat(messageLocalization.format('dxFileManager-listThumbnailsTooltipTextSize'), ": ").concat(getDisplayFileSize(item.size), "\r\n");
+      text += `${messageLocalization.format('dxFileManager-listThumbnailsTooltipTextSize')}: ${getDisplayFileSize(item.size)}\r\n`;
     }
-    text += "".concat(messageLocalization.format('dxFileManager-listThumbnailsTooltipTextDateModified'), ": ").concat(item.dateModified);
+    text += `${messageLocalization.format('dxFileManager-listThumbnailsTooltipTextDateModified')}: ${item.dateModified}`;
     return text;
   }
   _onItemDblClick(e) {
-    var $item = $(e.currentTarget);
-    var item = this._itemList.getItemByItemElement($item);
+    const $item = $(e.currentTarget);
+    const item = this._itemList.getItemByItemElement($item);
     this._tryOpen(item);
   }
   _tryOpen(item) {
@@ -92,7 +92,7 @@ class FileManagerThumbnailsItemList extends FileManagerItemListBase {
   }
   _getItemsInternal() {
     return super._getItemsInternal().then(items => {
-      var deferred = new Deferred();
+      const deferred = new Deferred();
       setTimeout(() => deferred.resolve(items));
       return deferred.promise();
     });
@@ -106,13 +106,13 @@ class FileManagerThumbnailsItemList extends FileManagerItemListBase {
     });
   }
   _onItemListSelectionChanged(_ref) {
-    var {
+    let {
       addedItemKeys,
       removedItemKeys
     } = _ref;
-    var selectedItemInfos = this.getSelectedItems();
-    var selectedItems = selectedItemInfos.map(itemInfo => itemInfo.fileItem);
-    var selectedItemKeys = selectedItems.map(item => item.key);
+    const selectedItemInfos = this.getSelectedItems();
+    const selectedItems = selectedItemInfos.map(itemInfo => itemInfo.fileItem);
+    const selectedItemKeys = selectedItems.map(item => item.key);
     this._tryRaiseSelectionChanged({
       selectedItemInfos,
       selectedItems,
@@ -122,14 +122,14 @@ class FileManagerThumbnailsItemList extends FileManagerItemListBase {
     });
   }
   _onItemListFocusedItemChanged(_ref2) {
-    var {
+    let {
       item,
       itemElement
     } = _ref2;
     if (!this._isMultipleSelectionMode()) {
       this._selectItemSingleSelection(item);
     }
-    var fileSystemItem = (item === null || item === void 0 ? void 0 : item.fileItem) || null;
+    const fileSystemItem = (item === null || item === void 0 ? void 0 : item.fileItem) || null;
     this._onFocusedItemChanged({
       item: fileSystemItem,
       itemKey: fileSystemItem === null || fileSystemItem === void 0 ? void 0 : fileSystemItem.key,
@@ -146,7 +146,7 @@ class FileManagerThumbnailsItemList extends FileManagerItemListBase {
     this._itemList.option('focusedItemKey', itemKey);
   }
   refresh(options, operation) {
-    var actualOptions = {
+    const actualOptions = {
       dataSource: this._createDataSource()
     };
     if (options && Object.prototype.hasOwnProperty.call(options, 'focusedItemKey')) {
@@ -163,7 +163,7 @@ class FileManagerThumbnailsItemList extends FileManagerItemListBase {
     return this._refreshDeferred.promise();
   }
   _deselectItem(item) {
-    var itemElement = this._itemList.getItemElementByItem(item);
+    const itemElement = this._itemList.getItemElementByItem(item);
     this._itemList.unselectItem(itemElement);
   }
   _selectItemSingleSelection(item) {

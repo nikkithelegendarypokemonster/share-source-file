@@ -21,19 +21,8 @@ import messageLocalization from '../../../localization/message';
 import Scrollable from '../../../ui/scroll_view/ui.scrollable';
 import errors from '../../../ui/widget/ui.errors';
 import { getMemoizeScrollTo } from '../../core/utils/scroll';
-// NOTE: Renovation component section
-// @ts-expect-error
-import dxrAllDayPanelTable from '../../../renovation/ui/scheduler/workspaces/base/date_table/all_day_panel/table.j';
-// @ts-expect-error
-import dxrAllDayPanelTitle from '../../../renovation/ui/scheduler/workspaces/base/date_table/all_day_panel/title.j';
-// @ts-expect-error
-import dxrDateTableLayout from '../../../renovation/ui/scheduler/workspaces/base/date_table/layout.j';
-// @ts-expect-error
-import dxrGroupPanel from '../../../renovation/ui/scheduler/workspaces/base/group_panel/group_panel.j';
-// @ts-expect-error
-import dxrTimePanelTableLayout from '../../../renovation/ui/scheduler/workspaces/base/time_panel/layout.j';
-import { HeaderPanelComponent } from '../__migration/components/index';
-import { calculateIsGroupedAllDayPanel, calculateViewStartDate, getCellDuration, getGroupCount, getStartViewDateTimeOffset, getViewStartByOptions, isDateAndTimeView } from '../__migration/utils/index';
+import { AllDayPanelTitleComponent, AllDayTableComponent, DateTableComponent, GroupPanelComponent, HeaderPanelComponent, TimePanelComponent } from '../../scheduler/r1/components/index';
+import { calculateIsGroupedAllDayPanel, calculateViewStartDate, getCellDuration, getGroupCount, getStartViewDateTimeOffset, getViewStartByOptions, isDateAndTimeView } from '../../scheduler/r1/utils/index';
 import WidgetObserver from '../base/m_widget_observer';
 import AppointmentDragBehavior from '../m_appointment_drag_behavior';
 import { DATE_TABLE_CLASS, DATE_TABLE_ROW_CLASS, FIXED_CONTAINER_CLASS, GROUP_HEADER_CONTENT_CLASS, GROUP_ROW_CLASS, TIME_PANEL_CLASS, VERTICAL_GROUP_COUNT_CLASSES, VIRTUAL_CELL_CLASS } from '../m_classes';
@@ -50,66 +39,66 @@ import { VirtualScrollingDispatcher, VirtualScrollingRenderer } from './m_virtua
 import HorizontalGroupedStrategy from './m_work_space_grouped_strategy_horizontal';
 import VerticalGroupedStrategy from './m_work_space_grouped_strategy_vertical';
 import ViewDataProvider from './view_model/m_view_data_provider';
-var {
+const {
   tableCreator
 } = tableCreatorModule;
 // TODO: The constant is needed so that the dragging is not sharp. To prevent small twitches
-var DRAGGING_MOUSE_FAULT = 10;
+const DRAGGING_MOUSE_FAULT = 10;
 // @ts-expect-error
-var {
+const {
   abstract
 } = WidgetObserver;
-var toMs = dateUtils.dateToMilliseconds;
-var COMPONENT_CLASS = 'dx-scheduler-work-space';
-var GROUPED_WORKSPACE_CLASS = 'dx-scheduler-work-space-grouped';
-var VERTICAL_GROUPED_WORKSPACE_CLASS = 'dx-scheduler-work-space-vertical-grouped';
-var WORKSPACE_VERTICAL_GROUP_TABLE_CLASS = 'dx-scheduler-work-space-vertical-group-table';
-var WORKSPACE_WITH_BOTH_SCROLLS_CLASS = 'dx-scheduler-work-space-both-scrollbar';
-var WORKSPACE_WITH_COUNT_CLASS = 'dx-scheduler-work-space-count';
-var WORKSPACE_WITH_GROUP_BY_DATE_CLASS = 'dx-scheduler-work-space-group-by-date';
-var WORKSPACE_WITH_ODD_CELLS_CLASS = 'dx-scheduler-work-space-odd-cells';
-var TIME_PANEL_CELL_CLASS = 'dx-scheduler-time-panel-cell';
-var TIME_PANEL_ROW_CLASS = 'dx-scheduler-time-panel-row';
-var ALL_DAY_PANEL_CLASS = 'dx-scheduler-all-day-panel';
-var ALL_DAY_TABLE_CLASS = 'dx-scheduler-all-day-table';
-var ALL_DAY_CONTAINER_CLASS = 'dx-scheduler-all-day-appointments';
-var ALL_DAY_TITLE_CLASS = 'dx-scheduler-all-day-title';
-var ALL_DAY_TABLE_CELL_CLASS = 'dx-scheduler-all-day-table-cell';
-var ALL_DAY_TABLE_ROW_CLASS = 'dx-scheduler-all-day-table-row';
-var WORKSPACE_WITH_ALL_DAY_CLASS = 'dx-scheduler-work-space-all-day';
-var WORKSPACE_WITH_COLLAPSED_ALL_DAY_CLASS = 'dx-scheduler-work-space-all-day-collapsed';
-var WORKSPACE_WITH_MOUSE_SELECTION_CLASS = 'dx-scheduler-work-space-mouse-selection';
-var HORIZONTAL_SIZES_CLASS = 'dx-scheduler-cell-sizes-horizontal';
-var VERTICAL_SIZES_CLASS = 'dx-scheduler-cell-sizes-vertical';
-var HEADER_PANEL_CLASS = 'dx-scheduler-header-panel';
-var HEADER_PANEL_CELL_CLASS = 'dx-scheduler-header-panel-cell';
-var HEADER_ROW_CLASS = 'dx-scheduler-header-row';
-var GROUP_HEADER_CLASS = 'dx-scheduler-group-header';
-var DATE_TABLE_CELL_CLASS = 'dx-scheduler-date-table-cell';
-var DATE_TABLE_FOCUSED_CELL_CLASS = 'dx-scheduler-focused-cell';
-var VIRTUAL_ROW_CLASS = 'dx-scheduler-virtual-row';
-var DATE_TABLE_DROPPABLE_CELL_CLASS = 'dx-scheduler-date-table-droppable-cell';
-var SCHEDULER_HEADER_SCROLLABLE_CLASS = 'dx-scheduler-header-scrollable';
-var SCHEDULER_SIDEBAR_SCROLLABLE_CLASS = 'dx-scheduler-sidebar-scrollable';
-var SCHEDULER_DATE_TABLE_SCROLLABLE_CLASS = 'dx-scheduler-date-table-scrollable';
-var SCHEDULER_WORKSPACE_DXPOINTERDOWN_EVENT_NAME = addNamespace(pointerEvents.down, 'dxSchedulerWorkSpace');
-var DragEventNames = {
+const toMs = dateUtils.dateToMilliseconds;
+const COMPONENT_CLASS = 'dx-scheduler-work-space';
+const GROUPED_WORKSPACE_CLASS = 'dx-scheduler-work-space-grouped';
+const VERTICAL_GROUPED_WORKSPACE_CLASS = 'dx-scheduler-work-space-vertical-grouped';
+const WORKSPACE_VERTICAL_GROUP_TABLE_CLASS = 'dx-scheduler-work-space-vertical-group-table';
+const WORKSPACE_WITH_BOTH_SCROLLS_CLASS = 'dx-scheduler-work-space-both-scrollbar';
+const WORKSPACE_WITH_COUNT_CLASS = 'dx-scheduler-work-space-count';
+const WORKSPACE_WITH_GROUP_BY_DATE_CLASS = 'dx-scheduler-work-space-group-by-date';
+const WORKSPACE_WITH_ODD_CELLS_CLASS = 'dx-scheduler-work-space-odd-cells';
+const TIME_PANEL_CELL_CLASS = 'dx-scheduler-time-panel-cell';
+const TIME_PANEL_ROW_CLASS = 'dx-scheduler-time-panel-row';
+const ALL_DAY_PANEL_CLASS = 'dx-scheduler-all-day-panel';
+const ALL_DAY_TABLE_CLASS = 'dx-scheduler-all-day-table';
+const ALL_DAY_CONTAINER_CLASS = 'dx-scheduler-all-day-appointments';
+const ALL_DAY_TITLE_CLASS = 'dx-scheduler-all-day-title';
+const ALL_DAY_TABLE_CELL_CLASS = 'dx-scheduler-all-day-table-cell';
+const ALL_DAY_TABLE_ROW_CLASS = 'dx-scheduler-all-day-table-row';
+const WORKSPACE_WITH_ALL_DAY_CLASS = 'dx-scheduler-work-space-all-day';
+const WORKSPACE_WITH_COLLAPSED_ALL_DAY_CLASS = 'dx-scheduler-work-space-all-day-collapsed';
+const WORKSPACE_WITH_MOUSE_SELECTION_CLASS = 'dx-scheduler-work-space-mouse-selection';
+const HORIZONTAL_SIZES_CLASS = 'dx-scheduler-cell-sizes-horizontal';
+const VERTICAL_SIZES_CLASS = 'dx-scheduler-cell-sizes-vertical';
+const HEADER_PANEL_CLASS = 'dx-scheduler-header-panel';
+const HEADER_PANEL_CELL_CLASS = 'dx-scheduler-header-panel-cell';
+const HEADER_ROW_CLASS = 'dx-scheduler-header-row';
+const GROUP_HEADER_CLASS = 'dx-scheduler-group-header';
+const DATE_TABLE_CELL_CLASS = 'dx-scheduler-date-table-cell';
+const DATE_TABLE_FOCUSED_CELL_CLASS = 'dx-scheduler-focused-cell';
+const VIRTUAL_ROW_CLASS = 'dx-scheduler-virtual-row';
+const DATE_TABLE_DROPPABLE_CELL_CLASS = 'dx-scheduler-date-table-droppable-cell';
+const SCHEDULER_HEADER_SCROLLABLE_CLASS = 'dx-scheduler-header-scrollable';
+const SCHEDULER_SIDEBAR_SCROLLABLE_CLASS = 'dx-scheduler-sidebar-scrollable';
+const SCHEDULER_DATE_TABLE_SCROLLABLE_CLASS = 'dx-scheduler-date-table-scrollable';
+const SCHEDULER_WORKSPACE_DXPOINTERDOWN_EVENT_NAME = addNamespace(pointerEvents.down, 'dxSchedulerWorkSpace');
+const DragEventNames = {
   ENTER: addNamespace(dragEventEnter, 'dxSchedulerDateTable'),
   DROP: addNamespace(dragEventDrop, 'dxSchedulerDateTable'),
   LEAVE: addNamespace(dragEventLeave, 'dxSchedulerDateTable')
 };
-var SCHEDULER_CELL_DXCLICK_EVENT_NAME = addNamespace(clickEventName, 'dxSchedulerDateTable');
-var SCHEDULER_CELL_DXPOINTERDOWN_EVENT_NAME = addNamespace(pointerEvents.down, 'dxSchedulerDateTable');
-var SCHEDULER_CELL_DXPOINTERUP_EVENT_NAME = addNamespace(pointerEvents.up, 'dxSchedulerDateTable');
-var SCHEDULER_CELL_DXPOINTERMOVE_EVENT_NAME = addNamespace(pointerEvents.move, 'dxSchedulerDateTable');
-var CELL_DATA = 'dxCellData';
-var DATE_TABLE_MIN_CELL_WIDTH = 75;
-var DAY_MS = toMs('day');
-var HOUR_MS = toMs('hour');
-var DRAG_AND_DROP_SELECTOR = ".".concat(DATE_TABLE_CLASS, " td, .").concat(ALL_DAY_TABLE_CLASS, " td");
-var CELL_SELECTOR = ".".concat(DATE_TABLE_CELL_CLASS, ", .").concat(ALL_DAY_TABLE_CELL_CLASS);
-var CELL_INDEX_CALCULATION_EPSILON = 0.05;
-var DEFAULT_WORKSPACE_RENDER_OPTIONS = {
+const SCHEDULER_CELL_DXCLICK_EVENT_NAME = addNamespace(clickEventName, 'dxSchedulerDateTable');
+const SCHEDULER_CELL_DXPOINTERDOWN_EVENT_NAME = addNamespace(pointerEvents.down, 'dxSchedulerDateTable');
+const SCHEDULER_CELL_DXPOINTERUP_EVENT_NAME = addNamespace(pointerEvents.up, 'dxSchedulerDateTable');
+const SCHEDULER_CELL_DXPOINTERMOVE_EVENT_NAME = addNamespace(pointerEvents.move, 'dxSchedulerDateTable');
+const CELL_DATA = 'dxCellData';
+const DATE_TABLE_MIN_CELL_WIDTH = 75;
+const DAY_MS = toMs('day');
+const HOUR_MS = toMs('hour');
+const DRAG_AND_DROP_SELECTOR = `.${DATE_TABLE_CLASS} td, .${ALL_DAY_TABLE_CLASS} td`;
+const CELL_SELECTOR = `.${DATE_TABLE_CELL_CLASS}, .${ALL_DAY_TABLE_CELL_CLASS}`;
+const CELL_INDEX_CALCULATION_EPSILON = 0.05;
+const DEFAULT_WORKSPACE_RENDER_OPTIONS = {
   renderComponents: {
     header: true,
     timePanel: true,
@@ -142,19 +131,19 @@ class SchedulerWorkSpace extends WidgetObserver {
   get cellsSelectionState() {
     if (!this._cellsSelectionState) {
       this._cellsSelectionState = new CellsSelectionState(this.viewDataProvider);
-      var selectedCellsOption = this.option('selectedCellData');
+      const selectedCellsOption = this.option('selectedCellData');
       if ((selectedCellsOption === null || selectedCellsOption === void 0 ? void 0 : selectedCellsOption.length) > 0) {
-        var validSelectedCells = selectedCellsOption.map(selectedCell => {
-          var {
+        const validSelectedCells = selectedCellsOption.map(selectedCell => {
+          const {
             groups
           } = selectedCell;
           if (!groups || this._getGroupCount() === 0) {
-            return _extends(_extends({}, selectedCell), {
+            return _extends({}, selectedCell, {
               groupIndex: 0
             });
           }
-          var groupIndex = this._getGroupIndexByResourceId(groups);
-          return _extends(_extends({}, selectedCell), {
+          const groupIndex = this._getGroupIndexByResourceId(groups);
+          return _extends({}, selectedCell, {
             groupIndex
           });
         });
@@ -185,12 +174,12 @@ class SchedulerWorkSpace extends WidgetObserver {
     return this.option('draggingMode') === 'default';
   }
   _supportedKeys() {
-    var clickHandler = function clickHandler(e) {
+    const clickHandler = function (e) {
       e.preventDefault();
       e.stopPropagation();
-      var selectedCells = this.cellsSelectionState.getSelectedCells();
-      if (selectedCells === null || selectedCells === void 0 ? void 0 : selectedCells.length) {
-        var selectedCellsElement = selectedCells.map(cellData => this._getCellByData(cellData)).filter(cell => !!cell);
+      const selectedCells = this.cellsSelectionState.getSelectedCells();
+      if (selectedCells !== null && selectedCells !== void 0 && selectedCells.length) {
+        const selectedCellsElement = selectedCells.map(cellData => this._getCellByData(cellData)).filter(cell => !!cell);
         e.target = selectedCellsElement;
         this._showPopup = true;
         this._cellClickAction({
@@ -200,24 +189,24 @@ class SchedulerWorkSpace extends WidgetObserver {
         });
       }
     };
-    var onArrowPressed = (e, key) => {
-      var _a;
+    const onArrowPressed = (e, key) => {
+      var _this$cellsSelectionS;
       e.preventDefault();
       e.stopPropagation();
-      var focusedCellData = (_a = this.cellsSelectionState.focusedCell) === null || _a === void 0 ? void 0 : _a.cellData;
+      const focusedCellData = (_this$cellsSelectionS = this.cellsSelectionState.focusedCell) === null || _this$cellsSelectionS === void 0 ? void 0 : _this$cellsSelectionS.cellData;
       if (focusedCellData) {
-        var isAllDayPanelCell = focusedCellData.allDay && !this._isVerticalGroupedWorkSpace();
-        var isMultiSelection = e.shiftKey;
-        var isMultiSelectionAllowed = this.option('allowMultipleCellSelection');
-        var isRTL = this._isRTL();
-        var groupCount = this._getGroupCount();
-        var isGroupedByDate = this.isGroupedByDate();
-        var isHorizontalGrouping = this._isHorizontalGroupedWorkSpace();
-        var focusedCellPosition = this.viewDataProvider.findCellPositionInMap(_extends(_extends({}, focusedCellData), {
+        const isAllDayPanelCell = focusedCellData.allDay && !this._isVerticalGroupedWorkSpace();
+        const isMultiSelection = e.shiftKey;
+        const isMultiSelectionAllowed = this.option('allowMultipleCellSelection');
+        const isRTL = this._isRTL();
+        const groupCount = this._getGroupCount();
+        const isGroupedByDate = this.isGroupedByDate();
+        const isHorizontalGrouping = this._isHorizontalGroupedWorkSpace();
+        const focusedCellPosition = this.viewDataProvider.findCellPositionInMap(_extends({}, focusedCellData, {
           isAllDay: focusedCellData.allDay
         }));
-        var edgeIndices = isHorizontalGrouping && isMultiSelection && !isGroupedByDate ? this.viewDataProvider.getGroupEdgeIndices(focusedCellData.groupIndex, isAllDayPanelCell) : this.viewDataProvider.getViewEdgeIndices(isAllDayPanelCell);
-        var nextCellData = this.cellsSelectionController.handleArrowClick({
+        const edgeIndices = isHorizontalGrouping && isMultiSelection && !isGroupedByDate ? this.viewDataProvider.getGroupEdgeIndices(focusedCellData.groupIndex, isAllDayPanelCell) : this.viewDataProvider.getViewEdgeIndices(isAllDayPanelCell);
+        const nextCellData = this.cellsSelectionController.handleArrowClick({
           focusedCellPosition,
           edgeIndices,
           isRTL,
@@ -259,10 +248,10 @@ class SchedulerWorkSpace extends WidgetObserver {
     if (!isDefined($cell) || !$cell.length) {
       return;
     }
-    var isMultiSelectionAllowed = this.option('allowMultipleCellSelection');
-    var currentCellData = this._getFullCellData($cell);
-    var focusedCellData = this.cellsSelectionState.focusedCell.cellData;
-    var nextFocusedCellData = this.cellsSelectionController.moveToCell({
+    const isMultiSelectionAllowed = this.option('allowMultipleCellSelection');
+    const currentCellData = this._getFullCellData($cell);
+    const focusedCellData = this.cellsSelectionState.focusedCell.cellData;
+    const nextFocusedCellData = this.cellsSelectionController.moveToCell({
       isMultiSelection,
       isMultiSelectionAllowed,
       currentCellData,
@@ -272,21 +261,21 @@ class SchedulerWorkSpace extends WidgetObserver {
     this._processNextSelectedCell(nextFocusedCellData, focusedCellData, isMultiSelectionAllowed && isMultiSelection);
   }
   _processNextSelectedCell(nextCellData, focusedCellData, isMultiSelection) {
-    var nextCellPosition = this.viewDataProvider.findCellPositionInMap({
+    const nextCellPosition = this.viewDataProvider.findCellPositionInMap({
       startDate: nextCellData.startDate,
       groupIndex: nextCellData.groupIndex,
       isAllDay: nextCellData.allDay,
       index: nextCellData.index
     });
     if (!this.viewDataProvider.isSameCell(focusedCellData, nextCellData)) {
-      var $cell = nextCellData.allDay && !this._isVerticalGroupedWorkSpace() ? this._dom_getAllDayPanelCell(nextCellPosition.columnIndex) : this._dom_getDateCell(nextCellPosition);
-      var isNextCellAllDay = nextCellData.allDay;
+      const $cell = nextCellData.allDay && !this._isVerticalGroupedWorkSpace() ? this._dom_getAllDayPanelCell(nextCellPosition.columnIndex) : this._dom_getDateCell(nextCellPosition);
+      const isNextCellAllDay = nextCellData.allDay;
       this._setSelectedCellsStateAndUpdateSelection(isNextCellAllDay, nextCellPosition, isMultiSelection, $cell);
       this._dateTableScrollable.scrollToElement($cell);
     }
   }
   _setSelectedCellsStateAndUpdateSelection(isAllDay, cellPosition, isMultiSelection, $nextFocusedCell) {
-    var nextCellCoordinates = {
+    const nextCellCoordinates = {
       rowIndex: cellPosition.rowIndex,
       columnIndex: cellPosition.columnIndex,
       allDay: isAllDay
@@ -311,7 +300,7 @@ class SchedulerWorkSpace extends WidgetObserver {
       super._focusInHandler.apply(this, arguments);
       this.cellsSelectionState.restoreSelectedAndFocusedCells();
       if (!this.cellsSelectionState.focusedCell) {
-        var cellCoordinates = {
+        const cellCoordinates = {
           columnIndex: 0,
           rowIndex: 0,
           allDay: this._isVerticalGroupedWorkSpace() && this.isAllDayPanelVisible
@@ -336,12 +325,12 @@ class SchedulerWorkSpace extends WidgetObserver {
     return this.$element();
   }
   _isVerticalGroupedWorkSpace() {
-    var _a;
-    return !!((_a = this.option('groups')) === null || _a === void 0 ? void 0 : _a.length) && this.option('groupOrientation') === 'vertical';
+    var _this$option;
+    return !!((_this$option = this.option('groups')) !== null && _this$option !== void 0 && _this$option.length) && this.option('groupOrientation') === 'vertical';
   }
   _isHorizontalGroupedWorkSpace() {
-    var _a;
-    return !!((_a = this.option('groups')) === null || _a === void 0 ? void 0 : _a.length) && this.option('groupOrientation') === 'horizontal';
+    var _this$option2;
+    return !!((_this$option2 = this.option('groups')) !== null && _this$option2 !== void 0 && _this$option2.length) && this.option('groupOrientation') === 'horizontal';
   }
   _isWorkSpaceWithCount() {
     return this.option('intervalCount') > 1;
@@ -357,23 +346,23 @@ class SchedulerWorkSpace extends WidgetObserver {
     this._$allDayTitle = $('<div>').appendTo(this._$headerPanelEmptyCell);
   }
   _dateTableScrollableConfig() {
-    var config = {
+    let config = {
       useKeyboard: false,
       bounceEnabled: false,
       updateManually: true,
       onScroll: () => {
-        var _a;
-        (_a = this._groupedStrategy.cache) === null || _a === void 0 ? void 0 : _a.clear();
+        var _this$_groupedStrateg;
+        (_this$_groupedStrateg = this._groupedStrategy.cache) === null || _this$_groupedStrateg === void 0 || _this$_groupedStrateg.clear();
       }
     };
     if (this._needCreateCrossScrolling()) {
       config = extend(config, this._createCrossScrollingConfig(config));
     }
     if (this.isVirtualScrolling() && (this.virtualScrollingDispatcher.horizontalScrollingAllowed || this.virtualScrollingDispatcher.height)) {
-      var currentOnScroll = config.onScroll;
-      config = _extends(_extends({}, config), {
+      const currentOnScroll = config.onScroll;
+      config = _extends({}, config, {
         onScroll: e => {
-          currentOnScroll === null || currentOnScroll === void 0 ? void 0 : currentOnScroll(e);
+          currentOnScroll === null || currentOnScroll === void 0 || currentOnScroll(e);
           this.virtualScrollingDispatcher.handleOnScrollEvent(e === null || e === void 0 ? void 0 : e.scrollOffset);
         }
       });
@@ -381,13 +370,13 @@ class SchedulerWorkSpace extends WidgetObserver {
     return config;
   }
   _createCrossScrollingConfig(_ref) {
-    var {
-      onScroll: _onScroll
+    let {
+      onScroll
     } = _ref;
     return {
       direction: 'both',
       onScroll: event => {
-        _onScroll === null || _onScroll === void 0 ? void 0 : _onScroll();
+        onScroll === null || onScroll === void 0 || onScroll();
         this._scrollSync.sidebar({
           top: event.scrollOffset.top
         });
@@ -427,14 +416,14 @@ class SchedulerWorkSpace extends WidgetObserver {
   _setTableSizes() {
     this.cache.clear();
     this._attachTableClasses();
-    var cellWidth = this.getCellWidth();
+    let cellWidth = this.getCellWidth();
     if (cellWidth < this.getCellMinWidth()) {
       cellWidth = this.getCellMinWidth();
     }
-    var minWidth = this.getWorkSpaceMinWidth();
-    var groupCount = this._getGroupCount();
-    var totalCellCount = this._getTotalCellCount(groupCount);
-    var width = cellWidth * totalCellCount;
+    const minWidth = this.getWorkSpaceMinWidth();
+    const groupCount = this._getGroupCount();
+    const totalCellCount = this._getTotalCellCount(groupCount);
+    let width = cellWidth * totalCellCount;
     if (width < minWidth) {
       width = minWidth;
     }
@@ -513,15 +502,15 @@ class SchedulerWorkSpace extends WidgetObserver {
     return calculateIsGroupedAllDayPanel(this.option('groups'), this.option('groupOrientation'), this.isAllDayPanelVisible);
   }
   generateRenderOptions(isProvideVirtualCellsWidth) {
-    var _a;
-    var groupCount = this._getGroupCount();
-    var groupOrientation = groupCount > 0 ? this.option('groupOrientation') : this._getDefaultGroupStrategy();
-    var options = _extends({
+    var _this$_getToday;
+    const groupCount = this._getGroupCount();
+    const groupOrientation = groupCount > 0 ? this.option('groupOrientation') : this._getDefaultGroupStrategy();
+    const options = _extends({
       groupByDate: this.option('groupByDate'),
       startRowIndex: 0,
       startCellIndex: 0,
       groupOrientation,
-      today: (_a = this._getToday) === null || _a === void 0 ? void 0 : _a.call(this),
+      today: (_this$_getToday = this._getToday) === null || _this$_getToday === void 0 ? void 0 : _this$_getToday.call(this),
       groups: this.option('groups'),
       isProvideVirtualCellsWidth,
       isAllDayPanelVisible: this.isAllDayPanelVisible,
@@ -553,31 +542,31 @@ class SchedulerWorkSpace extends WidgetObserver {
   }
   updateHeaderEmptyCellWidth() {
     if (hasWindow() && this._isRenderHeaderPanelEmptyCell()) {
-      var timePanelWidth = this.getTimePanelWidth();
-      var groupPanelWidth = this.getGroupTableWidth();
+      const timePanelWidth = this.getTimePanelWidth();
+      const groupPanelWidth = this.getGroupTableWidth();
       this._$headerPanelEmptyCell.css('width', timePanelWidth + groupPanelWidth);
     }
   }
   _isGroupsSpecified(resources) {
-    var _a;
-    return ((_a = this.option('groups')) === null || _a === void 0 ? void 0 : _a.length) && resources;
+    var _this$option3;
+    return ((_this$option3 = this.option('groups')) === null || _this$option3 === void 0 ? void 0 : _this$option3.length) && resources;
   }
   _getGroupIndexByResourceId(id) {
-    var groups = this.option('groups');
-    var resourceTree = createResourcesTree(groups);
+    const groups = this.option('groups');
+    const resourceTree = createResourcesTree(groups);
     if (!resourceTree.length) return 0;
     return this._getGroupIndexRecursively(resourceTree, id);
   }
   _getGroupIndexRecursively(resourceTree, id) {
-    var currentKey = resourceTree[0].name;
-    var currentValue = id[currentKey];
+    const currentKey = resourceTree[0].name;
+    const currentValue = id[currentKey];
     return resourceTree.reduce((prevIndex, _ref2) => {
-      var {
+      let {
         leafIndex,
         value,
         children
       } = _ref2;
-      var areValuesEqual = currentValue === value;
+      const areValuesEqual = currentValue === value;
       if (areValuesEqual && leafIndex !== undefined) {
         return leafIndex;
       }
@@ -608,13 +597,13 @@ class SchedulerWorkSpace extends WidgetObserver {
     this._attachContextMenuEvent();
   }
   _attachClickEvent() {
-    var that = this;
-    var pointerDownAction = this._createAction(e => {
+    const that = this;
+    const pointerDownAction = this._createAction(e => {
       that._pointerDownHandler(e.event);
     });
     this._createCellClickAction();
-    var cellSelector = ".".concat(DATE_TABLE_CELL_CLASS, ",.").concat(ALL_DAY_TABLE_CELL_CLASS);
-    var $element = this.$element();
+    const cellSelector = `.${DATE_TABLE_CELL_CLASS},.${ALL_DAY_TABLE_CELL_CLASS}`;
+    const $element = this.$element();
     eventsEngine.off($element, SCHEDULER_WORKSPACE_DXPOINTERDOWN_EVENT_NAME);
     eventsEngine.off($element, SCHEDULER_CELL_DXCLICK_EVENT_NAME);
     eventsEngine.on($element, SCHEDULER_WORKSPACE_DXPOINTERDOWN_EVENT_NAME, e => {
@@ -627,7 +616,7 @@ class SchedulerWorkSpace extends WidgetObserver {
       });
     });
     eventsEngine.on($element, SCHEDULER_CELL_DXCLICK_EVENT_NAME, cellSelector, e => {
-      var $cell = $(e.target);
+      const $cell = $(e.target);
       that._cellClickAction({
         event: e,
         cellElement: getPublicElement($cell),
@@ -651,7 +640,7 @@ class SchedulerWorkSpace extends WidgetObserver {
     }
   }
   _pointerDownHandler(e) {
-    var $target = $(e.target);
+    const $target = $(e.target);
     if (!$target.hasClass(DATE_TABLE_CELL_CLASS) && !$target.hasClass(ALL_DAY_TABLE_CELL_CLASS)) {
       this._isCellClick = false;
       return;
@@ -660,16 +649,16 @@ class SchedulerWorkSpace extends WidgetObserver {
     if ($target.hasClass(DATE_TABLE_FOCUSED_CELL_CLASS)) {
       this._showPopup = true;
     } else {
-      var cellCoordinates = this._getCoordinatesByCell($target);
-      var isAllDayCell = this._hasAllDayClass($target);
+      const cellCoordinates = this._getCoordinatesByCell($target);
+      const isAllDayCell = this._hasAllDayClass($target);
       this._setSelectedCellsStateAndUpdateSelection(isAllDayCell, cellCoordinates, false, $target);
     }
   }
   _handleSelectedCellsClick() {
-    var selectedCells = this.cellsSelectionState.getSelectedCells();
-    var firstCellData = selectedCells[0];
-    var lastCellData = selectedCells[selectedCells.length - 1];
-    var result = {
+    const selectedCells = this.cellsSelectionState.getSelectedCells();
+    const firstCellData = selectedCells[0];
+    const lastCellData = selectedCells[selectedCells.length - 1];
+    const result = {
       startDate: firstCellData.startDate,
       endDate: lastCellData.endDate
     };
@@ -680,14 +669,14 @@ class SchedulerWorkSpace extends WidgetObserver {
   }
   _attachContextMenuEvent() {
     this._createContextMenuAction();
-    var cellSelector = ".".concat(DATE_TABLE_CELL_CLASS, ",.").concat(ALL_DAY_TABLE_CELL_CLASS);
-    var $element = this.$element();
-    var eventName = addNamespace(contextMenuEventName, this.NAME);
+    const cellSelector = `.${DATE_TABLE_CELL_CLASS},.${ALL_DAY_TABLE_CELL_CLASS}`;
+    const $element = this.$element();
+    const eventName = addNamespace(contextMenuEventName, this.NAME);
     eventsEngine.off($element, eventName, cellSelector);
     eventsEngine.on($element, eventName, cellSelector, this._contextMenuHandler.bind(this));
   }
   _contextMenuHandler(e) {
-    var $cell = $(e.target);
+    const $cell = $(e.target);
     this._contextMenuAction({
       event: e,
       cellElement: getPublicElement($cell),
@@ -711,25 +700,25 @@ class SchedulerWorkSpace extends WidgetObserver {
     return this._groupedStrategy.calculateHeaderCellRepeatCount();
   }
   _updateScrollable() {
-    var _a, _b;
+    var _this$_headerScrollab, _this$_sidebarScrolla;
     this._dateTableScrollable.update();
-    (_a = this._headerScrollable) === null || _a === void 0 ? void 0 : _a.update();
-    (_b = this._sidebarScrollable) === null || _b === void 0 ? void 0 : _b.update();
+    (_this$_headerScrollab = this._headerScrollable) === null || _this$_headerScrollab === void 0 || _this$_headerScrollab.update();
+    (_this$_sidebarScrolla = this._sidebarScrollable) === null || _this$_sidebarScrolla === void 0 || _this$_sidebarScrolla.update();
   }
   _getTimePanelRowCount() {
     return this._getCellCountInDay();
   }
   _getCellCountInDay() {
-    var hoursInterval = this.option('hoursInterval');
-    var startDayHour = this.option('startDayHour');
-    var endDayHour = this.option('endDayHour');
+    const hoursInterval = this.option('hoursInterval');
+    const startDayHour = this.option('startDayHour');
+    const endDayHour = this.option('endDayHour');
     return this.viewDataProvider.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
   }
   _getTotalCellCount(groupCount) {
     return this._groupedStrategy.getTotalCellCount(groupCount);
   }
   _getTotalRowCount(groupCount, includeAllDayPanelRows) {
-    var result = this._groupedStrategy.getTotalRowCount(groupCount);
+    let result = this._groupedStrategy.getTotalRowCount(groupCount);
     if (includeAllDayPanelRows && this.isAllDayPanelVisible) {
       result += groupCount;
     }
@@ -739,7 +728,7 @@ class SchedulerWorkSpace extends WidgetObserver {
     return this._groupedStrategy.getGroupIndex(rowIndex, columnIndex);
   }
   calculateEndDate(startDate) {
-    var {
+    const {
       viewDataGenerator
     } = this.viewDataProvider;
     return viewDataGenerator.calculateEndDate(startDate, viewDataGenerator.getInterval(this.option('hoursInterval')), this.option('endDayHour'));
@@ -748,7 +737,7 @@ class SchedulerWorkSpace extends WidgetObserver {
     return getGroupCount(this.option('groups'));
   }
   _attachTablesEvents() {
-    var element = this.$element();
+    const element = this.$element();
     this._attachDragEvents(element);
     this._attachPointerEvents(element);
   }
@@ -759,38 +748,38 @@ class SchedulerWorkSpace extends WidgetObserver {
   }
   _attachDragEvents(element) {
     this._detachDragEvents(element);
-    var onDragEnter = e => {
+    const onDragEnter = e => {
       if (!this.preventDefaultDragging) {
         this.removeDroppableCellClass();
         $(e.target).addClass(DATE_TABLE_DROPPABLE_CELL_CLASS);
       }
     };
-    var removeClasses = () => {
+    const removeClasses = () => {
       if (!this.preventDefaultDragging) {
         this.removeDroppableCellClass();
       }
     };
-    var onCheckDropTarget = (target, event) => !this._isOutsideScrollable(target, event);
+    const onCheckDropTarget = (target, event) => !this._isOutsideScrollable(target, event);
     eventsEngine.on(element, DragEventNames.ENTER, DRAG_AND_DROP_SELECTOR, {
       checkDropTarget: onCheckDropTarget
     }, onDragEnter);
     eventsEngine.on(element, DragEventNames.LEAVE, removeClasses);
     eventsEngine.on(element, DragEventNames.DROP, DRAG_AND_DROP_SELECTOR, () => {
-      var _a, _b;
+      var _this$dragBehavior, _this$dragBehavior$dr;
       if (!this.dragBehavior) {
         return;
       }
-      if (!((_a = this.dragBehavior) === null || _a === void 0 ? void 0 : _a.dragBetweenComponentsPromise)) {
+      if (!((_this$dragBehavior = this.dragBehavior) !== null && _this$dragBehavior !== void 0 && _this$dragBehavior.dragBetweenComponentsPromise)) {
         this.dragBehavior.removeDroppableClasses();
         return;
       }
-      (_b = this.dragBehavior.dragBetweenComponentsPromise) === null || _b === void 0 ? void 0 : _b.then(() => {
+      (_this$dragBehavior$dr = this.dragBehavior.dragBetweenComponentsPromise) === null || _this$dragBehavior$dr === void 0 || _this$dragBehavior$dr.then(() => {
         this.dragBehavior.removeDroppableClasses();
       });
     });
   }
   _attachPointerEvents(element) {
-    var isPointerDown = false;
+    let isPointerDown = false;
     eventsEngine.off(element, SCHEDULER_CELL_DXPOINTERMOVE_EVENT_NAME);
     eventsEngine.off(element, SCHEDULER_CELL_DXPOINTERDOWN_EVENT_NAME);
     eventsEngine.on(element, SCHEDULER_CELL_DXPOINTERDOWN_EVENT_NAME, DRAG_AND_DROP_SELECTOR, e => {
@@ -849,8 +838,8 @@ class SchedulerWorkSpace extends WidgetObserver {
     return this._groupedStrategy.getLeftOffset();
   }
   _getCellCoordinatesByIndex(index) {
-    var columnIndex = Math.floor(index / this._getRowCount());
-    var rowIndex = index - this._getRowCount() * columnIndex;
+    const columnIndex = Math.floor(index / this._getRowCount());
+    const rowIndex = index - this._getRowCount() * columnIndex;
     return {
       columnIndex,
       rowIndex
@@ -859,31 +848,31 @@ class SchedulerWorkSpace extends WidgetObserver {
   // TODO: necessary for old render
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _getDateGenerationOptions() {
-    var isOldRender = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-    var _a;
+    var _this$viewDataProvide;
+    let isOldRender = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
     return {
       startDayHour: this.option('startDayHour'),
       endDayHour: this.option('endDayHour'),
       isWorkView: this.viewDataProvider.viewDataGenerator.isWorkView,
-      interval: (_a = this.viewDataProvider.viewDataGenerator) === null || _a === void 0 ? void 0 : _a.getInterval(this.option('hoursInterval')),
+      interval: (_this$viewDataProvide = this.viewDataProvider.viewDataGenerator) === null || _this$viewDataProvide === void 0 ? void 0 : _this$viewDataProvide.getInterval(this.option('hoursInterval')),
       startViewDate: this.getStartViewDate(),
       firstDayOfWeek: this._firstDayOfWeek()
     };
   }
   // TODO: refactor current time indicator
   _getIntervalBetween(currentDate, allDay) {
-    var firstViewDate = this.getStartViewDate();
-    var startDayTime = this.option('startDayHour') * HOUR_MS;
-    var timeZoneOffset = dateUtils.getTimezonesDifference(firstViewDate, currentDate);
-    var fullInterval = currentDate.getTime() - firstViewDate.getTime() - timeZoneOffset;
-    var days = this._getDaysOfInterval(fullInterval, startDayTime);
-    var weekendsCount = this._getWeekendsCount(days);
-    var result = (days - weekendsCount) * DAY_MS;
+    const firstViewDate = this.getStartViewDate();
+    const startDayTime = this.option('startDayHour') * HOUR_MS;
+    const timeZoneOffset = dateUtils.getTimezonesDifference(firstViewDate, currentDate);
+    const fullInterval = currentDate.getTime() - firstViewDate.getTime() - timeZoneOffset;
+    const days = this._getDaysOfInterval(fullInterval, startDayTime);
+    const weekendsCount = this._getWeekendsCount(days);
+    let result = (days - weekendsCount) * DAY_MS;
     if (!allDay) {
-      var {
+      const {
         hiddenInterval
       } = this.viewDataProvider;
-      var visibleDayDuration = this.getVisibleDayDuration();
+      const visibleDayDuration = this.getVisibleDayDuration();
       result = fullInterval - days * hiddenInterval - weekendsCount * visibleDayDuration;
     }
     return result;
@@ -899,68 +888,68 @@ class SchedulerWorkSpace extends WidgetObserver {
     return index * this._getRowCount();
   }
   _getDroppableCell() {
-    return this._getDateTables().find(".".concat(DATE_TABLE_DROPPABLE_CELL_CLASS));
+    return this._getDateTables().find(`.${DATE_TABLE_DROPPABLE_CELL_CLASS}`);
   }
   _getWorkSpaceWidth() {
     return this.cache.get('workspaceWidth', () => {
       if (this._needCreateCrossScrolling()) {
         return getBoundingRect(this._$dateTable.get(0)).width;
       }
-      var totalWidth = getBoundingRect(this.$element().get(0)).width;
-      var timePanelWidth = this.getTimePanelWidth();
-      var groupTableWidth = this.getGroupTableWidth();
+      const totalWidth = getBoundingRect(this.$element().get(0)).width;
+      const timePanelWidth = this.getTimePanelWidth();
+      const groupTableWidth = this.getGroupTableWidth();
       return totalWidth - timePanelWidth - groupTableWidth;
     });
   }
   _getCellByCoordinates(cellCoordinates, groupIndex, inAllDayRow) {
-    var indexes = this._groupedStrategy.prepareCellIndexes(cellCoordinates, groupIndex, inAllDayRow);
+    const indexes = this._groupedStrategy.prepareCellIndexes(cellCoordinates, groupIndex, inAllDayRow);
     return this._dom_getDateCell(indexes);
   }
   // TODO DOM adapter
   _dom_getDateCell(position) {
-    return this._$dateTable.find("tr:not(.".concat(VIRTUAL_ROW_CLASS, ")")).eq(position.rowIndex).find("td:not(.".concat(VIRTUAL_CELL_CLASS, ")")).eq(position.columnIndex);
+    return this._$dateTable.find(`tr:not(.${VIRTUAL_ROW_CLASS})`).eq(position.rowIndex).find(`td:not(.${VIRTUAL_CELL_CLASS})`).eq(position.columnIndex);
   }
   _dom_getAllDayPanelCell(columnIndex) {
     return this._$allDayPanel.find('tr').eq(0).find('td').eq(columnIndex);
   }
   _getCells(allDay, direction) {
-    var cellClass = allDay ? ALL_DAY_TABLE_CELL_CLASS : DATE_TABLE_CELL_CLASS;
+    const cellClass = allDay ? ALL_DAY_TABLE_CELL_CLASS : DATE_TABLE_CELL_CLASS;
     if (direction === 'vertical') {
-      var result = [];
-      for (var i = 1;; i++) {
-        var cells = this.$element().find("tr .".concat(cellClass, ":nth-child(").concat(i, ")"));
+      let result = [];
+      for (let i = 1;; i++) {
+        const cells = this.$element().find(`tr .${cellClass}:nth-child(${i})`);
         if (!cells.length) break;
         result = result.concat(cells.toArray());
       }
       return $(result);
     }
-    return this.$element().find(".".concat(cellClass));
+    return this.$element().find(`.${cellClass}`);
   }
   _getFirstAndLastDataTableCell() {
-    var selector = this.isVirtualScrolling() ? ".".concat(DATE_TABLE_CELL_CLASS, ", .").concat(VIRTUAL_CELL_CLASS) : ".".concat(DATE_TABLE_CELL_CLASS);
-    var $cells = this.$element().find(selector);
+    const selector = this.isVirtualScrolling() ? `.${DATE_TABLE_CELL_CLASS}, .${VIRTUAL_CELL_CLASS}` : `.${DATE_TABLE_CELL_CLASS}`;
+    const $cells = this.$element().find(selector);
     return [$cells[0], $cells[$cells.length - 1]];
   }
   _getAllCells(allDay) {
     if (this._isVerticalGroupedWorkSpace()) {
-      return this._$dateTable.find("td:not(.".concat(VIRTUAL_CELL_CLASS, ")"));
+      return this._$dateTable.find(`td:not(.${VIRTUAL_CELL_CLASS})`);
     }
-    var cellClass = allDay && this.supportAllDayRow() ? ALL_DAY_TABLE_CELL_CLASS : DATE_TABLE_CELL_CLASS;
-    return this.$element().find(".".concat(cellClass));
+    const cellClass = allDay && this.supportAllDayRow() ? ALL_DAY_TABLE_CELL_CLASS : DATE_TABLE_CELL_CLASS;
+    return this.$element().find(`.${cellClass}`);
   }
   _setHorizontalGroupHeaderCellsHeight() {
-    var {
+    const {
       height
     } = getBoundingRect(this._$dateTable.get(0));
     setOuterHeight(this._$groupTable, height);
   }
   _getGroupHeaderCells() {
-    return this.$element().find(".".concat(GROUP_HEADER_CLASS));
+    return this.$element().find(`.${GROUP_HEADER_CLASS}`);
   }
   _getScrollCoordinates(hours, minutes, date, groupIndex, allDay) {
-    var currentDate = date || new Date(this.option('currentDate'));
-    var startDayHour = this.option('startDayHour');
-    var endDayHour = this.option('endDayHour');
+    const currentDate = date || new Date(this.option('currentDate'));
+    const startDayHour = this.option('startDayHour');
+    const endDayHour = this.option('endDayHour');
     if (hours < startDayHour) {
       hours = startDayHour;
     }
@@ -968,27 +957,27 @@ class SchedulerWorkSpace extends WidgetObserver {
       hours = endDayHour - 1;
     }
     currentDate.setHours(hours, minutes, 0, 0);
-    var cell = this.viewDataProvider.findGlobalCellPosition(currentDate, groupIndex, allDay);
-    var {
+    const cell = this.viewDataProvider.findGlobalCellPosition(currentDate, groupIndex, allDay);
+    const {
       position,
       cellData
     } = cell;
     return this.virtualScrollingDispatcher.calculateCoordinatesByDataAndPosition(cellData, position, currentDate, isDateAndTimeView(this.type), this.viewDirection === 'vertical');
   }
   _isOutsideScrollable(target, event) {
-    var $dateTableScrollableElement = this._dateTableScrollable.$element();
-    var scrollableSize = getBoundingRect($dateTableScrollableElement.get(0));
-    var window = getWindow();
-    var isTargetInAllDayPanel = !$(target).closest($dateTableScrollableElement).length;
-    var isOutsideHorizontalScrollable = event.pageX < scrollableSize.left || event.pageX > scrollableSize.left + scrollableSize.width + (window.scrollX || 0);
-    var isOutsideVerticalScrollable = event.pageY < scrollableSize.top || event.pageY > scrollableSize.top + scrollableSize.height + (window.scrollY || 0);
+    const $dateTableScrollableElement = this._dateTableScrollable.$element();
+    const scrollableSize = getBoundingRect($dateTableScrollableElement.get(0));
+    const window = getWindow();
+    const isTargetInAllDayPanel = !$(target).closest($dateTableScrollableElement).length;
+    const isOutsideHorizontalScrollable = event.pageX < scrollableSize.left || event.pageX > scrollableSize.left + scrollableSize.width + (window.scrollX || 0);
+    const isOutsideVerticalScrollable = event.pageY < scrollableSize.top || event.pageY > scrollableSize.top + scrollableSize.height + (window.scrollY || 0);
     if (isTargetInAllDayPanel && !isOutsideHorizontalScrollable) {
       return false;
     }
     return isOutsideVerticalScrollable || isOutsideHorizontalScrollable;
   }
   setCellDataCache(cellCoordinates, groupIndex, $cell) {
-    var key = JSON.stringify({
+    const key = JSON.stringify({
       rowIndex: cellCoordinates.rowIndex,
       columnIndex: cellCoordinates.columnIndex,
       groupIndex
@@ -996,12 +985,12 @@ class SchedulerWorkSpace extends WidgetObserver {
     this.cache.set(key, this.getCellData($cell));
   }
   setCellDataCacheAlias(appointment, geometry) {
-    var key = JSON.stringify({
+    const key = JSON.stringify({
       rowIndex: appointment.rowIndex,
       columnIndex: appointment.columnIndex,
       groupIndex: appointment.groupIndex
     });
-    var aliasKey = JSON.stringify({
+    const aliasKey = JSON.stringify({
       top: geometry.top,
       left: geometry.left
     });
@@ -1023,11 +1012,11 @@ class SchedulerWorkSpace extends WidgetObserver {
     });
   }
   getCellData($cell) {
-    var cellData = this._getFullCellData($cell) || {};
+    const cellData = this._getFullCellData($cell) || {};
     return this._filterCellDataFields(cellData);
   }
   _getFullCellData($cell) {
-    var currentCell = $cell[0];
+    const currentCell = $cell[0];
     if (currentCell) {
       return this._getDataByCell($cell);
     }
@@ -1040,13 +1029,13 @@ class SchedulerWorkSpace extends WidgetObserver {
     return this.virtualScrollingDispatcher.virtualCellOffset;
   }
   _getDataByCell($cell) {
-    var rowIndex = $cell.parent().index() - this.virtualScrollingDispatcher.topVirtualRowsCount;
-    var columnIndex = $cell.index() - this.virtualScrollingDispatcher.leftVirtualCellsCount;
-    var {
+    const rowIndex = $cell.parent().index() - this.virtualScrollingDispatcher.topVirtualRowsCount;
+    const columnIndex = $cell.index() - this.virtualScrollingDispatcher.leftVirtualCellsCount;
+    const {
       viewDataProvider
     } = this;
-    var isAllDayCell = this._hasAllDayClass($cell);
-    var cellData = viewDataProvider.getCellData(rowIndex, columnIndex, isAllDayCell);
+    const isAllDayCell = this._hasAllDayClass($cell);
+    const cellData = viewDataProvider.getCellData(rowIndex, columnIndex, isAllDayCell);
     return cellData || undefined;
   }
   isGroupedByDate() {
@@ -1054,13 +1043,13 @@ class SchedulerWorkSpace extends WidgetObserver {
   }
   // TODO: refactor current time indicator
   getCellIndexByDate(date, inAllDayRow) {
-    var {
+    const {
       viewDataGenerator
     } = this.viewDataProvider;
-    var timeInterval = inAllDayRow ? 24 * 60 * 60 * 1000 : viewDataGenerator.getInterval(this.option('hoursInterval'));
-    var startViewDateOffset = getStartViewDateTimeOffset(this.getStartViewDate(), this.option('startDayHour'));
-    var dateTimeStamp = this._getIntervalBetween(date, inAllDayRow) + startViewDateOffset;
-    var index = Math.floor(dateTimeStamp / timeInterval);
+    const timeInterval = inAllDayRow ? 24 * 60 * 60 * 1000 : viewDataGenerator.getInterval(this.option('hoursInterval'));
+    const startViewDateOffset = getStartViewDateTimeOffset(this.getStartViewDate(), this.option('startDayHour'));
+    const dateTimeStamp = this._getIntervalBetween(date, inAllDayRow) + startViewDateOffset;
+    let index = Math.floor(dateTimeStamp / timeInterval);
     if (inAllDayRow) {
       index = this._updateIndex(index);
     }
@@ -1070,20 +1059,20 @@ class SchedulerWorkSpace extends WidgetObserver {
     return index;
   }
   getDroppableCellIndex() {
-    var $droppableCell = this._getDroppableCell();
-    var $row = $droppableCell.parent();
-    var rowIndex = $row.index();
+    const $droppableCell = this._getDroppableCell();
+    const $row = $droppableCell.parent();
+    const rowIndex = $row.index();
     return rowIndex * $row.find('td').length + $droppableCell.index();
   }
   getDataByDroppableCell() {
-    var cellData = this.getCellData($(this._getDroppableCell()));
-    var {
+    const cellData = this.getCellData($(this._getDroppableCell()));
+    const {
       allDay
     } = cellData;
-    var {
+    const {
       startDate
     } = cellData;
-    var {
+    const {
       endDate
     } = cellData;
     return {
@@ -1103,17 +1092,17 @@ class SchedulerWorkSpace extends WidgetObserver {
     if (groupIndex < 0 || !hasWindow()) {
       return 0;
     }
-    var $row = this.$element().find(".".concat(DATE_TABLE_ROW_CLASS)).eq(0);
-    var width = 0;
-    var $cells = $row.find(".".concat(DATE_TABLE_CELL_CLASS));
-    var totalCellCount = this._getCellCount() * groupIndex;
+    const $row = this.$element().find(`.${DATE_TABLE_ROW_CLASS}`).eq(0);
+    let width = 0;
+    const $cells = $row.find(`.${DATE_TABLE_CELL_CLASS}`);
+    const totalCellCount = this._getCellCount() * groupIndex;
     cellCount = cellCount || this._getCellCount();
     if (!isDefined(startIndex)) {
       startIndex = totalCellCount;
     }
-    for (var i = startIndex; i < totalCellCount + cellCount; i++) {
-      var element = $($cells).eq(i).get(0);
-      var elementWidth = element ? getBoundingRect(element).width : 0;
+    for (let i = startIndex; i < totalCellCount + cellCount; i++) {
+      const element = $($cells).eq(i).get(0);
+      const elementWidth = element ? getBoundingRect(element).width : 0;
       width += elementWidth;
     }
     return width / (totalCellCount + cellCount - startIndex);
@@ -1136,18 +1125,17 @@ class SchedulerWorkSpace extends WidgetObserver {
   }
   // NOTE: refactor leftIndex calculation
   getCellIndexByCoordinates(coordinates, allDay) {
-    var _a, _b, _c;
-    var {
+    const {
       horizontalScrollingState,
       verticalScrollingState
     } = this.virtualScrollingDispatcher;
-    var cellCount = (_a = horizontalScrollingState === null || horizontalScrollingState === void 0 ? void 0 : horizontalScrollingState.itemCount) !== null && _a !== void 0 ? _a : this._getTotalCellCount(this._getGroupCount());
-    var cellWidth = this.getCellWidth();
-    var cellHeight = allDay ? this.getAllDayHeight() : this.getCellHeight();
-    var leftCoordinateOffset = (_b = horizontalScrollingState === null || horizontalScrollingState === void 0 ? void 0 : horizontalScrollingState.virtualItemSizeBefore) !== null && _b !== void 0 ? _b : 0;
-    var topCoordinateOffset = (_c = verticalScrollingState === null || verticalScrollingState === void 0 ? void 0 : verticalScrollingState.virtualItemSizeBefore) !== null && _c !== void 0 ? _c : 0;
-    var topIndex = Math.floor(Math.floor(coordinates.top - topCoordinateOffset) / Math.floor(cellHeight));
-    var leftIndex = (coordinates.left - leftCoordinateOffset) / cellWidth;
+    const cellCount = (horizontalScrollingState === null || horizontalScrollingState === void 0 ? void 0 : horizontalScrollingState.itemCount) ?? this._getTotalCellCount(this._getGroupCount());
+    const cellWidth = this.getCellWidth();
+    const cellHeight = allDay ? this.getAllDayHeight() : this.getCellHeight();
+    const leftCoordinateOffset = (horizontalScrollingState === null || horizontalScrollingState === void 0 ? void 0 : horizontalScrollingState.virtualItemSizeBefore) ?? 0;
+    const topCoordinateOffset = (verticalScrollingState === null || verticalScrollingState === void 0 ? void 0 : verticalScrollingState.virtualItemSizeBefore) ?? 0;
+    const topIndex = Math.floor(Math.floor(coordinates.top - topCoordinateOffset) / Math.floor(cellHeight));
+    let leftIndex = (coordinates.left - leftCoordinateOffset) / cellWidth;
     leftIndex = Math.floor(leftIndex + CELL_INDEX_CALCULATION_EPSILON);
     if (this._isRTL()) {
       leftIndex = cellCount - leftIndex - 1;
@@ -1170,31 +1158,31 @@ class SchedulerWorkSpace extends WidgetObserver {
     return allDay ? toMs('day') : this.getCellDuration();
   }
   getVisibleDayDuration() {
-    var startDayHour = this.option('startDayHour');
-    var endDayHour = this.option('endDayHour');
-    var hoursInterval = this.option('hoursInterval');
+    const startDayHour = this.option('startDayHour');
+    const endDayHour = this.option('endDayHour');
+    const hoursInterval = this.option('hoursInterval');
     return this.viewDataProvider.getVisibleDayDuration(startDayHour, endDayHour, hoursInterval);
   }
   getGroupBounds(coordinates) {
-    var groupBounds = this._groupedStrategy instanceof VerticalGroupedStrategy ? this.getGroupBoundsVertical(coordinates.groupIndex) : this.getGroupBoundsHorizontal(coordinates);
+    const groupBounds = this._groupedStrategy instanceof VerticalGroupedStrategy ? this.getGroupBoundsVertical(coordinates.groupIndex) : this.getGroupBoundsHorizontal(coordinates);
     return this._isRTL() ? this.getGroupBoundsRtlCorrection(groupBounds) : groupBounds;
   }
   getGroupBoundsVertical(groupIndex) {
-    var $firstAndLastCells = this._getFirstAndLastDataTableCell();
+    const $firstAndLastCells = this._getFirstAndLastDataTableCell();
     return this._groupedStrategy.getGroupBoundsOffset(groupIndex, $firstAndLastCells);
   }
   getGroupBoundsHorizontal(coordinates) {
-    var cellCount = this._getCellCount();
-    var $cells = this._getCells();
-    var cellWidth = this.getCellWidth();
-    var {
+    const cellCount = this._getCellCount();
+    const $cells = this._getCells();
+    const cellWidth = this.getCellWidth();
+    const {
       groupedDataMap
     } = this.viewDataProvider;
     return this._groupedStrategy.getGroupBoundsOffset(cellCount, $cells, cellWidth, coordinates, groupedDataMap);
   }
   getGroupBoundsRtlCorrection(groupBounds) {
-    var cellWidth = this.getCellWidth();
-    return _extends(_extends({}, groupBounds), {
+    const cellWidth = this.getCellWidth();
+    return _extends({}, groupBounds, {
       left: groupBounds.right - cellWidth * 2,
       right: groupBounds.left + cellWidth * 2
     });
@@ -1203,23 +1191,23 @@ class SchedulerWorkSpace extends WidgetObserver {
     return this._isVerticalGroupedWorkSpace() && this.getScrollable().scrollTop() !== 0;
   }
   getCellDataByCoordinates(coordinates, allDay) {
-    var key = JSON.stringify({
+    const key = JSON.stringify({
       top: coordinates.top,
       left: coordinates.left
     });
     return this.cache.get(key, () => {
-      var $cells = this._getCells(allDay);
-      var cellIndex = this.getCellIndexByCoordinates(coordinates, allDay);
-      var $cell = $cells.eq(cellIndex);
+      const $cells = this._getCells(allDay);
+      const cellIndex = this.getCellIndexByCoordinates(coordinates, allDay);
+      const $cell = $cells.eq(cellIndex);
       return this.getCellData($cell);
     });
   }
   getVisibleBounds() {
-    var result = {};
-    var $scrollable = this.getScrollable().$element();
-    var cellHeight = this.getCellHeight();
-    var scrolledCellCount = this.getScrollableScrollTop() / cellHeight;
-    var totalCellCount = scrolledCellCount + getHeight($scrollable) / cellHeight;
+    const result = {};
+    const $scrollable = this.getScrollable().$element();
+    const cellHeight = this.getCellHeight();
+    const scrolledCellCount = this.getScrollableScrollTop() / cellHeight;
+    const totalCellCount = scrolledCellCount + getHeight($scrollable) / cellHeight;
     result.top = {
       hours: Math.floor(scrolledCellCount * this.option('hoursInterval')) + this.option('startDayHour'),
       minutes: scrolledCellCount % 2 ? 30 : 0
@@ -1231,28 +1219,28 @@ class SchedulerWorkSpace extends WidgetObserver {
     return result;
   }
   updateScrollPosition(date, groups) {
-    var allDay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-    var newDate = this.timeZoneCalculator.createDate(date, {
+    let allDay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    const newDate = this.timeZoneCalculator.createDate(date, {
       path: 'toGrid'
     });
-    var inAllDayRow = allDay && this.isAllDayPanelVisible;
+    const inAllDayRow = allDay && this.isAllDayPanelVisible;
     if (this.needUpdateScrollPosition(newDate, groups, inAllDayRow)) {
       this.scrollTo(newDate, groups, inAllDayRow, false);
     }
   }
   needUpdateScrollPosition(date, groups, inAllDayRow) {
-    var cells = this._getCellsInViewport(inAllDayRow);
-    var groupIndex = this._isGroupsSpecified(groups) ? this._getGroupIndexByResourceId(groups) : 0;
-    var time = date.getTime();
-    var trimmedTime = dateUtils.trimTime(date).getTime();
+    const cells = this._getCellsInViewport(inAllDayRow);
+    const groupIndex = this._isGroupsSpecified(groups) ? this._getGroupIndexByResourceId(groups) : 0;
+    const time = date.getTime();
+    const trimmedTime = dateUtils.trimTime(date).getTime();
     return cells.reduce((currentResult, cell) => {
-      var {
+      const {
         startDate: cellStartDate,
         endDate: cellEndDate,
         groupIndex: cellGroupIndex
       } = this.getCellData(cell);
-      var cellStartTime = cellStartDate.getTime();
-      var cellEndTime = cellEndDate.getTime();
+      const cellStartTime = cellStartDate.getTime();
+      const cellEndTime = cellEndDate.getTime();
       if ((!inAllDayRow && cellStartTime <= time && time < cellEndTime || inAllDayRow && trimmedTime === cellStartTime) && groupIndex === cellGroupIndex) {
         return false;
       }
@@ -1260,31 +1248,31 @@ class SchedulerWorkSpace extends WidgetObserver {
     }, true);
   }
   _getCellsInViewport(inAllDayRow) {
-    var $scrollable = this.getScrollable().$element();
-    var cellHeight = this.getCellHeight();
-    var cellWidth = this.getCellWidth();
-    var totalColumnCount = this._getTotalCellCount(this._getGroupCount());
-    var scrollableScrollTop = this.getScrollableScrollTop();
-    var scrollableScrollLeft = this.getScrollableScrollLeft();
-    var fullScrolledRowCount = scrollableScrollTop / cellHeight - this.virtualScrollingDispatcher.topVirtualRowsCount;
-    var scrolledRowCount = Math.floor(fullScrolledRowCount);
+    const $scrollable = this.getScrollable().$element();
+    const cellHeight = this.getCellHeight();
+    const cellWidth = this.getCellWidth();
+    const totalColumnCount = this._getTotalCellCount(this._getGroupCount());
+    const scrollableScrollTop = this.getScrollableScrollTop();
+    const scrollableScrollLeft = this.getScrollableScrollLeft();
+    const fullScrolledRowCount = scrollableScrollTop / cellHeight - this.virtualScrollingDispatcher.topVirtualRowsCount;
+    let scrolledRowCount = Math.floor(fullScrolledRowCount);
     if (scrollableScrollTop % cellHeight !== 0) {
       scrolledRowCount += 1;
     }
     // TODO horizontal v-scrolling
-    var fullScrolledColumnCount = scrollableScrollLeft / cellWidth;
-    var scrolledColumnCount = Math.floor(fullScrolledColumnCount);
+    const fullScrolledColumnCount = scrollableScrollLeft / cellWidth;
+    let scrolledColumnCount = Math.floor(fullScrolledColumnCount);
     if (scrollableScrollLeft % cellWidth !== 0) {
       scrolledColumnCount += 1;
     }
-    var rowCount = Math.floor(fullScrolledRowCount + getHeight($scrollable) / cellHeight);
-    var columnCount = Math.floor(fullScrolledColumnCount + getWidth($scrollable) / cellWidth);
-    var $cells = this._getAllCells(inAllDayRow);
-    var result = [];
+    const rowCount = Math.floor(fullScrolledRowCount + getHeight($scrollable) / cellHeight);
+    const columnCount = Math.floor(fullScrolledColumnCount + getWidth($scrollable) / cellWidth);
+    const $cells = this._getAllCells(inAllDayRow);
+    const result = [];
     $cells.each(function (index) {
-      var $cell = $(this);
-      var columnIndex = index % totalColumnCount;
-      var rowIndex = index / totalColumnCount;
+      const $cell = $(this);
+      const columnIndex = index % totalColumnCount;
+      const rowIndex = index / totalColumnCount;
       if (scrolledColumnCount <= columnIndex && columnIndex < columnCount && scrolledRowCount <= rowIndex && rowIndex < rowCount) {
         result.push($cell);
       }
@@ -1295,33 +1283,33 @@ class SchedulerWorkSpace extends WidgetObserver {
     if (!this._isValidScrollDate(date)) {
       return;
     }
-    var coordinates = this._getScrollCoordinates(hours, minutes, date);
-    var scrollable = this.getScrollable();
+    const coordinates = this._getScrollCoordinates(hours, minutes, date);
+    const scrollable = this.getScrollable();
     scrollable.scrollBy({
       top: coordinates.top - scrollable.scrollTop(),
       left: 0
     });
   }
   scrollTo(date, groups) {
-    var allDay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-    var throwWarning = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+    let allDay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    let throwWarning = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
     if (!this._isValidScrollDate(date, throwWarning)) {
       return;
     }
-    var groupIndex = this._getGroupCount() && groups ? this._getGroupIndexByResourceId(groups) : 0;
-    var isScrollToAllDay = allDay && this.isAllDayPanelVisible;
-    var coordinates = this._getScrollCoordinates(date.getHours(), date.getMinutes(), date, groupIndex, isScrollToAllDay);
-    var scrollable = this.getScrollable();
-    var $scrollable = scrollable.$element();
-    var cellWidth = this.getCellWidth();
-    var offset = this.option('rtlEnabled') ? cellWidth : 0;
-    var scrollableHeight = getHeight($scrollable);
-    var scrollableWidth = getWidth($scrollable);
-    var cellHeight = this.getCellHeight();
-    var xShift = (scrollableWidth - cellWidth) / 2;
-    var yShift = (scrollableHeight - cellHeight) / 2;
-    var left = coordinates.left - scrollable.scrollLeft() - xShift - offset;
-    var top = coordinates.top - scrollable.scrollTop() - yShift;
+    const groupIndex = this._getGroupCount() && groups ? this._getGroupIndexByResourceId(groups) : 0;
+    const isScrollToAllDay = allDay && this.isAllDayPanelVisible;
+    const coordinates = this._getScrollCoordinates(date.getHours(), date.getMinutes(), date, groupIndex, isScrollToAllDay);
+    const scrollable = this.getScrollable();
+    const $scrollable = scrollable.$element();
+    const cellWidth = this.getCellWidth();
+    const offset = this.option('rtlEnabled') ? cellWidth : 0;
+    const scrollableHeight = getHeight($scrollable);
+    const scrollableWidth = getWidth($scrollable);
+    const cellHeight = this.getCellHeight();
+    const xShift = (scrollableWidth - cellWidth) / 2;
+    const yShift = (scrollableHeight - cellHeight) / 2;
+    const left = coordinates.left - scrollable.scrollLeft() - xShift - offset;
+    let top = coordinates.top - scrollable.scrollTop() - yShift;
     if (isScrollToAllDay && !this._isVerticalGroupedWorkSpace()) {
       top = 0;
     }
@@ -1340,9 +1328,9 @@ class SchedulerWorkSpace extends WidgetObserver {
     }
   }
   _isValidScrollDate(date) {
-    var throwWarning = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-    var min = this.getStartViewDate();
-    var max = this.getEndViewDate();
+    let throwWarning = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    const min = this.getStartViewDate();
+    const max = this.getEndViewDate();
     if (date < min || date > max) {
       throwWarning && errors.log('W1008', date);
       return false;
@@ -1353,14 +1341,14 @@ class SchedulerWorkSpace extends WidgetObserver {
     return false;
   }
   removeDroppableCellClass($cellElement) {
-    var $cell = $cellElement || this._getDroppableCell();
-    $cell === null || $cell === void 0 ? void 0 : $cell.removeClass(DATE_TABLE_DROPPABLE_CELL_CLASS);
+    const $cell = $cellElement || this._getDroppableCell();
+    $cell === null || $cell === void 0 || $cell.removeClass(DATE_TABLE_DROPPABLE_CELL_CLASS);
   }
   _getCoordinatesByCell($cell) {
-    var columnIndex = $cell.index() - this.virtualScrollingDispatcher.leftVirtualCellsCount;
-    var rowIndex = $cell.parent().index();
-    var isAllDayCell = this._hasAllDayClass($cell);
-    var isVerticalGrouping = this._isVerticalGroupedWorkSpace();
+    const columnIndex = $cell.index() - this.virtualScrollingDispatcher.leftVirtualCellsCount;
+    let rowIndex = $cell.parent().index();
+    const isAllDayCell = this._hasAllDayClass($cell);
+    const isVerticalGrouping = this._isVerticalGroupedWorkSpace();
     if (!(isAllDayCell && !isVerticalGrouping)) {
       rowIndex -= this.virtualScrollingDispatcher.topVirtualRowsCount;
     }
@@ -1373,21 +1361,30 @@ class SchedulerWorkSpace extends WidgetObserver {
     return this.option('showAllDayPanel');
   }
   _getTimePanelCells() {
-    return this.$element().find(".".concat(TIME_PANEL_CELL_CLASS));
+    return this.$element().find(`.${TIME_PANEL_CELL_CLASS}`);
   }
   _getRDateTableProps() {
     return {
       viewData: this.viewDataProvider.viewData,
+      viewContext: this.getR1ComponentsViewContext(),
       dataCellTemplate: this.option('dataCellTemplate'),
       addDateTableClass: !this.option('crossScrollingEnabled') || this.isVirtualScrolling(),
       groupOrientation: this.option('groupOrientation'),
       addVerticalSizesClassToRows: false
     };
   }
+  getR1ComponentsViewContext() {
+    return {
+      view: {
+        type: this.type
+      },
+      crossScrollingEnabled: !!this.option('crossScrollingEnabled')
+    };
+  }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _updateSelectedCellDataOption(selectedCellData, $nextFocusedCell) {
-    var correctedSelectedCellData = selectedCellData.map(_ref3 => {
-      var {
+    const correctedSelectedCellData = selectedCellData.map(_ref3 => {
+      let {
         startDate,
         endDate,
         allDay,
@@ -1408,13 +1405,13 @@ class SchedulerWorkSpace extends WidgetObserver {
     });
   }
   _getCellByData(cellData) {
-    var {
+    const {
       startDate,
       groupIndex,
       allDay,
       index
     } = cellData;
-    var position = this.viewDataProvider.findCellPositionInMap({
+    const position = this.viewDataProvider.findCellPositionInMap({
       startDate,
       groupIndex,
       isAllDay: allDay,
@@ -1433,17 +1430,17 @@ class SchedulerWorkSpace extends WidgetObserver {
     }));
   }
   _getDateTableDOMElementsInfo() {
-    var dateTableCells = this._getAllCells(false);
+    const dateTableCells = this._getAllCells(false);
     if (!dateTableCells.length || !hasWindow()) {
       return [[{}]];
     }
-    var dateTable = this._getDateTable();
+    const dateTable = this._getDateTable();
     // We should use getBoundingClientRect in renovation
-    var dateTableRect = getBoundingRect(dateTable.get(0));
-    var columnsCount = this.viewDataProvider.getColumnsCount();
-    var result = [];
+    const dateTableRect = getBoundingRect(dateTable.get(0));
+    const columnsCount = this.viewDataProvider.getColumnsCount();
+    const result = [];
     dateTableCells.each((index, cell) => {
-      var rowIndex = Math.floor(index / columnsCount);
+      const rowIndex = Math.floor(index / columnsCount);
       if (result.length === rowIndex) {
         result.push([]);
       }
@@ -1452,14 +1449,14 @@ class SchedulerWorkSpace extends WidgetObserver {
     return result;
   }
   _getAllDayPanelDOMElementsInfo() {
-    var result = [];
+    const result = [];
     if (this.isAllDayPanelVisible && !this._isVerticalGroupedWorkSpace() && hasWindow()) {
-      var allDayCells = this._getAllCells(true);
+      const allDayCells = this._getAllCells(true);
       if (!allDayCells.length) {
         return [{}];
       }
-      var allDayAppointmentContainer = this._$allDayPanel;
-      var allDayPanelRect = getBoundingRect(allDayAppointmentContainer.get(0));
+      const allDayAppointmentContainer = this._$allDayPanel;
+      const allDayPanelRect = getBoundingRect(allDayAppointmentContainer.get(0));
       allDayCells.each((_, cell) => {
         this._addCellMetaData(result, cell, allDayPanelRect);
       });
@@ -1467,7 +1464,7 @@ class SchedulerWorkSpace extends WidgetObserver {
     return result;
   }
   _addCellMetaData(cellMetaDataArray, cell, parentRect) {
-    var cellRect = getBoundingRect(cell);
+    const cellRect = getBoundingRect(cell);
     cellMetaDataArray.push({
       left: cellRect.left - parentRect.left,
       top: cellRect.top - parentRect.top,
@@ -1478,23 +1475,23 @@ class SchedulerWorkSpace extends WidgetObserver {
   // TODO: remove along with old render
   _oldRender_getAllDayCellData(groupIndex) {
     return (cell, rowIndex, columnIndex) => {
-      var validColumnIndex = columnIndex % this._getCellCount();
-      var options = this._getDateGenerationOptions(true);
-      var startDate = this.viewDataProvider.viewDataGenerator.getDateByCellIndices(options, rowIndex, validColumnIndex, this._getCellCountInDay());
+      const validColumnIndex = columnIndex % this._getCellCount();
+      const options = this._getDateGenerationOptions(true);
+      let startDate = this.viewDataProvider.viewDataGenerator.getDateByCellIndices(options, rowIndex, validColumnIndex, this._getCellCountInDay());
       startDate = dateUtils.trimTime(startDate);
-      var validGroupIndex = groupIndex || 0;
+      let validGroupIndex = groupIndex || 0;
       if (this.isGroupedByDate()) {
         validGroupIndex = Math.floor(columnIndex % this._getGroupCount());
       } else if (this._isHorizontalGroupedWorkSpace()) {
         validGroupIndex = Math.floor(columnIndex / this._getCellCount());
       }
-      var data = {
+      const data = {
         startDate,
         endDate: startDate,
         allDay: true,
         groupIndex: validGroupIndex
       };
-      var groupsArray = getCellGroups(validGroupIndex, this.option('groups'));
+      const groupsArray = getCellGroups(validGroupIndex, this.option('groups'));
       if (groupsArray.length) {
         data.groups = getGroupsObjectFromGroupsArray(groupsArray);
       }
@@ -1508,7 +1505,7 @@ class SchedulerWorkSpace extends WidgetObserver {
   // Methods that render renovated components. Useless in renovation
   // ------------
   renderRWorkSpace() {
-    var {
+    let {
       header,
       timePanel,
       dateTable,
@@ -1528,11 +1525,12 @@ class SchedulerWorkSpace extends WidgetObserver {
     }
   }
   renderRDateTable() {
-    utils.renovation.renderComponent(this, this._$dateTable, dxrDateTableLayout, 'renovatedDateTable', this._getRDateTableProps());
+    utils.renovation.renderComponent(this, this._$dateTable, DateTableComponent, 'renovatedDateTable', this._getRDateTableProps());
   }
   renderRGroupPanel() {
-    var _a;
-    var options = {
+    var _this$option4;
+    const options = {
+      viewContext: this.getR1ComponentsViewContext(),
       groups: this.option('groups'),
       groupOrientation: this.option('groupOrientation'),
       groupByDate: this.isGroupedByDate(),
@@ -1540,44 +1538,47 @@ class SchedulerWorkSpace extends WidgetObserver {
       className: this.verticalGroupTableClass,
       groupPanelData: this.viewDataProvider.getGroupPanelData(this.generateRenderOptions())
     };
-    if ((_a = this.option('groups')) === null || _a === void 0 ? void 0 : _a.length) {
+    if ((_this$option4 = this.option('groups')) !== null && _this$option4 !== void 0 && _this$option4.length) {
       this._attachGroupCountClass();
-      utils.renovation.renderComponent(this, this._getGroupHeaderContainer(), dxrGroupPanel, 'renovatedGroupPanel', options);
+      utils.renovation.renderComponent(this, this._getGroupHeaderContainer(), GroupPanelComponent, 'renovatedGroupPanel', options);
     } else {
       this._detachGroupCountClass();
     }
   }
   renderRAllDayPanel() {
-    var _a;
-    var visible = this.isAllDayPanelVisible && !this.isGroupedAllDayPanel();
+    const visible = this.isAllDayPanelVisible && !this.isGroupedAllDayPanel();
     if (visible) {
+      var _this$virtualScrollin;
       this._toggleAllDayVisibility(false);
-      var options = _extends({
+      const options = _extends({
         viewData: this.viewDataProvider.viewData,
+        viewContext: this.getR1ComponentsViewContext(),
         dataCellTemplate: this.option('dataCellTemplate'),
         startCellIndex: 0
-      }, ((_a = this.virtualScrollingDispatcher.horizontalVirtualScrolling) === null || _a === void 0 ? void 0 : _a.getRenderState()) || {});
-      utils.renovation.renderComponent(this, this._$allDayTable, dxrAllDayPanelTable, 'renovatedAllDayPanel', options);
-      utils.renovation.renderComponent(this, this._$allDayTitle, dxrAllDayPanelTitle, 'renovatedAllDayPanelTitle', {});
+      }, ((_this$virtualScrollin = this.virtualScrollingDispatcher.horizontalVirtualScrolling) === null || _this$virtualScrollin === void 0 ? void 0 : _this$virtualScrollin.getRenderState()) || {});
+      utils.renovation.renderComponent(this, this._$allDayTable, AllDayTableComponent, 'renovatedAllDayPanel', options);
+      utils.renovation.renderComponent(this, this._$allDayTitle, AllDayPanelTitleComponent, 'renovatedAllDayPanelTitle', {});
     }
     this._toggleAllDayVisibility(true);
   }
   renderRTimeTable() {
-    utils.renovation.renderComponent(this, this._$timePanel, dxrTimePanelTableLayout, 'renovatedTimePanel', {
+    utils.renovation.renderComponent(this, this._$timePanel, TimePanelComponent, 'renovatedTimePanel', {
+      viewContext: this.getR1ComponentsViewContext(),
       timePanelData: this.viewDataProvider.timePanelData,
       timeCellTemplate: this.option('timeCellTemplate'),
       groupOrientation: this.option('groupOrientation')
     });
   }
   renderRHeaderPanel() {
-    var isRenderDateHeader = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-    var _a;
-    if ((_a = this.option('groups')) === null || _a === void 0 ? void 0 : _a.length) {
+    var _this$option5;
+    let isRenderDateHeader = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+    if ((_this$option5 = this.option('groups')) !== null && _this$option5 !== void 0 && _this$option5.length) {
       this._attachGroupCountClass();
     } else {
       this._detachGroupCountClass();
     }
     utils.renovation.renderComponent(this, this._$thead, this.renovatedHeaderPanelComponent, 'renovatedHeaderPanel', {
+      viewContext: this.getR1ComponentsViewContext(),
       dateHeaderData: this.viewDataProvider.dateHeaderData,
       groupPanelData: this.viewDataProvider.getGroupPanelData(this.generateRenderOptions()),
       dateCellTemplate: this.option('dateCellTemplate'),
@@ -1595,28 +1596,30 @@ class SchedulerWorkSpace extends WidgetObserver {
   initDragBehavior(scheduler) {
     if (!this.dragBehavior && scheduler) {
       this.dragBehavior = new AppointmentDragBehavior(scheduler);
-      var $rootElement = $(scheduler.element());
+      const $rootElement = $(scheduler.element());
       this._createDragBehavior(this.getWorkArea(), $rootElement);
-      this._createDragBehavior(this._$allDayPanel, $rootElement);
+      if (!this._isVerticalGroupedWorkSpace()) {
+        this._createDragBehavior(this._$allDayPanel, $rootElement);
+      }
     }
   }
   _createDragBehavior($targetElement, $rootElement) {
-    var getItemData = (itemElement, appointments) => appointments._getItemData(itemElement);
-    var getItemSettings = $itemElement => $itemElement.data(APPOINTMENT_SETTINGS_KEY);
-    var options = {
+    const getItemData = (itemElement, appointments) => appointments._getItemData(itemElement);
+    const getItemSettings = $itemElement => $itemElement.data(APPOINTMENT_SETTINGS_KEY);
+    const options = {
       getItemData,
       getItemSettings
     };
     this._createDragBehaviorBase($targetElement, $rootElement, options);
   }
   _createDragBehaviorBase(targetElement, rootElement, options) {
-    var container = this.$element().find(".".concat(FIXED_CONTAINER_CLASS));
-    var disableDefaultDragging = () => {
+    const container = this.$element().find(`.${FIXED_CONTAINER_CLASS}`);
+    const disableDefaultDragging = () => {
       if (!this.isDefaultDraggingMode) {
         this.preventDefaultDragging = true;
       }
     };
-    var enableDefaultDragging = () => {
+    const enableDefaultDragging = () => {
       if (!this.isDefaultDraggingMode) {
         this.preventDefaultDragging = false;
       }
@@ -1774,7 +1777,7 @@ class SchedulerWorkSpace extends WidgetObserver {
     }
   }
   updateShowAllDayPanel() {
-    var isHiddenAllDayPanel = this.option('allDayPanelMode') === 'hidden';
+    const isHiddenAllDayPanel = this.option('allDayPanelMode') === 'hidden';
     this.option('onShowAllDayPanel')(!isHiddenAllDayPanel);
   }
   _getVirtualScrollingDispatcherOptions() {
@@ -1847,12 +1850,12 @@ class SchedulerWorkSpace extends WidgetObserver {
     this._toggleGroupByDateClass();
   }
   isVerticalOrientation() {
-    var _a;
-    var orientation = ((_a = this.option('groups')) === null || _a === void 0 ? void 0 : _a.length) ? this.option('groupOrientation') : this._getDefaultGroupStrategy();
+    var _this$option6;
+    const orientation = (_this$option6 = this.option('groups')) !== null && _this$option6 !== void 0 && _this$option6.length ? this.option('groupOrientation') : this._getDefaultGroupStrategy();
     return orientation === 'vertical';
   }
   _initGroupedStrategy() {
-    var Strategy = this.isVerticalOrientation() ? VerticalGroupedStrategy : HorizontalGroupedStrategy;
+    const Strategy = this.isVerticalOrientation() ? VerticalGroupedStrategy : HorizontalGroupedStrategy;
     this._groupedStrategy = new Strategy(this);
   }
   _getDefaultGroupStrategy() {
@@ -1874,11 +1877,11 @@ class SchedulerWorkSpace extends WidgetObserver {
     this.$element().toggleClass(VERTICAL_GROUPED_WORKSPACE_CLASS, this._isVerticalGroupedWorkSpace());
   }
   _getDateTableCellClass(rowIndex, columnIndex) {
-    var cellClass = "".concat(DATE_TABLE_CELL_CLASS, " ").concat(HORIZONTAL_SIZES_CLASS, " ").concat(VERTICAL_SIZES_CLASS);
+    const cellClass = `${DATE_TABLE_CELL_CLASS} ${HORIZONTAL_SIZES_CLASS} ${VERTICAL_SIZES_CLASS}`;
     return this._groupedStrategy.addAdditionalGroupCellClasses(cellClass, columnIndex + 1, rowIndex, columnIndex);
   }
   _getGroupHeaderClass(i) {
-    var cellClass = GROUP_HEADER_CLASS;
+    const cellClass = GROUP_HEADER_CLASS;
     return this._groupedStrategy.addAdditionalGroupCellClasses(cellClass, i + 1);
   }
   _initWorkSpaceUnits() {
@@ -1909,7 +1912,7 @@ class SchedulerWorkSpace extends WidgetObserver {
     this._allDayPanels = [];
   }
   _initDateTableScrollable() {
-    var $dateTableScrollable = $('<div>').addClass(SCHEDULER_DATE_TABLE_SCROLLABLE_CLASS);
+    const $dateTableScrollable = $('<div>').addClass(SCHEDULER_DATE_TABLE_SCROLLABLE_CLASS);
     // @ts-expect-error
     this._dateTableScrollable = this._createComponent($dateTableScrollable, Scrollable, this._dateTableScrollableConfig());
     this._scrollSync.dateTable = getMemoizeScrollTo(() => this._dateTableScrollable);
@@ -1922,7 +1925,6 @@ class SchedulerWorkSpace extends WidgetObserver {
     }
   }
   _createWorkSpaceStaticElements() {
-    var _a;
     this._$dateTableContainer.append(this._$dateTable);
     if (this._isVerticalGroupedWorkSpace()) {
       this._$dateTableContainer.append(this._$allDayContainer);
@@ -1930,17 +1932,17 @@ class SchedulerWorkSpace extends WidgetObserver {
       this._dateTableScrollable.$content().append(this._$dateTableScrollableContent);
       this._$headerTablesContainer.append(this._$headerPanel);
     } else {
+      var _this$_$allDayPanel;
       this._$dateTableScrollableContent.append(this._$timePanel, this._$dateTableContainer);
       this._dateTableScrollable.$content().append(this._$dateTableScrollableContent);
       this._$headerTablesContainer.append(this._$headerPanel, this._$allDayPanel);
-      (_a = this._$allDayPanel) === null || _a === void 0 ? void 0 : _a.append(this._$allDayContainer, this._$allDayTable);
+      (_this$_$allDayPanel = this._$allDayPanel) === null || _this$_$allDayPanel === void 0 || _this$_$allDayPanel.append(this._$allDayContainer, this._$allDayTable);
     }
     this._appendHeaderPanelEmptyCellIfNecessary();
     this._$headerPanelContainer.append(this._$headerTablesContainer);
     this.$element().append(this._$fixedContainer, this._$headerPanelContainer, this._dateTableScrollable.$element());
   }
   _createWorkSpaceScrollableElements() {
-    var _a;
     this.$element().append(this._$fixedContainer);
     this._$flexContainer = $('<div>').addClass('dx-scheduler-work-space-flex-container');
     this._createHeaderScrollable();
@@ -1958,8 +1960,9 @@ class SchedulerWorkSpace extends WidgetObserver {
       this._$dateTableContainer.append(this._$allDayContainer);
       this._$sidebarScrollableContent.append(this._$groupTable, this._$timePanel);
     } else {
+      var _this$_$allDayPanel2;
       this._headerScrollable.$content().append(this._$allDayPanel);
-      (_a = this._$allDayPanel) === null || _a === void 0 ? void 0 : _a.append(this._$allDayContainer, this._$allDayTable);
+      (_this$_$allDayPanel2 = this._$allDayPanel) === null || _this$_$allDayPanel2 === void 0 || _this$_$allDayPanel2.append(this._$allDayContainer, this._$allDayTable);
       this._$sidebarScrollableContent.append(this._$timePanel);
     }
     this._sidebarScrollable.$content().append(this._$sidebarScrollableContent);
@@ -1968,13 +1971,13 @@ class SchedulerWorkSpace extends WidgetObserver {
     this._isRenderHeaderPanelEmptyCell() && this._$headerPanelContainer.append(this._$headerPanelEmptyCell);
   }
   _createHeaderScrollable() {
-    var $headerScrollable = $('<div>').addClass(SCHEDULER_HEADER_SCROLLABLE_CLASS).appendTo(this._$headerTablesContainer);
+    const $headerScrollable = $('<div>').addClass(SCHEDULER_HEADER_SCROLLABLE_CLASS).appendTo(this._$headerTablesContainer);
     // @ts-expect-error
     this._headerScrollable = this._createComponent($headerScrollable, Scrollable, this._headerScrollableConfig());
     this._scrollSync.header = getMemoizeScrollTo(() => this._headerScrollable);
   }
   _createSidebarScrollable() {
-    var $timePanelScrollable = $('<div>').addClass(SCHEDULER_SIDEBAR_SCROLLABLE_CLASS).appendTo(this._$flexContainer);
+    const $timePanelScrollable = $('<div>').addClass(SCHEDULER_SIDEBAR_SCROLLABLE_CLASS).appendTo(this._$flexContainer);
     // @ts-expect-error
     this._sidebarScrollable = this._createComponent($timePanelScrollable, Scrollable, {
       useKeyboard: false,
@@ -1994,8 +1997,8 @@ class SchedulerWorkSpace extends WidgetObserver {
   _attachTableClasses() {
     this._addTableClass(this._$dateTable, DATE_TABLE_CLASS);
     if (this._isVerticalGroupedWorkSpace()) {
-      var groupCount = this._getGroupCount();
-      for (var i = 0; i < groupCount; i++) {
+      const groupCount = this._getGroupCount();
+      for (let i = 0; i < groupCount; i++) {
         this._addTableClass(this._allDayTables[i], ALL_DAY_TABLE_CLASS);
       }
     } else if (!this.isRenovatedRender()) {
@@ -2050,7 +2053,7 @@ class SchedulerWorkSpace extends WidgetObserver {
     this._shader = new VerticalShader(this);
   }
   updateCellsSelection() {
-    var renderOptions = this.generateRenderOptions();
+    const renderOptions = this.generateRenderOptions();
     this.viewDataProvider.updateViewData(renderOptions);
     this.renderRWorkSpace({
       timePanel: true,
@@ -2076,14 +2079,14 @@ class SchedulerWorkSpace extends WidgetObserver {
     });
   }
   _attachGroupCountClass() {
-    var className = this._groupedStrategy.getGroupCountClass(this.option('groups'));
+    const className = this._groupedStrategy.getGroupCountClass(this.option('groups'));
     this.$element().addClass(className);
   }
   _getDateHeaderTemplate() {
     return this.option('dateCellTemplate');
   }
   _toggleAllDayVisibility(isUpdateScrollable) {
-    var showAllDayPanel = this._isShowAllDayPanel();
+    const showAllDayPanel = this._isShowAllDayPanel();
     this.$element().toggleClass(WORKSPACE_WITH_ALL_DAY_CLASS, showAllDayPanel);
     this._changeAllDayVisibility();
     isUpdateScrollable && this._updateScrollable();
@@ -2103,19 +2106,20 @@ class SchedulerWorkSpace extends WidgetObserver {
     this._$allDayTitle && this._$allDayTitle.remove();
   }
   _cleanView() {
-    var _a, _b, _c;
+    var _this$_shader;
     this.cache.clear();
     this._cleanTableWidths();
     this.cellsSelectionState.clearSelectedAndFocusedCells();
     if (!this.isRenovatedRender()) {
+      var _this$_$allDayTable, _this$_$sidebarTable;
       this._$thead.empty();
       this._$dateTable.empty();
       this._$timePanel.empty();
       this._$groupTable.empty();
-      (_a = this._$allDayTable) === null || _a === void 0 ? void 0 : _a.empty();
-      (_b = this._$sidebarTable) === null || _b === void 0 ? void 0 : _b.empty();
+      (_this$_$allDayTable = this._$allDayTable) === null || _this$_$allDayTable === void 0 || _this$_$allDayTable.empty();
+      (_this$_$sidebarTable = this._$sidebarTable) === null || _this$_$sidebarTable === void 0 || _this$_$sidebarTable.empty();
     }
-    (_c = this._shader) === null || _c === void 0 ? void 0 : _c.clean();
+    (_this$_shader = this._shader) === null || _this$_shader === void 0 || _this$_shader.clean();
     delete this._interval;
   }
   _clean() {
@@ -2130,16 +2134,16 @@ class SchedulerWorkSpace extends WidgetObserver {
     this._$allDayTable && this._$allDayTable.css('width', '');
   }
   _disposeRenovatedComponents() {
-    var _a, _b, _c, _d, _e;
-    (_a = this.renovatedAllDayPanel) === null || _a === void 0 ? void 0 : _a.dispose();
+    var _this$renovatedAllDay, _this$renovatedDateTa, _this$renovatedTimePa, _this$renovatedGroupP, _this$renovatedHeader;
+    (_this$renovatedAllDay = this.renovatedAllDayPanel) === null || _this$renovatedAllDay === void 0 || _this$renovatedAllDay.dispose();
     this.renovatedAllDayPanel = undefined;
-    (_b = this.renovatedDateTable) === null || _b === void 0 ? void 0 : _b.dispose();
+    (_this$renovatedDateTa = this.renovatedDateTable) === null || _this$renovatedDateTa === void 0 || _this$renovatedDateTa.dispose();
     this.renovatedDateTable = undefined;
-    (_c = this.renovatedTimePanel) === null || _c === void 0 ? void 0 : _c.dispose();
+    (_this$renovatedTimePa = this.renovatedTimePanel) === null || _this$renovatedTimePa === void 0 || _this$renovatedTimePa.dispose();
     this.renovatedTimePanel = undefined;
-    (_d = this.renovatedGroupPanel) === null || _d === void 0 ? void 0 : _d.dispose();
+    (_this$renovatedGroupP = this.renovatedGroupPanel) === null || _this$renovatedGroupP === void 0 || _this$renovatedGroupP.dispose();
     this.renovatedGroupPanel = undefined;
-    (_e = this.renovatedHeaderPanel) === null || _e === void 0 ? void 0 : _e.dispose();
+    (_this$renovatedHeader = this.renovatedHeaderPanel) === null || _this$renovatedHeader === void 0 || _this$renovatedHeader.dispose();
     this.renovatedHeaderPanel = undefined;
   }
   getGroupedStrategy() {
@@ -2158,18 +2162,18 @@ class SchedulerWorkSpace extends WidgetObserver {
     this.renderer._renderGrid();
   }
   updateAppointments() {
-    var _a;
+    var _this$dragBehavior2;
     this.option('onRenderAppointments')();
-    (_a = this.dragBehavior) === null || _a === void 0 ? void 0 : _a.updateDragSource();
+    (_this$dragBehavior2 = this.dragBehavior) === null || _this$dragBehavior2 === void 0 || _this$dragBehavior2.updateDragSource();
   }
   // ----------------
   // These methods should be deleted when we get rid of old render
   // ----------------
   _createAllDayPanelElements() {
-    var groupCount = this._getGroupCount();
+    const groupCount = this._getGroupCount();
     if (this._isVerticalGroupedWorkSpace() && groupCount !== 0) {
-      for (var i = 0; i < groupCount; i++) {
-        var $allDayTitle = $('<div>').addClass(ALL_DAY_TITLE_CLASS).text(messageLocalization.format('dxScheduler-allDay'));
+      for (let i = 0; i < groupCount; i++) {
+        const $allDayTitle = $('<div>').addClass(ALL_DAY_TITLE_CLASS).text(messageLocalization.format('dxScheduler-allDay'));
         this._allDayTitles.push($allDayTitle);
         this._$allDayTable = $('<table>');
         this._allDayTables.push(this._$allDayTable);
@@ -2183,7 +2187,7 @@ class SchedulerWorkSpace extends WidgetObserver {
     }
   }
   renderWorkSpace() {
-    var {
+    let {
       generateNewData,
       renderComponents
     } = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_WORKSPACE_RENDER_OPTIONS;
@@ -2202,11 +2206,11 @@ class SchedulerWorkSpace extends WidgetObserver {
     this._initPositionHelper();
   }
   _renderGroupHeader() {
-    var $container = this._getGroupHeaderContainer();
-    var groupCount = this._getGroupCount();
-    var cellTemplates = [];
+    const $container = this._getGroupHeaderContainer();
+    const groupCount = this._getGroupCount();
+    let cellTemplates = [];
     if (groupCount) {
-      var groupRows = this._makeGroupRows(this.option('groups'), this.option('groupByDate'));
+      const groupRows = this._makeGroupRows(this.option('groups'), this.option('groupByDate'));
       this._attachGroupCountClass();
       $container.append(groupRows.elements);
       cellTemplates = groupRows.cellTemplates;
@@ -2216,12 +2220,12 @@ class SchedulerWorkSpace extends WidgetObserver {
     return cellTemplates;
   }
   _applyCellTemplates(templates) {
-    templates === null || templates === void 0 ? void 0 : templates.forEach(template => {
+    templates === null || templates === void 0 || templates.forEach(template => {
       template();
     });
   }
   _makeGroupRows(groups, groupByDate) {
-    var tableCreatorStrategy = this._isVerticalGroupedWorkSpace() ? tableCreator.VERTICAL : tableCreator.HORIZONTAL;
+    const tableCreatorStrategy = this._isVerticalGroupedWorkSpace() ? tableCreator.VERTICAL : tableCreator.HORIZONTAL;
     return tableCreator.makeGroupedTable(tableCreatorStrategy, groups, {
       groupHeaderRowClass: GROUP_ROW_CLASS,
       groupRowClass: GROUP_ROW_CLASS,
@@ -2230,26 +2234,26 @@ class SchedulerWorkSpace extends WidgetObserver {
     }, this._getCellCount() || 1, this.option('resourceCellTemplate'), this._getGroupCount(), groupByDate);
   }
   _renderDateHeader() {
-    var container = this._getDateHeaderContainer();
-    var $headerRow = $('<tr>').addClass(HEADER_ROW_CLASS);
-    var count = this._getCellCount();
-    var cellTemplate = this._getDateHeaderTemplate();
-    var repeatCount = this._getCalculateHeaderCellRepeatCount();
-    var templateCallbacks = [];
-    var groupByDate = this.isGroupedByDate();
+    const container = this._getDateHeaderContainer();
+    const $headerRow = $('<tr>').addClass(HEADER_ROW_CLASS);
+    const count = this._getCellCount();
+    const cellTemplate = this._getDateHeaderTemplate();
+    const repeatCount = this._getCalculateHeaderCellRepeatCount();
+    const templateCallbacks = [];
+    const groupByDate = this.isGroupedByDate();
     if (!groupByDate) {
-      for (var rowIndex = 0; rowIndex < repeatCount; rowIndex++) {
-        for (var columnIndex = 0; columnIndex < count; columnIndex++) {
-          var templateIndex = rowIndex * count + columnIndex;
+      for (let rowIndex = 0; rowIndex < repeatCount; rowIndex++) {
+        for (let columnIndex = 0; columnIndex < count; columnIndex++) {
+          const templateIndex = rowIndex * count + columnIndex;
           this._renderDateHeaderTemplate($headerRow, columnIndex, templateIndex, cellTemplate, templateCallbacks);
         }
       }
       container.append($headerRow);
     } else {
-      var colSpan = groupByDate ? this._getGroupCount() : 1;
-      for (var _columnIndex = 0; _columnIndex < count; _columnIndex++) {
-        var _templateIndex = _columnIndex * repeatCount;
-        var cellElement = this._renderDateHeaderTemplate($headerRow, _columnIndex, _templateIndex, cellTemplate, templateCallbacks);
+      const colSpan = groupByDate ? this._getGroupCount() : 1;
+      for (let columnIndex = 0; columnIndex < count; columnIndex++) {
+        const templateIndex = columnIndex * repeatCount;
+        const cellElement = this._renderDateHeaderTemplate($headerRow, columnIndex, templateIndex, cellTemplate, templateCallbacks);
         cellElement.attr('colSpan', colSpan);
       }
       container.prepend($headerRow);
@@ -2258,16 +2262,16 @@ class SchedulerWorkSpace extends WidgetObserver {
     return $headerRow;
   }
   _renderDateHeaderTemplate(container, panelCellIndex, templateIndex, cellTemplate, templateCallbacks) {
-    var validTemplateIndex = this.isGroupedByDate() ? Math.floor(templateIndex / this._getGroupCount()) : templateIndex;
-    var {
+    const validTemplateIndex = this.isGroupedByDate() ? Math.floor(templateIndex / this._getGroupCount()) : templateIndex;
+    const {
       completeDateHeaderMap
     } = this.viewDataProvider;
-    var {
+    const {
       text,
       startDate: date
     } = completeDateHeaderMap[completeDateHeaderMap.length - 1][validTemplateIndex];
-    var $cell = $('<th>').addClass(this._getHeaderPanelCellClass(panelCellIndex)).attr('title', text);
-    if (cellTemplate === null || cellTemplate === void 0 ? void 0 : cellTemplate.render) {
+    const $cell = $('<th>').addClass(this._getHeaderPanelCellClass(panelCellIndex)).attr('title', text);
+    if (cellTemplate !== null && cellTemplate !== void 0 && cellTemplate.render) {
       templateCallbacks.push(cellTemplate.render.bind(cellTemplate, {
         model: _extends({
           text,
@@ -2283,12 +2287,12 @@ class SchedulerWorkSpace extends WidgetObserver {
     return $cell;
   }
   _getGroupsForDateHeaderTemplate(templateIndex) {
-    var indexMultiplier = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-    var groupIndex;
-    var groups;
+    let indexMultiplier = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    let groupIndex;
+    let groups;
     if (this._isHorizontalGroupedWorkSpace() && !this.isGroupedByDate()) {
       groupIndex = this._getGroupIndex(0, templateIndex * indexMultiplier);
-      var groupsArray = getCellGroups(groupIndex, this.option('groups'));
+      const groupsArray = getCellGroups(groupIndex, this.option('groups'));
       groups = getGroupsObjectFromGroupsArray(groupsArray);
     }
     return {
@@ -2297,15 +2301,15 @@ class SchedulerWorkSpace extends WidgetObserver {
     };
   }
   _getHeaderPanelCellClass(i) {
-    var cellClass = "".concat(HEADER_PANEL_CELL_CLASS, " ").concat(HORIZONTAL_SIZES_CLASS);
+    const cellClass = `${HEADER_PANEL_CELL_CLASS} ${HORIZONTAL_SIZES_CLASS}`;
     return this._groupedStrategy.addAdditionalGroupCellClasses(cellClass, i + 1, undefined, undefined, this.isGroupedByDate());
   }
   _renderAllDayPanel(index) {
-    var cellCount = this._getCellCount();
+    let cellCount = this._getCellCount();
     if (!this._isVerticalGroupedWorkSpace()) {
       cellCount *= this._getGroupCount() || 1;
     }
-    var cellTemplates = this._renderTableBody({
+    const cellTemplates = this._renderTableBody({
       container: this._allDayPanels.length ? getPublicElement(this._allDayTables[index]) : getPublicElement(this._$allDayTable),
       rowCount: 1,
       cellCount,
@@ -2321,39 +2325,39 @@ class SchedulerWorkSpace extends WidgetObserver {
   }
   _renderGroupAllDayPanel() {
     if (this._isVerticalGroupedWorkSpace()) {
-      var groupCount = this._getGroupCount();
-      for (var i = 0; i < groupCount; i++) {
+      const groupCount = this._getGroupCount();
+      for (let i = 0; i < groupCount; i++) {
         this._renderAllDayPanel(i);
       }
     }
   }
   _getAllDayPanelCellClass(i, j) {
-    var cellClass = "".concat(ALL_DAY_TABLE_CELL_CLASS, " ").concat(HORIZONTAL_SIZES_CLASS);
+    const cellClass = `${ALL_DAY_TABLE_CELL_CLASS} ${HORIZONTAL_SIZES_CLASS}`;
     return this._groupedStrategy.addAdditionalGroupCellClasses(cellClass, j + 1);
   }
   _renderTimePanel() {
-    var repeatCount = this._groupedStrategy.calculateTimeCellRepeatCount();
-    var getTimeCellGroups = rowIndex => {
+    const repeatCount = this._groupedStrategy.calculateTimeCellRepeatCount();
+    const getTimeCellGroups = rowIndex => {
       if (!this._isVerticalGroupedWorkSpace()) {
         return {};
       }
-      var groupIndex = this._getGroupIndex(rowIndex, 0);
-      var groupsArray = getCellGroups(groupIndex, this.option('groups'));
-      var groups = getGroupsObjectFromGroupsArray(groupsArray);
+      const groupIndex = this._getGroupIndex(rowIndex, 0);
+      const groupsArray = getCellGroups(groupIndex, this.option('groups'));
+      const groups = getGroupsObjectFromGroupsArray(groupsArray);
       return {
         groupIndex,
         groups
       };
     };
-    var getData = (rowIndex, field) => {
-      var allDayPanelsCount = 0;
+    const getData = (rowIndex, field) => {
+      let allDayPanelsCount = 0;
       if (this.isAllDayPanelVisible) {
         allDayPanelsCount = 1;
       }
       if (this.isGroupedAllDayPanel()) {
         allDayPanelsCount = Math.ceil((rowIndex + 1) / this._getRowCount());
       }
-      var validRowIndex = rowIndex + allDayPanelsCount;
+      const validRowIndex = rowIndex + allDayPanelsCount;
       return this.viewDataProvider.completeTimePanelMap[validRowIndex][field];
     };
     this._renderTableBody({
@@ -2371,11 +2375,11 @@ class SchedulerWorkSpace extends WidgetObserver {
     });
   }
   _getTimeCellClass(i) {
-    var cellClass = "".concat(TIME_PANEL_CELL_CLASS, " ").concat(VERTICAL_SIZES_CLASS);
+    const cellClass = `${TIME_PANEL_CELL_CLASS} ${VERTICAL_SIZES_CLASS}`;
     return this._isVerticalGroupedWorkSpace() ? this._groupedStrategy.addAdditionalGroupCellClasses(cellClass, i, i) : cellClass;
   }
   _renderDateTable() {
-    var groupCount = this._getGroupCount();
+    const groupCount = this._getGroupCount();
     this._renderTableBody({
       container: getPublicElement(this._$dateTable),
       rowCount: this._getTotalRowCount(groupCount),
@@ -2385,14 +2389,14 @@ class SchedulerWorkSpace extends WidgetObserver {
       cellTemplate: this.option('dataCellTemplate'),
       // TODO: remove along with old render
       getCellData: (_, rowIndex, columnIndex) => {
-        var isGroupedAllDayPanel = this.isGroupedAllDayPanel();
-        var validRowIndex = rowIndex;
+        const isGroupedAllDayPanel = this.isGroupedAllDayPanel();
+        let validRowIndex = rowIndex;
         if (isGroupedAllDayPanel) {
-          var rowCount = this._getRowCount();
-          var allDayPanelsCount = Math.ceil(rowIndex / rowCount);
+          const rowCount = this._getRowCount();
+          const allDayPanelsCount = Math.ceil(rowIndex / rowCount);
           validRowIndex += allDayPanelsCount;
         }
-        var {
+        const {
           cellData
         } = this.viewDataProvider.viewDataMap.dateTableMap[validRowIndex][columnIndex];
         return {
@@ -2410,7 +2414,7 @@ class SchedulerWorkSpace extends WidgetObserver {
     return this._groupedStrategy.insertAllDayRowsIntoDateTable();
   }
   _renderTableBody(options, delayCellTemplateRendering) {
-    var result = [];
+    let result = [];
     if (!delayCellTemplateRendering) {
       this._applyCellTemplates(tableCreator.makeTable(options));
     } else {
@@ -2419,44 +2423,44 @@ class SchedulerWorkSpace extends WidgetObserver {
     return result;
   }
 }
-var createDragBehaviorConfig = (container, rootElement, isDefaultDraggingMode, dragBehavior, enableDefaultDragging, disableDefaultDragging, getDroppableCell, getDateTables, removeDroppableCellClass, getCellWidth, options) => {
-  var state = {
+const createDragBehaviorConfig = (container, rootElement, isDefaultDraggingMode, dragBehavior, enableDefaultDragging, disableDefaultDragging, getDroppableCell, getDateTables, removeDroppableCellClass, getCellWidth, options) => {
+  const state = {
     dragElement: undefined,
     itemData: undefined
   };
-  var isItemDisabled = () => {
-    var {
+  const isItemDisabled = () => {
+    const {
       itemData
     } = state;
     if (itemData) {
-      var getter = compileGetter('disabled');
+      const getter = compileGetter('disabled');
       return getter(itemData);
     }
     return true;
   };
-  var createDragAppointment = (itemData, settings, appointments) => {
-    var appointmentIndex = appointments.option('items').length;
+  const createDragAppointment = (itemData, settings, appointments) => {
+    const appointmentIndex = appointments.option('items').length;
     settings.isCompact = false;
     settings.virtual = false;
-    var items = appointments._renderItem(appointmentIndex, {
+    const items = appointments._renderItem(appointmentIndex, {
       itemData,
       settings: [settings]
     });
     return items[0];
   };
-  var onDragStart = e => {
+  const onDragStart = e => {
     if (!isDefaultDraggingMode) {
       disableDefaultDragging();
     }
-    var canceled = e.cancel;
-    var {
+    const canceled = e.cancel;
+    const {
       event
     } = e;
-    var $itemElement = $(e.itemElement);
-    var appointments = e.component._appointments;
+    const $itemElement = $(e.itemElement);
+    const appointments = e.component._appointments;
     state.itemData = options.getItemData(e.itemElement, appointments);
-    var settings = options.getItemSettings($itemElement, e);
-    var {
+    const settings = options.getItemSettings($itemElement, e);
+    const {
       initialPosition
     } = options;
     if (!isItemDisabled()) {
@@ -2467,7 +2471,7 @@ var createDragBehaviorConfig = (container, rootElement, isDefaultDraggingMode, d
         }
         state.dragElement = createDragAppointment(state.itemData, settings, appointments);
         event.data.itemElement = state.dragElement;
-        event.data.initialPosition = initialPosition !== null && initialPosition !== void 0 ? initialPosition : locate($(state.dragElement));
+        event.data.initialPosition = initialPosition ?? locate($(state.dragElement));
         event.data.itemData = state.itemData;
         event.data.itemSettings = settings;
         dragBehavior.onDragStart(event.data);
@@ -2475,35 +2479,35 @@ var createDragBehaviorConfig = (container, rootElement, isDefaultDraggingMode, d
       }
     }
   };
-  var getElementsFromPoint = () => {
-    var appointmentWidth = getWidth(state.dragElement);
-    var cellWidth = getCellWidth();
-    var isWideAppointment = appointmentWidth > cellWidth;
-    var isNarrowAppointment = appointmentWidth <= DRAGGING_MOUSE_FAULT;
-    var dragElementContainer = $(state.dragElement).parent();
-    var boundingRect = getBoundingRect(dragElementContainer.get(0));
-    var newX = boundingRect.left;
-    var newY = boundingRect.top;
+  const getElementsFromPoint = () => {
+    const appointmentWidth = getWidth(state.dragElement);
+    const cellWidth = getCellWidth();
+    const isWideAppointment = appointmentWidth > cellWidth;
+    const isNarrowAppointment = appointmentWidth <= DRAGGING_MOUSE_FAULT;
+    const dragElementContainer = $(state.dragElement).parent().get(0);
+    const boundingRect = getBoundingRect(dragElementContainer);
+    const newX = boundingRect.left;
+    const newY = boundingRect.top;
     if (isWideAppointment) {
-      return domAdapter.elementsFromPoint(newX + DRAGGING_MOUSE_FAULT, newY + DRAGGING_MOUSE_FAULT);
+      return domAdapter.elementsFromPoint(newX + DRAGGING_MOUSE_FAULT, newY + DRAGGING_MOUSE_FAULT, dragElementContainer);
     }
     if (isNarrowAppointment) {
-      return domAdapter.elementsFromPoint(newX, newY);
+      return domAdapter.elementsFromPoint(newX, newY, dragElementContainer);
     }
-    return domAdapter.elementsFromPoint(newX + appointmentWidth / 2, newY + DRAGGING_MOUSE_FAULT);
+    return domAdapter.elementsFromPoint(newX + appointmentWidth / 2, newY + DRAGGING_MOUSE_FAULT, dragElementContainer);
   };
-  var onDragMove = () => {
+  const onDragMove = () => {
     if (isDefaultDraggingMode) {
       return;
     }
-    var elements = getElementsFromPoint();
-    var isMoveUnderControl = !!elements.find(el => el === rootElement.get(0));
-    var dateTables = getDateTables();
-    var droppableCell = elements.find(el => {
-      var {
+    const elements = getElementsFromPoint();
+    const isMoveUnderControl = !!elements.find(el => el === rootElement.get(0));
+    const dateTables = getDateTables();
+    const droppableCell = elements.find(el => {
+      const {
         classList
       } = el;
-      var isCurrentSchedulerElement = dateTables.find(el).length === 1;
+      const isCurrentSchedulerElement = dateTables.find(el).length === 1;
       return isCurrentSchedulerElement && (classList.contains(DATE_TABLE_CELL_CLASS) || classList.contains(ALL_DAY_TABLE_CELL_CLASS));
     });
     if (droppableCell) {
@@ -2515,19 +2519,19 @@ var createDragBehaviorConfig = (container, rootElement, isDefaultDraggingMode, d
       removeDroppableCellClass();
     }
   };
-  var onDragEnd = e => {
-    var _a;
+  const onDragEnd = e => {
+    var _state$dragElement;
     if (!isDefaultDraggingMode) {
       enableDefaultDragging();
     }
     if (!isItemDisabled()) {
       dragBehavior.onDragEnd(e);
     }
-    (_a = state.dragElement) === null || _a === void 0 ? void 0 : _a.remove();
+    (_state$dragElement = state.dragElement) === null || _state$dragElement === void 0 || _state$dragElement.remove();
     removeDroppableCellClass();
   };
-  var cursorOffset = options.isSetCursorOffset ? () => {
-    var $dragElement = $(state.dragElement);
+  const cursorOffset = options.isSetCursorOffset ? () => {
+    const $dragElement = $(state.dragElement);
     return {
       x: getWidth($dragElement) / 2,
       y: getHeight($dragElement) / 2

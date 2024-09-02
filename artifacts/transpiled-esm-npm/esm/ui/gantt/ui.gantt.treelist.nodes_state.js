@@ -10,7 +10,7 @@ export class GanttTreeListNodeState {
     return this.children.length > 0;
   }
   removeChild(state) {
-    var index = this.children.indexOf(state.key);
+    const index = this.children.indexOf(state.key);
     if (index > -1) {
       this.children = this.children.splice(index, 1);
     }
@@ -52,7 +52,7 @@ export class GanttTreeListNodesState {
   }
   getExpandedKeys() {
     if (this._hasCollapsed) {
-      var keys = [];
+      const keys = [];
       this._forEachState(state => {
         if (state.hasChildren() && !state.collapsed) {
           keys.push(state.key);
@@ -79,10 +79,10 @@ export class GanttTreeListNodesState {
     }
   }
   _removeStateWithChildren(key) {
-    var state = this._getNodeState(key);
+    const state = this._getNodeState(key);
     if (state) {
       state.children.forEach(child => this._removeStateWithChildren(child));
-      var parent = this._getNodeState(state.parentKey);
+      const parent = this._getNodeState(state.parentKey);
       if (parent) {
         parent.removeChild(state);
       }
@@ -90,16 +90,16 @@ export class GanttTreeListNodesState {
     }
   }
   _applyNode(node) {
-    var nodeState = new GanttTreeListNodeState(node);
-    var oldState = this._getNodeState(node.key);
+    const nodeState = new GanttTreeListNodeState(node);
+    const oldState = this._getNodeState(node.key);
     if (!(oldState !== null && oldState !== void 0 && oldState.equal(nodeState))) {
       this._nodeHash[node.key] = nodeState;
       this._expandTreelineToNode(node.key);
     }
   }
   _expandTreelineToNode(key) {
-    var state = this._getNodeState(key);
-    var parent = this._getNodeState(state === null || state === void 0 ? void 0 : state.parentKey);
+    const state = this._getNodeState(key);
+    let parent = this._getNodeState(state === null || state === void 0 ? void 0 : state.parentKey);
     while (parent) {
       parent.collapsed = false;
       parent = this._getNodeState(parent.parentKey);
@@ -107,8 +107,8 @@ export class GanttTreeListNodesState {
   }
   _validateHash() {
     Object.keys(this._nodeHash).forEach(key => {
-      var state = this._getNodeState(key);
-      var parentKey = state === null || state === void 0 ? void 0 : state.parentKey;
+      const state = this._getNodeState(key);
+      const parentKey = state === null || state === void 0 ? void 0 : state.parentKey;
       if (parentKey !== this._rootValue && !this._getNodeState(parentKey)) {
         this._removeStateWithChildren(key);
       }
@@ -116,7 +116,7 @@ export class GanttTreeListNodesState {
   }
   _forEachState(callback) {
     Object.keys(this._nodeHash).forEach(key => {
-      var state = this._nodeHash[key];
+      const state = this._nodeHash[key];
       if (state) {
         callback(state);
       }

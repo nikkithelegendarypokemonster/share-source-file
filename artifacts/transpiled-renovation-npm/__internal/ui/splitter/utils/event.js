@@ -7,7 +7,7 @@ exports.RESIZE_EVENT = exports.ITEM_EXPANDED_EVENT = exports.ITEM_COLLAPSED_EVEN
 exports.getActionNameByEventName = getActionNameByEventName;
 var _inflector = require("../../../../core/utils/inflector");
 function getActionNameByEventName(eventName) {
-  return "_".concat((0, _inflector.camelize)(eventName.replace('on', '')), "Action");
+  return `_${(0, _inflector.camelize)(eventName.replace('on', ''))}Action`;
 }
 const RESIZE_EVENT = exports.RESIZE_EVENT = {
   onResize: 'onResize',

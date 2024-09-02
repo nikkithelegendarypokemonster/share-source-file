@@ -1,10 +1,10 @@
 /**
 * DevExtreme (esm/ui/speed_dial_action/repaint_floating_action_button.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-import { repaint } from './speed_dial_main_item';
-export default repaint;
+import repaintFloatingActionButton from '../../__internal/ui/speed_dial_action/m_repaint_floating_action_button';
+export default repaintFloatingActionButton;

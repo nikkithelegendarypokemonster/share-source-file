@@ -1,7 +1,7 @@
 /**
 * DevExtreme (excel_exporter.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,201 +11,277 @@ import dxDataGrid, { Column } from './ui/data_grid';
 import dxPivotGrid, { Cell } from './ui/pivot_grid';
 import { ExportLoadPanel } from './exporter/export_load_panel';
 
+/**
+ * @public
+ * @namespace DevExpress.excelExporter
+ */
 export type DataGridCell = ExcelDataGridCell;
 
 /**
+ * @namespace DevExpress.excelExporter
  * @deprecated Use DataGridCell instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export interface ExcelDataGridCell {
     /**
-     * The configuration of the cell&apos;s column.
+     * @docid
+     * @public
+     * @type dxDataGridColumn
      */
     column?: Column;
     /**
-     * The data object of the cell&apos;s row.
+     * @docid
+     * @public
      */
     data?: any;
     /**
-     * The group index of the cell&apos;s row. Available when the rowType is &apos;group&apos;.
+     * @docid
+     * @public
      */
     groupIndex?: number;
     /**
-     * Information about group summary items the cell represents.
+     * @docid
+     * @public
      */
     groupSummaryItems?: Array<{
       /**
-       * The group summary item&apos;s identifier.
+       * @docid
        */
       name?: string;
       /**
-       * The group summary item&apos;s raw value.
+       * @docid
        */
       value?: any;
     }>;
     /**
-     * The type of the cell&apos;s row.
+     * @docid
+     * @public
      */
     rowType?: string;
     /**
-     * The identifier of the total summary item that the cell represents.
+     * @docid
+     * @public
      */
     totalSummaryItemName?: string;
     /**
-     * The cell&apos;s raw value.
+     * @docid
+     * @public
      */
     value?: any;
 }
 
+/**
+ * @public
+ * @namespace DevExpress.excelExporter
+ */
 export type PivotGridCell = ExcelPivotGridCell;
 
 /**
+ * @namespace DevExpress.excelExporter
  * @deprecated Use PivotGridCell instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export interface ExcelPivotGridCell extends Cell {
     /**
-     * The area to which the cell belongs.
+     * @docid
+     * @public
      */
     area?: 'column' | 'row' | 'data';
     /**
-     * A zero-based index that indicates the position of the cell&apos;s row.
+     * @docid
+     * @public
      */
     rowIndex?: number;
     /**
-     * A zero-based index that indicates the position of the cell&apos;s column.
+     * @docid
+     * @public
      */
     columnIndex?: number;
     /**
-     * The header type. Available if the cell belongs to the field panel.
+     * @docid
+     * @public
      */
     headerType?: 'column' | 'row' | 'data' | 'filter';
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.excelExporter
+ * @type object
  */
 export interface CellAddress {
     /**
-     * The index of a row that contains the cell.
+     * @docid
+     * @public
      */
     row?: number;
     /**
-     * The index of a column that contains the cell.
+     * @docid
+     * @public
      */
     column?: number;
 }
 
 /**
- * The coordinates of the exported DataGrid in the Excel file.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.excelExporter
+ * @type object
  */
 export interface CellRange {
     /**
-     * Coordinates of the top left cell.
+     * @docid
+     * @public
      */
     from?: CellAddress;
     /**
-     * Coordinates of the bottom right cell.
+     * @docid
+     * @public
      */
     to?: CellAddress;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.excelExporter
+ * @hidden
  */
 export interface ExcelExportBaseProps {
     /**
-     * An Excel worksheet to which the grid should be exported.
+     * @docid
+     * @default undefined
+     * @public
      */
     worksheet?: object;
     /**
-     * A cell used as a start position for export.
+     * @docid
+     * @default { row: 1, column: 1 }
+     * @public
      */
     topLeftCell?: CellAddress | string;
     /**
-     * Specifies whether Excel columns should have the same width as their source UI component&apos;s columns.
+     * @docid
+     * @default true
+     * @public
      */
     keepColumnWidths?: boolean;
     /**
-     * Configures the load panel.
+     * @docid
+     * @public
      */
     loadPanel?: ExportLoadPanel;
     /**
-      * Specifies if the CSV export routine saves potentially dangerous content as plain text data.
-      */
+     * @docid
+     * @default false
+     * @public
+     */
      encodeExecutableContent?: boolean;
 }
 
 /**
- * Properties that can be passed to the exportDataGrid(options) method from the excelExporter module.
+ * @docid
+ * @public
+ * @namespace DevExpress.excelExporter
+ * @inherits ExcelExportBaseProps
  */
 export interface ExcelExportDataGridProps extends ExcelExportBaseProps {
     /**
-     * A DataGrid instance. This setting is required.
+     * @docid
+     * @default undefined
+     * @public
      */
     component?: dxDataGrid;
     /**
-     * Specifies whether to export only selected rows.
+     * @docid
+     * @default false
+     * @public
      */
     selectedRowsOnly?: boolean;
     /**
-     * Specifies whether to enable Excel filtering in the document.
+     * @docid
+     * @default false
+     * @public
      */
     autoFilterEnabled?: boolean;
     /**
-     * Customizes an Excel cell after creation.
+     * @docid
+     * @type_function_param1_field gridCell:ExcelDataGridCell
+     * @type_function_param1_field excelCell:Object
+     * @public
      */
     customizeCell?: ((options: { gridCell?: DataGridCell; excelCell?: any }) => void);
 }
 
 /**
- * Properties that can be passed to the exportPivotGrid(options) method from the excelExporter module.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.excelExporter
+ * @inherits ExcelExportBaseProps
  */
 export interface ExcelExportPivotGridProps extends ExcelExportBaseProps {
     /**
-     * A PivotGrid instance. This setting is required.
+     * @docid
+     * @default undefined
+     * @public
      */
     component?: dxPivotGrid;
     /**
-     * Specifies whether to merge neighbouring cells in the row field if they have the same values.
+     * @docid
+     * @default true
+     * @public
      */
     mergeRowFieldValues?: boolean;
     /**
-     * Specifies whether to merge neighbouring cells in the column field if they have the same values.
+     * @docid
+     * @default true
+     * @public
      */
     mergeColumnFieldValues?: boolean;
     /**
-     * Specifies whether to export headers of the filter fields on the field panel.
+     * @docid
+     * @default false
+     * @public
      */
     exportFilterFieldHeaders?: boolean;
     /**
-     * Specifies whether to export headers of the data fields on the field panel.
+     * @docid
+     * @default false
+     * @public
      */
     exportDataFieldHeaders?: boolean;
     /**
-     * Specifies whether to export headers of the column fields on the field panel.
+     * @docid
+     * @default false
+     * @public
      */
     exportColumnFieldHeaders?: boolean;
     /**
-     * Specifies whether to export headers of the row fields on the field panel.
+     * @docid
+     * @default false
+     * @public
      */
     exportRowFieldHeaders?: boolean;
     /**
-     * Customizes an Excel cell after creation.
+     * @docid
+     * @type_function_param1_field pivotCell:ExcelPivotGridCell
+     * @type_function_param1_field excelCell:Object
+     * @public
      */
     customizeCell?: ((options: { pivotCell?: PivotGridCell; excelCell?: any }) => void);
 }
 
 /**
- * Exports grid data to Excel.
+ * @docid excelExporter.exportDataGrid
+ * @publicName exportDataGrid(options)
+ * @return Promise<CellRange>
+ * @namespace DevExpress.excelExporter
+ * @static
+ * @public
  */
 export function exportDataGrid(options: ExcelExportDataGridProps): DxPromise<CellRange>;
 
 /**
- * Exports pivot grid data to Excel.
+ * @docid excelExporter.exportPivotGrid
+ * @publicName exportPivotGrid(options)
+ * @return Promise<CellRange>
+ * @namespace DevExpress.excelExporter
+ * @static
+ * @public
  */
 export function exportPivotGrid(options: ExcelExportPivotGridProps): DxPromise<CellRange>;

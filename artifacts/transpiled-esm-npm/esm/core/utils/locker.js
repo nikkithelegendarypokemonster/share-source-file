@@ -1,15 +1,15 @@
 import errors from '../errors';
-var Locker = function Locker() {
-  var info = {};
-  var currentCount = function currentCount(lockName) {
+const Locker = function () {
+  const info = {};
+  const currentCount = function (lockName) {
     return info[lockName] || 0;
   };
   return {
-    obtain: function obtain(lockName) {
+    obtain: function (lockName) {
       info[lockName] = currentCount(lockName) + 1;
     },
-    release: function release(lockName) {
-      var count = currentCount(lockName);
+    release: function (lockName) {
+      const count = currentCount(lockName);
       if (count < 1) {
         throw errors.Error('E0014');
       }
@@ -19,7 +19,7 @@ var Locker = function Locker() {
         info[lockName] = count - 1;
       }
     },
-    locked: function locked(lockName) {
+    locked: function (lockName) {
       return currentCount(lockName) > 0;
     }
   };

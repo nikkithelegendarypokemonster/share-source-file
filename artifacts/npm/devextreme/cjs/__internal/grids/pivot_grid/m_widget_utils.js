@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/pivot_grid/m_widget_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -205,7 +205,7 @@ function parseFields(dataSource, fieldsList, path, fieldsDataType) {
   Object.keys(fieldsList || []).forEach(field => {
     if (field && field.startsWith('__')) return;
     let dataIndex = 1;
-    const currentPath = path.length ? "".concat(path, ".").concat(field) : field;
+    const currentPath = path.length ? `${path}.${field}` : field;
     let dataType = fieldsDataType[currentPath];
     const getter = (0, _data.compileGetter)(currentPath);
     let value = fieldsList[field];
@@ -266,7 +266,7 @@ function setDefaultFieldValueFormatting(field) {
       setFieldProperty(field, 'customizeText', formatObject => {
         const secondValue = formatObject.value + groupInterval;
         const secondValueText = _format_helper.default.format(secondValue, field.format);
-        return formatObject.valueText && secondValueText ? "".concat(formatObject.valueText, " - ").concat(secondValueText) : '';
+        return formatObject.valueText && secondValueText ? `${formatObject.valueText} - ${secondValueText}` : '';
       });
     }
   }
@@ -319,7 +319,7 @@ const getScrollbarWidth = containerElement => containerElement.offsetWidth - con
 exports.getScrollbarWidth = getScrollbarWidth;
 const calculateScrollbarWidth = exports.calculateScrollbarWidth = (0, _call_once.default)(() => {
   const document = _dom_adapter.default.getDocument();
-  document.body.insertAdjacentHTML('beforeend', "<div class=\"".concat(_const.CLASSES.scrollBarMeasureElement, "\"></div>"));
+  document.body.insertAdjacentHTML('beforeend', `<div class="${_const.CLASSES.scrollBarMeasureElement}"></div>`);
   const scrollbar = document.body.lastElementChild;
   const scrollbarWidth = getScrollbarWidth(scrollbar);
   if (scrollbar) {

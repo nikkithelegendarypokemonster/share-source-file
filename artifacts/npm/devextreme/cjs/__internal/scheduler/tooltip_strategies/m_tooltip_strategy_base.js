@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/tooltip_strategies/m_tooltip_strategy_base.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,33 +15,32 @@ exports.TooltipStrategyBase = void 0;
 var _renderer = _interopRequireDefault(require("../../../core/renderer"));
 var _function_template = require("../../../core/templates/function_template");
 var _button = _interopRequireDefault(require("../../../ui/button"));
-var _uiList = _interopRequireDefault(require("../../../ui/list/ui.list.edit"));
 var _promise = require("../../core/utils/promise");
+var _m_list = _interopRequireDefault(require("../../ui/list/m_list.edit"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const TOOLTIP_APPOINTMENT_ITEM = 'dx-tooltip-appointment-item';
-const TOOLTIP_APPOINTMENT_ITEM_CONTENT = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-content");
-const TOOLTIP_APPOINTMENT_ITEM_CONTENT_SUBJECT = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-content-subject");
-const TOOLTIP_APPOINTMENT_ITEM_CONTENT_DATE = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-content-date");
-const TOOLTIP_APPOINTMENT_ITEM_MARKER = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-marker");
-const TOOLTIP_APPOINTMENT_ITEM_MARKER_BODY = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-marker-body");
-const TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON_CONTAINER = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-delete-button-container");
-const TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON = "".concat(TOOLTIP_APPOINTMENT_ITEM, "-delete-button");
-let TooltipStrategyBase = exports.TooltipStrategyBase = /*#__PURE__*/function () {
-  function TooltipStrategyBase(options) {
+const TOOLTIP_APPOINTMENT_ITEM_CONTENT = `${TOOLTIP_APPOINTMENT_ITEM}-content`;
+const TOOLTIP_APPOINTMENT_ITEM_CONTENT_SUBJECT = `${TOOLTIP_APPOINTMENT_ITEM}-content-subject`;
+const TOOLTIP_APPOINTMENT_ITEM_CONTENT_DATE = `${TOOLTIP_APPOINTMENT_ITEM}-content-date`;
+const TOOLTIP_APPOINTMENT_ITEM_MARKER = `${TOOLTIP_APPOINTMENT_ITEM}-marker`;
+const TOOLTIP_APPOINTMENT_ITEM_MARKER_BODY = `${TOOLTIP_APPOINTMENT_ITEM}-marker-body`;
+const TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON_CONTAINER = `${TOOLTIP_APPOINTMENT_ITEM}-delete-button-container`;
+const TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON = `${TOOLTIP_APPOINTMENT_ITEM}-delete-button`;
+class TooltipStrategyBase {
+  constructor(options) {
     this.asyncTemplatePromises = new Set();
     this._tooltip = null;
     this._options = options;
     this._extraOptions = null;
   }
-  var _proto = TooltipStrategyBase.prototype;
-  _proto.show = function show(target, dataList, extraOptions) {
+  show(target, dataList, extraOptions) {
     if (this._canShowTooltip(dataList)) {
       this.hide();
       this._extraOptions = extraOptions;
       this._showCore(target, dataList);
     }
-  };
-  _proto._showCore = function _showCore(target, dataList) {
+  }
+  _showCore(target, dataList) {
     if (!this._tooltip) {
       this._tooltip = this._createTooltip(target, dataList);
     } else {
@@ -52,43 +51,41 @@ let TooltipStrategyBase = exports.TooltipStrategyBase = /*#__PURE__*/function ()
     this._tooltip.option('visible', true);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._prepareBeforeVisibleChanged = function _prepareBeforeVisibleChanged(dataList) {};
-  _proto._getContentTemplate = function _getContentTemplate(dataList) {
+  _prepareBeforeVisibleChanged(dataList) {}
+  _getContentTemplate(dataList) {
     return container => {
       const listElement = (0, _renderer.default)('<div>');
       (0, _renderer.default)(container).append(listElement);
       this._list = this._createList(listElement, dataList);
     };
-  };
-  _proto.isAlreadyShown = function isAlreadyShown(target) {
+  }
+  isAlreadyShown(target) {
     if (this._tooltip && this._tooltip.option('visible')) {
       return this._tooltip.option('target')[0] === target[0];
     }
     return undefined;
-  };
-  _proto._onShown = function _onShown() {
+  }
+  _onShown() {
     this._list.option('focusStateEnabled', this._extraOptions.focusStateEnabled);
-  };
-  _proto.dispose = function dispose() {};
-  _proto.hide = function hide() {
+  }
+  dispose() {}
+  hide() {
     if (this._tooltip) {
       this._tooltip.option('visible', false);
     }
-  };
-  _proto._shouldUseTarget = function _shouldUseTarget() {
+  }
+  _shouldUseTarget() {
     return true;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._createTooltip = function _createTooltip(target, dataList) {};
-  _proto._canShowTooltip = function _canShowTooltip(dataList) {
+  _createTooltip(target, dataList) {}
+  _canShowTooltip(dataList) {
     if (!dataList.length) {
       return false;
     }
     return true;
-  };
-  _proto._createListOption = function _createListOption(dataList) {
+  }
+  _createListOption(dataList) {
     return {
       dataSource: dataList,
       onContentReady: this._onListRender.bind(this),
@@ -100,15 +97,14 @@ let TooltipStrategyBase = exports.TooltipStrategyBase = /*#__PURE__*/function ()
     };
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._onListRender = function _onListRender(e) {};
-  _proto._createTooltipElement = function _createTooltipElement(wrapperClass) {
+  _onListRender(e) {}
+  _createTooltipElement(wrapperClass) {
     return (0, _renderer.default)('<div>').appendTo(this._options.container).addClass(wrapperClass);
-  };
-  _proto._createList = function _createList(listElement, dataList) {
-    return this._options.createComponent(listElement, _uiList.default, this._createListOption(dataList));
-  };
-  _proto._renderTemplate = function _renderTemplate(appointment, targetedAppointment, index, color) {
+  }
+  _createList(listElement, dataList) {
+    return this._options.createComponent(listElement, _m_list.default, this._createListOption(dataList));
+  }
+  _renderTemplate(appointment, targetedAppointment, index, color) {
     const itemListContent = this._createItemListContent(appointment, targetedAppointment, color);
     this._options.addDefaultTemplates({
       // @ts-expect-error
@@ -118,10 +114,10 @@ let TooltipStrategyBase = exports.TooltipStrategyBase = /*#__PURE__*/function ()
         return $container;
       })
     });
-    const template = this._options.getAppointmentTemplate("".concat(this._getItemListTemplateName(), "Template"));
+    const template = this._options.getAppointmentTemplate(`${this._getItemListTemplateName()}Template`);
     return this._createFunctionTemplate(template, appointment, targetedAppointment, index);
-  };
-  _proto._createFunctionTemplate = function _createFunctionTemplate(template, appointmentData, targetedAppointmentData, index) {
+  }
+  _createFunctionTemplate(template, appointmentData, targetedAppointmentData, index) {
     const isButtonClicked = !!this._extraOptions.isButtonClick;
     const isEmptyDropDownAppointmentTemplate = this._isEmptyDropDownAppointmentTemplate();
     // @ts-expect-error
@@ -146,22 +142,21 @@ let TooltipStrategyBase = exports.TooltipStrategyBase = /*#__PURE__*/function ()
         }
       });
     });
-  };
-  _proto._getItemListTemplateName = function _getItemListTemplateName() {
+  }
+  _getItemListTemplateName() {
     return this._isEmptyDropDownAppointmentTemplate() ? 'appointmentTooltip' : 'dropDownAppointment';
-  };
-  _proto._isEmptyDropDownAppointmentTemplate = function _isEmptyDropDownAppointmentTemplate() {
+  }
+  _isEmptyDropDownAppointmentTemplate() {
     return !this._extraOptions.dropDownAppointmentTemplate || this._extraOptions.dropDownAppointmentTemplate === 'dropDownAppointment';
-  };
-  _proto._onListItemClick = function _onListItemClick(e) {
+  }
+  _onListItemClick(e) {
     this.hide();
     this._extraOptions.clickEvent && this._extraOptions.clickEvent(e);
     this._options.showAppointmentPopup(e.itemData.appointment, false, e.itemData.targetedAppointment);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._onListItemContextMenu = function _onListItemContextMenu(e) {};
-  _proto._createItemListContent = function _createItemListContent(appointment, targetedAppointment, color) {
+  _onListItemContextMenu(e) {}
+  _createItemListContent(appointment, targetedAppointment, color) {
     const {
       editing
     } = this._extraOptions;
@@ -173,21 +168,21 @@ let TooltipStrategyBase = exports.TooltipStrategyBase = /*#__PURE__*/function ()
       $itemElement.append(this._createDeleteButton(appointment, targetedAppointment));
     }
     return $itemElement;
-  };
-  _proto._createItemListMarker = function _createItemListMarker(color) {
+  }
+  _createItemListMarker(color) {
     const $marker = (0, _renderer.default)('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_MARKER);
     const $markerBody = (0, _renderer.default)('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_MARKER_BODY);
     $marker.append($markerBody);
     color && color.done(value => $markerBody.css('background', value));
     return $marker;
-  };
-  _proto._createItemListInfo = function _createItemListInfo(object) {
+  }
+  _createItemListInfo(object) {
     const result = (0, _renderer.default)('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_CONTENT);
     const $title = (0, _renderer.default)('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_CONTENT_SUBJECT).text(object.text);
     const $date = (0, _renderer.default)('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_CONTENT_DATE).text(object.formatDate);
     return result.append($title).append($date);
-  };
-  _proto._createDeleteButton = function _createDeleteButton(appointment, targetedAppointment) {
+  }
+  _createDeleteButton(appointment, targetedAppointment) {
     const $container = (0, _renderer.default)('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON_CONTAINER);
     const $deleteButton = (0, _renderer.default)('<div>').addClass(TOOLTIP_APPOINTMENT_ITEM_DELETE_BUTTON);
     $container.append($deleteButton);
@@ -201,6 +196,6 @@ let TooltipStrategyBase = exports.TooltipStrategyBase = /*#__PURE__*/function ()
       }
     });
     return $container;
-  };
-  return TooltipStrategyBase;
-}();
+  }
+}
+exports.TooltipStrategyBase = TooltipStrategyBase;

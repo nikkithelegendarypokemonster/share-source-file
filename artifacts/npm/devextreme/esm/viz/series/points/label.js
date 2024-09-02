@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/series/points/label.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,21 +11,21 @@ import { degreesToRadians as _degreesToRadians, patchFontOptions as _patchFontOp
 import { each } from '../../../core/utils/iterator';
 import { extend } from '../../../core/utils/extend';
 import { processDisplayFormat } from '../helpers/display_format_parser';
-var _format = formatHelper.format;
-var _math = Math;
-var _round = _math.round;
-var _floor = _math.floor;
-var _abs = _math.abs;
-var CONNECTOR_LENGTH = 12;
-var LABEL_BACKGROUND_PADDING_X = 8;
-var LABEL_BACKGROUND_PADDING_Y = 4;
+const _format = formatHelper.format;
+const _math = Math;
+const _round = _math.round;
+const _floor = _math.floor;
+const _abs = _math.abs;
+const CONNECTOR_LENGTH = 12;
+const LABEL_BACKGROUND_PADDING_X = 8;
+const LABEL_BACKGROUND_PADDING_Y = 4;
 function getClosestCoord(point, coords) {
-  var closestDistance = Infinity;
-  var closestCoord;
+  let closestDistance = Infinity;
+  let closestCoord;
   each(coords, function (_, coord) {
-    var x = point[0] - coord[0];
-    var y = point[1] - coord[1];
-    var distance = x * x + y * y;
+    const x = point[0] - coord[0];
+    const y = point[1] - coord[1];
+    const distance = x * x + y * y;
     if (distance < closestDistance) {
       closestDistance = distance;
       closestCoord = coord;
@@ -39,21 +39,21 @@ function getCrossCoord(rect, coord, indexOffset) {
 
 // We could always conside center of label as label point (with appropriate connector path clipping). In that case we do not depend neither on background nor on rotation.
 
-var barPointStrategy = {
-  isLabelInside: function isLabelInside(labelPoint, figure) {
-    var xc = labelPoint.x + labelPoint.width / 2;
-    var yc = labelPoint.y + labelPoint.height / 2;
+const barPointStrategy = {
+  isLabelInside: function (labelPoint, figure) {
+    const xc = labelPoint.x + labelPoint.width / 2;
+    const yc = labelPoint.y + labelPoint.height / 2;
     return figure.x <= xc && xc <= figure.x + figure.width && figure.y <= yc && yc <= figure.y + figure.height;
   },
-  prepareLabelPoints: function prepareLabelPoints(bBox, rotatedBBox, isHorizontal, angle, figureCenter) {
-    var x1 = rotatedBBox.x;
-    var xc = x1 + rotatedBBox.width / 2;
-    var x2 = x1 + rotatedBBox.width - 1;
-    var y1 = rotatedBBox.y;
-    var yc = y1 + rotatedBBox.height / 2;
-    var y2 = y1 + rotatedBBox.height - 1;
-    var labelPoints;
-    var isRectangular = _abs(angle) % 90 === 0;
+  prepareLabelPoints: function (bBox, rotatedBBox, isHorizontal, angle, figureCenter) {
+    const x1 = rotatedBBox.x;
+    const xc = x1 + rotatedBBox.width / 2;
+    const x2 = x1 + rotatedBBox.width - 1;
+    const y1 = rotatedBBox.y;
+    const yc = y1 + rotatedBBox.height / 2;
+    const y2 = y1 + rotatedBBox.height - 1;
+    let labelPoints;
+    const isRectangular = _abs(angle) % 90 === 0;
     if (figureCenter[0] > x1 && figureCenter[0] < x2) {
       if (isRectangular) {
         labelPoints = [[figureCenter[0], _abs(figureCenter[1] - y1) < _abs(figureCenter[1] - y2) ? y1 : y2]];
@@ -75,20 +75,20 @@ var barPointStrategy = {
     }
     return labelPoints;
   },
-  isHorizontal: function isHorizontal(bBox, figure) {
+  isHorizontal: function (bBox, figure) {
     return bBox.x > figure.x + figure.width || bBox.x + bBox.width < figure.x;
   },
-  getFigureCenter: function getFigureCenter(figure) {
+  getFigureCenter: function (figure) {
     return [_floor(figure.x + figure.width / 2), _floor(figure.y + figure.height / 2)];
   },
-  findFigurePoint: function findFigurePoint(figure, labelPoint) {
-    var figureCenter = barPointStrategy.getFigureCenter(figure);
-    var point = getClosestCoord(labelPoint, [[figure.x, figureCenter[1]], [figureCenter[0], figure.y + figure.height], [figure.x + figure.width, figureCenter[1]], [figureCenter[0], figure.y]]);
+  findFigurePoint: function (figure, labelPoint) {
+    const figureCenter = barPointStrategy.getFigureCenter(figure);
+    const point = getClosestCoord(labelPoint, [[figure.x, figureCenter[1]], [figureCenter[0], figure.y + figure.height], [figure.x + figure.width, figureCenter[1]], [figureCenter[0], figure.y]]);
     return point;
   },
-  adjustPoints: function adjustPoints(points) {
-    var lineIsVertical = _abs(points[1] - points[3]) <= 1;
-    var lineIsHorizontal = _abs(points[0] - points[2]) <= 1;
+  adjustPoints: function (points) {
+    const lineIsVertical = _abs(points[1] - points[3]) <= 1;
+    const lineIsHorizontal = _abs(points[0] - points[2]) <= 1;
     if (lineIsHorizontal) {
       points[0] = points[2];
     }
@@ -98,36 +98,36 @@ var barPointStrategy = {
     return points;
   }
 };
-var symbolPointStrategy = {
-  isLabelInside: function isLabelInside() {
+const symbolPointStrategy = {
+  isLabelInside: function () {
     return false;
   },
   prepareLabelPoints: barPointStrategy.prepareLabelPoints,
-  isHorizontal: function isHorizontal(bBox, figure) {
+  isHorizontal: function (bBox, figure) {
     return bBox.x > figure.x + figure.r || bBox.x + bBox.width < figure.x - figure.r;
   },
-  getFigureCenter: function getFigureCenter(figure) {
+  getFigureCenter: function (figure) {
     return [figure.x, figure.y];
   },
-  findFigurePoint: function findFigurePoint(figure, labelPoint) {
-    var angle = Math.atan2(figure.y - labelPoint[1], labelPoint[0] - figure.x);
+  findFigurePoint: function (figure, labelPoint) {
+    const angle = Math.atan2(figure.y - labelPoint[1], labelPoint[0] - figure.x);
     return [_round(figure.x + figure.r * Math.cos(angle)), _round(figure.y - figure.r * Math.sin(angle))];
   },
   adjustPoints: barPointStrategy.adjustPoints
 };
-var piePointStrategy = {
-  isLabelInside: function isLabelInside(_0, _1, isOutside) {
+const piePointStrategy = {
+  isLabelInside: function (_0, _1, isOutside) {
     return !isOutside;
   },
-  prepareLabelPoints: function prepareLabelPoints(bBox, rotatedBBox, isHorizontal, angle) {
-    var xl = bBox.x;
-    var xr = xl + bBox.width;
-    var xc = xl + _round(bBox.width / 2);
-    var yt = bBox.y;
-    var yb = yt + bBox.height;
-    var yc = yt + _round(bBox.height / 2);
-    var points = [[[xl, yt], [xr, yt]], [[xr, yt], [xr, yb]], [[xr, yb], [xl, yb]], [[xl, yb], [xl, yt]]];
-    var cosSin = _getCosAndSin(angle);
+  prepareLabelPoints: function (bBox, rotatedBBox, isHorizontal, angle) {
+    const xl = bBox.x;
+    const xr = xl + bBox.width;
+    const xc = xl + _round(bBox.width / 2);
+    const yt = bBox.y;
+    const yb = yt + bBox.height;
+    const yc = yt + _round(bBox.height / 2);
+    let points = [[[xl, yt], [xr, yt]], [[xr, yt], [xr, yb]], [[xr, yb], [xl, yb]], [[xl, yb], [xl, yt]]];
+    const cosSin = _getCosAndSin(angle);
     if (angle === 0) {
       points = isHorizontal ? [[xl, yc], [xr, yc]] : [[xc, yt], [xc, yb]];
     } else {
@@ -136,10 +136,10 @@ var piePointStrategy = {
           return [_round((point[0] - xc) * cosSin.cos + (point[1] - yc) * cosSin.sin + xc), _round(-(point[0] - xc) * cosSin.sin + (point[1] - yc) * cosSin.cos + yc)];
         });
       }).reduce(function (r, pair) {
-        var point1x = pair[0][0];
-        var point1y = pair[0][1];
-        var point2x = pair[1][0];
-        var point2y = pair[1][1];
+        const point1x = pair[0][0];
+        const point1y = pair[0][1];
+        const point2x = pair[1][0];
+        const point2y = pair[1][1];
         if (isHorizontal) {
           if (point1y >= yc && yc >= point2y || point1y <= yc && yc <= point2y) {
             r.push([(yc - point1y) * (point2x - point1x) / (point2y - point1y) + point1x, yc]);
@@ -154,17 +154,17 @@ var piePointStrategy = {
     }
     return points;
   },
-  isHorizontal: function isHorizontal(bBox, figure) {
+  isHorizontal: function (bBox, figure) {
     return bBox.x > figure.x || figure.x > bBox.x + bBox.width;
   },
   getFigureCenter: symbolPointStrategy.getFigureCenter,
-  findFigurePoint: function findFigurePoint(figure, labelPoint, isHorizontal) {
+  findFigurePoint: function (figure, labelPoint, isHorizontal) {
     if (!isHorizontal) {
       return [figure.x, figure.y];
     }
-    var labelX = labelPoint[0];
-    var x = _round(figure.x + (figure.y - labelPoint[1]) / Math.tan(_degreesToRadians(figure.angle)));
-    var points = [figure.x, figure.y, x, labelPoint[1]];
+    const labelX = labelPoint[0];
+    const x = _round(figure.x + (figure.y - labelPoint[1]) / Math.tan(_degreesToRadians(figure.angle)));
+    let points = [figure.x, figure.y, x, labelPoint[1]];
     if (!(figure.x <= x && x <= labelX) && !(labelX <= x && x <= figure.x)) {
       if (_abs(figure.x - labelX) < CONNECTOR_LENGTH) {
         points = [figure.x, figure.y];
@@ -176,7 +176,7 @@ var piePointStrategy = {
     }
     return points;
   },
-  adjustPoints: function adjustPoints(points) {
+  adjustPoints: function (points) {
     return points;
   }
 };
@@ -194,7 +194,7 @@ function checkConnector(connector) {
   return connector && connector['stroke-width'] > 0 && connector.stroke && connector.stroke !== 'none';
 }
 function formatText(data, options) {
-  var format = options.format;
+  const format = options.format;
   data.valueText = _format(data.value, format);
   data.argumentText = _format(data.argument, options.argumentFormat);
   if (data.percent !== undefined) {
@@ -232,64 +232,64 @@ export function Label(renderSettings) {
 }
 Label.prototype = {
   constructor: Label,
-  setColor: function setColor(color) {
+  setColor: function (color) {
     this._color = color;
   },
-  setOptions: function setOptions(options) {
+  setOptions: function (options) {
     this._options = options;
   },
-  setData: function setData(data) {
+  setData: function (data) {
     this._data = data;
   },
-  setDataField: function setDataField(fieldName, fieldValue) {
+  setDataField: function (fieldName, fieldValue) {
     // Is this laziness really required?
     this._data = this._data || {};
     this._data[fieldName] = fieldValue;
   },
-  getData: function getData() {
+  getData: function () {
     return this._data;
   },
-  setFigureToDrawConnector: function setFigureToDrawConnector(figure) {
+  setFigureToDrawConnector: function (figure) {
     this._figure = figure;
   },
-  dispose: function dispose() {
-    var that = this;
+  dispose: function () {
+    const that = this;
     disposeItem(that, '_group');
     that._data = that._options = that._textContent = that._visible = that._insideGroup = that._text = that._background = that._connector = that._figure = null;
   },
   // The following method is required because we support partial visibility for labels
   // entire labels group can be hidden and any particular label can be visible at the same time
   // in order to do that label must have visibility:"visible" attribute
-  _setVisibility: function _setVisibility(value, state) {
+  _setVisibility: function (value, state) {
     this._group && this._group.attr({
       visibility: value
     });
     this._visible = state;
   },
-  isVisible: function isVisible() {
+  isVisible: function () {
     return this._visible;
   },
-  hide: function hide(holdInvisible) {
+  hide: function (holdInvisible) {
     this._holdVisibility = !!holdInvisible;
     this._hide();
   },
-  _hide: function _hide() {
+  _hide: function () {
     this._setVisibility('hidden', false);
   },
-  show: function show(holdVisible) {
-    var correctPosition = !this._drawn;
+  show: function (holdVisible) {
+    const correctPosition = !this._drawn;
     if (this._point.hasValue()) {
       this._holdVisibility = !!holdVisible;
       this._show();
       correctPosition && this._point.correctLabelPosition(this);
     }
   },
-  _show: function _show() {
-    var that = this;
-    var renderer = that._renderer;
-    var container = that._container;
-    var options = that._options || {};
-    var text = that._textContent = formatText(that._data, options) || null;
+  _show: function () {
+    const that = this;
+    const renderer = that._renderer;
+    const container = that._container;
+    const options = that._options || {};
+    const text = that._textContent = formatText(that._data, options) || null;
     if (text) {
       if (!that._group) {
         that._group = renderer.g().append(container);
@@ -329,10 +329,10 @@ Label.prototype = {
       that._hide();
     }
   },
-  _getLabelVisibility: function _getLabelVisibility(isVisible) {
+  _getLabelVisibility: function (isVisible) {
     return this._holdVisibility ? this.isVisible() : isVisible;
   },
-  draw: function draw(isVisible) {
+  draw: function (isVisible) {
     if (this._getLabelVisibility(isVisible)) {
       this._show();
       this._point && this._point.correctLabelPosition(this);
@@ -342,8 +342,8 @@ Label.prototype = {
     }
     return this;
   },
-  _updateBackground: function _updateBackground(bBox) {
-    var that = this;
+  _updateBackground: function (bBox) {
+    const that = this;
     if (that._background) {
       bBox.x -= LABEL_BACKGROUND_PADDING_X;
       bBox.y -= LABEL_BACKGROUND_PADDING_Y;
@@ -352,30 +352,30 @@ Label.prototype = {
       that._background.attr(bBox);
     }
     that._bBoxWithoutRotation = extend({}, bBox);
-    var rotationAngle = that._options.rotationAngle || 0;
+    const rotationAngle = that._options.rotationAngle || 0;
     that._insideGroup.rotate(rotationAngle, bBox.x + bBox.width / 2, bBox.y + bBox.height / 2);
     // Angle is transformed from svg to right-handed cartesian space
     bBox = _rotateBBox(bBox, [bBox.x + bBox.width / 2, bBox.y + bBox.height / 2], -rotationAngle);
     that._bBox = bBox;
   },
   getFigureCenter() {
-    var figure = this._figure;
-    var strategy = this._strategy || selectStrategy(figure);
+    const figure = this._figure;
+    const strategy = this._strategy || selectStrategy(figure);
     return strategy.getFigureCenter(figure);
   },
-  _getConnectorPoints: function _getConnectorPoints() {
-    var that = this;
-    var figure = that._figure;
-    var options = that._options;
-    var strategy = that._strategy || selectStrategy(figure);
-    var bBox = that._shiftBBox(that._bBoxWithoutRotation);
-    var rotatedBBox = that.getBoundingRect();
-    var labelPoint;
-    var points = [];
-    var isHorizontal;
+  _getConnectorPoints: function () {
+    const that = this;
+    const figure = that._figure;
+    const options = that._options;
+    const strategy = that._strategy || selectStrategy(figure);
+    const bBox = that._shiftBBox(that._bBoxWithoutRotation);
+    const rotatedBBox = that.getBoundingRect();
+    let labelPoint;
+    let points = [];
+    let isHorizontal;
     if (!strategy.isLabelInside(bBox, figure, options.position !== 'inside')) {
       isHorizontal = strategy.isHorizontal(bBox, figure);
-      var figureCenter = that.getFigureCenter();
+      const figureCenter = that.getFigureCenter();
       points = strategy.prepareLabelPoints(bBox, rotatedBBox, isHorizontal, -options.rotationAngle || 0, figureCenter);
       labelPoint = getClosestCoord(figureCenter, points);
       points = strategy.findFigurePoint(figure, labelPoint, isHorizontal);
@@ -384,12 +384,12 @@ Label.prototype = {
     return strategy.adjustPoints(points);
   },
   // TODO: Should not be called when not invisible (check for "_textContent" is to be removed)
-  fit: function fit(maxWidth) {
-    var padding = this._background ? 2 * LABEL_BACKGROUND_PADDING_X : 0;
-    var rowCountChanged = false;
+  fit: function (maxWidth) {
+    const padding = this._background ? 2 * LABEL_BACKGROUND_PADDING_X : 0;
+    let rowCountChanged = false;
     if (this._text) {
-      var result = this._text.setMaxSize(maxWidth - padding, undefined, this._options);
-      var rowCount = result.rowCount;
+      const result = this._text.setMaxSize(maxWidth - padding, undefined, this._options);
+      let rowCount = result.rowCount;
       if (rowCount === 0) {
         rowCount = 1;
       }
@@ -402,11 +402,11 @@ Label.prototype = {
     this._updateBackground(this._text.getBBox());
     return rowCountChanged;
   },
-  resetEllipsis: function resetEllipsis() {
+  resetEllipsis: function () {
     this._text && this._text.restoreText();
     this._updateBackground(this._text.getBBox());
   },
-  setTrackerData: function setTrackerData(point) {
+  setTrackerData: function (point) {
     this._text.data({
       'chart-data-point': point
     });
@@ -414,15 +414,15 @@ Label.prototype = {
       'chart-data-point': point
     });
   },
-  hideInsideLabel: function hideInsideLabel(coords) {
+  hideInsideLabel: function (coords) {
     return this._point.hideInsideLabel(this, coords);
   },
   getPoint() {
     return this._point;
   },
   // TODO: Should not be called when not invisible (check for "_textContent" is to be removed)
-  shift: function shift(x, y) {
-    var that = this;
+  shift: function (x, y) {
+    const that = this;
     if (that._textContent) {
       that._insideGroup.attr({
         translateX: that._x = _round(x - that._bBox.x),
@@ -437,10 +437,10 @@ Label.prototype = {
     return that;
   },
   // TODO: Should not be called when not invisible (check for "_textContent" is to be removed)
-  getBoundingRect: function getBoundingRect() {
+  getBoundingRect: function () {
     return this._shiftBBox(this._bBox);
   },
-  _shiftBBox: function _shiftBBox(bBox) {
+  _shiftBBox: function (bBox) {
     return this._textContent ? {
       x: bBox.x + this._x,
       y: bBox.y + this._y,
@@ -448,8 +448,8 @@ Label.prototype = {
       height: bBox.height
     } : {};
   },
-  getLayoutOptions: function getLayoutOptions() {
-    var options = this._options;
+  getLayoutOptions: function () {
+    const options = this._options;
     return {
       alignment: options.alignment,
       background: checkBackground(options.background),

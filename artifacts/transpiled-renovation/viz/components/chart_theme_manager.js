@@ -120,7 +120,7 @@ const ThemeManager = exports.ThemeManager = _base_theme_manager.BaseThemeManager
         mainSeriesColor = (0, _utils.extractColor)(settings.color, true) || palette.getNextColor(seriesCount);
       } else {
         mainSeriesColor = function (argument, index, count) {
-          const cat = "".concat(argument, "-").concat(index);
+          const cat = `${argument}-${index}`;
           if (!that._multiPieColors[cat]) {
             that._multiPieColors[cat] = palette.getNextColor(count);
           }

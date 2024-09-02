@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/text_box.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -21,125 +21,179 @@ import dxTextEditor, {
     dxTextEditorOptions,
 } from './text_box/ui.text_editor.base';
 
+/** @public */
 export type TextBoxType = 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
 
 /**
- * The type of the change event handler&apos;s argument.
+ * @docid _ui_text_box_ChangeEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ChangeEvent = NativeEventInfo<dxTextBox, Event>;
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_text_box_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxTextBox>;
 
 /**
- * The type of the copy event handler&apos;s argument.
+ * @docid _ui_text_box_CopyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CopyEvent = NativeEventInfo<dxTextBox, ClipboardEvent>;
 
 /**
- * The type of the cut event handler&apos;s argument.
+ * @docid _ui_text_box_CutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CutEvent = NativeEventInfo<dxTextBox, ClipboardEvent>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_text_box_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxTextBox>;
 
 /**
- * The type of the enterKey event handler&apos;s argument.
+ * @docid _ui_text_box_EnterKeyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type EnterKeyEvent = NativeEventInfo<dxTextBox, KeyboardEvent>;
 
 /**
- * The type of the focusIn event handler&apos;s argument.
+ * @docid _ui_text_box_FocusInEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusInEvent = NativeEventInfo<dxTextBox, FocusEvent>;
 
 /**
- * The type of the focusOut event handler&apos;s argument.
+ * @docid _ui_text_box_FocusOutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusOutEvent = NativeEventInfo<dxTextBox, FocusEvent>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_text_box_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxTextBox>;
 
 /**
- * The type of the input event handler&apos;s argument.
+ * @docid _ui_text_box_InputEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type InputEvent = NativeEventInfo<dxTextBox, UIEvent & { target: HTMLInputElement }>;
 
 /**
- * The type of the keyDown event handler&apos;s argument.
+ * @docid _ui_text_box_KeyDownEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyDownEvent = NativeEventInfo<dxTextBox, KeyboardEvent>;
 
+/** @public */
 export type KeyPressEvent = NativeEventInfo<dxTextBox, KeyboardEvent>;
 
 /**
- * The type of the keyUp event handler&apos;s argument.
+ * @docid _ui_text_box_KeyUpEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyUpEvent = NativeEventInfo<dxTextBox, KeyboardEvent>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_text_box_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxTextBox> & ChangedOptionInfo;
 
 /**
- * The type of the paste event handler&apos;s argument.
+ * @docid _ui_text_box_PasteEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type PasteEvent = NativeEventInfo<dxTextBox, ClipboardEvent>;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_text_box_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxTextBox, KeyboardEvent | MouseEvent | PointerEvent | TouchEvent | Event> & ValueChangedInfo;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxTextBoxOptions<TComponent> extends dxTextEditorOptions<TComponent> {
     /**
-     * Specifies the maximum number of characters you can enter into the textbox.
+     * @docid
+     * @default null
+     * @public
      */
     maxLength?: string | number;
     /**
-     * The &apos;mode&apos; attribute value of the actual HTML input element representing the text box.
+     * @docid
+     * @default "text"
+     * @public
      */
     mode?: TextBoxType;
     /**
-     * Specifies a value the UI component displays.
+     * @docid
+     * @default ""
+     * @public
      */
     value?: string;
 }
 /**
- * The TextBox is a UI component that enables a user to enter and edit a single line of text.
+ * @docid
+ * @isEditor
+ * @inherits dxTextEditor
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxTextBox<TProperties = Properties> extends dxTextEditor<TProperties> {
     /**
-     * Resets the value property to the value passed as an argument.
+     * @docid
+     * @publicName reset(value)
+     * @public
      */
     reset(value?: string): void;
 }
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 interface TextBoxInstance extends dxTextBox<Properties> { }
 
+/** @public */
 export type Properties = dxTextBoxOptions<TextBoxInstance>;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = Properties;
 
 

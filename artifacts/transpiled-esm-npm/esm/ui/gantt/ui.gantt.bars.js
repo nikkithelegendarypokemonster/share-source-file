@@ -3,8 +3,8 @@ import ToolbarMenu from '../toolbar';
 import ContextMenu from '../context_menu';
 import messageLocalization from '../../localization/message';
 import { extend } from '../../core/utils/extend';
-var TOOLBAR_SEPARATOR_CLASS = 'dx-gantt-toolbar-separator';
-var COMMANDS = {
+const TOOLBAR_SEPARATOR_CLASS = 'dx-gantt-toolbar-separator';
+const COMMANDS = {
   createTask: 0,
   createSubTask: 1,
   removeTask: 2,
@@ -36,7 +36,7 @@ class Bar {
   }
   _createItemsCore(items) {
     return items.map(item => {
-      var result;
+      let result;
       if (typeof item === 'string') {
         result = this._createItemByText(item);
       } else {
@@ -102,7 +102,7 @@ class Bar {
   }
   _fillCache(items) {
     items.forEach(item => {
-      var key = item.commandId;
+      const key = item.commandId;
       if (key !== undefined) {
         if (!this._cache[key]) {
           this._cache[key] = [];
@@ -120,21 +120,21 @@ class Bar {
 
   // IBar
   getCommandKeys() {
-    var itemsCache = this._getItemsCache();
-    var result = [];
-    for (var itemKey in itemsCache) {
+    const itemsCache = this._getItemsCache();
+    const result = [];
+    for (const itemKey in itemsCache) {
       result.push(parseInt(itemKey));
     }
     return result;
   }
   setItemEnabled(key, enabled) {
-    var itemsCache = this._getItemsCache();
+    const itemsCache = this._getItemsCache();
     itemsCache[key].forEach(item => {
       item.disabled = !enabled;
     });
   }
   setItemVisible(key, visible) {
-    var itemsCache = this._getItemsCache();
+    const itemsCache = this._getItemsCache();
     itemsCache[key].forEach(item => {
       item.visible = visible;
     });
@@ -156,7 +156,7 @@ export class GanttToolbar extends Bar {
   _createControl() {
     this._menu = this._owner._createComponent(this._element, ToolbarMenu, {
       onItemClick: e => {
-        var commandId = e.itemData.commandId;
+        const commandId = e.itemData.commandId;
         if (commandId !== undefined) {
           this._executeCommand(e.itemData.commandId);
         }

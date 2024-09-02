@@ -1,49 +1,61 @@
 /**
 * DevExtreme (core/devices.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /**
- * The device object defines the device on which the application is running.
+ * @public
+ * @docid
+ * @section commonObjectStructures
+ * @namespace DevExpress
  */
 export type Device = {
     /**
-     * Indicates whether or not the device platform is Android.
+     * @docid
+     * @public
      */
     android?: boolean;
     /**
-     * Specifies the type of the device on which the application is running.
+     * @docid
+     * @public
      */
     deviceType?: 'phone' | 'tablet' | 'desktop';
     /**
-     * Indicates whether or not the device platform is generic, which means that the application will look and behave according to a generic &apos;light&apos; or &apos;dark&apos; theme.
+     * @docid
+     * @public
      */
     generic?: boolean;
     /**
-     * Specifies a performance grade of the current device.
+     * @docid
+     * @public
      */
     grade?: 'A' | 'B' | 'C';
     /**
-     * Indicates whether or not the device platform is iOS.
+     * @docid
+     * @public
      */
     ios?: boolean;
     /**
-     * Indicates whether or not the device type is &apos;phone&apos;.
+     * @docid
+     * @public
      */
     phone?: boolean;
     /**
-     * Specifies the platform of the device on which the application is running.
+     * @docid
+     * @public
      */
     platform?: 'android' | 'ios' | 'generic';
     /**
-     * Indicates whether or not the device type is &apos;tablet&apos;.
+     * @docid
+     * @public
      */
     tablet?: boolean;
     /**
-     * Specifies an array with the major and minor versions of the device platform.
+     * @docid
+     * @public
      */
     version?: Array<number>;
 };
@@ -51,47 +63,80 @@ export type Device = {
 type EventName = 'orientationChanged';
 
 /**
- * An object that serves as a namespace for the methods and events specifying information on the current device.
+ * @docid
+ * @publicName devices
+ * @section Utils
+ * @namespace DevExpress
+ * @public
  */
 declare class DevicesObject {
     constructor(options?: { window?: Window });
     /**
-     * Gets information on the current device.
+     * @docid
+     * @publicName current()
+     * @public
      */
     current(): Device;
     /**
-     * Overrides actual device information to force the application to operate as if it was running on a specified device.
+     * @docid
+     * @publicName current(deviceName)
+     * @public
      */
     current(deviceName: string | Device): void;
     /**
-     * Detaches all event handlers from a single event.
+     * @docid
+     * @publicName off(eventName)
+     * @param1 eventName:string
+     * @return this
+     * @public
      */
     off(eventName: EventName): this;
     /**
-     * Detaches a particular event handler from a single event.
+     * @docid
+     * @publicName off(eventName, eventHandler)
+     * @param1 eventName:string
+     * @return this
+     * @public
      */
     off(eventName: EventName, eventHandler: Function): this;
     /**
-     * Subscribes to an event.
+     * @docid
+     * @publicName on(eventName, eventHandler)
+     * @param1 eventName:string
+     * @return this
+     * @public
      */
     on(eventName: EventName, eventHandler: Function): this;
     /**
-     * Subscribes to events.
+     * @docid
+     * @publicName on(events)
+     * @param1 events:object
+     * @return this
+     * @public
      */
     on(events: { [key in EventName]?: Function }): this;
     /**
-     * Returns the current device orientation.
+     * @docid
+     * @publicName orientation()
+     * @return String
+     * @public
      */
     orientation(): 'portrait' | 'landscape' | undefined;
     /**
-     * Returns real information about the current device regardless of the value passed to the DevExpress.devices.current(deviceName) method.
+     * @docid
+     * @publicName real()
+     * @public
      */
     real(): Device;
     isSimulator(): boolean;
 }
 
 /**
-  * 
-  */
- declare const devices: DevicesObject;
+ * @const devices
+ * @namespace DevExpress
+ * @hidden
+ * @public
+ */
+
+declare const devices: DevicesObject;
 export default devices;

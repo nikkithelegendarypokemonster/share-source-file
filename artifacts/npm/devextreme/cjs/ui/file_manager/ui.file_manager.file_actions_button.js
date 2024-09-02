@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/file_manager/ui.file_manager.file_actions_button.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,18 +14,11 @@ var _extend = require("../../core/utils/extend");
 var _ui = _interopRequireDefault(require("../widget/ui.widget"));
 var _button = _interopRequireDefault(require("../button"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const FILE_MANAGER_FILE_ACTIONS_BUTTON = 'dx-filemanager-file-actions-button';
 const FILE_MANAGER_FILE_ACTIONS_BUTTON_ACTIVATED = 'dx-filemanager-file-actions-button-activated';
 const ACTIVE_STATE_CLASS = 'dx-state-active';
-let FileManagerFileActionsButton = /*#__PURE__*/function (_Widget) {
-  _inheritsLoose(FileManagerFileActionsButton, _Widget);
-  function FileManagerFileActionsButton() {
-    return _Widget.apply(this, arguments) || this;
-  }
-  var _proto = FileManagerFileActionsButton.prototype;
-  _proto._initMarkup = function _initMarkup() {
+class FileManagerFileActionsButton extends _ui.default {
+  _initMarkup() {
     this._createClickAction();
     const $button = (0, _renderer.default)('<div>');
     this.$element().append($button).addClass(FILE_MANAGER_FILE_ACTIONS_BUTTON);
@@ -34,21 +27,21 @@ let FileManagerFileActionsButton = /*#__PURE__*/function (_Widget) {
       stylingMode: 'text',
       onClick: e => this._raiseClick(e)
     });
-    _Widget.prototype._initMarkup.call(this);
-  };
-  _proto._createClickAction = function _createClickAction() {
+    super._initMarkup();
+  }
+  _createClickAction() {
     this._clickAction = this._createActionByOption('onClick');
-  };
-  _proto._raiseClick = function _raiseClick(e) {
+  }
+  _raiseClick(e) {
     this._clickAction(e);
-  };
-  _proto._getDefaultOptions = function _getDefaultOptions() {
-    return (0, _extend.extend)(_Widget.prototype._getDefaultOptions.call(this), {
+  }
+  _getDefaultOptions() {
+    return (0, _extend.extend)(super._getDefaultOptions(), {
       cssClass: '',
       onClick: null
     });
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _optionChanged(args) {
     const name = args.name;
     switch (name) {
       case 'cssClass':
@@ -58,15 +51,14 @@ let FileManagerFileActionsButton = /*#__PURE__*/function (_Widget) {
         this._createClickAction();
         break;
       default:
-        _Widget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  _proto.setActive = function setActive(active) {
+  }
+  setActive(active) {
     this.$element().toggleClass(FILE_MANAGER_FILE_ACTIONS_BUTTON_ACTIVATED, active);
     setTimeout(() => this._button.$element().toggleClass(ACTIVE_STATE_CLASS, active));
-  };
-  return FileManagerFileActionsButton;
-}(_ui.default);
+  }
+}
 var _default = exports.default = FileManagerFileActionsButton;
 module.exports = exports.default;
 module.exports.default = exports.default;

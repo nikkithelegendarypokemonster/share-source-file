@@ -7,8 +7,8 @@ import { formatDates, getFormatType } from './appointments/m_text_utils';
 import { createAppointmentAdapter } from './m_appointment_adapter';
 import { AGENDA_LAST_IN_DATE_APPOINTMENT_CLASS } from './m_classes';
 import { utils } from './m_utils';
-var toMs = dateUtils.dateToMilliseconds;
-var subscribes = {
+const toMs = dateUtils.dateToMilliseconds;
+const subscribes = {
   isCurrentViewAgenda() {
     return this.currentViewType === 'agenda';
   },
@@ -34,19 +34,19 @@ var subscribes = {
     return this.getWorkSpace().isGroupedByDate();
   },
   showAppointmentTooltip(options) {
-    var targetedAppointment = this.getTargetedAppointment(options.data, options.target);
+    const targetedAppointment = this.getTargetedAppointment(options.data, options.target);
     this.showAppointmentTooltip(options.data, options.target, targetedAppointment);
   },
   hideAppointmentTooltip() {
     this.hideAppointmentTooltip();
   },
   showEditAppointmentPopup(options) {
-    var targetedData = this.getTargetedAppointment(options.data, options.target);
+    const targetedData = this.getTargetedAppointment(options.data, options.target);
     this.showAppointmentPopup(options.data, false, targetedData);
   },
   updateAppointmentAfterResize(options) {
-    var info = utils.dataAccessors.getAppointmentInfo(options.$appointment);
-    var {
+    const info = utils.dataAccessors.getAppointmentInfo(options.$appointment);
+    const {
       exceptionDate
     } = info.sourceAppointment;
     this._checkRecurringAppointment(options.target, options.data, exceptionDate, () => {
@@ -59,21 +59,21 @@ var subscribes = {
     return this._getUpdatedData(rawAppointment);
   },
   updateAppointmentAfterDrag(_ref) {
-    var {
+    let {
       event,
       element,
       rawAppointment,
       newCellIndex,
       oldCellIndex
     } = _ref;
-    var info = utils.dataAccessors.getAppointmentInfo(element);
-    var appointment = createAppointmentAdapter(rawAppointment, this._dataAccessors, this.timeZoneCalculator);
-    var targetedAppointment = createAppointmentAdapter(extend({}, rawAppointment, this._getUpdatedData(rawAppointment)), this._dataAccessors, this.timeZoneCalculator);
-    var targetedRawAppointment = targetedAppointment.source();
-    var becomeAllDay = targetedAppointment.allDay;
-    var wasAllDay = appointment.allDay;
-    var movedBetweenAllDayAndSimple = this._workSpace.supportAllDayRow() && (wasAllDay && !becomeAllDay || !wasAllDay && becomeAllDay);
-    var isDragAndDropBetweenComponents = event.fromComponent !== event.toComponent;
+    const info = utils.dataAccessors.getAppointmentInfo(element);
+    const appointment = createAppointmentAdapter(rawAppointment, this._dataAccessors, this.timeZoneCalculator);
+    const targetedAppointment = createAppointmentAdapter(extend({}, rawAppointment, this._getUpdatedData(rawAppointment)), this._dataAccessors, this.timeZoneCalculator);
+    const targetedRawAppointment = targetedAppointment.source();
+    const becomeAllDay = targetedAppointment.allDay;
+    const wasAllDay = appointment.allDay;
+    const movedBetweenAllDayAndSimple = this._workSpace.supportAllDayRow() && (wasAllDay && !becomeAllDay || !wasAllDay && becomeAllDay);
+    const isDragAndDropBetweenComponents = event.fromComponent !== event.toComponent;
     if (newCellIndex === -1) {
       if (!isDragAndDropBetweenComponents) {
         // TODO dragging inside component
@@ -92,21 +92,21 @@ var subscribes = {
     }
   },
   onDeleteButtonPress(options) {
-    var targetedData = this.getTargetedAppointment(options.data, $(options.target));
+    const targetedData = this.getTargetedAppointment(options.data, $(options.target));
     this.checkAndDeleteAppointment(options.data, targetedData);
     this.hideAppointmentTooltip();
   },
   getTextAndFormatDate(appointmentRaw, targetedAppointmentRaw, format) {
-    var appointmentAdapter = createAppointmentAdapter(appointmentRaw, this._dataAccessors, this.timeZoneCalculator);
-    var targetedAdapter = createAppointmentAdapter(targetedAppointmentRaw || appointmentRaw, this._dataAccessors, this.timeZoneCalculator);
+    const appointmentAdapter = createAppointmentAdapter(appointmentRaw, this._dataAccessors, this.timeZoneCalculator);
+    const targetedAdapter = createAppointmentAdapter(targetedAppointmentRaw || appointmentRaw, this._dataAccessors, this.timeZoneCalculator);
     // TODO pull out time zone converting from appointment adapter for knockout(T947938)
-    var startDate = this.timeZoneCalculator.createDate(targetedAdapter.startDate, {
+    const startDate = this.timeZoneCalculator.createDate(targetedAdapter.startDate, {
       path: 'toGrid'
     });
-    var endDate = this.timeZoneCalculator.createDate(targetedAdapter.endDate, {
+    const endDate = this.timeZoneCalculator.createDate(targetedAdapter.endDate, {
       path: 'toGrid'
     });
-    var formatType = format || getFormatType(startDate, endDate, targetedAdapter.allDay, this.currentViewType !== 'month');
+    const formatType = format || getFormatType(startDate, endDate, targetedAdapter.allDay, this.currentViewType !== 'month');
     return {
       text: targetedAdapter.text || appointmentAdapter.text,
       formatDate: formatDates(startDate, endDate, formatType)
@@ -119,13 +119,13 @@ var subscribes = {
     return String(data);
   },
   getResizableAppointmentArea(options) {
-    var {
+    const {
       allDay
     } = options;
-    var groups = this._getCurrentViewOption('groups');
+    const groups = this._getCurrentViewOption('groups');
     if (groups && groups.length) {
       if (allDay || this.getLayoutManager().getRenderingStrategyInstance()._needHorizontalGroupBounds()) {
-        var horizontalGroupBounds = this._workSpace.getGroupBounds(options.coordinates);
+        const horizontalGroupBounds = this._workSpace.getGroupBounds(options.coordinates);
         return {
           left: horizontalGroupBounds.left,
           right: horizontalGroupBounds.right,
@@ -134,7 +134,7 @@ var subscribes = {
         };
       }
       if (this.getLayoutManager().getRenderingStrategyInstance()._needVerticalGroupBounds(allDay) && this._workSpace._isVerticalGroupedWorkSpace()) {
-        var verticalGroupBounds = this._workSpace.getGroupBounds(options.coordinates);
+        const verticalGroupBounds = this._workSpace.getGroupBounds(options.coordinates);
         return {
           left: 0,
           right: 0,
@@ -179,12 +179,12 @@ var subscribes = {
     return this.getRenderingStrategyInstance().getDirection();
   },
   updateAppointmentEndDate(options) {
-    var {
+    const {
       endDate
     } = options;
-    var endDayHour = this._getCurrentViewOption('endDayHour');
-    var startDayHour = this._getCurrentViewOption('startDayHour');
-    var updatedEndDate = endDate;
+    const endDayHour = this._getCurrentViewOption('endDayHour');
+    const startDayHour = this._getCurrentViewOption('startDayHour');
+    let updatedEndDate = endDate;
     if (endDate.getHours() >= endDayHour) {
       updatedEndDate.setHours(endDayHour, 0, 0, 0);
     } else if (!options.isSameDate && startDayHour > 0 && endDate.getHours() * 60 + endDate.getMinutes() < startDayHour * 60) {
@@ -206,12 +206,12 @@ var subscribes = {
     return this._workSpace._getGroupCount();
   },
   mapAppointmentFields(config) {
-    var {
+    const {
       itemData,
       itemElement,
       targetedAppointment
     } = config;
-    var targetedData = targetedAppointment || this.getTargetedAppointment(itemData, itemElement);
+    const targetedData = targetedAppointment || this.getTargetedAppointment(itemData, itemElement);
     return {
       appointmentData: config.itemData,
       appointmentElement: config.itemElement,
@@ -240,14 +240,14 @@ var subscribes = {
     return this.forceMaxAppointmentPerCell();
   },
   onAgendaReady(rows) {
-    var $appts = this.getAppointmentsInstance()._itemElements();
-    var total = 0;
-    var applyClass = function applyClass(_, count) {
-      var index = count + total - 1;
+    const $appts = this.getAppointmentsInstance()._itemElements();
+    let total = 0;
+    const applyClass = function (_, count) {
+      const index = count + total - 1;
       $appts.eq(index).addClass(AGENDA_LAST_IN_DATE_APPOINTMENT_CLASS);
       total += count;
     };
-    for (var i = 0; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
       each(rows[i], applyClass);
     }
   },

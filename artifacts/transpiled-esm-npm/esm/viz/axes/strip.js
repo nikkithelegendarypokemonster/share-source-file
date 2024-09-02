@@ -2,16 +2,16 @@ import { isDefined } from '../../core/utils/type';
 import { patchFontOptions } from '../core/utils';
 import { extend } from '../../core/utils/extend';
 export default function createStrip(axis, options) {
-  var storedCoord;
-  var lastStoredCoordinates;
-  var labelOptions = options.label || {};
+  let storedCoord;
+  let lastStoredCoordinates;
+  const labelOptions = options.label || {};
   return {
     options,
     label: null,
     rect: null,
     _getCoord() {
-      var canvas = axis._getCanvasStartEnd();
-      var range = axis._translator.getBusinessRange();
+      const canvas = axis._getCanvasStartEnd();
+      const range = axis._translator.getBusinessRange();
       return axis._getStripPos(options.startValue, options.endValue, canvas.start, canvas.end, range);
     },
     _drawLabel(coords) {
@@ -25,7 +25,7 @@ export default function createStrip(axis, options) {
         return;
       }
       if ((isDefined(options.startValue) || isDefined(options.endValue)) && isDefined(options.color)) {
-        var stripPos = this._getCoord();
+        const stripPos = this._getCoord();
         this.labelCoords = labelOptions.text ? axis._getStripLabelCoords(stripPos.from, stripPos.to, labelOptions) : null;
         if (stripPos.outOfCanvas || !isDefined(stripPos.to) || !isDefined(stripPos.from)) {
           return;
@@ -41,7 +41,7 @@ export default function createStrip(axis, options) {
     },
     removeLabel() {},
     updatePosition(animate) {
-      var stripPos = this._getCoord();
+      const stripPos = this._getCoord();
       if (animate && storedCoord) {
         this.label && this.label.attr(axis._getStripLabelCoords(storedCoord.from, storedCoord.to, options.label));
         this.rect && this.rect.attr(axis._getStripGraphicAttributes(storedCoord.from, storedCoord.to));

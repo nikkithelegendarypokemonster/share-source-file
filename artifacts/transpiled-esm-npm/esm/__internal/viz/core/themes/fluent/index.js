@@ -1,4 +1,4 @@
-var themes = [{
+const themes = [{
   baseThemeName: 'material.blue.light',
   theme: {
     name: 'fluent.blue.light'

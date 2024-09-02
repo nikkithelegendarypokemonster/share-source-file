@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/tree_list/data_controller/m_data_controller.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -17,7 +17,7 @@ export class TreeListDataController extends DataController {
     return dataSourceAdapterProvider;
   }
   _getNodeLevel(node) {
-    var level = -1;
+    let level = -1;
     while (node.parent) {
       if (node.visible) {
         level++;
@@ -54,7 +54,7 @@ export class TreeListDataController extends DataController {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _isCellChanged(oldRow, newRow, visibleRowIndex, columnIndex, isLiveUpdate) {
     // @ts-expect-error
-    var firstDataColumnIndex = this._columnsController.getFirstDataColumnIndex();
+    const firstDataColumnIndex = this._columnsController.getFirstDataColumnIndex();
     if (columnIndex === firstDataColumnIndex && oldRow.isSelected !== newRow.isSelected) {
       return true;
     }
@@ -68,13 +68,13 @@ export class TreeListDataController extends DataController {
     super.init.apply(this, arguments);
   }
   keyOf(data) {
-    var dataSource = this._dataSource;
+    const dataSource = this._dataSource;
     if (dataSource) {
       return dataSource.keyOf(data);
     }
   }
   key() {
-    var dataSource = this._dataSource;
+    const dataSource = this._dataSource;
     if (dataSource) {
       return dataSource.getKeyExpr();
     }
@@ -84,10 +84,10 @@ export class TreeListDataController extends DataController {
   }
   changeRowExpand(key) {
     if (this._dataSource) {
-      var args = {
+      const args = {
         key
       };
-      var isExpanded = this.isRowExpanded(key);
+      const isExpanded = this.isRowExpanded(key);
       this.executeAction(isExpanded ? 'onRowCollapsing' : 'onRowExpanding', args);
       if (!args.cancel) {
         return this._dataSource.changeRowExpand(key).done(() => {

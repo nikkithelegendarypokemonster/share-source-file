@@ -1,1 +1,1 @@
-export var RequiredRule = {};
+export const RequiredRule = {};

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/workspaces/m_timeline_month.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,11 +10,11 @@ import _extends from "@babel/runtime/helpers/esm/extends";
 import registerComponent from '../../../core/component_registrator';
 import dateUtils from '../../../core/utils/date';
 // NOTE: Renovation component import.
-import { HeaderPanelComponent } from '../__migration/components/index';
-import { formatWeekdayAndDay, monthUtils } from '../__migration/utils/index';
+import { HeaderPanelComponent } from '../../scheduler/r1/components/index';
+import { formatWeekdayAndDay, monthUtils } from '../../scheduler/r1/utils/index';
 import { VIEWS } from '../m_constants';
 import SchedulerTimeline from './m_timeline';
-var TIMELINE_CLASS = 'dx-scheduler-timeline-month';
+const TIMELINE_CLASS = 'dx-scheduler-timeline-month';
 class SchedulerTimelineMonth extends SchedulerTimeline {
   constructor() {
     super(...arguments);
@@ -46,16 +46,16 @@ class SchedulerTimelineMonth extends SchedulerTimeline {
     return formatWeekdayAndDay;
   }
   _getIntervalBetween(currentDate) {
-    var firstViewDate = this.getStartViewDate();
-    var timeZoneOffset = dateUtils.getTimezonesDifference(firstViewDate, currentDate);
+    const firstViewDate = this.getStartViewDate();
+    const timeZoneOffset = dateUtils.getTimezonesDifference(firstViewDate, currentDate);
     return currentDate.getTime() - (firstViewDate.getTime() - this.option('startDayHour') * 3600000) - timeZoneOffset;
   }
   _getViewStartByOptions() {
     return monthUtils.getViewStartByOptions(this.option('startDate'), this.option('currentDate'), this.option('intervalCount'), dateUtils.getFirstMonthDate(this.option('startDate')));
   }
   generateRenderOptions() {
-    var options = super.generateRenderOptions(true);
-    return _extends(_extends({}, options), {
+    const options = super.generateRenderOptions(true);
+    return _extends({}, options, {
       getDateForHeaderText: (_, date) => date
     });
   }

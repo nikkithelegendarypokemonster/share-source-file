@@ -1,11 +1,11 @@
 import { getWindow } from '../../core/utils/window';
-import gridCoreUtils from '../grid_core/ui.grid_core.utils';
+import gridCoreUtils from '../../__internal/grids/grid_core/m_utils';
 import { isDate, isDefined, isNumeric } from '../../core/utils/type';
 import dateLocalization from '../../localization/date';
 import numberLocalization from '../../localization/number';
-var window = getWindow();
-var TREELIST_EMPTY_SPACE = 'dx-treelist-empty-space';
-var TREELIST_TABLE = 'dx-treelist-table';
+const window = getWindow();
+const TREELIST_EMPTY_SPACE = 'dx-treelist-empty-space';
+const TREELIST_TABLE = 'dx-treelist-table';
 export class GanttExportHelper {
   constructor(gantt) {
     this._gantt = gantt;
@@ -16,8 +16,8 @@ export class GanttExportHelper {
     this._cache = {};
   }
   getTreeListTableStyle() {
-    var table = this._getTreeListTable();
-    var style = window.getComputedStyle(table);
+    const table = this._getTreeListTable();
+    const style = window.getComputedStyle(table);
     return {
       color: style.color,
       backgroundColor: style.backgroundColor,
@@ -30,15 +30,15 @@ export class GanttExportHelper {
     };
   }
   getTreeListColCount() {
-    var headerView = this._getHeaderView();
-    var widths = headerView.getColumnWidths().filter(w => w > 0);
+    const headerView = this._getHeaderView();
+    const widths = headerView.getColumnWidths().filter(w => w > 0);
     return widths.length;
   }
   getTreeListHeaderInfo(colIndex) {
-    var element = this._getHeaderElement(colIndex);
+    const element = this._getHeaderElement(colIndex);
     if (!element) return null;
-    var style = window.getComputedStyle(element);
-    var styleForExport = {
+    const style = window.getComputedStyle(element);
+    const styleForExport = {
       color: style.color,
       padding: style.padding,
       paddingLeft: style.paddingLeft,
@@ -54,12 +54,11 @@ export class GanttExportHelper {
     };
   }
   getTreeListCellInfo(key, colIndex) {
-    var _cell$textContent;
-    var node = this._treeList.getNodeByKey(key);
-    var visibleRowIndex = this._treeList.getRowIndexByKey(key);
-    var cell = visibleRowIndex > -1 ? this._getDataCell(visibleRowIndex, colIndex) : null;
-    var style = cell ? window.getComputedStyle(cell) : this._getColumnCellStyle(colIndex);
-    var styleForExport = {
+    const node = this._treeList.getNodeByKey(key);
+    const visibleRowIndex = this._treeList.getRowIndexByKey(key);
+    const cell = visibleRowIndex > -1 ? this._getDataCell(visibleRowIndex, colIndex) : null;
+    const style = cell ? window.getComputedStyle(cell) : this._getColumnCellStyle(colIndex);
+    const styleForExport = {
       color: style.color,
       padding: style.padding,
       paddingLeft: style.paddingLeft,
@@ -72,7 +71,7 @@ export class GanttExportHelper {
       styleForExport.extraLeftPadding = this._getEmptySpaceWidth(node.level);
     }
     return {
-      content: (_cell$textContent = cell === null || cell === void 0 ? void 0 : cell.textContent) !== null && _cell$textContent !== void 0 ? _cell$textContent : this._getDisplayText(key, colIndex),
+      content: (cell === null || cell === void 0 ? void 0 : cell.textContent) ?? this._getDisplayText(key, colIndex),
       styles: styleForExport
     };
   }
@@ -82,24 +81,23 @@ export class GanttExportHelper {
     };
   }
   _ensureColumnWidthCache(colIndex) {
-    var _this$_cache, _columnWidths, _this$_cache$_columnW;
-    (_this$_cache$_columnW = (_this$_cache = this._cache)[_columnWidths = 'columnWidths']) !== null && _this$_cache$_columnW !== void 0 ? _this$_cache$_columnW : _this$_cache[_columnWidths] = {};
+    var _this$_cache, _columnWidths;
+    (_this$_cache = this._cache)[_columnWidths = 'columnWidths'] ?? (_this$_cache[_columnWidths] = {});
     if (!this._cache['columnWidths'][colIndex]) {
-      var _header$clientWidth;
-      var header = this._getHeaderElement(colIndex);
-      this._cache['columnWidths'][colIndex] = (_header$clientWidth = header === null || header === void 0 ? void 0 : header.clientWidth) !== null && _header$clientWidth !== void 0 ? _header$clientWidth : 0;
+      const header = this._getHeaderElement(colIndex);
+      this._cache['columnWidths'][colIndex] = (header === null || header === void 0 ? void 0 : header.clientWidth) ?? 0;
     }
   }
   _getColumnWidth(colIndex) {
     this._ensureColumnWidthCache(colIndex);
-    var widths = this._cache['columnWidths'];
+    const widths = this._cache['columnWidths'];
     return widths && widths[colIndex];
   }
   _getEmptySpaceWidth(level) {
     if (!this._cache['emptyWidth']) {
-      var _this$_cache2, _emptyWidth, _this$_cache2$_emptyW, _element$offsetWidth;
-      var element = this._getTreeListElement(TREELIST_EMPTY_SPACE);
-      (_this$_cache2$_emptyW = (_this$_cache2 = this._cache)[_emptyWidth = 'emptyWidth']) !== null && _this$_cache2$_emptyW !== void 0 ? _this$_cache2$_emptyW : _this$_cache2[_emptyWidth] = (_element$offsetWidth = element.offsetWidth) !== null && _element$offsetWidth !== void 0 ? _element$offsetWidth : 0;
+      var _this$_cache2, _emptyWidth;
+      const element = this._getTreeListElement(TREELIST_EMPTY_SPACE);
+      (_this$_cache2 = this._cache)[_emptyWidth = 'emptyWidth'] ?? (_this$_cache2[_emptyWidth] = element.offsetWidth ?? 0);
     }
     return this._cache['emptyWidth'] * (level + 1);
   }
@@ -108,10 +106,10 @@ export class GanttExportHelper {
     return this._cache['columnStyles'][colIndex];
   }
   _ensureColumnCellStyleCache(colIndex) {
-    var _this$_cache3, _columnStyles, _this$_cache3$_column;
-    (_this$_cache3$_column = (_this$_cache3 = this._cache)[_columnStyles = 'columnStyles']) !== null && _this$_cache3$_column !== void 0 ? _this$_cache3$_column : _this$_cache3[_columnStyles] = {};
+    var _this$_cache3, _columnStyles;
+    (_this$_cache3 = this._cache)[_columnStyles = 'columnStyles'] ?? (_this$_cache3[_columnStyles] = {});
     if (!this._cache['columnStyles'][colIndex]) {
-      var cell = this._getDataCell(0, colIndex);
+      const cell = this._getDataCell(0, colIndex);
       this._cache['columnStyles'][colIndex] = window.getComputedStyle(cell);
     }
   }
@@ -120,9 +118,9 @@ export class GanttExportHelper {
     return this._cache['tasks'][key];
   }
   _ensureTaskCache(key) {
-    var _this$_cache4, _tasks, _this$_cache4$_tasks, _this$_cache$tasks, _this$_cache$tasks$ke;
-    (_this$_cache4$_tasks = (_this$_cache4 = this._cache)[_tasks = 'tasks']) !== null && _this$_cache4$_tasks !== void 0 ? _this$_cache4$_tasks : _this$_cache4[_tasks] = {};
-    (_this$_cache$tasks$ke = (_this$_cache$tasks = this._cache['tasks'])[key]) !== null && _this$_cache$tasks$ke !== void 0 ? _this$_cache$tasks$ke : _this$_cache$tasks[key] = this._gantt._findTaskByKey(key);
+    var _this$_cache4, _tasks, _this$_cache$tasks;
+    (_this$_cache4 = this._cache)[_tasks = 'tasks'] ?? (_this$_cache4[_tasks] = {});
+    (_this$_cache$tasks = this._cache['tasks'])[key] ?? (_this$_cache$tasks[key] = this._gantt._findTaskByKey(key));
   }
   _getTreeListTable() {
     return this._getTreeListElement(TREELIST_TABLE);
@@ -131,8 +129,8 @@ export class GanttExportHelper {
     return this._treeList._$element.find('.' + className).get(0);
   }
   _getDataCell(rowIndex, colIndex) {
-    var treeList = this._treeList;
-    var cellElement = treeList.getCellElement(rowIndex, colIndex);
+    const treeList = this._treeList;
+    const cellElement = treeList.getCellElement(rowIndex, colIndex);
     return cellElement && cellElement.length ? cellElement[0] : cellElement;
   }
   _getHeaderElement(index) {
@@ -142,18 +140,18 @@ export class GanttExportHelper {
     return this._treeList._views.columnHeadersView;
   }
   _getDisplayText(key, colIndex) {
-    var task = this._getTask(key);
+    const task = this._getTask(key);
     return task && this._getGridDisplayText(colIndex, task);
   }
   _getGridDisplayText(colIndex, data) {
-    var columns = this._treeList.getController('columns').getColumns();
-    var column = columns[colIndex];
-    var field = column === null || column === void 0 ? void 0 : column.dataField;
-    var format = column === null || column === void 0 ? void 0 : column.format;
-    var value = gridCoreUtils.getDisplayValue(column, data[field], data, 'data');
+    const columns = this._treeList.getController('columns').getColumns();
+    const column = columns[colIndex];
+    const field = column === null || column === void 0 ? void 0 : column.dataField;
+    const format = column === null || column === void 0 ? void 0 : column.format;
+    const value = gridCoreUtils.getDisplayValue(column, data[field], data, 'data');
     if (isDefined(format)) {
       if ((column === null || column === void 0 ? void 0 : column.dataType) === 'date' || (column === null || column === void 0 ? void 0 : column.dataType) === 'datetime') {
-        var date = isDate(value) ? value : new Date(value);
+        const date = isDate(value) ? value : new Date(value);
         return dateLocalization.format(date, format);
       }
       if (isNumeric(value)) {

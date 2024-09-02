@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/gantt.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -55,458 +55,438 @@ import {
     HeaderFilterSearchConfig,
 } from '../common/grids';
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type GanttPdfExportDateRange = 'all' | 'visible';
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type GanttPdfExportMode = 'all' | 'treeList' | 'chart';
+/** @public */
 export type GanttPredefinedContextMenuItem = 'undo' | 'redo' | 'expandAll' | 'collapseAll' | 'addTask' | 'deleteTask' | 'zoomIn' | 'zoomOut' | 'deleteDependency' | 'taskDetails' | 'resourceManager';
+/** @public */
 export type GanttPredefinedToolbarItem = 'separator' | 'undo' | 'redo' | 'expandAll' | 'collapseAll' | 'addTask' | 'deleteTask' | 'zoomIn' | 'zoomOut' | 'taskDetails' | 'fullScreen' | 'resourceManager' | 'showResources' | 'showDependencies';
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type GanttRenderScaleType = 'minutes' | 'hours' | 'sixHours' | 'days' | 'weeks' | 'months' | 'quarters' | 'years' | 'fiveYears';
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type GanttScaleType = 'auto' | 'minutes' | 'hours' | 'sixHours' | 'days' | 'weeks' | 'months' | 'quarters' | 'years';
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type GanttTaskTitlePosition = 'inside' | 'outside' | 'none';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_gantt_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxGantt>;
 
 /**
- * The type of the contextMenuPreparing event handler&apos;s argument.
+ * @docid _ui_gantt_ContextMenuPreparingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable
  */
 export type ContextMenuPreparingEvent = Cancelable & {
     /**
-     * 
+     * @docid _ui_gantt_ContextMenuPreparingEvent.component
+     * @type this
      */
     readonly component?: dxGantt;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ContextMenuPreparingEvent.element */
     readonly element?: DxElement;
     /**
-     * 
+     * @docid _ui_gantt_ContextMenuPreparingEvent.event
+     * @type event
      */
     readonly event?: DxEvent<PointerEvent | MouseEvent | TouchEvent>;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ContextMenuPreparingEvent.targetKey */
     readonly targetKey?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ContextMenuPreparingEvent.targetType */
     readonly targetType?: string;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ContextMenuPreparingEvent.data */
     readonly data?: any;
     /**
-     * 
+     * @docid _ui_gantt_ContextMenuPreparingEvent.items
+     * @type Array<object>
      */
     readonly items?: Array<any>;
 };
 
 /**
- * The type of the customCommand event handler&apos;s argument.
+ * @docid _ui_gantt_CustomCommandEvent
+ * @public
+ * @type object
  */
 export type CustomCommandEvent = {
     /**
-     * 
+     * @docid _ui_gantt_CustomCommandEvent.component
+     * @type this
      */
     readonly component?: dxGantt;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_CustomCommandEvent.element */
     readonly element?: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_CustomCommandEvent.name */
     readonly name: string;
 };
 
 /**
- * The type of the dependencyDeleted event handler&apos;s argument.
+ * @docid _ui_gantt_DependencyDeletedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DependencyDeletedEvent = EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_DependencyDeletedEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_DependencyDeletedEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the dependencyDeleting event handler&apos;s argument.
+ * @docid _ui_gantt_DependencyDeletingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type DependencyDeletingEvent = Cancelable & EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_DependencyDeletingEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_DependencyDeletingEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the dependencyInserted event handler&apos;s argument.
+ * @docid _ui_gantt_DependencyInsertedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DependencyInsertedEvent = EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_DependencyInsertedEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_DependencyInsertedEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the dependencyInserting event handler&apos;s argument.
+ * @docid _ui_gantt_DependencyInsertingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type DependencyInsertingEvent = Cancelable & EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_DependencyInsertingEvent.values */
     readonly values: any;
 };
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_gantt_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxGantt>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_gantt_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxGantt>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_gantt_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxGantt> & ChangedOptionInfo;
 
 /**
- * The type of the resourceAssigned event handler&apos;s argument.
+ * @docid _ui_gantt_ResourceAssignedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ResourceAssignedEvent = EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceAssignedEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceAssignedEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the resourceAssigning event handler&apos;s argument.
+ * @docid _ui_gantt_ResourceAssigningEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type ResourceAssigningEvent = Cancelable & EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceAssigningEvent.values */
     readonly values: any;
 };
 
 /**
- * The type of the resourceDeleted event handler&apos;s argument.
+ * @docid _ui_gantt_ResourceDeletedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ResourceDeletedEvent = EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceDeletedEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceDeletedEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the resourceDeleting event handler&apos;s argument.
+ * @docid _ui_gantt_ResourceDeletingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type ResourceDeletingEvent = Cancelable & EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceDeletingEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceDeletingEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the resourceInserted event handler&apos;s argument.
+ * @docid _ui_gantt_ResourceInsertedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ResourceInsertedEvent = EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceInsertedEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceInsertedEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the resourceInserting event handler&apos;s argument.
+ * @docid _ui_gantt_ResourceInsertingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type ResourceInsertingEvent = Cancelable & EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceInsertingEvent.values */
     readonly values: any;
 };
 
 /**
- * The type of the resourceUnassigned event handler&apos;s argument.
+ * @docid _ui_gantt_ResourceUnassignedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ResourceUnassignedEvent = EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceUnassignedEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceUnassignedEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the resourceUnassigning event handler&apos;s argument.
+ * @docid _ui_gantt_ResourceUnassigningEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type ResourceUnassigningEvent = Cancelable & EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceUnassigningEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ResourceUnassigningEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the selectionChanged event handler&apos;s argument.
+ * @docid _ui_gantt_SelectionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type SelectionChangedEvent = EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_SelectionChangedEvent.selectedRowKey */
     readonly selectedRowKey?: any;
 };
 
 /**
- * The type of the taskClick event handler&apos;s argument.
+ * @docid _ui_gantt_TaskClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type TaskClickEvent = NativeEventInfo<dxGantt, PointerEvent | MouseEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskClickEvent.key */
     readonly key?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskClickEvent.data */
     readonly data?: any;
 };
 
 /**
- * The type of the taskDblClick event handler&apos;s argument.
+ * @docid _ui_gantt_TaskDblClickEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,NativeEventInfo
  */
 export type TaskDblClickEvent = Cancelable & NativeEventInfo<dxGantt, PointerEvent | MouseEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskDblClickEvent.key */
     readonly key?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskDblClickEvent.data */
     readonly data?: any;
 };
 
 /**
- * The type of the taskDeleted event handler&apos;s argument.
+ * @docid _ui_gantt_TaskDeletedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type TaskDeletedEvent = EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskDeletedEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskDeletedEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the taskDeleting event handler&apos;s argument.
+ * @docid _ui_gantt_TaskDeletingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type TaskDeletingEvent = Cancelable & EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskDeletingEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskDeletingEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the taskEditDialogShowing event handler&apos;s argument.
+ * @docid _ui_gantt_TaskEditDialogShowingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type TaskEditDialogShowingEvent = Cancelable & EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskEditDialogShowingEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskEditDialogShowingEvent.key */
     readonly key: any;
     /**
-     * 
+     * @docid _ui_gantt_TaskEditDialogShowingEvent.readOnlyFields
+     * @type Array<string>
      */
     readonly readOnlyFields?: Array<string>;
     /**
-     * 
+     * @docid _ui_gantt_TaskEditDialogShowingEvent.hiddenFields
+     * @type Array<string>
      */
     readonly hiddenFields?: Array<string>;
 };
 
 /**
- * The type of the resourceManagerDialogShowing event handler&apos;s argument.
+ * @docid _ui_gantt_ResourceManagerDialogShowingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type ResourceManagerDialogShowingEvent = Cancelable & EventInfo<dxGantt> & {
     /**
-     * 
+     * @docid _ui_gantt_ResourceManagerDialogShowingEvent.values
+     * @type Array<any>
      */
     readonly values: Array<any>;
 };
 
 /**
- * The type of the taskInserted event handler&apos;s argument.
+ * @docid _ui_gantt_TaskInsertedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type TaskInsertedEvent = EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskInsertedEvent.values */
     readonly values?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskInsertedEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the taskInserting event handler&apos;s argument.
+ * @docid _ui_gantt_TaskInsertingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type TaskInsertingEvent = Cancelable & EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskInsertingEvent.values */
     readonly values: any;
 };
 
 /**
- * The type of the taskMoving event handler&apos;s argument.
+ * @docid _ui_gantt_TaskMovingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type TaskMovingEvent = Cancelable & EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskMovingEvent.newValues */
     readonly newValues: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskMovingEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskMovingEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the taskUpdated event handler&apos;s argument.
+ * @docid _ui_gantt_TaskUpdatedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type TaskUpdatedEvent = EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskUpdatedEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskUpdatedEvent.key */
     readonly key: any;
 };
 
 /**
- * The type of the taskUpdating event handler&apos;s argument.
+ * @docid _ui_gantt_TaskUpdatingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type TaskUpdatingEvent = Cancelable & EventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskUpdatingEvent.newValues */
     readonly newValues: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskUpdatingEvent.values */
     readonly values: any;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_TaskUpdatingEvent.key */
     readonly key: any;
 };
 /**
- * The type of the scaleCellPrepared event handler&apos;s argument.
+ * @docid _ui_gantt_ScaleCellPreparedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type ScaleCellPreparedEvent = InitializedEventInfo<dxGantt> & {
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ScaleCellPreparedEvent.scaleIndex */
     readonly scaleIndex: number;
     /**
-     * 
+     * @docid _ui_gantt_ScaleCellPreparedEvent.scaleType
+     * @type Enums.GanttRenderScaleType
      */
     readonly scaleType: GanttRenderScaleType;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ScaleCellPreparedEvent.scaleElement */
     readonly scaleElement: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ScaleCellPreparedEvent.separatorElement */
     readonly separatorElement: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ScaleCellPreparedEvent.startDate */
     readonly startDate: Date;
-    /**
-     * 
-     */
+    /** @docid _ui_gantt_ScaleCellPreparedEvent.endDate */
     readonly endDate: Date;
 };
 
+/** @public */
 export type TaskContentTemplateData = {
     readonly cellSize: any;
     readonly isMilestone: boolean;
@@ -517,911 +497,1322 @@ export type TaskContentTemplateData = {
     readonly taskSize: any;
 };
 
+/** @public */
 export type ProgressTooltipTemplateData = {
     readonly progress: number;
 };
 
+/** @public */
 export type TimeTooltipTemplateData = {
     readonly start: Date;
     readonly end: Date;
 };
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxGanttOptions extends WidgetOptions<dxGantt> {
     /**
-     * Specifies whether users can select tasks in the Gantt.
+     * @docid
+     * @default true
+     * @public
      */
     allowSelection?: boolean;
     /**
-     * An array of columns in the Gantt.
+     * @docid
+     * @type Array<dxGanttColumn|string>
+     * @default undefined
+     * @public
      */
     columns?: Array<Column | string>;
     /**
-     * Configures dependencies.
+     * @docid
+     * @default null
+     * @public
      */
     dependencies?: {
       /**
-       * Binds the UI component to the data source which contains dependencies.
+       * @docid
+       * @default null
+       * @type Store|DataSource|DataSourceOptions|string|Array<any>|null
        */
       dataSource?: DataSourceLike<any> | null;
       /**
-       * Specifies the data field that provides keys for dependencies.
+       * @docid
+       * @default "id"
        */
       keyExpr?: string | Function;
       /**
-       * Specifies the data field that provides predecessor IDs.
+       * @docid
+       * @default "predecessorId"
        */
       predecessorIdExpr?: string | Function;
       /**
-       * Specifies the data field that provides successor IDs.
+       * @docid
+       * @default "successorId"
        */
       successorIdExpr?: string | Function;
       /**
-       * Specifies the data field that provides dependency types.
+       * @docid
+       * @default "type"
        */
       typeExpr?: string | Function;
     };
     /**
-     * Configures edit properties.
+     * @docid
+     * @public
      */
     editing?: {
       /**
-       * Specifies whether a user can add dependencies.
+       * @docid
+       * @default true
        */
       allowDependencyAdding?: boolean;
       /**
-       * Specifies whether a user can delete dependencies.
+       * @docid
+       * @default true
        */
       allowDependencyDeleting?: boolean;
       /**
-       * Specifies whether a user can add resources. tasks.
+       * @docid
+       * @default true
        */
       allowResourceAdding?: boolean;
       /**
-       * Specifies whether a user can delete resources.
+       * @docid
+       * @default true
        */
       allowResourceDeleting?: boolean;
       /**
-       * For internal use only.
+       * @docid
+       * @default true
        */
       allowResourceUpdating?: boolean;
       /**
-       * Specifies whether a user can add tasks.
+       * @docid
+       * @default true
        */
       allowTaskAdding?: boolean;
       /**
-       * Specifies whether a user can delete tasks.
+       * @docid
+       * @default true
        */
       allowTaskDeleting?: boolean;
       /**
-       * Specifies whether users can update a task&apos;s resources.
+       * @docid
+       * @default true
        */
       allowTaskResourceUpdating?: boolean;
       /**
-       * Specifies whether a user can update tasks.
+       * @docid
+       * @default true
        */
       allowTaskUpdating?: boolean;
       /**
-       * Specifies whether a user can edit tasks, resources and dependencies.
+       * @docid
+       * @default false
        */
       enabled?: boolean;
     };
     /**
-     * Configures validation properties.
+     * @docid
+     * @public
      */
     validation?: {
       /**
-       * Enables task dependencies validation.
+       * @docid
+       * @default false
        */
       validateDependencies?: boolean;
       /**
-       * Specifies whether to recalculate the parent task&apos;s duration and progress when its child tasks are modified.
+       * @docid
+       * @default false
        */
       autoUpdateParentTasks?: boolean;
       /**
-        * Specifies whether users can move or resize a predecessor to change a gap before a successor according to the dependency rules.
-        */
+       * @docid
+       * @default false
+       */
        enablePredecessorGap?: boolean;
     };
     /**
-      * Configures sort settings.
-      */
+     * @docid
+     * @public
+     */
      sorting?: dxGanttSorting;
     /**
-     * Configures filter row settings.
+     * @docid
+     * @public
      */
     filterRow?: dxGanttFilterRow;
     /**
-      * Configures the header filter settings.
-      */
+     * @docid
+     * @public
+     */
      headerFilter?: dxGanttHeaderFilter;
     /**
-     * A function that is executed after users select a task or clear its selection.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:SelectionChangedEvent}
+     * @action
+     * @public
      */
     onSelectionChanged?: ((e: SelectionChangedEvent) => void);
     /**
-     * A function that is executed after a custom command item was clicked. Allows you to implement a custom command&apos;s functionality.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:CustomCommandEvent}
+     * @action
+     * @public
      */
     onCustomCommand?: ((e: CustomCommandEvent) => void);
     /**
-     * A function that is executed before the context menu is rendered.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:ContextMenuPreparingEvent}
+     * @action
+     * @public
      */
     onContextMenuPreparing?: ((e: ContextMenuPreparingEvent) => void);
     /**
-     * A function that is executed before a task is inserted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:TaskInsertingEvent}
+     * @action
+     * @public
      */
     onTaskInserting?: ((e: TaskInsertingEvent) => void);
     /**
-     * A function that is executed when a task is inserted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:TaskInsertedEvent}
+     * @action
+     * @public
      */
     onTaskInserted?: ((e: TaskInsertedEvent) => void);
     /**
-     * A function that is executed before a task is deleted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:TaskDeletingEvent}
+     * @action
+     * @public
      */
     onTaskDeleting?: ((e: TaskDeletingEvent) => void);
     /**
-     * A function that is executed when a task is deleted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:TaskDeletedEvent}
+     * @action
+     * @public
      */
     onTaskDeleted?: ((e: TaskDeletedEvent) => void);
     /**
-     * A function that is executed before a task is updated.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:TaskUpdatingEvent}
+     * @action
+     * @public
      */
     onTaskUpdating?: ((e: TaskUpdatingEvent) => void);
     /**
-     * A function that is executed when a task is updated.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:TaskUpdatedEvent}
+     * @action
+     * @public
      */
     onTaskUpdated?: ((e: TaskUpdatedEvent) => void);
     /**
-     * A function that is executed before a task is moved.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:TaskMovingEvent}
+     * @action
+     * @public
      */
     onTaskMoving?: ((e: TaskMovingEvent) => void);
     /**
-     * A function that is executed before the edit dialog is shown.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:TaskEditDialogShowingEvent}
+     * @action
+     * @public
      */
     onTaskEditDialogShowing?: ((e: TaskEditDialogShowingEvent) => void);
     /**
-     * A function that is executed before the Resource Manager dialog is shown.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:ResourceManagerDialogShowingEvent}
+     * @action
+     * @public
      */
     onResourceManagerDialogShowing?: ((e: ResourceManagerDialogShowingEvent) => void);
     /**
-     * A function that is executed before a dependency is inserted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:DependencyInsertingEvent}
+     * @action
+     * @public
      */
     onDependencyInserting?: ((e: DependencyInsertingEvent) => void);
     /**
-     * A function that is executed when a dependency is inserted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:DependencyInsertedEvent}
+     * @action
+     * @public
      */
     onDependencyInserted?: ((e: DependencyInsertedEvent) => void);
     /**
-     * A function that is executed before a dependency is deleted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:DependencyDeletingEvent}
+     * @action
+     * @public
      */
     onDependencyDeleting?: ((e: DependencyDeletingEvent) => void);
     /**
-     * A function that is executed when a dependency is deleted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:DependencyDeletedEvent}
+     * @action
+     * @public
      */
     onDependencyDeleted?: ((e: DependencyDeletedEvent) => void);
     /**
-     * A function that is executed before a resource is inserted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:ResourceInsertingEvent}
+     * @action
+     * @public
      */
     onResourceInserting?: ((e: ResourceInsertingEvent) => void);
     /**
-     * A function that is executed when a resource is inserted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:ResourceInsertedEvent}
+     * @action
+     * @public
      */
     onResourceInserted?: ((e: ResourceInsertedEvent) => void);
     /**
-     * A function that is executed before a resource is deleted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:ResourceDeletingEvent}
+     * @action
+     * @public
      */
     onResourceDeleting?: ((e: ResourceDeletingEvent) => void);
     /**
-     * A function that is executed when a resource is deleted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:ResourceDeletedEvent}
+     * @action
+     * @public
      */
     onResourceDeleted?: ((e: ResourceDeletedEvent) => void);
     /**
-     * A function that is executed before a resource is assigned to a task.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:ResourceAssigningEvent}
+     * @action
+     * @public
      */
     onResourceAssigning?: ((e: ResourceAssigningEvent) => void);
     /**
-     * A function that is executed when a resource is assigned to a task.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:ResourceAssignedEvent}
+     * @action
+     * @public
      */
     onResourceAssigned?: ((e: ResourceAssignedEvent) => void);
     /**
-     * A function that is executed before a resource is unassigned from a task.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:ResourceUnassigningEvent}
+     * @action
+     * @public
      */
     onResourceUnassigning?: ((e: ResourceUnassigningEvent) => void);
     /**
-     * A function that is executed when a resource is unassigned from a task.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:ResourceUnassignedEvent}
+     * @action
+     * @public
      */
     onResourceUnassigned?: ((e: ResourceUnassignedEvent) => void);
     /**
-     * A function that is executed when a user clicks a task.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:TaskClickEvent}
+     * @action
+     * @public
      */
     onTaskClick?: ((e: TaskClickEvent) => void);
     /**
-     * A function that is executed when a user double-clicks a task.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:TaskDblClickEvent}
+     * @action
+     * @public
      */
     onTaskDblClick?: ((e: TaskDblClickEvent) => void);
     /**
-     * A function that is executed before a scale cell is prepared.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/gantt:ScaleCellPreparedEvent}
+     * @action
+     * @public
      */
     onScaleCellPrepared?: ((e: ScaleCellPreparedEvent) => void);
 
     /**
-     * Configures resource assignments.
+     * @docid
+     * @default null
+     * @public
      */
     resourceAssignments?: {
       /**
-       * Binds the UI component to the data source, which contains resource assignments.
+       * @docid
+       * @default null
+       * @type Store|DataSource|DataSourceOptions|string|Array<any>|null
        */
       dataSource?: DataSourceLike<any> | null;
       /**
-       * Specifies the data field that provides keys for resource assignments.
+       * @docid
+       * @default "id"
        */
       keyExpr?: string | Function;
       /**
-       * Specifies the data field that provides resource IDs.
+       * @docid
+       * @default "resourceId"
        */
       resourceIdExpr?: string | Function;
       /**
-       * Specifies the data field that provides task IDs.
+       * @docid
+       * @default "taskId"
        */
       taskIdExpr?: string | Function;
     };
     /**
-     * Configures task resources.
+     * @docid
+     * @default null
+     * @public
      */
     resources?: {
       /**
-       * Specifies the data field that provides resources&apos; color.
+       * @docid
+       * @default "color"
        */
       colorExpr?: string | Function;
       /**
-       * Binds the UI component to the data source, which contains resources.
+       * @docid
+       * @default null
+       * @type Store|DataSource|DataSourceOptions|string|Array<any>|null
        */
       dataSource?: DataSourceLike<any> | null;
       /**
-       * Specifies the data field that provides keys for resources.
+       * @docid
+       * @default "id"
        */
       keyExpr?: string | Function;
       /**
-       * Specifies the data field that provides resource texts.
+       * @docid
+       * @default "text"
        */
       textExpr?: string | Function;
     };
     /**
-     * Specifies the zoom level of tasks in the Gantt chart.
+     * @docid
+     * @default "auto"
+     * @public
      */
     scaleType?: GanttScaleType;
     /**
-     * Configures zoom range settings.
+     * @docid
+     * @public
      */
     scaleTypeRange?: {
         /**
-         * Specifies the minimum zoom level of tasks in the Gantt chart.
+         * @docid
+         * @default "minutes"
          */
         min?: GanttScaleType;
         /**
-         * Specifies the maximum zoom level of tasks in the Gantt chart.
+         * @docid
+         * @default "years"
          */
         max?: GanttScaleType;
     };
     /**
-     * Allows you to select a row or determine which row is selected.
+     * @docid
+     * @default undefined
+     * @public
      */
     selectedRowKey?: any;
     /**
-     * Specifies whether to display task resources.
+     * @docid
+     * @default true
+     * @public
      */
     showResources?: boolean;
     /**
-      * Specifies whether to display dependencies between tasks.
-      */
+     * @docid
+     * @default true
+     * @public
+     */
      showDependencies?: boolean;
     /**
-     * Specifies whether to show/hide horizontal faint lines that separate tasks.
+     * @docid
+     * @default true
+     * @public
      */
     showRowLines?: boolean;
     /**
-     * Specifies the width of the task list in pixels.
+     * @docid
+     * @default 300
+     * @public
      */
     taskListWidth?: number;
     /**
-     * Specifies a task&apos;s title position.
+     * @docid
+     * @default "inside"
+     * @public
      */
     taskTitlePosition?: GanttTaskTitlePosition;
     /**
-     * Specifies the first day of a week.
+     * @docid
+     * @default undefined
+     * @public
      */
     firstDayOfWeek?: FirstDayOfWeek;
     /**
-     * Configures tasks.
+     * @docid
+     * @default null
+     * @public
      */
     tasks?: {
       /**
-       * Specifies the data field that provides tasks&apos; color.
+       * @docid
+       * @default "color"
        */
       colorExpr?: string | Function;
       /**
-       * Binds the UI component to the data source which contains tasks.
+       * @docid
+       * @default null
+       * @type Store|DataSource|DataSourceOptions|string|Array<any>|null
        */
       dataSource?: DataSourceLike<any> | null;
       /**
-       * Specifies the data field that provides tasks&apos; end dates.
+       * @docid
+       * @default "end"
        */
       endExpr?: string | Function;
       /**
-       * Specifies the data field that provides keys for tasks.
+       * @docid
+       * @default "id"
        */
       keyExpr?: string | Function;
       /**
-       * Specifies the data field that provides tasks&apos; parent IDs.
+       * @docid
+       * @default "parentId"
        */
       parentIdExpr?: string | Function;
       /**
-       * Specifies the data field that provides tasks&apos; progress.
+       * @docid
+       * @default "progress"
        */
       progressExpr?: string | Function;
       /**
-       * Specifies the data field that provides tasks&apos; start dates.
+       * @docid
+       * @default "start"
        */
       startExpr?: string | Function;
       /**
-       * Specifies the data field that provides task titles.
+       * @docid
+       * @default "title"
        */
       titleExpr?: string | Function;
     };
     /**
-     * Configures toolbar settings.
+     * @docid
+     * @default null
+     * @public
      */
     toolbar?: dxGanttToolbar;
     /**
-     * Configures the context menu settings.
+     * @docid
+     * @public
      */
     contextMenu?: dxGanttContextMenu;
     /**
-     * Configures strip lines.
+     * @docid
+     * @default undefined
+     * @public
      */
     stripLines?: Array<dxGanttStripLine>;
     /**
-     * Specifies custom content for the task tooltip.
+     * @docid
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     taskTooltipContentTemplate?: template | ((container: DxElement, task: any) => string | UserDefinedElement);
     /**
-     * Specifies custom content for the tooltip that displays the task&apos;s start and end time while the task is resized in the UI.
+     * @docid
+     * @type_function_param2 item:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     taskTimeTooltipContentTemplate?: template | ((container: DxElement, item: TimeTooltipTemplateData) => string | UserDefinedElement);
     /**
-     * Specifies custom content for the tooltip that displays the task&apos;s progress while the progress handler is resized in the UI.
+     * @docid
+     * @type_function_param2 item:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     taskProgressTooltipContentTemplate?: template | ((container: DxElement, item: ProgressTooltipTemplateData) => string | UserDefinedElement);
     /**
-     * Specifies custom content for the task.
+     * @docid
+     * @type_function_param2 item:object
+     * @type_function_param2_field cellSize:object
+     * @type_function_param2_field taskData:object
+     * @type_function_param2_field taskHTML:object
+     * @type_function_param2_field taskPosition:object
+     * @type_function_param2_field taskResources:Array<object>
+     * @type_function_param2_field taskSize:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     taskContentTemplate?: template | ((container: DxElement, item: TaskContentTemplateData) => string | UserDefinedElement);
     /**
-     * Specifies the root task&apos;s identifier.
+     * @docid
+     * @default 0
+     * @public
      */
     rootValue?: any;
     /**
-     * Specifies the start date of the date interval in the Gantt chart.
+     * @docid
+     * @default null
+     * @public
      */
     startDateRange?: Date;
     /**
-     * Specifies the end date of the date interval in the Gantt chart.
+     * @docid
+     * @default null
+     * @public
      */
     endDateRange?: Date;
 }
 /**
- * The Gantt is a UI component that displays the task flow and dependencies between tasks.
+ * @docid
+ * @inherits Widget
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxGantt extends Widget<dxGanttOptions> {
     /**
-     * Gets the task data.
+     * @docid
+     * @publicName getTaskData(key)
+     * @param1 key:object
+     * @return Object
+     * @public
      */
     getTaskData(key: any): any;
     /**
-     * Gets the dependency data.
+     * @docid
+     * @publicName getDependencyData(key)
+     * @param1 key:object
+     * @return Object
+     * @public
      */
     getDependencyData(key: any): any;
     /**
-     * Gets the resource data.
+     * @docid
+     * @publicName getResourceData(key)
+     * @param1 key:object
+     * @return Object
+     * @public
      */
     getResourceData(key: any): any;
     /**
-     * Gets the resource assignment data.
+     * @docid
+     * @publicName getResourceAssignmentData(key)
+     * @param1 key:object
+     * @return Object
+     * @public
      */
     getResourceAssignmentData(key: any): any;
     /**
-     * Inserts a new task.
+     * @docid
+     * @publicName insertTask(data)
+     * @param1 data:object
+     * @public
      */
     insertTask(data: any): void;
     /**
-     * Deletes a task.
+     * @docid
+     * @publicName deleteTask(key)
+     * @param1 key:object
+     * @public
      */
     deleteTask(key: any): void;
     /**
-     * Updates the task data.
+     * @docid
+     * @publicName updateTask(key, data)
+     * @param1 key:object
+     * @param2 data:object
+     * @public
      */
     updateTask(key: any, data: any): void;
     /**
-     * Inserts a new dependency.
+     * @docid
+     * @publicName insertDependency(data)
+     * @param1 data:object
+     * @public
      */
     insertDependency(data: any): void;
     /**
-     * Deletes a dependency.
+     * @docid
+     * @publicName deleteDependency(key)
+     * @param1 key:object
+     * @public
      */
     deleteDependency(key: any): void;
     /**
-     * Inserts a new resource.
+     * @docid
+     * @publicName insertResource(data, taskKeys)
+     * @param1 data:object
+     * @param2 taskKeys?:Array<object>
+     * @public
      */
     insertResource(data: any, taskKeys?: Array<any>): void;
     /**
-     * Deletes a resource.
+     * @docid
+     * @publicName deleteResource(key)
+     * @param1 key:object
+     * @public
      */
     deleteResource(key: any): void;
     /**
-     * Assigns a resource to a task.
+     * @docid
+     * @publicName assignResourceToTask(resourceKey, taskKey)
+     * @param1 resourceKey:object
+     * @param2 taskKey:object
+     * @public
      */
     assignResourceToTask(resourceKey: any, taskKey: any): void;
     /**
-     * Removes a resource from the task.
+     * @docid
+     * @publicName unassignResourceFromTask(resourceKey, taskKey)
+     * @param1 resourceKey:object
+     * @param2 taskKey:object
+     * @public
      */
     unassignResourceFromTask(resourceKey: any, taskKey: any): void;
     /**
-     * Gets resources assigned to a task.
+     * @docid
+     * @publicName getTaskResources(key)
+     * @param1 key:object
+     * @return Array<object>
+     * @public
      */
     getTaskResources(key: any): Array<any>;
     /**
-     * Gets the keys of the visible tasks.
+     * @docid
+     * @publicName getVisibleTaskKeys()
+     * @return Array<object>
+     * @public
      */
     getVisibleTaskKeys(): Array<any>;
     /**
-     * Gets the keys of the visible dependencies.
+     * @docid
+     * @publicName getVisibleDependencyKeys()
+     * @return Array<object>
+     * @public
      */
     getVisibleDependencyKeys(): Array<any>;
     /**
-     * Gets the keys of the visible resources.
+     * @docid
+     * @publicName getVisibleResourceKeys()
+     * @return Array<object>
+     * @public
      */
     getVisibleResourceKeys(): Array<any>;
     /**
-     * Gets the keys of the visible resource assignments.
+     * @docid
+     * @publicName getVisibleResourceAssignmentKeys()
+     * @return Array<object>
+     * @public
      */
     getVisibleResourceAssignmentKeys(): Array<any>;
     /**
-     * Updates the dimensions of the UI component contents.
+     * @docid
+     * @publicName updateDimensions()
+     * @public
      */
     updateDimensions(): void;
     /**
-     * Scrolls the Gantt chart to the specified date.
+     * @docid
+     * @publicName scrollToDate(date)
+     * @public
      */
     scrollToDate(date: Date | Number | string): void;
     /**
-     * Invokes the &apos;Resource Manager&apos; dialog.
+     * @docid
+     * @publicName showResourceManagerDialog()
+     * @public
      */
     showResourceManagerDialog(): void;
     /**
-     * Expands all tasks.
+     * @docid
+     * @publicName expandAll()
+     * @public
      */
     expandAll(): void;
     /**
-     * Collapses all tasks.
+     * @docid
+     * @publicName collapseAll()
+     * @public
      */
     collapseAll(): void;
     /**
-     * Expands all tasks down to the specified hierarchical level.
+     * @docid
+     * @publicName expandAllToLevel(level)
+     * @public
      */
     expandAllToLevel(level: Number): void;
     /**
-     * Expands a task&apos;s parent tasks.
+     * @docid
+     * @publicName expandToTask(key)
+     * @param1 key:object
+     * @public
      */
     expandToTask(key: any): void;
     /**
-     * Collapses a task.
+     * @docid
+     * @publicName collapseTask(key)
+     * @param1 key:object
+     * @public
      */
     collapseTask(key: any): void;
     /**
-     * Expands a task.
+     * @docid
+     * @publicName expandTask(key)
+     * @param1 key:object
+     * @public
      */
     expandTask(key: any): void;
     /**
-     * Reloads data and repaints the Gantt component.
+     * @docid
+     * @publicName refresh()
+     * @return Promise<void>
+     * @public
      */
     refresh(): DxPromise<void>;
     /**
-      * Shows or hides task resources.
-      */
+     * @docid
+     * @publicName showResources(value)
+     * @public
+     */
      showResources(value: boolean): void;
      /**
-       * Shows or hides dependencies between tasks.
-       */
+     * @docid
+     * @publicName showDependencies(value)
+     * @public
+     */
       showDependencies(value: boolean): void;
      /**
-       * Zooms in the Gantt chart.
-       */
+     * @docid
+     * @publicName zoomIn()
+     * @public
+     */
       zoomIn(): void;
       /**
-       * Zooms out the Gantt chart.
-       */
+     * @docid
+     * @publicName zoomOut()
+     * @public
+     */
       zoomOut(): void;
      /**
-       * Removes all resources from the task.
-       */
+     * @docid
+     * @publicName unassignAllResourcesFromTask(taskKey)
+     * @param1 taskKey:object
+     * @public
+     */
       unassignAllResourcesFromTask(taskKey: any): void;
      /**
-       * Invokes the &apos;Task Details&apos; dialog.
-       */
+     * @docid
+     * @publicName showTaskDetailsDialog(taskKey)
+     * @param1 taskKey:object
+     * @public
+     */
       showTaskDetailsDialog(taskKey: any): void;
 }
 
 /**
- * Configures the toolbar.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxGanttToolbar {
     /**
-     * Configures toolbar items&apos; settings.
+     * @docid
+     * @type Array<dxGanttToolbarItem,Enums.GanttPredefinedToolbarItem>
+     * @public
      */
     items?: Array<ToolbarItem | GanttPredefinedToolbarItem>;
 }
 
 /**
- * Configures the context menu.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxGanttContextMenu {
     /**
-     * Specifies whether the context menu is enabled in the UI component.
+     * @docid
+     * @default true
+     * @public
      */
     enabled?: boolean;
     /**
-     * Configures context menu item settings.
+     * @docid
+     * @type Array<dxGanttContextMenuItem,Enums.GanttPredefinedContextMenuItem>
+     * @public
      */
     items?: Array<ContextMenuItem | GanttPredefinedContextMenuItem>;
 }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxGantt
+ */
 export type ToolbarItem = dxGanttToolbarItem;
 
 /**
  * @deprecated Use ToolbarItem instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
  */
 export interface dxGanttToolbarItem extends dxToolbarItem {
     /**
-     * Specifies the toolbar item&apos;s name.
+     * @docid
+     * @public
      */
     name?: GanttPredefinedToolbarItem | string;
     /**
-     * Specifies the toolbar item&apos;s location.
+     * @docid
+     * @default "before"
+     * @public
      */
     location?: ToolbarItemLocation;
 }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxGantt
+ */
 export type ContextMenuItem = dxGanttContextMenuItem;
 
 /**
  * @deprecated Use ContextMenuItem instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
  */
 export interface dxGanttContextMenuItem extends dxContextMenuItem {
     /**
-     * Specifies the context menu item name.
+     * @docid
+     * @type Enums.GanttPredefinedContextMenuItem|string
+     * @public
      */
     name?: GanttPredefinedContextMenuItem | string;
 }
 
 /**
- * Configures a strip line.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxGanttStripLine {
     /**
-     * Specifies the name of the cascading style sheet (CSS) class associated with the strip line.
+     * @docid
+     * @default undefined
+     * @public
      */
     cssClass?: string;
     /**
-     * Specifies the end point of the strip line.
+     * @docid
+     * @default undefined
+     * @public
      */
     end?: Date | number | string | (() => Date | number | string);
     /**
-     * Specifies the start point of the strip line.
+     * @docid
+     * @default undefined
+     * @public
      */
     start?: Date | number | string | (() => Date | number | string);
     /**
-     * Specifies the strip line&apos;s title.
+     * @docid
+     * @default undefined
+     * @public
      */
     title?: string;
 }
 
 /**
- * Configures sorting.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxGanttSorting {
     /**
-     * Specifies text for the context menu item that sets an ascending sort order in a column.
+     * @docid
+     * @default "Sort Ascending"
      */
     ascendingText?: string;
     /**
-     * Specifies text for the context menu item that clears sorting settings for a column.
+     * @docid
+     * @default "Clear Sorting"
      */
     clearText?: string;
     /**
-     * Specifies text for the context menu item that sets a descending sort order in a column.
+     * @docid
+     * @default "Sort Descending"
      */
     descendingText?: string;
     /**
-     * Specifies sort mode.
+     * @docid
+     * @default "single"
      */
     mode?: SingleMultipleOrNone | string;
     /**
-     * Specifies whether to display sort indexes in column headers. Applies only when sorting.mode is &apos;multiple&apos; and data is sorted by two or more columns.
+     * @docid
+     * @default false
      */
     showSortIndexes?: boolean;
 }
 
 /**
- * Configures the filter row.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxGanttFilterRow {
     /**
-     * Specifies the null text for the editor that sets the end of a range for the &apos;between&apos; filter operation.
+     * @docid
+     * @default "End"
      */
     betweenEndText?: string;
     /**
-     * Specifies the null text for the editor that sets the start of a range for the &apos;between&apos; filter operation.
+     * @docid
+     * @default "Start"
      */
     betweenStartText?: string;
     /**
-     * Specifies descriptions for filter operations in the filter list.
+     * @docid
      */
     operationDescriptions?: dxGanttFilterRowOperationDescriptions;
     /**
-     * Specifies text for the &apos;reset&apos; operation.
+     * @docid
+     * @default "Reset"
      */
     resetOperationText?: string;
     /**
-     * Specifies text for the &apos;All&apos; filter operation.
+     * @docid
+     * @default "(All)"
      */
     showAllText?: string;
     /**
-     * Specifies whether to display filter icons.
+     * @docid
+     * @default true
      */
     showOperationChooser?: boolean;
     /**
-     * Specifies whether the filter row is visible.
+     * @docid
+     * @default false
      */
     visible?: boolean;
 }
 
 /**
- * Contains descriptions for filter operations in the filter list.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxGanttFilterRowOperationDescriptions {
     /**
-     * Text for the &apos;Between&apos; operation.
+     * @docid
+     * @default "Between"
      */
     between?: string;
     /**
-     * Text for the &apos;Contains&apos; operation.
+     * @docid
+     * @default "Contains"
      */
     contains?: string;
     /**
-     * Text for the &apos;Ends with&apos; operation.
+     * @docid
+     * @default "Ends with"
      */
     endsWith?: string;
     /**
-     * Text for the &apos;Equals&apos; operation.
+     * @docid
+     * @default "Equals"
      */
     equal?: string;
     /**
-     * Text for the &apos;Greater than&apos; operation.
+     * @docid
+     * @default "Greater than"
      */
     greaterThan?: string;
     /**
-     * Text for the &apos;Greater than or equal to&apos; operation.
+     * @docid
+     * @default "Greater than or equal to"
      */
     greaterThanOrEqual?: string;
     /**
-     * Text for the &apos;Less than&apos; operation.
+     * @docid
+     * @default "Less than"
      */
     lessThan?: string;
     /**
-     * Text for the &apos;Less than or equal to&apos; operation.
+     * @docid
+     * @default "Less than or equal to"
      */
     lessThanOrEqual?: string;
     /**
-     * Text for the &apos;Does not contain&apos; operation.
+     * @docid
+     * @default "Does not contain"
      */
     notContains?: string;
     /**
-     * Text for the &apos;Does not equal&apos; operation.
+     * @docid
+     * @default "Does not equal"
      */
     notEqual?: string;
     /**
-     * Text for the &apos;Starts with&apos; operation.
+     * @docid
+     * @default "Starts with"
      */
     startsWith?: string;
 }
 
 /**
- * Configures the header filter.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxGanttHeaderFilter {
     /**
-     * Specifies whether to enable searching in the header filter.
-     * @deprecated Use search.enabled instead.
+     * @docid
+     * @default false
+     * @deprecated
      */
     allowSearch?: boolean;
     /**
-     * Specifies whether a &apos;Select All&apos; option is available to users.
+     * @docid
+     * @default true
      */
     allowSelectAll?: boolean;
     /**
-     * Specifies the height of the popup window that contains values for filtering.
+     * @docid
+     * @default 315 &for(Material)
+     * @default 315 &for(Fluent)
+     * @default 325
      */
     height?: number;
     /**
-     * Configures the header filter&apos;s search functionality.
+     * @docid
      */
     search?: HeaderFilterSearchConfig;
     /**
-     * Specifies a delay in milliseconds between typing a search string and the search execution.
-     * @deprecated Use search.timeout instead.
+     * @docid
+     * @default 500
+     * @deprecated
      */
     searchTimeout?: number;
     /**
-     * Contains properties that specify text for various elements of the popup window.
+     * @docid
      */
     texts?: dxGanttHeaderFilterTexts;
     /**
-     * Specifies whether to show header filter icons.
+     * @docid
+     * @default false
      */
     visible?: boolean;
     /**
-     * Specifies the width of the popup window that contains values for filtering.
+     * @docid
+     * @default 252
      */
     width?: number;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxGanttHeaderFilterTexts {
     /**
-     * Specifies text for the &apos;Cancel&apos; button in the popup window.
+     * @docid
+     * @default "Cancel"
      */
     cancel?: string;
     /**
-     * Specifies text for the &apos;(Blank)&apos; item in the popup window.
+     * @docid
+     * @default "(Blanks)"
      */
     emptyValue?: string;
     /**
-     * Specifies text for the &apos;OK&apos; button in the popup window.
+     * @docid
+     * @default "Ok"
      */
     ok?: string;
 }
 
+/** @public */
 export type Properties = dxGanttOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxGanttOptions;
 
+/** @public */
 export type Column<TRowData = any, TKey = any> = dxGanttColumn<TRowData, TKey>;
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use the Column type instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type dxGanttColumn<TRowData = any, TKey = any> = Omit<dxGanttColumnBlank<TRowData, TKey>, 'allowEditing' | 'allowFixing' | 'allowHiding' | 'allowReordering' | 'allowResizing' | 'allowSearch' | 'buttons' | 'columns' | 'editCellTemplate' | 'editorOptions' | 'fixed' | 'fixedPosition' | 'formItem' | 'hidingPriority' | 'isBand' | 'lookup' | 'name' | 'ownerBand' | 'renderAsync' | 'setCellValue' | 'showEditorAlways' | 'showInColumnChooser' | 'type' | 'validationRules' >;
 
 /**
-  * Configures the column.
-  * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-  */
+ * @docid dxGanttColumn
+ * @export dxGanttColumn
+ * @inherits dxTreeListColumn
+ * @namespace DevExpress.ui
+ */
  interface dxGanttColumnBlank<TRowData = any, TKey = any> extends TreeListColumn<TRowData, TKey> {
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.allowEditing
+     */
      allowEditing: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.allowFixing
+     */
      allowFixing: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.allowHiding
+     */
      allowHiding: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.allowReordering
+     */
      allowReordering: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.allowResizing
+     */
      allowResizing: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.allowSearch
+     */
      allowSearch: any;
     /**
-     * 
+     * @hidden
+     * @docid dxGanttColumn.buttons
      */
     buttons: any;
     /**
-     * 
+     * @hidden
+     * @docid dxGanttColumn.columns
      */
     columns: any;
     /**
-     * 
+     * @hidden
+     * @docid dxGanttColumn.editorOptions
      */
     editorOptions: any;
     /**
-     * 
+     * @hidden
+     * @type template
+     * @docid dxGanttColumn.editCellTemplate
      */
     editCellTemplate: any;
     /**
-     * 
+     * @hidden
+     * @docid dxGanttColumn.fixed
      */
     fixed: any;
     /**
-     * 
+     * @hidden
+     * @docid dxGanttColumn.fixedPosition
      */
     fixedPosition: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.formItem
+     */
      formItem: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.hidingPriority
+     */
      hidingPriority: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.isBand
+     */
      isBand: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.lookup
+     */
      lookup: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.name
+     */
      name: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.ownerBand
+     */
      ownerBand: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.renderAsync
+     */
      renderAsync: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.setCellValue
+     */
      setCellValue: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.showEditorAlways
+     */
      showEditorAlways: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.showInColumnChooser
+     */
      showInColumnChooser: any;
     /**
-      * 
-      */
+     * @hidden
+     * @docid dxGanttColumn.validationRules
+     */
      validationRules: any;
     /**
-     * 
+     * @hidden
+     * @docid dxGanttColumn.type
      */
     type: any;
  }

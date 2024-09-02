@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/toolbar.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,6 +11,68 @@
 exports.default = void 0;
 var _ui = _interopRequireDefault(require("./toolbar/ui.toolbar"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-var _default = exports.default = _ui.default;
+var _default = exports.default = _ui.default; // STYLE toolbar
+/**
+ * @name dxToolbarItem
+ * @inherits CollectionWidgetItem
+ * @type object
+ */
+/**
+ * @name dxToolbarOptions.selectedIndex
+ * @type number
+ * @default -1
+ * @hidden
+ */
+/**
+ * @name dxToolbarOptions.activeStateEnabled
+ * @hidden
+ */
+/**
+ * @name dxToolbarOptions.focusStateEnabled
+ * @hidden
+ */
+/**
+ * @name dxToolbarOptions.accessKey
+ * @hidden
+ */
+/**
+ * @name dxToolbarOptions.tabIndex
+ * @hidden
+ */
+/**
+ * @name dxToolbarOptions.selectedItems
+ * @hidden
+ */
+/**
+ * @name dxToolbarOptions.selectedItemKeys
+ * @hidden
+ */
+/**
+ * @name dxToolbarOptions.keyExpr
+ * @hidden
+ */
+/**
+ * @name dxToolbarOptions.selectedItem
+ * @hidden
+ */
+/**
+ * @name dxToolbarOptions.height
+ * @hidden
+ */
+/**
+ * @name dxToolbarOptions.onSelectionChanged
+ * @action
+ * @hidden
+ */
+/**
+ * @name dxToolbar.registerKeyHandler
+ * @publicName registerKeyHandler(key, handler)
+ * @hidden
+ */
+/**
+ * @name dxToolbar.focus
+ * @publicName focus()
+ * @hidden
+ */
 module.exports = exports.default;
 module.exports.default = exports.default;

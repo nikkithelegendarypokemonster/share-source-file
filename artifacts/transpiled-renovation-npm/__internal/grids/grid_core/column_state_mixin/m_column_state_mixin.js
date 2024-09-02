@@ -8,21 +8,14 @@ var _renderer = _interopRequireDefault(require("../../../../core/renderer"));
 var _extend = require("../../../../core/utils/extend");
 var _position = require("../../../../core/utils/position");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const COLUMN_INDICATORS_CLASS = 'dx-column-indicators';
 const GROUP_PANEL_ITEM_CLASS = 'dx-group-panel-item';
-const ColumnStateMixin = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(_class, _Base);
-  function _class() {
-    return _Base.apply(this, arguments) || this;
-  }
-  var _proto = _class.prototype;
+const ColumnStateMixin = Base => class extends Base {
   /**
    * @extended header_filter_core
    */
-  _proto._applyColumnState = function _applyColumnState(options) {
-    var _a;
+  _applyColumnState(options) {
+    var _that$component;
     const that = this;
     const rtlEnabled = this.option('rtlEnabled');
     const columnAlignment = that._getColumnAlignment(options.column.alignment, rtlEnabled);
@@ -33,7 +26,7 @@ const ColumnStateMixin = Base => /*#__PURE__*/function (_Base) {
     const $indicatorsContainer = that._createIndicatorContainer(parameters, isGroupPanelItem);
     const $span = (0, _renderer.default)('<span>').addClass(that._getIndicatorClassName(options.name));
     // TODO getController
-    const columnsController = (_a = that.component) === null || _a === void 0 ? void 0 : _a.getController('columns');
+    const columnsController = (_that$component = that.component) === null || _that$component === void 0 ? void 0 : _that$component.getController('columns');
     const indicatorAlignment = (columnsController === null || columnsController === void 0 ? void 0 : columnsController.getHeaderContentAlignment(columnAlignment)) || columnAlignment;
     parameters.container = $indicatorsContainer;
     parameters.indicator = $span;
@@ -46,13 +39,12 @@ const ColumnStateMixin = Base => /*#__PURE__*/function (_Base) {
    */
   // @ts-expect-error
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._getIndicatorClassName = function _getIndicatorClassName(name) {};
-  _proto._getColumnAlignment = function _getColumnAlignment(alignment, rtlEnabled) {
+  _getIndicatorClassName(name) {}
+  _getColumnAlignment(alignment, rtlEnabled) {
     rtlEnabled = rtlEnabled || this.option('rtlEnabled');
     return alignment && alignment !== 'center' ? alignment : (0, _position.getDefaultAlignment)(rtlEnabled);
-  };
-  _proto._createIndicatorContainer = function _createIndicatorContainer(options, ignoreIndicatorAlignment) {
+  }
+  _createIndicatorContainer(options, ignoreIndicatorAlignment) {
     let $indicatorsContainer = this._getIndicatorContainer(options.rootElement);
     const indicatorAlignment = options.columnAlignment === 'left' ? 'right' : 'left';
     if (!$indicatorsContainer.length) {
@@ -60,23 +52,23 @@ const ColumnStateMixin = Base => /*#__PURE__*/function (_Base) {
     }
     this.setAria('role', 'presentation', $indicatorsContainer);
     return $indicatorsContainer.css('float', options.showColumnLines && !ignoreIndicatorAlignment ? indicatorAlignment : null);
-  };
-  _proto._getIndicatorContainer = function _getIndicatorContainer($cell) {
-    return $cell && $cell.find(".".concat(COLUMN_INDICATORS_CLASS));
-  };
-  _proto._getIndicatorElements = function _getIndicatorElements($cell) {
+  }
+  _getIndicatorContainer($cell) {
+    return $cell && $cell.find(`.${COLUMN_INDICATORS_CLASS}`);
+  }
+  _getIndicatorElements($cell) {
     const $indicatorContainer = this._getIndicatorContainer($cell);
     return $indicatorContainer && $indicatorContainer.children();
   }
   /**
    * @extended header_filter_core
-   */;
-  _proto._renderIndicator = function _renderIndicator(options) {
+   */
+  _renderIndicator(options) {
     const $container = options.container;
     const $indicator = options.indicator;
     $container && $indicator && $container.append($indicator);
-  };
-  _proto._updateIndicators = function _updateIndicators(indicatorName) {
+  }
+  _updateIndicators(indicatorName) {
     const that = this;
     // @ts-expect-error
     const columns = that.getColumns();
@@ -92,8 +84,8 @@ const ColumnStateMixin = Base => /*#__PURE__*/function (_Base) {
         rowOptions.cells[$cell.index()].column = columns[i];
       }
     }
-  };
-  _proto._updateIndicator = function _updateIndicator($cell, column, indicatorName) {
+  }
+  _updateIndicator($cell, column, indicatorName) {
     if (!column.command) {
       return this._applyColumnState({
         name: indicatorName,
@@ -103,8 +95,7 @@ const ColumnStateMixin = Base => /*#__PURE__*/function (_Base) {
       });
     }
     return undefined;
-  };
-  return _class;
-}(Base);
+  }
+};
 exports.ColumnStateMixin = ColumnStateMixin;
 var _default = exports.default = ColumnStateMixin;

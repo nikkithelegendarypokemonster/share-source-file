@@ -4,14 +4,14 @@ import $ from '../../../../core/renderer';
 import { each } from '../../../../core/utils/iterator';
 import ContextMenu from '../../../../ui/context_menu';
 import modules from '../m_modules';
-var CONTEXT_MENU = 'dx-context-menu';
-var viewName = {
+const CONTEXT_MENU = 'dx-context-menu';
+const viewName = {
   columnHeadersView: 'header',
   rowsView: 'content',
   footerView: 'footer',
   headerPanel: 'headerPanel'
 };
-var VIEW_NAMES = ['columnHeadersView', 'rowsView', 'footerView', 'headerPanel'];
+const VIEW_NAMES = ['columnHeadersView', 'rowsView', 'footerView', 'headerPanel'];
 export class ContextMenuController extends modules.ViewController {
   init() {
     this.createAction('onContextMenuPreparing');
@@ -20,23 +20,23 @@ export class ContextMenuController extends modules.ViewController {
     if (!dxEvent) {
       return false;
     }
-    var that = this;
-    var $targetElement = $(dxEvent.target);
-    var $element;
-    var $targetRowElement;
-    var $targetCellElement;
-    var menuItems;
+    const that = this;
+    const $targetElement = $(dxEvent.target);
+    let $element;
+    let $targetRowElement;
+    let $targetCellElement;
+    let menuItems;
     each(VIEW_NAMES, function () {
-      var _a, _b;
-      var view = that.getView(this);
+      const view = that.getView(this);
       $element = view && view.element();
       if ($element && ($element.is($targetElement) || $element.find($targetElement).length)) {
+        var _rowOptions$cells;
         $targetCellElement = $targetElement.closest('.dx-row > td, .dx-row > tr');
         $targetRowElement = $targetCellElement.parent();
-        var rowIndex = view.getRowIndex($targetRowElement);
-        var columnIndex = $targetCellElement[0] && $targetCellElement[0].cellIndex;
-        var rowOptions = $targetRowElement.data('options');
-        var options = {
+        const rowIndex = view.getRowIndex($targetRowElement);
+        const columnIndex = $targetCellElement[0] && $targetCellElement[0].cellIndex;
+        const rowOptions = $targetRowElement.data('options');
+        const options = {
           event: dxEvent,
           targetElement: getPublicElement($targetElement),
           target: viewName[this],
@@ -44,7 +44,7 @@ export class ContextMenuController extends modules.ViewController {
           // @ts-expect-error
           row: view._getRows()[rowIndex],
           columnIndex,
-          column: (_b = (_a = rowOptions === null || rowOptions === void 0 ? void 0 : rowOptions.cells) === null || _a === void 0 ? void 0 : _a[columnIndex]) === null || _b === void 0 ? void 0 : _b.column
+          column: rowOptions === null || rowOptions === void 0 || (_rowOptions$cells = rowOptions.cells) === null || _rowOptions$cells === void 0 || (_rowOptions$cells = _rowOptions$cells[columnIndex]) === null || _rowOptions$cells === void 0 ? void 0 : _rowOptions$cells.column
         };
         // @ts-expect-error
         options.items = view.getContextMenuItems && view.getContextMenuItems(options);
@@ -71,15 +71,15 @@ export class ContextMenuView extends modules.View {
     this._contextMenuController = this.getController('contextMenu');
   }
   _renderCore() {
-    var $element = this.element().addClass(CONTEXT_MENU);
+    const $element = this.element().addClass(CONTEXT_MENU);
     this.setAria('role', 'presentation', $element);
     this._createComponent($element, ContextMenu, {
       onPositioning: actionArgs => {
-        var {
+        const {
           event
         } = actionArgs;
-        var contextMenuInstance = actionArgs.component;
-        var items = this._contextMenuController.getContextMenuItems(event);
+        const contextMenuInstance = actionArgs.component;
+        const items = this._contextMenuController.getContextMenuItems(event);
         if (items) {
           contextMenuInstance.option('items', items);
           event.stopPropagation();
@@ -89,16 +89,16 @@ export class ContextMenuView extends modules.View {
         }
       },
       onItemClick(params) {
-        var _a, _b;
+        var _params$itemData, _params$itemData$onIt;
         // @ts-expect-error
-        (_b = (_a = params.itemData) === null || _a === void 0 ? void 0 : _a.onItemClick) === null || _b === void 0 ? void 0 : _b.call(_a, params);
+        (_params$itemData = params.itemData) === null || _params$itemData === void 0 || (_params$itemData$onIt = _params$itemData.onItemClick) === null || _params$itemData$onIt === void 0 || _params$itemData$onIt.call(_params$itemData, params);
       },
       cssClass: this.getWidgetContainerClass(),
       target: this.component.$element()
     });
   }
 }
-export var contextMenuModule = {
+export const contextMenuModule = {
   defaultOptions() {
     return {
       onContextMenuPreparing: null

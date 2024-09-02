@@ -67,7 +67,7 @@ const HorizontalHeadersArea = exports.HorizontalHeadersArea = _m_area_item.AreaI
       classArray
     } = options;
     if (options.cellIndex === options.cellsCount - 1) {
-      cssArray.push("".concat(options.rtlEnabled ? 'border-left:' : 'border-right:', "0px"));
+      cssArray.push(`${options.rtlEnabled ? 'border-left:' : 'border-right:'}0px`);
     }
     if (cell.rowspan === rowsCount - options.rowIndex || options.rowIndex + 1 === rowsCount) {
       cssArray.push('border-bottom-width:0px');

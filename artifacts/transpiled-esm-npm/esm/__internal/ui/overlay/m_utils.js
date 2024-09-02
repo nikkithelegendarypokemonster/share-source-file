@@ -1,0 +1,27 @@
+import $ from '../../../core/renderer';
+import { getInnerHeight, getOuterHeight } from '../../../core/utils/size';
+import { isNumeric } from '../../../core/utils/type';
+import { getWindow } from '../../../core/utils/window';
+const WINDOW_HEIGHT_PERCENT = 0.9;
+export const getElementMaxHeightByWindow = ($element, startLocation) => {
+  // @ts-expect-error
+  const $window = $(getWindow());
+  // @ts-expect-error
+  const {
+    top: elementOffset
+  } = $element.offset();
+  let actualOffset;
+  if (isNumeric(startLocation)) {
+    if (startLocation < elementOffset) {
+      return elementOffset - startLocation;
+    }
+    // @ts-expect-error
+    actualOffset = getInnerHeight($window) - startLocation + $window.scrollTop();
+  } else {
+    // @ts-expect-error
+    const offsetTop = elementOffset - $window.scrollTop();
+    const offsetBottom = getInnerHeight($window) - offsetTop - getOuterHeight($element);
+    actualOffset = Math.max(offsetTop, offsetBottom);
+  }
+  return actualOffset * WINDOW_HEIGHT_PERCENT;
+};

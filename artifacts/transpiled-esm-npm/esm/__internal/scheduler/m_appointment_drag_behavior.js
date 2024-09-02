@@ -4,7 +4,7 @@ import { extend } from '../../core/utils/extend';
 import Draggable from '../../ui/draggable';
 import { LIST_ITEM_DATA_KEY } from './m_constants';
 import { isSchedulerComponent } from './utils/is_scheduler_component';
-var APPOINTMENT_ITEM_CLASS = 'dx-scheduler-appointment';
+const APPOINTMENT_ITEM_CLASS = 'dx-scheduler-appointment';
 export default class AppointmentDragBehavior {
   constructor(scheduler) {
     this.scheduler = scheduler;
@@ -21,7 +21,7 @@ export default class AppointmentDragBehavior {
     return appointment.data('dxAppointmentSettings').allDay;
   }
   onDragStart(e) {
-    var {
+    const {
       itemSettings,
       itemData,
       initialPosition
@@ -39,16 +39,16 @@ export default class AppointmentDragBehavior {
     }
   }
   getAppointmentElement(e) {
-    var itemElement = e.event.data && e.event.data.itemElement || e.itemElement;
+    const itemElement = e.event.data && e.event.data.itemElement || e.itemElement;
     return $(itemElement);
   }
   onDragEnd(event) {
-    var element = this.getAppointmentElement(event);
-    var rawAppointment = this.appointments._getItemData(element);
-    var container = this.appointments._getAppointmentContainer(this.isAllDay(element));
+    const element = this.getAppointmentElement(event);
+    const rawAppointment = this.appointments._getItemData(element);
+    const container = this.appointments._getAppointmentContainer(this.isAllDay(element));
     container.append(element);
-    var newCellIndex = this.workspace.getDroppableCellIndex();
-    var oldCellIndex = this.workspace.getCellIndexByCoordinates(this.initialPosition);
+    const newCellIndex = this.workspace.getDroppableCellIndex();
+    const oldCellIndex = this.workspace.getCellIndexByCoordinates(this.initialPosition);
     this.appointments.notifyObserver('updateAppointmentAfterDrag', {
       event,
       element,
@@ -61,13 +61,13 @@ export default class AppointmentDragBehavior {
     this.removeDroppableClasses();
   }
   getItemData(appointmentElement) {
-    var dataFromTooltip = $(appointmentElement).data(LIST_ITEM_DATA_KEY);
-    var itemDataFromTooltip = dataFromTooltip === null || dataFromTooltip === void 0 ? void 0 : dataFromTooltip.appointment;
-    var itemDataFromGrid = this.appointments._getItemData(appointmentElement);
+    const dataFromTooltip = $(appointmentElement).data(LIST_ITEM_DATA_KEY);
+    const itemDataFromTooltip = dataFromTooltip === null || dataFromTooltip === void 0 ? void 0 : dataFromTooltip.appointment;
+    const itemDataFromGrid = this.appointments._getItemData(appointmentElement);
     return itemDataFromTooltip || itemDataFromGrid;
   }
   getItemSettings(appointment) {
-    var itemData = $(appointment).data(LIST_ITEM_DATA_KEY);
+    const itemData = $(appointment).data(LIST_ITEM_DATA_KEY);
     return itemData && itemData.settings || [];
   }
   createDragStartHandler(options, appointmentDragging) {
@@ -90,7 +90,7 @@ export default class AppointmentDragBehavior {
   }
   createDragEndHandler(options, appointmentDragging) {
     return e => {
-      var updatedData = this.appointments.invoke('getUpdatedData', e.itemData);
+      const updatedData = this.appointments.invoke('getUpdatedData', e.itemData);
       this.appointmentInfo = null;
       e.toItemData = extend({}, e.itemData, updatedData);
       appointmentDragging.onDragEnd && appointmentDragging.onDragEnd(e);
@@ -105,7 +105,7 @@ export default class AppointmentDragBehavior {
         this.removeDroppableClasses();
       }
       if (e.cancel !== true && isSchedulerComponent(e.toComponent)) {
-        var targetDragBehavior = e.toComponent._getDragBehavior();
+        const targetDragBehavior = e.toComponent._getDragBehavior();
         // @ts-expect-error
         targetDragBehavior.dragBetweenComponentsPromise = new Deferred();
       }
@@ -113,7 +113,7 @@ export default class AppointmentDragBehavior {
   }
   createDropHandler(appointmentDragging) {
     return e => {
-      var updatedData = this.appointments.invoke('getUpdatedData', e.itemData);
+      const updatedData = this.appointments.invoke('getUpdatedData', e.itemData);
       e.itemData = extend({}, e.itemData, updatedData);
       if (e.fromComponent !== e.toComponent) {
         appointmentDragging.onAdd && appointmentDragging.onAdd(e);
@@ -124,11 +124,11 @@ export default class AppointmentDragBehavior {
     };
   }
   addTo(container, config) {
-    var appointmentDragging = this.scheduler.option('appointmentDragging') || {};
-    var options = extend({
+    const appointmentDragging = this.scheduler.option('appointmentDragging') || {};
+    const options = extend({
       component: this.scheduler,
       contentTemplate: null,
-      filter: ".".concat(APPOINTMENT_ITEM_CLASS),
+      filter: `.${APPOINTMENT_ITEM_CLASS}`,
       immediate: false,
       onDragStart: this.onDragStart.bind(this),
       onDragMove: this.onDragMove.bind(this),
@@ -144,12 +144,12 @@ export default class AppointmentDragBehavior {
     }));
   }
   updateDragSource(appointment, settings) {
-    var {
+    const {
       appointmentInfo
     } = this;
     if (appointmentInfo || appointment) {
-      var currentAppointment = appointment || appointmentInfo.appointment;
-      var currentSettings = settings || appointmentInfo.settings;
+      const currentAppointment = appointment || appointmentInfo.appointment;
+      const currentSettings = settings || appointmentInfo.settings;
       this.appointments._setDragSourceAppointment(currentAppointment, currentSettings);
     }
   }

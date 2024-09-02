@@ -1,17 +1,23 @@
 /**
 * DevExtreme (animation/frame.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /**
- * Cancels an animation frame request scheduled with the requestAnimationFrame method.
+ * @docid utils.cancelAnimationFrame
+ * @publicName cancelAnimationFrame(requestID)
+ * @namespace DevExpress.utils
+ * @public
  */
 export function cancelAnimationFrame(requestID: number): void;
 
 /**
- * Makes the browser call a function to update animation before the next repaint.
+ * @docid utils.requestAnimationFrame
+ * @publicName requestAnimationFrame(callback)
+ * @namespace DevExpress.utils
+ * @public
  */
 export function requestAnimationFrame(callback: Function): number;

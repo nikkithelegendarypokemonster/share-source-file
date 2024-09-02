@@ -8,27 +8,25 @@ exports.parseLicenseKey = parseLicenseKey;
 exports.peekValidationPerformed = peekValidationPerformed;
 exports.setLicenseCheckSkipCondition = setLicenseCheckSkipCondition;
 exports.validateLicense = validateLicense;
+var _config = _interopRequireDefault(require("../../../core/config"));
 var _errors = _interopRequireDefault(require("../../../core/errors"));
 var _version = require("../../../core/version");
+var _version2 = require("../../utils/version");
 var _byte_utils = require("./byte_utils");
 var _key = require("./key");
 var _pkcs = require("./pkcs1");
 var _rsa_bigint = require("./rsa_bigint");
 var _sha = require("./sha1");
+var _trial_panel = require("./trial_panel");
 var _types = require("./types");
+const _excluded = ["customerId", "maxVersionAllowed", "format", "internalUsageId"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-var __rest = void 0 && (void 0).__rest || function (s, e) {
-  var t = {};
-  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-const SPLITTER = '.';
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 const FORMAT = 1;
 const RTM_MIN_PATCH_VERSION = 3;
+const KEY_SPLITTER = '.';
+const BUY_NOW_LINK = 'https://go.devexpress.com/Licensing_Installer_Watermark_DevExtremeJQuery.aspx';
 const GENERAL_ERROR = {
   kind: _types.TokenKind.corrupted,
   error: 'general'
@@ -70,7 +68,7 @@ function parseLicenseKey(encodedKey) {
   if (encodedKey === undefined) {
     return GENERAL_ERROR;
   }
-  const parts = encodedKey.split(SPLITTER);
+  const parts = encodedKey.split(KEY_SPLITTER);
   if (parts.length !== 2 || parts[0].length === 0 || parts[1].length === 0) {
     return GENERAL_ERROR;
   }
@@ -83,13 +81,13 @@ function parseLicenseKey(encodedKey) {
   let decodedPayload = '';
   try {
     decodedPayload = atob(parts[0]);
-  } catch (_a) {
+  } catch {
     return DECODING_ERROR;
   }
   let payload = {};
   try {
     payload = JSON.parse(decodedPayload);
-  } catch (_b) {
+  } catch {
     return DESERIALIZATION_ERROR;
   }
   const {
@@ -98,7 +96,7 @@ function parseLicenseKey(encodedKey) {
       format,
       internalUsageId
     } = payload,
-    rest = __rest(payload, ["customerId", "maxVersionAllowed", "format", "internalUsageId"]);
+    rest = _objectWithoutPropertiesLoose(payload, _excluded);
   if (internalUsageId !== undefined) {
     return {
       kind: _types.TokenKind.internal,
@@ -119,6 +117,9 @@ function parseLicenseKey(encodedKey) {
     }, rest)
   };
 }
+function isPreview(patch) {
+  return isNaN(patch) || patch < RTM_MIN_PATCH_VERSION;
+}
 function getLicenseCheckParams(_ref2) {
   let {
     licenseKey,
@@ -126,8 +127,11 @@ function getLicenseCheckParams(_ref2) {
   } = _ref2;
   let preview = false;
   try {
-    const [major, minor, patch] = version.split('.').map(Number);
-    preview = isNaN(patch) || patch < RTM_MIN_PATCH_VERSION;
+    preview = isPreview(version.patch);
+    const {
+      major,
+      minor
+    } = preview ? (0, _version2.getPreviousMajorVersion)(version) : version;
     if (!licenseKey) {
       return {
         preview,
@@ -164,7 +168,7 @@ function getLicenseCheckParams(_ref2) {
       preview,
       error: undefined
     };
-  } catch (_a) {
+  } catch {
     return {
       preview,
       error: 'W0021'
@@ -172,19 +176,27 @@ function getLicenseCheckParams(_ref2) {
   }
 }
 function validateLicense(licenseKey) {
-  let version = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _version.version;
+  let versionStr = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _version.fullVersion;
   if (validationPerformed) {
     return;
   }
   validationPerformed = true;
+  const version = (0, _version2.parseVersion)(versionStr);
+  const versionsCompatible = (0, _version2.assertedVersionsCompatible)(version);
   const {
-    preview,
     internal,
     error
   } = getLicenseCheckParams({
     licenseKey,
     version
   });
+  if (!versionsCompatible && internal) {
+    return;
+  }
+  if (error && !internal) {
+    (0, _trial_panel.showTrialPanel)((0, _config.default)().buyNowLink ?? BUY_NOW_LINK, _version.fullVersion);
+  }
+  const preview = isPreview(version.patch);
   if (error) {
     _errors.default.log(preview ? 'W0022' : error);
     return;

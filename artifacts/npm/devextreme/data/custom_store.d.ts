@@ -1,7 +1,7 @@
 /**
 * DevExtreme (data/custom_store.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,80 +11,115 @@ import { Store, Options as StoreOptions } from './store';
 import { DxExtendedPromise, DxPromise } from '../core/utils/deferred';
 import { GroupItem as CustomStoreGroupItem, LoadResult } from '../common/data/custom-store';
 
+/** @public */
 export type Options<
     TItem = any,
     TKey = any,
 > = CustomStoreOptions<TItem, TKey>;
 
 /**
+ * @public
  * @deprecated Use GroupItem from common/data/custom-store instead
  */
 export type GroupItem<TItem = any> = CustomStoreGroupItem<TItem>;
 
 /**
- * Specifies returned data of the `load()` method in CustomStore.
- * @deprecated Use LoadResult instead.
+ * @docid
+ * @public
+ * @type object
+ * @deprecated Use LoadResult instead
  */
 export type ResolvedData<TItem = any> = LoadResult<TItem>;
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 type LoadFunctionResult<T> = T | DxPromise<T> | PromiseLike<T>;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.data
+ * @deprecated Use Options instead
  */
 export interface CustomStoreOptions<
     TItem = any,
     TKey = any,
 > extends StoreOptions<TItem, TKey> {
     /**
-     * Specifies a custom implementation of the byKey(key) method.
+     * @docid
+     * @public
+     * @type_function_param1 key:object|string|number
+     * @type_function_param2 extraOptions:LoadOptions
+     * @type_function_return Promise<any>
      */
     byKey?: ((key: TKey, extraOptions?: LoadOptions<TItem>) => PromiseLike<TItem>);
     /**
-     * Specifies whether raw data should be saved in the cache. Applies only if loadMode is &apos;raw&apos;.
+     * @docid
+     * @default true
+     * @public
      */
     cacheRawData?: boolean;
     /**
-     * Specifies a custom implementation of the insert(values) method.
+     * @docid
+     * @type_function_param1 values:object
+     * @type_function_return Promise<any>
+     * @public
      */
     insert?: ((values: TItem) => PromiseLike<TItem>);
     /**
-     * Specifies a custom implementation of the load(options) method.
+     * @docid
+     * @type_function_param1 options:LoadOptions
+     * @type_function_return LoadResult|Promise<LoadResult>
+     * @public
      */
     load: (options: LoadOptions<TItem>) => LoadFunctionResult<LoadResult<TItem>>;
     /**
-     * Specifies how data returned by the load function is treated.
+     * @docid
+     * @default 'processed'
+     * @public
      */
     loadMode?: 'processed' | 'raw';
     /**
-     * A function that is executed after data is loaded to the store.
+     * @docid
+     * @type_function_param1 result:LoadResult
+     * @type_function_param2 loadOptions:LoadOptions
+     * @action
+     * @public
      */
     onLoaded?: ((result: LoadResult<TItem>, loadOptions: LoadOptions<TItem>) => void);
     /**
-     * Specifies a custom implementation of the remove(key) method.
+     * @docid
+     * @type_function_param1 key:object|string|number
+     * @type_function_return Promise<void>
+     * @public
      */
     remove?: ((key: TKey) => PromiseLike<void>);
     /**
-     * Specifies a custom implementation of the totalCount(options) method.
+     * @docid
+     * @type_function_param1_field filter:object
+     * @type_function_param1_field group:object
+     * @type_function_return Promise<number>
+     * @public
      */
     totalCount?: ((loadOptions: { filter?: FilterDescriptor | Array<FilterDescriptor>; group?: GroupDescriptor<TItem> | Array<GroupDescriptor<TItem>> }) => PromiseLike<number>);
     /**
-     * Specifies a custom implementation of the update(key, values) method.
+     * @docid
+     * @type_function_param1 key:object|string|number
+     * @type_function_param2 values:object
+     * @type_function_return Promise<any>
+     * @public
      */
     update?: ((key: TKey, values: TItem) => PromiseLike<any>);
     /**
-     * Specifies whether the store combines the search and filter expressions. Defaults to true if the loadMode is &apos;raw&apos; and false if it is &apos;processed&apos;.
+     * @docid
+     * @default undefined
+     * @public
      */
     useDefaultSearch?: boolean;
 }
 
 /**
- * The CustomStore enables you to implement custom data access logic for consuming data from any source.
+ * @docid
+ * @inherits Store
+ * @public
+ * @options CustomStoreOptions
  */
 export default class CustomStore<
     TItem = any,
@@ -92,19 +127,33 @@ export default class CustomStore<
 > extends Store<TItem, TKey> {
     constructor(options?: Options<TItem, TKey>);
     /**
-     * Gets a data item with a specific key.
+     * @docid
+     * @publicName byKey(key, extraOptions)
+     * @param1 key:object|string|number
+     * @param2 extraOptions:LoadOptions
+     * @return Promise<any>
+     * @public
      */
     byKey(key: TKey, extraOptions?: LoadOptions<TItem>): DxPromise<TItem>;
     /**
-     * Deletes data from the cache. Takes effect only if the cacheRawData property is true.
+     * @docid
+     * @publicName clearRawDataCache()
+     * @public
      */
     clearRawDataCache(): void;
     /**
-     * Starts loading data.
+     * @docid
+     * @publicName load()
+     * @return Promise<any>
+     * @public
      */
     load(): DxExtendedPromise<LoadResult<TItem>>;
     /**
-     * Starts loading data.
+     * @docid
+     * @publicName load(options)
+     * @param1 options:LoadOptions
+     * @return Promise<LoadResult>
+     * @public
      */
     load(options: LoadOptions<TItem>): DxExtendedPromise<LoadResult<TItem>>;
 }

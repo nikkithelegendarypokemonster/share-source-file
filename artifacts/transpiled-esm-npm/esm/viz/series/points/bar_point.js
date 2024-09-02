@@ -1,28 +1,28 @@
 import { extend } from '../../../core/utils/extend';
-var _extend = extend;
-var _math = Math;
-var _floor = _math.floor;
-var _abs = _math.abs;
+const _extend = extend;
+const _math = Math;
+const _floor = _math.floor;
+const _abs = _math.abs;
 import symbolPoint from './symbol_point';
-var CANVAS_POSITION_DEFAULT = 'canvas_position_default';
-var DEFAULT_BAR_TRACKER_SIZE = 9;
-var CORRECTING_BAR_TRACKER_VALUE = 4;
-var RIGHT = 'right';
-var LEFT = 'left';
-var TOP = 'top';
-var BOTTOM = 'bottom';
+const CANVAS_POSITION_DEFAULT = 'canvas_position_default';
+const DEFAULT_BAR_TRACKER_SIZE = 9;
+const CORRECTING_BAR_TRACKER_VALUE = 4;
+const RIGHT = 'right';
+const LEFT = 'left';
+const TOP = 'top';
+const BOTTOM = 'bottom';
 function getLabelOrientation(point) {
-  var initialValue = point.initialValue;
-  var invert = point._getValTranslator().getBusinessRange().invert;
-  var isDiscreteValue = point.series.valueAxisType === 'discrete';
-  var isFullStacked = point.series.isFullStackedSeries();
-  var notAxisInverted = !isDiscreteValue && (initialValue >= 0 && !invert || initialValue < 0 && invert) || isDiscreteValue && !invert || isFullStacked;
+  const initialValue = point.initialValue;
+  const invert = point._getValTranslator().getBusinessRange().invert;
+  const isDiscreteValue = point.series.valueAxisType === 'discrete';
+  const isFullStacked = point.series.isFullStackedSeries();
+  const notAxisInverted = !isDiscreteValue && (initialValue >= 0 && !invert || initialValue < 0 && invert) || isDiscreteValue && !invert || isFullStacked;
   return notAxisInverted ? TOP : BOTTOM;
 }
 export default _extend({}, symbolPoint, {
   correctCoordinates(correctOptions) {
-    var that = this;
-    var correction = _floor(correctOptions.offset - correctOptions.width / 2);
+    const that = this;
+    const correction = _floor(correctOptions.offset - correctOptions.width / 2);
     if (that._options.rotated) {
       that.height = correctOptions.width;
       that.yCorrection = correction;
@@ -33,8 +33,8 @@ export default _extend({}, symbolPoint, {
       that.yCorrection = null;
     }
   },
-  _calculateVisibility: function _calculateVisibility(x, y, width, height) {
-    var {
+  _calculateVisibility: function (x, y, width, height) {
+    const {
       minX,
       maxX,
       minY,
@@ -42,8 +42,8 @@ export default _extend({}, symbolPoint, {
     } = this._getVisibleArea();
     this.inVisibleArea = minX <= x + width && maxX >= x && minY <= y + height && maxY >= y;
   },
-  _cacheVisibility: function _cacheVisibility(x, y, minY, rotated) {
-    var size = Math.abs(y - minY);
+  _cacheVisibility: function (x, y, minY, rotated) {
+    const size = Math.abs(y - minY);
     y = Math.min(y, minY);
     if (rotated) {
       this._calculateVisibility(y, x, size, this.height);
@@ -51,15 +51,15 @@ export default _extend({}, symbolPoint, {
       this._calculateVisibility(x, y, this.width, size);
     }
   },
-  _getGraphicBBox: function _getGraphicBBox(location) {
-    var bBox = {
+  _getGraphicBBox: function (location) {
+    const bBox = {
       x: this.x,
       y: this.y,
       width: this.width,
       height: this.height
     };
     if (location) {
-      var isTop = location === 'top';
+      const isTop = location === 'top';
       if (!this._options.rotated) {
         bBox.y = isTop ? bBox.y : bBox.y + bBox.height;
         bBox.height = 0;
@@ -70,19 +70,19 @@ export default _extend({}, symbolPoint, {
     }
     return bBox;
   },
-  _getLabelConnector: function _getLabelConnector(location) {
+  _getLabelConnector: function (location) {
     return this._getGraphicBBox(location);
   },
-  _getLabelPosition: function _getLabelPosition() {
-    var position = getLabelOrientation(this);
+  _getLabelPosition: function () {
+    let position = getLabelOrientation(this);
     if (this._options.rotated) {
       position = position === TOP ? RIGHT : LEFT;
     }
     return position;
   },
-  _getLabelCoords: function _getLabelCoords(label) {
-    var that = this;
-    var coords;
+  _getLabelCoords: function (label) {
+    const that = this;
+    let coords;
     if (that.initialValue === 0 && that.series.isFullStackedSeries()) {
       if (!this._options.rotated) {
         coords = that._getLabelCoordOfPosition(label, TOP);
@@ -96,13 +96,13 @@ export default _extend({}, symbolPoint, {
     }
     return coords;
   },
-  _drawLabel: function _drawLabel() {
+  _drawLabel: function () {
     this._label.pointPosition = this._label.getLayoutOptions().position !== 'inside' && getLabelOrientation(this);
     symbolPoint._drawLabel.call(this);
   },
-  hideInsideLabel: function hideInsideLabel(label, coord) {
-    var graphicBBox = this._getGraphicBBox();
-    var labelBBox = label.getBoundingRect();
+  hideInsideLabel: function (label, coord) {
+    const graphicBBox = this._getGraphicBBox();
+    const labelBBox = label.getBoundingRect();
     if (this._options.resolveLabelsOverlapping) {
       if ((coord.y <= graphicBBox.y && coord.y + labelBBox.height >= graphicBBox.y + graphicBBox.height || coord.x <= graphicBBox.x && coord.x + labelBBox.width >= graphicBBox.x + graphicBBox.width) && !(coord.y > graphicBBox.y + graphicBBox.height || coord.y + labelBBox.height < graphicBBox.y || coord.x > graphicBBox.x + graphicBBox.width || coord.x + labelBBox.width < graphicBBox.x)) {
         label.draw(false);
@@ -111,15 +111,15 @@ export default _extend({}, symbolPoint, {
     }
     return false;
   },
-  _showForZeroValues: function _showForZeroValues() {
+  _showForZeroValues: function () {
     return this._options.label.showForZeroValues || this.initialValue;
   },
   _drawMarker(renderer, group, animationEnabled) {
-    var that = this;
-    var style = that._getStyle();
-    var r = that._options.cornerRadius;
-    var rotated = that._options.rotated;
-    var {
+    const that = this;
+    const style = that._getStyle();
+    const r = that._options.cornerRadius;
+    const rotated = that._options.rotated;
+    let {
       x,
       y,
       width,
@@ -141,12 +141,12 @@ export default _extend({}, symbolPoint, {
       'chart-data-point': that
     }).append(group);
   },
-  _getSettingsForTracker: function _getSettingsForTracker() {
-    var that = this;
-    var y = that.y;
-    var height = that.height;
-    var x = that.x;
-    var width = that.width;
+  _getSettingsForTracker: function () {
+    const that = this;
+    let y = that.y;
+    let height = that.height;
+    let x = that.x;
+    let width = that.width;
     if (that._options.rotated) {
       if (width === 1) {
         width = DEFAULT_BAR_TRACKER_SIZE;
@@ -165,8 +165,8 @@ export default _extend({}, symbolPoint, {
       height: height
     };
   },
-  getGraphicSettings: function getGraphicSettings() {
-    var graphic = this.graphic;
+  getGraphicSettings: function () {
+    const graphic = this.graphic;
     return {
       x: graphic.attr('x'),
       y: graphic.attr('y'),
@@ -175,11 +175,11 @@ export default _extend({}, symbolPoint, {
     };
   },
   _getEdgeTooltipParams() {
-    var isPositive = this.value >= 0;
-    var xCoord;
-    var yCoord;
-    var invertedBusinessRange = this._getValTranslator().getBusinessRange().invert;
-    var {
+    const isPositive = this.value >= 0;
+    let xCoord;
+    let yCoord;
+    const invertedBusinessRange = this._getValTranslator().getBusinessRange().invert;
+    const {
       x,
       y,
       width,
@@ -206,16 +206,16 @@ export default _extend({}, symbolPoint, {
       offset: 0
     };
   },
-  getTooltipParams: function getTooltipParams(location) {
+  getTooltipParams: function (location) {
     if (location === 'edge') {
       return this._getEdgeTooltipParams();
     }
-    var center = this.getCenterCoord();
+    const center = this.getCenterCoord();
     center.offset = 0;
     return center;
   },
   getCenterCoord() {
-    var {
+    const {
       width,
       height,
       x,
@@ -226,7 +226,7 @@ export default _extend({}, symbolPoint, {
       y: y + height / 2
     };
   },
-  _truncateCoord: function _truncateCoord(coord, bounds) {
+  _truncateCoord: function (coord, bounds) {
     if (coord === null) {
       return coord;
     }
@@ -241,27 +241,27 @@ export default _extend({}, symbolPoint, {
   _getErrorBarBaseEdgeLength() {
     return this._options.rotated ? this.height : this.width;
   },
-  _translateErrorBars: function _translateErrorBars(argVisibleArea) {
+  _translateErrorBars: function (argVisibleArea) {
     symbolPoint._translateErrorBars.call(this);
     if (this._errorBarPos < argVisibleArea[0] || this._errorBarPos > argVisibleArea[1]) {
       this._errorBarPos = undefined;
     }
   },
   // TODO check & rework
-  _translate: function _translate() {
-    var that = this;
-    var rotated = that._options.rotated;
-    var valAxis = rotated ? 'x' : 'y';
-    var argAxis = rotated ? 'y' : 'x';
-    var valIntervalName = rotated ? 'width' : 'height';
-    var argIntervalName = rotated ? 'height' : 'width';
-    var argTranslator = that._getArgTranslator();
-    var valTranslator = that._getValTranslator();
-    var argVisibleArea = that.series.getArgumentAxis().getVisibleArea();
-    var valVisibleArea = that.series.getValueAxis().getVisibleArea();
-    var arg = argTranslator.translate(that.argument);
-    var val = valTranslator.translate(that.value, 1);
-    var minVal = valTranslator.translate(that.minValue, -1);
+  _translate: function () {
+    const that = this;
+    const rotated = that._options.rotated;
+    const valAxis = rotated ? 'x' : 'y';
+    const argAxis = rotated ? 'y' : 'x';
+    const valIntervalName = rotated ? 'width' : 'height';
+    const argIntervalName = rotated ? 'height' : 'width';
+    const argTranslator = that._getArgTranslator();
+    const valTranslator = that._getValTranslator();
+    const argVisibleArea = that.series.getArgumentAxis().getVisibleArea();
+    const valVisibleArea = that.series.getValueAxis().getVisibleArea();
+    let arg = argTranslator.translate(that.argument);
+    let val = valTranslator.translate(that.value, 1);
+    let minVal = valTranslator.translate(that.minValue, -1);
     that[argAxis] = arg = arg === null ? arg : arg + (that[argAxis + 'Correction'] || 0);
     that['v' + valAxis] = val;
     that['v' + argAxis] = arg + that[argIntervalName] / 2;
@@ -284,27 +284,27 @@ export default _extend({}, symbolPoint, {
       }
     }
   },
-  _updateMarker: function _updateMarker(animationEnabled, style) {
+  _updateMarker: function (animationEnabled, style) {
     this.graphic.smartAttr(_extend({}, style, !animationEnabled ? this.getMarkerCoords() : {}));
   },
-  getMarkerCoords: function getMarkerCoords() {
-    var that = this;
-    var x = that.x;
-    var y = that.y;
-    var width = that.width;
-    var height = that.height;
-    var argAxis = that.series.getArgumentAxis();
-    var rotated = that._options.rotated;
+  getMarkerCoords: function () {
+    const that = this;
+    let x = that.x;
+    const y = that.y;
+    let width = that.width;
+    let height = that.height;
+    const argAxis = that.series.getArgumentAxis();
+    const rotated = that._options.rotated;
     if (argAxis.getAxisPosition) {
-      var axisOptions = argAxis.getOptions();
-      var edgeOffset = Math.round(axisOptions.width / 2);
-      var argAxisPosition = argAxis.getAxisPosition();
+      const axisOptions = argAxis.getOptions();
+      const edgeOffset = Math.round(axisOptions.width / 2);
+      const argAxisPosition = argAxis.getAxisPosition();
       if (axisOptions.visible) {
         if (!rotated) {
           height -= that.minY === that.defaultY && that.minY === argAxisPosition - argAxis.getAxisShift() ? edgeOffset : 0;
           height < 0 && (height = 0);
         } else {
-          var isStartFromAxis = that.minX === that.defaultX && that.minX === argAxisPosition - argAxis.getAxisShift();
+          const isStartFromAxis = that.minX === that.defaultX && that.minX === argAxisPosition - argAxis.getAxisShift();
           x += isStartFromAxis ? edgeOffset : 0;
           width -= isStartFromAxis ? edgeOffset : 0;
           width < 0 && (width = 0);
@@ -318,8 +318,8 @@ export default _extend({}, symbolPoint, {
       height
     };
   },
-  coordsIn: function coordsIn(x, y) {
-    var that = this;
+  coordsIn: function (x, y) {
+    const that = this;
     return x >= that.x && x <= that.x + that.width && y >= that.y && y <= that.y + that.height;
   }
 });

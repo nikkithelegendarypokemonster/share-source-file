@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/templates/template_base.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,15 +12,15 @@ import Callbacks from '../utils/callbacks';
 import { contains } from '../utils/dom';
 import { triggerShownEvent } from '../../events/visibility_change';
 import errors from '../errors';
-export var renderedCallbacks = Callbacks({
+export const renderedCallbacks = Callbacks({
   syncStrategy: true
 });
 export class TemplateBase {
   render(options) {
     options = options || {};
-    var onRendered = options.onRendered;
+    const onRendered = options.onRendered;
     delete options.onRendered;
-    var $result;
+    let $result;
     if (options.renovated && options.transclude && this._element) {
       $result = $('<div>').append(this._element).contents();
     } else {
@@ -35,13 +35,13 @@ export class TemplateBase {
     if (!container) {
       return;
     }
-    var $container = $(container);
-    var resultInContainer = contains($container.get(0), $result.get(0));
+    const $container = $(container);
+    const resultInContainer = contains($container.get(0), $result.get(0));
     $container.append($result);
     if (resultInContainer) {
       return;
     }
-    var resultInBody = domAdapter.getBody().contains($container.get(0));
+    const resultInBody = contains(domAdapter.getBody(), $container.get(0));
     if (!resultInBody) {
       return;
     }

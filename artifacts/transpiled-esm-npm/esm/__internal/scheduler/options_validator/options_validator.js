@@ -5,25 +5,25 @@ export class SchedulerOptionsValidator extends OptionsValidator {
   constructor() {
     super({
       startDayHour: new Validator(_ref => {
-        var {
+        let {
           startDayHour
         } = _ref;
         return startDayHour;
       }, [mustBeInteger, mustBeInRange([0, 24])]),
       endDayHour: new Validator(_ref2 => {
-        var {
+        let {
           endDayHour
         } = _ref2;
         return endDayHour;
       }, [mustBeInteger, mustBeInRange([0, 24])]),
       offset: new Validator(_ref3 => {
-        var {
+        let {
           offset
         } = _ref3;
         return offset;
       }, [mustBeInteger, mustBeInRange([-1440, 1440]), mustBeDivisibleBy(5)]),
       cellDuration: new Validator(_ref4 => {
-        var {
+        let {
           cellDuration
         } = _ref4;
         return cellDuration;

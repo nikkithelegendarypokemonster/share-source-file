@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.AppointmentViewModelGenerator = void 0;
 var _date = require("../../core/utils/date");
-var _index = require("../__migration/utils/index");
+var _index = require("../../scheduler/r1/utils/index");
 var _m_strategy_agenda = _interopRequireDefault(require("./rendering_strategies/m_strategy_agenda"));
 var _m_strategy_horizontal = _interopRequireDefault(require("./rendering_strategies/m_strategy_horizontal"));
 var _m_strategy_horizontal_month = _interopRequireDefault(require("./rendering_strategies/m_strategy_horizontal_month"));
@@ -22,14 +22,12 @@ const RENDERING_STRATEGIES = {
   week: _m_strategy_week.default,
   agenda: _m_strategy_agenda.default
 };
-let AppointmentViewModelGenerator = exports.AppointmentViewModelGenerator = /*#__PURE__*/function () {
-  function AppointmentViewModelGenerator() {}
-  var _proto = AppointmentViewModelGenerator.prototype;
-  _proto.initRenderingStrategy = function initRenderingStrategy(options) {
+class AppointmentViewModelGenerator {
+  initRenderingStrategy(options) {
     const RenderingStrategy = RENDERING_STRATEGIES[options.appointmentRenderingStrategyName];
     this.renderingStrategy = new RenderingStrategy(options);
-  };
-  _proto.generate = function generate(filteredItems, options) {
+  }
+  generate(filteredItems, options) {
     const {
       viewOffset
     } = options;
@@ -43,8 +41,8 @@ let AppointmentViewModelGenerator = exports.AppointmentViewModelGenerator = /*#_
       positionMap,
       viewModel
     };
-  };
-  _proto.postProcess = function postProcess(filteredItems, positionMap) {
+  }
+  postProcess(filteredItems, positionMap) {
     const renderingStrategy = this.getRenderingStrategy();
     return filteredItems.map((data, index) => {
       // TODO research do we need this code
@@ -64,8 +62,8 @@ let AppointmentViewModelGenerator = exports.AppointmentViewModelGenerator = /*#_
       item.needRemove = false;
       return item;
     });
-  };
-  _proto.makeRenovatedViewModels = function makeRenovatedViewModels(viewModel, supportAllDayRow, isVerticalGrouping) {
+  }
+  makeRenovatedViewModels(viewModel, supportAllDayRow, isVerticalGrouping) {
     const strategy = this.getRenderingStrategy();
     const regularViewModels = [];
     const allDayViewModels = [];
@@ -96,18 +94,18 @@ let AppointmentViewModelGenerator = exports.AppointmentViewModelGenerator = /*#_
       regular: regularViewModels
     }, compactViewModels);
     return result;
-  };
-  _proto.prepareViewModel = function prepareViewModel(options, strategy, itemData) {
+  }
+  prepareViewModel(options, strategy, itemData) {
     const geometry = strategy.getAppointmentGeometry(options);
     const viewModel = {
       key: (0, _index.getAppointmentKey)(geometry),
       appointment: itemData,
-      geometry: _extends(_extends({}, geometry), {
+      geometry: _extends({}, geometry, {
         // TODO move to the rendering strategies
         leftVirtualWidth: options.leftVirtualWidth,
         topVirtualHeight: options.topVirtualHeight
       }),
-      info: _extends(_extends({}, options.info), {
+      info: _extends({}, options.info, {
         allDay: options.allDay,
         direction: options.direction,
         appointmentReduced: options.appointmentReduced,
@@ -115,8 +113,8 @@ let AppointmentViewModelGenerator = exports.AppointmentViewModelGenerator = /*#_
       })
     };
     return viewModel;
-  };
-  _proto.getCompactViewModelFrame = function getCompactViewModelFrame(compactViewModel) {
+  }
+  getCompactViewModelFrame(compactViewModel) {
     return {
       isAllDay: !!compactViewModel.isAllDay,
       isCompact: compactViewModel.isCompact,
@@ -133,8 +131,8 @@ let AppointmentViewModelGenerator = exports.AppointmentViewModelGenerator = /*#_
         settings: []
       }
     };
-  };
-  _proto.prepareCompactViewModels = function prepareCompactViewModels(compactOptions, supportAllDayRow) {
+  }
+  prepareCompactViewModels(compactOptions, supportAllDayRow) {
     const regularCompact = {};
     const allDayCompact = {};
     compactOptions.forEach(_ref2 => {
@@ -168,23 +166,22 @@ let AppointmentViewModelGenerator = exports.AppointmentViewModelGenerator = /*#_
       allDayCompact: allDayViewModels,
       regularCompact: regularViewModels
     };
-  };
-  _proto.getRenderingStrategy = function getRenderingStrategy() {
+  }
+  getRenderingStrategy() {
     return this.renderingStrategy;
   }
   // NOTE: Unfortunately, we cannot implement immutable behavior here
   // because in this case it will break the refs (keys) of dataSource's appointments,
   // and it will break appointment updates :(
-  ;
-  _proto.unshiftViewModelAppointmentsByViewOffset = function unshiftViewModelAppointmentsByViewOffset(viewModel, viewOffset) {
-    var _a, _b;
+  unshiftViewModelAppointmentsByViewOffset(viewModel, viewOffset) {
     const processedAppointments = new Set();
     // eslint-disable-next-line no-restricted-syntax
     for (const model of viewModel) {
       // eslint-disable-next-line no-restricted-syntax
-      for (const setting of (_a = model.settings) !== null && _a !== void 0 ? _a : []) {
+      for (const setting of model.settings ?? []) {
+        var _setting$info;
         // eslint-disable-next-line prefer-destructuring
-        const appointment = (_b = setting === null || setting === void 0 ? void 0 : setting.info) === null || _b === void 0 ? void 0 : _b.appointment;
+        const appointment = setting === null || setting === void 0 || (_setting$info = setting.info) === null || _setting$info === void 0 ? void 0 : _setting$info.appointment;
         if (appointment && !processedAppointments.has(appointment)) {
           appointment.startDate = _date.dateUtilsTs.addOffsets(appointment.startDate, [viewOffset]);
           appointment.endDate = _date.dateUtilsTs.addOffsets(appointment.endDate, [viewOffset]);
@@ -194,6 +191,6 @@ let AppointmentViewModelGenerator = exports.AppointmentViewModelGenerator = /*#_
       }
     }
     return viewModel;
-  };
-  return AppointmentViewModelGenerator;
-}();
+  }
+}
+exports.AppointmentViewModelGenerator = AppointmentViewModelGenerator;

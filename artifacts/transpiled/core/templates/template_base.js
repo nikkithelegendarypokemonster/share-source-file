@@ -11,10 +11,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const renderedCallbacks = exports.renderedCallbacks = (0, _callbacks.default)({
   syncStrategy: true
 });
-let TemplateBase = exports.TemplateBase = /*#__PURE__*/function () {
-  function TemplateBase() {}
-  var _proto = TemplateBase.prototype;
-  _proto.render = function render(options) {
+class TemplateBase {
+  render(options) {
     options = options || {};
     const onRendered = options.onRendered;
     delete options.onRendered;
@@ -28,8 +26,8 @@ let TemplateBase = exports.TemplateBase = /*#__PURE__*/function () {
     renderedCallbacks.fire($result, options.container);
     onRendered && onRendered();
     return $result;
-  };
-  _proto._ensureResultInContainer = function _ensureResultInContainer($result, container) {
+  }
+  _ensureResultInContainer($result, container) {
     if (!container) {
       return;
     }
@@ -39,14 +37,14 @@ let TemplateBase = exports.TemplateBase = /*#__PURE__*/function () {
     if (resultInContainer) {
       return;
     }
-    const resultInBody = _dom_adapter.default.getBody().contains($container.get(0));
+    const resultInBody = (0, _dom.contains)(_dom_adapter.default.getBody(), $container.get(0));
     if (!resultInBody) {
       return;
     }
     (0, _visibility_change.triggerShownEvent)($result);
-  };
-  _proto._renderCore = function _renderCore() {
+  }
+  _renderCore() {
     throw _errors.default.Error('E0001');
-  };
-  return TemplateBase;
-}();
+  }
+}
+exports.TemplateBase = TemplateBase;

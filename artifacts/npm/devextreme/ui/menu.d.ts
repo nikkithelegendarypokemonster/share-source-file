@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/menu.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -39,235 +39,355 @@ export {
     SubmenuShowMode,
 };
 
+/** @public */
 export type SubmenuDirection = 'auto' | 'leftOrTop' | 'rightOrBottom';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_menu_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent<TKey = any> = EventInfo<dxMenu<TKey>>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_menu_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent<TKey = any> = EventInfo<dxMenu<TKey>>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_menu_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent<TKey = any> = InitializedEventInfo<dxMenu<TKey>>;
 
 /**
- * The type of the itemClick event handler&apos;s argument.
+ * @docid _ui_menu_ItemClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemClickEvent<TKey = any> = NativeEventInfo<dxMenu<TKey>, KeyboardEvent | MouseEvent | PointerEvent> & ItemInfo<Item>;
 
 /**
- * The type of the itemContextMenu event handler&apos;s argument.
+ * @docid _ui_menu_ItemContextMenuEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemContextMenuEvent<TKey = any> = NativeEventInfo<dxMenu<TKey>, MouseEvent | PointerEvent | TouchEvent> & ItemInfo<Item>;
 
 /**
- * The type of the itemRendered event handler&apos;s argument.
+ * @docid _ui_menu_ItemRenderedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ItemInfo
  */
 export type ItemRenderedEvent<TKey = any> = EventInfo<dxMenu<TKey>> & ItemInfo<Item>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_menu_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent<TKey = any> = EventInfo<dxMenu<TKey>> & ChangedOptionInfo;
 
 /**
- * The type of the selectionChanged event handler&apos;s argument.
+ * @docid _ui_menu_SelectionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,SelectionChangedInfo
  */
 export type SelectionChangedEvent<TKey = any> = EventInfo<dxMenu<TKey>> & SelectionChangedInfo<Item>;
 
 /**
- * The type of the submenuHidden event handler&apos;s argument.
+ * @docid _ui_menu_SubmenuHiddenEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type SubmenuHiddenEvent<TKey = any> = EventInfo<dxMenu<TKey>> & {
     /**
-     * 
+     * @docid _ui_menu_SubmenuHiddenEvent.itemData
+     * @type dxMenuItem
      */
+    readonly itemData?: Item;
+    /** @docid _ui_menu_SubmenuHiddenEvent.rootItem */
     readonly rootItem?: DxElement;
+    /** @docid _ui_menu_SubmenuHiddenEvent.submenuContainer */
+    readonly submenuContainer?: DxElement;
 };
 
 /**
- * The type of the submenuHiding event handler&apos;s argument.
+ * @docid _ui_menu_SubmenuHidingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type SubmenuHidingEvent<TKey = any> = Cancelable & EventInfo<dxMenu<TKey>> & {
     /**
-     * 
+     * @docid _ui_menu_SubmenuHidingEvent.itemData
+     * @type dxMenuItem
      */
+    readonly itemData?: Item;
+    /** @docid _ui_menu_SubmenuHidingEvent.rootItem */
     readonly rootItem?: DxElement;
+    /** @docid _ui_menu_SubmenuHidingEvent.submenuContainer */
+    readonly submenuContainer?: DxElement;
 };
 
 /**
- * The type of the submenuShowing event handler&apos;s argument.
+ * @docid _ui_menu_SubmenuShowingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type SubmenuShowingEvent<TKey = any> = EventInfo<dxMenu<TKey>> & {
     /**
-     * 
+     * @docid _ui_menu_SubmenuShowingEvent.itemData
+     * @type dxMenuItem
      */
+    readonly itemData?: Item;
+    /** @docid _ui_menu_SubmenuShowingEvent.rootItem */
     readonly rootItem?: DxElement;
+    /** @docid _ui_menu_SubmenuShowingEvent.submenuContainer */
+    readonly submenuContainer?: DxElement;
 };
 
 /**
- * The type of the submenuShown event handler&apos;s argument.
+ * @docid _ui_menu_SubmenuShownEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type SubmenuShownEvent<TKey = any> = EventInfo<dxMenu<TKey>> & {
     /**
-     * 
+     * @docid _ui_menu_SubmenuShownEvent.itemData
+     * @type dxMenuItem
      */
+    readonly itemData?: Item;
+    /** @docid _ui_menu_SubmenuShownEvent.rootItem */
     readonly rootItem?: DxElement;
+    /** @docid _ui_menu_SubmenuShownEvent.submenuContainer */
+    readonly submenuContainer?: DxElement;
 };
 
 /**
- * 
- * @deprecated 
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @public
+ * @docid
  */
 export interface dxMenuOptions<
     TKey = any,
 > extends dxMenuBaseOptions<dxMenu<TKey>, dxMenuItem, TKey> {
     /**
-     * Specifies whether adaptive rendering is enabled. This property is in effect only if the orientation is &apos;horizontal&apos;.
+     * @docid
+     * @default false
+     * @public
      */
     adaptivityEnabled?: boolean;
     /**
-     * Binds the UI component to data.
+     * @docid
+     * @type string | Array<dxMenuItem> | Store | DataSource | DataSourceOptions | null
+     * @default null
+     * @public
      */
     dataSource?: DataSourceLike<Item, TKey> | null;
     /**
-     * Specifies whether or not the submenu is hidden when the mouse pointer leaves it.
+     * @docid
+     * @default false
+     * @public
      */
     hideSubmenuOnMouseLeave?: boolean;
     /**
-     * Holds an array of menu items.
+     * @docid
+     * @type Array<dxMenuItem>
+     * @public
      */
     items?: Array<Item>;
     /**
-     * A function that is executed after a submenu is hidden.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/menu:SubmenuHiddenEvent}
+     * @action
+     * @public
      */
     onSubmenuHidden?: ((e: SubmenuHiddenEvent<TKey>) => void);
     /**
-     * A function that is executed before a submenu is hidden.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/menu:SubmenuHidingEvent}
+     * @action
+     * @public
      */
     onSubmenuHiding?: ((e: SubmenuHidingEvent<TKey>) => void);
     /**
-     * A function that is executed before a submenu is displayed.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/menu:SubmenuShowingEvent}
+     * @action
+     * @public
      */
     onSubmenuShowing?: ((e: SubmenuShowingEvent<TKey>) => void);
     /**
-     * A function that is executed after a submenu is displayed.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/menu:SubmenuShownEvent}
+     * @action
+     * @public
      */
     onSubmenuShown?: ((e: SubmenuShownEvent<TKey>) => void);
     /**
-     * Specifies whether the menu has horizontal or vertical orientation.
+     * @docid
+     * @default "horizontal"
+     * @public
      */
     orientation?: Orientation;
     /**
-     * Specifies properties for showing and hiding the first level submenu.
+     * @docid
+     * @default { name: "onClick", delay: { show: 50, hide: 300 } }
+     * @public
      */
     showFirstSubmenuMode?: {
       /**
-       * Specifies the delay in submenu showing and hiding.
+       * @docid
+       * @default { show: 50, hide: 300 }
        */
       delay?: {
         /**
-         * The time span after which the submenu is hidden.
+         * @docid
+         * @default 300
          */
         hide?: number;
         /**
-         * The time span after which the submenu is shown.
+         * @docid
+         * @default 50
          */
         show?: number;
       } | number;
       /**
-       * Specifies the mode name.
+       * @docid
+       * @default "onClick"
        */
       name?: SubmenuShowMode;
     } | SubmenuShowMode;
     /**
-     * Specifies the direction at which the submenus are displayed.
+     * @docid
+     * @default "auto"
+     * @public
      */
     submenuDirection?: SubmenuDirection;
 }
 /**
- * The Menu UI component is a panel with clickable items. A click on an item opens a drop-down menu, which can contain several submenus.
+ * @docid
+ * @inherits dxMenuBase
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxMenu<
     TKey = any,
 > extends dxMenuBase<dxMenuOptions<TKey>, dxMenuItem, TKey> { }
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export interface MenuBasePlainItem extends CollectionWidgetItem {
   /**
-   * Specifies whether a group separator is displayed over the item.
+   * @docid dxMenuBaseItem.beginGroup
+   * @public
    */
   beginGroup?: boolean;
   /**
-   * Specifies if a menu is closed when a user clicks the item.
+   * @docid dxMenuBaseItem.closeMenuOnClick
+   * @default true
+   * @public
    */
   closeMenuOnClick?: boolean;
   /**
-   * Specifies whether the menu item responds to user interaction.
+   * @docid dxMenuBaseItem.disabled
+   * @default false
+   * @public
    */
   disabled?: boolean;
   /**
-   * Specifies the menu item&apos;s icon.
+   * @docid dxMenuBaseItem.icon
+   * @public
    */
   icon?: string;
   /**
-   * Specifies whether or not a user can select a menu item.
+   * @docid dxMenuBaseItem.selectable
+   * @default false
+   * @public
    */
   selectable?: boolean;
   /**
-   * Specifies whether or not the item is selected.
+   * @docid dxMenuBaseItem.selected
+   * @default false
+   * @public
    */
   selected?: boolean;
   /**
-   * Specifies the text inserted into the item element.
+   * @docid dxMenuBaseItem.text
+   * @public
    */
   text?: string;
   /**
-   * Specifies whether or not the menu item is visible.
+   * @docid dxMenuBaseItem.visible
+   * @default true
+   * @public
    */
   visible?: boolean;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @inherits CollectionWidgetItem
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxMenuBaseItem extends MenuBasePlainItem {
     /**
-     * Specifies nested menu items.
+     * @docid
+     * @public
      */
     items?: Array<dxMenuBaseItem>;
 }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxMenu
+ */
 export type Item = dxMenuItem;
 
 /**
  * @deprecated Use Item instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
  */
 export interface dxMenuItem extends dxMenuBaseItem {
     /**
-     * Specifies nested menu items.
+     * @docid
+     * @public
+     * @type Array<dxMenuItem>
      */
     items?: Array<Item>;
     /**
-     * Specifies a web address to be opened when a user clicks on an item.
+     * @docid
+     * @public
      */
     url?: string;
     /**
-     * Specifies link attributes for the url option.
+     * @docid
+     * @public
+     * @default {}
      */
     linkAttr?: { [key: string]: any };
 }
 
+/** @public */
 export type ExplicitTypes<TKey = any> = {
     Properties: Properties<TKey>;
     ContentReadyEvent: ContentReadyEvent<TKey>;
@@ -284,12 +404,10 @@ export type ExplicitTypes<TKey = any> = {
     SubmenuShownEvent: SubmenuShownEvent<TKey>;
 };
 
+/** @public */
 export type Properties<TKey = any> = dxMenuOptions<TKey>;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options<TKey = any> = Properties<TKey>;
 
 

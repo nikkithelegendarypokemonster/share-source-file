@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/localization/number.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -206,7 +206,7 @@ const numberLocalization = (0, _dependency_injector.default)({
     const specialCharacters = ['\\', '(', ')', '[', ']', '*', '+', '$', '^', '?', '|', '{', '}'];
     let negativeEtalon = this.format(-1, format).replace(digitalRegExp, '1');
     specialCharacters.forEach(char => {
-      negativeEtalon = negativeEtalon.replace(new RegExp("\\".concat(char), 'g'), "\\".concat(char));
+      negativeEtalon = negativeEtalon.replace(new RegExp(`\\${char}`, 'g'), `\\${char}`);
     });
     negativeEtalon = negativeEtalon.replace(/ /g, '\\s');
     negativeEtalon = negativeEtalon.replace(/1/g, '.*');

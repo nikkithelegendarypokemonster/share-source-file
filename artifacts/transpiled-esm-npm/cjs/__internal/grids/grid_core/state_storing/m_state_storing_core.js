@@ -14,12 +14,8 @@ var _events_engine = _interopRequireDefault(require("../../../../events/core/eve
 var _ui = _interopRequireDefault(require("../../../../ui/widget/ui.errors"));
 var _m_modules = _interopRequireDefault(require("../m_modules"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } // @ts-expect-error
+// @ts-expect-error
+
 const DATE_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
 const parseDates = function (state) {
   if (!state) return;
@@ -44,13 +40,20 @@ const getStorage = function (options) {
 const getUniqueStorageKey = function (options) {
   return (0, _type.isDefined)(options.storageKey) ? options.storageKey : 'storage';
 };
-let StateStoringController = exports.StateStoringController = /*#__PURE__*/function (_modules$ViewControll) {
-  _inheritsLoose(StateStoringController, _modules$ViewControll);
-  function StateStoringController() {
-    return _modules$ViewControll.apply(this, arguments) || this;
+class StateStoringController extends _m_modules.default.ViewController {
+  // TODO getController
+  // NOTE: sometimes fields empty in the runtime
+  // getter here is a temporary solution
+  getDataController() {
+    return this.getController('data');
   }
-  var _proto = StateStoringController.prototype;
-  _proto.init = function init() {
+  getExportController() {
+    return this.getController('export');
+  }
+  getColumnsController() {
+    return this.getController('columns');
+  }
+  init() {
     this._state = {};
     this._isLoaded = false;
     this._isLoading = false;
@@ -61,8 +64,8 @@ let StateStoringController = exports.StateStoringController = /*#__PURE__*/funct
     };
     _events_engine.default.on((0, _window.getWindow)(), 'unload', this._windowUnloadHandler);
     return this; // needed by pivotGrid mocks
-  };
-  _proto.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     const that = this;
     switch (args.name) {
       case 'stateStoring':
@@ -72,14 +75,14 @@ let StateStoringController = exports.StateStoringController = /*#__PURE__*/funct
         args.handled = true;
         break;
       default:
-        _modules$ViewControll.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  _proto.dispose = function dispose() {
+  }
+  dispose() {
     clearTimeout(this._savingTimeoutID);
     _events_engine.default.off((0, _window.getWindow)(), 'unload', this._windowUnloadHandler);
-  };
-  _proto._loadState = function _loadState() {
+  }
+  _loadState() {
     const options = this.option('stateStoring');
     if (options.type === 'custom') {
       return options.customLoad && options.customLoad();
@@ -90,8 +93,8 @@ let StateStoringController = exports.StateStoringController = /*#__PURE__*/funct
     } catch (e) {
       _ui.default.log('W1022', 'State storing', e.message);
     }
-  };
-  _proto._saveState = function _saveState(state) {
+  }
+  _saveState(state) {
     const options = this.option('stateStoring');
     if (options.type === 'custom') {
       options.customSave && options.customSave(state);
@@ -102,20 +105,20 @@ let StateStoringController = exports.StateStoringController = /*#__PURE__*/funct
     } catch (e) {
       _ui.default.log(e.message);
     }
-  };
-  _proto.publicMethods = function publicMethods() {
+  }
+  publicMethods() {
     return ['state'];
-  };
-  _proto.isEnabled = function isEnabled() {
+  }
+  isEnabled() {
     return this.option('stateStoring.enabled');
-  };
-  _proto.isLoaded = function isLoaded() {
+  }
+  isLoaded() {
     return this._isLoaded;
-  };
-  _proto.isLoading = function isLoading() {
+  }
+  isLoading() {
     return this._isLoading;
-  };
-  _proto.load = function load() {
+  }
+  load() {
     this._isLoading = true;
     const loadResult = (0, _deferred.fromPromise)(this._loadState());
     loadResult.always(() => {
@@ -127,45 +130,25 @@ let StateStoringController = exports.StateStoringController = /*#__PURE__*/funct
       }
     });
     return loadResult;
-  };
-  _proto.state = function state(_state) {
+  }
+  state(state) {
     const that = this;
     if (!arguments.length) {
       return (0, _extend.extend)(true, {}, that._state);
     }
-    that._state = (0, _extend.extend)({}, _state);
+    that._state = (0, _extend.extend)({}, state);
     parseDates(that._state);
-  };
-  _proto.save = function save() {
+  }
+  save() {
     const that = this;
     clearTimeout(that._savingTimeoutID);
     that._savingTimeoutID = setTimeout(() => {
       that._saveState(that.state());
       that._savingTimeoutID = undefined;
     }, that.option('stateStoring.savingTimeout'));
-  };
-  _createClass(StateStoringController, [{
-    key: "_dataController",
-    get:
-    // TODO getController
-    // NOTE: sometimes fields empty in the runtime
-    // getter here is a temporary solution
-    function () {
-      return this.getController('data');
-    }
-  }, {
-    key: "_exportController",
-    get: function () {
-      return this.getController('export');
-    }
-  }, {
-    key: "_columnsController",
-    get: function () {
-      return this.getController('columns');
-    }
-  }]);
-  return StateStoringController;
-}(_m_modules.default.ViewController);
+  }
+}
+exports.StateStoringController = StateStoringController;
 var _default = exports.default = {
   StateStoringController
 };

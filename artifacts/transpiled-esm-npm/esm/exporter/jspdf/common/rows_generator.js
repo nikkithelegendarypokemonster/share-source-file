@@ -1,9 +1,8 @@
-import _extends from "@babel/runtime/helpers/esm/extends";
 import { isDate, isDefined, isNumeric } from '../../../core/utils/type';
 import dateLocalization from '../../../localization/date';
 import numberLocalization from '../../../localization/number';
 import { toPdfUnit } from './pdf_utils';
-var defaultStyles = {
+const defaultStyles = {
   base: {
     font: {
       size: 10
@@ -20,16 +19,16 @@ var defaultStyles = {
   totalFooter: {}
 };
 function generateRowsInfo(doc, dataProvider, dataGrid, headerBackgroundColor) {
-  var result = [];
-  var rowsCount = dataProvider.getRowsCount();
-  var wordWrapEnabled = !!dataGrid.option('wordWrapEnabled');
-  var rtlEnabled = !!dataGrid.option('rtlEnabled');
-  var columns = dataProvider.getColumns();
-  var styles = dataProvider.getStyles();
-  for (var rowIndex = 0; rowIndex < rowsCount; rowIndex++) {
-    var rowType = dataProvider.getCellData(rowIndex, 0, true).cellSourceData.rowType;
-    var indentLevel = rowType !== 'header' ? dataProvider.getGroupLevel(rowIndex) : 0;
-    var previousRow = result[rowIndex - 1];
+  const result = [];
+  const rowsCount = dataProvider.getRowsCount();
+  const wordWrapEnabled = !!dataGrid.option('wordWrapEnabled');
+  const rtlEnabled = !!dataGrid.option('rtlEnabled');
+  const columns = dataProvider.getColumns();
+  const styles = dataProvider.getStyles();
+  for (let rowIndex = 0; rowIndex < rowsCount; rowIndex++) {
+    const rowType = dataProvider.getCellData(rowIndex, 0, true).cellSourceData.rowType;
+    let indentLevel = rowType !== 'header' ? dataProvider.getGroupLevel(rowIndex) : 0;
+    const previousRow = result[rowIndex - 1];
     if (rowType === 'groupFooter' && (previousRow === null || previousRow === void 0 ? void 0 : previousRow.rowType) === 'groupFooter') {
       indentLevel = previousRow.indentLevel - 1;
     }
@@ -53,7 +52,7 @@ function generateRowsInfo(doc, dataProvider, dataGrid, headerBackgroundColor) {
   return result;
 }
 function generateRowCells(_ref) {
-  var {
+  let {
     doc,
     dataProvider,
     rowIndex,
@@ -64,18 +63,17 @@ function generateRowCells(_ref) {
     backgroundColor,
     rtlEnabled
   } = _ref;
-  var result = [];
-  for (var cellIndex = 0; cellIndex < columns.length; cellIndex++) {
-    var _style$alignment;
-    var cellData = dataProvider.getCellData(rowIndex, cellIndex, true);
-    var cellStyle = styles[dataProvider.getStyleId(rowIndex, cellIndex)];
-    var style = getPdfCellStyle(columns[cellIndex], rowType, cellStyle);
-    var defaultAlignment = rtlEnabled ? 'right' : 'left';
-    var paddingValue = toPdfUnit(doc, 5);
-    var pdfCell = {
+  const result = [];
+  for (let cellIndex = 0; cellIndex < columns.length; cellIndex++) {
+    const cellData = dataProvider.getCellData(rowIndex, cellIndex, true);
+    const cellStyle = styles[dataProvider.getStyleId(rowIndex, cellIndex)];
+    const style = getPdfCellStyle(columns[cellIndex], rowType, cellStyle);
+    const defaultAlignment = rtlEnabled ? 'right' : 'left';
+    const paddingValue = toPdfUnit(doc, 5);
+    const pdfCell = {
       text: getFormattedValue(cellData.value, cellStyle.format),
       verticalAlign: 'middle',
-      horizontalAlign: (_style$alignment = style.alignment) !== null && _style$alignment !== void 0 ? _style$alignment : defaultAlignment,
+      horizontalAlign: style.alignment ?? defaultAlignment,
       wordWrapEnabled,
       backgroundColor,
       padding: {
@@ -94,12 +92,12 @@ function generateRowCells(_ref) {
       pdfCell._internalTextOptions.isInputRtl = true;
       pdfCell._internalTextOptions.isOutputRtl = false;
     }
-    var cellInfo = {
+    const cellInfo = {
       gridCell: cellData.cellSourceData,
-      pdfCell: _extends({}, pdfCell, style)
+      pdfCell: Object.assign({}, pdfCell, style)
     };
     if (rowType === 'header') {
-      var cellMerging = dataProvider.getCellMerging(rowIndex, cellIndex);
+      const cellMerging = dataProvider.getCellMerging(rowIndex, cellIndex);
       if (cellMerging && cellMerging.rowspan > 0) {
         cellInfo.rowSpan = cellMerging.rowspan;
       }
@@ -107,17 +105,17 @@ function generateRowCells(_ref) {
         cellInfo.colSpan = cellMerging.colspan;
       }
     } else if (rowType === 'group') {
-      var drawLeftBorderField = rtlEnabled ? 'drawRightBorder' : 'drawLeftBorder';
-      var drawRightBorderField = rtlEnabled ? 'drawLeftBorder' : 'drawRightBorder';
+      const drawLeftBorderField = rtlEnabled ? 'drawRightBorder' : 'drawLeftBorder';
+      const drawRightBorderField = rtlEnabled ? 'drawLeftBorder' : 'drawRightBorder';
       cellInfo.pdfCell[drawLeftBorderField] = cellIndex === 0;
       cellInfo.pdfCell[drawRightBorderField] = cellIndex === columns.length - 1;
       if (cellIndex > 0) {
-        var isEmptyCellsExceptFirst = result.slice(1).reduce((accumulate, cellInfo) => {
+        const isEmptyCellsExceptFirst = result.slice(1).reduce((accumulate, cellInfo) => {
           return accumulate && !isDefined(cellInfo.pdfCell.text);
         }, true);
         if (!isDefined(cellInfo.pdfCell.text) && isEmptyCellsExceptFirst) {
           result[0].pdfCell[drawRightBorderField] = true;
-          for (var i = 0; i < result.length; i++) {
+          for (let i = 0; i < result.length; i++) {
             result[i].colSpan = result.length;
           }
           cellInfo.colSpan = result.length;
@@ -132,13 +130,13 @@ function getBaseTableStyle() {
   return defaultStyles['base'];
 }
 function getPdfCellStyle(column, rowType, cellStyle) {
-  var styles = _extends({}, defaultStyles['base'], defaultStyles[rowType]);
-  var alignment = rowType === 'header' ? column.alignment : cellStyle.alignment;
+  const styles = Object.assign({}, defaultStyles['base'], defaultStyles[rowType]);
+  const alignment = rowType === 'header' ? column.alignment : cellStyle.alignment;
   if (alignment) {
     styles.alignment = alignment;
   }
   if (cellStyle.bold && rowType !== 'header') {
-    styles.font = _extends({}, styles.font, {
+    styles.font = Object.assign({}, styles.font, {
       style: 'bold'
     });
   }

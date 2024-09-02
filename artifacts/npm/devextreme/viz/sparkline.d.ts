@@ -1,7 +1,7 @@
 /**
 * DevExtreme (viz/sparkline.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -32,166 +32,243 @@ export {
     PointSymbol,
 };
 
+/** @public */
 export type SparklineType = 'area' | 'bar' | 'line' | 'spline' | 'splinearea' | 'steparea' | 'stepline' | 'winloss';
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _viz_sparkline_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxSparkline>;
 
 /**
- * The type of the drawn event handler&apos;s argument.
+ * @docid _viz_sparkline_DrawnEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DrawnEvent = EventInfo<dxSparkline>;
 
 /**
- * The type of the exported event handler&apos;s argument.
+ * @docid _viz_sparkline_ExportedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ExportedEvent = EventInfo<dxSparkline>;
 
 /**
- * The type of the exporting event handler&apos;s argument.
+ * @docid _viz_sparkline_ExportingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ExportInfo
  */
 export type ExportingEvent = EventInfo<dxSparkline> & ExportInfo;
 
 /**
- * The type of the fileSaving event handler&apos;s argument.
+ * @docid _viz_sparkline_FileSavingEvent
+ * @public
+ * @type object
+ * @inherits FileSavingEventInfo
  */
 export type FileSavingEvent = FileSavingEventInfo<dxSparkline>;
 
 /**
- * The type of the incidentOccurred event handler&apos;s argument.
+ * @docid _viz_sparkline_IncidentOccurredEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,IncidentInfo
  */
 export type IncidentOccurredEvent = EventInfo<dxSparkline> & IncidentInfo;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _viz_sparkline_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxSparkline>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _viz_sparkline_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxSparkline> & ChangedOptionInfo;
 
 /**
- * The type of the tooltipHidden event handler&apos;s argument.
+ * @docid _viz_sparkline_TooltipHiddenEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type TooltipHiddenEvent = EventInfo<dxSparkline>;
 
 /**
- * The type of the tooltipShown event handler&apos;s argument.
+ * @docid _viz_sparkline_TooltipShownEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type TooltipShownEvent = EventInfo<dxSparkline>;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.viz
+ * @docid
  */
 export interface dxSparklineOptions extends BaseSparklineOptions<dxSparkline> {
     /**
-     * Specifies the data source field that provides arguments for a sparkline.
+     * @docid
+     * @default 'arg'
+     * @public
      */
     argumentField?: string;
     /**
-     * Sets a color for the bars indicating negative values. Available for a sparkline of the bar type only.
+     * @docid
+     * @default '#d7d7d7'
+     * @public
      */
     barNegativeColor?: string;
     /**
-     * Sets a color for the bars indicating positive values. Available for a sparkline of the bar type only.
+     * @docid
+     * @default '#a9a9a9'
+     * @public
      */
     barPositiveColor?: string;
     /**
-     * Binds the UI component to data.
+     * @docid
+     * @notUsedInTheme
+     * @public
+     * @type Store|DataSource|DataSourceOptions|string|Array<any>|null
      */
     dataSource?: DataSourceLike<any> | null;
     /**
-     * Sets a color for the boundary of both the first and last points on a sparkline.
+     * @docid
+     * @default '#666666'
+     * @public
      */
     firstLastColor?: string;
     /**
-     * Specifies whether the sparkline should ignore null data points.
+     * @docid
+     * @default false
+     * @public
      */
     ignoreEmptyPoints?: boolean;
     /**
-     * Sets a color for a line on a sparkline. Available for the sparklines of the line- and area-like types.
+     * @docid
+     * @default '#666666'
+     * @public
      */
     lineColor?: string;
     /**
-     * Specifies a width for a line on a sparkline. Available for the sparklines of the line- and area-like types.
+     * @docid
+     * @default 2
+     * @public
      */
     lineWidth?: number;
     /**
-     * Sets a color for the bars indicating the values that are less than the winloss threshold. Available for a sparkline of the winloss type only.
+     * @docid
+     * @default '#d7d7d7'
+     * @public
      */
     lossColor?: string;
     /**
-     * Sets a color for the boundary of the maximum point on a sparkline.
+     * @docid
+     * @default '#e55253'
+     * @public
      */
     maxColor?: string;
     /**
-     * Specifies the maximum value of the sparkline&apos;s value axis.
+     * @docid
+     * @default undefined
+     * @public
      */
     maxValue?: number;
     /**
-     * Sets a color for the boundary of the minimum point on a sparkline.
+     * @docid
+     * @default '#e8c267'
+     * @public
      */
     minColor?: string;
     /**
-     * Specifies the minimum value of the sparkline value axis.
+     * @docid
+     * @default undefined
+     * @public
      */
     minValue?: number;
     /**
-     * Sets a color for points on a sparkline. Available for the sparklines of the line- and area-like types.
+     * @docid
+     * @default '#ffffff'
+     * @public
      */
     pointColor?: string;
     /**
-     * Specifies the diameter of sparkline points in pixels. Available for the sparklines of line- and area-like types.
+     * @docid
+     * @default 4
+     * @public
      */
     pointSize?: number;
     /**
-     * Specifies a symbol to use as a point marker on a sparkline. Available for the sparklines of the line- and area-like types.
+     * @docid
+     * @default 'circle'
+     * @public
      */
     pointSymbol?: PointSymbol;
     /**
-     * Specifies whether or not to indicate both the first and last values on a sparkline.
+     * @docid
+     * @default true
+     * @public
      */
     showFirstLast?: boolean;
     /**
-     * Specifies whether or not to indicate both the minimum and maximum values on a sparkline.
+     * @docid
+     * @default false
+     * @public
      */
     showMinMax?: boolean;
     /**
-     * Determines the type of a sparkline.
+     * @docid
+     * @default 'line'
+     * @public
      */
     type?: SparklineType;
     /**
-     * Specifies the data source field that provides values for a sparkline.
+     * @docid
+     * @default 'val'
+     * @public
      */
     valueField?: string;
     /**
-     * Sets a color for the bars indicating the values greater than a winloss threshold. Available for a sparkline of the winloss type only.
+     * @docid
+     * @default '#a9a9a9'
+     * @public
      */
     winColor?: string;
     /**
-     * Specifies a value that serves as a threshold for the sparkline of the winloss type.
+     * @docid
+     * @default 0
+     * @public
      */
     winlossThreshold?: number;
 }
 /**
- * The Sparkline UI component is a compact chart that contains only one series. Owing to their size, sparklines occupy very little space and can be easily collected in a table or embedded straight in text.
+ * @docid
+ * @inherits BaseSparkline, DataHelperMixin
+ * @namespace DevExpress.viz
+ * @public
  */
 export default class dxSparkline extends BaseSparkline<dxSparklineOptions> {
     getDataSource(): DataSource;
 }
 
+/** @public */
 export type Properties = dxSparklineOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxSparklineOptions;
 
 

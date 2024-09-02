@@ -12,21 +12,14 @@ var _message = _interopRequireDefault(require("../../../../localization/message"
 var _toolbar = _interopRequireDefault(require("../../../../ui/toolbar"));
 var _m_columns_view = require("../views/m_columns_view");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); } /* eslint-disable max-classes-per-file */
 const HEADER_PANEL_CLASS = 'header-panel';
 const TOOLBAR_BUTTON_CLASS = 'toolbar-button';
 const TOOLBAR_ARIA_LABEL = '-ariaToolbar';
 const DEFAULT_TOOLBAR_ITEM_NAMES = ['addRowButton', 'applyFilterButton', 'columnChooserButton', 'exportButton', 'groupPanel', 'revertButton', 'saveButton', 'searchPanel'];
-let HeaderPanel = exports.HeaderPanel = /*#__PURE__*/function (_ColumnsView) {
-  _inheritsLoose(HeaderPanel, _ColumnsView);
-  function HeaderPanel() {
-    return _ColumnsView.apply(this, arguments) || this;
-  }
-  var _proto = HeaderPanel.prototype;
-  _proto.init = function init() {
-    _ColumnsView.prototype.init.call(this);
+class HeaderPanel extends _m_columns_view.ColumnsView {
+  init() {
+    super.init();
     this._editingController = this.getController('editing');
     this._headerFilterController = this.getController('headerFilter');
     this.createAction('onToolbarPreparing', {
@@ -35,18 +28,18 @@ let HeaderPanel = exports.HeaderPanel = /*#__PURE__*/function (_ColumnsView) {
   }
   /**
    * @extended: column_chooser, editing, filter_row, search
-   */;
-  _proto._getToolbarItems = function _getToolbarItems() {
+   */
+  _getToolbarItems() {
     return [];
-  };
-  _proto._getButtonContainer = function _getButtonContainer() {
+  }
+  _getButtonContainer() {
     return (0, _renderer.default)('<div>').addClass(this.addWidgetPrefix(TOOLBAR_BUTTON_CLASS));
-  };
-  _proto._getToolbarButtonClass = function _getToolbarButtonClass(specificClass) {
-    const secondClass = specificClass ? " ".concat(specificClass) : '';
+  }
+  _getToolbarButtonClass(specificClass) {
+    const secondClass = specificClass ? ` ${specificClass}` : '';
     return this.addWidgetPrefix(TOOLBAR_BUTTON_CLASS) + secondClass;
-  };
-  _proto._getToolbarOptions = function _getToolbarOptions() {
+  }
+  _getToolbarOptions() {
     const userToolbarOptions = this.option('toolbar');
     const options = {
       toolbarOptions: {
@@ -66,14 +59,14 @@ let HeaderPanel = exports.HeaderPanel = /*#__PURE__*/function (_ColumnsView) {
     this.executeAction('onToolbarPreparing', options);
     if (options.toolbarOptions && !(0, _type.isDefined)(options.toolbarOptions.visible)) {
       const toolbarItems = options.toolbarOptions.items;
-      options.toolbarOptions.visible = !!(toolbarItems === null || toolbarItems === void 0 ? void 0 : toolbarItems.length);
+      options.toolbarOptions.visible = !!(toolbarItems !== null && toolbarItems !== void 0 && toolbarItems.length);
     }
     return options.toolbarOptions;
-  };
-  _proto._normalizeToolbarItems = function _normalizeToolbarItems(defaultItems, userItems) {
+  }
+  _normalizeToolbarItems(defaultItems, userItems) {
     defaultItems.forEach(button => {
       if (!DEFAULT_TOOLBAR_ITEM_NAMES.includes(button.name)) {
-        throw new Error("Default toolbar item '".concat(button.name, "' is not added to DEFAULT_TOOLBAR_ITEM_NAMES"));
+        throw new Error(`Default toolbar item '${button.name}' is not added to DEFAULT_TOOLBAR_ITEM_NAMES`);
       }
     });
     const defaultProps = {
@@ -100,7 +93,7 @@ let HeaderPanel = exports.HeaderPanel = /*#__PURE__*/function (_ColumnsView) {
         if ((0, _type.isDefined)(defaultButtonsByNames[button.name])) {
           button = (0, _extend.extend)(true, {}, defaultButtonsByNames[button.name], button);
         } else if (DEFAULT_TOOLBAR_ITEM_NAMES.includes(button.name)) {
-          button = _extends(_extends({}, button), {
+          button = _extends({}, button, {
             visible: false
           });
         }
@@ -108,8 +101,8 @@ let HeaderPanel = exports.HeaderPanel = /*#__PURE__*/function (_ColumnsView) {
       return (0, _extend.extend)(true, {}, defaultProps, button);
     });
     return isArray ? normalizedItems : normalizedItems[0];
-  };
-  _proto._renderCore = function _renderCore() {
+  }
+  _renderCore() {
     if (!this._toolbar) {
       const $headerPanel = this.element();
       $headerPanel.addClass(this.addWidgetPrefix(HEADER_PANEL_CLASS));
@@ -119,112 +112,105 @@ let HeaderPanel = exports.HeaderPanel = /*#__PURE__*/function (_ColumnsView) {
     } else {
       this._toolbar.option(this._toolbarOptions);
     }
-  };
-  _proto._columnOptionChanged = function _columnOptionChanged() {};
-  _proto._handleDataChanged = function _handleDataChanged() {
+  }
+  _columnOptionChanged() {}
+  _handleDataChanged() {
     if (this._requireReady) {
       this.render();
     }
-  };
-  _proto._isDisabledDefinedByUser = function _isDisabledDefinedByUser(name) {
-    var _a;
-    const userItems = (_a = this.option('toolbar')) === null || _a === void 0 ? void 0 : _a.items;
+  }
+  _isDisabledDefinedByUser(name) {
+    var _this$option;
+    const userItems = (_this$option = this.option('toolbar')) === null || _this$option === void 0 ? void 0 : _this$option.items;
     const userItem = userItems === null || userItems === void 0 ? void 0 : userItems.find(item => (item === null || item === void 0 ? void 0 : item.name) === name);
     return (0, _type.isDefined)(userItem === null || userItem === void 0 ? void 0 : userItem.disabled);
-  };
-  _proto.render = function render() {
+  }
+  render() {
     this._toolbarOptions = this._getToolbarOptions();
-    _ColumnsView.prototype.render.apply(this, arguments);
-  };
-  _proto.setToolbarItemDisabled = function setToolbarItemDisabled(name, disabled) {
-    var _a;
+    super.render.apply(this, arguments);
+  }
+  setToolbarItemDisabled(name, disabled) {
     const toolbar = this._toolbar;
     const isDefinedByUser = this._isDisabledDefinedByUser(name);
     if (!toolbar || isDefinedByUser) {
       return;
     }
-    const items = (_a = toolbar.option('items')) !== null && _a !== void 0 ? _a : [];
+    const items = toolbar.option('items') ?? [];
     const itemIndex = items.findIndex(item => item.name === name);
     if (itemIndex < 0) {
       return;
     }
-    const item = toolbar.option("items[".concat(itemIndex, "]"));
-    toolbar.option("items[".concat(itemIndex, "].disabled"), disabled);
+    const item = toolbar.option(`items[${itemIndex}]`);
+    toolbar.option(`items[${itemIndex}].disabled`, disabled);
     if (item.options) {
-      toolbar.option("items[".concat(itemIndex, "].options.disabled"), disabled);
+      toolbar.option(`items[${itemIndex}].options.disabled`, disabled);
     }
-  };
-  _proto.updateToolbarDimensions = function updateToolbarDimensions() {
-    var _a;
-    (_a = this._toolbar) === null || _a === void 0 ? void 0 : _a.updateDimensions();
-  };
-  _proto.getHeaderPanel = function getHeaderPanel() {
+  }
+  updateToolbarDimensions() {
+    var _this$_toolbar;
+    (_this$_toolbar = this._toolbar) === null || _this$_toolbar === void 0 || _this$_toolbar.updateDimensions();
+  }
+  getHeaderPanel() {
     return this.element();
-  };
-  _proto.getHeight = function getHeight() {
+  }
+  getHeight() {
     return this.getElementHeight();
-  };
-  _proto.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     if (args.name === 'onToolbarPreparing') {
       this._invalidate();
       args.handled = true;
     }
     if (args.name === 'toolbar') {
-      args.handled = true;
-      if (this._toolbar) {
-        const parts = (0, _data.getPathParts)(args.fullName);
-        const optionName = args.fullName.replace(/^toolbar\./, '');
-        if (parts.length === 1) {
-          // `toolbar` case
+      const parts = (0, _data.getPathParts)(args.fullName);
+      const optionName = args.fullName.replace(/^toolbar\./, '');
+      if (parts.length === 1) {
+        // `toolbar` case
+        this._invalidate();
+      } else if (parts[1] === 'items') {
+        if (parts.length === 2) {
+          var _this$_toolbar2;
+          // `toolbar.items` case
           const toolbarOptions = this._getToolbarOptions();
-          this._toolbar.option(toolbarOptions);
-        } else if (parts[1] === 'items') {
-          if (parts.length === 2) {
-            // `toolbar.items` case
-            const toolbarOptions = this._getToolbarOptions();
-            this._toolbar.option('items', toolbarOptions.items);
-          } else if (parts.length === 3) {
-            // `toolbar.items[i]` case
-            const normalizedItem = this._normalizeToolbarItems(this._getToolbarItems(), args.value);
-            this._toolbar.option(optionName, normalizedItem);
-          } else if (parts.length >= 4) {
-            // `toolbar.items[i].prop` case
-            this._toolbar.option(optionName, args.value);
-          }
-        } else {
-          // `toolbar.visible`, `toolbar.disabled` case
-          this._toolbar.option(optionName, args.value);
+          (_this$_toolbar2 = this._toolbar) === null || _this$_toolbar2 === void 0 || _this$_toolbar2.option('items', toolbarOptions.items);
+        } else if (parts.length === 3) {
+          var _this$_toolbar3;
+          // `toolbar.items[i]` case
+          const normalizedItem = this._normalizeToolbarItems(this._getToolbarItems(), args.value);
+          (_this$_toolbar3 = this._toolbar) === null || _this$_toolbar3 === void 0 || _this$_toolbar3.option(optionName, normalizedItem);
+        } else if (parts.length >= 4) {
+          var _this$_toolbar4;
+          // `toolbar.items[i].prop` case
+          (_this$_toolbar4 = this._toolbar) === null || _this$_toolbar4 === void 0 || _this$_toolbar4.option(optionName, args.value);
         }
+      } else {
+        // `toolbar.visible`, `toolbar.disabled` case
+        this._invalidate();
       }
+      args.handled = true;
     }
-    _ColumnsView.prototype.optionChanged.call(this, args);
+    super.optionChanged(args);
   }
   /**
    * @extended: column_chooser, editing
-   */;
-  _proto.isVisible = function isVisible() {
+   */
+  isVisible() {
     return !!(this._toolbarOptions && this._toolbarOptions.visible);
   }
   /**
    * @extended: DataGrid's grouping
-   */;
-  _proto.allowDragging = function allowDragging() {};
-  _proto.hasGroupedColumns = function hasGroupedColumns() {};
-  return HeaderPanel;
-}(_m_columns_view.ColumnsView);
-const resizing = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(HeaderPanelResizingExtender, _Base);
-  function HeaderPanelResizingExtender() {
-    return _Base.apply(this, arguments) || this;
-  }
-  var _proto2 = HeaderPanelResizingExtender.prototype;
-  _proto2._updateDimensionsCore = function _updateDimensionsCore() {
+   */
+  allowDragging() {}
+  hasGroupedColumns() {}
+}
+exports.HeaderPanel = HeaderPanel;
+const resizing = Base => class HeaderPanelResizingExtender extends Base {
+  _updateDimensionsCore() {
     // @ts-expect-error
-    _Base.prototype._updateDimensionsCore.apply(this, arguments);
+    super._updateDimensionsCore.apply(this, arguments);
     this.getView('headerPanel').updateToolbarDimensions();
-  };
-  return HeaderPanelResizingExtender;
-}(Base);
+  }
+};
 const headerPanelModule = exports.headerPanelModule = {
   defaultOptions() {
     return {};

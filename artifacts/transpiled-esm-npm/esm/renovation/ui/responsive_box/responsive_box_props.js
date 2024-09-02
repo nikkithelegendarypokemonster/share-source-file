@@ -1,1 +1,1 @@
-export var ResponsiveBoxProps = {};
+export const ResponsiveBoxProps = {};

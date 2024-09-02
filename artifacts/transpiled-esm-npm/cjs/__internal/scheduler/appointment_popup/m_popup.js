@@ -11,16 +11,12 @@ var _deferred = require("../../../core/utils/deferred");
 var _visibility_change = require("../../../events/visibility_change");
 var _ui = _interopRequireDefault(require("../../../ui/popup/ui.popup"));
 var _m_expression_utils = require("../../scheduler/m_expression_utils");
-var _index = require("../__migration/appointment_popup/index");
+var _index = require("../../scheduler/r1/appointment_popup/index");
 var _m_appointment_adapter = require("../m_appointment_adapter");
 var _m_loading = require("../m_loading");
 var _m_utils = require("../resources/m_utils");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 const toMs = _date.default.dateToMilliseconds;
 const APPOINTMENT_POPUP_CLASS = 'dx-scheduler-appointment-popup';
 const DAY_IN_MS = toMs('day');
@@ -44,8 +40,8 @@ const ACTION_TO_APPOINTMENT = exports.ACTION_TO_APPOINTMENT = {
   UPDATE: 1,
   EXCLUDE_FROM_SERIES: 2
 };
-let AppointmentPopup = exports.AppointmentPopup = /*#__PURE__*/function () {
-  function AppointmentPopup(scheduler, form) {
+class AppointmentPopup {
+  constructor(scheduler, form) {
     this.scheduler = scheduler;
     this.form = form;
     this.popup = null;
@@ -58,8 +54,10 @@ let AppointmentPopup = exports.AppointmentPopup = /*#__PURE__*/function () {
       }
     };
   }
-  var _proto = AppointmentPopup.prototype;
-  _proto.show = function show(appointment, config) {
+  get visible() {
+    return this.popup ? this.popup.option('visible') : false;
+  }
+  show(appointment, config) {
     this.state.appointment.data = appointment;
     this.state.action = config.action;
     this.state.excludeInfo = config.excludeInfo;
@@ -69,20 +67,20 @@ let AppointmentPopup = exports.AppointmentPopup = /*#__PURE__*/function () {
     }
     this.popup.option('toolbarItems', (0, _index.getPopupToolbarItems)(config.isToolbarVisible, e => this._doneButtonClickHandler(e)));
     this.popup.show();
-  };
-  _proto.hide = function hide() {
+  }
+  hide() {
     this.popup.hide();
-  };
-  _proto.dispose = function dispose() {
-    var _a;
-    (_a = this.popup) === null || _a === void 0 ? void 0 : _a.$element().remove();
-  };
-  _proto._createPopup = function _createPopup(options) {
+  }
+  dispose() {
+    var _this$popup;
+    (_this$popup = this.popup) === null || _this$popup === void 0 || _this$popup.$element().remove();
+  }
+  _createPopup(options) {
     const popupElement = (0, _renderer.default)('<div>').addClass(APPOINTMENT_POPUP_CLASS).appendTo(this.scheduler.getElement());
     return this.scheduler.createComponent(popupElement, _ui.default, options);
-  };
-  _proto._createPopupConfig = function _createPopupConfig() {
-    return _extends(_extends({}, POPUP_CONFIG), {
+  }
+  _createPopupConfig() {
+    return _extends({}, POPUP_CONFIG, {
       onHiding: () => this.scheduler.focus(),
       contentTemplate: () => this._createPopupContent(),
       onShowing: e => this._onShowing(e),
@@ -90,8 +88,8 @@ let AppointmentPopup = exports.AppointmentPopup = /*#__PURE__*/function () {
         class: APPOINTMENT_POPUP_CLASS
       }
     });
-  };
-  _proto._onShowing = function _onShowing(e) {
+  }
+  _onShowing(e) {
     this._updateForm();
     const arg = {
       form: this.form.dxForm,
@@ -107,26 +105,26 @@ let AppointmentPopup = exports.AppointmentPopup = /*#__PURE__*/function () {
         this.updatePopupFullScreenMode();
       }
     });
-  };
-  _proto._createPopupContent = function _createPopupContent() {
+  }
+  _createPopupContent() {
     this._createForm();
     return this.form.dxForm.$element(); // TODO
-  };
-  _proto._createFormData = function _createFormData(rawAppointment) {
+  }
+  _createFormData(rawAppointment) {
     const appointment = this._createAppointmentAdapter(rawAppointment);
     const dataAccessors = this.scheduler.getDataAccessors();
     const resources = this.scheduler.getResources();
     const normalizedResources = (0, _m_utils.getNormalizedResources)(rawAppointment, dataAccessors, resources);
-    return _extends(_extends(_extends({}, rawAppointment), normalizedResources), {
+    return _extends({}, rawAppointment, normalizedResources, {
       repeat: !!appointment.recurrenceRule
     });
-  };
-  _proto._createForm = function _createForm() {
+  }
+  _createForm() {
     const rawAppointment = this.state.appointment.data;
     const formData = this._createFormData(rawAppointment);
     this.form.create(this.triggerResize.bind(this), this.changeSize.bind(this), formData); // TODO
-  };
-  _proto._isReadOnly = function _isReadOnly(rawAppointment) {
+  }
+  _isReadOnly(rawAppointment) {
     const appointment = this._createAppointmentAdapter(rawAppointment);
     if (rawAppointment && appointment.disabled) {
       return true;
@@ -135,11 +133,11 @@ let AppointmentPopup = exports.AppointmentPopup = /*#__PURE__*/function () {
       return false;
     }
     return !this.scheduler.getEditingConfig().allowUpdating;
-  };
-  _proto._createAppointmentAdapter = function _createAppointmentAdapter(rawAppointment) {
+  }
+  _createAppointmentAdapter(rawAppointment) {
     return (0, _m_appointment_adapter.createAppointmentAdapter)(rawAppointment, this.scheduler.getDataAccessors(), this.scheduler.getTimeZoneCalculator());
-  };
-  _proto._updateForm = function _updateForm() {
+  }
+  _updateForm() {
     const {
       data
     } = this.state.appointment;
@@ -153,21 +151,21 @@ let AppointmentPopup = exports.AppointmentPopup = /*#__PURE__*/function () {
     const formData = appointment.clone().source();
     this.form.readOnly = this._isReadOnly(formData);
     this.form.updateFormData(formData);
-  };
-  _proto.triggerResize = function triggerResize() {
+  }
+  triggerResize() {
     if (this.popup) {
       (0, _visibility_change.triggerResizeEvent)(this.popup.$element());
     }
-  };
-  _proto.changeSize = function changeSize(isRecurrence) {
+  }
+  changeSize(isRecurrence) {
     if (this.popup) {
       const isFullScreen = (0, _index.isPopupFullScreenNeeded)();
       const maxWidth = isFullScreen ? '100%' : (0, _index.getMaxWidth)(isRecurrence);
       this.popup.option('fullScreen', isFullScreen);
       this.popup.option('maxWidth', maxWidth);
     }
-  };
-  _proto.updatePopupFullScreenMode = function updatePopupFullScreenMode() {
+  }
+  updatePopupFullScreenMode() {
     if (this.form.dxForm && this.visible) {
       // TODO
       const {
@@ -177,8 +175,8 @@ let AppointmentPopup = exports.AppointmentPopup = /*#__PURE__*/function () {
       const isRecurrence = _m_expression_utils.ExpressionUtils.getField(dataAccessors, 'recurrenceRule', formData);
       this.changeSize(isRecurrence);
     }
-  };
-  _proto.saveChangesAsync = function saveChangesAsync(isShowLoadPanel) {
+  }
+  saveChangesAsync(isShowLoadPanel) {
     // @ts-expect-error
     const deferred = new _deferred.Deferred();
     const validation = this.form.dxForm.validate();
@@ -189,11 +187,18 @@ let AppointmentPopup = exports.AppointmentPopup = /*#__PURE__*/function () {
         deferred.resolve(false);
         return;
       }
+      const {
+        repeat
+      } = this.form.formData;
       const adapter = this._createAppointmentAdapter(this.form.formData);
       const clonedAdapter = adapter.clone({
         pathTimeZone: 'fromAppointment'
       }); // TODO:
+      const shouldClearRecurrenceRule = !repeat && !!clonedAdapter.recurrenceRule;
       this._addMissingDSTTime(adapter, clonedAdapter);
+      if (shouldClearRecurrenceRule) {
+        clonedAdapter.recurrenceRule = '';
+      }
       const appointment = clonedAdapter.source();
       delete appointment.repeat; // TODO
       switch (this.state.action) {
@@ -216,12 +221,12 @@ let AppointmentPopup = exports.AppointmentPopup = /*#__PURE__*/function () {
       });
     });
     return deferred.promise();
-  };
-  _proto._doneButtonClickHandler = function _doneButtonClickHandler(e) {
+  }
+  _doneButtonClickHandler(e) {
     e.cancel = true;
     this.saveEditDataAsync();
-  };
-  _proto.saveEditDataAsync = function saveEditDataAsync() {
+  }
+  saveEditDataAsync() {
     // @ts-expect-error
     const deferred = new _deferred.Deferred();
     if (this._tryLockSaveChanges()) {
@@ -248,8 +253,8 @@ let AppointmentPopup = exports.AppointmentPopup = /*#__PURE__*/function () {
       });
     }
     return deferred.promise();
-  };
-  _proto._showLoadPanel = function _showLoadPanel() {
+  }
+  _showLoadPanel() {
     const container = this.popup.$overlayContent();
     (0, _m_loading.show)({
       container,
@@ -257,38 +262,31 @@ let AppointmentPopup = exports.AppointmentPopup = /*#__PURE__*/function () {
         of: container
       }
     });
-  };
-  _proto._tryLockSaveChanges = function _tryLockSaveChanges() {
+  }
+  _tryLockSaveChanges() {
     if (this.state.saveChangesLocker === false) {
       this.state.saveChangesLocker = true;
       return true;
     }
     return false;
-  };
-  _proto._unlockSaveChanges = function _unlockSaveChanges() {
+  }
+  _unlockSaveChanges() {
     this.state.saveChangesLocker = false;
   }
   // NOTE: Fix ticket T1102713
-  ;
-  _proto._addMissingDSTTime = function _addMissingDSTTime(formAppointmentAdapter, clonedAppointmentAdapter) {
+  _addMissingDSTTime(formAppointmentAdapter, clonedAppointmentAdapter) {
     const timeZoneCalculator = this.scheduler.getTimeZoneCalculator();
     clonedAppointmentAdapter.startDate = this._addMissingDSTShiftToDate(timeZoneCalculator, formAppointmentAdapter.startDate, clonedAppointmentAdapter.startDate);
     if (clonedAppointmentAdapter.endDate) {
       clonedAppointmentAdapter.endDate = this._addMissingDSTShiftToDate(timeZoneCalculator, formAppointmentAdapter.endDate, clonedAppointmentAdapter.endDate);
     }
-  };
-  _proto._addMissingDSTShiftToDate = function _addMissingDSTShiftToDate(timeZoneCalculator, originFormDate, clonedDate) {
-    var _a, _b;
-    const originTimezoneShift = (_a = timeZoneCalculator.getOffsets(originFormDate)) === null || _a === void 0 ? void 0 : _a.common;
-    const clonedTimezoneShift = (_b = timeZoneCalculator.getOffsets(clonedDate)) === null || _b === void 0 ? void 0 : _b.common;
+  }
+  _addMissingDSTShiftToDate(timeZoneCalculator, originFormDate, clonedDate) {
+    var _timeZoneCalculator$g, _timeZoneCalculator$g2;
+    const originTimezoneShift = (_timeZoneCalculator$g = timeZoneCalculator.getOffsets(originFormDate)) === null || _timeZoneCalculator$g === void 0 ? void 0 : _timeZoneCalculator$g.common;
+    const clonedTimezoneShift = (_timeZoneCalculator$g2 = timeZoneCalculator.getOffsets(clonedDate)) === null || _timeZoneCalculator$g2 === void 0 ? void 0 : _timeZoneCalculator$g2.common;
     const shiftDifference = originTimezoneShift - clonedTimezoneShift;
     return shiftDifference ? new Date(clonedDate.getTime() + shiftDifference * toMs('hour')) : clonedDate;
-  };
-  _createClass(AppointmentPopup, [{
-    key: "visible",
-    get: function () {
-      return this.popup ? this.popup.option('visible') : false;
-    }
-  }]);
-  return AppointmentPopup;
-}();
+  }
+}
+exports.AppointmentPopup = AppointmentPopup;

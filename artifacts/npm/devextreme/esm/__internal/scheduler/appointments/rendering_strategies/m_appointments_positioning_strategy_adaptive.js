@@ -1,16 +1,16 @@
 /**
 * DevExtreme (esm/__internal/scheduler/appointments/rendering_strategies/m_appointments_positioning_strategy_adaptive.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import AppointmentPositioningStrategy from './m_appointments_positioning_strategy_base';
-var COLLECTOR_ADAPTIVE_SIZE = 28;
-var COLLECTOR_ADAPTIVE_BOTTOM_OFFSET = 40;
-var ADAPTIVE_APPOINTMENT_DEFAULT_OFFSET = 35;
-var ADAPTIVE_APPOINTMENT_DEFAULT_WIDTH = 30;
+const COLLECTOR_ADAPTIVE_SIZE = 28;
+const COLLECTOR_ADAPTIVE_BOTTOM_OFFSET = 40;
+const ADAPTIVE_APPOINTMENT_DEFAULT_OFFSET = 35;
+const ADAPTIVE_APPOINTMENT_DEFAULT_WIDTH = 30;
 class AdaptivePositioningStrategy extends AppointmentPositioningStrategy {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getDropDownAppointmentWidth(intervalCount, isAllDay) {
@@ -20,21 +20,21 @@ class AdaptivePositioningStrategy extends AppointmentPositioningStrategy {
     return COLLECTOR_ADAPTIVE_SIZE;
   }
   getCollectorTopOffset(allDay) {
-    var renderingStrategy = this._renderingStrategy;
+    const renderingStrategy = this._renderingStrategy;
     if (renderingStrategy.allDaySupported() && allDay) {
       return (renderingStrategy.allDayHeight - renderingStrategy.getDropDownButtonAdaptiveSize()) / 2;
     }
     return this._renderingStrategy.cellHeight - COLLECTOR_ADAPTIVE_BOTTOM_OFFSET;
   }
   getCollectorLeftOffset() {
-    var collectorWidth = this._renderingStrategy.getDropDownAppointmentWidth();
+    const collectorWidth = this._renderingStrategy.getDropDownAppointmentWidth();
     return (this._renderingStrategy.cellWidth - collectorWidth) / 2;
   }
   getAppointmentDefaultOffset() {
     return ADAPTIVE_APPOINTMENT_DEFAULT_OFFSET;
   }
   getDynamicAppointmentCountPerCell() {
-    var renderingStrategy = this._renderingStrategy;
+    const renderingStrategy = this._renderingStrategy;
     if (renderingStrategy.allDaySupported()) {
       return {
         allDay: 0,
@@ -50,7 +50,7 @@ class AdaptivePositioningStrategy extends AppointmentPositioningStrategy {
     return 0;
   }
   _getAppointmentDefaultWidth() {
-    var renderingStrategy = this._renderingStrategy;
+    const renderingStrategy = this._renderingStrategy;
     if (renderingStrategy.allDaySupported()) {
       return ADAPTIVE_APPOINTMENT_DEFAULT_WIDTH;
     }

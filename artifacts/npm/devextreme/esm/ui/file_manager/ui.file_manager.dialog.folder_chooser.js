@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/file_manager/ui.file_manager.dialog.folder_chooser.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,13 +12,13 @@ import messageLocalization from '../../localization/message';
 import { getMapFromObject } from './ui.file_manager.common';
 import FileManagerDialogBase from './ui.file_manager.dialog';
 import FileManagerFilesTreeView from './ui.file_manager.files_tree_view';
-var FILE_MANAGER_DIALOG_FOLDER_CHOOSER = 'dx-filemanager-dialog-folder-chooser';
-var FILE_MANAGER_DIALOG_FOLDER_CHOOSER_POPUP = 'dx-filemanager-dialog-folder-chooser-popup';
+const FILE_MANAGER_DIALOG_FOLDER_CHOOSER = 'dx-filemanager-dialog-folder-chooser';
+const FILE_MANAGER_DIALOG_FOLDER_CHOOSER_POPUP = 'dx-filemanager-dialog-folder-chooser-popup';
 class FileManagerFolderChooserDialog extends FileManagerDialogBase {
   show() {
     var _this$_filesTreeView;
     this._setSelectedDirInfo(null);
-    (_this$_filesTreeView = this._filesTreeView) === null || _this$_filesTreeView === void 0 ? void 0 : _this$_filesTreeView.refresh();
+    (_this$_filesTreeView = this._filesTreeView) === null || _this$_filesTreeView === void 0 || _this$_filesTreeView.refresh();
     super.show();
   }
   switchToCopyDialog(targetItemInfos) {
@@ -54,7 +54,7 @@ class FileManagerFolderChooserDialog extends FileManagerDialogBase {
     this._$contentElement.append(this._filesTreeView.$element());
   }
   _getDialogResult() {
-    var result = this._getDialogSelectedDirectory();
+    const result = this._getDialogSelectedDirectory();
     return result ? {
       folder: result
     } : result;
@@ -68,7 +68,7 @@ class FileManagerFolderChooserDialog extends FileManagerDialogBase {
     return this._selectedDirectoryInfo;
   }
   _onFilesTreeViewDirectoryClick(_ref) {
-    var {
+    let {
       itemData
     } = _ref;
     this._setSelectedDirInfo(itemData);
@@ -92,12 +92,12 @@ class FileManagerFolderChooserDialog extends FileManagerDialogBase {
     if (!this._filesTreeView) {
       return;
     }
-    var locations = this._getLocationsToProcess(isDisabled);
+    const locations = this._getLocationsToProcess(isDisabled);
     this._filesTreeView.toggleDirectoryExpandedStateRecursive(locations.locationsToExpand[0], isDisabled).then(() => this._filesTreeView.toggleDirectoryLineExpandedState(locations.locationsToCollapse, !isDisabled).then(() => locations.locationKeysToDisable.forEach(key => this._filesTreeView.toggleNodeDisabledState(key, isDisabled))));
   }
   _getLocationsToProcess(isDisabled) {
-    var expandLocations = {};
-    var collapseLocations = {};
+    const expandLocations = {};
+    const collapseLocations = {};
     this._targetItemInfos.forEach(itemInfo => {
       if (itemInfo.parentDirectory) {
         expandLocations[itemInfo.parentDirectory.getInternalKey()] = itemInfo.parentDirectory;
@@ -106,8 +106,8 @@ class FileManagerFolderChooserDialog extends FileManagerDialogBase {
         collapseLocations[itemInfo.getInternalKey()] = itemInfo;
       }
     });
-    var expandMap = getMapFromObject(expandLocations);
-    var collapseMap = getMapFromObject(collapseLocations);
+    const expandMap = getMapFromObject(expandLocations);
+    const collapseMap = getMapFromObject(collapseLocations);
     return {
       locationsToExpand: isDisabled ? expandMap.values : [],
       locationsToCollapse: isDisabled ? collapseMap.values : [],

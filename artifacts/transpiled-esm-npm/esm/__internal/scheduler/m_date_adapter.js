@@ -1,5 +1,5 @@
 import dateUtils from '../../core/utils/date';
-var toMs = dateUtils.dateToMilliseconds;
+const toMs = dateUtils.dateToMilliseconds;
 class DateAdapterCore {
   constructor(source) {
     this._source = new Date(source.getTime ? source.getTime() : source);
@@ -11,8 +11,8 @@ class DateAdapterCore {
     return this._source;
   }
   getTimezoneOffset() {
-    var format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-    var value = this._source.getTimezoneOffset();
+    let format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+    const value = this._source.getTimezoneOffset();
     if (format === 'minute') {
       return value * toMs('minute');
     }
@@ -42,5 +42,5 @@ class DateAdapterCore {
     return this;
   }
 }
-var DateAdapter = date => new DateAdapterCore(date);
+const DateAdapter = date => new DateAdapterCore(date);
 export default DateAdapter;

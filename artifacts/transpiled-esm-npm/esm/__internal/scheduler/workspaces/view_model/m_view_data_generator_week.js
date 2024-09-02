@@ -1,4 +1,4 @@
-import { weekUtils } from '../../../scheduler/__migration/utils/index';
+import { weekUtils } from '../../../scheduler/r1/utils/index';
 import { ViewDataGenerator } from './m_view_data_generator';
 export class ViewDataGeneratorWeek extends ViewDataGenerator {
   constructor() {

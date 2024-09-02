@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/grid_core/filter/m_filter_panel.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -24,30 +24,23 @@ var _m_accessibility = require("../m_accessibility");
 var _m_modules = _interopRequireDefault(require("../m_modules"));
 var _m_utils2 = _interopRequireDefault(require("../m_utils"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const FILTER_PANEL_CLASS = 'filter-panel';
-const FILTER_PANEL_TEXT_CLASS = "".concat(FILTER_PANEL_CLASS, "-text");
-const FILTER_PANEL_CHECKBOX_CLASS = "".concat(FILTER_PANEL_CLASS, "-checkbox");
-const FILTER_PANEL_CLEAR_FILTER_CLASS = "".concat(FILTER_PANEL_CLASS, "-clear-filter");
-const FILTER_PANEL_LEFT_CONTAINER = "".concat(FILTER_PANEL_CLASS, "-left");
+const FILTER_PANEL_TEXT_CLASS = `${FILTER_PANEL_CLASS}-text`;
+const FILTER_PANEL_CHECKBOX_CLASS = `${FILTER_PANEL_CLASS}-checkbox`;
+const FILTER_PANEL_CLEAR_FILTER_CLASS = `${FILTER_PANEL_CLASS}-clear-filter`;
+const FILTER_PANEL_LEFT_CONTAINER = `${FILTER_PANEL_CLASS}-left`;
 const FILTER_PANEL_TARGET = 'filterPanel';
-let FilterPanelView = exports.FilterPanelView = /*#__PURE__*/function (_modules$View) {
-  _inheritsLoose(FilterPanelView, _modules$View);
-  function FilterPanelView() {
-    return _modules$View.apply(this, arguments) || this;
-  }
-  var _proto = FilterPanelView.prototype;
-  _proto.init = function init() {
+class FilterPanelView extends _m_modules.default.View {
+  init() {
     this._dataController = this.getController('data');
     this._columnsController = this.getController('columns');
     this._filterSyncController = this.getController('filterSync');
     this._dataController.dataSourceChanged.add(() => this.render());
-  };
-  _proto.isVisible = function isVisible() {
+  }
+  isVisible() {
     return this.option('filterPanel.visible') && this._dataController.dataSource();
-  };
-  _proto._renderCore = function _renderCore() {
+  }
+  _renderCore() {
     const $element = this.element();
     $element.empty();
     const isColumnsDefined = !!this._columnsController.getColumns().length;
@@ -57,8 +50,8 @@ let FilterPanelView = exports.FilterPanelView = /*#__PURE__*/function (_modules$
     $element.addClass(this.addWidgetPrefix(FILTER_PANEL_CLASS));
     const $leftContainer = (0, _renderer.default)('<div>').addClass(this.addWidgetPrefix(FILTER_PANEL_LEFT_CONTAINER)).appendTo($element);
     this._renderFilterBuilderText($element, $leftContainer);
-  };
-  _proto._renderFilterBuilderText = function _renderFilterBuilderText($element, $leftContainer) {
+  }
+  _renderFilterBuilderText($element, $leftContainer) {
     const $filterElement = this._getFilterElement();
     const $textElement = this._getTextElement();
     if (this.option('filterValue') || this._filterValueBuffer) {
@@ -69,8 +62,8 @@ let FilterPanelView = exports.FilterPanelView = /*#__PURE__*/function (_modules$
       return;
     }
     $leftContainer.append($filterElement).append($textElement);
-  };
-  _proto._getCheckElement = function _getCheckElement() {
+  }
+  _getCheckElement() {
     const that = this;
     const $element = (0, _renderer.default)('<div>').addClass(this.addWidgetPrefix(FILTER_PANEL_CHECKBOX_CLASS));
     that._createComponent($element, _check_box.default, {
@@ -81,16 +74,16 @@ let FilterPanelView = exports.FilterPanelView = /*#__PURE__*/function (_modules$
     });
     $element.attr('title', this.option('filterPanel.texts.filterEnabledHint'));
     return $element;
-  };
-  _proto._getFilterElement = function _getFilterElement() {
+  }
+  _getFilterElement() {
     const that = this;
     const $element = (0, _renderer.default)('<div>').addClass('dx-icon-filter');
     _events_engine.default.on($element, 'click', () => that._showFilterBuilder());
     (0, _m_accessibility.registerKeyboardAction)('filterPanel', that, $element, undefined, () => that._showFilterBuilder());
     that._addTabIndexToElement($element);
     return $element;
-  };
-  _proto._getTextElement = function _getTextElement() {
+  }
+  _getTextElement() {
     const that = this;
     const $textElement = (0, _renderer.default)('<div>').addClass(that.addWidgetPrefix(FILTER_PANEL_TEXT_CLASS));
     let filterText;
@@ -118,11 +111,11 @@ let FilterPanelView = exports.FilterPanelView = /*#__PURE__*/function (_modules$
     (0, _m_accessibility.registerKeyboardAction)('filterPanel', that, $textElement, undefined, () => that._showFilterBuilder());
     that._addTabIndexToElement($textElement);
     return $textElement;
-  };
-  _proto._showFilterBuilder = function _showFilterBuilder() {
+  }
+  _showFilterBuilder() {
     this.option('filterBuilderPopup.visible', true);
-  };
-  _proto._getRemoveButtonElement = function _getRemoveButtonElement() {
+  }
+  _getRemoveButtonElement() {
     const that = this;
     // @ts-expect-error
     const clearFilterValue = () => that.option('filterValue', null);
@@ -131,14 +124,14 @@ let FilterPanelView = exports.FilterPanelView = /*#__PURE__*/function (_modules$
     (0, _m_accessibility.registerKeyboardAction)('filterPanel', this, $element, undefined, clearFilterValue);
     that._addTabIndexToElement($element);
     return $element;
-  };
-  _proto._addTabIndexToElement = function _addTabIndexToElement($element) {
+  }
+  _addTabIndexToElement($element) {
     if (!this.option('useLegacyKeyboardNavigation')) {
       const tabindex = this.option('tabindex') || 0;
       $element.attr('tabindex', tabindex);
     }
-  };
-  _proto.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     switch (args.name) {
       case 'filterValue':
         this._invalidate();
@@ -150,20 +143,20 @@ let FilterPanelView = exports.FilterPanelView = /*#__PURE__*/function (_modules$
         args.handled = true;
         break;
       default:
-        _modules$View.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  _proto._getConditionText = function _getConditionText(fieldText, operationText, valueText) {
-    let result = "[".concat(fieldText, "] ").concat(operationText);
+  }
+  _getConditionText(fieldText, operationText, valueText) {
+    let result = `[${fieldText}] ${operationText}`;
     if ((0, _type.isDefined)(valueText)) {
       result += valueText;
     }
     return result;
-  };
-  _proto._getValueMaskedText = function _getValueMaskedText(value) {
-    return Array.isArray(value) ? "('".concat(value.join('\', \''), "')") : " '".concat(value, "'");
-  };
-  _proto._getValueText = function _getValueText(field, customOperation, value) {
+  }
+  _getValueMaskedText(value) {
+    return Array.isArray(value) ? `('${value.join('\', \'')}')` : ` '${value}'`;
+  }
+  _getValueText(field, customOperation, value) {
     // @ts-expect-error
     const deferred = new _deferred.Deferred();
     const hasCustomOperation = customOperation && customOperation.customizeText;
@@ -182,8 +175,8 @@ let FilterPanelView = exports.FilterPanelView = /*#__PURE__*/function (_modules$
       deferred.resolve('');
     }
     return deferred.promise();
-  };
-  _proto.getConditionText = function getConditionText(filterValue, options) {
+  }
+  getConditionText(filterValue, options) {
     const that = this;
     const operation = filterValue[1];
     // @ts-expect-error
@@ -204,8 +197,8 @@ let FilterPanelView = exports.FilterPanelView = /*#__PURE__*/function (_modules$
       deferred.resolve(that._getConditionText(fieldText, operationText, valueText));
     });
     return deferred;
-  };
-  _proto.getGroupText = function getGroupText(filterValue, options, isInnerGroup) {
+  }
+  getGroupText(filterValue, options, isInnerGroup) {
     const that = this;
     // @ts-expect-error
     const result = new _deferred.Deferred();
@@ -224,19 +217,19 @@ let FilterPanelView = exports.FilterPanelView = /*#__PURE__*/function (_modules$
         args[_key] = arguments[_key];
       }
       if (groupValue.startsWith('!')) {
-        const groupText = options.groupOperationDescriptions["not".concat(groupValue.substring(1, 2).toUpperCase()).concat(groupValue.substring(2))].split(' ');
-        text = "".concat(groupText[0], " ").concat(args[0]);
+        const groupText = options.groupOperationDescriptions[`not${groupValue.substring(1, 2).toUpperCase()}${groupValue.substring(2)}`].split(' ');
+        text = `${groupText[0]} ${args[0]}`;
       } else {
-        text = args.join(" ".concat(options.groupOperationDescriptions[groupValue], " "));
+        text = args.join(` ${options.groupOperationDescriptions[groupValue]} `);
       }
       if (isInnerGroup) {
-        text = "(".concat(text, ")");
+        text = `(${text})`;
       }
       result.resolve(text);
     });
     return result;
-  };
-  _proto.getFilterText = function getFilterText(filterValue, customOperations) {
+  }
+  getFilterText(filterValue, customOperations) {
     const options = {
       customOperations,
       columns: this._columnsController.getFilteringColumns(),
@@ -244,27 +237,21 @@ let FilterPanelView = exports.FilterPanelView = /*#__PURE__*/function (_modules$
       groupOperationDescriptions: this.option('filterBuilder.groupOperationDescriptions')
     };
     return (0, _m_utils.isCondition)(filterValue) ? this.getConditionText(filterValue, options) : this.getGroupText(filterValue, options);
-  };
-  return FilterPanelView;
-}(_m_modules.default.View);
-const data = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(FilterPanelDataControllerExtender, _Base);
-  function FilterPanelDataControllerExtender() {
-    return _Base.apply(this, arguments) || this;
   }
-  var _proto2 = FilterPanelDataControllerExtender.prototype;
-  _proto2.optionChanged = function optionChanged(args) {
+}
+exports.FilterPanelView = FilterPanelView;
+const data = Base => class FilterPanelDataControllerExtender extends Base {
+  optionChanged(args) {
     switch (args.name) {
       case 'filterPanel':
         this._applyFilter();
         args.handled = true;
         break;
       default:
-        _Base.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  return FilterPanelDataControllerExtender;
-}(Base);
+  }
+};
 const filterPanelModule = exports.filterPanelModule = {
   defaultOptions() {
     return {

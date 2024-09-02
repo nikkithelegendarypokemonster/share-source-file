@@ -32,7 +32,7 @@ export default class Scrollable extends ScrollableWrapper {
   }
   scrollToElement(element, offset) {
     var _this$viewRef8;
-    var params = [this._patchElementParam(element), offset];
+    const params = [this._patchElementParam(element), offset];
     return (_this$viewRef8 = this.viewRef) === null || _this$viewRef8 === void 0 ? void 0 : _this$viewRef8.scrollToElement(...params.slice(0, arguments.length));
   }
   scrollHeight() {
@@ -65,7 +65,7 @@ export default class Scrollable extends ScrollableWrapper {
   }
   getScrollElementPosition(targetElement, direction, offset) {
     var _this$viewRef16;
-    var params = [this._patchElementParam(targetElement), direction, offset];
+    const params = [this._patchElementParam(targetElement), direction, offset];
     return (_this$viewRef16 = this.viewRef) === null || _this$viewRef16 === void 0 ? void 0 : _this$viewRef16.getScrollElementPosition(...params.slice(0, arguments.length));
   }
   startLoading() {

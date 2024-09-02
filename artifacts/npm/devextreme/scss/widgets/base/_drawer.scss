@@ -5,6 +5,12 @@
 .dx-drawer {
   height: 100%;
   width: 100%;
+
+  .dx-drawer-wrapper > .dx-drawer-panel-content {
+    &.dx-drawer-panel-content-hidden {
+      visibility: hidden;
+    }
+  }
 }
 
 .dx-drawer-wrapper {

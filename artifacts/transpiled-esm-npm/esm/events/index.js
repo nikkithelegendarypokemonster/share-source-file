@@ -4,11 +4,11 @@ import eventsEngine from './core/events_engine';
 * @name events
 */
 
-export var on = eventsEngine.on;
-export var one = eventsEngine.one;
-export var off = eventsEngine.off;
-export var trigger = eventsEngine.trigger;
-export var triggerHandler = eventsEngine.triggerHandler;
+export const on = eventsEngine.on;
+export const one = eventsEngine.one;
+export const off = eventsEngine.off;
+export const trigger = eventsEngine.trigger;
+export const triggerHandler = eventsEngine.triggerHandler;
 
 /**
 * @name events.Event
@@ -21,4 +21,4 @@ export var triggerHandler = eventsEngine.triggerHandler;
 * @hidden
 */
 
-export var Event = eventsEngine.Event;
+export const Event = eventsEngine.Event;

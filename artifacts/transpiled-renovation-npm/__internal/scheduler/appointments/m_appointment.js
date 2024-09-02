@@ -10,36 +10,34 @@ var _dom_component = _interopRequireDefault(require("../../../core/dom_component
 var _renderer = _interopRequireDefault(require("../../../core/renderer"));
 var _deferred = require("../../../core/utils/deferred");
 var _extend = require("../../../core/utils/extend");
+var _type = require("../../../core/utils/type");
 var _events_engine = _interopRequireDefault(require("../../../events/core/events_engine"));
 var _pointer = _interopRequireDefault(require("../../../events/pointer"));
 var _index = require("../../../events/utils/index");
 var _date = _interopRequireDefault(require("../../../localization/date"));
 var _message = _interopRequireDefault(require("../../../localization/message"));
 var _resizable = _interopRequireDefault(require("../../../ui/resizable"));
-var _ui = require("../../../ui/tooltip/ui.tooltip");
+var _m_tooltip = require("../../ui/tooltip/m_tooltip");
 var _m_classes = require("../m_classes");
 var _m_expression_utils = require("../m_expression_utils");
 var _m_recurrence = require("../m_recurrence");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */
+/* eslint-disable max-classes-per-file */
+
 const DEFAULT_HORIZONTAL_HANDLES = 'left right';
 const DEFAULT_VERTICAL_HANDLES = 'top bottom';
 const REDUCED_APPOINTMENT_POINTERENTER_EVENT_NAME = (0, _index.addNamespace)(_pointer.default.enter, 'dxSchedulerAppointment');
 const REDUCED_APPOINTMENT_POINTERLEAVE_EVENT_NAME = (0, _index.addNamespace)(_pointer.default.leave, 'dxSchedulerAppointment');
-let Appointment = exports.Appointment = /*#__PURE__*/function (_DOMComponent) {
-  _inheritsLoose(Appointment, _DOMComponent);
-  function Appointment() {
-    return _DOMComponent.apply(this, arguments) || this;
+class Appointment extends _dom_component.default {
+  get coloredElement() {
+    return this.$element();
   }
-  var _proto = Appointment.prototype;
-  _proto._getDefaultOptions = function _getDefaultOptions() {
+  get rawAppointment() {
+    return this.option('data');
+  }
+  _getDefaultOptions() {
     // @ts-expect-error
-    return (0, _extend.extend)(_DOMComponent.prototype._getDefaultOptions.call(this), {
+    return (0, _extend.extend)(super._getDefaultOptions(), {
       data: {},
       groupIndex: -1,
       groups: [],
@@ -61,25 +59,25 @@ let Appointment = exports.Appointment = /*#__PURE__*/function (_DOMComponent) {
       cellWidth: 0,
       isDragSource: false
     });
-  };
-  _proto.notifyObserver = function notifyObserver(subject, args) {
+  }
+  notifyObserver(subject, args) {
     const observer = this.option('observer');
     if (observer) {
       observer.fire(subject, args);
     }
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.invoke = function invoke(funcName) {
+  invoke(funcName) {
     const observer = this.option('observer');
     if (observer) {
       return observer.fire.apply(observer, arguments);
     }
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _optionChanged(args) {
     switch (args.name) {
       case 'data':
       case 'groupIndex':
+      case 'groupTexts':
       case 'geometry':
       case 'allowDrag':
       case 'allowResize':
@@ -97,10 +95,10 @@ let Appointment = exports.Appointment = /*#__PURE__*/function (_DOMComponent) {
         break;
       default:
         // @ts-expect-error
-        _DOMComponent.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  _proto._getHorizontalResizingRule = function _getHorizontalResizingRule() {
+  }
+  _getHorizontalResizingRule() {
     const reducedHandles = {
       head: this.option('rtlEnabled') ? 'right' : 'left',
       body: '',
@@ -115,8 +113,8 @@ let Appointment = exports.Appointment = /*#__PURE__*/function (_DOMComponent) {
       step,
       roundStepValue: false
     };
-  };
-  _proto._getVerticalResizingRule = function _getVerticalResizingRule() {
+  }
+  _getVerticalResizingRule() {
     const height = Math.round(this.invoke('getCellHeight'));
     return {
       handles: DEFAULT_VERTICAL_HANDLES,
@@ -125,11 +123,12 @@ let Appointment = exports.Appointment = /*#__PURE__*/function (_DOMComponent) {
       step: height,
       roundStepValue: true
     };
-  };
-  _proto._render = function _render() {
+  }
+  _render() {
     // @ts-expect-error
-    _DOMComponent.prototype._render.call(this);
+    super._render();
     this._renderAppointmentGeometry();
+    this._renderAriaLabel();
     this._renderEmptyClass();
     this._renderReducedAppointment();
     this._renderAllDayClass();
@@ -142,8 +141,8 @@ let Appointment = exports.Appointment = /*#__PURE__*/function (_DOMComponent) {
     this._renderRecurrenceClass();
     this._renderResizable();
     this._setResourceColor();
-  };
-  _proto._setResourceColor = function _setResourceColor() {
+  }
+  _setResourceColor() {
     const appointmentConfig = {
       itemData: this.rawAppointment,
       groupIndex: this.option('groupIndex'),
@@ -156,8 +155,35 @@ let Appointment = exports.Appointment = /*#__PURE__*/function (_DOMComponent) {
         this.coloredElement.addClass(_m_classes.APPOINTMENT_HAS_RESOURCE_COLOR_CLASS);
       }
     });
-  };
-  _proto._renderAppointmentGeometry = function _renderAppointmentGeometry() {
+  }
+  _getGroupText() {
+    const groupTexts = this.option('groupTexts');
+    if (!(groupTexts !== null && groupTexts !== void 0 && groupTexts.length)) {
+      return '';
+    }
+    const groupText = groupTexts.join(', ');
+    // @ts-expect-error
+    return _message.default.format('dxScheduler-appointmentAriaLabel-group', groupText);
+  }
+  _getDateText() {
+    const startDateText = this._localizeDate(this._getStartDate());
+    const endDateText = this._localizeDate(this._getEndDate());
+    const dateText = startDateText === endDateText ? `${startDateText}` : `${startDateText} - ${endDateText}`;
+    // @ts-expect-error
+    const {
+      partIndex,
+      partTotalCount
+    } = this.option();
+    const partText = (0, _type.isDefined)(partIndex) ? ` (${partIndex + 1}/${partTotalCount})` : '';
+    return `${dateText}${partText}`;
+  }
+  _renderAriaLabel() {
+    // @ts-expect-error
+    const $element = this.$element();
+    const ariaLabel = [this._getDateText(), this._getGroupText()].filter(label => !!label).join(', ');
+    $element.attr('aria-label', `${ariaLabel}, `);
+  }
+  _renderAppointmentGeometry() {
     const geometry = this.option('geometry');
     const $element = this.$element();
     (0, _translator.move)($element, {
@@ -168,125 +194,114 @@ let Appointment = exports.Appointment = /*#__PURE__*/function (_DOMComponent) {
       width: geometry.width < 0 ? 0 : geometry.width,
       height: geometry.height < 0 ? 0 : geometry.height
     });
-  };
-  _proto._renderEmptyClass = function _renderEmptyClass() {
+  }
+  _renderEmptyClass() {
     const geometry = this.option('geometry');
     if (geometry.empty || this.option('isCompact')) {
       this.$element().addClass(_m_classes.EMPTY_APPOINTMENT_CLASS);
     }
-  };
-  _proto._renderReducedAppointment = function _renderReducedAppointment() {
+  }
+  _renderReducedAppointment() {
     const reducedPart = this.option('reduced');
     if (!reducedPart) {
       return;
     }
     this.$element().toggleClass(_m_classes.REDUCED_APPOINTMENT_CLASS, true).toggleClass(_m_classes.REDUCED_APPOINTMENT_PARTS_CLASSES[reducedPart], true);
     this._renderAppointmentReducedIcon();
-  };
-  _proto._renderAppointmentReducedIcon = function _renderAppointmentReducedIcon() {
+  }
+  _localizeDate(date) {
+    return `${_date.default.format(date, 'monthAndDay')}, ${_date.default.format(date, 'year')}`;
+  }
+  _renderAppointmentReducedIcon() {
     const $icon = (0, _renderer.default)('<div>').addClass(_m_classes.REDUCED_APPOINTMENT_ICON).appendTo(this.$element());
     const endDate = this._getEndDate();
     const tooltipLabel = _message.default.format('dxScheduler-editorLabelEndDate');
-    const tooltipText = [tooltipLabel, ': ', _date.default.format(endDate, 'monthAndDay'), ', ', _date.default.format(endDate, 'year')].join('');
-    // @ts-expect-error
+    const tooltipText = [tooltipLabel, ': ', this._localizeDate(endDate)].join('');
     _events_engine.default.off($icon, REDUCED_APPOINTMENT_POINTERENTER_EVENT_NAME);
     _events_engine.default.on($icon, REDUCED_APPOINTMENT_POINTERENTER_EVENT_NAME, () => {
-      (0, _ui.show)({
+      (0, _m_tooltip.show)({
         target: $icon,
         content: tooltipText
       });
     });
-    // @ts-expect-error
     _events_engine.default.off($icon, REDUCED_APPOINTMENT_POINTERLEAVE_EVENT_NAME);
     _events_engine.default.on($icon, REDUCED_APPOINTMENT_POINTERLEAVE_EVENT_NAME, () => {
-      (0, _ui.hide)();
+      (0, _m_tooltip.hide)();
     });
-  };
-  _proto._getEndDate = function _getEndDate() {
+  }
+  _getEndDate() {
     const result = _m_expression_utils.ExpressionUtils.getField(this.option('dataAccessors'), 'endDate', this.rawAppointment);
     if (result) {
       return new Date(result);
     }
     return result;
-  };
-  _proto._renderAllDayClass = function _renderAllDayClass() {
+  }
+  _getStartDate() {
+    const result = _m_expression_utils.ExpressionUtils.getField(this.option('dataAccessors'), 'startDate', this.rawAppointment);
+    if (result) {
+      return new Date(result);
+    }
+    return result;
+  }
+  _renderAllDayClass() {
     this.$element().toggleClass(_m_classes.ALL_DAY_APPOINTMENT_CLASS, !!this.option('allDay'));
-  };
-  _proto._renderDragSourceClass = function _renderDragSourceClass() {
+  }
+  _renderDragSourceClass() {
     this.$element().toggleClass(_m_classes.APPOINTMENT_DRAG_SOURCE_CLASS, !!this.option('isDragSource'));
-  };
-  _proto._renderRecurrenceClass = function _renderRecurrenceClass() {
+  }
+  _renderRecurrenceClass() {
     const rule = _m_expression_utils.ExpressionUtils.getField(this.option('dataAccessors'), 'recurrenceRule', this.rawAppointment);
     if ((0, _m_recurrence.getRecurrenceProcessor)().isValidRecurrenceRule(rule)) {
       this.$element().addClass(_m_classes.RECURRENCE_APPOINTMENT_CLASS);
     }
-  };
-  _proto._renderDirection = function _renderDirection() {
+  }
+  _renderDirection() {
     this.$element().addClass(_m_classes.DIRECTION_APPOINTMENT_CLASSES[this.option('direction')]);
-  };
-  _proto._createResizingConfig = function _createResizingConfig() {
+  }
+  _createResizingConfig() {
     const config = this.option('direction') === 'vertical' ? this._getVerticalResizingRule() : this._getHorizontalResizingRule();
     if (!this.invoke('isGroupedByDate')) {
       config.stepPrecision = 'strict';
     }
     return config;
-  };
-  _proto._renderResizable = function _renderResizable() {
+  }
+  _renderResizable() {
     if (this.option('allowResize')) {
       // @ts-expect-error
       this._createComponent(this.$element(), _resizable.default, (0, _extend.extend)(this._createResizingConfig(), this.option('resizableConfig')));
     }
-  };
-  _proto._useTemplates = function _useTemplates() {
-    return false;
-  };
-  _createClass(Appointment, [{
-    key: "coloredElement",
-    get: function () {
-      return this.$element();
-    }
-  }, {
-    key: "rawAppointment",
-    get: function () {
-      return this.option('data');
-    }
-  }]);
-  return Appointment;
-}(_dom_component.default);
-(0, _component_registrator.default)('dxSchedulerAppointment', Appointment);
-let AgendaAppointment = exports.AgendaAppointment = /*#__PURE__*/function (_Appointment) {
-  _inheritsLoose(AgendaAppointment, _Appointment);
-  function AgendaAppointment() {
-    return _Appointment.apply(this, arguments) || this;
   }
-  var _proto2 = AgendaAppointment.prototype;
-  _proto2._getDefaultOptions = function _getDefaultOptions() {
-    return (0, _extend.extend)(_Appointment.prototype._getDefaultOptions.call(this), {
+  _useTemplates() {
+    return false;
+  }
+}
+exports.Appointment = Appointment;
+(0, _component_registrator.default)('dxSchedulerAppointment', Appointment);
+class AgendaAppointment extends Appointment {
+  get coloredElement() {
+    return this.$element().find(`.${_m_classes.APPOINTMENT_CONTENT_CLASSES.AGENDA_MARKER}`);
+  }
+  _getDefaultOptions() {
+    return (0, _extend.extend)(super._getDefaultOptions(), {
       // @ts-expect-error
       createPlainResourceListAsync: new _deferred.Deferred()
     });
-  };
-  _proto2._renderResourceList = function _renderResourceList(container, list) {
+  }
+  _renderResourceList(container, list) {
     list.forEach(item => {
       const itemContainer = (0, _renderer.default)('<div>').addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.AGENDA_RESOURCE_LIST_ITEM).appendTo(container);
-      (0, _renderer.default)('<div>').text("".concat(item.label, ":")).appendTo(itemContainer);
+      (0, _renderer.default)('<div>').text(`${item.label}:`).appendTo(itemContainer);
       (0, _renderer.default)('<div>').addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.AGENDA_RESOURCE_LIST_ITEM_VALUE).text(item.values.join(', ')).appendTo(itemContainer);
     });
-  };
-  _proto2._render = function _render() {
-    _Appointment.prototype._render.call(this);
+  }
+  _render() {
+    super._render();
     const createPlainResourceListAsync = this.option('createPlainResourceListAsync');
     createPlainResourceListAsync(this.rawAppointment).done(list => {
-      const parent = this.$element().find(".".concat(_m_classes.APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_CONTENT_DETAILS));
+      const parent = this.$element().find(`.${_m_classes.APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_CONTENT_DETAILS}`);
       const container = (0, _renderer.default)('<div>').addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.AGENDA_RESOURCE_LIST).appendTo(parent);
       this._renderResourceList(container, list);
     });
-  };
-  _createClass(AgendaAppointment, [{
-    key: "coloredElement",
-    get: function () {
-      return this.$element().find(".".concat(_m_classes.APPOINTMENT_CONTENT_CLASSES.AGENDA_MARKER));
-    }
-  }]);
-  return AgendaAppointment;
-}(Appointment);
+  }
+}
+exports.AgendaAppointment = AgendaAppointment;

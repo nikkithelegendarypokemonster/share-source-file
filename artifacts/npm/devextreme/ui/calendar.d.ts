@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/calendar.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -35,43 +35,57 @@ export {
     FirstDayOfWeek,
 };
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export interface ComponentDisabledDate<T> {
     component: T;
     readonly date: Date;
     readonly view: string;
 }
 
+/** @public */
 export type CalendarZoomLevel = 'century' | 'decade' | 'month' | 'year';
 
+/** @public */
 export type CalendarSelectionMode = 'single' | 'multiple' | 'range';
 
+/** @public */
 export type WeekNumberRule = 'auto' | 'firstDay' | 'fullWeek' | 'firstFourDays';
 
+/** @public */
 export type ContentReadyEvent = EventInfo<dxCalendar>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_calendar_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxCalendar>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_calendar_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxCalendar>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_calendar_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxCalendar> & ChangedOptionInfo;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_calendar_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxCalendar, KeyboardEvent | MouseEvent | PointerEvent | TouchEvent | Event> & ValueChangedInfo;
 
+/** @public */
 export type CellTemplateData = {
     readonly date: Date;
     readonly view: string;
@@ -79,109 +93,157 @@ export type CellTemplateData = {
 };
 
 /**
- * Specifies dates that users cannot select.
+ * @docid
+ * @public
+ * @type object
  */
 export type DisabledDate = ComponentDisabledDate<dxCalendar>;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxCalendarOptions extends EditorOptions<dxCalendar> {
     /**
-     * Specifies whether the UI component changes its visual state as a result of user interaction.
+     * @docid
+     * @default true
+     * @public
      */
     activeStateEnabled?: boolean;
     /**
-     * Specifies a custom template for calendar cells.
+     * @docid
+     * @default "cell"
+     * @type_function_param1 itemData:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     cellTemplate?: template | ((itemData: CellTemplateData, itemIndex: number, itemElement: DxElement) => string | UserDefinedElement);
     /**
-     * Specifies the date-time value serialization format.
+     * @docid
+     * @default undefined
+     * @public
      */
     dateSerializationFormat?: string;
     /**
-     * Specifies dates that users cannot select.
+     * @docid
+     * @default null
+     * @type_function_param1 data:DisabledDate
+     * @public
      */
     disabledDates?: Array<Date> | ((data: DisabledDate) => boolean);
     /**
-     * Specifies the first day of a week.
+     * @docid
+     * @default undefined
+     * @public
      */
     firstDayOfWeek?: FirstDayOfWeek;
     /**
-     * Specifies whether the UI component can be focused using keyboard navigation.
+     * @docid
+     * @default true &for(desktop)
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * Specifies whether the UI component changes its state when a user pauses on it.
+     * @docid
+     * @default true
+     * @public
      */
     hoverStateEnabled?: boolean;
     /**
-     * The latest date the UI component allows to select.
+     * @docid
+     * @default new Date(3000, 0)
+     * @public
      */
     max?: Date | number | string;
     /**
-     * Specifies the maximum zoom level of the calendar.
+     * @docid
+     * @default 'month'
+     * @public
      */
     maxZoomLevel?: CalendarZoomLevel;
     /**
-     * The earliest date the UI component allows to select.
+     * @docid
+     * @default new Date(1000, 0)
+     * @public
      */
     min?: Date | number | string;
     /**
-     * Specifies the minimum zoom level of the calendar.
+     * @docid
+     * @default 'century'
+     * @public
      */
     minZoomLevel?: CalendarZoomLevel;
     /**
-     * The value to be assigned to the `name` attribute of the underlying HTML element.
+     * @docid
+     * @hidden false
+     * @public
      */
     name?: string;
     /**
-     * Specifies one of three selection modes: single, multiple, or range.
+     * @docid
+     * @default 'single'
+     * @public
      */
     selectionMode?: CalendarSelectionMode;
     /**
-     * Specifies whether a user can select a week by clicking on a week number.
+     * @docid
+     * @default true
+     * @public
      */
     selectWeekOnClick?: boolean;
     /**
-     * Specifies whether or not the UI component displays a button that selects the current date.
+     * @docid
+     * @default false
+     * @public
      */
     showTodayButton?: boolean;
     /**
-     * Specifies whether to display a column with week numbers.
+     * @docid
+     * @default false
+     * @public
      */
     showWeekNumbers?: boolean;
     /**
-     * Specifies a week number calculation rule.
+     * @docid
+     * @default 'auto'
+     * @public
      */
     weekNumberRule?: WeekNumberRule;
     /**
-     * An object or a value that specifies the date and time selected in the calendar.
+     * @docid
+     * @default null
+     * @public
      */
     value?: Date | number | string | Array<Date | number | string>;
     /**
-     * Specifies the current calendar zoom level.
+     * @docid
+     * @default 'month'
+     * @fires dxCalendarOptions.onOptionChanged
+     * @public
      */
     zoomLevel?: CalendarZoomLevel;
 }
 /**
- * The Calendar is a UI component that displays a calendar and allows an end user to select the required date within a specified date range.
+ * @docid
+ * @isEditor
+ * @inherits Editor
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxCalendar extends Editor<dxCalendarOptions> {
     /**
-     * Resets the value property to the value passed as an argument.
+     * @docid
+     * @publicName reset(value)
+     * @public
      */
     reset(value?: Date | number | string | Array<Date | number | string> | null): void;
 }
 
+/** @public */
 export type Properties = dxCalendarOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxCalendarOptions;
 
 

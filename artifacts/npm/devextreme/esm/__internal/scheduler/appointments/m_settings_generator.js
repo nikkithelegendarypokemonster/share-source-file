@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/appointments/m_settings_generator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,17 +11,17 @@ import _extends from "@babel/runtime/helpers/esm/extends";
 import dateUtils from '../../../core/utils/date';
 import { extend } from '../../../core/utils/extend';
 import { isEmptyObject } from '../../../core/utils/type';
-import timeZoneUtils from '../../../ui/scheduler/utils.timeZone';
 import { dateUtilsTs } from '../../core/utils/date';
-import { getGroupCount, isDateAndTimeView } from '../__migration/utils/index';
+import { getGroupCount, isDateAndTimeView } from '../../scheduler/r1/utils/index';
 import { createAppointmentAdapter } from '../m_appointment_adapter';
 import { ExpressionUtils } from '../m_expression_utils';
 import { getRecurrenceProcessor } from '../m_recurrence';
+import timeZoneUtils from '../m_utils_time_zone';
 import { createResourcesTree, getDataAccessors, getResourceTreeLeaves } from '../resources/m_utils';
 import { CellPositionCalculator } from './m_cell_position_calculator';
 import { createFormattedDateText } from './m_text_utils';
-var toMs = dateUtils.dateToMilliseconds;
-var APPOINTMENT_DATE_TEXT_FORMAT = 'TIME';
+const toMs = dateUtils.dateToMilliseconds;
+const APPOINTMENT_DATE_TEXT_FORMAT = 'TIME';
 // TODO: Vinogradov types refactoring.
 export class DateGeneratorBaseStrategy {
   constructor(options) {
@@ -86,17 +86,17 @@ export class DateGeneratorBaseStrategy {
     return this.appointmentTakesAllDay ? this.options.allDayIntervalDuration : this.options.intervalDuration;
   }
   generate(appointmentAdapter) {
-    var {
+    const {
       isRecurrent
     } = appointmentAdapter;
-    var itemGroupIndices = this._getGroupIndices(this.rawAppointment);
-    var appointmentList = this._createAppointments(appointmentAdapter, itemGroupIndices);
+    const itemGroupIndices = this._getGroupIndices(this.rawAppointment);
+    let appointmentList = this._createAppointments(appointmentAdapter, itemGroupIndices);
     appointmentList = this._getProcessedByAppointmentTimeZone(appointmentList, appointmentAdapter); // T983264
     if (this._canProcessNotNativeTimezoneDates(appointmentAdapter)) {
       appointmentList = this._getProcessedNotNativeTimezoneDates(appointmentList, appointmentAdapter);
     }
-    var dateSettings = this._createGridAppointmentList(appointmentList, appointmentAdapter);
-    var firstViewDates = this._getAppointmentsFirstViewDate(dateSettings);
+    let dateSettings = this._createGridAppointmentList(appointmentList, appointmentAdapter);
+    const firstViewDates = this._getAppointmentsFirstViewDate(dateSettings);
     dateSettings = this._fillNormalizedStartDate(dateSettings, firstViewDates);
     dateSettings = this._cropAppointmentsByStartDayHour(dateSettings, firstViewDates);
     dateSettings = this._fillNormalizedEndDate(dateSettings, this.rawAppointment);
@@ -111,30 +111,30 @@ export class DateGeneratorBaseStrategy {
     };
   }
   shiftSourceAppointmentDates(dateSettings) {
-    var {
+    const {
       viewOffset
     } = this.options;
-    return dateSettings.map(item => _extends(_extends({}, item), {
-      source: _extends(_extends({}, item.source), {
+    return dateSettings.map(item => _extends({}, item, {
+      source: _extends({}, item.source, {
         startDate: dateUtilsTs.addOffsets(item.source.startDate, [viewOffset]),
         endDate: dateUtilsTs.addOffsets(item.source.endDate, [viewOffset])
       })
     }));
   }
   _getProcessedByAppointmentTimeZone(appointmentList, appointment) {
-    var hasAppointmentTimeZone = !isEmptyObject(appointment.startDateTimeZone) || !isEmptyObject(appointment.endDateTimeZone);
+    const hasAppointmentTimeZone = !isEmptyObject(appointment.startDateTimeZone) || !isEmptyObject(appointment.endDateTimeZone);
     if (hasAppointmentTimeZone) {
-      var appointmentOffsets = {
+      const appointmentOffsets = {
         startDate: this.timeZoneCalculator.getOffsets(appointment.startDate, appointment.startDateTimeZone),
         endDate: this.timeZoneCalculator.getOffsets(appointment.endDate, appointment.endDateTimeZone)
       };
       appointmentList.forEach(a => {
-        var sourceOffsets = {
+        const sourceOffsets = {
           startDate: this.timeZoneCalculator.getOffsets(a.startDate, appointment.startDateTimeZone),
           endDate: this.timeZoneCalculator.getOffsets(a.endDate, appointment.endDateTimeZone)
         };
-        var startDateOffsetDiff = appointmentOffsets.startDate.appointment - sourceOffsets.startDate.appointment;
-        var endDateOffsetDiff = appointmentOffsets.endDate.appointment - sourceOffsets.endDate.appointment;
+        const startDateOffsetDiff = appointmentOffsets.startDate.appointment - sourceOffsets.startDate.appointment;
+        const endDateOffsetDiff = appointmentOffsets.endDate.appointment - sourceOffsets.endDate.appointment;
         if (sourceOffsets.startDate.appointment !== sourceOffsets.startDate.common) {
           a.startDate = new Date(a.startDate.getTime() + startDateOffsetDiff * toMs('hour'));
         }
@@ -146,7 +146,7 @@ export class DateGeneratorBaseStrategy {
     return appointmentList;
   }
   _createAppointments(appointment, groupIndices) {
-    var appointments = this._createRecurrenceAppointments(appointment, groupIndices);
+    let appointments = this._createRecurrenceAppointments(appointment, groupIndices);
     if (!appointment.isRecurrent && appointments.length === 0) {
       appointments.push({
         startDate: appointment.startDate,
@@ -155,19 +155,19 @@ export class DateGeneratorBaseStrategy {
     }
     // T817857
     appointments = appointments.map(item => {
-      var _a;
-      var resultEndTime = (_a = item.endDate) === null || _a === void 0 ? void 0 : _a.getTime();
+      var _item$endDate;
+      const resultEndTime = (_item$endDate = item.endDate) === null || _item$endDate === void 0 ? void 0 : _item$endDate.getTime();
       if (item.startDate.getTime() === resultEndTime) {
         item.endDate.setTime(resultEndTime + toMs('minute'));
       }
-      return _extends(_extends({}, item), {
+      return _extends({}, item, {
         exceptionDate: new Date(item.startDate)
       });
     });
     return appointments;
   }
   _canProcessNotNativeTimezoneDates(appointment) {
-    var isTimeZoneSet = !isEmptyObject(this.timeZone);
+    const isTimeZoneSet = !isEmptyObject(this.timeZone);
     if (!isTimeZoneSet) {
       return false;
     }
@@ -179,11 +179,11 @@ export class DateGeneratorBaseStrategy {
   _getProcessedNotNativeDateIfCrossDST(date, offset) {
     if (offset < 0) {
       // summer time
-      var newDate = new Date(date);
-      var newDateMinusOneHour = new Date(newDate);
+      const newDate = new Date(date);
+      const newDateMinusOneHour = new Date(newDate);
       newDateMinusOneHour.setHours(newDateMinusOneHour.getHours() - 1);
-      var newDateOffset = this.timeZoneCalculator.getOffsets(newDate).common;
-      var newDateMinusOneHourOffset = this.timeZoneCalculator.getOffsets(newDateMinusOneHour).common;
+      const newDateOffset = this.timeZoneCalculator.getOffsets(newDate).common;
+      const newDateMinusOneHourOffset = this.timeZoneCalculator.getOffsets(newDateMinusOneHour).common;
       if (newDateOffset !== newDateMinusOneHourOffset) {
         return 0;
       }
@@ -195,25 +195,25 @@ export class DateGeneratorBaseStrategy {
   }
   _getProcessedNotNativeTimezoneDates(appointmentList, appointment) {
     return appointmentList.map(item => {
-      var diffStartDateOffset = this._getCommonOffset(appointment.startDate) - this._getCommonOffset(item.startDate);
-      var diffEndDateOffset = this._getCommonOffset(appointment.endDate) - this._getCommonOffset(item.endDate);
+      let diffStartDateOffset = this._getCommonOffset(appointment.startDate) - this._getCommonOffset(item.startDate);
+      let diffEndDateOffset = this._getCommonOffset(appointment.endDate) - this._getCommonOffset(item.endDate);
       if (diffStartDateOffset === 0 && diffEndDateOffset === 0) {
         return item;
       }
       diffStartDateOffset = this._getProcessedNotNativeDateIfCrossDST(item.startDate, diffStartDateOffset);
       diffEndDateOffset = this._getProcessedNotNativeDateIfCrossDST(item.endDate, diffEndDateOffset);
-      var newStartDate = new Date(item.startDate.getTime() + diffStartDateOffset * toMs('hour'));
-      var newEndDate = new Date(item.endDate.getTime() + diffEndDateOffset * toMs('hour'));
-      var testNewStartDate = this.timeZoneCalculator.createDate(newStartDate, {
+      const newStartDate = new Date(item.startDate.getTime() + diffStartDateOffset * toMs('hour'));
+      let newEndDate = new Date(item.endDate.getTime() + diffEndDateOffset * toMs('hour'));
+      const testNewStartDate = this.timeZoneCalculator.createDate(newStartDate, {
         path: 'toGrid'
       });
-      var testNewEndDate = this.timeZoneCalculator.createDate(newEndDate, {
+      const testNewEndDate = this.timeZoneCalculator.createDate(newEndDate, {
         path: 'toGrid'
       });
       if (appointment.duration > testNewEndDate.getTime() - testNewStartDate.getTime()) {
         newEndDate = new Date(newStartDate.getTime() + appointment.duration);
       }
-      return _extends(_extends({}, item), {
+      return _extends({}, item, {
         startDate: newStartDate,
         endDate: newEndDate,
         exceptionDate: new Date(newStartDate)
@@ -224,41 +224,41 @@ export class DateGeneratorBaseStrategy {
     return this.isVerticalOrientation ? this.isGroupedByDate : this.isGroupedByDate && this.appointmentTakesAllDay;
   }
   normalizeEndDateByViewEnd(rawAppointment, endDate) {
-    var result = new Date(endDate.getTime());
-    var isAllDay = isDateAndTimeView(this.viewType) && this.appointmentTakesAllDay;
+    let result = new Date(endDate.getTime());
+    const isAllDay = isDateAndTimeView(this.viewType) && this.appointmentTakesAllDay;
     if (!isAllDay) {
-      var roundedEndViewDate = dateUtils.roundToHour(this.endViewDate);
+      const roundedEndViewDate = dateUtils.roundToHour(this.endViewDate);
       if (result > roundedEndViewDate) {
         result = roundedEndViewDate;
       }
     }
-    var endDayHour = this.viewEndDayHour;
-    var allDay = ExpressionUtils.getField(this.dataAccessors, 'allDay', rawAppointment);
-    var currentViewEndTime = new Date(new Date(endDate.getTime()).setHours(endDayHour, 0, 0, 0));
+    const endDayHour = this.viewEndDayHour;
+    const allDay = ExpressionUtils.getField(this.dataAccessors, 'allDay', rawAppointment);
+    const currentViewEndTime = new Date(new Date(endDate.getTime()).setHours(endDayHour, 0, 0, 0));
     if (result.getTime() > currentViewEndTime.getTime() || allDay && result.getHours() < endDayHour) {
       result = currentViewEndTime;
     }
     return result;
   }
   _fillNormalizedEndDate(dateSettings, rawAppointment) {
-    return dateSettings.map(item => _extends(_extends({}, item), {
+    return dateSettings.map(item => _extends({}, item, {
       normalizedEndDate: this.normalizeEndDateByViewEnd(rawAppointment, item.endDate)
     }));
   }
   _separateLongParts(gridAppointmentList, appointmentAdapter) {
-    var result = [];
+    let result = [];
     gridAppointmentList.forEach(gridAppointment => {
-      var maxDate = new Date(this.dateRange[1]);
-      var {
+      const maxDate = new Date(this.dateRange[1]);
+      const {
         startDate,
         normalizedEndDate: endDateOfPart
       } = gridAppointment;
-      var longStartDateParts = dateUtils.getDatesOfInterval(startDate, endDateOfPart, {
+      const longStartDateParts = dateUtils.getDatesOfInterval(startDate, endDateOfPart, {
         milliseconds: this.getIntervalDuration()
       });
-      var list = longStartDateParts.filter(startDatePart => new Date(startDatePart) < maxDate).map(date => {
-        var endDate = new Date(new Date(date).setMilliseconds(appointmentAdapter.duration));
-        var normalizedEndDate = this.normalizeEndDateByViewEnd(this.rawAppointment, endDate);
+      const list = longStartDateParts.filter(startDatePart => new Date(startDatePart) < maxDate).map(date => {
+        const endDate = new Date(new Date(date).setMilliseconds(appointmentAdapter.duration));
+        const normalizedEndDate = this.normalizeEndDateByViewEnd(this.rawAppointment, endDate);
         return {
           startDate: date,
           endDate,
@@ -272,17 +272,17 @@ export class DateGeneratorBaseStrategy {
   }
   _createGridAppointmentList(appointmentList, appointmentAdapter) {
     return appointmentList.map(source => {
-      var offsetDifference = appointmentAdapter.startDate.getTimezoneOffset() - source.startDate.getTimezoneOffset();
+      const offsetDifference = appointmentAdapter.startDate.getTimezoneOffset() - source.startDate.getTimezoneOffset();
       if (offsetDifference !== 0 && this._canProcessNotNativeTimezoneDates(appointmentAdapter)) {
         source.startDate = dateUtilsTs.addOffsets(source.startDate, [offsetDifference * toMs('minute')]);
         source.endDate = dateUtilsTs.addOffsets(source.endDate, [offsetDifference * toMs('minute')]);
         source.exceptionDate = new Date(source.startDate);
       }
-      var duration = source.endDate.getTime() - source.startDate.getTime();
-      var startDate = this.timeZoneCalculator.createDate(source.startDate, {
+      const duration = source.endDate.getTime() - source.startDate.getTime();
+      const startDate = this.timeZoneCalculator.createDate(source.startDate, {
         path: 'toGrid'
       });
-      var endDate = dateUtilsTs.addOffsets(startDate, [duration]);
+      const endDate = dateUtilsTs.addOffsets(startDate, [duration]);
       return {
         startDate,
         endDate,
@@ -293,8 +293,8 @@ export class DateGeneratorBaseStrategy {
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _createExtremeRecurrenceDates(groupIndex) {
-    var startViewDate = this.appointmentTakesAllDay ? dateUtils.trimTime(this.dateRange[0]) : this.dateRange[0];
-    var endViewDateByEndDayHour = this.dateRange[1];
+    let startViewDate = this.appointmentTakesAllDay ? dateUtils.trimTime(this.dateRange[0]) : this.dateRange[0];
+    let endViewDateByEndDayHour = this.dateRange[1];
     if (this.timeZone) {
       startViewDate = this.timeZoneCalculator.createDate(startViewDate, {
         path: 'fromGrid'
@@ -302,7 +302,7 @@ export class DateGeneratorBaseStrategy {
       endViewDateByEndDayHour = this.timeZoneCalculator.createDate(endViewDateByEndDayHour, {
         path: 'fromGrid'
       });
-      var daylightOffset = timeZoneUtils.getDaylightOffsetInMs(startViewDate, endViewDateByEndDayHour);
+      const daylightOffset = timeZoneUtils.getDaylightOffsetInMs(startViewDate, endViewDateByEndDayHour);
       if (daylightOffset) {
         endViewDateByEndDayHour = new Date(endViewDateByEndDayHour.getTime() + daylightOffset);
       }
@@ -310,16 +310,16 @@ export class DateGeneratorBaseStrategy {
     return [startViewDate, endViewDateByEndDayHour];
   }
   _createRecurrenceOptions(appointment, groupIndex) {
-    var {
+    const {
       viewOffset
     } = this.options;
     // NOTE: For creating a recurrent appointments,
     // we should use original appointment's dates (without view offset).
-    var originalAppointmentStartDate = dateUtilsTs.addOffsets(appointment.startDate, [viewOffset]);
-    var originalAppointmentEndDate = dateUtilsTs.addOffsets(appointment.endDate, [viewOffset]);
-    var [minRecurrenceDate, maxRecurrenceDate] = this._createExtremeRecurrenceDates(groupIndex);
-    var shiftedMinRecurrenceDate = dateUtilsTs.addOffsets(minRecurrenceDate, [viewOffset]);
-    var shiftedMaxRecurrenceDate = dateUtilsTs.addOffsets(maxRecurrenceDate, [viewOffset]);
+    const originalAppointmentStartDate = dateUtilsTs.addOffsets(appointment.startDate, [viewOffset]);
+    const originalAppointmentEndDate = dateUtilsTs.addOffsets(appointment.endDate, [viewOffset]);
+    const [minRecurrenceDate, maxRecurrenceDate] = this._createExtremeRecurrenceDates(groupIndex);
+    const shiftedMinRecurrenceDate = dateUtilsTs.addOffsets(minRecurrenceDate, [viewOffset]);
+    const shiftedMaxRecurrenceDate = dateUtilsTs.addOffsets(maxRecurrenceDate, [viewOffset]);
     return {
       rule: appointment.recurrenceRule,
       exception: appointment.recurrenceException,
@@ -333,9 +333,9 @@ export class DateGeneratorBaseStrategy {
         if (isEmptyObject(this.timeZone) || timeZoneUtils.isEqualLocalTimeZone(this.timeZone, date)) {
           return date;
         }
-        var appointmentOffset = this.timeZoneCalculator.getOffsets(originalAppointmentStartDate).common;
-        var exceptionAppointmentOffset = this.timeZoneCalculator.getOffsets(date).common;
-        var diff = appointmentOffset - exceptionAppointmentOffset;
+        const appointmentOffset = this.timeZoneCalculator.getOffsets(originalAppointmentStartDate).common;
+        const exceptionAppointmentOffset = this.timeZoneCalculator.getOffsets(date).common;
+        let diff = appointmentOffset - exceptionAppointmentOffset;
         diff = this._getProcessedNotNativeDateIfCrossDST(date, diff);
         return new Date(date.getTime() - diff * dateUtils.dateToMilliseconds('hour'));
       }
@@ -343,18 +343,18 @@ export class DateGeneratorBaseStrategy {
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _createRecurrenceAppointments(appointment, groupIndices) {
-    var {
+    const {
       duration
     } = appointment;
-    var {
+    const {
       viewOffset
     } = this.options;
-    var option = this._createRecurrenceOptions(appointment);
-    var generatedStartDates = getRecurrenceProcessor().generateDates(option);
+    const option = this._createRecurrenceOptions(appointment);
+    const generatedStartDates = getRecurrenceProcessor().generateDates(option);
     return generatedStartDates.map(date => {
-      var utcDate = timeZoneUtils.createUTCDateWithLocalOffset(date);
+      const utcDate = timeZoneUtils.createUTCDateWithLocalOffset(date);
       utcDate.setTime(utcDate.getTime() + duration);
-      var endDate = timeZoneUtils.createDateFromUTCWithLocalOffset(utcDate);
+      const endDate = timeZoneUtils.createDateFromUTCWithLocalOffset(utcDate);
       return {
         startDate: new Date(date),
         endDate
@@ -363,7 +363,7 @@ export class DateGeneratorBaseStrategy {
     // NOTE: For the next calculations,
     // we should shift recurrence appointments by view offset.
     .map(_ref => {
-      var {
+      let {
         startDate,
         endDate
       } = _ref;
@@ -374,25 +374,25 @@ export class DateGeneratorBaseStrategy {
     });
   }
   _getAppointmentsFirstViewDate(appointments) {
-    var {
+    const {
       viewOffset
     } = this.options;
     return appointments.map(appointment => {
-      var tableFirstDate = this._getAppointmentFirstViewDate(_extends(_extends({}, appointment), {
+      const tableFirstDate = this._getAppointmentFirstViewDate(_extends({}, appointment, {
         startDate: dateUtilsTs.addOffsets(appointment.startDate, [viewOffset]),
         endDate: dateUtilsTs.addOffsets(appointment.endDate, [viewOffset])
       }));
       if (!tableFirstDate) {
         return appointment.startDate;
       }
-      var firstDate = dateUtilsTs.addOffsets(tableFirstDate, [-viewOffset]);
+      const firstDate = dateUtilsTs.addOffsets(tableFirstDate, [-viewOffset]);
       return firstDate > appointment.startDate ? firstDate : appointment.startDate;
     });
   }
   _fillNormalizedStartDate(appointments, firstViewDates,
   // TODO Vinogradov: Check this unused argument.
   rawAppointment) {
-    return appointments.map((item, idx) => _extends(_extends({}, item), {
+    return appointments.map((item, idx) => _extends({}, item, {
       startDate: this._getAppointmentResultDate({
         appointment: item,
         rawAppointment,
@@ -414,15 +414,15 @@ export class DateGeneratorBaseStrategy {
     });
   }
   _getAppointmentResultDate(options) {
-    var {
+    const {
       appointment,
       startDayHour,
       firstViewDate
     } = options;
-    var {
+    let {
       startDate
     } = options;
-    var resultDate;
+    let resultDate;
     if (this.appointmentTakesAllDay) {
       resultDate = dateUtils.normalizeDate(startDate, firstViewDate);
     } else {
@@ -434,8 +434,8 @@ export class DateGeneratorBaseStrategy {
     return !this.isDateAppointment ? dateUtils.roundDateByStartDayHour(resultDate, startDayHour) : resultDate;
   }
   _getAppointmentFirstViewDate(appointment) {
-    var groupIndex = appointment.source.groupIndex || 0;
-    var {
+    const groupIndex = appointment.source.groupIndex || 0;
+    const {
       startDate,
       endDate
     } = appointment;
@@ -445,9 +445,9 @@ export class DateGeneratorBaseStrategy {
     return this.viewDataProvider.findGroupCellStartDate(groupIndex, startDate, endDate, this.isDateAppointment);
   }
   _getGroupIndices(rawAppointment) {
-    var result = [];
+    let result = [];
     if (rawAppointment && this.loadedResources.length) {
-      var tree = createResourcesTree(this.loadedResources);
+      const tree = createResourcesTree(this.loadedResources);
       result = getResourceTreeLeaves((field, action) => getDataAccessors(this.options.dataAccessors.resources, field, action), tree, rawAppointment);
     }
     return result;
@@ -458,19 +458,19 @@ export class DateGeneratorVirtualStrategy extends DateGeneratorBaseStrategy {
     return getGroupCount(this.loadedResources);
   }
   _createRecurrenceAppointments(appointment, groupIndices) {
-    var {
+    const {
       duration
     } = appointment;
-    var result = [];
-    var validGroupIndices = this.groupCount ? groupIndices : [0];
+    const result = [];
+    const validGroupIndices = this.groupCount ? groupIndices : [0];
     validGroupIndices.forEach(groupIndex => {
-      var option = this._createRecurrenceOptions(appointment, groupIndex);
-      var generatedStartDates = getRecurrenceProcessor().generateDates(option);
-      var recurrentInfo = generatedStartDates.map(date => {
-        var startDate = new Date(date);
-        var utcDate = timeZoneUtils.createUTCDateWithLocalOffset(date);
+      const option = this._createRecurrenceOptions(appointment, groupIndex);
+      const generatedStartDates = getRecurrenceProcessor().generateDates(option);
+      const recurrentInfo = generatedStartDates.map(date => {
+        const startDate = new Date(date);
+        const utcDate = timeZoneUtils.createUTCDateWithLocalOffset(date);
         utcDate.setTime(utcDate.getTime() + duration);
-        var endDate = timeZoneUtils.createDateFromUTCWithLocalOffset(utcDate);
+        const endDate = timeZoneUtils.createDateFromUTCWithLocalOffset(utcDate);
         return {
           startDate,
           endDate,
@@ -482,12 +482,12 @@ export class DateGeneratorVirtualStrategy extends DateGeneratorBaseStrategy {
     return result;
   }
   _updateGroupIndices(appointments, groupIndices) {
-    var result = [];
+    const result = [];
     groupIndices.forEach(groupIndex => {
-      var groupStartDate = this.viewDataProvider.getGroupStartDate(groupIndex);
+      const groupStartDate = this.viewDataProvider.getGroupStartDate(groupIndex);
       if (groupStartDate) {
         appointments.forEach(appointment => {
-          var appointmentCopy = extend({}, appointment);
+          const appointmentCopy = extend({}, appointment);
           appointmentCopy.groupIndex = groupIndex;
           result.push(appointmentCopy);
         });
@@ -496,15 +496,16 @@ export class DateGeneratorVirtualStrategy extends DateGeneratorBaseStrategy {
     return result;
   }
   _getGroupIndices(resources) {
-    var groupIndices = super._getGroupIndices(resources);
-    var viewDataGroupIndices = this.viewDataProvider.getGroupIndices();
-    if (!(groupIndices === null || groupIndices === void 0 ? void 0 : groupIndices.length)) {
+    var _groupIndices;
+    let groupIndices = super._getGroupIndices(resources);
+    const viewDataGroupIndices = this.viewDataProvider.getGroupIndices();
+    if (!((_groupIndices = groupIndices) !== null && _groupIndices !== void 0 && _groupIndices.length)) {
       groupIndices = [0];
     }
     return groupIndices.filter(groupIndex => viewDataGroupIndices.indexOf(groupIndex) !== -1);
   }
   _createAppointments(appointment, groupIndices) {
-    var appointments = super._createAppointments(appointment, groupIndices);
+    const appointments = super._createAppointments(appointment, groupIndices);
     return !appointment.isRecurrent ? this._updateGroupIndices(appointments, groupIndices) : appointments;
   }
 }
@@ -530,53 +531,53 @@ export class AppointmentSettingsGenerator {
     return this.options.groups;
   }
   get dateSettingsStrategy() {
-    var options = _extends(_extends({}, this.options), {
+    const options = _extends({}, this.options, {
       isAllDayRowAppointment: this.isAllDayRowAppointment
     });
     return this.options.isVirtualScrolling ? new DateGeneratorVirtualStrategy(options) : new DateGeneratorBaseStrategy(options);
   }
   create() {
-    var {
+    const {
       dateSettings,
       itemGroupIndices,
       isRecurrent
     } = this._generateDateSettings();
-    var cellPositions = this._calculateCellPositions(dateSettings, itemGroupIndices);
-    var result = this._prepareAppointmentInfos(dateSettings, cellPositions, isRecurrent);
+    const cellPositions = this._calculateCellPositions(dateSettings, itemGroupIndices);
+    const result = this._prepareAppointmentInfos(dateSettings, cellPositions, isRecurrent);
     return result;
   }
   _generateDateSettings() {
     return this.dateSettingsStrategy.generate(this.appointmentAdapter);
   }
   _calculateCellPositions(dateSettings, itemGroupIndices) {
-    var cellPositionCalculator = new CellPositionCalculator(_extends(_extends({}, this.options), {
+    const cellPositionCalculator = new CellPositionCalculator(_extends({}, this.options, {
       dateSettings
     }));
     return cellPositionCalculator.calculateCellPositions(itemGroupIndices, this.isAllDayRowAppointment, this.appointmentAdapter.isRecurrent);
   }
   _prepareAppointmentInfos(dateSettings, cellPositions, isRecurrent) {
-    var infos = [];
+    const infos = [];
     cellPositions.forEach(_ref2 => {
-      var {
+      let {
         coordinates,
         dateSettingIndex
       } = _ref2;
-      var dateSetting = dateSettings[dateSettingIndex];
-      var dateText = this._getAppointmentDateText(dateSetting);
-      var info = {
+      const dateSetting = dateSettings[dateSettingIndex];
+      const dateText = this._getAppointmentDateText(dateSetting);
+      const info = {
         appointment: dateSetting,
         sourceAppointment: dateSetting.source,
         dateText,
         isRecurrent
       };
-      infos.push(_extends(_extends({}, coordinates), {
+      infos.push(_extends({}, coordinates, {
         info
       }));
     });
     return infos;
   }
   _getAppointmentDateText(sourceAppointment) {
-    var {
+    const {
       startDate,
       endDate,
       allDay

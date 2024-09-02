@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/gantt/ui.gantt.actions.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -48,46 +48,45 @@ const GANTT_DEPENDENCIES = 'dependencies';
 const GANTT_RESOURCES = 'resources';
 const GANTT_RESOURCE_ASSIGNMENTS = 'resourceAssignments';
 const GANTT_NEW_TASK_CACHE_KEY = 'gantt_new_task_key';
-let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function () {
-  function GanttActionsManager(gantt) {
+class GanttActionsManager {
+  constructor(gantt) {
     this._gantt = gantt;
     this._mappingHelper = gantt._mappingHelper;
     this._customFieldsManager = gantt._customFieldsManager;
   }
-  var _proto = GanttActionsManager.prototype;
-  _proto._createActionByOption = function _createActionByOption(optionName) {
+  _createActionByOption(optionName) {
     return this._gantt._createActionByOption(optionName);
-  };
-  _proto._getTaskData = function _getTaskData(key) {
+  }
+  _getTaskData(key) {
     return this._gantt.getTaskData(key);
-  };
-  _proto._convertCoreToMappedData = function _convertCoreToMappedData(optionName, coreData) {
+  }
+  _convertCoreToMappedData(optionName, coreData) {
     return this._mappingHelper.convertCoreToMappedData(optionName, coreData);
-  };
-  _proto._convertMappedToCoreData = function _convertMappedToCoreData(optionName, mappedData) {
+  }
+  _convertMappedToCoreData(optionName, mappedData) {
     return this._mappingHelper.convertMappedToCoreData(optionName, mappedData);
-  };
-  _proto._convertMappedToCoreFields = function _convertMappedToCoreFields(optionName, fields) {
+  }
+  _convertMappedToCoreFields(optionName, fields) {
     return this._mappingHelper.convertMappedToCoreFields(optionName, fields);
-  };
-  _proto._convertCoreToMappedFields = function _convertCoreToMappedFields(optionName, fields) {
+  }
+  _convertCoreToMappedFields(optionName, fields) {
     return this._mappingHelper.convertCoreToMappedFields(optionName, fields);
-  };
-  _proto._saveCustomFieldsDataToCache = function _saveCustomFieldsDataToCache(key, data) {
+  }
+  _saveCustomFieldsDataToCache(key, data) {
     let forceUpdateOnKeyExpire = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
     let isCustomFieldsUpdateOnly = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
     this._customFieldsManager.saveCustomFieldsDataToCache(key, data, forceUpdateOnKeyExpire, isCustomFieldsUpdateOnly);
-  };
-  _proto.createTaskDblClickAction = function createTaskDblClickAction() {
+  }
+  createTaskDblClickAction() {
     this._taskDblClickAction = this._createActionByOption(Actions.onTaskDblClick);
-  };
-  _proto.taskDblClickAction = function taskDblClickAction(args) {
+  }
+  taskDblClickAction(args) {
     if (!this._taskDblClickAction) {
       this.createTaskDblClickAction();
     }
     this._taskDblClickAction(args);
-  };
-  _proto.raiseTaskDblClickAction = function raiseTaskDblClickAction(key, event) {
+  }
+  raiseTaskDblClickAction(key, event) {
     const args = {
       cancel: false,
       data: this._getTaskData(key),
@@ -96,65 +95,65 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
     };
     this.taskDblClickAction(args);
     return !args.cancel;
-  };
-  _proto.createTaskClickAction = function createTaskClickAction() {
+  }
+  createTaskClickAction() {
     this._taskClickAction = this._createActionByOption(Actions.onTaskClick);
-  };
-  _proto.taskClickAction = function taskClickAction(args) {
+  }
+  taskClickAction(args) {
     if (!this._taskClickAction) {
       this.createTaskClickAction();
     }
     this._taskClickAction(args);
-  };
-  _proto.raiseTaskClickAction = function raiseTaskClickAction(key, event) {
+  }
+  raiseTaskClickAction(key, event) {
     const args = {
       key: key,
       event: event,
       data: this._getTaskData(key)
     };
     this.taskClickAction(args);
-  };
-  _proto.createSelectionChangedAction = function createSelectionChangedAction() {
+  }
+  createSelectionChangedAction() {
     this._selectionChangedAction = this._createActionByOption(Actions.onSelectionChanged);
-  };
-  _proto.selectionChangedAction = function selectionChangedAction(args) {
+  }
+  selectionChangedAction(args) {
     if (!this._selectionChangedAction) {
       this.createSelectionChangedAction();
     }
     this._selectionChangedAction(args);
-  };
-  _proto.raiseSelectionChangedAction = function raiseSelectionChangedAction(selectedRowKey) {
+  }
+  raiseSelectionChangedAction(selectedRowKey) {
     this.selectionChangedAction({
       selectedRowKey: selectedRowKey
     });
-  };
-  _proto.createCustomCommandAction = function createCustomCommandAction() {
+  }
+  createCustomCommandAction() {
     this._customCommandAction = this._createActionByOption(Actions.onCustomCommand);
-  };
-  _proto.customCommandAction = function customCommandAction(args) {
+  }
+  customCommandAction(args) {
     if (!this._customCommandAction) {
       this.createCustomCommandAction();
     }
     this._customCommandAction(args);
-  };
-  _proto.raiseCustomCommand = function raiseCustomCommand(commandName) {
+  }
+  raiseCustomCommand(commandName) {
     this.customCommandAction({
       name: commandName
     });
-  };
-  _proto.createContextMenuPreparingAction = function createContextMenuPreparingAction() {
+  }
+  createContextMenuPreparingAction() {
     this._contextMenuPreparingAction = this._createActionByOption(Actions.onContextMenuPreparing);
-  };
-  _proto.contextMenuPreparingAction = function contextMenuPreparingAction(args) {
+  }
+  contextMenuPreparingAction(args) {
     if (!this._contextMenuPreparingAction) {
       this.createContextMenuPreparingAction();
     }
     this._contextMenuPreparingAction(args);
-  };
-  _proto.raiseContextMenuPreparing = function raiseContextMenuPreparing(options) {
+  }
+  raiseContextMenuPreparing(options) {
     this.contextMenuPreparingAction(options);
-  };
-  _proto._getInsertingAction = function _getInsertingAction(optionName) {
+  }
+  _getInsertingAction(optionName) {
     switch (optionName) {
       case GANTT_TASKS:
         return this._getTaskInsertingAction();
@@ -166,8 +165,8 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
         return this._getResourceAssigningAction();
     }
     return () => {};
-  };
-  _proto.raiseInsertingAction = function raiseInsertingAction(optionName, coreArgs) {
+  }
+  raiseInsertingAction(optionName, coreArgs) {
     const action = this._getInsertingAction(optionName);
     if (action) {
       const args = {
@@ -181,60 +180,60 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
         this._saveCustomFieldsDataToCache(GANTT_NEW_TASK_CACHE_KEY, args.values);
       }
     }
-  };
-  _proto.createTaskInsertingAction = function createTaskInsertingAction() {
+  }
+  createTaskInsertingAction() {
     this._taskInsertingAction = this._createActionByOption(Actions.onTaskInserting);
-  };
-  _proto.taskInsertingAction = function taskInsertingAction(args) {
+  }
+  taskInsertingAction(args) {
     const action = this._getTaskInsertingAction();
     action(args);
-  };
-  _proto._getTaskInsertingAction = function _getTaskInsertingAction() {
+  }
+  _getTaskInsertingAction() {
     if (!this._taskInsertingAction) {
       this.createTaskInsertingAction();
     }
     return this._taskInsertingAction;
-  };
-  _proto.createDependencyInsertingAction = function createDependencyInsertingAction() {
+  }
+  createDependencyInsertingAction() {
     this._dependencyInsertingAction = this._createActionByOption(Actions.onDependencyInserting);
-  };
-  _proto.dependencyInsertingAction = function dependencyInsertingAction(args) {
+  }
+  dependencyInsertingAction(args) {
     const action = this._getDependencyInsertingAction();
     action(args);
-  };
-  _proto._getDependencyInsertingAction = function _getDependencyInsertingAction() {
+  }
+  _getDependencyInsertingAction() {
     if (!this._dependencyInsertingAction) {
       this.createDependencyInsertingAction();
     }
     return this._dependencyInsertingAction;
-  };
-  _proto.createResourceInsertingAction = function createResourceInsertingAction() {
+  }
+  createResourceInsertingAction() {
     this._resourceInsertingAction = this._createActionByOption(Actions.onResourceInserting);
-  };
-  _proto.resourceInsertingAction = function resourceInsertingAction(args) {
+  }
+  resourceInsertingAction(args) {
     const action = this._getResourceInsertingAction();
     action(args);
-  };
-  _proto._getResourceInsertingAction = function _getResourceInsertingAction() {
+  }
+  _getResourceInsertingAction() {
     if (!this._resourceInsertingAction) {
       this.createResourceInsertingAction();
     }
     return this._resourceInsertingAction;
-  };
-  _proto.createResourceAssigningAction = function createResourceAssigningAction() {
+  }
+  createResourceAssigningAction() {
     this._resourceAssigningAction = this._createActionByOption(Actions.onResourceAssigning);
-  };
-  _proto.resourceAssigningAction = function resourceAssigningAction(args) {
+  }
+  resourceAssigningAction(args) {
     const action = this._getResourceAssigningAction();
     action(args);
-  };
-  _proto._getResourceAssigningAction = function _getResourceAssigningAction() {
+  }
+  _getResourceAssigningAction() {
     if (!this._resourceAssigningAction) {
       this.createResourceAssigningAction();
     }
     return this._resourceAssigningAction;
-  };
-  _proto._getInsertedAction = function _getInsertedAction(optionName) {
+  }
+  _getInsertedAction(optionName) {
     switch (optionName) {
       case GANTT_TASKS:
         return this._getTaskInsertedAction();
@@ -246,8 +245,8 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
         return this._getResourceAssignedAction();
     }
     return () => {};
-  };
-  _proto.raiseInsertedAction = function raiseInsertedAction(optionName, data, key) {
+  }
+  raiseInsertedAction(optionName, data, key) {
     const action = this._getInsertedAction(optionName);
     if (action) {
       const args = {
@@ -256,60 +255,60 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
       };
       action(args);
     }
-  };
-  _proto.createTaskInsertedAction = function createTaskInsertedAction() {
+  }
+  createTaskInsertedAction() {
     this._taskInsertedAction = this._createActionByOption(Actions.onTaskInserted);
-  };
-  _proto.taskInsertedAction = function taskInsertedAction(args) {
+  }
+  taskInsertedAction(args) {
     const action = this._getTaskInsertedAction();
     action(args);
-  };
-  _proto._getTaskInsertedAction = function _getTaskInsertedAction() {
+  }
+  _getTaskInsertedAction() {
     if (!this._taskInsertedAction) {
       this.createTaskInsertedAction();
     }
     return this._taskInsertedAction;
-  };
-  _proto.createDependencyInsertedAction = function createDependencyInsertedAction() {
+  }
+  createDependencyInsertedAction() {
     this._dependencyInsertedAction = this._createActionByOption(Actions.onDependencyInserted);
-  };
-  _proto.dependencyInsertedAction = function dependencyInsertedAction(args) {
+  }
+  dependencyInsertedAction(args) {
     const action = this._getDependencyInsertedAction();
     action(args);
-  };
-  _proto._getDependencyInsertedAction = function _getDependencyInsertedAction() {
+  }
+  _getDependencyInsertedAction() {
     if (!this._dependencyInsertedAction) {
       this.createDependencyInsertedAction();
     }
     return this._dependencyInsertedAction;
-  };
-  _proto.createResourceInsertedAction = function createResourceInsertedAction() {
+  }
+  createResourceInsertedAction() {
     this._resourceInsertedAction = this._createActionByOption(Actions.onResourceInserted);
-  };
-  _proto.resourceInsertedAction = function resourceInsertedAction(args) {
+  }
+  resourceInsertedAction(args) {
     const action = this._getResourceInsertedAction();
     action(args);
-  };
-  _proto._getResourceInsertedAction = function _getResourceInsertedAction() {
+  }
+  _getResourceInsertedAction() {
     if (!this._resourceInsertedAction) {
       this.createResourceInsertedAction();
     }
     return this._resourceInsertedAction;
-  };
-  _proto.createResourceAssignedAction = function createResourceAssignedAction() {
+  }
+  createResourceAssignedAction() {
     this._resourceAssignedAction = this._createActionByOption(Actions.onResourceAssigned);
-  };
-  _proto.resourceAssignedAction = function resourceAssignedAction(args) {
+  }
+  resourceAssignedAction(args) {
     const action = this._getResourceAssignedAction();
     action(args);
-  };
-  _proto._getResourceAssignedAction = function _getResourceAssignedAction() {
+  }
+  _getResourceAssignedAction() {
     if (!this._resourceAssignedAction) {
       this.createResourceAssignedAction();
     }
     return this._resourceAssignedAction;
-  };
-  _proto._getDeletingAction = function _getDeletingAction(optionName) {
+  }
+  _getDeletingAction(optionName) {
     switch (optionName) {
       case GANTT_TASKS:
         return this._getTaskDeletingAction();
@@ -321,8 +320,8 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
         return this._getResourceUnassigningAction();
     }
     return () => {};
-  };
-  _proto.raiseDeletingAction = function raiseDeletingAction(optionName, coreArgs) {
+  }
+  raiseDeletingAction(optionName, coreArgs) {
     const action = this._getDeletingAction(optionName);
     if (action) {
       const args = {
@@ -333,60 +332,60 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
       action(args);
       coreArgs.cancel = args.cancel;
     }
-  };
-  _proto.createTaskDeletingAction = function createTaskDeletingAction() {
+  }
+  createTaskDeletingAction() {
     this._taskDeletingAction = this._createActionByOption(Actions.onTaskDeleting);
-  };
-  _proto.taskDeletingAction = function taskDeletingAction(args) {
+  }
+  taskDeletingAction(args) {
     const action = this._getTaskDeletingAction();
     action(args);
-  };
-  _proto._getTaskDeletingAction = function _getTaskDeletingAction() {
+  }
+  _getTaskDeletingAction() {
     if (!this._taskDeletingAction) {
       this.createTaskDeletingAction();
     }
     return this._taskDeletingAction;
-  };
-  _proto.createDependencyDeletingAction = function createDependencyDeletingAction() {
+  }
+  createDependencyDeletingAction() {
     this._dependencyDeletingAction = this._createActionByOption(Actions.onDependencyDeleting);
-  };
-  _proto.dependencyDeletingAction = function dependencyDeletingAction(args) {
+  }
+  dependencyDeletingAction(args) {
     const action = this._getDependencyDeletingAction();
     action(args);
-  };
-  _proto._getDependencyDeletingAction = function _getDependencyDeletingAction() {
+  }
+  _getDependencyDeletingAction() {
     if (!this._dependencyDeletingAction) {
       this.createDependencyDeletingAction();
     }
     return this._dependencyDeletingAction;
-  };
-  _proto.createResourceDeletingAction = function createResourceDeletingAction() {
+  }
+  createResourceDeletingAction() {
     this._resourceDeletingAction = this._createActionByOption(Actions.onResourceDeleting);
-  };
-  _proto.resourceDeletingAction = function resourceDeletingAction(args) {
+  }
+  resourceDeletingAction(args) {
     const action = this._getResourceDeletingAction();
     action(args);
-  };
-  _proto._getResourceDeletingAction = function _getResourceDeletingAction() {
+  }
+  _getResourceDeletingAction() {
     if (!this._resourceDeletingAction) {
       this.createResourceDeletingAction();
     }
     return this._resourceDeletingAction;
-  };
-  _proto.createResourceUnassigningAction = function createResourceUnassigningAction() {
+  }
+  createResourceUnassigningAction() {
     this._resourceUnassigningAction = this._createActionByOption(Actions.onResourceUnassigning);
-  };
-  _proto.resourceUnassigningAction = function resourceUnassigningAction(args) {
+  }
+  resourceUnassigningAction(args) {
     const action = this._getResourceUnassigningAction();
     action(args);
-  };
-  _proto._getResourceUnassigningAction = function _getResourceUnassigningAction() {
+  }
+  _getResourceUnassigningAction() {
     if (!this._resourceUnassigningAction) {
       this.createResourceUnassigningAction();
     }
     return this._resourceUnassigningAction;
-  };
-  _proto._getDeletedAction = function _getDeletedAction(optionName) {
+  }
+  _getDeletedAction(optionName) {
     switch (optionName) {
       case GANTT_TASKS:
         return this._getTaskDeletedAction();
@@ -398,8 +397,8 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
         return this._getResourceUnassignedAction();
     }
     return () => {};
-  };
-  _proto.raiseDeletedAction = function raiseDeletedAction(optionName, key, data) {
+  }
+  raiseDeletedAction(optionName, key, data) {
     const action = this._getDeletedAction(optionName);
     if (action) {
       const args = {
@@ -408,67 +407,67 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
       };
       action(args);
     }
-  };
-  _proto.createTaskDeletedAction = function createTaskDeletedAction() {
+  }
+  createTaskDeletedAction() {
     this._taskDeletedAction = this._createActionByOption(Actions.onTaskDeleted);
-  };
-  _proto.taskDeletedAction = function taskDeletedAction(args) {
+  }
+  taskDeletedAction(args) {
     const action = this._getTaskDeletedAction();
     action(args);
-  };
-  _proto._getTaskDeletedAction = function _getTaskDeletedAction() {
+  }
+  _getTaskDeletedAction() {
     if (!this._taskDeletedAction) {
       this.createTaskDeletedAction();
     }
     return this._taskDeletedAction;
-  };
-  _proto.createDependencyDeletedAction = function createDependencyDeletedAction() {
+  }
+  createDependencyDeletedAction() {
     this._dependencyDeletedAction = this._createActionByOption(Actions.onDependencyDeleted);
-  };
-  _proto.dependencyDeletedAction = function dependencyDeletedAction(args) {
+  }
+  dependencyDeletedAction(args) {
     const action = this._getDependencyDeletedAction();
     action(args);
-  };
-  _proto._getDependencyDeletedAction = function _getDependencyDeletedAction() {
+  }
+  _getDependencyDeletedAction() {
     if (!this._dependencyDeletedAction) {
       this.createDependencyDeletedAction();
     }
     return this._dependencyDeletedAction;
-  };
-  _proto.createResourceDeletedAction = function createResourceDeletedAction() {
+  }
+  createResourceDeletedAction() {
     this._resourceDeletedAction = this._createActionByOption(Actions.onResourceDeleted);
-  };
-  _proto.resourceDeletedAction = function resourceDeletedAction(args) {
+  }
+  resourceDeletedAction(args) {
     const action = this._getResourceDeletedAction();
     action(args);
-  };
-  _proto._getResourceDeletedAction = function _getResourceDeletedAction() {
+  }
+  _getResourceDeletedAction() {
     if (!this._resourceDeletedAction) {
       this.createResourceDeletedAction();
     }
     return this._resourceDeletedAction;
-  };
-  _proto.createResourceUnassignedAction = function createResourceUnassignedAction() {
+  }
+  createResourceUnassignedAction() {
     this._resourceUnassignedAction = this._createActionByOption(Actions.onResourceUnassigned);
-  };
-  _proto.resourceUnassignedAction = function resourceUnassignedAction(args) {
+  }
+  resourceUnassignedAction(args) {
     const action = this._getResourceUnassignedAction();
     action(args);
-  };
-  _proto._getResourceUnassignedAction = function _getResourceUnassignedAction() {
+  }
+  _getResourceUnassignedAction() {
     if (!this._resourceUnassignedAction) {
       this.createResourceUnassignedAction();
     }
     return this._resourceUnassignedAction;
-  };
-  _proto._getUpdatingAction = function _getUpdatingAction(optionName) {
+  }
+  _getUpdatingAction(optionName) {
     switch (optionName) {
       case GANTT_TASKS:
         return this._getTaskUpdatingAction();
     }
     return () => {};
-  };
-  _proto.raiseUpdatingAction = function raiseUpdatingAction(optionName, coreArgs, action) {
+  }
+  raiseUpdatingAction(optionName, coreArgs, action) {
     action = action || this._getUpdatingAction(optionName);
     if (action) {
       const isTaskUpdating = optionName === GANTT_TASKS;
@@ -493,28 +492,28 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
         }
       }
     }
-  };
-  _proto.createTaskUpdatingAction = function createTaskUpdatingAction() {
+  }
+  createTaskUpdatingAction() {
     this._taskUpdatingAction = this._createActionByOption(Actions.onTaskUpdating);
-  };
-  _proto.taskUpdatingAction = function taskUpdatingAction(args) {
+  }
+  taskUpdatingAction(args) {
     const action = this._getTaskUpdatingAction();
     action(args);
-  };
-  _proto._getTaskUpdatingAction = function _getTaskUpdatingAction() {
+  }
+  _getTaskUpdatingAction() {
     if (!this._taskUpdatingAction) {
       this.createTaskUpdatingAction();
     }
     return this._taskUpdatingAction;
-  };
-  _proto._getUpdatedAction = function _getUpdatedAction(optionName) {
+  }
+  _getUpdatedAction(optionName) {
     switch (optionName) {
       case GANTT_TASKS:
         return this._getTaskUpdatedAction();
     }
     return () => {};
-  };
-  _proto.raiseUpdatedAction = function raiseUpdatedAction(optionName, data, key) {
+  }
+  raiseUpdatedAction(optionName, data, key) {
     const action = this._getUpdatedAction(optionName);
     if (action) {
       const args = {
@@ -523,34 +522,34 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
       };
       action(args);
     }
-  };
-  _proto.createTaskUpdatedAction = function createTaskUpdatedAction() {
+  }
+  createTaskUpdatedAction() {
     this._taskUpdatedAction = this._createActionByOption(Actions.onTaskUpdated);
-  };
-  _proto.taskUpdatedAction = function taskUpdatedAction(args) {
+  }
+  taskUpdatedAction(args) {
     const action = this._getTaskUpdatedAction();
     action(args);
-  };
-  _proto._getTaskUpdatedAction = function _getTaskUpdatedAction() {
+  }
+  _getTaskUpdatedAction() {
     if (!this._taskUpdatedAction) {
       this.createTaskUpdatedAction();
     }
     return this._taskUpdatedAction;
-  };
-  _proto.createTaskEditDialogShowingAction = function createTaskEditDialogShowingAction() {
+  }
+  createTaskEditDialogShowingAction() {
     this._taskEditDialogShowingAction = this._createActionByOption(Actions.onTaskEditDialogShowing);
-  };
-  _proto.taskEditDialogShowingAction = function taskEditDialogShowingAction(args) {
+  }
+  taskEditDialogShowingAction(args) {
     const action = this._getTaskEditDialogShowingAction();
     action(args);
-  };
-  _proto._getTaskEditDialogShowingAction = function _getTaskEditDialogShowingAction() {
+  }
+  _getTaskEditDialogShowingAction() {
     if (!this._taskEditDialogShowingAction) {
       this.createTaskEditDialogShowingAction();
     }
     return this._taskEditDialogShowingAction;
-  };
-  _proto.raiseTaskEditDialogShowingAction = function raiseTaskEditDialogShowingAction(coreArgs) {
+  }
+  raiseTaskEditDialogShowingAction(coreArgs) {
     const action = this._getTaskEditDialogShowingAction();
     if (action) {
       const args = {
@@ -566,21 +565,21 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
       coreArgs.readOnlyFields = this._convertMappedToCoreFields(GANTT_TASKS, args.readOnlyFields);
       coreArgs.hiddenFields = this._convertMappedToCoreFields(GANTT_TASKS, args.hiddenFields);
     }
-  };
-  _proto.createResourceManagerDialogShowingAction = function createResourceManagerDialogShowingAction() {
+  }
+  createResourceManagerDialogShowingAction() {
     this._resourceManagerDialogShowingAction = this._createActionByOption(Actions.onResourceManagerDialogShowing);
-  };
-  _proto.resourceManagerDialogShowingAction = function resourceManagerDialogShowingAction(args) {
+  }
+  resourceManagerDialogShowingAction(args) {
     const action = this._getResourceManagerDialogShowingAction();
     action(args);
-  };
-  _proto._getResourceManagerDialogShowingAction = function _getResourceManagerDialogShowingAction() {
+  }
+  _getResourceManagerDialogShowingAction() {
     if (!this._resourceManagerDialogShowingAction) {
       this.createResourceManagerDialogShowingAction();
     }
     return this._resourceManagerDialogShowingAction;
-  };
-  _proto.raiseResourceManagerDialogShowingAction = function raiseResourceManagerDialogShowingAction(coreArgs) {
+  }
+  raiseResourceManagerDialogShowingAction(coreArgs) {
     const action = this._getResourceManagerDialogShowingAction();
     if (action) {
       const mappedResources = coreArgs.values.resources.items.map(r => this._convertMappedToCoreData(GANTT_RESOURCES, r));
@@ -591,30 +590,30 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
       action(args);
       coreArgs.cancel = args.cancel;
     }
-  };
-  _proto.createTaskMovingAction = function createTaskMovingAction() {
+  }
+  createTaskMovingAction() {
     this._taskMovingAction = this._createActionByOption(Actions.onTaskMoving);
-  };
-  _proto.taskMovingAction = function taskMovingAction(args) {
+  }
+  taskMovingAction(args) {
     const action = this.getTaskMovingAction();
     action(args);
-  };
-  _proto.getTaskMovingAction = function getTaskMovingAction() {
+  }
+  getTaskMovingAction() {
     if (!this._taskMovingAction) {
       this.createTaskMovingAction();
     }
     return this._taskMovingAction;
-  };
-  _proto.getScaleCellPreparedAction = function getScaleCellPreparedAction() {
+  }
+  getScaleCellPreparedAction() {
     if (!this._scaleCellPreparedAction) {
       this.createScaleCellPreparedAction();
     }
     return this._scaleCellPreparedAction;
-  };
-  _proto.createScaleCellPreparedAction = function createScaleCellPreparedAction() {
+  }
+  createScaleCellPreparedAction() {
     this._scaleCellPreparedAction = this._createActionByOption(Actions.onScaleCellPrepared);
-  };
-  _proto.raiseScaleCellPreparedAction = function raiseScaleCellPreparedAction(data) {
+  }
+  raiseScaleCellPreparedAction(data) {
     const action = this.getScaleCellPreparedAction();
     if (action) {
       const args = {
@@ -627,8 +626,8 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
       };
       action(args);
     }
-  };
-  _proto._getScaleType = function _getScaleType(viewType) {
+  }
+  _getScaleType(viewType) {
     switch (viewType) {
       case 0:
         return 'minutes';
@@ -651,6 +650,6 @@ let GanttActionsManager = exports.GanttActionsManager = /*#__PURE__*/function ()
       default:
         return undefined;
     }
-  };
-  return GanttActionsManager;
-}();
+  }
+}
+exports.GanttActionsManager = GanttActionsManager;

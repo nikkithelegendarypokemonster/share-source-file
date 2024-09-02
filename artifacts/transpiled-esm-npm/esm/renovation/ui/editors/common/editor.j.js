@@ -3,7 +3,7 @@ import EditorWrapperComponent from '../../../component_wrapper/editors/editor';
 import { Editor as EditorComponent, defaultOptions } from './editor';
 export default class Editor extends EditorWrapperComponent {
   getProps() {
-    var props = super.getProps();
+    const props = super.getProps();
     props.onKeyDown = this._wrapKeyDownHandler(props.onKeyDown);
     return props;
   }

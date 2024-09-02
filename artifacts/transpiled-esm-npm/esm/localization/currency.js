@@ -1,23 +1,23 @@
 import { extend } from '../core/utils/extend';
 export default {
-  _formatNumberCore: function _formatNumberCore(value, format, formatConfig) {
+  _formatNumberCore: function (value, format, formatConfig) {
     if (format === 'currency') {
       formatConfig.precision = formatConfig.precision || 0;
-      var result = this.format(value, extend({}, formatConfig, {
+      let result = this.format(value, extend({}, formatConfig, {
         type: 'fixedpoint'
       }));
-      var currencyPart = this.getCurrencySymbol().symbol.replace(/\$/g, '$$$$');
+      const currencyPart = this.getCurrencySymbol().symbol.replace(/\$/g, '$$$$');
       result = result.replace(/^(\D*)(\d.*)/, '$1' + currencyPart + '$2');
       return result;
     }
     return this.callBase.apply(this, arguments);
   },
-  getCurrencySymbol: function getCurrencySymbol() {
+  getCurrencySymbol: function () {
     return {
       symbol: '$'
     };
   },
-  getOpenXmlCurrencyFormat: function getOpenXmlCurrencyFormat() {
+  getOpenXmlCurrencyFormat: function () {
     return '$#,##0{0}_);\\($#,##0{0}\\)';
   }
 };

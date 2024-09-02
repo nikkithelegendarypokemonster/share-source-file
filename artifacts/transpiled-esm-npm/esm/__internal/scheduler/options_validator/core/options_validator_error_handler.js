@@ -7,16 +7,16 @@ export class OptionsValidatorErrorHandler {
     if (optionsValidatorResult === true) {
       return;
     }
-    var uniqErrorCodes = Object.keys(optionsValidatorResult).reduce((set, validatorName) => {
-      var errorCode = this.validatorNameToErrorCodeMap[validatorName];
+    const uniqErrorCodes = Object.keys(optionsValidatorResult).reduce((set, validatorName) => {
+      const errorCode = this.validatorNameToErrorCodeMap[validatorName];
       if (errorCode) {
         set.add(errorCode);
       }
       return set;
     }, new Set());
-    var errorCodeArray = [...uniqErrorCodes];
+    const errorCodeArray = [...uniqErrorCodes];
     errorCodeArray.forEach((errorCode, idx) => {
-      var isLastErrorCode = idx === errorCodeArray.length - 1;
+      const isLastErrorCode = idx === errorCodeArray.length - 1;
       // NOTE: For stopping code stack execution and not creating
       // the special error code for this case,
       // we log all errors and throw the last one.

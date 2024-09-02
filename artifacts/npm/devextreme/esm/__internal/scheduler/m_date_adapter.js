@@ -1,13 +1,13 @@
 /**
 * DevExtreme (esm/__internal/scheduler/m_date_adapter.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import dateUtils from '../../core/utils/date';
-var toMs = dateUtils.dateToMilliseconds;
+const toMs = dateUtils.dateToMilliseconds;
 class DateAdapterCore {
   constructor(source) {
     this._source = new Date(source.getTime ? source.getTime() : source);
@@ -19,8 +19,8 @@ class DateAdapterCore {
     return this._source;
   }
   getTimezoneOffset() {
-    var format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-    var value = this._source.getTimezoneOffset();
+    let format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+    const value = this._source.getTimezoneOffset();
     if (format === 'minute') {
       return value * toMs('minute');
     }
@@ -50,5 +50,5 @@ class DateAdapterCore {
     return this;
   }
 }
-var DateAdapter = date => new DateAdapterCore(date);
+const DateAdapter = date => new DateAdapterCore(date);
 export default DateAdapter;

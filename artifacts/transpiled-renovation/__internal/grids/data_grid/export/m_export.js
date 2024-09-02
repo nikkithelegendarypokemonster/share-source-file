@@ -18,9 +18,7 @@ var _ui = _interopRequireDefault(require("../../../../ui/widget/ui.errors"));
 var _m_export = require("../../../grids/grid_core/m_export");
 var _m_core = _interopRequireDefault(require("../m_core"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); } /* eslint-disable max-classes-per-file */
 const DATAGRID_EXPORT_MENU_CLASS = 'dx-datagrid-export-menu';
 const DATAGRID_EXPORT_BUTTON_CLASS = 'dx-datagrid-export-button';
 const DATAGRID_EXPORT_TOOLBAR_BUTTON_NAME = 'exportButton';
@@ -28,14 +26,13 @@ const DATAGRID_EXPORT_ICON = 'export';
 const DATAGRID_EXPORT_EXCEL_ICON = 'xlsxfile';
 const DATAGRID_EXPORT_SELECTED_ICON = 'exportselected';
 const DATAGRID_PDF_EXPORT_ICON = 'pdffile';
-let DataProvider = exports.DataProvider = /*#__PURE__*/function () {
-  function DataProvider(exportController, initialColumnWidthsByColumnIndex, selectedRowsOnly) {
+class DataProvider {
+  constructor(exportController, initialColumnWidthsByColumnIndex, selectedRowsOnly) {
     this._exportController = exportController;
     this._initialColumnWidthsByColumnIndex = initialColumnWidthsByColumnIndex;
     this._selectedRowsOnly = selectedRowsOnly;
   }
-  var _proto = DataProvider.prototype;
-  _proto._getGroupValue = function _getGroupValue(item) {
+  _getGroupValue(item) {
     const {
       key,
       data,
@@ -45,16 +42,16 @@ let DataProvider = exports.DataProvider = /*#__PURE__*/function () {
     } = item;
     const groupColumn = this._options.groupColumns[groupIndex];
     const value = _m_core.default.getDisplayValue(groupColumn, groupColumn.deserializeValue ? groupColumn.deserializeValue(key[groupIndex]) : key[groupIndex], data, rowType);
-    let result = "".concat(groupColumn.caption, ": ").concat(_m_core.default.formatValue(value, groupColumn));
+    let result = `${groupColumn.caption}: ${_m_core.default.formatValue(value, groupColumn)}`;
     if (summaryCells && summaryCells[0] && summaryCells[0].length) {
-      result += " ".concat(_m_core.default.getGroupRowSummaryText(summaryCells[0], this._options.summaryTexts));
+      result += ` ${_m_core.default.getGroupRowSummaryText(summaryCells[0], this._options.summaryTexts)}`;
     }
     return result;
-  };
-  _proto._correctCellIndex = function _correctCellIndex(cellIndex) {
+  }
+  _correctCellIndex(cellIndex) {
     return cellIndex;
-  };
-  _proto._initOptions = function _initOptions() {
+  }
+  _initOptions() {
     const exportController = this._exportController;
     const groupColumns = exportController._columnsController.getGroupColumns();
     this._options = {
@@ -65,8 +62,8 @@ let DataProvider = exports.DataProvider = /*#__PURE__*/function () {
       summaryTexts: exportController.option('summary.texts'),
       rtlEnabled: exportController.option('rtlEnabled')
     };
-  };
-  _proto.getHeaderStyles = function getHeaderStyles() {
+  }
+  getHeaderStyles() {
     return [{
       bold: true,
       alignment: 'center'
@@ -77,14 +74,14 @@ let DataProvider = exports.DataProvider = /*#__PURE__*/function () {
       bold: true,
       alignment: 'right'
     }];
-  };
-  _proto.getGroupRowStyle = function getGroupRowStyle() {
+  }
+  getGroupRowStyle() {
     return {
       bold: true,
       alignment: (0, _position.getDefaultAlignment)(this._options.rtlEnabled)
     };
-  };
-  _proto.getColumnStyles = function getColumnStyles() {
+  }
+  getColumnStyles() {
     const columnStyles = [];
     this.getColumns().forEach(column => {
       columnStyles.push({
@@ -94,16 +91,16 @@ let DataProvider = exports.DataProvider = /*#__PURE__*/function () {
       });
     });
     return columnStyles;
-  };
-  _proto.getStyles = function getStyles() {
+  }
+  getStyles() {
     return [...this.getHeaderStyles(), ...this.getColumnStyles(), this.getGroupRowStyle()];
-  };
-  _proto._getTotalCellStyleId = function _getTotalCellStyleId(cellIndex) {
-    var _a;
-    const alignment = ((_a = this.getColumns()[cellIndex]) === null || _a === void 0 ? void 0 : _a.alignment) || 'right';
+  }
+  _getTotalCellStyleId(cellIndex) {
+    var _this$getColumns$cell;
+    const alignment = ((_this$getColumns$cell = this.getColumns()[cellIndex]) === null || _this$getColumns$cell === void 0 ? void 0 : _this$getColumns$cell.alignment) || 'right';
     return this.getHeaderStyles().map(style => style.alignment).indexOf(alignment);
-  };
-  _proto.getStyleId = function getStyleId(rowIndex, cellIndex) {
+  }
+  getStyleId(rowIndex, cellIndex) {
     if (rowIndex < this.getHeaderRowCount()) {
       return 0;
     }
@@ -114,38 +111,38 @@ let DataProvider = exports.DataProvider = /*#__PURE__*/function () {
       return this.getHeaderStyles().length + this.getColumns().length;
     }
     return cellIndex + this.getHeaderStyles().length;
-  };
-  _proto.getColumns = function getColumns(getColumnsByAllRows) {
+  }
+  getColumns(getColumnsByAllRows) {
     const {
       columns
     } = this._options;
     return getColumnsByAllRows ? columns : columns[columns.length - 1];
-  };
-  _proto.getColumnsWidths = function getColumnsWidths() {
+  }
+  getColumnsWidths() {
     const columns = this.getColumns();
     return (0, _type.isDefined)(columns) ? columns.map(c => c.width) : undefined;
-  };
-  _proto.getRowsCount = function getRowsCount() {
+  }
+  getRowsCount() {
     return this._options.items.length + this.getHeaderRowCount();
-  };
-  _proto.getHeaderRowCount = function getHeaderRowCount() {
+  }
+  getHeaderRowCount() {
     if (this.isHeadersVisible()) {
       return this._options.columns.length - 1;
     }
     return 0;
-  };
-  _proto.isGroupRow = function isGroupRow(rowIndex) {
+  }
+  isGroupRow(rowIndex) {
     return rowIndex < this._options.items.length && this._options.items[rowIndex].rowType === 'group';
-  };
-  _proto.getGroupLevel = function getGroupLevel(rowIndex) {
+  }
+  getGroupLevel(rowIndex) {
     const item = this._options.items[rowIndex - this.getHeaderRowCount()];
     const groupIndex = item && item.groupIndex;
     if (item && item.rowType === 'totalFooter') {
       return 0;
     }
     return (0, _type.isDefined)(groupIndex) ? groupIndex : this._options.groupColumns.length;
-  };
-  _proto.getCellType = function getCellType(rowIndex, cellIndex) {
+  }
+  getCellType(rowIndex, cellIndex) {
     const columns = this.getColumns();
     if (rowIndex < this.getHeaderRowCount()) {
       return 'string';
@@ -161,8 +158,8 @@ let DataProvider = exports.DataProvider = /*#__PURE__*/function () {
       }
       return 'string';
     }
-  };
-  _proto.ready = function ready() {
+  }
+  ready() {
     const that = this;
     that._initOptions();
     const options = that._options;
@@ -171,16 +168,16 @@ let DataProvider = exports.DataProvider = /*#__PURE__*/function () {
     }).fail(() => {
       options.items = [];
     });
-  };
-  _proto._convertFromGridGroupSummaryItems = function _convertFromGridGroupSummaryItems(gridGroupSummaryItems) {
+  }
+  _convertFromGridGroupSummaryItems(gridGroupSummaryItems) {
     if ((0, _type.isDefined)(gridGroupSummaryItems) && gridGroupSummaryItems.length > 0) {
       return gridGroupSummaryItems.map(item => ({
         value: item.value,
         name: item.name
       }));
     }
-  };
-  _proto.getCellData = function getCellData(rowIndex, cellIndex, isExcelJS) {
+  }
+  getCellData(rowIndex, cellIndex, isExcelJS) {
     let value;
     let column;
     const result = {
@@ -259,11 +256,11 @@ let DataProvider = exports.DataProvider = /*#__PURE__*/function () {
       }
     }
     return result;
-  };
-  _proto.isHeadersVisible = function isHeadersVisible() {
+  }
+  isHeadersVisible() {
     return this._options.isHeadersVisible;
-  };
-  _proto.isTotalCell = function isTotalCell(rowIndex, cellIndex) {
+  }
+  isTotalCell(rowIndex, cellIndex) {
     const {
       items
     } = this._options;
@@ -271,8 +268,8 @@ let DataProvider = exports.DataProvider = /*#__PURE__*/function () {
     const correctCellIndex = this._correctCellIndex(cellIndex);
     const isSummaryAlignByColumn = item.summaryCells && item.summaryCells[correctCellIndex] && item.summaryCells[correctCellIndex].length > 0 && item.summaryCells[correctCellIndex][0].alignByColumn;
     return item && item.rowType === 'groupFooter' || item.rowType === 'totalFooter' || isSummaryAlignByColumn;
-  };
-  _proto.getCellMerging = function getCellMerging(rowIndex, cellIndex) {
+  }
+  getCellMerging(rowIndex, cellIndex) {
     const {
       columns
     } = this._options;
@@ -284,23 +281,18 @@ let DataProvider = exports.DataProvider = /*#__PURE__*/function () {
       colspan: 0,
       rowspan: 0
     };
-  };
-  _proto.getFrozenArea = function getFrozenArea() {
+  }
+  getFrozenArea() {
     const that = this;
     return {
       x: 0,
       y: that.getHeaderRowCount()
     };
-  };
-  return DataProvider;
-}();
-let ExportController = exports.ExportController = /*#__PURE__*/function (_dataGridCore$ViewCon) {
-  _inheritsLoose(ExportController, _dataGridCore$ViewCon);
-  function ExportController() {
-    return _dataGridCore$ViewCon.apply(this, arguments) || this;
   }
-  var _proto2 = ExportController.prototype;
-  _proto2.init = function init() {
+}
+exports.DataProvider = DataProvider;
+class ExportController extends _m_core.default.ViewController {
+  init() {
     this.throwWarningIfNoOnExportingEvent();
     this._columnsController = this.getController('columns');
     this._dataController = this.getController('data');
@@ -310,8 +302,8 @@ let ExportController = exports.ExportController = /*#__PURE__*/function (_dataGr
     this.createAction('onExporting', {
       excludeValidators: ['disabled', 'readOnly']
     });
-  };
-  _proto2._getEmptyCell = function _getEmptyCell() {
+  }
+  _getEmptyCell() {
     return {
       caption: '',
       colspan: 1,
@@ -320,11 +312,11 @@ let ExportController = exports.ExportController = /*#__PURE__*/function (_dataGr
   }
   /**
    * @extended: adaptivity
-   */;
-  _proto2._updateColumnWidth = function _updateColumnWidth(column, width) {
+   */
+  _updateColumnWidth(column, width) {
     column.width = width;
-  };
-  _proto2._getColumns = function _getColumns(initialColumnWidthsByColumnIndex) {
+  }
+  _getColumns(initialColumnWidthsByColumnIndex) {
     let result = [];
     let i;
     let columns;
@@ -369,8 +361,8 @@ let ExportController = exports.ExportController = /*#__PURE__*/function (_dataGr
     result = (0, _m_export.prepareItems)(result.slice(0, -1), this._getEmptyCell());
     result.push(columns);
     return result;
-  };
-  _proto2._calculateExportColspan = function _calculateExportColspan(column) {
+  }
+  _calculateExportColspan(column) {
     if (!column.isBand) {
       return;
     }
@@ -384,11 +376,11 @@ let ExportController = exports.ExportController = /*#__PURE__*/function (_dataGr
       }
       return result;
     }, 0);
-  };
-  _proto2._needColumnExporting = function _needColumnExporting(column) {
+  }
+  _needColumnExporting(column) {
     return !column.command && (column.allowExporting || column.allowExporting === undefined);
-  };
-  _proto2._getFooterSummaryItems = function _getFooterSummaryItems(summaryCells, isTotal) {
+  }
+  _getFooterSummaryItems(summaryCells, isTotal) {
     const result = [];
     let estimatedItemsCount = 1;
     let i = 0;
@@ -408,8 +400,8 @@ let ExportController = exports.ExportController = /*#__PURE__*/function (_dataGr
       });
     } while (i++ < estimatedItemsCount - 1);
     return result;
-  };
-  _proto2._hasSummaryGroupFooters = function _hasSummaryGroupFooters() {
+  }
+  _hasSummaryGroupFooters() {
     const groupItems = this.option('summary.groupItems');
     if ((0, _type.isDefined)(groupItems)) {
       for (let i = 0; i < groupItems.length; i++) {
@@ -419,8 +411,8 @@ let ExportController = exports.ExportController = /*#__PURE__*/function (_dataGr
       }
     }
     return false;
-  };
-  _proto2._getItemsWithSummaryGroupFooters = function _getItemsWithSummaryGroupFooters(sourceItems) {
+  }
+  _getItemsWithSummaryGroupFooters(sourceItems) {
     let result = [];
     let beforeGroupFooterItems = [];
     let groupFooterItems = [];
@@ -435,8 +427,8 @@ let ExportController = exports.ExportController = /*#__PURE__*/function (_dataGr
       }
     }
     return result.length ? result : beforeGroupFooterItems;
-  };
-  _proto2._updateGroupValuesWithSummaryByColumn = function _updateGroupValuesWithSummaryByColumn(sourceItems) {
+  }
+  _updateGroupValuesWithSummaryByColumn(sourceItems) {
     let summaryValues = [];
     for (let i = 0; i < sourceItems.length; i++) {
       const item = sourceItems[i];
@@ -462,8 +454,8 @@ let ExportController = exports.ExportController = /*#__PURE__*/function (_dataGr
         }
       }
     }
-  };
-  _proto2._processUnExportedItems = function _processUnExportedItems(items) {
+  }
+  _processUnExportedItems(items) {
     const columns = this._columnsController.getVisibleColumns(null, true);
     const groupColumns = this._columnsController.getGroupColumns();
     let values;
@@ -501,8 +493,8 @@ let ExportController = exports.ExportController = /*#__PURE__*/function (_dataGr
         item.summaryCells = summaryCells;
       }
     }
-  };
-  _proto2._getAllItems = function _getAllItems(data) {
+  }
+  _getAllItems(data) {
     let skipFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     const that = this;
     // @ts-expect-error
@@ -531,33 +523,33 @@ let ExportController = exports.ExportController = /*#__PURE__*/function (_dataGr
       }).fail(d.reject);
     }).fail(d.reject);
     return d;
-  };
-  _proto2._getSummaryCells = function _getSummaryCells(summaryTotalItems, totalAggregates) {
+  }
+  _getSummaryCells(summaryTotalItems, totalAggregates) {
     // @ts-expect-error
     return this._dataController._calculateSummaryCells(summaryTotalItems, totalAggregates, this._columnsController.getVisibleColumns(null, true),
     // @ts-expect-error
     (summaryItem, column) => this._dataController._isDataColumn(column) ? column.index : -1);
-  };
-  _proto2._getSelectedItems = function _getSelectedItems() {
+  }
+  _getSelectedItems() {
     if (this.needLoadItemsOnExportingSelectedItems()) {
       return this._getAllItems(this._selectionController.loadSelectedItemsWithFilter(), true);
     }
     return this._getAllItems(this._selectionController.getSelectedRowsData());
-  };
-  _proto2._getColumnWidths = function _getColumnWidths(headersView, rowsView) {
+  }
+  _getColumnWidths(headersView, rowsView) {
     return headersView && headersView.isVisible() ? headersView.getColumnWidths() : rowsView.getColumnWidths();
-  };
-  _proto2.throwWarningIfNoOnExportingEvent = function throwWarningIfNoOnExportingEvent() {
-    var _a, _b;
-    const hasOnExporting = (_b = (_a = this.component).hasActionSubscription) === null || _b === void 0 ? void 0 : _b.call(_a, 'onExporting');
+  }
+  throwWarningIfNoOnExportingEvent() {
+    var _this$component$hasAc, _this$component;
+    const hasOnExporting = (_this$component$hasAc = (_this$component = this.component).hasActionSubscription) === null || _this$component$hasAc === void 0 ? void 0 : _this$component$hasAc.call(_this$component, 'onExporting');
     if (this.option('export.enabled') && !hasOnExporting) {
       _ui.default.log('W1024');
     }
-  };
-  _proto2.callbackNames = function callbackNames() {
+  }
+  callbackNames() {
     return ['selectionOnlyChanged'];
-  };
-  _proto2.getDataProvider = function getDataProvider(selectedRowsOnly) {
+  }
+  getDataProvider(selectedRowsOnly) {
     const columnWidths = this._getColumnWidths(this._headersView, this._rowsView);
     let initialColumnWidthsByColumnIndex;
     if (columnWidths && columnWidths.length) {
@@ -568,8 +560,8 @@ let ExportController = exports.ExportController = /*#__PURE__*/function (_dataGr
       }
     }
     return new DataProvider(this, initialColumnWidthsByColumnIndex, selectedRowsOnly);
-  };
-  _proto2.exportTo = function exportTo(selectedRowsOnly, format) {
+  }
+  exportTo(selectedRowsOnly, format) {
     this._selectionOnly = selectedRowsOnly;
     const onExporting = this.getAction('onExporting');
     const eventArgs = {
@@ -580,64 +572,52 @@ let ExportController = exports.ExportController = /*#__PURE__*/function (_dataGr
       cancel: false
     };
     (0, _type.isFunction)(onExporting) && onExporting(eventArgs);
-  };
-  _proto2.publicMethods = function publicMethods() {
+  }
+  publicMethods() {
     return ['getDataProvider'];
-  };
-  _proto2.selectionOnly = function selectionOnly(value) {
+  }
+  selectionOnly(value) {
     if ((0, _type.isDefined)(value)) {
       this._isSelectedRows = value;
       this.selectionOnlyChanged.fire();
     } else {
       return this._isSelectedRows;
     }
-  };
-  _proto2.optionChanged = function optionChanged(args) {
-    _dataGridCore$ViewCon.prototype.optionChanged.call(this, args);
+  }
+  optionChanged(args) {
+    super.optionChanged(args);
     if (args.name === 'export') {
       this.throwWarningIfNoOnExportingEvent();
     }
-  };
-  _proto2.needLoadItemsOnExportingSelectedItems = function needLoadItemsOnExportingSelectedItems() {
-    var _a;
-    return (_a = this.option('loadItemsOnExportingSelectedItems')) !== null && _a !== void 0 ? _a : this._dataController._dataSource.remoteOperations().filtering;
-  };
-  return ExportController;
-}(_m_core.default.ViewController);
-const editing = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(ExportEditingControllerExtender, _Base);
-  function ExportEditingControllerExtender() {
-    return _Base.apply(this, arguments) || this;
   }
-  var _proto3 = ExportEditingControllerExtender.prototype;
+  needLoadItemsOnExportingSelectedItems() {
+    return this.option('loadItemsOnExportingSelectedItems') ?? this._dataController._dataSource.remoteOperations().filtering;
+  }
+}
+exports.ExportController = ExportController;
+const editing = Base => class ExportEditingControllerExtender extends Base {
   // @ts-expect-error
-  _proto3.callbackNames = function callbackNames() {
-    const callbackList = _Base.prototype.callbackNames.call(this);
+  callbackNames() {
+    const callbackList = super.callbackNames();
     return (0, _type.isDefined)(callbackList) ? callbackList.push('editingButtonsUpdated') : ['editingButtonsUpdated'];
-  };
-  _proto3._updateEditButtons = function _updateEditButtons() {
-    _Base.prototype._updateEditButtons.call(this);
+  }
+  _updateEditButtons() {
+    super._updateEditButtons();
     // @ts-expect-error
     this.editingButtonsUpdated.fire();
-  };
-  return ExportEditingControllerExtender;
-}(Base);
-const headerPanel = Base => /*#__PURE__*/function (_Base2) {
-  _inheritsLoose(ExportHeaderPanelExtender, _Base2);
-  function ExportHeaderPanelExtender() {
-    return _Base2.apply(this, arguments) || this;
   }
-  var _proto4 = ExportHeaderPanelExtender.prototype;
-  _proto4._getToolbarItems = function _getToolbarItems() {
-    const items = _Base2.prototype._getToolbarItems.call(this);
+};
+const headerPanel = Base => class ExportHeaderPanelExtender extends Base {
+  _getToolbarItems() {
+    const items = super._getToolbarItems();
     const exportButton = this._getExportToolbarButton();
     if (exportButton) {
       items.push(exportButton);
       this._correctItemsPosition(items);
     }
     return items;
-  };
-  _proto4._getExportToolbarButton = function _getExportToolbarButton() {
+  }
+  _getExportToolbarButton() {
     const items = this._getExportToolbarItems();
     if (items.length === 0) {
       return null;
@@ -654,7 +634,7 @@ const headerPanel = Base => /*#__PURE__*/function (_Base2) {
       disabled
     };
     if (items.length === 1) {
-      const widgetOptions = _extends(_extends({}, items[0]), {
+      const widgetOptions = _extends({}, items[0], {
         hint: items[0].text,
         elementAttr: {
           class: DATAGRID_EXPORT_BUTTON_CLASS
@@ -686,12 +666,11 @@ const headerPanel = Base => /*#__PURE__*/function (_Base2) {
       };
     }
     return toolbarButtonOptions;
-  };
-  _proto4._getExportToolbarItems = function _getExportToolbarItems() {
-    var _a;
+  }
+  _getExportToolbarItems() {
     const exportOptions = this.option('export');
     const texts = this.option('export.texts');
-    const formats = (_a = this.option('export.formats')) !== null && _a !== void 0 ? _a : [];
+    const formats = this.option('export.formats') ?? [];
     if (!exportOptions.enabled) {
       return [];
     }
@@ -725,48 +704,47 @@ const headerPanel = Base => /*#__PURE__*/function (_Base2) {
       }
     });
     return items;
-  };
-  _proto4._correctItemsPosition = function _correctItemsPosition(items) {
+  }
+  _correctItemsPosition(items) {
     items.sort((itemA, itemB) => itemA.sortIndex - itemB.sortIndex);
-  };
-  _proto4._isExportButtonVisible = function _isExportButtonVisible() {
+  }
+  _isExportButtonVisible() {
     return this.option('export.enabled');
-  };
-  _proto4.optionChanged = function optionChanged(args) {
-    _Base2.prototype.optionChanged.call(this, args);
+  }
+  optionChanged(args) {
+    super.optionChanged(args);
     if (args.name === 'export') {
       args.handled = true;
       this._invalidate();
     }
-  };
-  _proto4._needDisableExportButton = function _needDisableExportButton() {
+  }
+  _needDisableExportButton() {
     const isDataColumnsInvisible = !this._columnsController.hasVisibleDataColumns();
     const hasUnsavedChanges = this._editingController.hasChanges();
     return isDataColumnsInvisible || hasUnsavedChanges;
-  };
-  _proto4._columnOptionChanged = function _columnOptionChanged(e) {
+  }
+  _columnOptionChanged(e) {
     // @ts-expect-error
-    _Base2.prototype._columnOptionChanged.call(this, e);
+    super._columnOptionChanged(e);
     const isColumnLocationChanged = _m_core.default.checkChanges(e.optionNames, ['groupIndex', 'visible', 'all']);
     if (isColumnLocationChanged) {
       const disabled = this._needDisableExportButton();
       this.setToolbarItemDisabled('exportButton', disabled);
     }
-  };
-  _proto4.init = function init() {
-    _Base2.prototype.init.call(this);
+  }
+  init() {
+    super.init();
     this._exportController = this.getController('export');
     // @ts-expect-error
     this._editingController.editingButtonsUpdated.add(() => {
       const disabled = this._needDisableExportButton();
       this.setToolbarItemDisabled('exportButton', disabled);
     });
-  };
-  _proto4.isVisible = function isVisible() {
-    return _Base2.prototype.isVisible.call(this) || this._isExportButtonVisible();
-  };
-  return ExportHeaderPanelExtender;
-}(Base);
+  }
+  isVisible() {
+    return super.isVisible() || this._isExportButtonVisible();
+  }
+};
 _m_core.default.registerModule('export', {
   defaultOptions() {
     return {

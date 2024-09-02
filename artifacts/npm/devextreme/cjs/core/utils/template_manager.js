@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/utils/template_manager.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -27,7 +27,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const findTemplates = (element, name) => {
   const optionsAttributeName = 'data-options';
-  const templates = (0, _renderer.default)(element).contents().filter("[".concat(optionsAttributeName, "*=\"").concat(name, "\"]"));
+  const templates = (0, _renderer.default)(element).contents().filter(`[${optionsAttributeName}*="${name}"]`);
   return [].slice.call(templates).map(element => {
     const optionsString = (0, _renderer.default)(element).attr(optionsAttributeName) || '';
     return {

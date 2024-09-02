@@ -5,19 +5,19 @@ import { extend } from './utils/extend';
 import { FunctionTemplate } from './templates/function_template';
 import { EmptyTemplate } from './templates/empty_template';
 import { findTemplates, suitableTemplatesByName, templateKey, getNormalizedTemplateArgs, validateTemplateSource, defaultCreateElement, acquireTemplate } from './utils/template_manager';
-var TEXT_NODE = 3;
-var ANONYMOUS_TEMPLATE_NAME = 'template';
-var TEMPLATE_OPTIONS_NAME = 'dxTemplate';
-var TEMPLATE_WRAPPER_CLASS = 'dx-template-wrapper';
-var DX_POLYMORPH_WIDGET_TEMPLATE = new FunctionTemplate(_ref => {
-  var {
+const TEXT_NODE = 3;
+const ANONYMOUS_TEMPLATE_NAME = 'template';
+const TEMPLATE_OPTIONS_NAME = 'dxTemplate';
+const TEMPLATE_WRAPPER_CLASS = 'dx-template-wrapper';
+const DX_POLYMORPH_WIDGET_TEMPLATE = new FunctionTemplate(_ref => {
+  let {
     model,
     parent
   } = _ref;
-  var widgetName = model.widget;
+  const widgetName = model.widget;
   if (!widgetName) return $();
-  var widgetElement = $('<div>');
-  var widgetOptions = model.options || {};
+  const widgetElement = $('<div>');
+  const widgetOptions = model.options || {};
   if (parent) {
     parent._createComponent(widgetElement, widgetName, widgetOptions);
   } else {
@@ -36,8 +36,8 @@ export class TemplateManager {
   static createDefaultOptions() {
     return {
       integrationOptions: {
-        watchMethod: function watchMethod(fn, callback) {
-          var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+        watchMethod: function (fn, callback) {
+          let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
           if (!options.skipImmediate) {
             callback(fn());
           }
@@ -63,18 +63,18 @@ export class TemplateManager {
     this._tempTemplates = [];
   }
   extractTemplates($el) {
-    var templates = this._extractTemplates($el);
-    var anonymousTemplateMeta = this._extractAnonymousTemplate($el);
+    const templates = this._extractTemplates($el);
+    const anonymousTemplateMeta = this._extractAnonymousTemplate($el);
     return {
       templates,
       anonymousTemplateMeta
     };
   }
   _extractTemplates($el) {
-    var templates = findTemplates($el, TEMPLATE_OPTIONS_NAME);
-    var suitableTemplates = suitableTemplatesByName(templates);
+    const templates = findTemplates($el, TEMPLATE_OPTIONS_NAME);
+    const suitableTemplates = suitableTemplatesByName(templates);
     templates.forEach(_ref2 => {
-      var {
+      let {
         element,
         options: {
           name
@@ -94,10 +94,10 @@ export class TemplateManager {
     });
   }
   _extractAnonymousTemplate($el) {
-    var $anonymousTemplate = $el.contents().detach();
-    var $notJunkTemplateContent = $anonymousTemplate.filter((_, element) => {
-      var isTextNode = element.nodeType === TEXT_NODE;
-      var isEmptyText = $(element).text().trim().length < 1;
+    const $anonymousTemplate = $el.contents().detach();
+    const $notJunkTemplateContent = $anonymousTemplate.filter((_, element) => {
+      const isTextNode = element.nodeType === TEXT_NODE;
+      const isEmptyText = $(element).text().trim().length < 1;
       return !(isTextNode && isEmptyText);
     });
     return $notJunkTemplateContent.length > 0 ? {
@@ -106,9 +106,9 @@ export class TemplateManager {
     } : {};
   }
   _createTemplateIfNeeded(templateSource) {
-    var cachedTemplate = this._tempTemplates.filter(tempTemplate => tempTemplate.source === templateKey(templateSource))[0];
+    const cachedTemplate = this._tempTemplates.filter(tempTemplate => tempTemplate.source === templateKey(templateSource))[0];
     if (cachedTemplate) return cachedTemplate.template;
-    var template = this._createTemplate(templateSource);
+    const template = this._createTemplate(templateSource);
     this._tempTemplates.push({
       template,
       source: templateKey(templateSource)
@@ -119,7 +119,7 @@ export class TemplateManager {
     return this._createElement(validateTemplateSource(templateSource));
   }
   getTemplate(templateSource, templates, _ref3, context) {
-    var {
+    let {
       isAsyncTemplate,
       skipTemplates
     } = _ref3;
@@ -127,19 +127,19 @@ export class TemplateManager {
       return acquireTemplate(templateSource, this._createTemplateIfNeeded, templates, isAsyncTemplate, skipTemplates, this._defaultTemplates);
     }
     return new FunctionTemplate(options => {
-      var templateSourceResult = templateSource.apply(context, getNormalizedTemplateArgs(options));
+      const templateSourceResult = templateSource.apply(context, getNormalizedTemplateArgs(options));
       if (!isDefined(templateSourceResult)) {
         return new EmptyTemplate();
       }
-      var dispose = false;
-      var template = acquireTemplate(templateSourceResult, templateSource => {
+      let dispose = false;
+      const template = acquireTemplate(templateSourceResult, templateSource => {
         if (templateSource.nodeType || isRenderer(templateSource) && !$(templateSource).is('script')) {
           return new FunctionTemplate(() => templateSource);
         }
         dispose = true;
         return this._createTemplate(templateSource);
       }, templates, isAsyncTemplate, skipTemplates, this._defaultTemplates);
-      var result = template.render(options);
+      const result = template.render(options);
       dispose && template.dispose && template.dispose();
       return result;
     });

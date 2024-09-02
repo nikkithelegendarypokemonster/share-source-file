@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/utils/version.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -18,13 +18,13 @@ export function compare(x, y, maxLevel) {
   }
   x = normalizeArg(x);
   y = normalizeArg(y);
-  var length = Math.max(x.length, y.length);
+  let length = Math.max(x.length, y.length);
   if (isFinite(maxLevel)) {
     length = Math.min(length, maxLevel);
   }
-  for (var i = 0; i < length; i++) {
-    var xItem = parseInt(x[i] || 0, 10);
-    var yItem = parseInt(y[i] || 0, 10);
+  for (let i = 0; i < length; i++) {
+    const xItem = parseInt(x[i] || 0, 10);
+    const yItem = parseInt(y[i] || 0, 10);
     if (xItem < yItem) {
       return -1;
     }

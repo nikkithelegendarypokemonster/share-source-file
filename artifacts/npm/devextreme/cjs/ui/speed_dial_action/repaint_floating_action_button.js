@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/speed_dial_action/repaint_floating_action_button.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,7 +9,8 @@
 "use strict";
 
 exports.default = void 0;
-var _speed_dial_main_item = require("./speed_dial_main_item");
-var _default = exports.default = _speed_dial_main_item.repaint;
+var _m_repaint_floating_action_button = _interopRequireDefault(require("../../__internal/ui/speed_dial_action/m_repaint_floating_action_button"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _default = exports.default = _m_repaint_floating_action_button.default;
 module.exports = exports.default;
 module.exports.default = exports.default;

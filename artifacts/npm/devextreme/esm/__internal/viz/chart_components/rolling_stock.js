@@ -1,22 +1,22 @@
 /**
 * DevExtreme (esm/__internal/viz/chart_components/rolling_stock.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 export class RollingStock {
   constructor(label, isRotated, shiftFunction) {
-    var bBox = label.getBoundingRect();
-    var {
+    const bBox = label.getBoundingRect();
+    const {
       x
     } = bBox;
-    var {
+    const {
       y
     } = bBox;
-    var endX = bBox.x + bBox.width;
-    var endY = bBox.y + bBox.height;
+    const endX = bBox.x + bBox.width;
+    const endY = bBox.y + bBox.height;
     this.labels = [label];
     this.shiftFunction = shiftFunction;
     this.bBox = {
@@ -29,7 +29,7 @@ export class RollingStock {
     this.initialPosition = isRotated ? bBox.x : bBox.y;
   }
   toChain(nextRollingStock) {
-    var nextRollingStockBBox = nextRollingStock.getBoundingRect();
+    const nextRollingStockBBox = nextRollingStock.getBoundingRect();
     nextRollingStock.shift(nextRollingStockBBox.start - this.bBox.end);
     this.changeBoxWidth(nextRollingStockBBox.width);
     this.labels = this.labels.concat(nextRollingStock.labels);
@@ -39,8 +39,8 @@ export class RollingStock {
   }
   shift(shiftLength) {
     this.labels.forEach(label => {
-      var bBox = label.getBoundingRect();
-      var coords = this.shiftFunction(bBox, shiftLength);
+      const bBox = label.getBoundingRect();
+      const coords = this.shiftFunction(bBox, shiftLength);
       if (!label.hideInsideLabel(coords)) {
         label.shift(coords.x, coords.y);
       }

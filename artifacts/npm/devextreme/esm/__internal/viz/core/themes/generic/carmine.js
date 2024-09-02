@@ -1,17 +1,17 @@
 /**
 * DevExtreme (esm/__internal/viz/core/themes/generic/carmine.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-var ACCENT_COLOR = '#f05b41';
-var BACKGROUND_COLOR = '#fff';
-var TITLE_COLOR = '#333';
-var SUBTITLE_COLOR = '#8899a8';
-var TEXT_COLOR = '#707070';
-var BORDER_COLOR = '#dee1e3';
+const ACCENT_COLOR = '#f05b41';
+const BACKGROUND_COLOR = '#fff';
+const TITLE_COLOR = '#333';
+const SUBTITLE_COLOR = '#8899a8';
+const TEXT_COLOR = '#707070';
+const BORDER_COLOR = '#dee1e3';
 export default [{
   baseThemeName: 'generic.light',
   theme: {

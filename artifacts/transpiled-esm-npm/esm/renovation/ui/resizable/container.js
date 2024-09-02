@@ -1,20 +1,20 @@
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["children", "disabled", "handles", "height", "mainRef", "onResize", "onResizeEnd", "onResizeStart", "rtlEnabled", "width"];
+const _excluded = ["children", "disabled", "handles", "height", "mainRef", "onResize", "onResizeEnd", "onResizeStart", "rtlEnabled", "width"];
 import { createVNode, createComponentVNode, normalizeProps } from "inferno";
 import { InfernoEffect, InfernoComponent } from '@devextreme/runtime/inferno';
 import { normalizeStyles } from '@devextreme/runtime/inferno';
 import { ResizableHandle } from './handle';
 import { combineClasses } from '../../utils/combine_classes';
 import { triggerResizeEvent } from '../../../events/visibility_change';
-var getCssClasses = (disabled, rtlEnabled, isResizing) => combineClasses({
+const getCssClasses = (disabled, rtlEnabled, isResizing) => combineClasses({
   'dx-resizable': true,
   'dx-state-disabled': disabled,
   'dx-rtl': rtlEnabled,
   'dx-resizable-resizing': isResizing
 });
-export var viewFunction = viewModel => {
-  var {
+export const viewFunction = viewModel => {
+  const {
     cssClasses,
     handles,
     mainContainerRef,
@@ -25,7 +25,7 @@ export var viewFunction = viewModel => {
     restAttributes,
     styles
   } = viewModel;
-  var {
+  const {
     children,
     disabled
   } = props;
@@ -39,7 +39,7 @@ export var viewFunction = viewModel => {
     "style": normalizeStyles(styles)
   }, restAttributes), null, mainContainerRef));
 };
-export var ResizableContainerProps = {
+export const ResizableContainerProps = {
   handles: Object.freeze([]),
   children: Object.freeze([]),
   rtlEnabled: false,
@@ -78,7 +78,7 @@ export class ResizableContainer extends InfernoComponent {
     }));
     this.startX = event.clientX;
     this.startY = event.clientY;
-    (_this$props$onResizeS = (_this$props = this.props).onResizeStart) === null || _this$props$onResizeS === void 0 ? void 0 : _this$props$onResizeS.call(_this$props, {
+    (_this$props$onResizeS = (_this$props = this.props).onResizeStart) === null || _this$props$onResizeS === void 0 || _this$props$onResizeS.call(_this$props, {
       event,
       handle
     });
@@ -86,10 +86,10 @@ export class ResizableContainer extends InfernoComponent {
     return undefined;
   }
   onHandleResize(event, handle) {
-    var {
+    const {
       onResize
     } = this.props;
-    onResize === null || onResize === void 0 ? void 0 : onResize({
+    onResize === null || onResize === void 0 || onResize({
       event,
       handle,
       delta: {
@@ -107,25 +107,25 @@ export class ResizableContainer extends InfernoComponent {
     }));
     this.startX = Number.NaN;
     this.startY = Number.NaN;
-    (_this$props$onResizeE = (_this$props2 = this.props).onResizeEnd) === null || _this$props$onResizeE === void 0 ? void 0 : _this$props$onResizeE.call(_this$props2, {
+    (_this$props$onResizeE = (_this$props2 = this.props).onResizeEnd) === null || _this$props$onResizeE === void 0 || _this$props$onResizeE.call(_this$props2, {
       event,
       handle
     });
     return undefined;
   }
   get cssClasses() {
-    var {
+    const {
       disabled,
       rtlEnabled
     } = this.props;
     return getCssClasses(!!disabled, !!rtlEnabled, this.state.isResizing);
   }
   get styles() {
-    var {
+    const {
       height,
       width
     } = this.props;
-    var style = this.restAttributes.style || {};
+    const style = this.restAttributes.style || {};
     return _extends({}, style, {
       height,
       width
@@ -136,13 +136,13 @@ export class ResizableContainer extends InfernoComponent {
       return this.__getterCache['handles'];
     }
     return this.__getterCache['handles'] = (() => {
-      var {
+      let {
         handles
       } = this.props;
       if (typeof handles === 'string') {
         handles = [handles];
       }
-      var result = handles.map(handle => handle);
+      const result = handles.map(handle => handle);
       if (result.includes('bottom')) {
         result.includes('right') && result.push('corner-bottom-right');
         result.includes('left') && result.push('corner-bottom-left');
@@ -155,7 +155,7 @@ export class ResizableContainer extends InfernoComponent {
     })();
   }
   get restAttributes() {
-    var _this$props3 = this.props,
+    const _this$props3 = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props3, _excluded);
     return restProps;
   }
@@ -166,7 +166,7 @@ export class ResizableContainer extends InfernoComponent {
     }
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       isResizing: this.state.isResizing,
@@ -181,9 +181,9 @@ export class ResizableContainer extends InfernoComponent {
     });
   }
 }
-ResizableContainer.defaultProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(ResizableContainerProps), Object.getOwnPropertyDescriptors(_extends({}, convertRulesToOptions([])))));
-var __defaultOptionRules = [];
+ResizableContainer.defaultProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(ResizableContainerProps), Object.getOwnPropertyDescriptors(_extends({}, convertRulesToOptions([])))));
+const __defaultOptionRules = [];
 export function defaultOptions(rule) {
   __defaultOptionRules.push(rule);
-  ResizableContainer.defaultProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(ResizableContainer.defaultProps), Object.getOwnPropertyDescriptors(convertRulesToOptions([])), Object.getOwnPropertyDescriptors(convertRulesToOptions(__defaultOptionRules))));
+  ResizableContainer.defaultProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(ResizableContainer.defaultProps), Object.getOwnPropertyDescriptors(convertRulesToOptions([])), Object.getOwnPropertyDescriptors(convertRulesToOptions(__defaultOptionRules))));
 }

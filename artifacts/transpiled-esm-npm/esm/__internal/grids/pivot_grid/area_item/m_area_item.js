@@ -9,14 +9,14 @@ import { setWidth } from '../../../../core/utils/size';
 import { setStyle } from '../../../../core/utils/style';
 import { isDefined } from '../../../../core/utils/type';
 import { getMemoizeScrollTo } from '../../../core/utils/scroll';
-var PIVOTGRID_EXPAND_CLASS = 'dx-expand';
-var getRealElementWidth = function getRealElementWidth(element) {
-  var width = 0;
-  var {
+const PIVOTGRID_EXPAND_CLASS = 'dx-expand';
+const getRealElementWidth = function (element) {
+  let width = 0;
+  const {
     offsetWidth
   } = element;
   if (element.getBoundingClientRect) {
-    var clientRect = getBoundingRect(element);
+    const clientRect = getBoundingRect(element);
     width = clientRect.width;
     if (!width) {
       width = clientRect.right - clientRect.left;
@@ -28,9 +28,9 @@ var getRealElementWidth = function getRealElementWidth(element) {
   return width > 0 ? width : offsetWidth;
 };
 function getFakeTableOffset(scrollPos, elementOffset, tableSize, viewPortSize) {
-  var offset = 0;
-  var halfTableCount = 0;
-  var halfTableSize = tableSize / 2;
+  let offset = 0;
+  let halfTableCount = 0;
+  const halfTableSize = tableSize / 2;
   if (scrollPos + viewPortSize - (elementOffset + tableSize) > 1) {
     if (scrollPos >= elementOffset + tableSize + halfTableSize) {
       halfTableCount = parseInt((scrollPos - (elementOffset + tableSize)) / halfTableSize, 10);
@@ -46,7 +46,7 @@ function getFakeTableOffset(scrollPos, elementOffset, tableSize, viewPortSize) {
   }
   return offset;
 }
-var AreaItem = Class.inherit({
+const AreaItem = Class.inherit({
   ctor(component) {
     this.component = component;
   },
@@ -54,7 +54,7 @@ var AreaItem = Class.inherit({
     return this.component.option.apply(this.component, arguments);
   },
   _getRowElement(index) {
-    var that = this;
+    const that = this;
     if (that._tableElement && that._tableElement.length > 0) {
       return that._tableElement[0].rows[index];
     }
@@ -67,7 +67,7 @@ var AreaItem = Class.inherit({
     return $('<table>');
   },
   _getCellText(cell, encodeHtml) {
-    var cellText = cell.isWhiteSpace ? '&nbsp' : cell.text || '&nbsp';
+    let cellText = cell.isWhiteSpace ? '&nbsp' : cell.text || '&nbsp';
     if (encodeHtml && (cellText.indexOf('<') !== -1 || cellText.indexOf('>') !== -1)) {
       cellText = $('<div>').text(cellText).html();
     }
@@ -76,7 +76,7 @@ var AreaItem = Class.inherit({
   _getRowClassNames() {},
   _applyCustomStyles(options) {
     if (options.cell.width) {
-      options.cssArray.push("min-width:".concat(options.cell.width, "px"));
+      options.cssArray.push(`min-width:${options.cell.width}px`);
     }
     if (options.cell.sorted) {
       options.classArray.push('dx-pivotgrid-sorted');
@@ -89,34 +89,34 @@ var AreaItem = Class.inherit({
     return '</tbody>';
   },
   _renderTableContent(tableElement, data) {
-    var that = this;
-    var rowsCount = data.length;
-    var row;
-    var cell;
-    var i;
-    var j;
-    var rowElement;
-    var cellElement;
-    var cellText;
-    var rtlEnabled = that.option('rtlEnabled');
-    var encodeHtml = that.option('encodeHtml');
-    var rowClassNames;
+    const that = this;
+    const rowsCount = data.length;
+    let row;
+    let cell;
+    let i;
+    let j;
+    let rowElement;
+    let cellElement;
+    let cellText;
+    const rtlEnabled = that.option('rtlEnabled');
+    const encodeHtml = that.option('encodeHtml');
+    let rowClassNames;
     tableElement.data('area', that._getAreaName());
     tableElement.data('data', data);
     tableElement.css('width', '');
-    var tbody = this._getMainElementMarkup();
+    const tbody = this._getMainElementMarkup();
     for (i = 0; i < rowsCount; i += 1) {
       row = data[i];
       rowClassNames = [];
-      var tr = domAdapter.createElement('tr');
+      const tr = domAdapter.createElement('tr');
       for (j = 0; j < row.length; j += 1) {
         cell = row[j];
         this._getRowClassNames(i, cell, rowClassNames);
-        var td = domAdapter.createElement('td');
+        const td = domAdapter.createElement('td');
         if (cell) {
           cell.rowspan && td.setAttribute('rowspan', cell.rowspan || 1);
           cell.colspan && td.setAttribute('colspan', cell.colspan || 1);
-          var styleOptions = {
+          const styleOptions = {
             cellElement,
             cell,
             cellsCount: row.length,
@@ -136,27 +136,27 @@ var AreaItem = Class.inherit({
             td.setAttribute('class', styleOptions.classArray.join(' '));
           }
           if (isDefined(cell.expanded)) {
-            var div = domAdapter.createElement('div');
+            const div = domAdapter.createElement('div');
             div.classList.add('dx-expand-icon-container');
-            var _span = domAdapter.createElement('span');
-            _span.classList.add(PIVOTGRID_EXPAND_CLASS);
-            div.appendChild(_span);
+            const span = domAdapter.createElement('span');
+            span.classList.add(PIVOTGRID_EXPAND_CLASS);
+            div.appendChild(span);
             td.appendChild(div);
           }
           cellText = this._getCellText(cell, encodeHtml);
         } else {
           cellText = '';
         }
-        var span = domAdapter.createElement('span');
+        const span = domAdapter.createElement('span');
         if (isDefined(cell.wordWrapEnabled)) {
           span.style.whiteSpace = cell.wordWrapEnabled ? 'normal' : 'nowrap';
         }
         span.innerHTML = cellText;
         td.appendChild(span);
         if (cell.sorted) {
-          var _span2 = domAdapter.createElement('span');
-          _span2.classList.add('dx-icon-sorted');
-          td.appendChild(_span2);
+          const span = domAdapter.createElement('span');
+          span.classList.add('dx-icon-sorted');
+          td.appendChild(span);
         }
         tr.appendChild(td);
       }
@@ -169,19 +169,19 @@ var AreaItem = Class.inherit({
     this._triggerOnCellPrepared(tableElement, data);
   },
   _triggerOnCellPrepared(tableElement, data) {
-    var that = this;
-    var rowElements = tableElement.find('tr');
-    var areaName = that._getAreaName();
-    var onCellPrepared = that.option('onCellPrepared');
-    var hasEvent = that.component._eventsStrategy.hasEvent('cellPrepared');
-    var rowElement;
-    var $cellElement;
-    var onCellPreparedArgs;
-    var defaultActionArgs = this.component._defaultActionArgs();
-    var row;
-    var cell;
-    var rowIndex;
-    var columnIndex;
+    const that = this;
+    const rowElements = tableElement.find('tr');
+    const areaName = that._getAreaName();
+    const onCellPrepared = that.option('onCellPrepared');
+    const hasEvent = that.component._eventsStrategy.hasEvent('cellPrepared');
+    let rowElement;
+    let $cellElement;
+    let onCellPreparedArgs;
+    const defaultActionArgs = this.component._defaultActionArgs();
+    let row;
+    let cell;
+    let rowIndex;
+    let columnIndex;
     if (onCellPrepared || hasEvent) {
       for (rowIndex = 0; rowIndex < data.length; rowIndex += 1) {
         row = data[rowIndex];
@@ -206,14 +206,14 @@ var AreaItem = Class.inherit({
     }
   },
   _getRowHeight(index) {
-    var row = this._getRowElement(index);
-    var height = 0;
-    var {
+    const row = this._getRowElement(index);
+    let height = 0;
+    const {
       offsetHeight
     } = row;
     if (row && row.lastChild) {
       if (row.getBoundingClientRect) {
-        var clientRect = getBoundingRect(row);
+        const clientRect = getBoundingRect(row);
         height = clientRect.height;
         if (height <= offsetHeight - 1) {
           height = offsetHeight;
@@ -224,49 +224,49 @@ var AreaItem = Class.inherit({
     return 0;
   },
   _setRowHeight(index, value) {
-    var row = this._getRowElement(index);
+    const row = this._getRowElement(index);
     if (row) {
-      row.style.height = "".concat(value, "px");
+      row.style.height = `${value}px`;
     }
   },
   getRowsLength() {
-    var that = this;
+    const that = this;
     if (that._tableElement && that._tableElement.length > 0) {
       return that._tableElement[0].rows.length;
     }
     return 0;
   },
   getRowsHeight() {
-    var that = this;
-    var result = [];
-    var rowsLength = that.getRowsLength();
-    for (var i = 0; i < rowsLength; i += 1) {
+    const that = this;
+    const result = [];
+    const rowsLength = that.getRowsLength();
+    for (let i = 0; i < rowsLength; i += 1) {
       result.push(that._getRowHeight(i));
     }
     return result;
   },
   setRowsHeight(values) {
-    var that = this;
-    var totalHeight = 0;
-    var valuesLength = values.length;
-    for (var i = 0; i < valuesLength; i += 1) {
+    const that = this;
+    let totalHeight = 0;
+    const valuesLength = values.length;
+    for (let i = 0; i < valuesLength; i += 1) {
       totalHeight += values[i];
       that._setRowHeight(i, values[i]);
     }
     this._tableHeight = totalHeight;
-    this._tableElement[0].style.height = "".concat(totalHeight, "px");
+    this._tableElement[0].style.height = `${totalHeight}px`;
   },
   getColumnsWidth() {
-    var rowsLength = this.getRowsLength();
-    var rowIndex;
-    var row;
-    var i;
-    var columnIndex;
-    var processedCells = [];
-    var result = [];
-    var fillCells = function fillCells(cells, rowIndex, columnIndex, rowSpan, colSpan) {
-      var rowOffset;
-      var columnOffset;
+    const rowsLength = this.getRowsLength();
+    let rowIndex;
+    let row;
+    let i;
+    let columnIndex;
+    const processedCells = [];
+    const result = [];
+    const fillCells = function (cells, rowIndex, columnIndex, rowSpan, colSpan) {
+      let rowOffset;
+      let columnOffset;
       for (rowOffset = 0; rowOffset < rowSpan; rowOffset += 1) {
         for (columnOffset = 0; columnOffset < colSpan; columnOffset += 1) {
           cells[rowIndex + rowOffset] = cells[rowIndex + rowOffset] || [];
@@ -290,11 +290,11 @@ var AreaItem = Class.inherit({
     return result;
   },
   setColumnsWidth(values) {
-    var i;
-    var tableElement = this._tableElement[0];
+    let i;
+    const tableElement = this._tableElement[0];
     this._colgroupElement.html('');
-    var columnsCount = this.getColumnsCount();
-    var columnWidth = [];
+    const columnsCount = this.getColumnsCount();
+    const columnWidth = [];
     for (i = 0; i < columnsCount; i += 1) {
       columnWidth.push(values[i] || 0);
     }
@@ -302,12 +302,12 @@ var AreaItem = Class.inherit({
       columnWidth[columnsCount - 1] += values[i];
     }
     for (i = 0; i < columnsCount; i += 1) {
-      var col = domAdapter.createElement('col');
-      col.style.width = "".concat(columnWidth[i], "px");
+      const col = domAdapter.createElement('col');
+      col.style.width = `${columnWidth[i]}px`;
       this._colgroupElement.append(col);
     }
     this._tableWidth = columnWidth.reduce((sum, width) => sum + width, 0);
-    tableElement.style.width = "".concat(this._tableWidth, "px");
+    tableElement.style.width = `${this._tableWidth}px`;
     tableElement.style.tableLayout = 'fixed';
   },
   resetColumnsWidth() {
@@ -330,7 +330,7 @@ var AreaItem = Class.inherit({
     return this._getGroupElementSize('width');
   },
   _getGroupElementSize(dimension) {
-    var size = this.groupElement()[0].style[dimension];
+    const size = this.groupElement()[0].style[dimension];
     if (size.indexOf('px') > 0) {
       return parseFloat(size);
     }
@@ -360,30 +360,30 @@ var AreaItem = Class.inherit({
       width: params.width,
       height: params.height
     });
-    var scrollable = this._getScrollable();
-    if (scrollable === null || scrollable === void 0 ? void 0 : scrollable.isRenovated()) {
+    const scrollable = this._getScrollable();
+    if (scrollable !== null && scrollable !== void 0 && scrollable.isRenovated()) {
       this._getScrollable().option('classes', 'dx-virtual-mode');
     } else {
       this.groupElement().addClass('dx-virtual-mode');
     }
   },
   disableVirtualMode() {
-    var scrollable = this._getScrollable();
-    if (scrollable === null || scrollable === void 0 ? void 0 : scrollable.isRenovated()) {
+    const scrollable = this._getScrollable();
+    if (scrollable !== null && scrollable !== void 0 && scrollable.isRenovated()) {
       this._getScrollable().option('classes', '');
     } else {
       this.groupElement().removeClass('dx-virtual-mode');
     }
   },
   _renderVirtualContent() {
-    var that = this;
+    const that = this;
     if (!that._virtualContent && that.option('scrolling.mode') === 'virtual') {
       that._virtualContent = $('<div>').addClass('dx-virtual-content').insertBefore(that._tableElement);
     }
   },
   reset() {
-    var that = this;
-    var tableElement = that._tableElement[0];
+    const that = this;
+    const tableElement = that._tableElement[0];
     that._fakeTable && that._fakeTable.detach();
     that._fakeTable = null;
     that.disableVirtualMode();
@@ -391,7 +391,7 @@ var AreaItem = Class.inherit({
     that.setGroupHeight('auto');
     that.resetColumnsWidth();
     if (tableElement) {
-      for (var i = 0; i < tableElement.rows.length; i += 1) {
+      for (let i = 0; i < tableElement.rows.length; i += 1) {
         tableElement.rows[i].style.height = '';
       }
       tableElement.style.height = '';
@@ -399,10 +399,10 @@ var AreaItem = Class.inherit({
     }
   },
   _updateFakeTableVisibility() {
-    var that = this;
-    var tableElement = that.tableElement()[0];
-    var horizontalOffsetName = that.option('rtlEnabled') ? 'right' : 'left';
-    var fakeTableElement = that._fakeTable[0];
+    const that = this;
+    const tableElement = that.tableElement()[0];
+    const horizontalOffsetName = that.option('rtlEnabled') ? 'right' : 'left';
+    const fakeTableElement = that._fakeTable[0];
     if (tableElement.style.top === fakeTableElement.style.top && fakeTableElement.style[horizontalOffsetName] === tableElement.style[horizontalOffsetName]) {
       that._fakeTable.addClass('dx-hidden');
     } else {
@@ -410,34 +410,34 @@ var AreaItem = Class.inherit({
     }
   },
   _moveFakeTableHorizontally(scrollPos) {
-    var that = this;
-    var rtlEnabled = that.option('rtlEnabled');
-    var offsetStyleName = rtlEnabled ? 'right' : 'left';
-    var tableElementOffset = parseFloat(that.tableElement()[0].style[offsetStyleName]);
-    var offset = getFakeTableOffset(scrollPos, tableElementOffset, that._tableWidth, that.getGroupWidth());
+    const that = this;
+    const rtlEnabled = that.option('rtlEnabled');
+    const offsetStyleName = rtlEnabled ? 'right' : 'left';
+    const tableElementOffset = parseFloat(that.tableElement()[0].style[offsetStyleName]);
+    const offset = getFakeTableOffset(scrollPos, tableElementOffset, that._tableWidth, that.getGroupWidth());
     if (parseFloat(that._fakeTable[0].style[offsetStyleName]) !== offset) {
-      that._fakeTable[0].style[offsetStyleName] = "".concat(offset, "px");
+      that._fakeTable[0].style[offsetStyleName] = `${offset}px`;
     }
   },
   _moveFakeTableTop(scrollPos) {
-    var that = this;
-    var tableElementOffsetTop = parseFloat(that.tableElement()[0].style.top);
-    var offsetTop = getFakeTableOffset(scrollPos, tableElementOffsetTop, that._tableHeight, that.getGroupHeight());
+    const that = this;
+    const tableElementOffsetTop = parseFloat(that.tableElement()[0].style.top);
+    const offsetTop = getFakeTableOffset(scrollPos, tableElementOffsetTop, that._tableHeight, that.getGroupHeight());
     if (parseFloat(that._fakeTable[0].style.top) !== offsetTop) {
-      that._fakeTable[0].style.top = "".concat(offsetTop, "px");
+      that._fakeTable[0].style.top = `${offsetTop}px`;
     }
   },
   _moveFakeTable() {
     this._updateFakeTableVisibility();
   },
   _createFakeTable() {
-    var that = this;
+    const that = this;
     if (!that._fakeTable) {
       that._fakeTable = that.tableElement().clone().addClass('dx-pivot-grid-fake-table').appendTo(that._virtualContent);
     }
   },
   render(rootElement, data) {
-    var that = this;
+    const that = this;
     if (that._tableElement) {
       try {
         that._tableElement[0].innerHTML = '';
@@ -460,17 +460,16 @@ var AreaItem = Class.inherit({
     return this.groupElement().data('dxScrollable');
   },
   _getMemoizeScrollTo() {
-    var _a;
-    this._memoizeScrollTo = (_a = this._memoizeScrollTo) !== null && _a !== void 0 ? _a : getMemoizeScrollTo(() => this._getScrollable());
+    this._memoizeScrollTo = this._memoizeScrollTo ?? getMemoizeScrollTo(() => this._getScrollable());
     return this._memoizeScrollTo;
   },
   _getMaxLeftOffset(scrollable) {
-    var containerElement = $(scrollable.container()).get(0);
+    const containerElement = $(scrollable.container()).get(0);
     return containerElement.scrollWidth - containerElement.clientWidth;
   },
   on(eventName, handler) {
-    var that = this;
-    var scrollable = that._getScrollable();
+    const that = this;
+    const scrollable = that._getScrollable();
     if (scrollable) {
       scrollable.on(eventName, e => {
         if (that.option('rtlEnabled') && isDefined(e.scrollOffset.left)) {
@@ -482,24 +481,24 @@ var AreaItem = Class.inherit({
     return this;
   },
   off(eventName) {
-    var scrollable = this._getScrollable();
+    const scrollable = this._getScrollable();
     if (scrollable) {
       scrollable.off(eventName);
     }
     return this;
   },
   scrollTo(pos) {
-    var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-    var scrollable = this._getScrollable();
+    let force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    const scrollable = this._getScrollable();
     if (!scrollable) {
       return;
     }
-    var rtlEnabled = this.option('rtlEnabled');
-    var areaName = this._getAreaName();
-    var scrollablePos = _extends(_extends({}, pos), {
+    const rtlEnabled = this.option('rtlEnabled');
+    const areaName = this._getAreaName();
+    const scrollablePos = _extends({}, pos, {
       left: rtlEnabled && (areaName === 'column' || areaName === 'data') ? this._getMaxLeftOffset(scrollable) - pos.left : pos.left
     });
-    var memoizeScrollTo = this._getMemoizeScrollTo();
+    const memoizeScrollTo = this._getMemoizeScrollTo();
     memoizeScrollTo(scrollablePos, force);
     if (this._virtualContent) {
       this._createFakeTable();
@@ -507,27 +506,27 @@ var AreaItem = Class.inherit({
     }
   },
   updateScrollable() {
-    var scrollable = this._getScrollable();
+    const scrollable = this._getScrollable();
     if (scrollable) {
       return scrollable.update();
     }
     return undefined;
   },
   getColumnsCount() {
-    var columnCount = 0;
-    var row = this._getRowElement(0);
-    var cells;
+    let columnCount = 0;
+    const row = this._getRowElement(0);
+    let cells;
     if (row) {
       cells = row.cells;
       // eslint-disable-next-line no-plusplus
-      for (var i = 0, len = cells.length; i < len; ++i) {
+      for (let i = 0, len = cells.length; i < len; ++i) {
         columnCount += cells[i].colSpan;
       }
     }
     return columnCount;
   },
   getData() {
-    var tableElement = this._tableElement;
+    const tableElement = this._tableElement;
     return tableElement ? tableElement.data('data') : [];
   }
 });

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/grid_core/virtual_data_loader/m_virtual_data_loader.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -153,19 +153,18 @@ const processChanged = (that, changed, changeType, isDelayChanged, removeCacheIt
     fireChanged(that, changed, change);
   }
 };
-let VirtualDataLoader = exports.VirtualDataLoader = /*#__PURE__*/function () {
-  function VirtualDataLoader(controller, dataOptions) {
+class VirtualDataLoader {
+  constructor(controller, dataOptions) {
     this._dataOptions = dataOptions;
     this._controller = controller;
     this._pageIndex = this._lastPageIndex = dataOptions.pageIndex();
     this._cache = [];
     this._loadingPageIndexes = {};
   }
-  var _proto = VirtualDataLoader.prototype;
-  _proto.option = function option() {
+  option() {
     return this._controller.option.apply(this._controller, arguments);
-  };
-  _proto.viewportItemIndexChanged = function viewportItemIndexChanged(itemIndex) {
+  }
+  viewportItemIndexChanged(itemIndex) {
     const pageSize = this._dataOptions.pageSize();
     const pageCount = this._dataOptions.pageCount();
     const virtualMode = this._controller.isVirtualMode();
@@ -193,34 +192,34 @@ let VirtualDataLoader = exports.VirtualDataLoader = /*#__PURE__*/function () {
       this.pageIndex(newPageIndex);
       return this.load();
     }
-  };
-  _proto.pageIndex = function pageIndex(_pageIndex) {
+  }
+  pageIndex(pageIndex) {
     const isVirtualMode = this._controller.isVirtualMode();
     const isAppendMode = this._controller.isAppendMode();
     // @ts-expect-error
     if (this.option(LEGACY_SCROLLING_MODE) !== false && (isVirtualMode || isAppendMode)) {
-      if (_pageIndex !== undefined) {
-        this._pageIndex = _pageIndex;
+      if (pageIndex !== undefined) {
+        this._pageIndex = pageIndex;
       }
       return this._pageIndex;
     }
-    return this._dataOptions.pageIndex(_pageIndex);
-  };
-  _proto.beginPageIndex = function beginPageIndex(defaultPageIndex) {
+    return this._dataOptions.pageIndex(pageIndex);
+  }
+  beginPageIndex(defaultPageIndex) {
     let index = getBeginPageIndex(this);
     if (index < 0) {
       index = defaultPageIndex !== undefined ? defaultPageIndex : this.pageIndex();
     }
     return index;
-  };
-  _proto.endPageIndex = function endPageIndex() {
+  }
+  endPageIndex() {
     const endPageIndex = getEndPageIndex(this);
     return endPageIndex > 0 ? endPageIndex : this._lastPageIndex;
-  };
-  _proto.pageSize = function pageSize() {
+  }
+  pageSize() {
     return this._dataOptions.pageSize();
-  };
-  _proto.load = function load() {
+  }
+  load() {
     const dataOptions = this._dataOptions;
     let result;
     const isVirtualMode = this._controller.isVirtualMode();
@@ -254,8 +253,8 @@ let VirtualDataLoader = exports.VirtualDataLoader = /*#__PURE__*/function () {
     }
     // @ts-expect-error
     return result || new _deferred.Deferred().resolve();
-  };
-  _proto.loadIfNeed = function loadIfNeed() {
+  }
+  loadIfNeed() {
     const isVirtualMode = this._controller.isVirtualMode();
     const isAppendMode = this._controller.isAppendMode();
     if ((isVirtualMode || isAppendMode) && !this._dataOptions.isLoading() && (!this._isChangedFiring || this._controller.isVirtual())) {
@@ -266,8 +265,8 @@ let VirtualDataLoader = exports.VirtualDataLoader = /*#__PURE__*/function () {
         this.load();
       }
     }
-  };
-  _proto.handleDataChanged = function handleDataChanged(callBase, e) {
+  }
+  handleDataChanged(callBase, e) {
     const dataOptions = this._dataOptions;
     let lastCacheLength = this._cache.length;
     let changeType;
@@ -334,11 +333,11 @@ let VirtualDataLoader = exports.VirtualDataLoader = /*#__PURE__*/function () {
     } else {
       processChanged(this, callBase, e);
     }
-  };
-  _proto.getDelayDeferred = function getDelayDeferred() {
+  }
+  getDelayDeferred() {
     return this._delayDeferred;
-  };
-  _proto.itemsCount = function itemsCount(isBase) {
+  }
+  itemsCount(isBase) {
     let count = 0;
     const isVirtualMode = this._controller.isVirtualMode();
     if (!isBase && isVirtualMode) {
@@ -349,8 +348,8 @@ let VirtualDataLoader = exports.VirtualDataLoader = /*#__PURE__*/function () {
       count = this._dataOptions.itemsCount();
     }
     return count;
-  };
-  _proto.virtualItemsCount = function virtualItemsCount() {
+  }
+  virtualItemsCount() {
     let pageIndex = getBeginPageIndex(this);
     if (pageIndex < 0) {
       pageIndex = this._dataOptions.pageIndex();
@@ -362,10 +361,10 @@ let VirtualDataLoader = exports.VirtualDataLoader = /*#__PURE__*/function () {
       begin: beginItemsCount,
       end: endItemsCount
     };
-  };
-  _proto.reset = function reset() {
+  }
+  reset() {
     this._loadingPageIndexes = {};
     this._cache = [];
-  };
-  return VirtualDataLoader;
-}();
+  }
+}
+exports.VirtualDataLoader = VirtualDataLoader;

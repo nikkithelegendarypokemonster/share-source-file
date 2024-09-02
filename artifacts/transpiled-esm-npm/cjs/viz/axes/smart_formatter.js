@@ -233,7 +233,7 @@ function formatDateRange(startValue, endValue, tickInterval) {
     if (highValue) {
       values.push(highValue);
     }
-    values.push("".concat(_format(startValue, diffFormat), " - ").concat(_format(endValue, diffFormat)));
+    values.push(`${_format(startValue, diffFormat)} - ${_format(endValue, diffFormat)}`);
   }
   return values.join(', ');
 }
@@ -323,5 +323,5 @@ function formatRange(_ref2) {
       format: argumentFormat
     }
   };
-  return "".concat(smartFormatter(startValue, formatOptions), " - ").concat(smartFormatter(endValue, formatOptions));
+  return `${smartFormatter(startValue, formatOptions)} - ${smartFormatter(endValue, formatOptions)}`;
 }

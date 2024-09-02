@@ -1,7 +1,7 @@
 /**
 * DevExtreme (data/data_source.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -19,6 +19,7 @@ import {
 import { DxExtendedPromise } from '../core/utils/deferred';
 import { Options as CustomStoreOptions } from './custom_store';
 
+/** @public */
 export type Options<
     TStoreItem = any,
     TMappedItem = TStoreItem,
@@ -27,9 +28,9 @@ export type Options<
 > = DataSourceOptions<TStoreItem, TItem, TMappedItem, TKey>;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.data
+ * @deprecated Use Options instead
+ * @docid
  */
 export interface DataSourceOptions<
     TStoreItem = any,
@@ -38,92 +39,136 @@ export interface DataSourceOptions<
     TKey = any,
 > {
     /**
-     * Custom parameters that should be passed to an OData service with the load query. Available only for the ODataStore.
+     * @docid
+     * @public
      */
     customQueryParams?: any;
     /**
-     * Specifies the navigation properties to be loaded with the OData entity. Available only for the ODataStore.
+     * @docid
+     * @public
      */
     expand?: Array<string> | string;
     /**
-     * Specifies data filtering conditions.
+     * @docid
+     * @type Filter expression
+     * @public
      */
     filter?: FilterDescriptor | Array<FilterDescriptor>;
     /**
-     * Specifies data grouping properties.
+     * @docid
+     * @type Group expression
+     * @public
      */
     group?: GroupDescriptor<TItem> | Array<GroupDescriptor<TItem>>;
     /**
-                                                              * Specifies parameters for language-specific sorting and filtering.
-                                                              */
-                                                             langParams?: LangParams;
+     * @docid
+     * @public
+     */
+    // eslint-disable-next-line spellcheck/spell-checker
+    langParams?: LangParams;
     /**
-     * Specifies an item mapping function.
+     * @docid
+     * @type_function_param1 dataItem:object
+     * @type_function_return object
+     * @public
      */
     map?: ((dataItem: TStoreItem) => TMappedItem);
     /**
-     * A function that is executed after data is loaded.
+     * @docid
+     * @type_function_param1_field changes:Array<any>
+     * @action
+     * @public
      */
     onChanged?: ((e: { readonly changes?: Array<TMappedItem> }) => void);
     /**
-     * A function that is executed when data loading fails.
+     * @docid
+     * @action
+     * @public
      */
     onLoadError?: ((error: { readonly message?: string }) => void);
     /**
-     * A function that is executed when the data loading status changes.
+     * @docid
+     * @action
+     * @public
      */
     onLoadingChanged?: ((isLoading: boolean) => void);
     /**
-     * Specifies the maximum number of data items per page. Applies only if paginate is true.
+     * @docid
+     * @default 20
+     * @public
      */
     pageSize?: number;
     /**
-     * Specifies whether the DataSource loads data items by pages or all at once. Defaults to false if group is set; otherwise, true.
+     * @docid
+     * @default undefined
+     * @public
      */
     paginate?: boolean;
     /**
-     * Specifies a post processing function.
+     * @docid
+     * @type_function_param1 data:Array<any>
+     * @type_function_return Array<any>
+     * @public
      */
     postProcess?: ((data: Array<TMappedItem>) => Array<TItem>);
     /**
-     * Specifies the period (in milliseconds) when changes are aggregated before pushing them to the DataSource.
+     * @docid
+     * @default undefined
+     * @public
      */
     pushAggregationTimeout?: number;
     /**
-     * Specifies whether the DataSource requests the total count of data items in the storage.
+     * @docid
+     * @public
      */
     requireTotalCount?: boolean;
     /**
-     * Specifies whether to reapply sorting, filtering, grouping, and other data processing operations after receiving a push.
+     * @docid
+     * @default false
+     * @public
      */
     reshapeOnPush?: boolean;
     /**
-     * Specifies the fields to search.
+     * @docid
+     * @type getter|Array<getter>
+     * @public
      */
     searchExpr?: string | Function | Array<string | Function>;
     /**
-     * Specifies the comparison operation used in searching.
+     * @docid
+     * @default "contains"
+     * @public
      */
     searchOperation?: SearchOperation;
     /**
-     * Specifies the value to which the search expression is compared.
+     * @docid
+     * @default null
+     * @public
      */
     searchValue?: any;
     /**
-     * Specifies the fields to select from data objects.
+     * @docid
+     * @type Select expression
+     * @public
      */
     select?: SelectDescriptor<TItem>;
     /**
-     * Specifies data sorting properties.
+     * @docid
+     * @type Sort expression
+     * @public
      */
     sort?: SortDescriptor<TItem> | Array<SortDescriptor<TItem>>;
     /**
-     * Configures the store underlying the DataSource.
+     * @docid
+     * @public
+     * @type Store|StoreOptions|Array<any>
      */
     store?: Array<TStoreItem> | Store<TStoreItem, TKey> | StoreOptions<TStoreItem, TKey>;
 }
 /**
- * The DataSource is an object that provides an API for processing data from an underlying store.
+ * @docid
+ * @public
+ * @options DataSourceOptions
  */
 export default class DataSource<
     TItem = any,
@@ -134,162 +179,265 @@ export default class DataSource<
     constructor(store: Store<TItem, TKey>);
     constructor(url: string);
     /**
-     * Cancels the load operation with a specific identifier.
+     * @docid
+     * @publicName cancel(operationId)
+     * @public
      */
     cancel(operationId: number): boolean;
     /**
-     * Disposes of all the resources allocated to the DataSource instance.
+     * @docid
+     * @publicName dispose()
+     * @public
      */
     dispose(): void;
     /**
-     * Gets the filter property&apos;s value.
+     * @docid
+     * @publicName filter()
+     * @return object
+     * @public
      */
     filter(): FilterDescriptor | Array<FilterDescriptor>;
     /**
-     * Sets the filter property&apos;s value.
+     * @docid
+     * @publicName filter(filterExpr)
+     * @param1 filterExpr:object
+     * @public
      */
     filter(filterExpr: FilterDescriptor | Array<FilterDescriptor>): void;
     /**
-     * Gets the group property&apos;s value.
+     * @docid
+     * @publicName group()
+     * @return object
+     * @public
      */
     group(): GroupDescriptor<TItem> | Array<GroupDescriptor<TItem>>;
     /**
-     * Sets the group property&apos;s value.
+     * @docid
+     * @publicName group(groupExpr)
+     * @param1 groupExpr:object
+     * @public
      */
     group(groupExpr: GroupDescriptor<TItem> | Array<GroupDescriptor<TItem>>): void;
     /**
-     * Checks whether the count of items on the current page is less than the pageSize. Takes effect only with enabled paging.
+     * @docid
+     * @publicName isLastPage()
+     * @public
      */
     isLastPage(): boolean;
     /**
-     * Checks whether data is loaded in the DataSource.
+     * @docid
+     * @publicName isLoaded()
+     * @public
      */
     isLoaded(): boolean;
     /**
-     * Checks whether data is being loaded in the DataSource.
+     * @docid
+     * @publicName isLoading()
+     * @public
      */
     isLoading(): boolean;
     /**
-     * Gets an array of data items on the current page.
+     * @docid
+     * @publicName items()
+     * @public
      */
     items(): Array<any>;
     /**
-     * Gets the value of the underlying store&apos;s key property.
+     * @docid
+     * @publicName key()
+     * @public
      */
     key(): string | Array<string>;
     /**
-     * Starts loading data.
+     * @docid
+     * @publicName load()
+     * @return Promise<any>
+     * @public
      */
     load(): DxExtendedPromise<any>;
     /**
-     * Gets an object with current data processing settings.
+     * @docid
+     * @publicName loadOptions()
+     * @return object
+     * @public
      */
     loadOptions(): LoadOptions<TItem>;
     /**
-     * Detaches all event handlers from a single event.
+     * @docid
+     * @publicName off(eventName)
+     * @param1 eventName:string
+     * @return this
+     * @public
      */
     off(eventName: EventName): this;
     /**
-     * Detaches a particular event handler from a single event.
+     * @docid
+     * @publicName off(eventName, eventHandler)
+     * @param1 eventName:string
+     * @return this
+     * @public
      */
     off(eventName: EventName, eventHandler: Function): this;
     /**
-     * Subscribes to an event.
+     * @docid
+     * @publicName on(eventName, eventHandler)
+     * @param1 eventName:string
+     * @return this
+     * @public
      */
     on(eventName: EventName, eventHandler: Function): this;
     /**
-     * Subscribes to events.
+     * @docid
+     * @publicName on(events)
+     * @param1 events:object
+     * @return this
+     * @public
      */
     on(events: { [key in EventName]?: Function }): this;
     /**
-     * Gets the current page index.
+     * @docid
+     * @publicName pageIndex()
+     * @return numeric
+     * @public
      */
     pageIndex(): number;
     /**
-     * Sets the index of the page that should be loaded on the next load() method call.
+     * @docid
+     * @publicName pageIndex(newIndex)
+     * @param1 newIndex:numeric
+     * @public
      */
     pageIndex(newIndex: number): void;
     /**
-     * Gets the page size.
+     * @docid
+     * @publicName pageSize()
+     * @return numeric
+     * @public
      */
     pageSize(): number;
     /**
-     * Sets the page size.
+     * @docid
+     * @publicName pageSize(value)
+     * @param1 value:numeric
+     * @public
      */
     pageSize(value: number): void;
     /**
-     * Gets the paginate property&apos;s value.
+     * @docid
+     * @publicName paginate()
+     * @public
      */
     paginate(): boolean;
     /**
-     * Sets the paginate property&apos;s value.
+     * @docid
+     * @publicName paginate(value)
+     * @public
      */
     paginate(value: boolean): void;
     /**
-     * Clears currently loaded DataSource items and calls the load() method.
+     * @docid
+     * @publicName reload()
+     * @return Promise<any>
+     * @public
      */
     reload(): DxExtendedPromise<any>;
     /**
-     * Gets the requireTotalCount property&apos;s value.
+     * @docid
+     * @publicName requireTotalCount()
+     * @public
      */
     requireTotalCount(): boolean;
     /**
-     * Sets the requireTotalCount property&apos;s value.
+     * @docid
+     * @publicName requireTotalCount(value)
+     * @public
      */
     requireTotalCount(value: boolean): void;
     /**
-     * Gets the searchExpr property&apos;s value.
+     * @docid
+     * @publicName searchExpr()
+     * @return getter|Array<getter>
+     * @public
      */
     searchExpr(): string & Function & Array<string | Function>;
     /**
-     * Sets the searchExpr property&apos;s value.
+     * @docid
+     * @publicName searchExpr(expr)
+     * @param1 expr:getter|Array<getter>
+     * @public
      */
     searchExpr(expr: string | Function | Array<string | Function>): void;
     /**
-     * Gets the searchOperation property&apos;s value.
+     * @docid
+     * @publicName searchOperation()
+     * @public
      */
     searchOperation(): string;
     /**
-     * Sets the searchOperation property&apos;s value.
+     * @docid
+     * @publicName searchOperation(op)
+     * @public
      */
     searchOperation(op: string): void;
     /**
-     * Gets the searchValue property&apos;s value.
+     * @docid
+     * @publicName searchValue()
+     * @public
      */
     searchValue(): any;
     /**
-     * Sets the searchValue property&apos;s value.
+     * @docid
+     * @publicName searchValue(value)
+     * @public
      */
     searchValue(value: any): void;
     /**
-     * Gets the select property&apos;s value.
+     * @docid
+     * @publicName select()
+     * @return any
+     * @public
      */
     select(): SelectDescriptor<TItem>;
     /**
-     * Sets the select property&apos;s value.
+     * @docid
+     * @publicName select(expr)
+     * @param1 expr:any
+     * @public
      */
     select(expr: SelectDescriptor<TItem>): void;
     /**
-     * Gets the sort property&apos;s value.
+     * @docid
+     * @publicName sort()
+     * @return any
+     * @public
      */
     sort(): SortDescriptor<TItem> | Array<SortDescriptor<TItem>>;
     /**
-     * Sets the sort property&apos;s value.
+     * @docid
+     * @publicName sort(sortExpr)
+     * @param1 sortExpr:any
+     * @public
      */
     sort(sortExpr: SortDescriptor<TItem> | Array<SortDescriptor<TItem>>): void;
     /**
-     * Gets the instance of the store underlying the DataSource.
+     * @docid
+     * @publicName store()
+     * @return object
+     * @public
      */
     store(): Store<TItem, TKey>;
     /**
-     * Gets the number of data items in the store after the last load() operation without paging. Takes effect only if requireTotalCount is true
+     * @docid
+     * @publicName totalCount()
+     * @return numeric
+     * @public
      */
     totalCount(): number;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type Store|DataSource|DataSourceOptions|string|Array<any>|null
  */
 export type DataSourceLike<TItem, TKey = any> =
     string |
@@ -298,9 +446,6 @@ export type DataSourceLike<TItem, TKey = any> =
     DataSourceOptionsStub<any, any, TItem> |
     DataSource<TItem, TKey>;
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 interface DataSourceOptionsStub<
     TStoreItem = any,
     TMappedItem = TStoreItem,
@@ -328,7 +473,4 @@ interface DataSourceOptionsStub<
     store?: Array<TStoreItem> | Store<TStoreItem, any> | StoreOptions<TStoreItem, any>;
 }
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 type EventName = 'changed' | 'loadError' | 'loadingChanged';

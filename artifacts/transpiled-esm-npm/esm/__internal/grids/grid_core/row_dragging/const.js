@@ -1,7 +1,7 @@
-export var ATTRIBUTES = {
+export const ATTRIBUTES = {
   dragCell: 'dx-drag-cell'
 };
-export var CLASSES = {
+export const CLASSES = {
   cellFocusDisabled: 'dx-cell-focus-disabled',
   handleIcon: 'drag-icon',
   commandDrag: 'dx-command-drag',

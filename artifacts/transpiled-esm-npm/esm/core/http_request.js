@@ -1,8 +1,8 @@
 import { getWindow } from './utils/window';
-var window = getWindow();
+const window = getWindow();
 import injector from './utils/dependency_injector';
-var nativeXMLHttpRequest = {
-  getXhr: function getXhr() {
+const nativeXMLHttpRequest = {
+  getXhr: function () {
     return new window.XMLHttpRequest();
   }
 };

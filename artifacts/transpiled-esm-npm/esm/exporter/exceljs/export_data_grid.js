@@ -20,7 +20,7 @@ class DataGridHelpers {
   _trySetAutoFilter(cellRange) {
     if (this.autoFilterEnabled) {
       if (!isDefined(this.worksheet.autoFilter) && this.dataProvider.getRowsCount() > 0) {
-        var dataRange = {
+        const dataRange = {
           from: {
             row: cellRange.from.row + this.dataProvider.getHeaderRowCount() - 1,
             column: cellRange.from.column

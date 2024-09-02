@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/tree_map/drilldown.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,12 +9,12 @@
 import TreeMapBase from './tree_map.base';
 import { expand as _expand } from '../core/helpers';
 import './api';
-var proto = TreeMapBase.prototype;
+const proto = TreeMapBase.prototype;
 proto._eventsMap.onDrill = {
   name: 'drill'
 };
 _expand(proto, '_extendProxyType', function (proto) {
-  var that = this;
+  const that = this;
   proto.drillDown = function () {
     that._drillToNode(this._id);
   };
@@ -23,8 +23,8 @@ _expand(proto, '_onNodesCreated', function () {
   this._drilldownIndex = -1;
 });
 proto._drillToNode = function (index) {
-  var that = this;
-  var node;
+  const that = this;
+  let node;
   if (that._drilldownIndex !== index) {
     node = that._nodes[index] || that._root;
     if (node.nodes) {

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/workspaces/m_work_space_grouped_strategy_vertical.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,17 +13,16 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _position = require("../../../core/utils/position");
-var _index = require("../__migration/utils/index");
+var _index = require("../../scheduler/r1/utils/index");
+var _const = require("../../scheduler/workspaces/const");
 var _m_classes = require("../m_classes");
 var _m_cache = require("./m_cache");
-const WORK_SPACE_BORDER = 1;
-let VerticalGroupedStrategy = /*#__PURE__*/function () {
-  function VerticalGroupedStrategy(_workSpace) {
+class VerticalGroupedStrategy {
+  constructor(_workSpace) {
     this._workSpace = _workSpace;
     this.cache = new _m_cache.Cache();
   }
-  var _proto = VerticalGroupedStrategy.prototype;
-  _proto.prepareCellIndexes = function prepareCellIndexes(cellCoordinates, groupIndex, inAllDayRow) {
+  prepareCellIndexes(cellCoordinates, groupIndex, inAllDayRow) {
     let rowIndex = cellCoordinates.rowIndex + groupIndex * this._workSpace._getRowCount();
     if (this._workSpace.supportAllDayRow() && this._workSpace.option('showAllDayPanel')) {
       rowIndex += groupIndex;
@@ -35,45 +34,46 @@ let VerticalGroupedStrategy = /*#__PURE__*/function () {
       rowIndex,
       columnIndex: cellCoordinates.columnIndex
     };
-  };
-  _proto.getGroupIndex = function getGroupIndex(rowIndex) {
+  }
+  getGroupIndex(rowIndex) {
     return Math.floor(rowIndex / this._workSpace._getRowCount());
-  };
-  _proto.calculateHeaderCellRepeatCount = function calculateHeaderCellRepeatCount() {
+  }
+  calculateHeaderCellRepeatCount() {
     return 1;
-  };
-  _proto.insertAllDayRowsIntoDateTable = function insertAllDayRowsIntoDateTable() {
+  }
+  insertAllDayRowsIntoDateTable() {
     return this._workSpace.option('showAllDayPanel');
-  };
-  _proto.getTotalCellCount = function getTotalCellCount() {
+  }
+  getTotalCellCount() {
     return this._workSpace._getCellCount();
-  };
-  _proto.getTotalRowCount = function getTotalRowCount() {
+  }
+  getTotalRowCount() {
     return this._workSpace._getRowCount() * this._workSpace._getGroupCount();
-  };
-  _proto.calculateTimeCellRepeatCount = function calculateTimeCellRepeatCount() {
+  }
+  calculateTimeCellRepeatCount() {
     return this._workSpace._getGroupCount() || 1;
-  };
-  _proto.getWorkSpaceMinWidth = function getWorkSpaceMinWidth() {
+  }
+  getWorkSpaceMinWidth() {
     let minWidth = this._workSpace._getWorkSpaceWidth();
-    const workspaceContainerWidth = (0, _position.getBoundingRect)(this._workSpace.$element().get(0)).width - this._workSpace.getTimePanelWidth() - this._workSpace.getGroupTableWidth() - 2 * WORK_SPACE_BORDER;
+    const workSpaceElementWidth = (0, _position.getBoundingRect)(this._workSpace.$element().get(0)).width;
+    const workspaceContainerWidth = workSpaceElementWidth - this._workSpace.getTimePanelWidth() - this._workSpace.getGroupTableWidth() - 2 * _const.WORK_SPACE_BORDER_PX;
     if (minWidth < workspaceContainerWidth) {
       minWidth = workspaceContainerWidth;
     }
     return minWidth;
-  };
-  _proto.getAllDayOffset = function getAllDayOffset() {
+  }
+  getAllDayOffset() {
     return 0;
-  };
-  _proto.getGroupCountClass = function getGroupCountClass(groups) {
+  }
+  getGroupCountClass(groups) {
     return (0, _index.getVerticalGroupCountClass)(groups);
-  };
-  _proto.getLeftOffset = function getLeftOffset() {
+  }
+  getLeftOffset() {
     return this._workSpace.getTimePanelWidth() + this._workSpace.getGroupTableWidth();
-  };
-  _proto.getGroupBoundsOffset = function getGroupBoundsOffset(groupIndex, _ref) {
+  }
+  getGroupBoundsOffset(groupIndex, _ref) {
     let [$firstCell, $lastCell] = _ref;
-    return this.cache.get("groupBoundsOffset".concat(groupIndex), () => {
+    return this.cache.get(`groupBoundsOffset${groupIndex}`, () => {
       const startDayHour = this._workSpace.option('startDayHour');
       const endDayHour = this._workSpace.option('endDayHour');
       const hoursInterval = this._workSpace.option('hoursInterval');
@@ -99,8 +99,8 @@ let VerticalGroupedStrategy = /*#__PURE__*/function () {
       };
       return this._groupBoundsOffset;
     });
-  };
-  _proto.shiftIndicator = function shiftIndicator($indicator, height, rtlOffset, i) {
+  }
+  shiftIndicator($indicator, height, rtlOffset, i) {
     const offset = this._workSpace.getIndicatorOffset(0);
     const tableOffset = this._workSpace.option('crossScrollingEnabled') ? 0 : this._workSpace.getGroupTableWidth();
     const horizontalOffset = rtlOffset ? rtlOffset - offset : offset;
@@ -110,57 +110,54 @@ let VerticalGroupedStrategy = /*#__PURE__*/function () {
     }
     $indicator.css('left', horizontalOffset + tableOffset);
     $indicator.css('top', height + verticalOffset);
-  };
-  _proto.getShaderOffset = function getShaderOffset(i, width) {
+  }
+  getShaderOffset(i, width) {
     const offset = this._workSpace.option('crossScrollingEnabled') ? 0 : this._workSpace.getGroupTableWidth();
     return this._workSpace.option('rtlEnabled') ? (0, _position.getBoundingRect)(this._$container.get(0)).width - offset - this._workSpace.getWorkSpaceLeftOffset() - width : offset;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.getShaderTopOffset = function getShaderTopOffset(i) {
+  getShaderTopOffset(i) {
     return 0;
-  };
-  _proto.getShaderHeight = function getShaderHeight() {
+  }
+  getShaderHeight() {
     let height = this._workSpace.getIndicationHeight();
     if (this._workSpace.supportAllDayRow() && this._workSpace.option('showAllDayPanel')) {
       height += this._workSpace.getCellHeight();
     }
     return height;
-  };
-  _proto.getShaderMaxHeight = function getShaderMaxHeight() {
+  }
+  getShaderMaxHeight() {
     let height = this._workSpace._getRowCount() * this._workSpace.getCellHeight();
     if (this._workSpace.supportAllDayRow() && this._workSpace.option('showAllDayPanel')) {
       height += this._workSpace.getCellHeight();
     }
     return height;
-  };
-  _proto.getShaderWidth = function getShaderWidth() {
+  }
+  getShaderWidth() {
     return this._workSpace.getIndicationWidth(0);
-  };
-  _proto.getScrollableScrollTop = function getScrollableScrollTop() {
+  }
+  getScrollableScrollTop() {
     return this._workSpace.getScrollable().scrollTop();
   }
   // ------------
   // We do not need these methods in renovation
   // ------------
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.addAdditionalGroupCellClasses = function addAdditionalGroupCellClasses(cellClass, index, i, j) {
+  addAdditionalGroupCellClasses(cellClass, index, i, j) {
     cellClass = this._addLastGroupCellClass(cellClass, i + 1);
     return this._addFirstGroupCellClass(cellClass, i + 1);
-  };
-  _proto._addLastGroupCellClass = function _addLastGroupCellClass(cellClass, index) {
+  }
+  _addLastGroupCellClass(cellClass, index) {
     if (index % this._workSpace._getRowCount() === 0) {
-      return "".concat(cellClass, " ").concat(_m_classes.LAST_GROUP_CELL_CLASS);
+      return `${cellClass} ${_m_classes.LAST_GROUP_CELL_CLASS}`;
     }
     return cellClass;
-  };
-  _proto._addFirstGroupCellClass = function _addFirstGroupCellClass(cellClass, index) {
+  }
+  _addFirstGroupCellClass(cellClass, index) {
     if ((index - 1) % this._workSpace._getRowCount() === 0) {
-      return "".concat(cellClass, " ").concat(_m_classes.FIRST_GROUP_CELL_CLASS);
+      return `${cellClass} ${_m_classes.FIRST_GROUP_CELL_CLASS}`;
     }
     return cellClass;
-  };
-  return VerticalGroupedStrategy;
-}();
+  }
+}
 var _default = exports.default = VerticalGroupedStrategy;

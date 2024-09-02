@@ -665,6 +665,10 @@ var _default = exports.default = {
     },
     estimateMargins: function (canvas) {
       this.updateCanvas(canvas);
+      const {
+        position,
+        placeholderSize
+      } = this._options;
       const that = this;
       const range = that._getViewportRange();
       const ticksData = this._createTicksAndLabelFormat(range);
@@ -704,6 +708,9 @@ var _default = exports.default = {
         top: (options.position === 'top' ? height : 0) + getConstantLineLabelMarginForVerticalAlignment(constantLineOptions, 'top', constantLinesHeight),
         bottom: (options.position !== 'top' ? height : 0) + getConstantLineLabelMarginForVerticalAlignment(constantLineOptions, 'bottom', constantLinesHeight)
       };
+      if (placeholderSize) {
+        margins[position] = placeholderSize;
+      }
       labelElement && labelElement.remove();
       titleElement && titleElement.remove();
       constantLinesLabelsElement && constantLinesLabelsElement.remove();
@@ -971,16 +978,14 @@ var _default = exports.default = {
             from = from >= minVisible ? from : minVisible;
             to = to <= maxVisible ? to : maxVisible;
             if (to - from < maxVisible - minVisible) {
-              var _lastResult$cumulativ;
               newBreak = {
                 from: from,
                 to: to,
-                cumulativeWidth: ((_lastResult$cumulativ = lastResult === null || lastResult === void 0 ? void 0 : lastResult.cumulativeWidth) !== null && _lastResult$cumulativ !== void 0 ? _lastResult$cumulativ : 0) + breakSize
+                cumulativeWidth: ((lastResult === null || lastResult === void 0 ? void 0 : lastResult.cumulativeWidth) ?? 0) + breakSize
               };
               if (currentBreak.gapSize) {
-                var _lastResult$cumulativ2;
                 newBreak.gapSize = _date.default.convertMillisecondsToDateUnits(to - from);
-                newBreak.cumulativeWidth = (_lastResult$cumulativ2 = lastResult === null || lastResult === void 0 ? void 0 : lastResult.cumulativeWidth) !== null && _lastResult$cumulativ2 !== void 0 ? _lastResult$cumulativ2 : 0;
+                newBreak.cumulativeWidth = (lastResult === null || lastResult === void 0 ? void 0 : lastResult.cumulativeWidth) ?? 0;
               }
               result.push(newBreak);
             }
@@ -1126,7 +1131,7 @@ var _default = exports.default = {
     getCustomPosition(position) {
       const that = this;
       const orthogonalAxis = that.getOrthogonalAxis();
-      const resolvedPosition = position !== null && position !== void 0 ? position : that.getResolvedPositionOption();
+      const resolvedPosition = position ?? that.getResolvedPositionOption();
       const offset = that.getOptions().offset;
       const orthogonalTranslator = orthogonalAxis.getTranslator();
       const orthogonalAxisType = orthogonalAxis.getOptions().type;
@@ -1153,7 +1158,7 @@ var _default = exports.default = {
         customPosition,
         offset
       } = that.getOptions();
-      const resolvedPosition = position !== null && position !== void 0 ? position : that.getResolvedPositionOption();
+      const resolvedPosition = position ?? that.getResolvedPositionOption();
       const orthogonalAxis = that.getOrthogonalAxis();
       const orthogonalTranslator = orthogonalAxis.getTranslator();
       const visibleArea = orthogonalTranslator.getCanvasVisibleArea();
@@ -1179,9 +1184,8 @@ var _default = exports.default = {
       return currentPosition;
     },
     getResolvedPositionOption() {
-      var _options$customPositi;
       const options = this.getOptions();
-      return (_options$customPositi = options.customPosition) !== null && _options$customPositi !== void 0 ? _options$customPositi : options.position;
+      return options.customPosition ?? options.position;
     },
     customPositionIsAvailable() {
       const options = this.getOptions();

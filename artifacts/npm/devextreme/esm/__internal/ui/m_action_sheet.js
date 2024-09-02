@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/ui/m_action_sheet.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -18,17 +18,17 @@ import Button from '../../ui/button';
 import CollectionWidget from '../../ui/collection/ui.collection_widget.edit';
 import Popover from '../../ui/popover/ui.popover';
 import Popup from '../../ui/popup/ui.popup';
-var window = getWindow();
-var ACTION_SHEET_CLASS = 'dx-actionsheet';
-var ACTION_SHEET_CONTAINER_CLASS = 'dx-actionsheet-container';
-var ACTION_SHEET_POPUP_WRAPPER_CLASS = 'dx-actionsheet-popup-wrapper';
-var ACTION_SHEET_POPOVER_WRAPPER_CLASS = 'dx-actionsheet-popover-wrapper';
-var ACTION_SHEET_CANCEL_BUTTON_CLASS = 'dx-actionsheet-cancel';
-var ACTION_SHEET_ITEM_CLASS = 'dx-actionsheet-item';
-var ACTION_SHEET_ITEM_DATA_KEY = 'dxActionSheetItemData';
-var ACTION_SHEET_WITHOUT_TITLE_CLASS = 'dx-actionsheet-without-title';
-var ACTION_SHEET_BUTTON_DEFAULT_STYLING_MODE = 'outlined';
-var ActionSheet = CollectionWidget.inherit({
+const window = getWindow();
+const ACTION_SHEET_CLASS = 'dx-actionsheet';
+const ACTION_SHEET_CONTAINER_CLASS = 'dx-actionsheet-container';
+const ACTION_SHEET_POPUP_WRAPPER_CLASS = 'dx-actionsheet-popup-wrapper';
+const ACTION_SHEET_POPOVER_WRAPPER_CLASS = 'dx-actionsheet-popover-wrapper';
+const ACTION_SHEET_CANCEL_BUTTON_CLASS = 'dx-actionsheet-cancel';
+const ACTION_SHEET_ITEM_CLASS = 'dx-actionsheet-item';
+const ACTION_SHEET_ITEM_DATA_KEY = 'dxActionSheetItemData';
+const ACTION_SHEET_WITHOUT_TITLE_CLASS = 'dx-actionsheet-without-title';
+const ACTION_SHEET_BUTTON_DEFAULT_STYLING_MODE = 'outlined';
+const ActionSheet = CollectionWidget.inherit({
   _getDefaultOptions() {
     return extend(this.callBase(), {
       usePopover: false,
@@ -60,7 +60,7 @@ var ActionSheet = CollectionWidget.inherit({
     this._templateManager.addDefaultTemplates({
       item: new BindableTemplate(($container, data) => {
         // @ts-expect-error
-        var button = new Button($('<div>'), extend({
+        const button = new Button($('<div>'), extend({
           onClick: data && data.click,
           stylingMode: data && data.stylingMode || ACTION_SHEET_BUTTON_DEFAULT_STYLING_MODE
         }, data));
@@ -124,8 +124,7 @@ var ActionSheet = CollectionWidget.inherit({
       disabled: false,
       showTitle: true,
       title: this.option('title'),
-      // @ts-expect-error
-      deferRendering: !window.angular,
+      deferRendering: true,
       onContentReady: this._popupContentReadyAction.bind(this),
       onHidden: this.hide.bind(this)
     };
@@ -207,15 +206,15 @@ var ActionSheet = CollectionWidget.inherit({
       this._$cancelButton.remove();
     }
     if (this.option('showCancelButton')) {
-      var cancelClickAction = this._createActionByOption('onCancelClick') || noop;
-      var that = this;
+      const cancelClickAction = this._createActionByOption('onCancelClick') || noop;
+      const that = this;
       this._$cancelButton = $('<div>').addClass(ACTION_SHEET_CANCEL_BUTTON_CLASS).appendTo(this._popup && this._popup.$content());
       this._createComponent(this._$cancelButton, Button, {
         disabled: false,
         stylingMode: ACTION_SHEET_BUTTON_DEFAULT_STYLING_MODE,
         text: this.option('cancelText'),
         onClick(e) {
-          var hidingArgs = {
+          const hidingArgs = {
             event: e,
             cancel: false
           };
@@ -270,9 +269,8 @@ var ActionSheet = CollectionWidget.inherit({
     }
   },
   toggle(showing) {
-    var that = this;
-    // @ts-expect-error
-    var d = new Deferred();
+    const that = this;
+    const d = Deferred();
     that._popup.toggle(showing).done(() => {
       that.option('visible', showing);
       d.resolveWith(that);

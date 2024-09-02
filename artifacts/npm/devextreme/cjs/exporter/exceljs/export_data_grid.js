@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/exporter/exceljs/export_data_grid.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,8 +12,8 @@ exports.exportDataGrid = exportDataGrid;
 var _type = require("../../core/utils/type");
 var _export = require("./export");
 var _export_merged_ranges_manager = require("./export_merged_ranges_manager");
-let DataGridHelpers = /*#__PURE__*/function () {
-  function DataGridHelpers(component, dataProvider, worksheet, options) {
+class DataGridHelpers {
+  constructor(component, dataProvider, worksheet, options) {
     this.component = component;
     this.dataProvider = dataProvider;
     this.worksheet = worksheet;
@@ -22,14 +22,13 @@ let DataGridHelpers = /*#__PURE__*/function () {
     this.customizeCell = options.customizeCell;
     this.autoFilterEnabled = options.autoFilterEnabled;
   }
-  var _proto = DataGridHelpers.prototype;
-  _proto._getFirstColumnIndex = function _getFirstColumnIndex() {
+  _getFirstColumnIndex() {
     return this.topLeftCell.column;
-  };
-  _proto._getFieldHeaderRowsCount = function _getFieldHeaderRowsCount() {
+  }
+  _getFieldHeaderRowsCount() {
     return 0;
-  };
-  _proto._trySetAutoFilter = function _trySetAutoFilter(cellRange) {
+  }
+  _trySetAutoFilter(cellRange) {
     if (this.autoFilterEnabled) {
       if (!(0, _type.isDefined)(this.worksheet.autoFilter) && this.dataProvider.getRowsCount() > 0) {
         const dataRange = {
@@ -42,52 +41,51 @@ let DataGridHelpers = /*#__PURE__*/function () {
         this.worksheet.autoFilter = dataRange;
       }
     }
-  };
-  _proto._trySetFont = function _trySetFont(excelCell, bold) {
+  }
+  _trySetFont(excelCell, bold) {
     if ((0, _type.isDefined)(bold)) {
       excelCell.font = excelCell.font || {};
       excelCell.font.bold = bold;
     }
-  };
-  _proto._getWorksheetFrozenState = function _getWorksheetFrozenState(cellRange) {
+  }
+  _getWorksheetFrozenState(cellRange) {
     return {
       state: 'frozen',
       ySplit: cellRange.from.row + this.dataProvider.getFrozenArea().y - 1
     };
-  };
-  _proto._trySetOutlineLevel = function _trySetOutlineLevel(row, rowIndex) {
+  }
+  _trySetOutlineLevel(row, rowIndex) {
     if (rowIndex >= this.dataProvider.getHeaderRowCount()) {
       row.outlineLevel = this.dataProvider.getGroupLevel(rowIndex);
     }
-  };
-  _proto._isFrozenZone = function _isFrozenZone(dataProvider) {
+  }
+  _isFrozenZone(dataProvider) {
     return dataProvider.getHeaderRowCount() > 0;
-  };
-  _proto._isHeaderCell = function _isHeaderCell(rowIndex) {
+  }
+  _isHeaderCell(rowIndex) {
     return rowIndex < this.dataProvider.getHeaderRowCount();
-  };
-  _proto._isInfoCell = function _isInfoCell() {
+  }
+  _isInfoCell() {
     return false;
-  };
-  _proto._allowToMergeRange = function _allowToMergeRange() {
+  }
+  _allowToMergeRange() {
     return true;
-  };
-  _proto._getAllFieldHeaders = function _getAllFieldHeaders() {
+  }
+  _getAllFieldHeaders() {
     return [];
-  };
-  _proto._customizeCell = function _customizeCell(excelCell, gridCell) {
+  }
+  _customizeCell(excelCell, gridCell) {
     if ((0, _type.isFunction)(this.customizeCell)) {
       this.customizeCell({
         excelCell,
         gridCell
       });
     }
-  };
-  _proto._exportFieldHeaders = function _exportFieldHeaders() {};
-  _proto._exportAllFieldHeaders = function _exportAllFieldHeaders() {};
-  _proto._isRowFieldHeadersRow = function _isRowFieldHeadersRow() {};
-  return DataGridHelpers;
-}();
+  }
+  _exportFieldHeaders() {}
+  _exportAllFieldHeaders() {}
+  _isRowFieldHeadersRow() {}
+}
 function exportDataGrid(options) {
   return _export.Export.export(_getFullOptions(options), DataGridHelpers, _getLoadPanelTargetElement, _getLoadPanelContainer);
 }

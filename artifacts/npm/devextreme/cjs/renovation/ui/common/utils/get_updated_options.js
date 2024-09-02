@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/renovation/ui/common/utils/get_updated_options.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -37,7 +37,7 @@ function compare(resultPaths, item1, item2, key, fullPropName, notDeepCopyArrays
     } else {
       const diffPaths = objectDiffs(item1, item2, fullPropName, notDeepCopyArrays);
       resultPaths.push(...diffPaths.map(item => _extends({}, item, {
-        path: "".concat(key, ".").concat(item.path)
+        path: `${key}.${item.path}`
       })));
     }
   } else if (type1 === 'array') {
@@ -49,7 +49,7 @@ function compare(resultPaths, item1, item2, key, fullPropName, notDeepCopyArrays
     } else {
       const diffPaths = objectDiffs(item1, item2, fullPropName, notDeepCopyArrays);
       [].push.apply(resultPaths, diffPaths.map(item => _extends({}, item, {
-        path: "".concat(key).concat(item.path)
+        path: `${key}${item.path}`
       })));
     }
   } else {
@@ -59,9 +59,9 @@ function compare(resultPaths, item1, item2, key, fullPropName, notDeepCopyArrays
 const objectDiffsFiltered = propsEnumerator => (oldProps, props, fullPropName, notDeepCopyArrays) => {
   const resultPaths = [];
   const processItem = !Array.isArray(oldProps) ? propName => {
-    compare(resultPaths, oldProps[propName], props[propName], propName, "".concat(fullPropName, ".").concat(propName), notDeepCopyArrays);
+    compare(resultPaths, oldProps[propName], props[propName], propName, `${fullPropName}.${propName}`, notDeepCopyArrays);
   } : propName => {
-    compare(resultPaths, oldProps[propName], props[propName], "[".concat(propName, "]"), "".concat(fullPropName, ".").concat(propName), notDeepCopyArrays);
+    compare(resultPaths, oldProps[propName], props[propName], `[${propName}]`, `${fullPropName}.${propName}`, notDeepCopyArrays);
   };
   propsEnumerator(oldProps).forEach(processItem);
   Object.keys(props).filter(propName => !Object.prototype.hasOwnProperty.call(oldProps, propName) && oldProps[propName] !== props[propName]).forEach(propName => {

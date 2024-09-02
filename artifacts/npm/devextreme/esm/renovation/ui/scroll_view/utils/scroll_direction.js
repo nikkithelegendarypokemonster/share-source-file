@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/renovation/ui/scroll_view/utils/scroll_direction.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,7 +12,7 @@ export class ScrollDirection {
     this.DIRECTION_HORIZONTAL = 'horizontal';
     this.DIRECTION_VERTICAL = 'vertical';
     this.DIRECTION_BOTH = 'both';
-    this.direction = direction !== null && direction !== void 0 ? direction : DIRECTION_VERTICAL;
+    this.direction = direction ?? DIRECTION_VERTICAL;
   }
   get isHorizontal() {
     return this.direction === DIRECTION_HORIZONTAL || this.direction === DIRECTION_BOTH;

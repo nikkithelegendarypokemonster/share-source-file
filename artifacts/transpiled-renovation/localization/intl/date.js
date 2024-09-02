@@ -82,6 +82,11 @@ const intlFormats = {
   'day': {
     day: 'numeric'
   },
+  'date': {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  },
   'dayofweek': {
     weekday: 'long'
   },

@@ -1,14 +1,14 @@
 import TreeMapBase from './tree_map.base';
 import Node from './node';
 import { noop } from '../../core/utils/common';
-var proto = TreeMapBase.prototype;
-var nodeProto = Node.prototype;
-var handlers = proto._handlers;
-var _calculateState = handlers.calculateState;
-var _buildState = nodeProto._buildState;
+const proto = TreeMapBase.prototype;
+const nodeProto = Node.prototype;
+const handlers = proto._handlers;
+const _calculateState = handlers.calculateState;
+const _buildState = nodeProto._buildState;
 import { extend as _extend } from '../../core/utils/extend';
 handlers.calculateState = function (options) {
-  var states = {
+  const states = {
     0: _calculateState(options)
   };
   handlers.calculateAdditionalStates(states, options);
@@ -21,7 +21,7 @@ nodeProto.statesMap = {
 };
 nodeProto.additionalStates = [];
 nodeProto._buildState = function (state, extra) {
-  var states = {
+  const states = {
     0: _buildState(state[0], extra)
   };
   if (this.additionalStates.length) {
@@ -41,8 +41,8 @@ nodeProto.setState = function (code, state) {
   this.ctx.change(['TILES']);
 };
 function buildAdditionalStates(states, base, source, list) {
-  var i;
-  var ii = list.length;
+  let i;
+  const ii = list.length;
   for (i = 0; i < ii; ++i) {
     states[list[i]] = _extend({}, base, source[list[i]]);
   }

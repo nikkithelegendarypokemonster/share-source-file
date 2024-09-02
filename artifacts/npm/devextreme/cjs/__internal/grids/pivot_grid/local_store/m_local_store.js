@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/pivot_grid/local_store/m_local_store.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -133,7 +133,7 @@ const LocalStore = exports.LocalStore = _class.default.inherit(function () {
     let hierarchyItem;
     if (dimension) {
       dimensionValue = dimension.selector(options.data);
-      pathHash = pathHash !== undefined ? pathHash + PATH_DELIMETER + dimensionValue : "".concat(dimensionValue);
+      pathHash = pathHash !== undefined ? pathHash + PATH_DELIMETER + dimensionValue : `${dimensionValue}`;
       hierarchyItem = addHierarchyItem(dimensionValue, children, pathHash, options.childrenHash);
       indexes.push(hierarchyItem.index);
       if (expandedPathsHash && expandedPathsHash[pathHash] || dimension.expanded) {
@@ -150,7 +150,7 @@ const LocalStore = exports.LocalStore = _class.default.inherit(function () {
     const expandedPaths = headerName === 'rows' ? loadOptions.rowExpandedPaths : loadOptions.columnExpandedPaths;
     const options = {
       data,
-      childrenHash: headers["".concat(headerName, "Hash")],
+      childrenHash: headers[`${headerName}Hash`],
       dimensions: loadOptions[headerName],
       expandedPathsHash: loadOptions.headerName !== headerName && expandedPaths && expandedPaths.hash
     };
@@ -179,7 +179,7 @@ const LocalStore = exports.LocalStore = _class.default.inherit(function () {
     if (expandedPaths) {
       const hash = expandedPaths.hash = {};
       expandedPaths.forEach(path => {
-        const pathValue = path.map(value => "".concat(value)).join(PATH_DELIMETER);
+        const pathValue = path.map(value => `${value}`).join(PATH_DELIMETER);
         hash[pathValue] = true;
       });
     }

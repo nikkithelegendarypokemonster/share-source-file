@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/diagram/ui.diagram.context_menu.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -17,21 +17,14 @@ var _uiDiagram = _interopRequireDefault(require("./ui.diagram.menu_helper"));
 var _diagram2 = _interopRequireDefault(require("./diagram.bar"));
 var _diagram3 = require("./diagram.importer");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const DIAGRAM_TOUCHBAR_CLASS = 'dx-diagram-touchbar';
 const DIAGRAM_TOUCHBAR_OVERLAY_CLASS = 'dx-diagram-touchbar-overlay';
 const DIAGRAM_TOUCHBAR_TARGET_CLASS = 'dx-diagram-touchbar-target';
 const DIAGRAM_TOUCHBAR_MIN_UNWRAPPED_WIDTH = 800;
 const DIAGRAM_TOUCHBAR_Y_OFFSET = 32;
-let DiagramContextMenuWrapper = /*#__PURE__*/function (_Widget) {
-  _inheritsLoose(DiagramContextMenuWrapper, _Widget);
-  function DiagramContextMenuWrapper() {
-    return _Widget.apply(this, arguments) || this;
-  }
-  var _proto = DiagramContextMenuWrapper.prototype;
-  _proto._init = function _init() {
-    _Widget.prototype._init.call(this);
+class DiagramContextMenuWrapper extends _ui.default {
+  _init() {
+    super._init();
     this._createOnVisibilityChangingAction();
     this._createOnInternalCommand();
     this._createOnCustomCommand();
@@ -40,9 +33,9 @@ let DiagramContextMenuWrapper = /*#__PURE__*/function (_Widget) {
     this._commands = [];
     this._commandToIndexMap = {};
     this.bar = new DiagramContextMenuBar(this);
-  };
-  _proto._initMarkup = function _initMarkup() {
-    _Widget.prototype._initMarkup.call(this);
+  }
+  _initMarkup() {
+    super._initMarkup();
     this._commands = this._getCommands();
     this._commandToIndexMap = {};
     this._fillCommandToIndexMap(this._commands, []);
@@ -86,8 +79,8 @@ let DiagramContextMenuWrapper = /*#__PURE__*/function (_Widget) {
         delete this._inOnShowing;
       }
     });
-  };
-  _proto._show = function _show(x, y, selection) {
+  }
+  _show(x, y, selection) {
     this._contextMenuInstance.hide();
     if (this._isTouchBarMode()) {
       this._$contextMenuTargetElement.show();
@@ -113,18 +106,18 @@ let DiagramContextMenuWrapper = /*#__PURE__*/function (_Widget) {
       });
       this._contextMenuInstance.show();
     }
-  };
-  _proto._hide = function _hide() {
+  }
+  _hide() {
     this._$contextMenuTargetElement.hide();
     this._contextMenuInstance.hide();
-  };
-  _proto._isTouchBarMode = function _isTouchBarMode() {
+  }
+  _isTouchBarMode() {
     const {
       Browser
     } = (0, _diagram3.getDiagram)();
     return Browser.TouchUI;
-  };
-  _proto._onItemClick = function _onItemClick(itemData) {
+  }
+  _onItemClick(itemData) {
     let processed = false;
     if (this._onItemClickAction) {
       processed = this._onItemClickAction(itemData);
@@ -133,8 +126,8 @@ let DiagramContextMenuWrapper = /*#__PURE__*/function (_Widget) {
       _uiDiagram.default.onContextMenuItemClick(this, itemData, this._executeCommand.bind(this));
       this._contextMenuInstance.hide();
     }
-  };
-  _proto._executeCommand = function _executeCommand(command, name, value) {
+  }
+  _executeCommand(command, name, value) {
     if (typeof command === 'number') {
       this.bar.raiseBarCommandExecuted(command, value);
     } else if (typeof command === 'string') {
@@ -147,17 +140,17 @@ let DiagramContextMenuWrapper = /*#__PURE__*/function (_Widget) {
         name
       });
     }
-  };
-  _proto._createOnInternalCommand = function _createOnInternalCommand() {
+  }
+  _createOnInternalCommand() {
     this._onInternalCommandAction = this._createActionByOption('onInternalCommand');
-  };
-  _proto._createOnCustomCommand = function _createOnCustomCommand() {
+  }
+  _createOnCustomCommand() {
     this._onCustomCommandAction = this._createActionByOption('onCustomCommand');
-  };
-  _proto._getCommands = function _getCommands() {
+  }
+  _getCommands() {
     return _diagram.default.getContextMenuCommands(this.option('commands'));
-  };
-  _proto._fillCommandToIndexMap = function _fillCommandToIndexMap(commands, indexPath) {
+  }
+  _fillCommandToIndexMap(commands, indexPath) {
     commands.forEach((command, index) => {
       const commandIndexPath = indexPath.concat([index]);
       if (command.command !== undefined) {
@@ -167,35 +160,35 @@ let DiagramContextMenuWrapper = /*#__PURE__*/function (_Widget) {
         this._fillCommandToIndexMap(command.items, commandIndexPath);
       }
     });
-  };
-  _proto._setItemEnabled = function _setItemEnabled(key, enabled) {
+  }
+  _setItemEnabled(key, enabled) {
     this._setItemVisible(key, enabled);
-  };
-  _proto._setItemVisible = function _setItemVisible(key, visible) {
+  }
+  _setItemVisible(key, visible) {
     const itemOptionText = _uiDiagram.default.getItemOptionText(this._contextMenuInstance, this._commandToIndexMap[key]);
     _uiDiagram.default.updateContextMenuItemVisible(this._contextMenuInstance, itemOptionText, visible);
-  };
-  _proto._setItemValue = function _setItemValue(key, value) {
+  }
+  _setItemValue(key, value) {
     const itemOptionText = _uiDiagram.default.getItemOptionText(this._contextMenuInstance, this._commandToIndexMap[key]);
     _uiDiagram.default.updateContextMenuItemValue(this._contextMenuInstance, itemOptionText, key, value);
-  };
-  _proto._setItemSubItems = function _setItemSubItems(key, items) {
+  }
+  _setItemSubItems(key, items) {
     const itemOptionText = _uiDiagram.default.getItemOptionText(this._contextMenuInstance, this._commandToIndexMap[key]);
     _uiDiagram.default.updateContextMenuItems(this._contextMenuInstance, itemOptionText, key, items);
-  };
-  _proto._setEnabled = function _setEnabled(enabled) {
+  }
+  _setEnabled(enabled) {
     this._contextMenuInstance.option('disabled', !enabled);
-  };
-  _proto.isVisible = function isVisible() {
+  }
+  isVisible() {
     return this._inOnShowing;
-  };
-  _proto._createOnVisibilityChangingAction = function _createOnVisibilityChangingAction() {
+  }
+  _createOnVisibilityChangingAction() {
     this._onVisibilityChangingAction = this._createActionByOption('onVisibilityChanging');
-  };
-  _proto._createOnItemClickAction = function _createOnItemClickAction() {
+  }
+  _createOnItemClickAction() {
     this._onItemClickAction = this._createActionByOption('onItemClick');
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _optionChanged(args) {
     switch (args.name) {
       case 'onVisibilityChanging':
         this._createOnVisibilityChangingAction();
@@ -215,57 +208,47 @@ let DiagramContextMenuWrapper = /*#__PURE__*/function (_Widget) {
       case 'export':
         break;
       default:
-        _Widget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  return DiagramContextMenuWrapper;
-}(_ui.default);
-let DiagramContextMenu = /*#__PURE__*/function (_ContextMenu) {
-  _inheritsLoose(DiagramContextMenu, _ContextMenu);
-  function DiagramContextMenu() {
-    return _ContextMenu.apply(this, arguments) || this;
   }
-  var _proto2 = DiagramContextMenu.prototype;
-  _proto2._renderContextMenuOverlay = function _renderContextMenuOverlay() {
-    _ContextMenu.prototype._renderContextMenuOverlay.call(this);
+}
+class DiagramContextMenu extends _context_menu.default {
+  _renderContextMenuOverlay() {
+    super._renderContextMenuOverlay();
     if (this._overlay && this.option('isTouchBarMode')) {
       this._overlay && this._overlay.option('onShown', () => {
         const $content = (0, _renderer.default)(this._overlay.$content());
         $content.parent().addClass(DIAGRAM_TOUCHBAR_OVERLAY_CLASS);
       });
     }
-  };
-  return DiagramContextMenu;
-}(_context_menu.default);
-let DiagramContextMenuBar = /*#__PURE__*/function (_DiagramBar) {
-  _inheritsLoose(DiagramContextMenuBar, _DiagramBar);
-  function DiagramContextMenuBar(owner) {
-    return _DiagramBar.call(this, owner) || this;
   }
-  var _proto3 = DiagramContextMenuBar.prototype;
-  _proto3.getCommandKeys = function getCommandKeys() {
+}
+class DiagramContextMenuBar extends _diagram2.default {
+  constructor(owner) {
+    super(owner);
+  }
+  getCommandKeys() {
     return this._getKeys(this._owner._commands);
-  };
-  _proto3.setItemValue = function setItemValue(key, value) {
+  }
+  setItemValue(key, value) {
     this._owner._setItemValue(key, value);
-  };
-  _proto3.setItemEnabled = function setItemEnabled(key, enabled) {
+  }
+  setItemEnabled(key, enabled) {
     this._owner._setItemEnabled(key, enabled);
-  };
-  _proto3.setItemVisible = function setItemVisible(key, visible) {
+  }
+  setItemVisible(key, visible) {
     this._owner._setItemVisible(key, visible);
-  };
-  _proto3.setItemSubItems = function setItemSubItems(key, items) {
+  }
+  setItemSubItems(key, items) {
     this._owner._setItemSubItems(key, items);
-  };
-  _proto3.setEnabled = function setEnabled(enabled) {
+  }
+  setEnabled(enabled) {
     this._owner._setEnabled(enabled);
-  };
-  _proto3.isVisible = function isVisible() {
+  }
+  isVisible() {
     return this._owner.isVisible();
-  };
-  return DiagramContextMenuBar;
-}(_diagram2.default);
+  }
+}
 var _default = exports.default = {
   DiagramContextMenuWrapper,
   DiagramContextMenu

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/appointments/m_cell_position_calculator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -61,9 +61,9 @@ class BaseStrategy {
     return this.options.isGroupedAllDayPanel;
   }
   calculateCellPositions(groupIndices, isAllDayRowAppointment, isRecurrentAppointment) {
-    var result = [];
+    const result = [];
     this.appointments.forEach((dateSetting, index) => {
-      var coordinates = this.getCoordinateInfos({
+      const coordinates = this.getCoordinateInfos({
         appointment: dateSetting,
         groupIndices,
         isAllDayRowAppointment,
@@ -76,16 +76,16 @@ class BaseStrategy {
     return result;
   }
   getCoordinateInfos(options) {
-    var {
+    const {
       appointment,
       isAllDayRowAppointment,
       groupIndices,
       recurrent
     } = options;
-    var {
+    const {
       startDate
     } = appointment;
-    var groupIndex = !recurrent ? appointment.source.groupIndex : undefined;
+    const groupIndex = !recurrent ? appointment.source.groupIndex : undefined;
     return this.getCoordinatesByDateInGroup(startDate, groupIndices, isAllDayRowAppointment, groupIndex);
   }
   _prepareObject(position, dateSettingIndex) {
@@ -96,21 +96,28 @@ class BaseStrategy {
     };
   }
   getCoordinatesByDate(date, groupIndex, inAllDayRow) {
-    var validGroupIndex = groupIndex || 0;
-    var cellInfo = {
+    const validGroupIndex = groupIndex || 0;
+    const cellInfo = {
       groupIndex: validGroupIndex,
       startDate: date,
       isAllDay: inAllDayRow
     };
-    var positionByMap = this.viewDataProvider.findCellPositionInMap(cellInfo, true);
+    const positionByMap = this.viewDataProvider.findCellPositionInMap(cellInfo, true);
     if (!positionByMap) {
       return undefined;
     }
-    var position = this.getCellPosition(positionByMap, inAllDayRow && !this.isVerticalGrouping);
-    var timeShift = inAllDayRow ? 0 : this.getTimeShiftRatio(positionByMap, date);
-    var shift = this.getPositionShift(timeShift, inAllDayRow);
-    var horizontalHMax = this.positionHelper.getHorizontalMax(validGroupIndex, date);
-    var verticalMax = this.positionHelper.getVerticalMax({
+    const position = this.getCellPosition(positionByMap, inAllDayRow && !this.isVerticalGrouping);
+    const groupEdgeIndices = this.viewDataProvider.getGroupEdgeIndices(validGroupIndex);
+    const {
+      top: vMin
+    } = this.getCellPosition({
+      columnIndex: positionByMap.columnIndex,
+      rowIndex: groupEdgeIndices.firstRowIndex
+    }, inAllDayRow && !this.isVerticalGrouping);
+    const timeShift = inAllDayRow ? 0 : this.getTimeShiftRatio(positionByMap, date);
+    const shift = this.getPositionShift(timeShift, inAllDayRow);
+    const horizontalHMax = this.positionHelper.getHorizontalMax(validGroupIndex, date);
+    const verticalMax = this.positionHelper.getVerticalMax({
       groupIndex: validGroupIndex,
       isVirtualScrolling: this.isVirtualScrolling,
       showAllDayPanel: this.showAllDayPanel,
@@ -127,20 +134,21 @@ class BaseStrategy {
       columnIndex: position.columnIndex,
       hMax: horizontalHMax,
       vMax: verticalMax,
+      vMin,
       groupIndex: validGroupIndex
     };
   }
   getCoordinatesByDateInGroup(startDate, groupIndices, inAllDayRow, groupIndex) {
-    var result = [];
+    const result = [];
     if (this.viewDataProvider.isSkippedDate(startDate)) {
       return result;
     }
-    var validGroupIndices = [groupIndex];
+    let validGroupIndices = [groupIndex];
     if (!isDefined(groupIndex)) {
       validGroupIndices = this.groupCount ? groupIndices : [0];
     }
     validGroupIndices.forEach(groupIndex => {
-      var coordinates = this.getCoordinatesByDate(startDate, groupIndex, inAllDayRow);
+      const coordinates = this.getCoordinatesByDate(startDate, groupIndex, inAllDayRow);
       if (coordinates) {
         result.push(coordinates);
       }
@@ -148,16 +156,16 @@ class BaseStrategy {
     return result;
   }
   getCellPosition(cellCoordinates, isAllDayPanel) {
-    var {
+    const {
       dateTableCellsMeta,
       allDayPanelCellsMeta
     } = this.DOMMetaData;
-    var {
+    const {
       columnIndex,
       rowIndex
     } = cellCoordinates;
-    var position = isAllDayPanel ? allDayPanelCellsMeta[columnIndex] : dateTableCellsMeta[rowIndex][columnIndex];
-    var validPosition = _extends({}, position);
+    const position = isAllDayPanel ? allDayPanelCellsMeta[columnIndex] : dateTableCellsMeta[rowIndex][columnIndex];
+    const validPosition = _extends({}, position);
     if (this.rtlEnabled) {
       validPosition.left += position.width;
     }
@@ -168,17 +176,17 @@ class BaseStrategy {
     return validPosition;
   }
   getTimeShiftRatio(positionByMap, appointmentDate) {
-    var {
+    const {
       cellDuration,
       viewOffset
     } = this.options;
-    var {
+    const {
       rowIndex,
       columnIndex
     } = positionByMap;
-    var matchedCell = this.viewDataProvider.viewDataMap.dateTableMap[rowIndex][columnIndex];
-    var matchedCellStartDate = dateUtilsTs.addOffsets(matchedCell.cellData.startDate, [-viewOffset]);
-    var result = (appointmentDate.getTime() - matchedCellStartDate.getTime()) / cellDuration;
+    const matchedCell = this.viewDataProvider.viewDataMap.dateTableMap[rowIndex][columnIndex];
+    const matchedCellStartDate = dateUtilsTs.addOffsets(matchedCell.cellData.startDate, [-viewOffset]);
+    const result = (appointmentDate.getTime() - matchedCellStartDate.getTime()) / cellDuration;
     // NOTE: Hande DST summer time change issue.
     // Time shift greater than cell duration - incorrect.
     // In this case appointment date should match with the next cell instead.
@@ -191,8 +199,8 @@ class VirtualStrategy extends BaseStrategy {
     this.isVirtualScrolling = true;
   }
   calculateCellPositions(groupIndices, isAllDayRowAppointment, isRecurrentAppointment) {
-    var appointments = isAllDayRowAppointment ? this.appointments : this.appointments.filter(_ref => {
-      var {
+    const appointments = isAllDayRowAppointment ? this.appointments : this.appointments.filter(_ref => {
+      let {
         source,
         startDate,
         endDate
@@ -205,13 +213,13 @@ class VirtualStrategy extends BaseStrategy {
     return super.calculateCellPositions(groupIndices, isAllDayRowAppointment, isRecurrentAppointment);
   }
   createRecurrentAppointmentInfos(dateSettings, isAllDayRowAppointment) {
-    var result = [];
+    const result = [];
     dateSettings.forEach((_ref2, index) => {
-      var {
+      let {
         source,
         startDate
       } = _ref2;
-      var coordinate = this.getCoordinatesByDate(startDate, source.groupIndex, isAllDayRowAppointment);
+      const coordinate = this.getCoordinatesByDate(startDate, source.groupIndex, isAllDayRowAppointment);
       if (coordinate) {
         result.push(this._prepareObject(coordinate, index));
       }
@@ -224,7 +232,7 @@ export class CellPositionCalculator {
     this.options = options;
   }
   calculateCellPositions(groupIndices, isAllDayRowAppointment, isRecurrentAppointment) {
-    var strategy = this.options.isVirtualScrolling ? new VirtualStrategy(this.options) : new BaseStrategy(this.options);
+    const strategy = this.options.isVirtualScrolling ? new VirtualStrategy(this.options) : new BaseStrategy(this.options);
     return strategy.calculateCellPositions(groupIndices, isAllDayRowAppointment, isRecurrentAppointment);
   }
 }

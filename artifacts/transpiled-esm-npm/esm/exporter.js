@@ -10,10 +10,10 @@ function _export(data, options, getData) {
   }
 
   // TODO: Can the following actions be not defined? (since they are provided by a widget not by a user)
-  var exportingAction = options.exportingAction;
-  var exportedAction = options.exportedAction;
-  var fileSavingAction = options.fileSavingAction;
-  var eventArgs = {
+  const exportingAction = options.exportingAction;
+  const exportedAction = options.exportedAction;
+  const fileSavingAction = options.fileSavingAction;
+  const eventArgs = {
     fileName: options.fileName,
     format: options.format,
     cancel: false
@@ -30,7 +30,7 @@ function _export(data, options, getData) {
         fileSavingAction(eventArgs);
       }
       if (!eventArgs.cancel) {
-        var format = options.format === 'xlsx' ? 'EXCEL' : options.format;
+        const format = options.format === 'xlsx' ? 'EXCEL' : options.format;
         fileSaver.saveAs(eventArgs.fileName, format, blob);
       }
     });
@@ -38,15 +38,15 @@ function _export(data, options, getData) {
   return new Deferred().resolve();
 }
 export { _export as export, fileSaver };
-export var image = {
+export const image = {
   creator: imageCreator,
   getData: getImageData,
   testFormats: testFormats
 };
-export var pdf = {
+export const pdf = {
   getData: getData
 };
-export var svg = {
+export const svg = {
   creator: svgCreator,
   getData: getSvgData
 };

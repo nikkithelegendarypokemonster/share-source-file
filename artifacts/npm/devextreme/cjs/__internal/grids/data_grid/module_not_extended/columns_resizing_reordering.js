@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/data_grid/module_not_extended/columns_resizing_reordering.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,7 +11,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TrackerView = exports.TablePositionViewController = exports.DraggingHeaderViewController = exports.DraggingHeaderView = exports.ColumnsSeparatorView = exports.ColumnsResizerViewController = void 0;
+exports.default = exports.TrackerView = exports.TablePositionViewController = exports.DraggingHeaderViewController = exports.DraggingHeaderView = exports.ColumnsSeparatorView = exports.ColumnsResizerViewController = void 0;
 var _m_columns_resizing_reordering = require("../../../grids/grid_core/columns_resizing_reordering/m_columns_resizing_reordering");
 var _m_core = _interopRequireDefault(require("../m_core"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -22,3 +22,12 @@ const TablePositionViewController = exports.TablePositionViewController = _m_col
 const ColumnsResizerViewController = exports.ColumnsResizerViewController = _m_columns_resizing_reordering.columnsResizingReorderingModule.controllers.columnsResizer;
 const TrackerView = exports.TrackerView = _m_columns_resizing_reordering.columnsResizingReorderingModule.views.trackerView;
 _m_core.default.registerModule('columnsResizingReordering', _m_columns_resizing_reordering.columnsResizingReorderingModule);
+// NOTE: default export for QUnit tests
+var _default = exports.default = {
+  DraggingHeaderView,
+  DraggingHeaderViewController,
+  ColumnsSeparatorView,
+  TablePositionViewController,
+  ColumnsResizerViewController,
+  TrackerView
+};

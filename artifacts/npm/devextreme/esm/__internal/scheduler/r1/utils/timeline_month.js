@@ -1,0 +1,15 @@
+/**
+* DevExtreme (esm/__internal/scheduler/r1/utils/timeline_month.js)
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
+*
+* Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
+* Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
+*/
+import dateUtils from '../../../../core/utils/date';
+import { setOptionHour } from './base';
+import { getViewStartByOptions } from './month';
+export const calculateStartViewDate = (currentDate, startDayHour, startDate, intervalCount) => {
+  const firstViewDate = dateUtils.getFirstMonthDate(getViewStartByOptions(startDate, currentDate, intervalCount, dateUtils.getFirstMonthDate(startDate)));
+  return setOptionHour(firstViewDate, startDayHour);
+};

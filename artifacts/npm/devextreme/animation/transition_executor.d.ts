@@ -1,7 +1,7 @@
 /**
 * DevExtreme (animation/transition_executor.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -19,27 +19,42 @@ import {
 } from './fx';
 
 /**
- * The manager that performs several specified animations at a time.
+ * @docid
+ * @namespace DevExpress
+ * @public
  */
 export default class TransitionExecutor {
     /**
-     * Registers the set of elements that should be animated as &apos;entering&apos; using the specified animation configuration.
+     * @docid
+     * @publicName enter(elements, animation)
+     * @param1 elements:jQuery
+     * @public
      */
     enter(elements: UserDefinedElementsArray, animation: AnimationConfig | string): void;
     /**
-     * Registers a set of elements that should be animated as &apos;leaving&apos; using the specified animation configuration.
+     * @docid
+     * @publicName leave(elements, animation)
+     * @param1 elements:jQuery
+     * @public
      */
     leave(elements: UserDefinedElementsArray, animation: AnimationConfig | string): void;
     /**
-     * Deletes all the animations registered in the Transition Executor by using the enter(elements, animation) and leave(elements, animation) methods.
+     * @docid
+     * @publicName reset()
+     * @public
      */
     reset(): void;
     /**
-     * Starts all the animations registered using the enter(elements, animation) and leave(elements, animation) methods beforehand.
+     * @docid
+     * @publicName start()
+     * @return Promise<void>
+     * @public
      */
     start(): DxPromise<void>;
     /**
-     * Stops all started animations.
+     * @docid
+     * @publicName stop()
+     * @public
      */
     stop(): void;
 }

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/shared/accessibility.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -27,14 +27,14 @@ const FOCUS_STATE_CLASS = 'dx-state-focused';
 const FOCUS_DISABLED_CLASS = 'dx-cell-focus-disabled';
 const FOCUSED_ROW_SELECTOR = '.dx-row-focused';
 const GRID_ROW_SELECTOR = '.dx-datagrid-rowsview .dx-row';
-const GRID_CELL_SELECTOR = "".concat(GRID_ROW_SELECTOR, " > td");
+const GRID_CELL_SELECTOR = `${GRID_ROW_SELECTOR} > td`;
 const TREELIST_ROW_SELECTOR = '.dx-treelist-rowsview .dx-row';
-const TREELIST_CELL_SELECTOR = "".concat(TREELIST_ROW_SELECTOR, " > td");
+const TREELIST_CELL_SELECTOR = `${TREELIST_ROW_SELECTOR} > td`;
 const viewItemSelectorMap = {
   groupPanel: ['.dx-datagrid-group-panel .dx-group-panel-item[tabindex]'],
   columnHeaders: ['.dx-datagrid-headers .dx-header-row > td.dx-datagrid-action', '.dx-treelist-headers .dx-header-row > td.dx-treelist-action'],
   filterRow: ['.dx-datagrid-headers .dx-datagrid-filter-row .dx-editor-cell .dx-texteditor-input', '.dx-treelist-headers .dx-treelist-filter-row .dx-editor-cell .dx-texteditor-input'],
-  rowsView: ["".concat(FOCUSED_ROW_SELECTOR), "".concat(GRID_ROW_SELECTOR, "[tabindex]"), "".concat(GRID_CELL_SELECTOR, "[tabindex]"), "".concat(GRID_CELL_SELECTOR), "".concat(TREELIST_ROW_SELECTOR, "[tabindex]"), "".concat(TREELIST_CELL_SELECTOR, "[tabindex]"), "".concat(TREELIST_CELL_SELECTOR)],
+  rowsView: [`${FOCUSED_ROW_SELECTOR}`, `${GRID_ROW_SELECTOR}[tabindex]`, `${GRID_CELL_SELECTOR}[tabindex]`, `${GRID_CELL_SELECTOR}`, `${TREELIST_ROW_SELECTOR}[tabindex]`, `${TREELIST_CELL_SELECTOR}[tabindex]`, `${TREELIST_CELL_SELECTOR}`],
   footer: ['.dx-datagrid-total-footer .dx-datagrid-summary-item', '.dx-treelist-total-footer .dx-treelist-summary-item'],
   filterPanel: ['.dx-datagrid-filter-panel .dx-icon-filter', '.dx-treelist-filter-panel .dx-icon-filter'],
   pager: ['.dx-datagrid-pager [tabindex]', '.dx-treelist-pager [tabindex]']
@@ -75,7 +75,7 @@ function getActiveAccessibleElements(ariaLabel, viewElement) {
   const $viewElement = (0, _renderer.default)(viewElement);
   let $activeElements;
   if (ariaLabel) {
-    $activeElements = $viewElement.find("[aria-label=\"".concat(ariaLabel, "\"][tabindex]"));
+    $activeElements = $viewElement.find(`[aria-label="${ariaLabel}"][tabindex]`);
   } else {
     $activeElements = $viewElement.find('[tabindex]');
   }

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/recurrence_editor.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -18,54 +18,71 @@ import {
 } from '../events/index';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_recurrence_editor_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxRecurrenceEditor>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_recurrence_editor_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxRecurrenceEditor>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_recurrence_editor_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxRecurrenceEditor>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_recurrence_editor_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxRecurrenceEditor> & ChangedOptionInfo;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_recurrence_editor_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxRecurrenceEditor, Event> & ValueChangedInfo;
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
+ * @docid
+ * @type object
  */
 export interface dxRecurrenceEditorOptions extends EditorOptions<dxRecurrenceEditor> {
     /**
-     * Specifies the UI component&apos;s value.
+     * @docid
+     * @default null
+     * @fires dxRecurrenceEditorOptions.onValueChanged
+     * @public
      */
     value?: string;
 }
 /**
- * A base class for editors.
+ * @docid
+ * @isEditor
+ * @inherits Editor
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxRecurrenceEditor extends Editor<dxRecurrenceEditorOptions> { }
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type Properties = dxRecurrenceEditorOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxRecurrenceEditorOptions;
 
 

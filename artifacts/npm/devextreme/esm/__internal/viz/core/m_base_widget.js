@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/viz/core/m_base_widget.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -28,12 +28,12 @@ import { parseScalar as _parseScalar } from '../../../viz/core/utils';
 // @ts-expect-error
 import { areCanvasesDifferent, floorCanvasDimensions } from '../../../viz/utils';
 import graphicObject from '../../common/m_charts';
-var {
+const {
   log
 } = warnings;
-var OPTION_RTL_ENABLED = 'rtlEnabled';
-var SIZED_ELEMENT_CLASS = 'dx-sized-element';
-var baseOptionMethod = DOMComponent.prototype.option;
+const OPTION_RTL_ENABLED = 'rtlEnabled';
+const SIZED_ELEMENT_CLASS = 'dx-sized-element';
+const baseOptionMethod = DOMComponent.prototype.option;
 function getTrue() {
   return true;
 }
@@ -65,22 +65,22 @@ function pickPositiveValue(values) {
 //             this._updateSize();
 //         }
 //     }]
-var getEmptyComponent = function getEmptyComponent() {
-  var emptyComponentConfig = {
+const getEmptyComponent = function () {
+  const emptyComponentConfig = {
     _initTemplates() {},
     ctor(element, options) {
       this.callBase(element, options);
-      var sizedElement = domAdapter.createElement('div');
-      var width = options && isNumeric(options.width) ? "".concat(options.width, "px") : '100%';
-      var height = options && isNumeric(options.height) ? "".concat(options.height, "px") : "".concat(this._getDefaultSize().height, "px");
+      const sizedElement = domAdapter.createElement('div');
+      const width = options && isNumeric(options.width) ? `${options.width}px` : '100%';
+      const height = options && isNumeric(options.height) ? `${options.height}px` : `${this._getDefaultSize().height}px`;
       domAdapter.setStyle(sizedElement, 'width', width);
       domAdapter.setStyle(sizedElement, 'height', height);
       domAdapter.setClass(sizedElement, SIZED_ELEMENT_CLASS, false);
       domAdapter.insertElement(element, sizedElement);
     }
   };
-  var EmptyComponent = DOMComponent.inherit(emptyComponentConfig);
-  var originalInherit = EmptyComponent.inherit;
+  const EmptyComponent = DOMComponent.inherit(emptyComponentConfig);
+  const originalInherit = EmptyComponent.inherit;
   EmptyComponent.inherit = function (config) {
     Object.keys(config).forEach(field => {
       if (isFunction(config[field]) && field.substr(0, 1) !== '_' && field !== 'option' || field === '_dispose' || field === '_optionChanged') {
@@ -94,11 +94,11 @@ var getEmptyComponent = function getEmptyComponent() {
 function callForEach(functions) {
   functions.forEach(c => c());
 }
-var isServerSide = !hasWindow();
+const isServerSide = !hasWindow();
 function sizeIsValid(value) {
   return isDefined(value) && value > 0;
 }
-var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
+const baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
   _eventsMap: {
     onIncidentOccurred: {
       name: 'incidentOccurred',
@@ -120,7 +120,7 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
   },
   _useLinks: true,
   _init() {
-    this._$element.children(".".concat(SIZED_ELEMENT_CLASS)).remove();
+    this._$element.children(`.${SIZED_ELEMENT_CLASS}`).remove();
     this._graphicObjects = {};
     this.callBase(...arguments);
     this._changesLocker = 0;
@@ -135,7 +135,7 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
     this._renderElementAttributes();
     this._initRenderer();
     // Shouldn't "_useLinks" be passed to the renderer instead of doing 3 checks here?
-    var useLinks = this._useLinks;
+    const useLinks = this._useLinks;
     // There is an implicit relation between `_useLinks` and `loading indicator` - it uses links
     // Though this relation is not ensured in code
     // we will immediately know when it is broken - `loading indicator` will break on construction
@@ -218,8 +218,8 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
     });
   },
   _getTemplatesItems(items) {
-    var elements = this._collectTemplatesFromItems(items);
-    var extraItems = this._getExtraTemplatesItems();
+    const elements = this._collectTemplatesFromItems(items);
+    const extraItems = this._getExtraTemplatesItems();
     return {
       items: extraItems.items.concat(elements.items),
       groups: extraItems.groups.concat(elements.groups),
@@ -236,7 +236,7 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
     };
   },
   _resolveDeferred(_ref) {
-    var {
+    let {
       items,
       launchRequest,
       doneRequest,
@@ -248,7 +248,7 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
       callForEach(doneRequest);
       return;
     }
-    var syncRendering = true;
+    let syncRendering = true;
     when.apply(this, items).done(() => {
       if (syncRendering) {
         this._setGroupsVisibility(groups, 'visible');
@@ -256,7 +256,7 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
       }
       callForEach(launchRequest);
       this._changesApplying = true;
-      var changes = ['LAYOUT', 'FULL_RENDER'];
+      const changes = ['LAYOUT', 'FULL_RENDER'];
       if (this._asyncFirstDrawing) {
         changes.push('FORCE_FIRST_DRAWING');
         this._asyncFirstDrawing = false;
@@ -274,7 +274,7 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
     }));
   },
   _applyQueuedOptions() {
-    var queue = this._optionsQueue;
+    const queue = this._optionsQueue;
     this._optionsQueue = null;
     this.beginUpdate();
     each(queue, (_, action) => {
@@ -288,12 +288,12 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
     this._resumeChanges();
   },
   _applyChanges() {
-    var changes = this._changes;
-    var order = this._totalChangesOrder;
-    var changesOrderLength = order.length;
-    for (var i = 0; i < changesOrderLength; i += 1) {
+    const changes = this._changes;
+    const order = this._totalChangesOrder;
+    const changesOrderLength = order.length;
+    for (let i = 0; i < changesOrderLength; i += 1) {
       if (changes.has(order[i])) {
-        this["_change_".concat(order[i])]();
+        this[`_change_${order[i]}`]();
       }
     }
   },
@@ -323,8 +323,8 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
     this._setContentSize();
   },
   _change_DISABLED() {
-    var renderer = this._renderer;
-    var {
+    const renderer = this._renderer;
+    const {
       root
     } = renderer;
     if (this.option('disabled')) {
@@ -344,10 +344,10 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
   _initRenderer() {
     // Canvas is calculated before the renderer is created in order to capture actual
     // size of the container
-    var rawCanvas = this._calculateRawCanvas();
+    const rawCanvas = this._calculateRawCanvas();
     this._canvas = floorCanvasDimensions(rawCanvas);
     this._renderer = new Renderer({
-      cssClass: "".concat(this._rootClassPrefix, " ").concat(this._rootClass),
+      cssClass: `${this._rootClassPrefix} ${this._rootClass}`,
       pathModified: this.option('pathModified'),
       container: this._$element[0]
     });
@@ -365,13 +365,13 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
   _getAnimationOptions: noop,
   render() {
     this._requestChange(['CONTAINER_SIZE']);
-    var visible = this._isVisible();
+    const visible = this._isVisible();
     this._toggleParentsScrollSubscription(visible);
     !visible && this._stopCurrentHandling();
   },
   _toggleParentsScrollSubscription(subscribe) {
-    var $parents = $(this._renderer.root.element).parents();
-    var scrollEvents = 'scroll.viz_widgets';
+    let $parents = $(this._renderer.root.element).parents();
+    const scrollEvents = 'scroll.viz_widgets';
     if (devices.real().platform === 'generic') {
       $parents = $parents.add(getWindow());
     }
@@ -404,23 +404,23 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
     this._eventTrigger = null;
   },
   _initEventTrigger() {
-    var callback = (name, actionSettings) => this._createActionByOption(name, actionSettings);
+    const callback = (name, actionSettings) => this._createActionByOption(name, actionSettings);
     this._eventTrigger = createEventTrigger(this._eventsMap, callback);
   },
   _calculateRawCanvas() {
-    var size = this.option('size') || {};
-    var margin = this.option('margin') || {};
-    var defaultCanvas = this._getDefaultSize() || {};
-    var getSizeOfSide = (size, side, getter) => {
+    const size = this.option('size') || {};
+    const margin = this.option('margin') || {};
+    const defaultCanvas = this._getDefaultSize() || {};
+    const getSizeOfSide = (size, side, getter) => {
       if (sizeIsValid(size[side]) || !hasWindow()) {
         return 0;
       }
-      var elementSize = getter(this._$element);
+      const elementSize = getter(this._$element);
       return elementSize <= 1 ? 0 : elementSize;
     };
-    var elementWidth = getSizeOfSide(size, 'width', x => getWidth(x));
-    var elementHeight = getSizeOfSide(size, 'height', x => getHeight(x));
-    var canvas = {
+    const elementWidth = getSizeOfSide(size, 'width', x => getWidth(x));
+    const elementHeight = getSizeOfSide(size, 'height', x => getHeight(x));
+    let canvas = {
       width: size.width <= 0 ? 0 : pickPositiveValue([size.width, elementWidth, defaultCanvas.width]),
       height: size.height <= 0 ? 0 : pickPositiveValue([size.height, elementHeight, defaultCanvas.height]),
       left: pickPositiveValue([margin.left, defaultCanvas.left]),
@@ -440,7 +440,7 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
     return canvas;
   },
   _updateSize() {
-    var rawCanvas = this._calculateRawCanvas();
+    const rawCanvas = this._calculateRawCanvas();
     if (areCanvasesDifferent(this._canvas, rawCanvas) || this.__forceRender /* for charts */) {
       this._canvas = floorCanvasDimensions(rawCanvas);
       this._recreateSizeDependentObjects(true);
@@ -454,20 +454,20 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
   },
   _getAlignmentRect: noop,
   _setContentSize() {
-    var canvas = this._canvas;
-    var layout = this._layout;
-    var rect = canvas.width > 0 && canvas.height > 0 ? [canvas.left, canvas.top, canvas.width - canvas.right, canvas.height - canvas.bottom] : [0, 0, 0, 0];
+    const canvas = this._canvas;
+    const layout = this._layout;
+    let rect = canvas.width > 0 && canvas.height > 0 ? [canvas.left, canvas.top, canvas.width - canvas.right, canvas.height - canvas.bottom] : [0, 0, 0, 0];
     rect = layout.forward(rect, this._getMinSize());
-    var nextRect = this._applySize(rect) || rect;
+    const nextRect = this._applySize(rect) || rect;
     layout.backward(nextRect, this._getAlignmentRect() || nextRect);
   },
   _getOption(name, isScalar) {
-    var theme = this._themeManager.theme(name);
-    var option = this.option(name);
+    const theme = this._themeManager.theme(name);
+    const option = this.option(name);
     return isScalar ? option !== undefined ? option : theme : extend(true, {}, theme, option);
   },
   _setupResizeHandler() {
-    var redrawOnResize = _parseScalar(this._getOption('redrawOnResize', true), true);
+    const redrawOnResize = _parseScalar(this._getOption('redrawOnResize', true), true);
     if (this._disposeResizeHandler) {
       this._removeResizeHandler();
     }
@@ -520,8 +520,8 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
     if (this._optionChangedLocker) {
       return;
     }
-    var partialChanges = this.getPartialChangeOptionsName(arg);
-    var changes = [];
+    const partialChanges = this.getPartialChangeOptionsName(arg);
+    let changes = [];
     if (partialChanges.length > 0) {
       partialChanges.forEach(pc => changes.push(this._partialOptionChangesMap[pc]));
     } else {
@@ -551,18 +551,18 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
   _partialOptionChangesMap: {},
   _partialOptionChangesPath: {},
   getPartialChangeOptionsName(changedOption) {
-    var {
+    const {
       fullName
     } = changedOption;
-    var sections = fullName.split(/[.]/);
-    var {
+    const sections = fullName.split(/[.]/);
+    const {
       name
     } = changedOption;
-    var {
+    const {
       value
     } = changedOption;
-    var options = this._partialOptionChangesPath[name];
-    var partialChangeOptionsName = [];
+    const options = this._partialOptionChangesPath[name];
+    const partialChangeOptionsName = [];
     if (options) {
       if (options === true) {
         partialChangeOptionsName.push(name);
@@ -589,7 +589,7 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
     return !Object.keys(optionObject).some(key => options.indexOf(key) === -1);
   },
   _addOptionsNameForPartialUpdate(optionObject, options, partialChangeOptionsName) {
-    var optionKeys = Object.keys(optionObject);
+    const optionKeys = Object.keys(optionObject);
     if (this._checkOptionsForPartialUpdate(optionObject, options)) {
       optionKeys.forEach(key => options.indexOf(key) > -1 && partialChangeOptionsName.push(key));
     }
@@ -614,7 +614,7 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
     return this._renderer.svg();
   },
   getSize() {
-    var canvas = this._canvas || {};
+    const canvas = this._canvas || {};
     return {
       width: canvas.width,
       height: canvas.height
@@ -626,19 +626,19 @@ var baseWidget = isServerSide ? getEmptyComponent() : DOMComponent.inherit({
     this.isReady = getFalse;
   },
   _renderGraphicObjects() {
-    var renderer = this._renderer;
-    var graphics = graphicObject.getGraphicObjects();
+    const renderer = this._renderer;
+    const graphics = graphicObject.getGraphicObjects();
     Object.keys(graphics).forEach(id => {
       if (!this._graphicObjects[id]) {
-        var {
-          type: _type,
+        const {
+          type,
           colors,
           rotationAngle,
           template,
           width,
           height
         } = graphics[id];
-        switch (_type) {
+        switch (type) {
           case 'linear':
             this._graphicObjects[id] = renderer.linearGradient(colors, id, rotationAngle);
             break;

@@ -1,7 +1,7 @@
 import { isWindow } from '../../../core/utils/type';
 import { extend } from '../../../core/utils/extend';
 import { getOuterWidth, getInnerWidth, getOuterHeight, getInnerHeight, getOffset } from '../../../core/utils/size';
-export var borderWidthStyles = {
+export const borderWidthStyles = {
   left: 'borderLeftWidth',
   top: 'borderTopWidth',
   right: 'borderRightWidth',
@@ -9,24 +9,24 @@ export var borderWidthStyles = {
 };
 function getBorderWidth(el, direction) {
   if (!isWindow(el)) {
-    var borderWidth = el.style[borderWidthStyles[direction]];
+    const borderWidth = el.style[borderWidthStyles[direction]];
     return parseInt(borderWidth, 10) || 0;
   }
   return 0;
 }
-var correctGeometry = function correctGeometry(area, mainEl) {
-  var el = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
-  var {
+const correctGeometry = function (area, mainEl) {
+  let el = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
+  const {
     height,
     offset,
     width
   } = area;
-  var {
+  const {
     left,
     top
   } = offset;
-  var areaBorderLeft = el ? getBorderWidth(el, 'left') : 0;
-  var areaBorderTop = el ? getBorderWidth(el, 'top') : 0;
+  const areaBorderLeft = el ? getBorderWidth(el, 'left') : 0;
+  const areaBorderTop = el ? getBorderWidth(el, 'top') : 0;
   return {
     width: width - getOuterWidth(mainEl) - getInnerWidth(mainEl),
     height: height - getOuterHeight(mainEl) - getInnerHeight(mainEl),
@@ -36,7 +36,7 @@ var correctGeometry = function correctGeometry(area, mainEl) {
     }
   };
 };
-export var getAreaFromElement = (el, mainEl) => correctGeometry({
+export const getAreaFromElement = (el, mainEl) => correctGeometry({
   width: getInnerWidth(el),
   height: getInnerHeight(el),
   offset: extend({
@@ -44,8 +44,8 @@ export var getAreaFromElement = (el, mainEl) => correctGeometry({
     left: 0
   }, isWindow(el) ? {} : getOffset(el))
 }, mainEl, el);
-export var getAreaFromObject = (_ref, mainEl) => {
-  var {
+export const getAreaFromObject = (_ref, mainEl) => {
+  let {
     bottom,
     left,
     right,
@@ -60,14 +60,14 @@ export var getAreaFromObject = (_ref, mainEl) => {
     }
   }, mainEl);
 };
-export var getMovingSides = el => {
-  var {
+export const getMovingSides = el => {
+  const {
     className
   } = el;
-  var hasCornerTopLeftClass = className.includes('dx-resizable-handle-corner-top-left');
-  var hasCornerTopRightClass = className.includes('dx-resizable-handle-corner-top-right');
-  var hasCornerBottomLeftClass = className.includes('dx-resizable-handle-corner-bottom-left');
-  var hasCornerBottomRightClass = className.includes('dx-resizable-handle-corner-bottom-right');
+  const hasCornerTopLeftClass = className.includes('dx-resizable-handle-corner-top-left');
+  const hasCornerTopRightClass = className.includes('dx-resizable-handle-corner-top-right');
+  const hasCornerBottomLeftClass = className.includes('dx-resizable-handle-corner-bottom-left');
+  const hasCornerBottomRightClass = className.includes('dx-resizable-handle-corner-bottom-right');
   return {
     top: className.includes('dx-resizable-handle-top') || hasCornerTopLeftClass || hasCornerTopRightClass,
     left: className.includes('dx-resizable-handle-left') || hasCornerTopLeftClass || hasCornerBottomLeftClass,
@@ -76,12 +76,12 @@ export var getMovingSides = el => {
   };
 };
 export function getDragOffsets(area, handleEl, areaProp) {
-  var hWidth = getOuterWidth(handleEl);
-  var hHeight = getOuterHeight(handleEl);
-  var hOffset = getOffset(handleEl);
-  var areaOffset = area.offset;
-  var isAreaWindow = isWindow(areaProp);
-  var scrollOffset = {
+  const hWidth = getOuterWidth(handleEl);
+  const hHeight = getOuterHeight(handleEl);
+  const hOffset = getOffset(handleEl);
+  const areaOffset = area.offset;
+  const isAreaWindow = isWindow(areaProp);
+  const scrollOffset = {
     scrollX: isAreaWindow ? areaProp.pageXOffset : 0,
     scrollY: isAreaWindow ? areaProp.pageYOffset : 0
   };
@@ -92,10 +92,10 @@ export function getDragOffsets(area, handleEl, areaProp) {
     maxBottomOffset: areaOffset.top + area.height - hOffset.top - hHeight + scrollOffset.scrollY
   };
 }
-export var filterOffsets = (offset, handleEl) => {
-  var sides = getMovingSides(handleEl);
-  var offsetX = !sides.left && !sides.right ? 0 : offset.x;
-  var offsetY = !sides.top && !sides.bottom ? 0 : offset.y;
+export const filterOffsets = (offset, handleEl) => {
+  const sides = getMovingSides(handleEl);
+  const offsetX = !sides.left && !sides.right ? 0 : offset.x;
+  const offsetY = !sides.top && !sides.bottom ? 0 : offset.y;
   return {
     x: offsetX,
     y: offsetY

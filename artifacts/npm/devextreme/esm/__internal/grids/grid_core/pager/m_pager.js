@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/grid_core/pager/m_pager.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,19 +11,19 @@ import { hasWindow } from '../../../../core/utils/window';
 import messageLocalization from '../../../../localization/message';
 import Pager from '../../../../ui/pager';
 import modules from '../m_modules';
-var PAGER_CLASS = 'pager';
-var MAX_PAGES_COUNT = 10;
-var getPageIndex = function getPageIndex(dataController) {
+const PAGER_CLASS = 'pager';
+const MAX_PAGES_COUNT = 10;
+const getPageIndex = function (dataController) {
   // eslint-disable-next-line radix
   return 1 + (parseInt(dataController.pageIndex()) || 0);
 };
 // TODO getController
 export class PagerView extends modules.View {
   init() {
-    var dataController = this.getController('data');
+    const dataController = this.getController('data');
     dataController.changed.add(e => {
       if (e && e.repaintChangesOnly) {
-        var pager = this._pager;
+        const pager = this._pager;
         if (pager) {
           pager.option({
             pageIndex: getPageIndex(dataController),
@@ -45,14 +45,14 @@ export class PagerView extends modules.View {
     this._pager = null;
   }
   optionChanged(args) {
-    var {
+    const {
       name
     } = args;
-    var isPager = name === 'pager';
-    var isPaging = name === 'paging';
-    var isDataSource = name === 'dataSource';
-    var isScrolling = name === 'scrolling';
-    var dataController = this.getController('data');
+    const isPager = name === 'pager';
+    const isPaging = name === 'paging';
+    const isDataSource = name === 'dataSource';
+    const isScrolling = name === 'scrolling';
+    const dataController = this.getController('data');
     if (isPager || isPaging || isScrolling || isDataSource) {
       args.handled = true;
       if (dataController.skipProcessingPagingChange(args.fullName)) {
@@ -72,13 +72,12 @@ export class PagerView extends modules.View {
     }
   }
   _renderCore() {
-    var _a;
-    var that = this;
-    var $element = that.element().addClass(that.addWidgetPrefix(PAGER_CLASS));
-    var pagerOptions = (_a = that.option('pager')) !== null && _a !== void 0 ? _a : {};
-    var dataController = that.getController('data');
-    var keyboardController = that.getController('keyboardNavigation');
-    var options = {
+    const that = this;
+    const $element = that.element().addClass(that.addWidgetPrefix(PAGER_CLASS));
+    const pagerOptions = that.option('pager') ?? {};
+    const dataController = that.getController('data');
+    const keyboardController = that.getController('keyboardNavigation');
+    const options = {
       maxPagesCount: MAX_PAGES_COUNT,
       pageIndex: getPageIndex(dataController),
       pageCount: dataController.pageCount(),
@@ -92,6 +91,7 @@ export class PagerView extends modules.View {
       pageSizes: that.getPageSizes(),
       totalCount: dataController.totalCount(),
       hasKnownLastPage: dataController.hasKnownLastPage(),
+      rtlEnabled: that.option('rtlEnabled'),
       pageIndexChanged(pageIndex) {
         if (dataController.pageIndex() !== pageIndex - 1) {
           dataController.pageIndex(pageIndex - 1);
@@ -100,9 +100,7 @@ export class PagerView extends modules.View {
       pageSizeChanged(pageSize) {
         dataController.pageSize(pageSize);
       },
-      onKeyDown: e => keyboardController && keyboardController.executeAction('onKeyDown', e),
-      useLegacyKeyboardNavigation: this.option('useLegacyKeyboardNavigation'),
-      useKeyboard: this.option('keyboardNavigation.enabled')
+      onKeyDown: e => keyboardController && keyboardController.executeAction('onKeyDown', e)
     };
     if (isDefined(pagerOptions.infoText)) {
       options.infoText = pagerOptions.infoText;
@@ -121,11 +119,11 @@ export class PagerView extends modules.View {
     return this._pager;
   }
   getPageSizes() {
-    var that = this;
-    var dataController = that.getController('data');
-    var pagerOptions = that.option('pager');
-    var allowedPageSizes = pagerOptions && pagerOptions.allowedPageSizes;
-    var pageSize = dataController.pageSize();
+    const that = this;
+    const dataController = that.getController('data');
+    const pagerOptions = that.option('pager');
+    const allowedPageSizes = pagerOptions && pagerOptions.allowedPageSizes;
+    const pageSize = dataController.pageSize();
     if (!isDefined(that._pageSizes) || !that._pageSizes.includes(pageSize)) {
       that._pageSizes = [];
       if (pagerOptions) {
@@ -139,10 +137,10 @@ export class PagerView extends modules.View {
     return that._pageSizes;
   }
   isVisible() {
-    var dataController = this.getController('data');
-    var pagerOptions = this.option('pager');
-    var pagerVisible = pagerOptions && pagerOptions.visible;
-    var scrolling = this.option('scrolling');
+    const dataController = this.getController('data');
+    const pagerOptions = this.option('pager');
+    let pagerVisible = pagerOptions && pagerOptions.visible;
+    const scrolling = this.option('scrolling');
     if (pagerVisible === 'auto') {
       // @ts-expect-error
       if (scrolling && (scrolling.mode === 'virtual' || scrolling.mode === 'infinite')) {
@@ -157,7 +155,7 @@ export class PagerView extends modules.View {
     return this.getElementHeight();
   }
 }
-export var pagerModule = {
+export const pagerModule = {
   defaultOptions() {
     return {
       pager: {

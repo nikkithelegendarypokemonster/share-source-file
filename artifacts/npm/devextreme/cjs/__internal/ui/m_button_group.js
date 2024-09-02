@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/ui/m_button_group.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22,11 +22,11 @@ var _uiCollection_widget = _interopRequireDefault(require("../../ui/collection/u
 var _ui = _interopRequireDefault(require("../../ui/widget/ui.widget"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const BUTTON_GROUP_CLASS = 'dx-buttongroup';
-const BUTTON_GROUP_WRAPPER_CLASS = "".concat(BUTTON_GROUP_CLASS, "-wrapper");
-const BUTTON_GROUP_ITEM_CLASS = "".concat(BUTTON_GROUP_CLASS, "-item");
-const BUTTON_GROUP_FIRST_ITEM_CLASS = "".concat(BUTTON_GROUP_CLASS, "-first-item");
-const BUTTON_GROUP_LAST_ITEM_CLASS = "".concat(BUTTON_GROUP_CLASS, "-last-item");
-const BUTTON_GROUP_ITEM_HAS_WIDTH = "".concat(BUTTON_GROUP_ITEM_CLASS, "-has-width");
+const BUTTON_GROUP_WRAPPER_CLASS = `${BUTTON_GROUP_CLASS}-wrapper`;
+const BUTTON_GROUP_ITEM_CLASS = `${BUTTON_GROUP_CLASS}-item`;
+const BUTTON_GROUP_FIRST_ITEM_CLASS = `${BUTTON_GROUP_CLASS}-first-item`;
+const BUTTON_GROUP_LAST_ITEM_CLASS = `${BUTTON_GROUP_CLASS}-last-item`;
+const BUTTON_GROUP_ITEM_HAS_WIDTH = `${BUTTON_GROUP_ITEM_CLASS}-has-width`;
 const SHAPE_STANDARD_CLASS = 'dx-shape-standard';
 const BUTTON_GROUP_STYLING_MODE_CLASS = {
   contained: 'dx-buttongroup-mode-contained',
@@ -137,7 +137,6 @@ const ButtonGroup = _ui.default.inherit({
     this.callBase();
   },
   _renderStylingMode() {
-    var _a;
     const {
       stylingMode
     } = this.option();
@@ -145,7 +144,7 @@ const ButtonGroup = _ui.default.inherit({
     for (const key in BUTTON_GROUP_STYLING_MODE_CLASS) {
       this.$element().removeClass(BUTTON_GROUP_STYLING_MODE_CLASS[key]);
     }
-    this.$element().addClass((_a = BUTTON_GROUP_STYLING_MODE_CLASS[stylingMode]) !== null && _a !== void 0 ? _a : BUTTON_GROUP_STYLING_MODE_CLASS.contained);
+    this.$element().addClass(BUTTON_GROUP_STYLING_MODE_CLASS[stylingMode] ?? BUTTON_GROUP_STYLING_MODE_CLASS.contained);
   },
   _fireSelectionChangeEvent(addedItems, removedItems) {
     this._createActionByOption('onSelectionChanged', {

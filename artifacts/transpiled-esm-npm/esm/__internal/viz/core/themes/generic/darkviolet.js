@@ -1,9 +1,9 @@
-var ACCENT_COLOR = '#9c63ff';
-var BACKGROUND_COLOR = '#17171f';
-var TITLE_COLOR = '#f5f6f7';
-var SUBTITLE_COLOR = '#fff';
-var TEXT_COLOR = '#b2b2b6';
-var BORDER_COLOR = '#343840';
+const ACCENT_COLOR = '#9c63ff';
+const BACKGROUND_COLOR = '#17171f';
+const TITLE_COLOR = '#f5f6f7';
+const SUBTITLE_COLOR = '#fff';
+const TEXT_COLOR = '#b2b2b6';
+const BORDER_COLOR = '#343840';
 export default [{
   baseThemeName: 'generic.dark',
   theme: {

@@ -1,31 +1,25 @@
 /**
 * DevExtreme (esm/__internal/scheduler/workspaces/view_model/m_time_panel_data_generator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _extends from "@babel/runtime/helpers/esm/extends";
-var __rest = this && this.__rest || function (s, e) {
-  var t = {};
-  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
+import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
+const _excluded = ["allDay", "startDate", "endDate", "groups", "groupIndex", "isFirstGroupCell", "isLastGroupCell", "index"];
 import dateUtils from '../../../../core/utils/date';
 import { dateUtilsTs } from '../../../core/utils/date';
 import { shiftIntegerByModule } from '../../../core/utils/math';
-import { getDisplayedRowCount, getIsGroupedAllDayPanel, getKeyByGroup, weekUtils } from '../../__migration/utils/index';
-var toMs = dateUtils.dateToMilliseconds;
+import { getDisplayedRowCount, getIsGroupedAllDayPanel, getKeyByGroup, weekUtils } from '../../../scheduler/r1/utils/index';
+const toMs = dateUtils.dateToMilliseconds;
 export class TimePanelDataGenerator {
   constructor(_viewDataGenerator) {
     this._viewDataGenerator = _viewDataGenerator;
   }
   getCompleteTimePanelMap(options, completeViewDataMap) {
-    var {
+    const {
       startViewDate,
       cellDuration,
       startDayHour,
@@ -39,9 +33,9 @@ export class TimePanelDataGenerator {
       today,
       showCurrentTimeIndicator
     } = options;
-    var rowsCount = completeViewDataMap.length - 1;
-    var realEndViewDate = completeViewDataMap[rowsCount][completeViewDataMap[rowsCount].length - 1].endDate;
-    var rowCountInGroup = this._viewDataGenerator.getRowCount({
+    const rowsCount = completeViewDataMap.length - 1;
+    const realEndViewDate = completeViewDataMap[rowsCount][completeViewDataMap[rowsCount].length - 1].endDate;
+    const rowCountInGroup = this._viewDataGenerator.getRowCount({
       intervalCount,
       currentDate,
       viewType,
@@ -49,7 +43,7 @@ export class TimePanelDataGenerator {
       startDayHour,
       endDayHour
     });
-    var cellCountInGroupRow = this._viewDataGenerator.getCellCount({
+    const cellCountInGroupRow = this._viewDataGenerator.getCellCount({
       intervalCount,
       currentDate,
       viewType,
@@ -57,22 +51,21 @@ export class TimePanelDataGenerator {
       startDayHour,
       endDayHour
     });
-    var allDayRowsCount = 0;
-    var usualCellIndex = 0;
+    let allDayRowsCount = 0;
+    let usualCellIndex = 0;
     return completeViewDataMap.map((row, index) => {
-      var _a = row[0],
+      const _row$ = row[0],
         {
           allDay,
           startDate,
-          endDate,
           groups,
           groupIndex,
           isFirstGroupCell,
           isLastGroupCell,
           index: cellIndex
-        } = _a,
-        restCellProps = __rest(_a, ["allDay", "startDate", "endDate", "groups", "groupIndex", "isFirstGroupCell", "isLastGroupCell", "index"]);
-      var highlighted = allDay ? false : this.isTimeCellShouldBeHighlighted(today, viewOffset, {
+        } = _row$,
+        restCellProps = _objectWithoutPropertiesLoose(_row$, _excluded);
+      const highlighted = allDay ? false : this.isTimeCellShouldBeHighlighted(today, viewOffset, {
         startViewDate,
         realEndViewDate,
         showCurrentTimeIndicator
@@ -92,8 +85,8 @@ export class TimePanelDataGenerator {
       } else {
         usualCellIndex += 1;
       }
-      var timeIndex = (index - allDayRowsCount) % rowCountInGroup;
-      return _extends(_extends({}, restCellProps), {
+      const timeIndex = (index - allDayRowsCount) % rowCountInGroup;
+      return _extends({}, restCellProps, {
         startDate,
         allDay,
         highlighted,
@@ -107,7 +100,7 @@ export class TimePanelDataGenerator {
     });
   }
   generateTimePanelData(completeTimePanelMap, options) {
-    var {
+    const {
       startRowIndex,
       rowCount,
       topVirtualRowHeight,
@@ -116,16 +109,16 @@ export class TimePanelDataGenerator {
       isVerticalGrouping,
       isAllDayPanelVisible
     } = options;
-    var indexDifference = isVerticalGrouping || !isAllDayPanelVisible ? 0 : 1;
-    var correctedStartRowIndex = startRowIndex + indexDifference;
-    var displayedRowCount = getDisplayedRowCount(rowCount, completeTimePanelMap);
-    var timePanelMap = completeTimePanelMap.slice(correctedStartRowIndex, correctedStartRowIndex + displayedRowCount);
-    var timePanelData = {
+    const indexDifference = isVerticalGrouping || !isAllDayPanelVisible ? 0 : 1;
+    const correctedStartRowIndex = startRowIndex + indexDifference;
+    const displayedRowCount = getDisplayedRowCount(rowCount, completeTimePanelMap);
+    const timePanelMap = completeTimePanelMap.slice(correctedStartRowIndex, correctedStartRowIndex + displayedRowCount);
+    const timePanelData = {
       topVirtualRowHeight,
       bottomVirtualRowHeight,
       isGroupedAllDayPanel
     };
-    var {
+    const {
       previousGroupedData: groupedData
     } = this._generateTimePanelDataFromMap(timePanelMap, isVerticalGrouping);
     timePanelData.groupedData = groupedData;
@@ -133,11 +126,11 @@ export class TimePanelDataGenerator {
   }
   _generateTimePanelDataFromMap(timePanelMap, isVerticalGrouping) {
     return timePanelMap.reduce((_ref, cellData) => {
-      var {
+      let {
         previousGroupIndex,
         previousGroupedData
       } = _ref;
-      var currentGroupIndex = cellData.groupIndex;
+      const currentGroupIndex = cellData.groupIndex;
       if (currentGroupIndex !== previousGroupIndex) {
         previousGroupedData.push({
           dateTable: [],
@@ -161,34 +154,34 @@ export class TimePanelDataGenerator {
     });
   }
   isTimeCellShouldBeHighlighted(today, viewOffset, _ref2, cellData) {
-    var {
+    let {
       startViewDate,
       realEndViewDate,
       showCurrentTimeIndicator
     } = _ref2;
     // NOTE: today date value shifted by -viewOffset for the render purposes.
     // Therefore, we roll-backing here this shift.
-    var realToday = dateUtilsTs.addOffsets(today, [viewOffset]);
+    const realToday = dateUtilsTs.addOffsets(today, [viewOffset]);
     // NOTE: start view date value calculated from the render options and hasn't viewOffset.
     // So, we must shift it by viewOffset to get the real start view date here.
-    var realStartViewDate = dateUtilsTs.addOffsets(startViewDate, [viewOffset]);
+    const realStartViewDate = dateUtilsTs.addOffsets(startViewDate, [viewOffset]);
     if (!showCurrentTimeIndicator || realToday < realStartViewDate || realToday >= realEndViewDate) {
       return false;
     }
-    var realTodayTimeMs = this.getLocalDateTimeInMs(realToday);
-    var [startMs, endMs] = this.getHighlightedInterval(cellData);
+    const realTodayTimeMs = this.getLocalDateTimeInMs(realToday);
+    const [startMs, endMs] = this.getHighlightedInterval(cellData);
     return startMs < endMs ? realTodayTimeMs >= startMs && realTodayTimeMs < endMs : realTodayTimeMs >= startMs && realTodayTimeMs < toMs('day') || realTodayTimeMs >= 0 && realTodayTimeMs < endMs;
   }
   getHighlightedInterval(_ref3) {
-    var {
+    let {
       date,
       index,
       duration,
       isFirst,
       isLast
     } = _ref3;
-    var cellTimeMs = this.getLocalDateTimeInMs(date);
-    var isEvenCell = index % 2 === 0;
+    const cellTimeMs = this.getLocalDateTimeInMs(date);
+    const isEvenCell = index % 2 === 0;
     switch (true) {
       case isFirst || isLast && !isEvenCell:
         return [cellTimeMs, shiftIntegerByModule(cellTimeMs + duration, toMs('day'))];
@@ -199,17 +192,17 @@ export class TimePanelDataGenerator {
     }
   }
   getLocalDateTimeInMs(date) {
-    var dateUtcMs = date.getTime() - date.getTimezoneOffset() * toMs('minute');
+    const dateUtcMs = date.getTime() - date.getTimezoneOffset() * toMs('minute');
     return shiftIntegerByModule(dateUtcMs, toMs('day'));
   }
   isLastCellInGroup(completeViewDataMap, index) {
     if (index === completeViewDataMap.length - 1) {
       return true;
     }
-    var {
+    const {
       groupIndex: currentGroupIndex
     } = completeViewDataMap[index][0];
-    var {
+    const {
       groupIndex: nextGroupIndex,
       allDay: nextAllDay
     } = completeViewDataMap[index + 1][0];

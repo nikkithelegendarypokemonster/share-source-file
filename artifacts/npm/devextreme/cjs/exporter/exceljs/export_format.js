@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/exporter/exceljs/export_format.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -168,7 +168,7 @@ const ExportFormat = exports.ExportFormat = {
     }
     if (escaped) {
       const singleTextQualifier = textQualifier;
-      const escapedTextQualifier = "".concat(textQualifier).concat(textQualifier);
+      const escapedTextQualifier = `${textQualifier}${textQualifier}`;
       return textQualifier + '\'' + value.replaceAll(singleTextQualifier, escapedTextQualifier) + textQualifier;
     }
     return value;

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/utils/data.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -124,6 +124,9 @@ function combineGetters(getters) {
     return result;
   };
 }
+function toLowerCase(value, options) {
+  return options !== null && options !== void 0 && options.locale ? value.toLocaleLowerCase(options.locale) : value.toLowerCase();
+}
 const ensurePropValueDefined = function (obj, propName, value, options) {
   if ((0, _type.isDefined)(value)) {
     return value;
@@ -162,6 +165,7 @@ const compileSetter = function (expr) {
 };
 exports.compileSetter = compileSetter;
 const toComparable = function (value, caseSensitive) {
+  var _options$collatorOpti;
   let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
   if (value instanceof Date) {
     return value.getTime();
@@ -169,13 +173,15 @@ const toComparable = function (value, caseSensitive) {
   if (value && value instanceof _class.default && value.valueOf) {
     return value.valueOf();
   }
-  if (!caseSensitive && typeof value === 'string') {
-    var _options$collatorOpti;
-    if ((options === null || options === void 0 ? void 0 : (_options$collatorOpti = options.collatorOptions) === null || _options$collatorOpti === void 0 ? void 0 : _options$collatorOpti.sensitivity) === 'base') {
+  const isCaseSensitive = (options === null || options === void 0 || (_options$collatorOpti = options.collatorOptions) === null || _options$collatorOpti === void 0 ? void 0 : _options$collatorOpti.sensitivity) === 'case' || caseSensitive;
+  if (!isCaseSensitive && typeof value === 'string') {
+    var _options$collatorOpti2;
+    if ((options === null || options === void 0 || (_options$collatorOpti2 = options.collatorOptions) === null || _options$collatorOpti2 === void 0 ? void 0 : _options$collatorOpti2.sensitivity) === 'base') {
       const REMOVE_DIACRITICAL_MARKS_REGEXP = /[\u0300-\u036f]/g;
-      value = value.normalize('NFD').replace(REMOVE_DIACRITICAL_MARKS_REGEXP, '');
+      value = toLowerCase(value, options).normalize('NFD').replace(REMOVE_DIACRITICAL_MARKS_REGEXP, '');
+      return value;
     }
-    return options !== null && options !== void 0 && options.locale ? value.toLocaleLowerCase(options.locale) : value.toLowerCase();
+    return toLowerCase(value, options);
   }
   return value;
 };

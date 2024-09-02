@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/diagram/ui.diagram.context_toolbox.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,21 +15,14 @@ var _ui2 = _interopRequireDefault(require("../popover/ui.popover"));
 var _diagram = require("./diagram.importer");
 var _window = require("../../core/utils/window");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const DIAGRAM_CONTEXT_TOOLBOX_TARGET_CLASS = 'dx-diagram-context-toolbox-target';
 const DIAGRAM_CONTEXT_TOOLBOX_CLASS = 'dx-diagram-context-toolbox';
 const DIAGRAM_TOUCH_CONTEXT_TOOLBOX_CLASS = 'dx-diagram-touch-context-toolbox';
 const DIAGRAM_CONTEXT_TOOLBOX_CONTENT_CLASS = 'dx-diagram-context-toolbox-content';
 const DIAGRAM_CONTEXT_TOOLBOX_MINHEIGHT = 150;
-let DiagramContextToolbox = /*#__PURE__*/function (_Widget) {
-  _inheritsLoose(DiagramContextToolbox, _Widget);
-  function DiagramContextToolbox() {
-    return _Widget.apply(this, arguments) || this;
-  }
-  var _proto = DiagramContextToolbox.prototype;
-  _proto._init = function _init() {
-    _Widget.prototype._init.call(this);
+class DiagramContextToolbox extends _ui.default {
+  _init() {
+    super._init();
     this._onShownAction = this._createActionByOption('onShown');
     const window = (0, _window.getWindow)();
     this._popoverPositionData = [{
@@ -89,9 +82,9 @@ let DiagramContextToolbox = /*#__PURE__*/function (_Widget) {
       },
       calcMaxHeight: rect => Math.max(DIAGRAM_CONTEXT_TOOLBOX_MINHEIGHT, Math.min(rect.top, window.innerHeight - rect.bottom) * 2 - 2)
     }];
-  };
-  _proto._initMarkup = function _initMarkup() {
-    _Widget.prototype._initMarkup.call(this);
+  }
+  _initMarkup() {
+    super._initMarkup();
     this._$popoverTargetElement = (0, _renderer.default)('<div>').addClass(DIAGRAM_CONTEXT_TOOLBOX_TARGET_CLASS).appendTo(this.$element());
     const $popoverElement = (0, _renderer.default)('<div>').addClass(DIAGRAM_CONTEXT_TOOLBOX_CLASS).appendTo(this.$element());
     if (this._isTouchMode()) {
@@ -101,14 +94,14 @@ let DiagramContextToolbox = /*#__PURE__*/function (_Widget) {
       hideOnOutsideClick: false,
       container: this.$element()
     });
-  };
-  _proto._isTouchMode = function _isTouchMode() {
+  }
+  _isTouchMode() {
     const {
       Browser
     } = (0, _diagram.getDiagram)();
     return Browser.TouchUI;
-  };
-  _proto._show = function _show(x, y, side, category, callback) {
+  }
+  _show(x, y, side, category, callback) {
     this._popoverInstance.hide();
     this._$popoverTargetElement.css({
       left: x + this._popoverPositionData[side].offset.x,
@@ -148,13 +141,12 @@ let DiagramContextToolbox = /*#__PURE__*/function (_Widget) {
       }
     });
     this._popoverInstance.show();
-  };
-  _proto._hide = function _hide() {
+  }
+  _hide() {
     this._$popoverTargetElement.hide();
     this._popoverInstance.hide();
-  };
-  return DiagramContextToolbox;
-}(_ui.default);
+  }
+}
 var _default = exports.default = DiagramContextToolbox;
 module.exports = exports.default;
 module.exports.default = exports.default;

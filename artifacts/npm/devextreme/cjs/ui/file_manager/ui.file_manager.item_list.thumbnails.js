@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/file_manager/ui.file_manager.item_list.thumbnails.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22,26 +22,19 @@ var _uiFile_managerItems_listThumbnails = _interopRequireDefault(require("./ui.f
 var _uiFile_manager2 = _interopRequireDefault(require("./ui.file_manager.item_list"));
 var _file_items_controller = require("./file_items_controller");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const FILE_MANAGER_THUMBNAILS_ITEM_LIST_CLASS = 'dx-filemanager-thumbnails';
 const FILE_MANAGER_THUMBNAILS_ITEM_CLASS = 'dx-filemanager-thumbnails-item';
 const FILE_MANAGER_THUMBNAILS_ITEM_THUMBNAIL_CLASS = 'dx-filemanager-thumbnails-item-thumbnail';
 const FILE_MANAGER_THUMBNAILS_EVENT_NAMESPACE = 'dxFileManager_thumbnails';
-let FileManagerThumbnailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
-  _inheritsLoose(FileManagerThumbnailsItemList, _FileManagerItemListB);
-  function FileManagerThumbnailsItemList() {
-    return _FileManagerItemListB.apply(this, arguments) || this;
-  }
-  var _proto = FileManagerThumbnailsItemList.prototype;
-  _proto._initMarkup = function _initMarkup() {
-    _FileManagerItemListB.prototype._initMarkup.call(this);
+class FileManagerThumbnailsItemList extends _uiFile_manager2.default {
+  _initMarkup() {
+    super._initMarkup();
     this.$element().addClass(FILE_MANAGER_THUMBNAILS_ITEM_LIST_CLASS);
     const contextMenuEvent = (0, _index.addNamespace)(_contextmenu.name, FILE_MANAGER_THUMBNAILS_EVENT_NAMESPACE);
     _events_engine.default.on(this.$element(), contextMenuEvent, this._onContextMenu.bind(this));
     this._createItemList();
-  };
-  _proto._createItemList = function _createItemList() {
+  }
+  _createItemList() {
     const selectionMode = this._isMultipleSelectionMode() ? 'multiple' : 'single';
     const $itemListContainer = (0, _renderer.default)('<div>').appendTo(this.$element());
     this._itemList = this._createComponent($itemListContainer, _uiFile_managerItems_listThumbnails.default, {
@@ -60,8 +53,8 @@ let FileManagerThumbnailsItemList = /*#__PURE__*/function (_FileManagerItemListB
       onFocusedItemChanged: this._onItemListFocusedItemChanged.bind(this),
       onContentReady: this._onContentReady.bind(this)
     });
-  };
-  _proto._onContextMenu = function _onContextMenu(e) {
+  }
+  _onContextMenu(e) {
     e.preventDefault();
     e.stopPropagation();
     if (!this._isDesktop()) {
@@ -80,51 +73,51 @@ let FileManagerThumbnailsItemList = /*#__PURE__*/function (_FileManagerItemListB
       itemElement: targetItemElement.length ? targetItemElement : undefined
     };
     this._showContextMenu(items, e.target, e, target);
-  };
-  _proto._getItemThumbnailCssClass = function _getItemThumbnailCssClass() {
+  }
+  _getItemThumbnailCssClass() {
     return FILE_MANAGER_THUMBNAILS_ITEM_THUMBNAIL_CLASS;
-  };
-  _proto._getItemSelector = function _getItemSelector() {
-    return ".".concat(FILE_MANAGER_THUMBNAILS_ITEM_CLASS);
-  };
-  _proto._getTooltipText = function _getTooltipText(fileItemInfo) {
+  }
+  _getItemSelector() {
+    return `.${FILE_MANAGER_THUMBNAILS_ITEM_CLASS}`;
+  }
+  _getTooltipText(fileItemInfo) {
     const item = fileItemInfo.fileItem;
     if (item.tooltipText) {
       return item.tooltipText;
     }
-    let text = "".concat(item.name, "\r\n");
+    let text = `${item.name}\r\n`;
     if (!item.isDirectory) {
-      text += "".concat(_message.default.format('dxFileManager-listThumbnailsTooltipTextSize'), ": ").concat((0, _uiFile_manager.getDisplayFileSize)(item.size), "\r\n");
+      text += `${_message.default.format('dxFileManager-listThumbnailsTooltipTextSize')}: ${(0, _uiFile_manager.getDisplayFileSize)(item.size)}\r\n`;
     }
-    text += "".concat(_message.default.format('dxFileManager-listThumbnailsTooltipTextDateModified'), ": ").concat(item.dateModified);
+    text += `${_message.default.format('dxFileManager-listThumbnailsTooltipTextDateModified')}: ${item.dateModified}`;
     return text;
-  };
-  _proto._onItemDblClick = function _onItemDblClick(e) {
+  }
+  _onItemDblClick(e) {
     const $item = (0, _renderer.default)(e.currentTarget);
     const item = this._itemList.getItemByItemElement($item);
     this._tryOpen(item);
-  };
-  _proto._tryOpen = function _tryOpen(item) {
+  }
+  _tryOpen(item) {
     if (item) {
       this._raiseSelectedItemOpened(item);
     }
-  };
-  _proto._getItemsInternal = function _getItemsInternal() {
-    return _FileManagerItemListB.prototype._getItemsInternal.call(this).then(items => {
+  }
+  _getItemsInternal() {
+    return super._getItemsInternal().then(items => {
       const deferred = new _deferred.Deferred();
       setTimeout(() => deferred.resolve(items));
       return deferred.promise();
     });
-  };
-  _proto._disableDragging = function _disableDragging() {
+  }
+  _disableDragging() {
     return false;
-  };
-  _proto._getDefaultOptions = function _getDefaultOptions() {
-    return (0, _extend.extend)(_FileManagerItemListB.prototype._getDefaultOptions.call(this), {
+  }
+  _getDefaultOptions() {
+    return (0, _extend.extend)(super._getDefaultOptions(), {
       focusStateEnabled: true
     });
-  };
-  _proto._onItemListSelectionChanged = function _onItemListSelectionChanged(_ref) {
+  }
+  _onItemListSelectionChanged(_ref) {
     let {
       addedItemKeys,
       removedItemKeys
@@ -139,8 +132,8 @@ let FileManagerThumbnailsItemList = /*#__PURE__*/function (_FileManagerItemListB
       currentSelectedItemKeys: addedItemKeys,
       currentDeselectedItemKeys: removedItemKeys
     });
-  };
-  _proto._onItemListFocusedItemChanged = function _onItemListFocusedItemChanged(_ref2) {
+  }
+  _onItemListFocusedItemChanged(_ref2) {
     let {
       item,
       itemElement
@@ -154,17 +147,17 @@ let FileManagerThumbnailsItemList = /*#__PURE__*/function (_FileManagerItemListB
       itemKey: fileSystemItem === null || fileSystemItem === void 0 ? void 0 : fileSystemItem.key,
       itemElement: itemElement || undefined
     });
-  };
-  _proto._getScrollable = function _getScrollable() {
+  }
+  _getScrollable() {
     return this._itemList.getScrollable();
-  };
-  _proto._setSelectedItemKeys = function _setSelectedItemKeys(itemKeys) {
+  }
+  _setSelectedItemKeys(itemKeys) {
     this._itemList.option('selectedItemKeys', itemKeys);
-  };
-  _proto._setFocusedItemKey = function _setFocusedItemKey(itemKey) {
+  }
+  _setFocusedItemKey(itemKey) {
     this._itemList.option('focusedItemKey', itemKey);
-  };
-  _proto.refresh = function refresh(options, operation) {
+  }
+  refresh(options, operation) {
     const actualOptions = {
       dataSource: this._createDataSource()
     };
@@ -180,26 +173,25 @@ let FileManagerThumbnailsItemList = /*#__PURE__*/function (_FileManagerItemListB
     this._itemList.option(actualOptions);
     this._refreshDeferred = new _deferred.Deferred();
     return this._refreshDeferred.promise();
-  };
-  _proto._deselectItem = function _deselectItem(item) {
+  }
+  _deselectItem(item) {
     const itemElement = this._itemList.getItemElementByItem(item);
     this._itemList.unselectItem(itemElement);
-  };
-  _proto._selectItemSingleSelection = function _selectItemSingleSelection(item) {
+  }
+  _selectItemSingleSelection(item) {
     if (item) {
       this._itemList.selectItem(item);
     } else {
       this._itemList.clearSelection();
     }
-  };
-  _proto.clearSelection = function clearSelection() {
+  }
+  clearSelection() {
     this._itemList.clearSelection();
-  };
-  _proto.getSelectedItems = function getSelectedItems() {
+  }
+  getSelectedItems() {
     return this._itemList.getSelectedItems();
-  };
-  return FileManagerThumbnailsItemList;
-}(_uiFile_manager2.default);
+  }
+}
 var _default = exports.default = FileManagerThumbnailsItemList;
 module.exports = exports.default;
 module.exports.default = exports.default;

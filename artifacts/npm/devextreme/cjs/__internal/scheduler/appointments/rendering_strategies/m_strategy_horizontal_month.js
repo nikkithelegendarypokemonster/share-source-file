@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/appointments/rendering_strategies/m_strategy_horizontal_month.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -17,29 +17,27 @@ var _m_position_helper = require("../../workspaces/helpers/m_position_helper");
 var _m_strategy_horizontal_month_line = _interopRequireDefault(require("./m_strategy_horizontal_month_line"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const MONTH_APPOINTMENT_HEIGHT_RATIO = 0.6;
 const MONTH_APPOINTMENT_MIN_OFFSET = 26;
 const MONTH_APPOINTMENT_MAX_OFFSET = 30;
 const MONTH_DROPDOWN_APPOINTMENT_MIN_RIGHT_OFFSET = 36;
 const MONTH_DROPDOWN_APPOINTMENT_MAX_RIGHT_OFFSET = 60;
 const toMs = _date.default.dateToMilliseconds;
-let HorizontalMonthRenderingStrategy = /*#__PURE__*/function (_HorizontalMonthLineR) {
-  _inheritsLoose(HorizontalMonthRenderingStrategy, _HorizontalMonthLineR);
-  function HorizontalMonthRenderingStrategy() {
-    return _HorizontalMonthLineR.apply(this, arguments) || this;
+class HorizontalMonthRenderingStrategy extends _m_strategy_horizontal_month_line.default {
+  get endViewDate() {
+    return this.options.endViewDate;
   }
-  var _proto = HorizontalMonthRenderingStrategy.prototype;
-  _proto._getLeftPosition = function _getLeftPosition(settings) {
+  get adaptivityEnabled() {
+    return this.options.adaptivityEnabled;
+  }
+  get DOMMetaData() {
+    return this.options.DOMMetaData;
+  }
+  _getLeftPosition(settings) {
     const fullWeekAppointmentWidth = this.getGroupWidth(settings.groupIndex);
     return this._calculateMultiWeekAppointmentLeftOffset(settings.hMax, fullWeekAppointmentWidth);
-  };
-  _proto._getChunkCount = function _getChunkCount(fullChunksWidth, firstChunkWidth, weekWidth, settings) {
+  }
+  _getChunkCount(fullChunksWidth, firstChunkWidth, weekWidth, settings) {
     const {
       groupIndex,
       info: {
@@ -60,11 +58,10 @@ let HorizontalMonthRenderingStrategy = /*#__PURE__*/function (_HorizontalMonthLi
   }
   // NOTE: This method tries to get real row index inside appointment's group view.
   // We cannot use settings.rowIndex, because this row index for all date table and not for special group.
-  ;
-  _proto._tryGetRowIndexInView = function _tryGetRowIndexInView(positionStartDate) {
-    var _a;
+  _tryGetRowIndexInView(positionStartDate) {
+    var _this$options$dataRan;
     const columnsCount = this.viewDataProvider.getColumnsCount();
-    if (((_a = this.options.dataRange) === null || _a === void 0 ? void 0 : _a.length) < 1 || !columnsCount) {
+    if (((_this$options$dataRan = this.options.dataRange) === null || _this$options$dataRan === void 0 ? void 0 : _this$options$dataRan.length) < 1 || !columnsCount) {
       return undefined;
     }
     const [startViewDate] = this.options.dateRange;
@@ -75,20 +72,19 @@ let HorizontalMonthRenderingStrategy = /*#__PURE__*/function (_HorizontalMonthLi
     return Math.floor(timeFromStart / dayDurationMs / columnsCount);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._getChunkWidths = function _getChunkWidths(geometry, settings, weekWidth) {
+  _getChunkWidths(geometry, settings, weekWidth) {
     const firstChunkWidth = geometry.reducedWidth;
     const fullChunksWidth = Math.floor(geometry.sourceAppointmentWidth);
     const widthWithoutFirstChunk = fullChunksWidth - firstChunkWidth;
     return [firstChunkWidth, fullChunksWidth, widthWithoutFirstChunk];
-  };
-  _proto._getTailChunkSettings = function _getTailChunkSettings(withoutFirstChunkWidth, weekWidth, leftPosition) {
+  }
+  _getTailChunkSettings(withoutFirstChunkWidth, weekWidth, leftPosition) {
     const tailChunkWidth = withoutFirstChunkWidth % weekWidth || weekWidth;
     const rtlPosition = leftPosition + (weekWidth - tailChunkWidth);
     const tailChunkLeftPosition = this.rtlEnabled ? rtlPosition : leftPosition;
     return [tailChunkWidth, tailChunkLeftPosition];
-  };
-  _proto._getAppointmentParts = function _getAppointmentParts(geometry, settings) {
+  }
+  _getAppointmentParts(geometry, settings) {
     const result = [];
     const weekWidth = Math.round(this.getGroupWidth(settings.groupIndex));
     const [firstChunkWidth, fullChunksWidth, withoutFirstChunkWidth] = this._getChunkWidths(geometry, settings, weekWidth);
@@ -102,7 +98,7 @@ let HorizontalMonthRenderingStrategy = /*#__PURE__*/function (_HorizontalMonthLi
     for (let chunkIndex = 1; chunkIndex < chunkCount; chunkIndex++) {
       const topPosition = settings.top + this.cellHeight * chunkIndex;
       const isTailChunk = hasTailChunk && chunkIndex === chunkCount - 1;
-      result.push(_extends(_extends({}, settings), {
+      result.push(_extends({}, settings, {
         top: topPosition,
         left: isTailChunk ? tailChunkLeftPosition : leftPosition,
         height: geometry.height,
@@ -113,11 +109,11 @@ let HorizontalMonthRenderingStrategy = /*#__PURE__*/function (_HorizontalMonthLi
       }));
     }
     return result;
-  };
-  _proto._calculateMultiWeekAppointmentLeftOffset = function _calculateMultiWeekAppointmentLeftOffset(max, width) {
+  }
+  _calculateMultiWeekAppointmentLeftOffset(max, width) {
     return this.rtlEnabled ? max : max - width;
-  };
-  _proto.getGroupWidth = function getGroupWidth(groupIndex) {
+  }
+  getGroupWidth(groupIndex) {
     return (0, _m_position_helper.getGroupWidth)(groupIndex, this.viewDataProvider, {
       intervalCount: this.options.intervalCount,
       currentDate: this.options.currentDate,
@@ -129,62 +125,44 @@ let HorizontalMonthRenderingStrategy = /*#__PURE__*/function (_HorizontalMonthLi
       rtlEnabled: this.rtlEnabled,
       DOMMetaData: this.DOMMetaData
     });
-  };
-  _proto._getAppointmentDefaultHeight = function _getAppointmentDefaultHeight() {
+  }
+  _getAppointmentDefaultHeight() {
     return this._getAppointmentHeightByTheme();
-  };
-  _proto._getAppointmentMinHeight = function _getAppointmentMinHeight() {
+  }
+  _getAppointmentMinHeight() {
     return this._getAppointmentDefaultHeight();
-  };
-  _proto.createTaskPositionMap = function createTaskPositionMap(items) {
-    return _HorizontalMonthLineR.prototype.createTaskPositionMap.call(this, items, true);
-  };
-  _proto._getSortedPositions = function _getSortedPositions(map) {
-    return _HorizontalMonthLineR.prototype._getSortedPositions.call(this, map, true);
-  };
-  _proto._getDefaultRatio = function _getDefaultRatio() {
+  }
+  createTaskPositionMap(items) {
+    return super.createTaskPositionMap(items, true);
+  }
+  _getSortedPositions(map) {
+    return super._getSortedPositions(map, true);
+  }
+  _getDefaultRatio() {
     return MONTH_APPOINTMENT_HEIGHT_RATIO;
-  };
-  _proto._getOffsets = function _getOffsets() {
+  }
+  _getOffsets() {
     return {
       unlimited: MONTH_APPOINTMENT_MIN_OFFSET,
       auto: MONTH_APPOINTMENT_MAX_OFFSET
     };
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.getDropDownAppointmentWidth = function getDropDownAppointmentWidth(intervalCount, isAllDay) {
+  getDropDownAppointmentWidth(intervalCount, isAllDay) {
     if (this.adaptivityEnabled) {
       return this.getDropDownButtonAdaptiveSize();
     }
     const offset = intervalCount > 1 ? MONTH_DROPDOWN_APPOINTMENT_MAX_RIGHT_OFFSET : MONTH_DROPDOWN_APPOINTMENT_MIN_RIGHT_OFFSET;
     return this.cellWidth - offset;
-  };
-  _proto.needCorrectAppointmentDates = function needCorrectAppointmentDates() {
+  }
+  needCorrectAppointmentDates() {
     return false;
-  };
-  _proto._needVerticalGroupBounds = function _needVerticalGroupBounds() {
+  }
+  _needVerticalGroupBounds() {
     return false;
-  };
-  _proto._needHorizontalGroupBounds = function _needHorizontalGroupBounds() {
+  }
+  _needHorizontalGroupBounds() {
     return true;
-  };
-  _createClass(HorizontalMonthRenderingStrategy, [{
-    key: "endViewDate",
-    get: function () {
-      return this.options.endViewDate;
-    }
-  }, {
-    key: "adaptivityEnabled",
-    get: function () {
-      return this.options.adaptivityEnabled;
-    }
-  }, {
-    key: "DOMMetaData",
-    get: function () {
-      return this.options.DOMMetaData;
-    }
-  }]);
-  return HorizontalMonthRenderingStrategy;
-}(_m_strategy_horizontal_month_line.default);
+  }
+}
 var _default = exports.default = HorizontalMonthRenderingStrategy;

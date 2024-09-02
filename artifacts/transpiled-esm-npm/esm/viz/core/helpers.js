@@ -1,27 +1,27 @@
 import { extend as _extend } from '../../core/utils/extend';
 import { hasWindow } from '../../core/utils/window';
 import { noop } from '../../core/utils/common';
-var isServerSide = !hasWindow();
+const isServerSide = !hasWindow();
 function Flags() {
   this.reset();
 }
 Flags.prototype = {
   constructor: Flags,
-  add: function add(codes) {
-    var i;
-    var ii = codes.length;
-    var flags = this._flags;
+  add: function (codes) {
+    let i;
+    const ii = codes.length;
+    const flags = this._flags;
     for (i = 0; i < ii; ++i) {
       flags[codes[i]] = 1;
     }
   },
-  has: function has(code) {
+  has: function (code) {
     return this._flags[code] > 0;
   },
-  count: function count() {
+  count: function () {
     return Object.keys(this._flags).length;
   },
-  reset: function reset() {
+  reset: function () {
     this._flags = {};
   }
 };
@@ -35,8 +35,8 @@ function buildTotalChanges(proto) {
   proto._totalChangesOrder = proto._optionChangesOrder.concat(proto._layoutChangesOrder, proto._customChangesOrder);
 }
 function addChange(settings) {
-  var proto = this.prototype;
-  var code = settings.code;
+  const proto = this.prototype;
+  const code = settings.code;
   proto['_change_' + code] = settings.handler;
   if (settings.isThemeDependent) {
     proto._themeDependentChanges.push(code);
@@ -48,10 +48,10 @@ function addChange(settings) {
   buildTotalChanges(proto);
 }
 function createChainExecutor() {
-  var executeChain = function executeChain() {
-    var i;
-    var ii = executeChain._chain.length;
-    var result;
+  const executeChain = function () {
+    let i;
+    const ii = executeChain._chain.length;
+    let result;
     for (i = 0; i < ii; ++i) {
       result = executeChain._chain[i].apply(this, arguments);
     }
@@ -67,7 +67,7 @@ function createChainExecutor() {
   return executeChain;
 }
 export function expand(target, name, expander) {
-  var current = target[name];
+  let current = target[name];
   if (!current) {
     current = expander;
   } else {
@@ -86,7 +86,7 @@ export function expand(target, name, expander) {
   target[name] = current;
 }
 function addPlugin(plugin) {
-  var proto = this.prototype;
+  const proto = this.prototype;
   proto._plugins.push(plugin);
   plugin.fontFields && proto._fontFields.push.apply(proto._fontFields, plugin.fontFields);
   if (plugin.members) {
@@ -97,16 +97,16 @@ function addPlugin(plugin) {
   }
   if (plugin.extenders) {
     Object.keys(plugin.extenders).forEach(function (key) {
-      var func = plugin.extenders[key];
+      const func = plugin.extenders[key];
       expand(proto, key, func);
     }, this);
   }
 }
-export var replaceInherit = isServerSide ? function (widget) {
-  var _inherit = widget.inherit;
+export const replaceInherit = isServerSide ? function (widget) {
+  const _inherit = widget.inherit;
   widget.inherit = function () {
-    var result = _inherit.apply(this, arguments);
-    var proto = result.prototype;
+    const result = _inherit.apply(this, arguments);
+    const proto = result.prototype;
     ['_plugins', '_eventsMap', '_initialChanges', '_themeDependentChanges', '_optionChangesMap', '_optionChangesOrder', '_layoutChangesOrder', '_customChangesOrder', '_totalChangesOrder'].forEach(function (key) {
       proto[key] = {};
     });
@@ -116,21 +116,21 @@ export var replaceInherit = isServerSide ? function (widget) {
   widget.addChange = noop;
   widget.addPlugin = noop;
 } : function (widget) {
-  var _inherit = widget.inherit;
+  const _inherit = widget.inherit;
   widget.inherit = function () {
-    var proto = this.prototype;
-    var plugins = proto._plugins;
-    var fontFields = proto._fontFields;
-    var eventsMap = proto._eventsMap;
-    var initialChanges = proto._initialChanges;
-    var themeDependentChanges = proto._themeDependentChanges;
-    var optionChangesMap = proto._optionChangesMap;
-    var partialOptionChangesMap = proto._partialOptionChangesMap;
-    var partialOptionChangesPath = proto._partialOptionChangesPath;
-    var optionChangesOrder = proto._optionChangesOrder;
-    var layoutChangesOrder = proto._layoutChangesOrder;
-    var customChangesOrder = proto._customChangesOrder;
-    var result = _inherit.apply(this, arguments);
+    let proto = this.prototype;
+    const plugins = proto._plugins;
+    const fontFields = proto._fontFields;
+    const eventsMap = proto._eventsMap;
+    const initialChanges = proto._initialChanges;
+    const themeDependentChanges = proto._themeDependentChanges;
+    const optionChangesMap = proto._optionChangesMap;
+    const partialOptionChangesMap = proto._partialOptionChangesMap;
+    const partialOptionChangesPath = proto._partialOptionChangesPath;
+    const optionChangesOrder = proto._optionChangesOrder;
+    const layoutChangesOrder = proto._layoutChangesOrder;
+    const customChangesOrder = proto._customChangesOrder;
+    const result = _inherit.apply(this, arguments);
     proto = result.prototype;
     proto._plugins = combineLists(plugins, proto._plugins);
     proto._fontFields = combineLists(fontFields, proto._fontFields);

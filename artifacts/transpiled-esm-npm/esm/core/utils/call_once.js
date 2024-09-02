@@ -1,14 +1,14 @@
-var callOnce = function callOnce(handler) {
-  var result;
-  var _wrappedHandler = function wrappedHandler() {
+const callOnce = function (handler) {
+  let result;
+  let wrappedHandler = function () {
     result = handler.apply(this, arguments);
-    _wrappedHandler = function wrappedHandler() {
+    wrappedHandler = function () {
       return result;
     };
     return result;
   };
   return function () {
-    return _wrappedHandler.apply(this, arguments);
+    return wrappedHandler.apply(this, arguments);
   };
 };
 export default callOnce;

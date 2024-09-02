@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/dialog.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,6 +14,9 @@ import {
     dxButtonOptions,
 } from './button';
 
+/**
+ * @public
+ */
 export interface CustomDialogOptions {
     title?: string;
     messageHtml?: string;
@@ -23,16 +26,34 @@ export interface CustomDialogOptions {
     dragEnabled?: boolean;
 }
 /**
- * Displays an alert dialog with a message and OK button.
+ * @docid ui.dialog.alert
+ * @publicName alert(messageHtml,title)
+ * @return Promise<void>
+ * @static
+ * @namespace DevExpress.ui.dialog
+ * @public
  */
 export function alert(messageHtml: string, title: string): DxPromise<void>;
 
 /**
- * Creates a confirmation dialog with a message and Yes and No buttons.
+ * @docid ui.dialog.confirm
+ * @publicName confirm(messageHtml,title)
+ * @return Promise<boolean>
+ * @static
+ * @namespace DevExpress.ui.dialog
+ * @public
  */
 export function confirm(messageHtml: string, title: string): DxPromise<boolean>;
 
 /**
- * Creates a dialog with custom buttons.
+ * @docid ui.dialog.custom
+ * @publicName custom(options)
+ * @return Object
+ * @param1 options:object
+ * @param1_field buttons:Array<dxButtonOptions>
+ * @param1_field message:String:deprecated(messageHtml)
+ * @static
+ * @namespace DevExpress.ui.dialog
+ * @public
  */
 export function custom(options: CustomDialogOptions): any;

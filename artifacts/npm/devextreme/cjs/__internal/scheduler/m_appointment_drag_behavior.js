@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/m_appointment_drag_behavior.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -20,8 +20,8 @@ var _m_constants = require("./m_constants");
 var _is_scheduler_component = require("./utils/is_scheduler_component");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const APPOINTMENT_ITEM_CLASS = 'dx-scheduler-appointment';
-let AppointmentDragBehavior = exports.default = /*#__PURE__*/function () {
-  function AppointmentDragBehavior(scheduler) {
+class AppointmentDragBehavior {
+  constructor(scheduler) {
     this.scheduler = scheduler;
     this.workspace = this.scheduler._workSpace;
     this.appointments = this.scheduler._appointments;
@@ -32,11 +32,10 @@ let AppointmentDragBehavior = exports.default = /*#__PURE__*/function () {
     this.appointmentInfo = null;
     this.dragBetweenComponentsPromise = null;
   }
-  var _proto = AppointmentDragBehavior.prototype;
-  _proto.isAllDay = function isAllDay(appointment) {
+  isAllDay(appointment) {
     return appointment.data('dxAppointmentSettings').allDay;
-  };
-  _proto.onDragStart = function onDragStart(e) {
+  }
+  onDragStart(e) {
     const {
       itemSettings,
       itemData,
@@ -48,17 +47,17 @@ let AppointmentDragBehavior = exports.default = /*#__PURE__*/function () {
       settings: itemSettings
     };
     this.appointments.notifyObserver('hideAppointmentTooltip');
-  };
-  _proto.onDragMove = function onDragMove(e) {
+  }
+  onDragMove(e) {
     if (e.fromComponent !== e.toComponent) {
       this.appointments.notifyObserver('removeDroppableCellClass');
     }
-  };
-  _proto.getAppointmentElement = function getAppointmentElement(e) {
+  }
+  getAppointmentElement(e) {
     const itemElement = e.event.data && e.event.data.itemElement || e.itemElement;
     return (0, _renderer.default)(itemElement);
-  };
-  _proto.onDragEnd = function onDragEnd(event) {
+  }
+  onDragEnd(event) {
     const element = this.getAppointmentElement(event);
     const rawAppointment = this.appointments._getItemData(element);
     const container = this.appointments._getAppointmentContainer(this.isAllDay(element));
@@ -72,21 +71,21 @@ let AppointmentDragBehavior = exports.default = /*#__PURE__*/function () {
       newCellIndex,
       oldCellIndex
     });
-  };
-  _proto.onDragCancel = function onDragCancel() {
+  }
+  onDragCancel() {
     this.removeDroppableClasses();
-  };
-  _proto.getItemData = function getItemData(appointmentElement) {
+  }
+  getItemData(appointmentElement) {
     const dataFromTooltip = (0, _renderer.default)(appointmentElement).data(_m_constants.LIST_ITEM_DATA_KEY);
     const itemDataFromTooltip = dataFromTooltip === null || dataFromTooltip === void 0 ? void 0 : dataFromTooltip.appointment;
     const itemDataFromGrid = this.appointments._getItemData(appointmentElement);
     return itemDataFromTooltip || itemDataFromGrid;
-  };
-  _proto.getItemSettings = function getItemSettings(appointment) {
+  }
+  getItemSettings(appointment) {
     const itemData = (0, _renderer.default)(appointment).data(_m_constants.LIST_ITEM_DATA_KEY);
     return itemData && itemData.settings || [];
-  };
-  _proto.createDragStartHandler = function createDragStartHandler(options, appointmentDragging) {
+  }
+  createDragStartHandler(options, appointmentDragging) {
     return e => {
       e.itemData = this.getItemData(e.itemElement);
       e.itemSettings = this.getItemSettings(e.itemElement);
@@ -95,16 +94,16 @@ let AppointmentDragBehavior = exports.default = /*#__PURE__*/function () {
         options.onDragStart(e);
       }
     };
-  };
-  _proto.createDragMoveHandler = function createDragMoveHandler(options, appointmentDragging) {
+  }
+  createDragMoveHandler(options, appointmentDragging) {
     return e => {
       appointmentDragging.onDragMove && appointmentDragging.onDragMove(e);
       if (!e.cancel) {
         options.onDragMove(e);
       }
     };
-  };
-  _proto.createDragEndHandler = function createDragEndHandler(options, appointmentDragging) {
+  }
+  createDragEndHandler(options, appointmentDragging) {
     return e => {
       const updatedData = this.appointments.invoke('getUpdatedData', e.itemData);
       this.appointmentInfo = null;
@@ -126,8 +125,8 @@ let AppointmentDragBehavior = exports.default = /*#__PURE__*/function () {
         targetDragBehavior.dragBetweenComponentsPromise = new _deferred.Deferred();
       }
     };
-  };
-  _proto.createDropHandler = function createDropHandler(appointmentDragging) {
+  }
+  createDropHandler(appointmentDragging) {
     return e => {
       const updatedData = this.appointments.invoke('getUpdatedData', e.itemData);
       e.itemData = (0, _extend.extend)({}, e.itemData, updatedData);
@@ -138,13 +137,13 @@ let AppointmentDragBehavior = exports.default = /*#__PURE__*/function () {
         this.dragBetweenComponentsPromise.resolve();
       }
     };
-  };
-  _proto.addTo = function addTo(container, config) {
+  }
+  addTo(container, config) {
     const appointmentDragging = this.scheduler.option('appointmentDragging') || {};
     const options = (0, _extend.extend)({
       component: this.scheduler,
       contentTemplate: null,
-      filter: ".".concat(APPOINTMENT_ITEM_CLASS),
+      filter: `.${APPOINTMENT_ITEM_CLASS}`,
       immediate: false,
       onDragStart: this.onDragStart.bind(this),
       onDragMove: this.onDragMove.bind(this),
@@ -158,8 +157,8 @@ let AppointmentDragBehavior = exports.default = /*#__PURE__*/function () {
       onDrop: this.createDropHandler(appointmentDragging),
       onCancelByEsc: true
     }));
-  };
-  _proto.updateDragSource = function updateDragSource(appointment, settings) {
+  }
+  updateDragSource(appointment, settings) {
     const {
       appointmentInfo
     } = this;
@@ -168,10 +167,10 @@ let AppointmentDragBehavior = exports.default = /*#__PURE__*/function () {
       const currentSettings = settings || appointmentInfo.settings;
       this.appointments._setDragSourceAppointment(currentAppointment, currentSettings);
     }
-  };
-  _proto.removeDroppableClasses = function removeDroppableClasses() {
+  }
+  removeDroppableClasses() {
     this.appointments._removeDragSourceClassFromDraggedAppointment();
     this.workspace.removeDroppableCellClass();
-  };
-  return AppointmentDragBehavior;
-}();
+  }
+}
+exports.default = AppointmentDragBehavior;

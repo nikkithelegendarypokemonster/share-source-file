@@ -1,31 +1,20 @@
 /**
 * DevExtreme (cjs/events/core/hook_touch_props.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 "use strict";
 
-exports.default = _default;
-const touchPropsToHook = ['pageX', 'pageY', 'screenX', 'screenY', 'clientX', 'clientY'];
-const touchPropHook = function (name, event) {
-  if (event[name] && !event.touches || !event.touches) {
-    return event[name];
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    return _m_hook_touch_props.default;
   }
-  const touches = event.touches.length ? event.touches : event.changedTouches;
-  if (!touches.length) {
-    return;
-  }
-  return touches[0][name];
-};
-function _default(callback) {
-  touchPropsToHook.forEach(function (name) {
-    callback(name, function (event) {
-      return touchPropHook(name, event);
-    });
-  }, this);
-}
+});
+var _m_hook_touch_props = _interopRequireDefault(require("../../__internal/events/core/m_hook_touch_props"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 module.exports = exports.default;
 module.exports.default = exports.default;

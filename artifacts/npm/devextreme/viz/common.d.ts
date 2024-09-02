@@ -1,7 +1,7 @@
 /**
 * DevExtreme (viz/common.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -26,261 +26,327 @@ import {
 
 import type * as Common from '../common/charts';
 
-/**
- * @deprecated Use SeriesType from 'devextreme/common/charts' instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated Use SeriesType from 'devextreme/common/charts' instead */
 export type SeriesType = Common.SeriesType;
 
-/**
- * @deprecated Use TimeIntervalConfig from 'devextreme/common/charts' instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated Use TimeIntervalConfig from 'devextreme/common/charts' instead */
 export type VizTimeInterval = Common.TimeIntervalConfig;
 
-/**
- * @deprecated Use ScaleBreak from 'devextreme/common/charts' instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated Use ScaleBreak from 'devextreme/common/charts' instead */
 export type ScaleBreak = Common.ScaleBreak;
 
-/**
- * @deprecated Use VisualRange from 'devextreme/common/charts' instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated Use VisualRange from 'devextreme/common/charts' instead */
 export type VisualRange = Common.VisualRange;
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.common.charts
+ * @hidden
  */
 export interface BaseLegend {
     /**
-     * Colors the legend&apos;s background.
+     * @docid
+     * @default undefined
+     * @public
      */
     backgroundColor?: string;
     /**
-     * Configures the legend&apos;s border.
+     * @docid
+     * @public
      */
     border?: {
       /**
-       * Colors the legend&apos;s border.
+       * @docid
+       * @default '#d3d3d3'
        */
       color?: string;
       /**
-       * Makes all the legend&apos;s corners rounded.
+       * @docid
+       * @default 0
        */
       cornerRadius?: number;
       /**
-       * Sets a dash style for the legend&apos;s border.
+       * @docid
+       * @default 'solid'
        */
       dashStyle?: DashStyle;
       /**
-       * Specifies the transparency of the legend&apos;s border.
+       * @docid
+       * @default undefined
        */
       opacity?: number;
       /**
-       * Shows the legend&apos;s border.
+       * @docid
+       * @default false
        */
       visible?: boolean;
       /**
-       * Specifies the width of the legend&apos;s border in pixels.
+       * @docid
+       * @default 1
        */
       width?: number;
     };
     /**
-     * Arranges legend items into several columns.
+     * @docid
+     * @default 0
+     * @public
      */
     columnCount?: number;
     /**
-     * Specifies an empty space between item columns in pixels.
+     * @docid
+     * @default 20
+     * @public
      */
     columnItemSpacing?: number;
     /**
-     * Specifies the legend items&apos; font properties.
+     * @docid
+     * @default '#767676' &prop(color)
+     * @public
      */
     font?: Font;
     /**
-     * Along with verticalAlignment, specifies the legend&apos;s position.
+     * @docid
+     * @default 'right'
+     * @public
      */
     horizontalAlignment?: HorizontalAlignment;
     /**
-     * Specifies the text&apos;s position relative to the marker in a legend item.
+     * @docid
+     * @default undefined
+     * @public
      */
     itemTextPosition?: Position;
     /**
-     * Aligns items in the last column or row (depending on the legend&apos;s orientation). Applies when legend items are not divided into columns or rows equally.
+     * @docid
+     * @default undefined
+     * @public
      */
     itemsAlignment?: HorizontalAlignment;
     /**
-     * Generates an empty space, measured in pixels, around the legend.
+     * @docid
+     * @default 10
+     * @public
      */
     margin?: number | {
       /**
-       * Specifies the legend&apos;s bottom margin in pixels.
+       * @docid
+       * @default 10
        */
       bottom?: number;
       /**
-       * Specifies the legend&apos;s left margin in pixels.
+       * @docid
+       * @default 10
        */
       left?: number;
       /**
-       * Specifies the legend&apos;s right margin in pixels.
+       * @docid
+       * @default 10
        */
       right?: number;
       /**
-       * Specifies the legend&apos;s top margin in pixels.
+       * @docid
+       * @default 10
        */
       top?: number;
     };
     /**
-     * Specifies the marker&apos;s size in a legend item in pixels.
+     * @docid
+     * @default 20
+     * @public
      */
     markerSize?: number;
     /**
-     * Arranges legend items vertically (in a column) or horizontally (in a row). The default value is &apos;horizontal&apos; if the legend.horizontalAlignment is &apos;center&apos;. Otherwise, it is &apos;vertical&apos;.
+     * @docid
+     * @default undefined
+     * @public
      */
     orientation?: Orientation;
     /**
-     * Generates an empty space, measured in pixels, between the legend&apos;s left/right border and its items.
+     * @docid
+     * @default 10
+     * @public
      */
     paddingLeftRight?: number;
     /**
-     * Generates an empty space, measured in pixels, between the legend&apos;s top/bottom border and its items.
+     * @docid
+     * @default 10
+     * @public
      */
     paddingTopBottom?: number;
     /**
-     * Arranges legend items in several rows.
+     * @docid
+     * @default 0
+     * @public
      */
     rowCount?: number;
     /**
-     * Specifies an empty space between item rows in pixels.
+     * @docid
+     * @default 8
+     * @public
      */
     rowItemSpacing?: number;
     /**
-     * Configures the legend title.
+     * @docid
+     * @public
      */
     title?: {
       /**
-       * Specifies the legend title&apos;s font properties.
+       * @docid
+       * @default '#232323' &prop(color)
+       * @default 18 &prop(size)
+       * @default 200 &prop(weight)
+       * @default "'Segoe UI Light', 'Helvetica Neue Light', 'Segoe UI', 'Helvetica Neue', 'Trebuchet MS', Verdana, sans-serif" &prop(family)
        */
       font?: Font;
       /**
-       * Along with verticalAlignment, specifies the legend title&apos;s position.
+       * @docid
+       * @default undefined
        */
       horizontalAlignment?: HorizontalAlignment;
       /**
-       * Generates space around the legend title.
+       * @docid
        */
       margin?: {
         /**
-         * Specifies the legend title&apos;s bottom margin.
+         * @docid
+         * @default 9
          */
         bottom?: number;
         /**
-         * Specifies the legend title&apos;s left margin.
+         * @docid
+         * @default 0
          */
         left?: number;
         /**
-         * Specifies the legend title&apos;s right margin.
+         * @docid
+         * @default 0
          */
         right?: number;
         /**
-         * Specifies the legend title&apos;s top margin.
+         * @docid
+         * @default 0
          */
         top?: number;
       };
       /**
-       * Reserves a pixel-measured space for the legend title.
+       * @docid
+       * @default undefined
        */
       placeholderSize?: number;
       /**
-       * Configures the legend subtitle. The subtitle appears only if the title is specified.
+       * @docid
        */
       subtitle?: {
         /**
-         * Specifies the legend subtitle&apos;s font properties.
+         * @docid
+         * @default '#232323' &prop(color)
+         * @default 14 &prop(size)
+         * @default 200 &prop(weight)
+         * @default "'Segoe UI Light', 'Helvetica Neue Light', 'Segoe UI', 'Helvetica Neue', 'Trebuchet MS', Verdana, sans-serif" &prop(family)
          */
         font?: Font;
         /**
-         * Specifies the distance between the legend&apos;s title and subtitle in pixels.
+         * @docid
+         * @default 0
          */
         offset?: number;
         /**
-         * Specifies the subtitle&apos;s text.
+         * @docid
+         * @default null
          */
         text?: string;
       } | string;
       /**
-       * Specifies the legend title&apos;s text.
+       * @docid
+       * @default null
        */
       text?: string;
       /**
-       * Specifies the legend title&apos;s vertical alignment.
+       * @docid
+       * @default 'top'
        */
       verticalAlignment?: VerticalEdge;
     } | string;
     /**
-     * Along with horizontalAlignment, specifies the legend&apos;s position.
+     * @docid
+     * @default 'top'
+     * @public
      */
     verticalAlignment?: VerticalEdge;
     /**
-     * Specifies the legend&apos;s visibility.
+     * @docid
+     * @default true
+     * @public
      */
     visible?: boolean;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.common.charts
+ * @hidden
  */
 export interface BaseLegendItem {
     /**
-     * A legend item marker.
+     * @docid
+     * @public
      */
     marker?: {
       /**
-       * The marker&apos;s color.
+       * @docid
        */
       fill?: string;
       /**
-       * The marker&apos;s opacity.
+       * @docid
        */
       opacity?: number;
       /**
-       * The markerSize in pixels.
+       * @docid
        */
       size?: number;
       /**
-       * The marker&apos;s state.
+       * @docid
        */
       state?: LegendMarkerState;
     };
     /**
-     * The text that the legend item displays.
+     * @docid
+     * @public
      */
     text?: string;
     /**
-     * Indicates and specifies whether the legend item is visible.
+     * @docid
+     * @public
      */
     visible?: boolean;
 }
 
 /**
- * Specifies properties for Chart UI component series.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @inherits dxChartSeriesTypes.CommonSeries
+ * @hidden
  */
 export interface ChartSeries extends dxChartSeriesTypesCommonSeries {
     /**
-     * Specifies the name that identifies the series.
+     * @docid
+     * @default undefined
+     * @public
      */
     name?: string;
     /**
-     * Specifies data about a series.
+     * @docid
+     * @default undefined
+     * @public
      */
     tag?: any;
     /**
-     * Sets the series type.
+     * @docid
+     * @default 'line'
+     * @type Enums.SeriesType
+     * @public
      */
     type?: CommonSeriesType;
 }

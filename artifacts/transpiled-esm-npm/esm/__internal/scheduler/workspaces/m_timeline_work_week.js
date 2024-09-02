@@ -1,9 +1,9 @@
 import registerComponent from '../../../core/component_registrator';
-import { getWeekendsCount } from '../__migration/utils/index';
+import { getWeekendsCount } from '../../scheduler/r1/utils/index';
 import { VIEWS } from '../m_constants';
 import SchedulerTimelineWeek from './m_timeline_week';
-var TIMELINE_CLASS = 'dx-scheduler-timeline-work-week';
-var LAST_DAY_WEEK_INDEX = 5;
+const TIMELINE_CLASS = 'dx-scheduler-timeline-work-week';
+const LAST_DAY_WEEK_INDEX = 5;
 class SchedulerTimelineWorkWeek extends SchedulerTimelineWeek {
   get type() {
     return VIEWS.TIMELINE_WORK_WEEK;
@@ -17,7 +17,7 @@ class SchedulerTimelineWorkWeek extends SchedulerTimelineWeek {
     return TIMELINE_CLASS;
   }
   _incrementDate(date) {
-    var day = date.getDay();
+    const day = date.getDay();
     if (day === LAST_DAY_WEEK_INDEX) {
       date.setDate(date.getDate() + 2);
     }

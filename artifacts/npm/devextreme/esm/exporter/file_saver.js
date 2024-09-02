@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/exporter/file_saver.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,9 +12,9 @@ import { getWindow, getNavigator } from '../core/utils/window';
 import errors from '../ui/widget/ui.errors';
 import { isDefined, isFunction } from '../core/utils/type';
 import { logger } from '../core/utils/console';
-var window = getWindow();
-var navigator = getNavigator();
-var FILE_EXTESIONS = {
+const window = getWindow();
+const navigator = getNavigator();
+const FILE_EXTESIONS = {
   EXCEL: 'xlsx',
   CSS: 'css',
   PNG: 'png',
@@ -23,7 +23,7 @@ var FILE_EXTESIONS = {
   SVG: 'svg',
   PDF: 'pdf'
 };
-export var MIME_TYPES = {
+export const MIME_TYPES = {
   CSS: 'text/css',
   EXCEL: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   PNG: 'image/png',
@@ -35,36 +35,36 @@ export var MIME_TYPES = {
 
 // Use github.com/eligrey/FileSaver.js library instead this method
 
-export var fileSaver = {
+export const fileSaver = {
   _revokeObjectURLTimeout: 30000,
-  _getDataUri: function _getDataUri(format, data) {
-    var mimeType = this._getMimeType(format);
-    return "data:".concat(mimeType, ";base64,").concat(data);
+  _getDataUri: function (format, data) {
+    const mimeType = this._getMimeType(format);
+    return `data:${mimeType};base64,${data}`;
   },
-  _getMimeType: function _getMimeType(format) {
+  _getMimeType: function (format) {
     return MIME_TYPES[format] || 'application/octet-stream';
   },
-  _linkDownloader: function _linkDownloader(fileName, href) {
-    var exportLinkElement = domAdapter.createElement('a');
+  _linkDownloader: function (fileName, href) {
+    const exportLinkElement = domAdapter.createElement('a');
     exportLinkElement.download = fileName;
     exportLinkElement.href = href;
     exportLinkElement.target = '_blank'; // cors policy
 
     return exportLinkElement;
   },
-  _winJSBlobSave: function _winJSBlobSave(blob, fileName, format) {
-    var savePicker = new Windows.Storage.Pickers.FileSavePicker();
+  _winJSBlobSave: function (blob, fileName, format) {
+    const savePicker = new Windows.Storage.Pickers.FileSavePicker();
     savePicker.suggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.documentsLibrary;
-    var fileExtension = FILE_EXTESIONS[format];
+    const fileExtension = FILE_EXTESIONS[format];
     if (fileExtension) {
-      var mimeType = this._getMimeType(format);
+      const mimeType = this._getMimeType(format);
       savePicker.fileTypeChoices.insert(mimeType, ['.' + fileExtension]);
     }
     savePicker.suggestedFileName = fileName;
     savePicker.pickSaveFileAsync().then(function (file) {
       if (file) {
         file.openAsync(Windows.Storage.FileAccessMode.readWrite).then(function (outputStream) {
-          var inputStream = blob.msDetachStream();
+          const inputStream = blob.msDetachStream();
           Windows.Storage.Streams.RandomAccessStream.copyAsync(inputStream, outputStream).then(function () {
             outputStream.flushAsync().done(function () {
               inputStream.close();
@@ -75,19 +75,19 @@ export var fileSaver = {
       }
     });
   },
-  _click: function _click(link) {
+  _click: function (link) {
     try {
       // eslint-disable-next-line no-undef
       link.dispatchEvent(new MouseEvent('click', {
         cancelable: true
       }));
     } catch (e) {
-      var event = domAdapter.getDocument().createEvent('MouseEvents');
+      const event = domAdapter.getDocument().createEvent('MouseEvents');
       event.initMouseEvent('click', true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null);
       link.dispatchEvent(event);
     }
   },
-  _saveBlobAs: function _saveBlobAs(fileName, format, data) {
+  _saveBlobAs: function (fileName, format, data) {
     this._blobSaved = false;
     if (isDefined(navigator.msSaveOrOpenBlob)) {
       navigator.msSaveOrOpenBlob(data, fileName);
@@ -96,10 +96,10 @@ export var fileSaver = {
       this._winJSBlobSave(data, fileName, format);
       this._blobSaved = true;
     } else {
-      var URL = window.URL || window.webkitURL || window.mozURL || window.msURL || window.oURL;
+      const URL = window.URL || window.webkitURL || window.mozURL || window.msURL || window.oURL;
       if (isDefined(URL)) {
-        var objectURL = URL.createObjectURL(data);
-        var downloadLink = this._linkDownloader(fileName, objectURL);
+        const objectURL = URL.createObjectURL(data);
+        const downloadLink = this._linkDownloader(fileName, objectURL);
         setTimeout(() => {
           URL.revokeObjectURL(objectURL);
           this._objectUrlRevoked = true;
@@ -110,8 +110,8 @@ export var fileSaver = {
       }
     }
   },
-  saveAs: function saveAs(fileName, format, data) {
-    var fileExtension = FILE_EXTESIONS[format];
+  saveAs: function (fileName, format, data) {
+    const fileExtension = FILE_EXTESIONS[format];
     if (fileExtension) {
       fileName += '.' + fileExtension;
     }
@@ -119,7 +119,7 @@ export var fileSaver = {
       this._saveBlobAs(fileName, format, data);
     } else {
       if (!isDefined(navigator.userAgent.match(/iPad/i))) errors.log('E1034');
-      var downloadLink = this._linkDownloader(fileName, this._getDataUri(format, data));
+      const downloadLink = this._linkDownloader(fileName, this._getDataUri(format, data));
       this._click(downloadLink);
     }
   }

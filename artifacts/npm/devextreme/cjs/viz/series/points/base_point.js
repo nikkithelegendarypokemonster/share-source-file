@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/viz/series/points/base_point.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -429,7 +429,7 @@ Point.prototype = {
       const axis = that.series.getArgumentAxis();
       const rangeText = axis.formatRange(aggregationInfo.intervalStart, aggregationInfo.intervalEnd, aggregationInfo.aggregationInterval, tooltip.getOptions().argumentFormat);
       if (rangeText) {
-        tooltipFormatObject.valueText += "\n".concat(rangeText);
+        tooltipFormatObject.valueText += `\n${rangeText}`;
       }
     }
     return tooltipFormatObject;

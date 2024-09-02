@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/themes.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -20,20 +20,20 @@ import greenMistThemes from '../__internal/viz/core/themes/generic/greenmist';
 import softBlueThemes from '../__internal/viz/core/themes/generic/softblue';
 import materialThemes from '../__internal/viz/core/themes/material/index';
 import fluentThemes from '../__internal/viz/core/themes/fluent/index';
-var themes = {};
-var themesMapping = {};
-var themesSchemeMapping = {};
-var _extend = extend;
-var currentThemeName = null;
-var defaultTheme;
-var nextCacheUid = 0;
-var widgetsCache = {};
+const themes = {};
+const themesMapping = {};
+const themesSchemeMapping = {};
+const _extend = extend;
+let currentThemeName = null;
+let defaultTheme;
+let nextCacheUid = 0;
+const widgetsCache = {};
 export function getTheme(themeName) {
-  var name = normalizeEnum(themeName);
+  const name = normalizeEnum(themeName);
   return themes[name] || themes[themesMapping[name] || currentTheme()];
 }
 function findThemeNameByName(name, scheme) {
-  var fullThemeKey = "".concat(name, ".").concat(scheme);
+  const fullThemeKey = `${name}.${scheme}`;
   return themesMapping[fullThemeKey] || themesSchemeMapping[fullThemeKey] || themesMapping[name];
 }
 function findThemeNameByPlatform(platform, version, scheme) {
@@ -43,26 +43,26 @@ export function currentTheme(themeName, colorScheme) {
   if (!arguments.length) {
     return currentThemeName || findThemeNameByName(getCurrentTheme()) || defaultTheme;
   }
-  var scheme = normalizeEnum(colorScheme);
+  const scheme = normalizeEnum(colorScheme);
   currentThemeName = (themeName !== null && themeName !== void 0 && themeName.platform ? findThemeNameByPlatform(normalizeEnum(themeName.platform), themeName.version, scheme) : findThemeNameByName(normalizeEnum(themeName), scheme)) || currentThemeName;
   // For chaining only
   return this;
 }
 function getThemeInfo(themeName, splitter) {
-  var k = themeName.indexOf(splitter);
+  const k = themeName.indexOf(splitter);
   return k > 0 ? {
     name: themeName.substring(0, k),
     scheme: themeName.substring(k + 1)
   } : null;
 }
 function registerThemeName(themeName, targetThemeName) {
-  var themeInfo = getThemeInfo(themeName, '.') || {
+  const themeInfo = getThemeInfo(themeName, '.') || {
     name: themeName
   };
-  var name = themeInfo.name;
-  var scheme = themeInfo.scheme;
+  const name = themeInfo.name;
+  const scheme = themeInfo.scheme;
   if (scheme) {
-    var fullThemeKey = "".concat(name, ".").concat(scheme);
+    const fullThemeKey = `${name}.${scheme}`;
     themesMapping[name] = themesMapping[name] || targetThemeName;
     themesMapping[fullThemeKey] = targetThemeName;
   } else {
@@ -70,7 +70,7 @@ function registerThemeName(themeName, targetThemeName) {
   }
 }
 export function registerTheme(theme, baseThemeName) {
-  var themeName = normalizeEnum(theme && theme.name);
+  const themeName = normalizeEnum(theme && theme.name);
   if (themeName) {
     theme.isDefault && (defaultTheme = themeName);
     registerThemeName(themeName, themeName);
@@ -81,15 +81,13 @@ export function registerThemeSchemeAlias(from, to) {
   themesSchemeMapping[from] = to;
 }
 function mergeScalar(target, field, source, sourceValue) {
-  var _source$field;
-  var _value = (_source$field = source === null || source === void 0 ? void 0 : source[field]) !== null && _source$field !== void 0 ? _source$field : sourceValue;
+  const _value = (source === null || source === void 0 ? void 0 : source[field]) ?? sourceValue;
   if (_value !== undefined && target[field] === undefined) {
     target[field] = _value;
   }
 }
 function mergeObject(target, field, source, sourceValue) {
-  var _source$field2;
-  var _value = (_source$field2 = source === null || source === void 0 ? void 0 : source[field]) !== null && _source$field2 !== void 0 ? _source$field2 : sourceValue;
+  const _value = (source === null || source === void 0 ? void 0 : source[field]) ?? sourceValue;
   if (_value !== undefined) {
     target[field] = _extend(true, {}, _value, target[field]);
   }
@@ -222,8 +220,8 @@ function patchTheme(theme) {
   return theme;
 }
 function patchAxes(theme) {
-  var commonAxisSettings = theme['chart:common:axis'];
-  var colorFieldName = 'color';
+  const commonAxisSettings = theme['chart:common:axis'];
+  const colorFieldName = 'color';
   [commonAxisSettings.grid, commonAxisSettings.minorGrid].forEach(obj => {
     mergeScalar(obj, colorFieldName, null, theme.gridColor);
   });
@@ -237,7 +235,7 @@ function patchAxes(theme) {
   mergeScalar(theme.rangeSelector.scale.label.font, colorFieldName, null, theme.axisColor);
 }
 function patchMapLayers(theme) {
-  var map = theme.map;
+  const map = theme.map;
   ['area', 'line', 'marker'].forEach(section => {
     mergeObject(map, 'layer:' + section, null, map.layer);
   });
@@ -246,7 +244,7 @@ function patchMapLayers(theme) {
   });
 }
 export function addCacheItem(target) {
-  var cacheUid = ++nextCacheUid;
+  const cacheUid = ++nextCacheUid;
   target._cache = cacheUid;
   widgetsCache[cacheUid] = target;
 }

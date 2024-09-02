@@ -1,19 +1,19 @@
 /**
 * DevExtreme (esm/localization/ldml/date.parser.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { escapeRegExp } from '../../core/utils/common';
 import { logger } from '../../core/utils/console';
-var FORMAT_TYPES = {
+const FORMAT_TYPES = {
   '3': 'abbreviated',
   '4': 'wide',
   '5': 'narrow'
 };
-var monthRegExpGenerator = function monthRegExpGenerator(count, dateParts) {
+const monthRegExpGenerator = function (count, dateParts) {
   if (count > 2) {
     return Object.keys(FORMAT_TYPES).map(function (count) {
       return ['format', 'standalone'].map(function (type) {
@@ -23,61 +23,64 @@ var monthRegExpGenerator = function monthRegExpGenerator(count, dateParts) {
   }
   return count === 2 ? '1[012]|0?[1-9]' : '0??[1-9]|1[012]';
 };
-var PATTERN_REGEXPS = {
-  ':': function _(count, dateParts) {
-    var countSuffix = count > 1 ? "{".concat(count, "}") : '';
-    var timeSeparator = escapeRegExp(dateParts.getTimeSeparator());
-    timeSeparator !== ':' && (timeSeparator = "".concat(timeSeparator, "|:"));
-    return "".concat(timeSeparator).concat(countSuffix);
+const PATTERN_REGEXPS = {
+  ':': function (count, dateParts) {
+    const countSuffix = count > 1 ? `{${count}}` : '';
+    let timeSeparator = escapeRegExp(dateParts.getTimeSeparator());
+    timeSeparator !== ':' && (timeSeparator = `${timeSeparator}|:`);
+    return `${timeSeparator}${countSuffix}`;
   },
-  y: function y(count) {
-    return count === 2 ? "[0-9]{".concat(count, "}") : '[0-9]+?';
+  y: function (count) {
+    return count === 2 ? `[0-9]{${count}}` : '[0-9]+?';
   },
   M: monthRegExpGenerator,
   L: monthRegExpGenerator,
-  Q: function Q(count, dateParts) {
+  Q: function (count, dateParts) {
     if (count > 2) {
       return dateParts.getQuarterNames(FORMAT_TYPES[count], 'format').join('|');
     }
     return '0?[1-4]';
   },
-  E: function E(count, dateParts) {
+  E: function (count, dateParts) {
     return '\\D*';
   },
-  a: function a(count, dateParts) {
+  a: function (count, dateParts) {
     return dateParts.getPeriodNames(FORMAT_TYPES[count < 3 ? 3 : count], 'format').join('|');
   },
-  d: function d(count) {
+  d: function (count) {
     return count === 2 ? '3[01]|[12][0-9]|0?[1-9]' : '0??[1-9]|[12][0-9]|3[01]';
   },
-  H: function H(count) {
+  H: function (count) {
     return count === 2 ? '2[0-3]|1[0-9]|0?[0-9]' : '0??[0-9]|1[0-9]|2[0-3]';
   },
-  h: function h(count) {
+  h: function (count) {
     return count === 2 ? '1[012]|0?[1-9]' : '0??[1-9]|1[012]';
   },
-  m: function m(count) {
+  m: function (count) {
     return count === 2 ? '[1-5][0-9]|0?[0-9]' : '0??[0-9]|[1-5][0-9]';
   },
-  s: function s(count) {
+  s: function (count) {
     return count === 2 ? '[1-5][0-9]|0?[0-9]' : '0??[0-9]|[1-5][0-9]';
   },
-  S: function S(count) {
-    return "[0-9]{1,".concat(count, "}");
+  S: function (count) {
+    return `[0-9]{1,${count}}`;
   },
-  w: function w(count) {
+  w: function (count) {
     return count === 2 ? '[1-5][0-9]|0?[0-9]' : '0??[0-9]|[1-5][0-9]';
+  },
+  x: function (count) {
+    return count === 3 ? '[+-](?:2[0-3]|[01][0-9]):(?:[0-5][0-9])|Z' : '[+-](?:2[0-3]|[01][0-9])(?:[0-5][0-9])|Z';
   }
 };
-var parseNumber = Number;
-var caseInsensitiveIndexOf = function caseInsensitiveIndexOf(array, value) {
+const parseNumber = Number;
+const caseInsensitiveIndexOf = function (array, value) {
   return array.map(item => item.toLowerCase()).indexOf(value.toLowerCase());
 };
-var monthPatternParser = function monthPatternParser(text, count, dateParts) {
+const monthPatternParser = function (text, count, dateParts) {
   if (count > 2) {
     return ['format', 'standalone'].map(function (type) {
       return Object.keys(FORMAT_TYPES).map(function (count) {
-        var monthNames = dateParts.getMonthNames(FORMAT_TYPES[count], type);
+        const monthNames = dateParts.getMonthNames(FORMAT_TYPES[count], type);
         return caseInsensitiveIndexOf(monthNames, text);
       });
     }).reduce(function (a, b) {
@@ -88,9 +91,9 @@ var monthPatternParser = function monthPatternParser(text, count, dateParts) {
   }
   return parseNumber(text) - 1;
 };
-var PATTERN_PARSERS = {
-  y: function y(text, count) {
-    var year = parseNumber(text);
+const PATTERN_PARSERS = {
+  y: function (text, count) {
+    const year = parseNumber(text);
     if (count === 2) {
       return year < 30 ? 2000 + year : 1900 + year;
     }
@@ -98,18 +101,18 @@ var PATTERN_PARSERS = {
   },
   M: monthPatternParser,
   L: monthPatternParser,
-  Q: function Q(text, count, dateParts) {
+  Q: function (text, count, dateParts) {
     if (count > 2) {
       return dateParts.getQuarterNames(FORMAT_TYPES[count], 'format').indexOf(text);
     }
     return parseNumber(text) - 1;
   },
-  E: function E(text, count, dateParts) {
-    var dayNames = dateParts.getDayNames(FORMAT_TYPES[count < 3 ? 3 : count], 'format');
+  E: function (text, count, dateParts) {
+    const dayNames = dateParts.getDayNames(FORMAT_TYPES[count < 3 ? 3 : count], 'format');
     return caseInsensitiveIndexOf(dayNames, text);
   },
-  a: function a(text, count, dateParts) {
-    var periodNames = dateParts.getPeriodNames(FORMAT_TYPES[count < 3 ? 3 : count], 'format');
+  a: function (text, count, dateParts) {
+    const periodNames = dateParts.getPeriodNames(FORMAT_TYPES[count < 3 ? 3 : count], 'format');
     return caseInsensitiveIndexOf(periodNames, text);
   },
   d: parseNumber,
@@ -117,7 +120,7 @@ var PATTERN_PARSERS = {
   h: parseNumber,
   m: parseNumber,
   s: parseNumber,
-  S: function S(text, count) {
+  S: function (text, count) {
     count = Math.max(count, 3);
     text = text.slice(0, 3);
     while (count < 3) {
@@ -127,14 +130,14 @@ var PATTERN_PARSERS = {
     return parseNumber(text);
   }
 };
-var ORDERED_PATTERNS = ['y', 'M', 'd', 'h', 'm', 's', 'S'];
-var PATTERN_SETTERS = {
+const ORDERED_PATTERNS = ['y', 'M', 'd', 'h', 'm', 's', 'S'];
+const PATTERN_SETTERS = {
   y: 'setFullYear',
   M: 'setMonth',
   L: 'setMonth',
-  a: function a(date, value, datePartValues) {
-    var hours = date.getHours();
-    var hourPartValue = datePartValues['h'];
+  a: function (date, value, datePartValues) {
+    let hours = date.getHours();
+    const hourPartValue = datePartValues['h'];
     if (hourPartValue !== undefined && hourPartValue !== hours) {
       hours--;
     }
@@ -152,41 +155,41 @@ var PATTERN_SETTERS = {
   s: 'setSeconds',
   S: 'setMilliseconds'
 };
-var getSameCharCount = function getSameCharCount(text, index) {
-  var char = text[index];
+const getSameCharCount = function (text, index) {
+  const char = text[index];
   if (!char) {
     return 0;
   }
-  var count = 0;
+  let count = 0;
   do {
     index++;
     count++;
   } while (text[index] === char);
   return count;
 };
-var createPattern = function createPattern(char, count) {
-  var result = '';
-  for (var i = 0; i < count; i++) {
+const createPattern = function (char, count) {
+  let result = '';
+  for (let i = 0; i < count; i++) {
     result += char;
   }
   return result;
 };
-export var getRegExpInfo = function getRegExpInfo(format, dateParts) {
-  var regexpText = '';
-  var stubText = '';
-  var isEscaping;
-  var patterns = [];
-  var addPreviousStub = function addPreviousStub() {
+export const getRegExpInfo = function (format, dateParts) {
+  let regexpText = '';
+  let stubText = '';
+  let isEscaping;
+  const patterns = [];
+  const addPreviousStub = function () {
     if (stubText) {
-      patterns.push("'".concat(stubText, "'"));
-      regexpText += "".concat(escapeRegExp(stubText), ")");
+      patterns.push(`'${stubText}'`);
+      regexpText += `${escapeRegExp(stubText)})`;
       stubText = '';
     }
   };
-  for (var i = 0; i < format.length; i++) {
-    var char = format[i];
-    var isEscapeChar = char === '\'';
-    var regexpPart = PATTERN_REGEXPS[char];
+  for (let i = 0; i < format.length; i++) {
+    const char = format[i];
+    const isEscapeChar = char === '\'';
+    const regexpPart = PATTERN_REGEXPS[char];
     if (isEscapeChar) {
       isEscaping = !isEscaping;
       if (format[i - 1] !== '\'') {
@@ -194,11 +197,11 @@ export var getRegExpInfo = function getRegExpInfo(format, dateParts) {
       }
     }
     if (regexpPart && !isEscaping) {
-      var count = getSameCharCount(format, i);
-      var pattern = createPattern(char, count);
+      const count = getSameCharCount(format, i);
+      const pattern = createPattern(char, count);
       addPreviousStub();
       patterns.push(pattern);
-      regexpText += "(".concat(regexpPart(count, dateParts), ")");
+      regexpText += `(${regexpPart(count, dateParts)})`;
       i += count - 1;
     } else {
       if (!stubText) {
@@ -209,27 +212,27 @@ export var getRegExpInfo = function getRegExpInfo(format, dateParts) {
   }
   addPreviousStub();
   if (!isPossibleForParsingFormat(patterns)) {
-    logger.warn("The following format may be parsed incorrectly: ".concat(format, "."));
+    logger.warn(`The following format may be parsed incorrectly: ${format}.`);
   }
   return {
     patterns: patterns,
-    regexp: new RegExp("^".concat(regexpText, "$"), 'i')
+    regexp: new RegExp(`^${regexpText}$`, 'i')
   };
 };
-var digitFieldSymbols = ['d', 'H', 'h', 'm', 's', 'w', 'M', 'L', 'Q'];
-export var isPossibleForParsingFormat = function isPossibleForParsingFormat(patterns) {
-  var isDigitPattern = pattern => {
+const digitFieldSymbols = ['d', 'H', 'h', 'm', 's', 'w', 'M', 'L', 'Q'];
+export const isPossibleForParsingFormat = function (patterns) {
+  const isDigitPattern = pattern => {
     if (!pattern) {
       return false;
     }
-    var char = pattern[0];
+    const char = pattern[0];
     return ['y', 'S'].includes(char) || digitFieldSymbols.includes(char) && pattern.length < 3;
   };
-  var isAmbiguousDigitPattern = pattern => {
+  const isAmbiguousDigitPattern = pattern => {
     return pattern[0] !== 'S' && pattern.length !== 2;
   };
-  var possibleForParsing = true;
-  var ambiguousDigitPatternsCount = 0;
+  let possibleForParsing = true;
+  let ambiguousDigitPatternsCount = 0;
   return patterns.every((pattern, index, patterns) => {
     if (isDigitPattern(pattern)) {
       if (isAmbiguousDigitPattern(pattern)) {
@@ -242,15 +245,15 @@ export var isPossibleForParsingFormat = function isPossibleForParsingFormat(patt
     return possibleForParsing;
   });
 };
-export var getPatternSetters = function getPatternSetters() {
+export const getPatternSetters = function () {
   return PATTERN_SETTERS;
 };
-var setPatternPart = function setPatternPart(date, pattern, text, dateParts, datePartValues) {
-  var patternChar = pattern[0];
-  var partSetter = PATTERN_SETTERS[patternChar];
-  var partParser = PATTERN_PARSERS[patternChar];
+const setPatternPart = function (date, pattern, text, dateParts, datePartValues) {
+  const patternChar = pattern[0];
+  const partSetter = PATTERN_SETTERS[patternChar];
+  const partParser = PATTERN_PARSERS[patternChar];
   if (partSetter && partParser) {
-    var value = partParser(text, pattern.length, dateParts);
+    const value = partParser(text, pattern.length, dateParts);
     datePartValues[pattern] = value;
     if (date[partSetter]) {
       date[partSetter](value);
@@ -259,13 +262,13 @@ var setPatternPart = function setPatternPart(date, pattern, text, dateParts, dat
     }
   }
 };
-var setPatternPartFromNow = function setPatternPartFromNow(date, pattern, now) {
-  var setterName = PATTERN_SETTERS[pattern];
-  var getterName = 'g' + setterName.substr(1);
-  var value = now[getterName]();
+const setPatternPartFromNow = function (date, pattern, now) {
+  const setterName = PATTERN_SETTERS[pattern];
+  const getterName = 'g' + setterName.substr(1);
+  const value = now[getterName]();
   date[setterName](value);
 };
-var getShortPatterns = function getShortPatterns(fullPatterns) {
+const getShortPatterns = function (fullPatterns) {
   return fullPatterns.map(function (pattern) {
     if (pattern[0] === '\'') {
       return '';
@@ -274,37 +277,37 @@ var getShortPatterns = function getShortPatterns(fullPatterns) {
     }
   });
 };
-var getMaxOrderedPatternIndex = function getMaxOrderedPatternIndex(patterns) {
-  var indexes = patterns.map(function (pattern) {
+const getMaxOrderedPatternIndex = function (patterns) {
+  const indexes = patterns.map(function (pattern) {
     return ORDERED_PATTERNS.indexOf(pattern);
   });
   return Math.max.apply(Math, indexes);
 };
-var getOrderedFormatPatterns = function getOrderedFormatPatterns(formatPatterns) {
-  var otherPatterns = formatPatterns.filter(function (pattern) {
+const getOrderedFormatPatterns = function (formatPatterns) {
+  const otherPatterns = formatPatterns.filter(function (pattern) {
     return ORDERED_PATTERNS.indexOf(pattern) < 0;
   });
   return ORDERED_PATTERNS.concat(otherPatterns);
 };
-export var getParser = function getParser(format, dateParts) {
-  var regExpInfo = getRegExpInfo(format, dateParts);
+export const getParser = function (format, dateParts) {
+  const regExpInfo = getRegExpInfo(format, dateParts);
   return function (text) {
-    var regExpResult = regExpInfo.regexp.exec(text);
+    const regExpResult = regExpInfo.regexp.exec(text);
     if (regExpResult) {
-      var now = new Date();
-      var date = new Date(now.getFullYear(), 0, 1);
-      var formatPatterns = getShortPatterns(regExpInfo.patterns);
-      var maxPatternIndex = getMaxOrderedPatternIndex(formatPatterns);
-      var orderedFormatPatterns = getOrderedFormatPatterns(formatPatterns);
-      var datePartValues = {};
+      const now = new Date();
+      const date = new Date(now.getFullYear(), 0, 1);
+      const formatPatterns = getShortPatterns(regExpInfo.patterns);
+      const maxPatternIndex = getMaxOrderedPatternIndex(formatPatterns);
+      const orderedFormatPatterns = getOrderedFormatPatterns(formatPatterns);
+      const datePartValues = {};
       orderedFormatPatterns.forEach(function (pattern, index) {
         if (!pattern || index < ORDERED_PATTERNS.length && index > maxPatternIndex) {
           return;
         }
-        var patternIndex = formatPatterns.indexOf(pattern);
+        const patternIndex = formatPatterns.indexOf(pattern);
         if (patternIndex >= 0) {
-          var regExpPattern = regExpInfo.patterns[patternIndex];
-          var regExpText = regExpResult[patternIndex + 1];
+          const regExpPattern = regExpInfo.patterns[patternIndex];
+          const regExpText = regExpResult[patternIndex + 1];
           setPatternPart(date, regExpPattern, regExpText, dateParts, datePartValues);
         } else {
           setPatternPartFromNow(date, pattern, now);

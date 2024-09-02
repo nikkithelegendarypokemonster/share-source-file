@@ -2,11 +2,11 @@ import $ from '../../core/renderer';
 import { Deferred } from '../../core/utils/deferred';
 import { value as viewPort } from '../../core/utils/view_port';
 import LoadPanel from '../../ui/load_panel';
-var loading = null;
-var createLoadPanel = function createLoadPanel(options) {
+let loading = null;
+const createLoadPanel = function (options) {
   return new LoadPanel($('<div>').appendTo(options && options.container || viewPort()), options);
 };
-var removeLoadPanel = function removeLoadPanel() {
+const removeLoadPanel = function () {
   if (!loading) {
     return;
   }

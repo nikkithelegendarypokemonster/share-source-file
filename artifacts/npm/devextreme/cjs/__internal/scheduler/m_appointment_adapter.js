@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/m_appointment_adapter.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -18,10 +18,6 @@ var _ui = _interopRequireDefault(require("../../ui/widget/ui.errors"));
 var _m_expression_utils = require("./m_expression_utils");
 var _m_recurrence = require("./m_recurrence");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 // TODO Vinogradov refactoring: add types to this module.
 const PROPERTY_NAMES = {
   startDate: 'startDate',
@@ -35,30 +31,88 @@ const PROPERTY_NAMES = {
   recurrenceException: 'recurrenceException',
   disabled: 'disabled'
 };
-let AppointmentAdapter = /*#__PURE__*/function () {
-  function AppointmentAdapter(rawAppointment, dataAccessors, timeZoneCalculator, options) {
+class AppointmentAdapter {
+  constructor(rawAppointment, dataAccessors, timeZoneCalculator, options) {
     this.rawAppointment = rawAppointment;
     this.dataAccessors = dataAccessors;
     this.timeZoneCalculator = timeZoneCalculator;
     this.options = options;
   }
-  var _proto = AppointmentAdapter.prototype;
-  _proto.getField = function getField(property) {
+  get duration() {
+    return this.endDate ? this.endDate - this.startDate : 0;
+  }
+  get startDate() {
+    const result = this.getField(PROPERTY_NAMES.startDate);
+    return result === undefined ? result : new Date(result);
+  }
+  set startDate(value) {
+    this.setField(PROPERTY_NAMES.startDate, value);
+  }
+  get endDate() {
+    const result = this.getField(PROPERTY_NAMES.endDate);
+    return result === undefined ? result : new Date(result);
+  }
+  set endDate(value) {
+    this.setField(PROPERTY_NAMES.endDate, value);
+  }
+  get allDay() {
+    return this.getField(PROPERTY_NAMES.allDay);
+  }
+  set allDay(value) {
+    this.setField(PROPERTY_NAMES.allDay, value);
+  }
+  get text() {
+    return this.getField(PROPERTY_NAMES.text);
+  }
+  set text(value) {
+    this.setField(PROPERTY_NAMES.text, value);
+  }
+  get description() {
+    return this.getField(PROPERTY_NAMES.description);
+  }
+  set description(value) {
+    this.setField(PROPERTY_NAMES.description, value);
+  }
+  get startDateTimeZone() {
+    return this.getField(PROPERTY_NAMES.startDateTimeZone);
+  }
+  get endDateTimeZone() {
+    return this.getField(PROPERTY_NAMES.endDateTimeZone);
+  }
+  get recurrenceRule() {
+    return this.getField(PROPERTY_NAMES.recurrenceRule);
+  }
+  set recurrenceRule(value) {
+    this.setField(PROPERTY_NAMES.recurrenceRule, value);
+  }
+  get recurrenceException() {
+    return this.getField(PROPERTY_NAMES.recurrenceException);
+  }
+  set recurrenceException(value) {
+    this.setField(PROPERTY_NAMES.recurrenceException, value);
+  }
+  get disabled() {
+    return !!this.getField(PROPERTY_NAMES.disabled);
+  }
+  get isRecurrent() {
+    return (0, _m_recurrence.getRecurrenceProcessor)().isValidRecurrenceRule(this.recurrenceRule);
+  }
+  getField(property) {
     return _m_expression_utils.ExpressionUtils.getField(this.dataAccessors, property, this.rawAppointment);
-  };
-  _proto.setField = function setField(property, value) {
+  }
+  setField(property, value) {
     return _m_expression_utils.ExpressionUtils.setField(this.dataAccessors, property, this.rawAppointment, value);
-  };
-  _proto.calculateStartDate = function calculateStartDate(pathTimeZoneConversion) {
+  }
+  calculateStartDate(pathTimeZoneConversion) {
     if (!this.startDate || isNaN(this.startDate.getTime())) {
       throw _ui.default.Error('E1032', this.text);
     }
     return this.calculateDate(this.startDate, this.startDateTimeZone, pathTimeZoneConversion);
-  };
-  _proto.calculateEndDate = function calculateEndDate(pathTimeZoneConversion) {
+  }
+  calculateEndDate(pathTimeZoneConversion) {
     return this.calculateDate(this.endDate, this.endDateTimeZone, pathTimeZoneConversion);
-  };
-  _proto.calculateDate = function calculateDate(date, appointmentTimeZone, pathTimeZoneConversion) {
+  }
+  calculateDate(date, appointmentTimeZone, pathTimeZoneConversion) {
     if (!date) {
       // TODO: E1032 should be thrown only for startDate above
       return undefined;
@@ -67,17 +121,17 @@ let AppointmentAdapter = /*#__PURE__*/function () {
       appointmentTimeZone,
       path: pathTimeZoneConversion
     });
-  };
-  _proto.clone = function clone() {
+  }
+  clone() {
     let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
     const result = new AppointmentAdapter((0, _object.deepExtendArraySafe)({}, this.rawAppointment), this.dataAccessors, this.timeZoneCalculator, options);
-    if (options === null || options === void 0 ? void 0 : options.pathTimeZone) {
+    if (options !== null && options !== void 0 && options.pathTimeZone) {
       result.startDate = result.calculateStartDate(options.pathTimeZone);
       result.endDate = result.calculateEndDate(options.pathTimeZone);
     }
     return result;
-  };
-  _proto.source = function source() {
+  }
+  source() {
     let serializeDate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
     if (serializeDate) {
       // TODO: hack for use dateSerializationFormat
@@ -87,93 +141,8 @@ let AppointmentAdapter = /*#__PURE__*/function () {
       return clonedAdapter.source();
     }
     return (0, _extend.extend)({}, this.rawAppointment);
-  };
-  _createClass(AppointmentAdapter, [{
-    key: "duration",
-    get: function () {
-      return this.endDate ? this.endDate - this.startDate : 0;
-    }
-  }, {
-    key: "startDate",
-    get: function () {
-      const result = this.getField(PROPERTY_NAMES.startDate);
-      return result === undefined ? result : new Date(result);
-    },
-    set: function (value) {
-      this.setField(PROPERTY_NAMES.startDate, value);
-    }
-  }, {
-    key: "endDate",
-    get: function () {
-      const result = this.getField(PROPERTY_NAMES.endDate);
-      return result === undefined ? result : new Date(result);
-    },
-    set: function (value) {
-      this.setField(PROPERTY_NAMES.endDate, value);
-    }
-  }, {
-    key: "allDay",
-    get: function () {
-      return this.getField(PROPERTY_NAMES.allDay);
-    },
-    set: function (value) {
-      this.setField(PROPERTY_NAMES.allDay, value);
-    }
-  }, {
-    key: "text",
-    get: function () {
-      return this.getField(PROPERTY_NAMES.text);
-    },
-    set: function (value) {
-      this.setField(PROPERTY_NAMES.text, value);
-    }
-  }, {
-    key: "description",
-    get: function () {
-      return this.getField(PROPERTY_NAMES.description);
-    },
-    set: function (value) {
-      this.setField(PROPERTY_NAMES.description, value);
-    }
-  }, {
-    key: "startDateTimeZone",
-    get: function () {
-      return this.getField(PROPERTY_NAMES.startDateTimeZone);
-    }
-  }, {
-    key: "endDateTimeZone",
-    get: function () {
-      return this.getField(PROPERTY_NAMES.endDateTimeZone);
-    }
-  }, {
-    key: "recurrenceRule",
-    get: function () {
-      return this.getField(PROPERTY_NAMES.recurrenceRule);
-    },
-    set: function (value) {
-      this.setField(PROPERTY_NAMES.recurrenceRule, value);
-    }
-  }, {
-    key: "recurrenceException",
-    get: function () {
-      return this.getField(PROPERTY_NAMES.recurrenceException);
-    },
-    set: function (value) {
-      this.setField(PROPERTY_NAMES.recurrenceException, value);
-    }
-  }, {
-    key: "disabled",
-    get: function () {
-      return !!this.getField(PROPERTY_NAMES.disabled);
-    }
-  }, {
-    key: "isRecurrent",
-    get: function () {
-      return (0, _m_recurrence.getRecurrenceProcessor)().isValidRecurrenceRule(this.recurrenceRule);
-    }
-  }]);
-  return AppointmentAdapter;
-}();
+  }
+}
 var _default = exports.default = AppointmentAdapter;
 const createAppointmentAdapter = (rawAppointment, dataAccessors, timeZoneCalculator, options) => new AppointmentAdapter(rawAppointment, dataAccessors, timeZoneCalculator, options);
 exports.createAppointmentAdapter = createAppointmentAdapter;

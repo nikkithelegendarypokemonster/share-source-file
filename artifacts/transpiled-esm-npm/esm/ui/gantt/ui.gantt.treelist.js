@@ -8,17 +8,17 @@ import { DataSource } from '../../data/data_source/data_source';
 import ArrayStore from '../../data/array_store';
 import { compileGetter } from '../../core/utils/data';
 import { GanttTreeListNodesState } from './ui.gantt.treelist.nodes_state';
-var GANTT_TASKS = 'tasks';
-var GANTT_COLLAPSABLE_ROW = 'dx-gantt-collapsable-row';
-var GANTT_DEFAULT_ROW_HEIGHT = 34;
-var GANTT_SCROLL_ACTIVATION_LEVEL = 1;
+const GANTT_TASKS = 'tasks';
+const GANTT_COLLAPSABLE_ROW = 'dx-gantt-collapsable-row';
+const GANTT_DEFAULT_ROW_HEIGHT = 34;
+const GANTT_SCROLL_ACTIVATION_LEVEL = 2;
 export class GanttTreeList {
   constructor(gantt) {
     this._gantt = gantt;
     this._$treeList = this._gantt._$treeList;
   }
   getTreeList() {
-    var {
+    const {
       keyExpr,
       parentIdExpr
     } = this._gantt.option(GANTT_TASKS);
@@ -86,7 +86,7 @@ export class GanttTreeList {
     }
   }
   _onContentReady(e) {
-    var hasTreeList = !!this._treeList;
+    const hasTreeList = !!this._treeList;
     if (hasTreeList) {
       this._initGanttOnContentReady(e);
     } else {
@@ -103,7 +103,7 @@ export class GanttTreeList {
     this._gantt._sizeHelper.updateGanttRowHeights();
   }
   _onSelectionChanged(e) {
-    var selectedRowKey = e.currentSelectedRowKeys[0];
+    const selectedRowKey = e.currentSelectedRowKeys[0];
     this._gantt._setGanttViewOption('selectedRowKey', selectedRowKey);
     this._gantt._setOptionWithoutOptionChange('selectedRowKey', selectedRowKey);
     this._gantt._actionsManager.raiseSelectionChangedAction(selectedRowKey);
@@ -128,7 +128,7 @@ export class GanttTreeList {
       this.setOption('selectedRowKeys', [e.row.data[this._gantt.option('tasks.keyExpr')]]);
     }
     e.items = [];
-    var info = {
+    const info = {
       cancel: false,
       event: e.event,
       type: 'task',
@@ -148,7 +148,7 @@ export class GanttTreeList {
     return this._gantt._hasHeight ? '100%' : '';
   }
   _initScrollSync(treeList) {
-    var treeListScrollable = treeList.getScrollable();
+    const treeListScrollable = treeList.getScrollable();
     if (treeListScrollable) {
       treeListScrollable.off('scroll');
       treeListScrollable.on('scroll', e => {
@@ -157,13 +157,13 @@ export class GanttTreeList {
     }
   }
   _onScroll(treeListScrollView) {
-    var ganttViewTaskAreaContainer = this._gantt._ganttView.getTaskAreaContainer();
+    const ganttViewTaskAreaContainer = this._gantt._ganttView.getTaskAreaContainer();
     if (ganttViewTaskAreaContainer.scrollTop !== treeListScrollView.component.scrollTop()) {
       ganttViewTaskAreaContainer.scrollTop = treeListScrollView.component.scrollTop();
     }
   }
   _correctRowsViewRowHeight(height) {
-    var view = this._treeList._views && this._treeList._views['rowsView'];
+    const view = this._treeList._views && this._treeList._views['rowsView'];
     if ((view === null || view === void 0 ? void 0 : view._rowHeight) !== height) {
       view._rowHeight = height;
     }
@@ -175,9 +175,9 @@ export class GanttTreeList {
     this.setOption('selectedRowKeys', keys);
   }
   scrollBy(scrollTop) {
-    var treeListScrollable = this._treeList.getScrollable();
+    const treeListScrollable = this._treeList.getScrollable();
     if (treeListScrollable) {
-      var diff = scrollTop - treeListScrollable.scrollTop();
+      const diff = scrollTop - treeListScrollable.scrollTop();
       if (Math.abs(diff) >= GANTT_SCROLL_ACTIVATION_LEVEL) {
         treeListScrollable.scrollBy({
           left: 0,
@@ -187,13 +187,13 @@ export class GanttTreeList {
     }
   }
   updateDataSource(data) {
-    var forceUpdate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-    var forceCustomData = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    let forceUpdate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    let forceCustomData = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
     if (!this._skipUpdateTreeListDataSource() || forceUpdate) {
       this.setDataSource(data);
     } else if (forceCustomData) {
-      var _data = this._treeList.option('dataSource');
-      this._gantt._onParentTasksRecalculated(_data);
+      const data = this._treeList.option('dataSource');
+      this._gantt._onParentTasksRecalculated(data);
     }
   }
   setDataSource(data) {
@@ -216,30 +216,30 @@ export class GanttTreeList {
     }
   }
   saveExpandedKeys() {
-    var treeList = this._treeList;
-    var visibleRowCount = treeList === null || treeList === void 0 ? void 0 : treeList.getVisibleRows().length;
+    const treeList = this._treeList;
+    const visibleRowCount = treeList === null || treeList === void 0 ? void 0 : treeList.getVisibleRows().length;
     if (visibleRowCount > 0) {
-      var nodes = this.getAllNodes();
-      var keys = this.getOption('expandedRowKeys');
-      var hasExpandedRows = keys && nodes.length !== visibleRowCount;
+      const nodes = this.getAllNodes();
+      const keys = this.getOption('expandedRowKeys');
+      const hasExpandedRows = keys && nodes.length !== visibleRowCount;
       if (hasExpandedRows) {
-        var state = this.getNodesState();
+        const state = this.getNodesState();
         state.applyNodes(nodes, this.getOption('rootValue'));
         state.saveExpandedState(keys);
       }
     }
   }
   _onNodesInitialized(e) {
-    var state = this.getNodesState();
-    var savedKeys = state.getExpandedKeys();
-    var nodes = this.getAllNodes();
+    const state = this.getNodesState();
+    const savedKeys = state.getExpandedKeys();
+    const nodes = this.getAllNodes();
     state.applyNodes(nodes, this.getOption('rootValue'));
-    var expandedKeys = state.getExpandedKeys();
+    const expandedKeys = state.getExpandedKeys();
     if (expandedKeys) {
       this.setOption('expandedRowKeys', expandedKeys);
     }
     if (this.isExpandedStateChanged(savedKeys, expandedKeys)) {
-      var expandedState = nodes.reduce((previous, node) => {
+      const expandedState = nodes.reduce((previous, node) => {
         previous[node.key] = expandedKeys ? expandedKeys.includes(node.key) : true;
         return previous;
       }, {});
@@ -254,12 +254,12 @@ export class GanttTreeList {
     return this._nodeState;
   }
   getAllNodes() {
-    var _this$_treeList, _this$_treeList$getDa, _this$_treeList2;
-    var store = (_this$_treeList = this._treeList) === null || _this$_treeList === void 0 ? void 0 : (_this$_treeList$getDa = _this$_treeList.getDataSource()) === null || _this$_treeList$getDa === void 0 ? void 0 : _this$_treeList$getDa.store();
+    var _this$_treeList, _this$_treeList2;
+    const store = (_this$_treeList = this._treeList) === null || _this$_treeList === void 0 || (_this$_treeList = _this$_treeList.getDataSource()) === null || _this$_treeList === void 0 ? void 0 : _this$_treeList.store();
     if (!store || !((_this$_treeList2 = this._treeList) !== null && _this$_treeList2 !== void 0 && _this$_treeList2.getNodeByKey)) {
       return [];
     }
-    var keyGetter = compileGetter(store.key());
+    const keyGetter = compileGetter(store.key());
     return store._array.map(item => this._treeList.getNodeByKey(keyGetter(item))).filter(item => !!item);
   }
   isExpandedStateChanged(keys1, keys2) {
@@ -275,8 +275,8 @@ export class GanttTreeList {
     return this._gantt._treeList._$element.get(0).offsetHeight;
   }
   getRowHeight() {
-    var $row = this._treeList._$element.find('.dx-data-row');
-    var height = $row.length ? getBoundingRect($row.last().get(0)).height : GANTT_DEFAULT_ROW_HEIGHT;
+    const $row = this._treeList._$element.find('.dx-data-row');
+    let height = $row.length ? getBoundingRect($row.last().get(0)).height : GANTT_DEFAULT_ROW_HEIGHT;
     if (!height) {
       height = GANTT_DEFAULT_ROW_HEIGHT;
     }
@@ -287,11 +287,11 @@ export class GanttTreeList {
     return getBoundingRect(this._treeList._$element.find('.dx-treelist-headers').get(0)).height;
   }
   getColumns() {
-    var columns = this._gantt.option('columns');
+    const columns = this._gantt.option('columns');
     if (columns) {
-      for (var i = 0; i < columns.length; i++) {
-        var column = columns[i];
-        var isKeyColumn = column.dataField === this._gantt.option("".concat(GANTT_TASKS, ".keyExpr")) || column.dataField === this._gantt.option("".concat(GANTT_TASKS, ".parentIdExpr"));
+      for (let i = 0; i < columns.length; i++) {
+        const column = columns[i];
+        const isKeyColumn = column.dataField === this._gantt.option(`${GANTT_TASKS}.keyExpr`) || column.dataField === this._gantt.option(`${GANTT_TASKS}.parentIdExpr`);
         if (isKeyColumn && !column.dataType) {
           column.dataType = 'object';
         }
@@ -300,15 +300,15 @@ export class GanttTreeList {
     return columns;
   }
   getSievedItems() {
-    var rootNode = this._treeList.getRootNode();
+    const rootNode = this._treeList.getRootNode();
     if (!rootNode) {
       return undefined;
     }
-    var resultArray = [];
+    const resultArray = [];
     GanttHelper.convertTreeToList(rootNode, resultArray);
-    var getters = GanttHelper.compileGettersByOption(this._gantt.option(GANTT_TASKS));
-    var validatedData = this._gantt._validateSourceData(GANTT_TASKS, resultArray);
-    var mappedData = validatedData.map(GanttHelper.prepareMapHandler(getters));
+    const getters = GanttHelper.compileGettersByOption(this._gantt.option(GANTT_TASKS));
+    const validatedData = this._gantt._validateSourceData(GANTT_TASKS, resultArray);
+    const mappedData = validatedData.map(GanttHelper.prepareMapHandler(getters));
     return mappedData;
   }
   setOption(optionName, value) {
@@ -320,7 +320,7 @@ export class GanttTreeList {
   }
   onTaskInserted(insertedId, parentId) {
     if (isDefined(parentId)) {
-      var expandedRowKeys = this.getOption('expandedRowKeys');
+      const expandedRowKeys = this.getOption('expandedRowKeys');
       if (expandedRowKeys.indexOf(parentId) === -1) {
         expandedRowKeys.push(parentId);
         this.setOption('expandedRowKeys', expandedRowKeys);

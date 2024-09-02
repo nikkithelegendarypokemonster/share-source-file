@@ -1,18 +1,18 @@
 /**
 * DevExtreme (esm/viz/funnel/item.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-var states = ['normal', 'hover', 'selection', 'selection'];
+const states = ['normal', 'hover', 'selection', 'selection'];
 import { isDefined } from '../../core/utils/type';
 function parseStyles(color, style, baseStyle) {
-  var border = style.border;
-  var baseBorder = baseStyle.border;
-  var borderVisible = isDefined(border.visible) ? border.visible : baseBorder.visible;
-  var borderWidth = isDefined(border.width) ? border.width : baseBorder.width;
+  const border = style.border;
+  const baseBorder = baseStyle.border;
+  const borderVisible = isDefined(border.visible) ? border.visible : baseBorder.visible;
+  const borderWidth = isDefined(border.width) ? border.width : baseBorder.width;
   return {
     fill: color,
     hatching: style.hatching,
@@ -21,8 +21,8 @@ function parseStyles(color, style, baseStyle) {
   };
 }
 function Item(widget, options) {
-  var that = this;
-  var data = options.data;
+  const that = this;
+  const data = options.data;
   that.code = 0;
   that.widget = widget;
   that.figure = options.figure;
@@ -39,16 +39,16 @@ function Item(widget, options) {
   };
 }
 Item.prototype = {
-  getState: function getState() {
+  getState: function () {
     return states[this.code];
   },
-  getNormalStyle: function getNormalStyle() {
+  getNormalStyle: function () {
     return this.states.normal;
   },
-  setHover: function setHover() {
+  setHover: function () {
     this.hover(true);
   },
-  hover: function hover(state) {
+  hover: function (state) {
     if (!this.widget._getOption('hoverEnabled', true) || state === this.isHovered()) {
       return;
     }
@@ -60,7 +60,7 @@ Item.prototype = {
     });
     this.widget._resume();
   },
-  setState: function setState(code, state) {
+  setState: function (code, state) {
     if (state) {
       this.code |= code;
     } else {
@@ -68,8 +68,8 @@ Item.prototype = {
     }
     this.widget._applyTilesAppearance();
   },
-  select: function select(state) {
-    var mode = this.widget._getOption('selectionMode', true);
+  select: function (state) {
+    const mode = this.widget._getOption('selectionMode', true);
     if (mode === 'none' || state === this.isSelected()) {
       return;
     }
@@ -83,16 +83,16 @@ Item.prototype = {
     });
     this.widget._resume();
   },
-  showTooltip: function showTooltip(coords) {
+  showTooltip: function (coords) {
     this.widget._showTooltip(this.id, coords);
   },
-  getColor: function getColor() {
+  getColor: function () {
     return this.color;
   },
-  isHovered: function isHovered() {
+  isHovered: function () {
     return !!(this.code & 1);
   },
-  isSelected: function isSelected() {
+  isSelected: function () {
     return !!(this.code & 2);
   }
 };

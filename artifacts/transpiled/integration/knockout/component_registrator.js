@@ -49,7 +49,7 @@ if (_knockout.default) {
                 component.endUpdate();
               } else {
                 var _model$onInitializing;
-                model === null || model === void 0 ? void 0 : (_model$onInitializing = model.onInitializing) === null || _model$onInitializing === void 0 ? void 0 : _model$onInitializing.call(this, options);
+                model === null || model === void 0 || (_model$onInitializing = model.onInitializing) === null || _model$onInitializing === void 0 || _model$onInitializing.call(this, options);
               }
             }, null, {
               disposeWhenNodeIsRemoved: domNode

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/options/option_manager.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,8 +12,8 @@ import { equals } from '../utils/comparator';
 import { extend } from '../utils/extend';
 import { isDefined, isPlainObject } from '../utils/type';
 import { normalizeOptions } from './utils';
-var cachedGetters = {};
-var cachedSetters = {};
+const cachedGetters = {};
+const cachedSetters = {};
 export class OptionManager {
   constructor(options, optionsByReference) {
     this._options = options;
@@ -24,16 +24,16 @@ export class OptionManager {
   }
   _setByReference(options, rulesOptions) {
     extend(true, options, rulesOptions);
-    for (var fieldName in this._optionsByReference) {
+    for (const fieldName in this._optionsByReference) {
       if (Object.prototype.hasOwnProperty.call(rulesOptions, fieldName)) {
         options[fieldName] = rulesOptions[fieldName];
       }
     }
   }
   _setPreparedValue(name, value, merge, silent) {
-    var previousValue = this.get(this._options, name, false);
+    const previousValue = this.get(this._options, name, false);
     if (!equals(previousValue, value)) {
-      var path = getPathParts(name);
+      const path = getPathParts(name);
       !silent && this._changingCallback(name, previousValue, value);
       cachedSetters[name] = cachedSetters[name] || compileSetter(name);
       cachedSetters[name](this._options, value, {
@@ -46,16 +46,16 @@ export class OptionManager {
   }
   _prepareRelevantNames(options, name, value, silent) {
     if (isPlainObject(value)) {
-      for (var valueName in value) {
-        this._prepareRelevantNames(options, "".concat(name, ".").concat(valueName), value[valueName]);
+      for (const valueName in value) {
+        this._prepareRelevantNames(options, `${name}.${valueName}`, value[valueName]);
       }
     }
     this._namePreparedCallbacks(options, name, value, silent);
   }
   get() {
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this._options;
-    var name = arguments.length > 1 ? arguments[1] : undefined;
-    var unwrapObservables = arguments.length > 2 ? arguments[2] : undefined;
+    let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this._options;
+    let name = arguments.length > 1 ? arguments[1] : undefined;
+    let unwrapObservables = arguments.length > 2 ? arguments[2] : undefined;
     cachedGetters[name] = cachedGetters[name] || compileGetter(name);
     return cachedGetters[name](options, {
       functionsAsIs: true,
@@ -64,11 +64,11 @@ export class OptionManager {
   }
   set(options, value, merge, silent) {
     options = normalizeOptions(options, value);
-    for (var name in options) {
+    for (const name in options) {
       this._prepareRelevantNames(options, name, options[name], silent);
     }
-    for (var _name in options) {
-      this._setPreparedValue(_name, options[_name], merge, silent);
+    for (const name in options) {
+      this._setPreparedValue(name, options[name], merge, silent);
     }
   }
   onRelevantNamesPrepared(callBack) {

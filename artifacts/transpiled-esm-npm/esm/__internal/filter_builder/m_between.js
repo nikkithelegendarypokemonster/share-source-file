@@ -1,18 +1,18 @@
 import $ from '../../core/renderer';
 import { extend } from '../../core/utils/extend';
-var FILTER_BUILDER_RANGE_CLASS = 'dx-filterbuilder-range';
-var FILTER_BUILDER_RANGE_START_CLASS = "".concat(FILTER_BUILDER_RANGE_CLASS, "-start");
-var FILTER_BUILDER_RANGE_END_CLASS = "".concat(FILTER_BUILDER_RANGE_CLASS, "-end");
-var FILTER_BUILDER_RANGE_SEPARATOR_CLASS = "".concat(FILTER_BUILDER_RANGE_CLASS, "-separator");
-var SEPARATOR = '\u2013';
+const FILTER_BUILDER_RANGE_CLASS = 'dx-filterbuilder-range';
+const FILTER_BUILDER_RANGE_START_CLASS = `${FILTER_BUILDER_RANGE_CLASS}-start`;
+const FILTER_BUILDER_RANGE_END_CLASS = `${FILTER_BUILDER_RANGE_CLASS}-end`;
+const FILTER_BUILDER_RANGE_SEPARATOR_CLASS = `${FILTER_BUILDER_RANGE_CLASS}-separator`;
+const SEPARATOR = '\u2013';
 function editorTemplate(conditionInfo, container) {
-  var $editorStart = $('<div>').addClass(FILTER_BUILDER_RANGE_START_CLASS);
-  var $editorEnd = $('<div>').addClass(FILTER_BUILDER_RANGE_END_CLASS);
-  var values = conditionInfo.value || [];
-  var getStartValue = function getStartValue(values) {
+  const $editorStart = $('<div>').addClass(FILTER_BUILDER_RANGE_START_CLASS);
+  const $editorEnd = $('<div>').addClass(FILTER_BUILDER_RANGE_END_CLASS);
+  let values = conditionInfo.value || [];
+  const getStartValue = function (values) {
     return values && values.length > 0 ? values[0] : null;
   };
-  var getEndValue = function getEndValue(values) {
+  const getEndValue = function (values) {
     return values && values.length === 2 ? values[1] : null;
   };
   container.append($editorStart);

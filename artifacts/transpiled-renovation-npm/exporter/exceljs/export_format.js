@@ -160,7 +160,7 @@ const ExportFormat = exports.ExportFormat = {
     }
     if (escaped) {
       const singleTextQualifier = textQualifier;
-      const escapedTextQualifier = "".concat(textQualifier).concat(textQualifier);
+      const escapedTextQualifier = `${textQualifier}${textQualifier}`;
       return textQualifier + '\'' + value.replaceAll(singleTextQualifier, escapedTextQualifier) + textQualifier;
     }
     return value;

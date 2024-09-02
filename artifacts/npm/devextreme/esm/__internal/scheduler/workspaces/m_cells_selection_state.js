@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/workspaces/m_cells_selection_state.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -19,22 +19,22 @@ export default class CellsSelectionState {
     return this._viewDataProvider;
   }
   get focusedCell() {
-    var focusedCell = this._focusedCell;
+    const focusedCell = this._focusedCell;
     if (!focusedCell) {
       return undefined;
     }
-    var {
+    const {
       groupIndex,
       startDate,
       allDay
     } = focusedCell;
-    var cellInfo = {
+    const cellInfo = {
       groupIndex,
       startDate,
       isAllDay: allDay,
       index: focusedCell.index
     };
-    var cellPosition = this.viewDataProvider.findCellPositionInMap(cellInfo);
+    const cellPosition = this.viewDataProvider.findCellPositionInMap(cellInfo);
     return {
       coordinates: cellPosition,
       cellData: focusedCell
@@ -42,14 +42,14 @@ export default class CellsSelectionState {
   }
   setFocusedCell(rowIndex, columnIndex, isAllDay) {
     if (rowIndex >= 0) {
-      var cell = this._viewDataProvider.getCellData(rowIndex, columnIndex, isAllDay);
+      const cell = this._viewDataProvider.getCellData(rowIndex, columnIndex, isAllDay);
       this._focusedCell = cell;
     }
   }
   setSelectedCells(lastCellCoordinates) {
-    var firstCellCoordinates = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-    var viewDataProvider = this._viewDataProvider;
-    var {
+    let firstCellCoordinates = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+    const viewDataProvider = this._viewDataProvider;
+    const {
       rowIndex: lastRowIndex,
       columnIndex: lastColumnIndex,
       allDay: isLastCellAllDay
@@ -57,8 +57,8 @@ export default class CellsSelectionState {
     if (lastRowIndex < 0) {
       return;
     }
-    var firstCell = firstCellCoordinates ? viewDataProvider.getCellData(firstCellCoordinates.rowIndex, firstCellCoordinates.columnIndex, firstCellCoordinates.allDay) : this._firstSelectedCell;
-    var lastCell = viewDataProvider.getCellData(lastRowIndex, lastColumnIndex, isLastCellAllDay);
+    const firstCell = firstCellCoordinates ? viewDataProvider.getCellData(firstCellCoordinates.rowIndex, firstCellCoordinates.columnIndex, firstCellCoordinates.allDay) : this._firstSelectedCell;
+    const lastCell = viewDataProvider.getCellData(lastRowIndex, lastColumnIndex, isLastCellAllDay);
     this._firstSelectedCell = firstCell;
     this._selectedCells = this._viewDataProvider.getCellsBetween(firstCell, lastCell);
   }

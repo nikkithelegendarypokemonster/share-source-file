@@ -6,9 +6,9 @@
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/withResolvers}
  */
 export function createPromise() {
-  var resolve;
-  var reject;
-  var promise = new Promise((res, rej) => {
+  let resolve;
+  let reject;
+  const promise = new Promise((res, rej) => {
     resolve = res;
     reject = rej;
   });

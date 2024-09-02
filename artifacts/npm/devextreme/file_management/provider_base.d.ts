@@ -1,7 +1,7 @@
 /**
 * DevExtreme (file_management/provider_base.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,88 +14,127 @@ import {
 } from '../core/utils/deferred';
 
 /**
-                                                               * 
-                                                               * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-                                                               */
-                                                              export interface FileSystemProviderBaseOptions<T = FileSystemProviderBase> {
+ * @namespace DevExpress.fileManagement
+ * @docid
+ * @type object
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export interface FileSystemProviderBaseOptions<T = FileSystemProviderBase> {
     /**
-     * Specifies which data field provides timestamps that indicate when a file was last modified.
+     * @docid
+     * @public
      */
     dateModifiedExpr?: string | Function;
     /**
-     * Specifies which data field provides information about whether a file system item is a directory.
+     * @docid
+     * @public
      */
     isDirectoryExpr?: string | Function;
     /**
-     * Specifies the data field that provides keys.
+     * @docid
+     * @public
      */
     keyExpr?: string | Function;
     /**
-     * Specifies which data field provides file and directory names.
+     * @docid
+     * @public
      */
     nameExpr?: string | Function;
     /**
-     * Specifies which data field provides file sizes.
+     * @docid
+     * @public
      */
     sizeExpr?: string | Function;
     /**
-     * Specifies which data field provides icons to be used as thumbnails.
+     * @docid
+     * @public
      */
     thumbnailExpr?: string | Function;
 }
 /**
- * Contains base provider settings.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.fileManagement
+ * @hidden
+ * @options FileSystemProviderBaseOptions
  */
 export default class FileSystemProviderBase {
     constructor(options?: FileSystemProviderBaseOptions);
     /**
-     * Gets file system items.
+     * @docid
+     * @publicName getItems()
+     * @return Promise<Array<FileSystemItem>>
+     * @public
      */
     getItems(parentDirectory: FileSystemItem): DxPromise<Array<FileSystemItem>>;
 
     /**
-     * Renames a file or directory.
+     * @docid
+     * @publicName renameItem()
+     * @return Promise<any>
+     * @public
      */
     renameItem(item: FileSystemItem, newName: string): DxPromise<any>;
 
     /**
-     * Creates a directory.
+     * @docid
+     * @publicName createDirectory()
+     * @return Promise<any>
+     * @public
      */
     createDirectory(parentDirectory: FileSystemItem, name: string): DxPromise<any>;
 
     /**
-     * Deletes files or directories.
+     * @docid
+     * @publicName deleteItems()
+     * @return Array<Promise<any>>
+     * @public
      */
     deleteItems(items: Array<FileSystemItem>): Array<DxPromise<any>>;
 
     /**
-     * Moves files and directories.
+     * @docid
+     * @publicName moveItems()
+     * @return Array<Promise<any>>
+     * @public
      */
     moveItems(items: Array<FileSystemItem>, destinationDirectory: FileSystemItem): Array<DxPromise<any>>;
 
     /**
-     * Copies files or directories.
+     * @docid
+     * @publicName copyItems()
+     * @return Array<Promise<any>>
+     * @public
      */
     copyItems(items: Array<FileSystemItem>, destinationDirectory: FileSystemItem): Array<DxPromise<any>>;
 
     /**
-     * Uploads a file in chunks.
+     * @docid
+     * @publicName uploadFileChunk()
+     * @return Promise<any>
+     * @public
      */
     uploadFileChunk(fileData: File, uploadInfo: UploadInfo, destinationDirectory: FileSystemItem): DxPromise<any>;
 
     /**
-     * Cancels the file upload.
+     * @docid
+     * @publicName abortFileUpload()
+     * @return Promise<any>
+     * @public
      */
     abortFileUpload(fileData: File, uploadInfo: UploadInfo, destinationDirectory: FileSystemItem): DxPromise<any>;
 
     /**
-     * Downloads files.
+     * @docid
+     * @publicName downloadItems()
+     * @public
      */
     downloadItems(items: Array<FileSystemItem>): void;
 
     /**
-     * Gets items content.
+     * @docid
+     * @publicName getItemsContent()
+     * @return Promise<object>
+     * @public
      */
     getItemsContent(items: Array<FileSystemItem>): DxPromise<any>;
 }

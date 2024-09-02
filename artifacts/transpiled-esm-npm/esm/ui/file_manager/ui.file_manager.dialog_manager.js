@@ -8,23 +8,23 @@ class FileManagerDialogManager {
   constructor($element, options) {
     this._$element = $element;
     this._options = options;
-    var baseDialogOptions = {
+    const baseDialogOptions = {
       onClosed: this._options['onDialogClosed'],
       rtlEnabled: this._options['rtlEnabled']
     };
-    var $chooseFolderDialog = $('<div>').appendTo(this._$element);
+    const $chooseFolderDialog = $('<div>').appendTo(this._$element);
     this._chooseDirectoryDialog = new FileManagerFolderChooserDialog($chooseFolderDialog, extend(baseDialogOptions, this._options['chooseDirectoryDialog']));
-    var $renameDialog = $('<div>').appendTo(this._$element);
+    const $renameDialog = $('<div>').appendTo(this._$element);
     this._renameItemDialog = new FileManagerNameEditorDialog($renameDialog, extend(baseDialogOptions, {
       title: messageLocalization.format('dxFileManager-dialogRenameItemTitle'),
       buttonText: messageLocalization.format('dxFileManager-dialogRenameItemButtonText')
     }));
-    var $createDialog = $('<div>').appendTo(this._$element);
+    const $createDialog = $('<div>').appendTo(this._$element);
     this._createItemDialog = new FileManagerNameEditorDialog($createDialog, extend(baseDialogOptions, {
       title: messageLocalization.format('dxFileManager-dialogCreateDirectoryTitle'),
       buttonText: messageLocalization.format('dxFileManager-dialogCreateDirectoryButtonText')
     }));
-    var $deleteItemDialog = $('<div>').appendTo(this._$element);
+    const $deleteItemDialog = $('<div>').appendTo(this._$element);
     this._deleteItemDialog = new FileManagerDeleteItemDialog($deleteItemDialog, baseDialogOptions);
   }
   getCopyDialog(targetItemInfos) {

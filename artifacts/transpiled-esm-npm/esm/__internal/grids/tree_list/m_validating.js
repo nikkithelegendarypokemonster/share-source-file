@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { validatingModule } from '../../grids/grid_core/validating/m_validating';
 import treeListCore from './m_core';
-var editingControllerExtender = Base => class TreeListEditingControllerExtender extends validatingModule.extenders.controllers.editing(Base) {
+const editingControllerExtender = Base => class TreeListEditingControllerExtender extends validatingModule.extenders.controllers.editing(Base) {
   processDataItem(item) {
     super.processDataItemTreeListHack.apply(this, arguments);
   }

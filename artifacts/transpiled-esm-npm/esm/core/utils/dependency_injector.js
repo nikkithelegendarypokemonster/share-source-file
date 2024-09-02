@@ -3,11 +3,11 @@ import { isFunction } from './type';
 import { each } from './iterator';
 import Class from '../class';
 export default function (object) {
-  var BaseClass = Class.inherit(object);
-  var InjectedClass = BaseClass;
-  var instance = new InjectedClass(object);
-  var initialFields = {};
-  var injectFields = function injectFields(injectionObject, initial) {
+  const BaseClass = Class.inherit(object);
+  let InjectedClass = BaseClass;
+  let instance = new InjectedClass(object);
+  const initialFields = {};
+  const injectFields = function (injectionObject, initial) {
     each(injectionObject, function (key) {
       if (isFunction(instance[key])) {
         if (initial || !object[key]) {

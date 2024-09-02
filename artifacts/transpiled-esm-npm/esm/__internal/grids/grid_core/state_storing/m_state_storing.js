@@ -5,12 +5,12 @@ import { Deferred } from '../../../../core/utils/deferred';
 import { extend } from '../../../../core/utils/extend';
 import { isDefined } from '../../../../core/utils/type';
 import { StateStoringController } from './m_state_storing_core';
-var getDataState = that => {
+const getDataState = that => {
   // TODO getView
-  var pagerView = that.getView('pagerView');
+  const pagerView = that.getView('pagerView');
   // TODO getController
-  var dataController = that.getController('data');
-  var state = {
+  const dataController = that.getController('data');
+  const state = {
     allowedPageSizes: pagerView ? pagerView.getPageSizes() : undefined,
     filterPanel: {
       filterEnabled: that.option('filterPanel.filterEnabled')
@@ -21,12 +21,12 @@ var getDataState = that => {
   return extend(state, dataController.getUserState());
 };
 // TODO move processLoadState to target modules (data, columns, pagerView)
-var processLoadState = that => {
+const processLoadState = that => {
   // TODO getController
-  var columnsController = that.getController('columns');
-  var selectionController = that.getController('selection');
-  var exportController = that.getController('export');
-  var dataController = that.getController('data');
+  const columnsController = that.getController('columns');
+  const selectionController = that.getController('selection');
+  const exportController = that.getController('export');
+  const dataController = that.getController('data');
   if (columnsController) {
     columnsController.columnsChanged.add(() => {
       that.updateState({
@@ -46,7 +46,7 @@ var processLoadState = that => {
     that._initialPageSize = that.option('paging.pageSize');
     that._initialFilterValue = that.option('filterValue');
     dataController.changed.add(() => {
-      var state = getDataState(that);
+      const state = getDataState(that);
       that.updateState(state);
     });
   }
@@ -58,12 +58,12 @@ var processLoadState = that => {
     });
   }
 };
-var DEFAULT_FILTER_VALUE = null;
-var getFilterValue = (that, state) => {
+const DEFAULT_FILTER_VALUE = null;
+const getFilterValue = (that, state) => {
   // TODO: getController
-  var filterSyncController = that.getController('filterSync');
-  var columnsController = that.getController('columns');
-  var hasFilterState = state.columns || state.filterValue !== undefined;
+  const filterSyncController = that.getController('filterSync');
+  const columnsController = that.getController('columns');
+  const hasFilterState = state.columns || state.filterValue !== undefined;
   if (filterSyncController) {
     if (hasFilterState) {
       return state.filterValue || filterSyncController.getFilterValueFromColumns(state.columns);
@@ -72,7 +72,7 @@ var getFilterValue = (that, state) => {
   }
   return DEFAULT_FILTER_VALUE;
 };
-var rowsView = Base => class StateStoringRowsViewExtender extends Base {
+const rowsView = Base => class StateStoringRowsViewExtender extends Base {
   init() {
     super.init();
     // @ts-expect-error
@@ -81,14 +81,14 @@ var rowsView = Base => class StateStoringRowsViewExtender extends Base {
         this.setLoading(false);
         this.renderNoDataText();
         // TODO getView
-        var columnHeadersView = this.component.getView('columnHeadersView');
+        const columnHeadersView = this.component.getView('columnHeadersView');
         columnHeadersView && columnHeadersView.render();
         this.component._fireContentReadyAction();
       }
     });
   }
 };
-var stateStoring = Base => class StateStoringExtender extends Base {
+const stateStoring = Base => class StateStoringExtender extends Base {
   init() {
     // @ts-expect-error
     super.init.apply(this, arguments);
@@ -97,11 +97,11 @@ var stateStoring = Base => class StateStoringExtender extends Base {
   }
   isLoading() {
     // @ts-expect-error
-    return super.isLoading() || this._dataController.isStateLoading();
+    return super.isLoading() || this.getDataController().isStateLoading();
   }
   state(state) {
     // @ts-expect-error
-    var result = super.state.apply(this, arguments);
+    const result = super.state.apply(this, arguments);
     if (state !== undefined) {
       this.applyState(extend(true, {}, state));
     }
@@ -109,10 +109,10 @@ var stateStoring = Base => class StateStoringExtender extends Base {
   }
   updateState(state) {
     if (this.isEnabled()) {
-      var oldState = this.state();
-      var newState = extend({}, oldState, state);
-      var oldStateHash = getKeyHash(oldState);
-      var newStateHash = getKeyHash(newState);
+      const oldState = this.state();
+      const newState = extend({}, oldState, state);
+      const oldStateHash = getKeyHash(oldState);
+      const newStateHash = getKeyHash(newState);
       if (!equalByValue(oldStateHash, newStateHash)) {
         state = extend(true, {}, state);
         extend(this._state, state);
@@ -126,30 +126,30 @@ var stateStoring = Base => class StateStoringExtender extends Base {
    * @extended: TreeList's state_storing
    */
   applyState(state) {
-    var _a;
-    var {
+    var _this$getView;
+    const {
       allowedPageSizes
     } = state;
-    var {
+    const {
       searchText
     } = state;
-    var {
+    const {
       selectedRowKeys
     } = state;
-    var {
+    const {
       selectionFilter
     } = state;
-    var scrollingMode = this.option('scrolling.mode');
-    var isVirtualScrollingMode = scrollingMode === 'virtual' || scrollingMode === 'infinite';
-    var showPageSizeSelector = this.option('pager.visible') === true && this.option('pager.showPageSizeSelector');
+    const scrollingMode = this.option('scrolling.mode');
+    const isVirtualScrollingMode = scrollingMode === 'virtual' || scrollingMode === 'infinite';
+    const showPageSizeSelector = this.option('pager.visible') === true && this.option('pager.showPageSizeSelector');
     // TODO getView
-    var hasHeight = (_a = this.getView('rowsView')) === null || _a === void 0 ? void 0 : _a.hasHeight();
+    const hasHeight = (_this$getView = this.getView('rowsView')) === null || _this$getView === void 0 ? void 0 : _this$getView.hasHeight();
     this.component.beginUpdate();
-    if (this._columnsController) {
-      this._columnsController.setUserState(state.columns);
+    if (this.getColumnsController()) {
+      this.getColumnsController().setUserState(state.columns);
     }
-    if (this._exportController) {
-      this._exportController.selectionOnly(state.exportSelectionOnly);
+    if (this.getExportController()) {
+      this.getExportController().selectionOnly(state.exportSelectionOnly);
     }
     if (!this.option('selection.deferred')) {
       this.option('selectedRowKeys', selectedRowKeys || []);
@@ -169,17 +169,17 @@ var stateStoring = Base => class StateStoringExtender extends Base {
     this.option('filterPanel.filterEnabled', state.filterPanel ? state.filterPanel.filterEnabled : true);
     this.option('paging.pageIndex', (!isVirtualScrollingMode || hasHeight) && state.pageIndex || 0);
     this.option('paging.pageSize', (!isVirtualScrollingMode || showPageSizeSelector) && isDefined(state.pageSize) ? state.pageSize : this._initialPageSize);
-    this._dataController && this._dataController.reset();
+    this.getDataController() && this.getDataController().reset();
   }
 };
-var columns = Base => class StateStoringColumnsExtender extends Base {
+const columns = Base => class StateStoringColumnsExtender extends Base {
   _shouldReturnVisibleColumns() {
     // @ts-expect-error
-    var result = super._shouldReturnVisibleColumns.apply(this, arguments);
+    const result = super._shouldReturnVisibleColumns.apply(this, arguments);
     return result && (!this._stateStoringController.isEnabled() || this._stateStoringController.isLoaded());
   }
 };
-var data = Base => class StateStoringDataExtender extends Base {
+const data = Base => class StateStoringDataExtender extends Base {
   dispose() {
     clearTimeout(this._restoreStateTimeoutID);
     super.dispose();
@@ -191,7 +191,7 @@ var data = Base => class StateStoringDataExtender extends Base {
     if (this._stateStoringController.isEnabled() && !this._stateStoringController.isLoaded()) {
       clearTimeout(this._restoreStateTimeoutID);
       // @ts-expect-error
-      var deferred = new Deferred();
+      const deferred = new Deferred();
       this._restoreStateTimeoutID = setTimeout(() => {
         this._stateStoringController.load().always(() => {
           this._restoreStateTimeoutID = null;
@@ -223,10 +223,10 @@ var data = Base => class StateStoringDataExtender extends Base {
     return super.isLoaded() && !this.isStateLoading();
   }
 };
-var selection = Base => class StateStoringSelectionExtender extends Base {
+const selection = Base => class StateStoringSelectionExtender extends Base {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _fireSelectionChanged(options) {
-    var isDeferredSelection = this.option('selection.deferred');
+    const isDeferredSelection = this.option('selection.deferred');
     if (this._stateStoringController.isLoading() && isDeferredSelection) {
       return;
     }
@@ -234,7 +234,7 @@ var selection = Base => class StateStoringSelectionExtender extends Base {
     super._fireSelectionChanged.apply(this, arguments);
   }
 };
-export var stateStoringModule = {
+export const stateStoringModule = {
   defaultOptions() {
     return {
       stateStoring: {

@@ -1,9 +1,9 @@
-var PI_DIV_180 = Math.PI / 180;
-var _abs = Math.abs;
-var _round = Math.round;
-var _floor = Math.floor;
-var _min = Math.min;
-var _max = Math.max;
+const PI_DIV_180 = Math.PI / 180;
+const _abs = Math.abs;
+const _round = Math.round;
+const _floor = Math.floor;
+const _min = Math.min;
+const _max = Math.max;
 import registerComponent from '../../core/component_registrator';
 import { clone } from '../../core/utils/object';
 import { noop } from '../../core/utils/common';
@@ -15,26 +15,26 @@ import dxCircularGauge from './circular_gauge';
 import { plugin as pluginLegend } from '../components/legend';
 import { plugins as centerTemplatePlugins } from '../core/center_template';
 import { roundFloatPart } from '../../core/utils/math';
-var _getSampleText = getSampleText;
-var _formatValue = formatValue;
-var _compareArrays = compareArrays;
-var _isArray = Array.isArray;
-var _convertAngleToRendererSpace = convertAngleToRendererSpace;
-var _getCosAndSin = getCosAndSin;
-var _patchFontOptions = patchFontOptions;
-var _Number = Number;
-var _isFinite = isFinite;
-var _noop = noop;
-var _extend = extend;
-var ARC_COORD_PREC = 5;
-var OPTION_VALUES = 'values';
-var BarWrapper;
-export var dxBarGauge = BaseGauge.inherit({
+const _getSampleText = getSampleText;
+const _formatValue = formatValue;
+const _compareArrays = compareArrays;
+const _isArray = Array.isArray;
+const _convertAngleToRendererSpace = convertAngleToRendererSpace;
+const _getCosAndSin = getCosAndSin;
+const _patchFontOptions = patchFontOptions;
+const _Number = Number;
+const _isFinite = isFinite;
+const _noop = noop;
+const _extend = extend;
+const ARC_COORD_PREC = 5;
+const OPTION_VALUES = 'values';
+let BarWrapper;
+export const dxBarGauge = BaseGauge.inherit({
   _rootClass: 'dxbg-bar-gauge',
   _themeSection: 'barGauge',
   _fontFields: ['label.font', 'legend.font', 'legend.title.font', 'legend.title.subtitle.font'],
-  _initCore: function _initCore() {
-    var that = this;
+  _initCore: function () {
+    const that = this;
     that.callBase.apply(that, arguments);
     that._barsGroup = that._renderer.g().attr({
       'class': 'dxbg-bars'
@@ -47,9 +47,9 @@ export var dxBarGauge = BaseGauge.inherit({
       group: that._barsGroup
     };
     that._animateStep = function (pos) {
-      var bars = that._bars;
-      var i;
-      var ii;
+      const bars = that._bars;
+      let i;
+      let ii;
       for (i = 0, ii = bars.length; i < ii; ++i) {
         bars[i].animate(pos);
       }
@@ -59,61 +59,62 @@ export var dxBarGauge = BaseGauge.inherit({
       that._checkOverlap();
     };
   },
-  _disposeCore: function _disposeCore() {
-    var that = this;
+  _disposeCore: function () {
+    const that = this;
     that._barsGroup.linkOff();
     that._barsGroup = that._values = that._context = that._animateStep = that._animateComplete = null;
     that.callBase.apply(that, arguments);
   },
-  _setupDomainCore: function _setupDomainCore() {
-    var that = this;
-    var startValue = that.option('startValue');
-    var endValue = that.option('endValue');
+  _setupDomainCore: function () {
+    const that = this;
+    let startValue = that.option('startValue');
+    let endValue = that.option('endValue');
     _isFinite(startValue) || (startValue = 0);
     _isFinite(endValue) || (endValue = 100);
     that._translator.setDomain(startValue, endValue);
     that._baseValue = that._translator.adjust(that.option('baseValue'));
     _isFinite(that._baseValue) || (that._baseValue = startValue < endValue ? startValue : endValue);
   },
-  _getDefaultSize: function _getDefaultSize() {
+  _getDefaultSize: function () {
     return {
       width: 300,
       height: 300
     };
   },
   _setupCodomain: dxCircularGauge.prototype._setupCodomain,
-  _getApproximateScreenRange: function _getApproximateScreenRange() {
-    var that = this;
-    var sides = that._area.sides;
-    var width = that._canvas.width / (sides.right - sides.left);
-    var height = that._canvas.height / (sides.down - sides.up);
-    var r = width < height ? width : height;
+  _getApproximateScreenRange: function () {
+    const that = this;
+    const sides = that._area.sides;
+    const width = that._canvas.width / (sides.right - sides.left);
+    const height = that._canvas.height / (sides.down - sides.up);
+    const r = width < height ? width : height;
     return -that._translator.getCodomainRange() * r * PI_DIV_180;
   },
-  _setupAnimationSettings: function _setupAnimationSettings() {
-    var that = this;
+  _setupAnimationSettings: function () {
+    const that = this;
     that.callBase.apply(that, arguments);
     if (that._animationSettings) {
       that._animationSettings.step = that._animateStep;
       that._animationSettings.complete = that._animateComplete;
     }
   },
-  _cleanContent: function _cleanContent() {
-    var that = this;
+  _cleanContent: function () {
+    const that = this;
     that._barsGroup.linkRemove();
     that._animationSettings && that._barsGroup.stopAnimation();
     that._barsGroup.clear();
   },
-  _renderContent: function _renderContent() {
-    var that = this;
-    var labelOptions = that.option('label');
-    var text;
-    var bBox;
-    var context = that._context;
+  _renderContent: function () {
+    const that = this;
+    let labelOptions = that.option('label');
+    const context = that._context;
     that._barsGroup.linkAppend();
     context.textEnabled = labelOptions === undefined || labelOptions && (!('visible' in labelOptions) || labelOptions.visible);
     if (context.textEnabled) {
-      context.textColor = labelOptions && labelOptions.font && labelOptions.font.color || null;
+      var _labelOptions, _labelOptions2;
+      context.fontStyles = _patchFontOptions(_extend({}, that._themeManager.theme().label.font, (_labelOptions = labelOptions) === null || _labelOptions === void 0 ? void 0 : _labelOptions.font, {
+        color: ((_labelOptions2 = labelOptions) === null || _labelOptions2 === void 0 || (_labelOptions2 = _labelOptions2.font) === null || _labelOptions2 === void 0 ? void 0 : _labelOptions2.color) || null
+      }));
       labelOptions = _extend(true, {}, that._themeManager.theme().label, labelOptions);
       context.formatOptions = {
         format: labelOptions.format !== undefined ? labelOptions.format : that._defaultFormatOptions,
@@ -122,14 +123,11 @@ export var dxBarGauge = BaseGauge.inherit({
       context.textOptions = {
         align: 'center'
       };
-      context.fontStyles = _patchFontOptions(_extend({}, that._themeManager.theme().label.font, labelOptions.font, {
-        color: null
-      }));
       that._textIndent = labelOptions.indent > 0 ? _Number(labelOptions.indent) : 0;
       context.lineWidth = labelOptions.connectorWidth > 0 ? _Number(labelOptions.connectorWidth) : 0;
       context.lineColor = labelOptions.connectorColor || null;
-      text = that._renderer.text(_getSampleText(that._translator, context.formatOptions), 0, 0).attr(context.textOptions).css(context.fontStyles).append(that._barsGroup);
-      bBox = text.getBBox();
+      const text = that._renderer.text(_getSampleText(that._translator, context.formatOptions), 0, 0).attr(context.textOptions).css(context.fontStyles).append(that._barsGroup);
+      const bBox = text.getBBox();
       text.remove();
       context.textY = bBox.y;
       context.textWidth = bBox.width;
@@ -138,8 +136,8 @@ export var dxBarGauge = BaseGauge.inherit({
     dxCircularGauge.prototype._applyMainLayout.call(that);
     that._renderBars();
   },
-  _measureMainElements: function _measureMainElements() {
-    var result = {
+  _measureMainElements: function () {
+    const result = {
       maxRadius: this._area.radius
     };
     if (this._context.textEnabled) {
@@ -150,12 +148,12 @@ export var dxBarGauge = BaseGauge.inherit({
     }
     return result;
   },
-  _renderBars: function _renderBars() {
-    var that = this;
-    var options = _extend({}, that._themeManager.theme(), that.option());
-    var radius;
-    var area = that._area;
-    var relativeInnerRadius = options.relativeInnerRadius > 0 && options.relativeInnerRadius < 1 ? _Number(options.relativeInnerRadius) : 0.1;
+  _renderBars: function () {
+    const that = this;
+    const options = _extend({}, that._themeManager.theme(), that.option());
+    let radius;
+    const area = that._area;
+    const relativeInnerRadius = options.relativeInnerRadius > 0 && options.relativeInnerRadius < 1 ? _Number(options.relativeInnerRadius) : 0.1;
     radius = area.radius;
     if (that._context.textEnabled) {
       //  B253614
@@ -175,31 +173,31 @@ export var dxBarGauge = BaseGauge.inherit({
     });
     that._arrangeBars();
   },
-  _arrangeBars: function _arrangeBars() {
-    var that = this;
-    var radius = that._outerRadius - that._innerRadius;
-    var context = that._context;
-    var i;
-    var count = that._bars.length;
+  _arrangeBars: function () {
+    const that = this;
+    let radius = that._outerRadius - that._innerRadius;
+    const context = that._context;
+    let i;
+    const count = that._bars.length;
     that._beginValueChanging();
     context.barSize = count > 0 ? _max((radius - (count - 1) * that._barSpacing) / count, 1) : 0;
-    var spacing = count > 1 ? _max(_min((radius - count * context.barSize) / (count - 1), that._barSpacing), 0) : 0;
-    var _count = _min(_floor((radius + spacing) / context.barSize), count);
+    const spacing = count > 1 ? _max(_min((radius - count * context.barSize) / (count - 1), that._barSpacing), 0) : 0;
+    const _count = _min(_floor((radius + spacing) / context.barSize), count);
     that._setBarsCount(count);
     radius = that._outerRadius;
     context.textRadius = radius;
     context.textIndent = that._textIndent;
     that._palette.reset();
-    var unitOffset = context.barSize + spacing;
-    var colors = that._palette.generateColors(_count);
+    const unitOffset = context.barSize + spacing;
+    const colors = that._palette.generateColors(_count);
     for (i = 0; i < _count; ++i, radius -= unitOffset) {
       that._bars[i].arrange({
         radius: radius,
         color: colors[i]
       });
     }
-    for (var _i = _count; _i < count; _i++) {
-      that._bars[_i].hide();
+    for (let i = _count; i < count; i++) {
+      that._bars[i].hide();
     }
     if (that._animationSettings && !that._noAnimation) {
       that._animateBars();
@@ -208,8 +206,8 @@ export var dxBarGauge = BaseGauge.inherit({
     }
     that._endValueChanging();
   },
-  _setBarsCount: function _setBarsCount() {
-    var that = this;
+  _setBarsCount: function () {
+    const that = this;
     if (that._bars.length > 0) {
       if (that._dummyBackground) {
         that._dummyBackground.dispose();
@@ -233,19 +231,19 @@ export var dxBarGauge = BaseGauge.inherit({
       }).append(that._barsGroup);
     }
   },
-  _getCenter: function _getCenter() {
+  _getCenter: function () {
     return {
       x: this._context.x,
       y: this._context.y
     };
   },
-  _updateBars: function _updateBars() {
+  _updateBars: function () {
     this._bars.forEach(bar => bar.applyValue());
     this._checkOverlap();
   },
-  _checkOverlap: function _checkOverlap() {
-    var that = this;
-    var overlapStrategy = _normalizeEnum(that._getOption('resolveLabelOverlapping', true));
+  _checkOverlap: function () {
+    const that = this;
+    const overlapStrategy = _normalizeEnum(that._getOption('resolveLabelOverlapping', true));
     function shiftFunction(box, length) {
       return getVerticallyShiftedAngularCoords(box, -length, that._context);
     }
@@ -253,7 +251,7 @@ export var dxBarGauge = BaseGauge.inherit({
       return;
     }
     if (overlapStrategy === 'shift') {
-      var newBars = that._dividePoints();
+      const newBars = that._dividePoints();
       overlapping.resolveLabelOverlappingInOneDirection(newBars.left, that._canvas, false, false, shiftFunction);
       overlapping.resolveLabelOverlappingInOneDirection(newBars.right, that._canvas, false, false, shiftFunction);
       that._clearLabelsCrossTitle();
@@ -263,33 +261,33 @@ export var dxBarGauge = BaseGauge.inherit({
     }
   },
   _drawConnector() {
-    var that = this;
-    var bars = that._bars;
-    var {
+    const that = this;
+    const bars = that._bars;
+    const {
       connectorWidth
     } = that._getOption('label');
     bars.forEach(bar => {
       if (!bar._isLabelShifted) {
         return;
       }
-      var x = bar._bar.attr('x');
-      var y = bar._bar.attr('y');
-      var innerRadius = bar._bar.attr('innerRadius');
-      var outerRadius = bar._bar.attr('outerRadius');
-      var startAngle = bar._bar.attr('startAngle');
-      var endAngle = bar._bar.attr('endAngle');
-      var coordStart = getStartCoordsArc.apply(null, normalizeArcParams(x, y, innerRadius, outerRadius, startAngle, endAngle));
-      var {
+      const x = bar._bar.attr('x');
+      const y = bar._bar.attr('y');
+      const innerRadius = bar._bar.attr('innerRadius');
+      const outerRadius = bar._bar.attr('outerRadius');
+      const startAngle = bar._bar.attr('startAngle');
+      const endAngle = bar._bar.attr('endAngle');
+      const coordStart = getStartCoordsArc.apply(null, normalizeArcParams(x, y, innerRadius, outerRadius, startAngle, endAngle));
+      const {
         cos,
         sin
       } = _getCosAndSin(bar._angle);
-      var xStart = coordStart.x - sin * connectorWidth / 2 - cos;
-      var yStart = coordStart.y - cos * connectorWidth / 2 + sin;
-      var box = bar._text.getBBox();
-      var lastCoords = bar._text._lastCoords;
-      var indentFromLabel = that._context.textWidth / 2;
-      var originalXLabelCoord = box.x + box.width / 2 + lastCoords.x;
-      var originalPoints = [xStart, yStart, originalXLabelCoord, box.y + lastCoords.y];
+      const xStart = coordStart.x - sin * connectorWidth / 2 - cos;
+      const yStart = coordStart.y - cos * connectorWidth / 2 + sin;
+      const box = bar._text.getBBox();
+      const lastCoords = bar._text._lastCoords;
+      const indentFromLabel = that._context.textWidth / 2;
+      const originalXLabelCoord = box.x + box.width / 2 + lastCoords.x;
+      const originalPoints = [xStart, yStart, originalXLabelCoord, box.y + lastCoords.y];
       if (bar._angle > 90) {
         originalPoints[2] += indentFromLabel;
       } else {
@@ -299,8 +297,8 @@ export var dxBarGauge = BaseGauge.inherit({
         originalPoints[3] += box.height;
       }
       if (connectorWidth % 2) {
-        var xDeviation = -sin / 2;
-        var yDeviation = -cos / 2;
+        const xDeviation = -sin / 2;
+        const yDeviation = -cos / 2;
         if (bar._angle > 180) {
           originalPoints[0] -= xDeviation;
           originalPoints[1] -= yDeviation;
@@ -309,7 +307,7 @@ export var dxBarGauge = BaseGauge.inherit({
           originalPoints[1] += yDeviation;
         }
       }
-      var points = originalPoints.map(coordinate => roundFloatPart(coordinate, 4));
+      const points = originalPoints.map(coordinate => roundFloatPart(coordinate, 4));
       bar._line.attr({
         points
       });
@@ -318,16 +316,16 @@ export var dxBarGauge = BaseGauge.inherit({
     });
   },
   _dividePoints() {
-    var that = this;
-    var bars = that._bars;
+    const that = this;
+    const bars = that._bars;
     return bars.reduce(function (stackBars, bar) {
-      var angle = normalizeAngle(bar._angle);
-      var isRightSide = angle <= 90 || angle >= 270;
+      const angle = normalizeAngle(bar._angle);
+      const isRightSide = angle <= 90 || angle >= 270;
       bar._text._lastCoords = {
         x: 0,
         y: 0
       };
-      var barToExtend = isRightSide ? stackBars.right : stackBars.left;
+      const barToExtend = isRightSide ? stackBars.right : stackBars.left;
       barToExtend.push({
         series: {
           isStackedSeries: () => false,
@@ -336,13 +334,13 @@ export var dxBarGauge = BaseGauge.inherit({
         getLabels: () => [{
           isVisible: () => true,
           getBoundingRect: () => {
-            var {
+            const {
               height,
               width,
               x,
               y
             } = bar._text.getBBox();
-            var lastCoords = bar._text._lastCoords;
+            const lastCoords = bar._text._lastCoords;
             return {
               x: x + lastCoords.x,
               y: y + lastCoords.y,
@@ -351,7 +349,7 @@ export var dxBarGauge = BaseGauge.inherit({
             };
           },
           shift: (x, y) => {
-            var box = bar._text.getBBox();
+            const box = bar._text.getBBox();
             bar._text._lastCoords = {
               x: x - box.x,
               y: y - box.y
@@ -378,14 +376,14 @@ export var dxBarGauge = BaseGauge.inherit({
     });
   },
   _clearOverlappingLabels() {
-    var that = this;
-    var bars = that._bars;
-    var currentIndex = 0;
-    var nextIndex = 1;
-    var sortedBars = bars.concat().sort((a, b) => a.getValue() - b.getValue());
+    const that = this;
+    const bars = that._bars;
+    let currentIndex = 0;
+    let nextIndex = 1;
+    const sortedBars = bars.concat().sort((a, b) => a.getValue() - b.getValue());
     while (currentIndex < sortedBars.length && nextIndex < sortedBars.length) {
-      var current = sortedBars[currentIndex];
-      var next = sortedBars[nextIndex];
+      const current = sortedBars[currentIndex];
+      const next = sortedBars[nextIndex];
       if (current.checkIntersect(next)) {
         next.hideLabel();
         nextIndex++;
@@ -396,27 +394,27 @@ export var dxBarGauge = BaseGauge.inherit({
     }
   },
   _clearLabelsCrossTitle() {
-    var that = this;
-    var bars = that._bars;
-    var titleCoords = that._title.getLayoutOptions() || {
+    const that = this;
+    const bars = that._bars;
+    const titleCoords = that._title.getLayoutOptions() || {
       x: 0,
       y: 0,
       height: 0,
       width: 0
     };
-    var minY = titleCoords.y + titleCoords.height;
+    const minY = titleCoords.y + titleCoords.height;
     bars.forEach(bar => {
-      var box = bar._text.getBBox();
-      var lastCoords = bar._text._lastCoords;
+      const box = bar._text.getBBox();
+      const lastCoords = bar._text._lastCoords;
       if (minY > box.y + lastCoords.y) {
         bar.hideLabel();
       }
     });
   },
-  _animateBars: function _animateBars() {
-    var that = this;
-    var i;
-    var ii = that._bars.length;
+  _animateBars: function () {
+    const that = this;
+    let i;
+    const ii = that._bars.length;
     if (ii > 0) {
       for (i = 0; i < ii; ++i) {
         that._bars[i].beginAnimation();
@@ -427,8 +425,8 @@ export var dxBarGauge = BaseGauge.inherit({
     }
   },
   _buildNodes() {
-    var that = this;
-    var options = that._options.silent();
+    const that = this;
+    const options = that._options.silent();
     that._palette = that._themeManager.createPalette(options.palette, {
       useHighlight: true,
       extensionMode: options.paletteExtensionMode
@@ -436,17 +434,17 @@ export var dxBarGauge = BaseGauge.inherit({
     that._palette.reset();
     that._bars = that._bars || [];
     that._animationSettings && that._barsGroup.stopAnimation();
-    var barValues = that._values.filter(_isFinite);
-    var count = barValues.length;
+    const barValues = that._values.filter(_isFinite);
+    const count = barValues.length;
     if (that._bars.length > count) {
-      var ii = that._bars.length;
-      for (var i = count; i < ii; ++i) {
+      const ii = that._bars.length;
+      for (let i = count; i < ii; ++i) {
         that._bars[i].dispose();
       }
       that._bars.splice(count, ii - count);
     } else if (that._bars.length < count) {
-      for (var _i2 = that._bars.length; _i2 < count; ++_i2) {
-        that._bars.push(new BarWrapper(_i2, that._context));
+      for (let i = that._bars.length; i < count; ++i) {
+        that._bars.push(new BarWrapper(i, that._context));
       }
     }
     that._bars.forEach((bar, index) => {
@@ -456,12 +454,12 @@ export var dxBarGauge = BaseGauge.inherit({
       });
     });
   },
-  _updateValues: function _updateValues(values) {
-    var that = this;
-    var list = _isArray(values) && values || _isFinite(values) && [values] || [];
-    var i;
-    var ii = list.length;
-    var value;
+  _updateValues: function (values) {
+    const that = this;
+    const list = _isArray(values) && values || _isFinite(values) && [values] || [];
+    let i;
+    const ii = list.length;
+    let value;
     that._values.length = ii;
     for (i = 0; i < ii; ++i) {
       value = list[i];
@@ -474,7 +472,7 @@ export var dxBarGauge = BaseGauge.inherit({
     }
     this._change(['NODES']);
   },
-  values: function values(arg) {
+  values: function (arg) {
     if (arg !== undefined) {
       this._updateValues(arg);
       return this;
@@ -492,7 +490,7 @@ export var dxBarGauge = BaseGauge.inherit({
     paletteExtensionMode: 'MOSTLY_TOTAL',
     values: 'VALUES'
   },
-  _change_VALUES: function _change_VALUES() {
+  _change_VALUES: function () {
     this._updateValues(this.option(OPTION_VALUES));
   },
   _factory: clone(BaseGauge.prototype._factory),
@@ -501,17 +499,17 @@ export var dxBarGauge = BaseGauge.inherit({
   _change_NODES() {
     this._buildNodes();
   },
-  _change_MOSTLY_TOTAL: function _change_MOSTLY_TOTAL() {
+  _change_MOSTLY_TOTAL: function () {
     this._change(['NODES']);
     this.callBase();
   },
   _proxyData: [],
   _getLegendData() {
-    var that = this;
-    var formatOptions = {};
-    var options = that._options.silent();
-    var labelFormatOptions = (options.label || {}).format;
-    var legendFormatOptions = (options.legend || {}).itemTextFormat;
+    const that = this;
+    const formatOptions = {};
+    const options = that._options.silent();
+    const labelFormatOptions = (options.label || {}).format;
+    const legendFormatOptions = (options.legend || {}).itemTextFormat;
     if (legendFormatOptions) {
       formatOptions.format = legendFormatOptions;
     } else {
@@ -536,8 +534,8 @@ export var dxBarGauge = BaseGauge.inherit({
     });
   }
 });
-BarWrapper = function BarWrapper(index, context) {
-  var that = this;
+BarWrapper = function (index, context) {
+  const that = this;
   that._context = context;
   that._tracker = context.renderer.arc().attr({
     'stroke-linejoin': 'round'
@@ -545,8 +543,8 @@ BarWrapper = function BarWrapper(index, context) {
   that.index = index;
 };
 _extend(BarWrapper.prototype, {
-  dispose: function dispose() {
-    var that = this;
+  dispose: function () {
+    const that = this;
     that._background.dispose();
     that._bar.dispose();
     if (that._context.textEnabled) {
@@ -557,9 +555,9 @@ _extend(BarWrapper.prototype, {
     that._context = that._settings = that._background = that._bar = that._line = that._text = that._tracker = null;
     return that;
   },
-  arrange: function arrange(options) {
-    var that = this;
-    var context = that._context;
+  arrange: function (options) {
+    const that = this;
+    const context = that._context;
     this._visible = true;
     context.tracker.attach(that._tracker, that, {
       index: that.index
@@ -607,14 +605,14 @@ _extend(BarWrapper.prototype, {
         stroke: context.lineColor || that._color
       }).sharp();
       that._text.css({
-        fill: context.textColor || that._color
+        fill: context.fontStyles.fill || that._color
       });
     }
     return that;
   },
-  getTooltipParameters: function getTooltipParameters() {
-    var that = this;
-    var cosSin = _getCosAndSin((that._angle + that._context.baseAngle) / 2);
+  getTooltipParameters: function () {
+    const that = this;
+    const cosSin = _getCosAndSin((that._angle + that._context.baseAngle) / 2);
     return {
       x: _round(that._context.x + (that._settings.outerRadius + that._settings.innerRadius) / 2 * cosSin.cos),
       y: _round(that._context.y - (that._settings.outerRadius + that._settings.innerRadius) / 2 * cosSin.sin),
@@ -623,24 +621,24 @@ _extend(BarWrapper.prototype, {
       value: that._value
     };
   },
-  setAngle: function setAngle(angle) {
-    var that = this;
-    var context = that._context;
-    var settings = that._settings;
-    var cosSin;
+  setAngle: function (angle) {
+    const that = this;
+    const context = that._context;
+    const settings = that._settings;
+    let cosSin;
     that._angle = angle;
     setAngles(settings, context.baseAngle, angle);
     that._bar.attr(settings);
     that._tracker.attr(settings);
     if (context.textEnabled) {
       cosSin = _getCosAndSin(angle);
-      var indent = context.textIndent;
-      var radius = context.textRadius + indent;
-      var x = context.x + radius * cosSin.cos;
-      var y = context.y - radius * cosSin.sin;
-      var halfWidth = context.textWidth * 0.5;
-      var textHeight = context.textHeight;
-      var textY = context.textY;
+      const indent = context.textIndent;
+      const radius = context.textRadius + indent;
+      let x = context.x + radius * cosSin.cos;
+      let y = context.y - radius * cosSin.sin;
+      const halfWidth = context.textWidth * 0.5;
+      const textHeight = context.textHeight;
+      const textY = context.textY;
       if (_abs(x - context.x) > indent) {
         x += x < context.x ? -halfWidth : halfWidth;
       }
@@ -649,10 +647,10 @@ _extend(BarWrapper.prototype, {
       } else {
         y -= y < context.y ? textY + textHeight : textY;
       }
-      var text = _formatValue(that._value, context.formatOptions, {
+      const text = _formatValue(that._value, context.formatOptions, {
         index: that.index
       });
-      var visibility = text === '' ? 'hidden' : null;
+      const visibility = text === '' ? 'hidden' : null;
       that._text.attr({
         text: text,
         x: x,
@@ -666,7 +664,7 @@ _extend(BarWrapper.prototype, {
     }
     return that;
   },
-  hideLabel: function hideLabel() {
+  hideLabel: function () {
     this._text.attr({
       visibility: 'hidden'
     });
@@ -674,21 +672,21 @@ _extend(BarWrapper.prototype, {
       visibility: 'hidden'
     });
   },
-  checkIntersect: function checkIntersect(anotherBar) {
-    var coords = this.calculateLabelCoords();
-    var anotherCoords = anotherBar.calculateLabelCoords();
+  checkIntersect: function (anotherBar) {
+    const coords = this.calculateLabelCoords();
+    const anotherCoords = anotherBar.calculateLabelCoords();
     if (!coords || !anotherCoords) {
       return false;
     }
-    var width = Math.max(0, Math.min(coords.bottomRight.x, anotherCoords.bottomRight.x) - Math.max(coords.topLeft.x, anotherCoords.topLeft.x));
-    var height = Math.max(0, Math.min(coords.bottomRight.y, anotherCoords.bottomRight.y) - Math.max(coords.topLeft.y, anotherCoords.topLeft.y));
+    const width = Math.max(0, Math.min(coords.bottomRight.x, anotherCoords.bottomRight.x) - Math.max(coords.topLeft.x, anotherCoords.topLeft.x));
+    const height = Math.max(0, Math.min(coords.bottomRight.y, anotherCoords.bottomRight.y) - Math.max(coords.topLeft.y, anotherCoords.topLeft.y));
     return width * height !== 0;
   },
-  calculateLabelCoords: function calculateLabelCoords() {
+  calculateLabelCoords: function () {
     if (!this._text) {
       return;
     }
-    var box = this._text.getBBox();
+    const box = this._text.getBBox();
     return {
       topLeft: {
         x: box.x,
@@ -700,7 +698,7 @@ _extend(BarWrapper.prototype, {
       }
     };
   },
-  _processValue: function _processValue(value) {
+  _processValue: function (value) {
     return this._context.translator.translate(this._context.translator.adjust(value));
   },
   applyValue() {
@@ -710,7 +708,7 @@ _extend(BarWrapper.prototype, {
     return this.setAngle(this._processValue(this.getValue()));
   },
   update(_ref) {
-    var {
+    let {
       color,
       value
     } = _ref;
@@ -726,12 +724,12 @@ _extend(BarWrapper.prototype, {
   getValue() {
     return this._value;
   },
-  beginAnimation: function beginAnimation() {
+  beginAnimation: function () {
     if (!this._visible) {
       return this;
     }
-    var that = this;
-    var angle = this._processValue(this.getValue());
+    const that = this;
+    const angle = this._processValue(this.getValue());
     if (!compareFloats(that._angle, angle)) {
       that._start = that._angle;
       that._delta = angle - that._angle;
@@ -751,17 +749,17 @@ _extend(BarWrapper.prototype, {
       that.setAngle(that._angle);
     }
   },
-  animate: function animate(pos) {
+  animate: function (pos) {
     if (!this._visible) {
       return this;
     }
-    var that = this;
+    const that = this;
     that._angle = that._start + that._delta * pos;
     setAngles(that._settings, that._context.baseAngle, that._angle);
     that._bar.attr(that._settings);
   },
-  endAnimation: function endAnimation() {
-    var that = this;
+  endAnimation: function () {
+    const that = this;
     if (that._delta !== undefined) {
       if (compareFloats(that._angle, that._start + that._delta)) {
         that._tracker.attr({

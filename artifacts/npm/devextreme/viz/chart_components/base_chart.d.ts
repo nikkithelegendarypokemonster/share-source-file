@@ -1,7 +1,7 @@
 /**
 * DevExtreme (viz/chart_components/base_chart.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -57,234 +57,351 @@ import {
 } from '../../common';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @hidden
  */
 export interface PointInteractionInfo {
-    /**
-     * 
-     */
+    /** @docid */
     readonly target: basePointObject;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid _viz_chart_components_base_chart_TooltipInfo
+ * @hidden
  */
 export interface TooltipInfo {
-    /**
-     * 
-     */
+    /** @docid _viz_chart_components_base_chart_TooltipInfo.target */
     target?: basePointObject | dxChartAnnotationConfig | any;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.viz
+ * @docid
+ * @type object
  */
 export interface BaseChartOptions<TComponent> extends BaseWidgetOptions<TComponent> {
     /**
-     * Specifies adaptive layout properties.
+     * @docid
+     * @type object
+     * @public
      */
     adaptiveLayout?: BaseChartAdaptiveLayout;
     /**
-     * Specifies animation properties.
+     * @docid
+     * @public
      */
     animation?: {
       /**
-       * Specifies how long the animation runs in milliseconds.
+       * @docid
+       * @default 1000
        */
       duration?: number;
       /**
-       * Specifies the easing function of the animation.
+       * @docid
+       * @default 'easeOutCubic'
        */
       easing?: AnimationEaseMode;
       /**
-       * Enables the animation in the UI component.
+       * @docid
+       * @default true
        */
       enabled?: boolean;
       /**
-       * Specifies how many series points the UI component should have before the animation will be disabled.
+       * @docid
+       * @default 300
        */
       maxPointCountSupported?: number;
     } | boolean;
     /**
-     * Customizes the appearance of an individual point label.
+     * @docid
+     * @type_function_param1 pointInfo:object
+     * @type_function_return dxChartSeriesTypes.CommonSeries.label
+     * @public
      */
     customizeLabel?: ((pointInfo: any) => SeriesLabel);
     /**
-     * Customizes the appearance of an individual series point.
+     * @docid
+     * @type_function_param1 pointInfo:object
+     * @type_function_return dxChartSeriesTypes.CommonSeries.point
+     * @public
      */
     customizePoint?: ((pointInfo: any) => SeriesPoint);
     /**
-     * Binds the UI component to data.
+     * @docid BaseChartOptions.dataSource
+     * @notUsedInTheme
+     * @public
+     * @type Store|DataSource|DataSourceOptions|string|Array<any>|null
      */
     dataSource?: DataSourceLike<any> | null;
     /**
-     * Specifies properties of the legend.
+     * @docid
+     * @inherits BaseLegend
+     * @type object
+     * @public
      */
     legend?: BaseChartLegend;
     /**
-     * A function that is executed when all series are ready.
+     * @docid
+     * @default null
+     * @notUsedInTheme
+     * @action
+     * @public
      */
     onDone?: ((e: EventInfo<TComponent>) => void);
     /**
-     * A function that is executed when a series point is clicked or tapped.
+     * @docid
+     * @default null
+     * @type function
+     * @type_function_param1 e:object
+     * @type_function_param1_field component:this
+     * @type_function_param1_field event:event
+     * @notUsedInTheme
+     * @action
+     * @public
      */
     onPointClick?: ((e: NativeEventInfo<TComponent, MouseEvent | PointerEvent> & PointInteractionInfo) => void) | string;
     /**
-     * A function that is executed after the pointer enters or leaves a series point.
+     * @docid
+     * @type_function_param1 e:object
+     * @type_function_param1_field component:object
+     * @type_function_param1_field element:object
+     * @notUsedInTheme
+     * @action
+     * @public
      */
     onPointHoverChanged?: ((e: EventInfo<TComponent> & PointInteractionInfo) => void);
     /**
-     * A function that is executed when a series point is selected or selection is canceled.
+     * @docid
+     * @type_function_param1 e:object
+     * @type_function_param1_field component:object
+     * @type_function_param1_field element:object
+     * @notUsedInTheme
+     * @action
+     * @public
      */
     onPointSelectionChanged?: ((e: EventInfo<TComponent> & PointInteractionInfo) => void);
     /**
-     * A function that is executed when a tooltip becomes hidden.
+     * @docid
+     * @default null
+     * @type_function_param1 e:object
+     * @type_function_param1_field component:this
+     * @notUsedInTheme
+     * @action
+     * @public
      */
     onTooltipHidden?: ((e: EventInfo<TComponent> & TooltipInfo) => void);
     /**
-     * A function that is executed when a tooltip appears.
+     * @docid
+     * @default null
+     * @type_function_param1 e:object
+     * @type_function_param1_field component:this
+     * @notUsedInTheme
+     * @action
+     * @public
      */
     onTooltipShown?: ((e: EventInfo<TComponent> & TooltipInfo) => void);
     /**
-     * Sets the palette to be used for colorizing series and their elements.
+     * @docid
+     * @default "Material"
+     * @public
      */
     palette?: Array<string> | Palette;
     /**
-     * Specifies what to do with colors in the palette when their number is less than the number of series (in the Chart UI component) or points in a series (in the PieChart UI component).
+     * @docid
+     * @default 'blend'
+     * @public
      */
     paletteExtensionMode?: PaletteExtensionMode;
     /**
-     * Specifies whether a single point or multiple points can be selected in the chart.
+     * @docid
+     * @default 'single'
+     * @public
      */
     pointSelectionMode?: SingleOrMultiple;
     /**
-     * Specifies properties for series.
+     * @docid
+     * @default undefined
+     * @notUsedInTheme
+     * @hideDefaults true
+     * @public
      */
     series?: any | Array<any>;
     /**
-     * Configures tooltips.
+     * @docid
+     * @type object
+     * @public
      */
     tooltip?: BaseChartTooltip;
 }
 /**
- * Specifies adaptive layout properties.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @hidden
+ * @docid
+ * @namespace DevExpress.viz
  */
 export interface BaseChartAdaptiveLayout {
     /**
-     * Specifies the minimum container height at which the layout begins to adapt.
+     * @docid BaseChartOptions.adaptiveLayout.height
+     * @default 80
+     * @public
      */
     height?: number;
     /**
-     * Specifies whether point labels should be kept when the UI component adapts the layout.
+     * @docid BaseChartOptions.adaptiveLayout.keepLabels
+     * @default true
+     * @public
      */
     keepLabels?: boolean;
     /**
-     * Specifies the minimum container width at which the layout begins to adapt.
+     * @docid BaseChartOptions.adaptiveLayout.width
+     * @default 80
+     * @public
      */
     width?: number;
 }
 /**
- * Specifies properties of the legend.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @hidden
+ * @docid
+ * @namespace DevExpress.viz
  */
 export interface BaseChartLegend extends BaseLegend {
     /**
-     * Allows you to change the order, text, and visibility of legend items.
+     * @docid BaseChartOptions.legend.customizeItems
+     * @public
      */
     customizeItems?: ((items: Array<LegendItem>) => Array<LegendItem>);
     /**
-     * Specifies an SVG element that serves as a custom legend item marker.
+     * @docid BaseChartOptions.legend.markerTemplate
+     * @default undefined
+     * @type_function_return string|SVGElement|jQuery
+     * @public
      */
     markerTemplate?: template | ((legendItem: LegendItem, element: SVGGElement) => string | UserDefinedElement<SVGElement>);
 }
 /**
- * Configures tooltips.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @hidden
+ * @docid
+ * @namespace DevExpress.viz
  */
 export interface BaseChartTooltip extends BaseWidgetTooltip {
     /**
-     * Formats the point argument before it is displayed in the tooltip. To format the point value, use the format property.
+     * @docid BaseChartOptions.tooltip.argumentFormat
+     * @default undefined
+     * @public
      */
     argumentFormat?: Format;
     /**
-     * Specifies a custom template for a tooltip.
+     * @docid BaseChartOptions.tooltip.contentTemplate
+     * @type_function_param1 pointInfo:object
+     * @type_function_return string|Element|jQuery
+     * @default undefined
+     * @public
      */
     contentTemplate?: template | ((pointInfo: any, element: DxElement) => string | UserDefinedElement);
     /**
-     * Allows you to change tooltip appearance.
+     * @docid BaseChartOptions.tooltip.customizeTooltip
+     * @type_function_param1 pointInfo:object
+     * @type_function_return object
+     * @default undefined
+     * @notUsedInTheme
+     * @public
      */
     customizeTooltip?: ((pointInfo: any) => any);
     /**
-     * Specifies whether the tooltip is shared across all series points with the same argument.
+     * @docid BaseChartOptions.tooltip.shared
+     * @default false
+     * @public
      */
     shared?: boolean;
     /**
-     * Allows users to interact with the tooltip content.
+     * @docid BaseChartOptions.tooltip.interactive
+     * @default false
+     * @public
      */
     interactive?: boolean;
 }
 /**
- * A base class for all chart UI components included in the ChartJS library.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @hidden
+ * @inherits BaseWidget, DataHelperMixin
+ * @namespace DevExpress.viz
+ * @options BaseChartOptions
  */
 export class BaseChart<TProperties> extends BaseWidget<TProperties> {
     /**
-     * Deselects the chart&apos;s selected series. The series is displayed in an initial style.
+     * @docid
+     * @publicName clearSelection()
+     * @public
      */
     clearSelection(): void;
     /**
-     * Gets all the series.
+     * @docid
+     * @publicName getAllSeries()
+     * @public
      */
     getAllSeries(): Array<baseSeriesObject>;
     getDataSource(): DataSource;
     /**
-     * Gets a series with a specific name.
+     * @docid
+     * @publicName getSeriesByName(seriesName)
+     * @public
      */
     getSeriesByName(seriesName: any): chartSeriesObject;
     /**
-     * Gets a series with a specific index.
+     * @docid
+     * @publicName getSeriesByPos(seriesIndex)
+     * @public
      */
     getSeriesByPos(seriesIndex: number): chartSeriesObject;
     /**
-     * Hides all UI component tooltips.
+     * @docid
+     * @publicName hideTooltip()
+     * @public
      */
     hideTooltip(): void;
     /**
-     * Reloads data and repaints the UI component.
+     * @docid
+     * @publicName refresh()
+     * @public
      */
     refresh(): void;
     render(): void;
     /**
-     * Redraws the UI component.
+     * @docid
+     * @publicName render(renderOptions)
+     * @param1 renderOptions:object
+     * @public
      */
     render(renderOptions: any): void;
 }
 
 /**
  * @deprecated Use LegendItem from common/charts instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type BaseChartLegendItem = LegendItem;
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @inherits BaseWidgetAnnotationConfig
+ * @namespace DevExpress.viz
  */
 export interface BaseChartAnnotationConfig extends BaseWidgetAnnotationConfig {
     /**
-     * Positions the annotation relative to a specific argument.
+     * @docid
+     * @default undefined
+     * @public
      */
     argument?: number | Date | string;
     /**
-     * Anchors the annotation to a series point. Accepts the name of the point&apos;s series.
+     * @docid
+     * @default undefined
+     * @public
      */
     series?: string;
     /**
-     * Positions the annotation relative to a value on the specified value axis.
+     * @docid
+     * @default undefined
+     * @public
      */
     value?: number | Date | string;
 }

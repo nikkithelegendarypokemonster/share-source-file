@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/grid_core/sorting/m_sorting.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -20,19 +20,14 @@ var _index = require("../../../../events/utils/index");
 var _message = _interopRequireDefault(require("../../../../localization/message"));
 var _m_sorting_mixin = _interopRequireDefault(require("./m_sorting_mixin"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */
+/* eslint-disable max-classes-per-file */
+
 const COLUMN_HEADERS_VIEW_NAMESPACE = 'dxDataGridColumnHeadersView';
 // TODO improve types of this mixin
 //  Now all members - protected by default (it may be wrong)
 // TODO getController
-const columnHeadersView = Base => /*#__PURE__*/function (_sortingMixin) {
-  _inheritsLoose(ColumnHeadersViewSortingExtender, _sortingMixin);
-  function ColumnHeadersViewSortingExtender() {
-    return _sortingMixin.apply(this, arguments) || this;
-  }
-  var _proto = ColumnHeadersViewSortingExtender.prototype;
-  _proto.optionChanged = function optionChanged(args) {
+const columnHeadersView = Base => class ColumnHeadersViewSortingExtender extends (0, _m_sorting_mixin.default)(Base) {
+  optionChanged(args) {
     const that = this;
     switch (args.name) {
       case 'sorting':
@@ -40,19 +35,19 @@ const columnHeadersView = Base => /*#__PURE__*/function (_sortingMixin) {
         args.handled = true;
         break;
       default:
-        _sortingMixin.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  _proto._createRow = function _createRow(row) {
-    const $row = _sortingMixin.prototype._createRow.call(this, row);
+  }
+  _createRow(row) {
+    const $row = super._createRow(row);
     if (row.rowType === 'header') {
       _events_engine.default.on($row, (0, _index.addNamespace)(_click.name, COLUMN_HEADERS_VIEW_NAMESPACE), 'td', this.createAction(e => {
         this._processHeaderAction(e.event, $row);
       }));
     }
     return $row;
-  };
-  _proto._processHeaderAction = function _processHeaderAction(event, $row) {
+  }
+  _processHeaderAction(event, $row) {
     if ((0, _renderer.default)(event.currentTarget).parent().get(0) !== $row.get(0)) {
       return;
     }
@@ -87,8 +82,8 @@ const columnHeadersView = Base => /*#__PURE__*/function (_sortingMixin) {
         that._columnsController.changeSortOrder(column.index, keyName);
       });
     }
-  };
-  _proto._renderCellContent = function _renderCellContent($cell, options) {
+  }
+  _renderCellContent($cell, options) {
     const that = this;
     const {
       column
@@ -101,9 +96,9 @@ const columnHeadersView = Base => /*#__PURE__*/function (_sortingMixin) {
         showColumnLines: that.option('showColumnLines')
       });
     }
-    _sortingMixin.prototype._renderCellContent.apply(this, arguments);
-  };
-  _proto._columnOptionChanged = function _columnOptionChanged(e) {
+    super._renderCellContent.apply(this, arguments);
+  }
+  _columnOptionChanged(e) {
     const {
       changeTypes
     } = e;
@@ -111,17 +106,11 @@ const columnHeadersView = Base => /*#__PURE__*/function (_sortingMixin) {
       this._updateIndicators('sort');
       return;
     }
-    _sortingMixin.prototype._columnOptionChanged.call(this, e);
-  };
-  return ColumnHeadersViewSortingExtender;
-}((0, _m_sorting_mixin.default)(Base));
-const headerPanel = Base => /*#__PURE__*/function (_sortingMixin2) {
-  _inheritsLoose(HeaderPanelSortingExtender, _sortingMixin2);
-  function HeaderPanelSortingExtender() {
-    return _sortingMixin2.apply(this, arguments) || this;
+    super._columnOptionChanged(e);
   }
-  var _proto2 = HeaderPanelSortingExtender.prototype;
-  _proto2.optionChanged = function optionChanged(args) {
+};
+const headerPanel = Base => class HeaderPanelSortingExtender extends (0, _m_sorting_mixin.default)(Base) {
+  optionChanged(args) {
     const that = this;
     switch (args.name) {
       case 'sorting':
@@ -129,12 +118,12 @@ const headerPanel = Base => /*#__PURE__*/function (_sortingMixin2) {
         args.handled = true;
         break;
       default:
-        _sortingMixin2.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  _proto2._createGroupPanelItem = function _createGroupPanelItem($rootElement, groupColumn) {
+  }
+  _createGroupPanelItem($rootElement, groupColumn) {
     const that = this;
-    const $item = _sortingMixin2.prototype._createGroupPanelItem.apply(this, arguments);
+    const $item = super._createGroupPanelItem(...arguments);
     _events_engine.default.on($item, (0, _index.addNamespace)(_click.name, 'dxDataGridHeaderPanel'), that.createAction(() => {
       that._processGroupItemAction(groupColumn.index);
     }));
@@ -150,12 +139,11 @@ const headerPanel = Base => /*#__PURE__*/function (_sortingMixin2) {
       showColumnLines: true
     });
     return $item;
-  };
-  _proto2._processGroupItemAction = function _processGroupItemAction(groupColumnIndex) {
+  }
+  _processGroupItemAction(groupColumnIndex) {
     setTimeout(() => this.getController('columns').changeSortOrder(groupColumnIndex));
-  };
-  return HeaderPanelSortingExtender;
-}((0, _m_sorting_mixin.default)(Base));
+  }
+};
 const sortingModule = exports.sortingModule = {
   defaultOptions() {
     return {

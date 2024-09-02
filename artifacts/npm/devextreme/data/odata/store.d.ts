@@ -1,7 +1,7 @@
 /**
 * DevExtreme (data/odata/store.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,64 +11,91 @@ import Store, { Options as StoreOptions } from '../abstract_store';
 import { Query } from '../query';
 import { ODataRequestOptions } from './context';
 
+/** @public */
 export type Options<
     TItem = any,
     TKey = any,
 > = ODataStoreOptions<TItem, TKey>;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.data
+ * @deprecated Use Options instead
  */
 export interface ODataStoreOptions<
     TItem = any,
     TKey = any,
 > extends StoreOptions<TItem, TKey> {
     /**
-     * Specifies a function that customizes the request before it is sent to the server.
+     * @docid
+     * @type_function_param1_field params:object
+     * @type_function_param1_field payload:object
+     * @type_function_param1_field headers:object
+     * @public
      */
     beforeSend?: ((options: { url: string; async: boolean; method: string; timeout: number; params: any; payload: any; headers: any }) => void);
     /**
-     * Specifies whether the store serializes/parses date-time values.
+     * @docid
+     * @public
      */
     deserializeDates?: boolean;
     /**
-     * Specifies a function that is executed when the ODataStore throws an error.
+     * @docid
+     * @type_function_param1 e:Error
+     * @type_function_param1_field errorDetails:object
+     * @type_function_param1_field requestOptions:object
+     * @public
      */
     errorHandler?: ((e: { httpStatus: number; errorDetails: any; requestOptions: ODataRequestOptions }) => void);
     /**
-     * Specifies the data field types. Accepts the following types: &apos;String&apos;, &apos;Int32&apos;, &apos;Int64&apos;, &apos;Boolean&apos;, &apos;Single&apos;, &apos;Decimal&apos; and &apos;Guid&apos;.
+     * @docid
+     * @default {}
+     * @public
      */
     fieldTypes?: any;
     /**
-     * Specifies whether to convert string values to lowercase in filter and search requests. Applies to the following operations: &apos;startswith&apos;, &apos;endswith&apos;, &apos;contains&apos;, and &apos;notcontains&apos;.
+     * @docid
+     * @public
      */
     filterToLower?: boolean;
     /**
-     * Specifies whether data should be sent using JSONP.
+     * @docid
+     * @default false
+     * @public
      */
     jsonp?: boolean;
     /**
-     * Specifies the type of the key property or properties.
+     * @docid
+     * @type string|object
+     * @acceptValues "String"|"Int32"|"Int64"|"Guid"|"Boolean"|"Single"|"Decimal"
+     * @public
      */
     keyType?: 'String' | 'Int32' | 'Int64' | 'Guid' | 'Boolean' | 'Single' | 'Decimal' | any;
     /**
-     * Specifies the URL of an OData entity collection.
+     * @docid
+     * @public
      */
     url?: string;
     /**
-     * Specifies the OData version.
+     * @docid
+     * @default 4
+     * @acceptValues 2|3|4
+     * @public
      */
     version?: number;
     /**
-     * Specifies whether to send cookies, authorization headers, and client certificates in a cross-origin request.
+     * @docid
+     * @default false
+     * @public
      */
     withCredentials?: boolean;
 }
 
 /**
- * The ODataStore is a store that provides an interface for loading and editing data from an individual OData entity collection and handling related events.
+ * @docid
+ * @inherits Store
+ * @public
+ * @options ODataStoreOptions
  */
 export default class ODataStore<
     TItem = any,
@@ -76,11 +103,18 @@ export default class ODataStore<
 > extends Store<TItem, TKey> {
     constructor(options?: Options<TItem, TKey>);
     /**
-     * Gets an entity with a specific key.
+     * @docid
+     * @publicName byKey(key, extraOptions)
+     * @param1 key:object|string|number
+     * @return Promise<any>
+     * @public
      */
     byKey(key: TKey, extraOptions?: { expand?: string | Array<string>; select?: string | Array<string> }): DxPromise<TItem>;
     /**
-     * Creates a Query for the OData endpoint.
+     * @docid
+     * @publicName createQuery(loadOptions)
+     * @return object
+     * @public
      */
     createQuery(loadOptions?: { expand?: string | Array<string>; requireTotalCount?: boolean; customQueryParams?: any }): Query;
 }

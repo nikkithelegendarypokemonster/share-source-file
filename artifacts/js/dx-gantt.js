@@ -1,7 +1,7 @@
 /*!
  * DevExpress Gantt (dx-gantt)
- * Version: 4.1.52
- * Build date: Wed Mar 13 2024
+ * Version: 4.1.56
+ * Build date: Mon Jun 10 2024
  *
  * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
  * Read about DevExpress licensing here: https://www.devexpress.com/Support/EULAs
@@ -997,21 +997,6 @@ var DomUtils = (function () {
         function getAbsolutePositionY_FF3(element) {
             return Math.round(element.getBoundingClientRect().top + DomUtils.getDocumentScrollTop());
         }
-        function getAbsolutePositionY_Opera(curEl) {
-            var isFirstCycle = true;
-            if (curEl && DomUtils.isHTMLTableRowElement(curEl) && curEl.cells.length > 0)
-                curEl = curEl.cells[0];
-            var pos = getAbsoluteScrollOffset_OperaFF(curEl, false);
-            while (curEl != null) {
-                pos += curEl.offsetTop;
-                if (!isFirstCycle)
-                    pos -= curEl.scrollTop;
-                curEl = curEl.offsetParent;
-                isFirstCycle = false;
-            }
-            pos += document.body.scrollTop;
-            return pos;
-        }
         function getAbsolutePositionY_NS(curEl) {
             var pos = getAbsoluteScrollOffset_OperaFF(curEl, false);
             var isFirstCycle = true;
@@ -1047,8 +1032,6 @@ var DomUtils = (function () {
             return getAbsolutePositionY_IE(element);
         else if (browser_1.Browser.Firefox && browser_1.Browser.Version >= 3)
             return getAbsolutePositionY_FF3(element);
-        else if (browser_1.Browser.Opera)
-            return getAbsolutePositionY_Opera(element);
         else if (browser_1.Browser.NetscapeFamily && (!browser_1.Browser.Firefox || browser_1.Browser.Version < 3))
             return getAbsolutePositionY_NS(element);
         else if (browser_1.Browser.WebKitFamily || browser_1.Browser.Edge)
@@ -15906,6 +15889,7 @@ var GanttView = (function () {
         this.updateView();
     };
     GanttView.prototype.cleanMarkup = function () {
+        this.setNormalScreenMode();
         this.renderHelper.taskAreaManagerDetachEvents();
         this.taskEditController.detachEvents();
         this.clearStripLinesUpdater();
@@ -16080,7 +16064,7 @@ var GanttView = (function () {
     GanttView.prototype.getTaskResources = function (key) {
         var model = this.viewModel;
         var task = model.getItemByPublicId("task", key);
-        return task && model.getAssignedResources(task).items;
+        return (task && model.getAssignedResources(task).items) || [];
     };
     GanttView.prototype.getVisibleTaskKeys = function () { return this.viewModel.getVisibleTasks().map(function (t) { return t.id; }); };
     GanttView.prototype.getVisibleDependencyKeys = function () { return this.viewModel.getVisibleDependencies().map(function (d) { return d.id; }); };
@@ -16112,6 +16096,18 @@ var GanttView = (function () {
     };
     GanttView.prototype.getTaskTreeLine = function (taskKey) {
         return this.viewModel.getTaskTreeLine(taskKey).reverse();
+    };
+    GanttView.prototype.isInFullScreenMode = function () {
+        var _a;
+        return !!((_a = this.fullScreenModeHelper) === null || _a === void 0 ? void 0 : _a.isInFullScreenMode);
+    };
+    GanttView.prototype.setFullScreenMode = function () {
+        if (!this.isInFullScreenMode())
+            this.fullScreenModeHelper.toggle();
+    };
+    GanttView.prototype.setNormalScreenMode = function () {
+        if (this.isInFullScreenMode())
+            this.fullScreenModeHelper.toggle();
     };
     GanttView.prototype.setTaskValue = function (id, fieldName, newValue) {
         var command = this.commandManager.updateTaskCommand;
@@ -17639,6 +17635,11 @@ var ScaleCalculator = (function () {
         return items;
     };
     ScaleCalculator.prototype.getDateInScale = function (pos) {
+        if (pos < 0) {
+            var timeOffset = pos / this.tickSize.width;
+            var timeSpan = DateUtils_1.DateUtils.getTickTimeSpan(this.viewType);
+            return new Date(this.range.start.getTime() + timeOffset * timeSpan);
+        }
         for (var i = 0; i < this.bottomScaleItems.length; i++) {
             var item = this.bottomScaleItems[i];
             var width = item.size.width;

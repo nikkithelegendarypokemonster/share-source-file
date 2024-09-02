@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/m_appointments_layout_manager.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,10 +9,10 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import { equalByValue } from '../../core/utils/common';
 import dateUtils from '../../core/utils/date';
-import { getAppointmentRenderingStrategyName, getCellDuration, getGroupCount } from './__migration/utils/index';
+import { getAppointmentRenderingStrategyName, getCellDuration, getGroupCount } from '../scheduler/r1/utils/index';
 import { AppointmentViewModelGenerator } from './appointments/m_view_model_generator';
 import { getAllDayHeight, getCellHeight, getCellWidth } from './workspaces/helpers/m_position_helper';
-var toMs = dateUtils.dateToMilliseconds;
+const toMs = dateUtils.dateToMilliseconds;
 class AppointmentLayoutManager {
   constructor(instance) {
     this.instance = instance;
@@ -33,24 +33,24 @@ class AppointmentLayoutManager {
     return undefined;
   }
   _getRenderingStrategyOptions() {
-    var workspace = this.instance.getWorkSpace();
-    var {
+    const workspace = this.instance.getWorkSpace();
+    const {
       virtualScrollingDispatcher
     } = this.instance.getWorkSpace();
-    var {
+    const {
       cellCountInsideLeftVirtualCell,
       cellCountInsideTopVirtualRow
     } = virtualScrollingDispatcher;
-    var groupCount = getGroupCount(this.instance.option('loadedResources'));
-    var DOMMetaData = workspace.getDOMElementsMetaData();
-    var allDayHeight = getAllDayHeight(workspace.option('showAllDayPanel'), workspace._isVerticalGroupedWorkSpace(), DOMMetaData);
-    var rowCount = workspace._getRowCount();
-    var {
+    const groupCount = getGroupCount(this.instance.option('loadedResources'));
+    const DOMMetaData = workspace.getDOMElementsMetaData();
+    const allDayHeight = getAllDayHeight(workspace.option('showAllDayPanel'), workspace._isVerticalGroupedWorkSpace(), DOMMetaData);
+    const rowCount = workspace._getRowCount();
+    const {
       positionHelper,
       viewDataProvider
     } = workspace;
-    var visibleDayDuration = viewDataProvider.getVisibleDayDuration(workspace.option('startDayHour'), workspace.option('endDayHour'), workspace.option('hoursInterval'));
-    var cellDuration = getCellDuration(workspace.type, workspace.option('startDayHour'), workspace.option('endDayHour'), workspace.option('hoursInterval'));
+    const visibleDayDuration = viewDataProvider.getVisibleDayDuration(workspace.option('startDayHour'), workspace.option('endDayHour'), workspace.option('hoursInterval'));
+    const cellDuration = getCellDuration(workspace.type, workspace.option('startDayHour'), workspace.option('endDayHour'), workspace.option('hoursInterval'));
     return {
       resources: this.instance.option('resources'),
       loadedResources: this.instance.option('loadedResources'),
@@ -111,8 +111,8 @@ class AppointmentLayoutManager {
     };
   }
   createAppointmentsMap(items) {
-    var renderingStrategyOptions = this._getRenderingStrategyOptions();
-    var {
+    const renderingStrategyOptions = this._getRenderingStrategyOptions();
+    const {
       viewModel,
       positionMap
     } = this.appointmentViewModel.generate(items, renderingStrategyOptions);
@@ -120,10 +120,10 @@ class AppointmentLayoutManager {
     return viewModel;
   }
   _isDataChanged(data) {
-    var {
+    const {
       appointmentDataProvider
     } = this.instance;
-    var updatedData = appointmentDataProvider.getUpdatedAppointment();
+    const updatedData = appointmentDataProvider.getUpdatedAppointment();
     return updatedData === data || appointmentDataProvider.getUpdatedAppointmentKeys().some(item => data[item.key] === item.value);
   }
   _isAppointmentShouldAppear(currentAppointment, sourceAppointment) {
@@ -133,15 +133,15 @@ class AppointmentLayoutManager {
     if (settings.length !== sourceSetting.length) {
       return true;
     }
-    var createSettingsToCompare = (settings, index) => {
-      var currentSetting = settings[index];
-      var leftVirtualCellCount = currentSetting.leftVirtualCellCount || 0;
-      var topVirtualCellCount = currentSetting.topVirtualCellCount || 0;
-      var columnIndex = currentSetting.columnIndex + leftVirtualCellCount;
-      var rowIndex = currentSetting.rowIndex + topVirtualCellCount;
-      var hMax = currentSetting.reduced ? currentSetting.hMax : undefined;
-      var vMax = currentSetting.reduced ? currentSetting.vMax : undefined;
-      return _extends(_extends({}, currentSetting), {
+    const createSettingsToCompare = (settings, index) => {
+      const currentSetting = settings[index];
+      const leftVirtualCellCount = currentSetting.leftVirtualCellCount || 0;
+      const topVirtualCellCount = currentSetting.topVirtualCellCount || 0;
+      const columnIndex = currentSetting.columnIndex + leftVirtualCellCount;
+      const rowIndex = currentSetting.rowIndex + topVirtualCellCount;
+      const hMax = currentSetting.reduced ? currentSetting.hMax : undefined;
+      const vMax = currentSetting.reduced ? currentSetting.vMax : undefined;
+      return _extends({}, currentSetting, {
         columnIndex,
         rowIndex,
         positionByMap: undefined,
@@ -154,9 +154,9 @@ class AppointmentLayoutManager {
         info: {}
       });
     };
-    for (var i = 0; i < settings.length; i++) {
-      var newSettings = createSettingsToCompare(settings, i);
-      var oldSettings = createSettingsToCompare(sourceSetting, i);
+    for (let i = 0; i < settings.length; i++) {
+      const newSettings = createSettingsToCompare(settings, i);
+      const oldSettings = createSettingsToCompare(sourceSetting, i);
       if (oldSettings) {
         // exclude sortedIndex property for comparison in commonUtils.equalByValue
         oldSettings.sortedIndex = newSettings.sortedIndex;
@@ -168,8 +168,8 @@ class AppointmentLayoutManager {
     return false;
   }
   _getAssociatedSourceAppointment(currentAppointment, sourceAppointments) {
-    for (var i = 0; i < sourceAppointments.length; i++) {
-      var item = sourceAppointments[i];
+    for (let i = 0; i < sourceAppointments.length; i++) {
+      const item = sourceAppointments[i];
       if (item.itemData === currentAppointment.itemData) {
         return item;
       }
@@ -177,10 +177,10 @@ class AppointmentLayoutManager {
     return null;
   }
   _getDeletedAppointments(currentAppointments, sourceAppointments) {
-    var result = [];
-    for (var i = 0; i < sourceAppointments.length; i++) {
-      var sourceAppointment = sourceAppointments[i];
-      var currentAppointment = this._getAssociatedSourceAppointment(sourceAppointment, currentAppointments);
+    const result = [];
+    for (let i = 0; i < sourceAppointments.length; i++) {
+      const sourceAppointment = sourceAppointments[i];
+      const currentAppointment = this._getAssociatedSourceAppointment(sourceAppointment, currentAppointments);
       if (!currentAppointment) {
         sourceAppointment.needRemove = true;
         result.push(sourceAppointment);
@@ -193,20 +193,20 @@ class AppointmentLayoutManager {
       return currentAppointments;
     }
     currentAppointments.forEach(appointment => {
-      var sourceAppointment = this._getAssociatedSourceAppointment(appointment, sourceAppointments);
+      const sourceAppointment = this._getAssociatedSourceAppointment(appointment, sourceAppointments);
       if (sourceAppointment) {
-        var isDataChanged = this._isDataChanged(appointment.itemData);
-        var isSettingChanged = this._isSettingChanged(appointment.settings, sourceAppointment.settings);
-        var isAppointmentShouldAppear = this._isAppointmentShouldAppear(appointment, sourceAppointment);
+        const isDataChanged = this._isDataChanged(appointment.itemData);
+        const isSettingChanged = this._isSettingChanged(appointment.settings, sourceAppointment.settings);
+        const isAppointmentShouldAppear = this._isAppointmentShouldAppear(appointment, sourceAppointment);
         appointment.needRepaint = isDataChanged || isSettingChanged || isAppointmentShouldAppear;
       }
     });
     return currentAppointments.concat(this._getDeletedAppointments(currentAppointments, sourceAppointments));
   }
   getRenderingStrategyInstance() {
-    var renderingStrategy = this.appointmentViewModel.getRenderingStrategy();
+    const renderingStrategy = this.appointmentViewModel.getRenderingStrategy();
     if (!renderingStrategy) {
-      var options = this._getRenderingStrategyOptions();
+      const options = this._getRenderingStrategyOptions();
       this.appointmentViewModel.initRenderingStrategy(options);
     }
     return this.appointmentViewModel.getRenderingStrategy();

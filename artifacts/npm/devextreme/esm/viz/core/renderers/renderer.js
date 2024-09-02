@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/core/renderers/renderer.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,15 +15,15 @@ import { getSvgMarkup } from '../../../core/utils/svg';
 import { AnimationController } from './animation';
 import { normalizeBBox, rotateBBox, normalizeEnum, normalizeArcParams, getNextDefsSvgId } from '../utils';
 import { isDefined } from '../../../core/utils/type';
-var window = getWindow();
-var {
+const window = getWindow();
+const {
   max,
   round
 } = Math;
-var SHARPING_CORRECTION = 0.5;
-var ARC_COORD_PREC = 5;
-var LIGHTENING_HASH = '@filter::lightening';
-var pxAddingExceptions = {
+const SHARPING_CORRECTION = 0.5;
+const ARC_COORD_PREC = 5;
+const LIGHTENING_HASH = '@filter::lightening';
+const pxAddingExceptions = {
   'column-count': true,
   'fill-opacity': true,
   'flex-grow': true,
@@ -37,22 +37,22 @@ var pxAddingExceptions = {
   'z-index': true,
   'zoom': true
 };
-var KEY_TEXT = 'text';
-var KEY_STROKE = 'stroke';
-var KEY_STROKE_WIDTH = 'stroke-width';
-var KEY_STROKE_OPACITY = 'stroke-opacity';
-var KEY_FONT_SIZE = 'font-size';
-var KEY_FONT_STYLE = 'font-style';
-var KEY_FONT_WEIGHT = 'font-weight';
-var KEY_TEXT_DECORATION = 'text-decoration';
-var KEY_TEXTS_ALIGNMENT = 'textsAlignment';
-var NONE = 'none';
-var DEFAULT_FONT_SIZE = 12;
-var ELLIPSIS = '...';
-var objectCreate = function () {
+const KEY_TEXT = 'text';
+const KEY_STROKE = 'stroke';
+const KEY_STROKE_WIDTH = 'stroke-width';
+const KEY_STROKE_OPACITY = 'stroke-opacity';
+const KEY_FONT_SIZE = 'font-size';
+const KEY_FONT_STYLE = 'font-style';
+const KEY_FONT_WEIGHT = 'font-weight';
+const KEY_TEXT_DECORATION = 'text-decoration';
+const KEY_TEXTS_ALIGNMENT = 'textsAlignment';
+const NONE = 'none';
+const DEFAULT_FONT_SIZE = 12;
+const ELLIPSIS = '...';
+const objectCreate = function () {
   if (!Object.create) {
     return function (proto) {
-      var F = function F() {};
+      const F = function () {};
       F.prototype = proto;
       return new F();
     };
@@ -62,14 +62,14 @@ var objectCreate = function () {
     };
   }
 }();
-var DEFAULTS = {
+const DEFAULTS = {
   scaleX: 1,
   scaleY: 1,
   'pointer-events': null
 };
-var getBackup = callOnce(function () {
-  var backupContainer = domAdapter.createElement('div');
-  var backupCounter = 0;
+const getBackup = callOnce(function () {
+  const backupContainer = domAdapter.createElement('div');
+  const backupCounter = 0;
   backupContainer.style.left = '-9999px';
   backupContainer.style.position = 'absolute';
   return {
@@ -105,13 +105,13 @@ export function getFuncIri(id, pathModified) {
   return id !== null ? 'url(' + (pathModified ? window.location.href.split('#')[0] : '') + '#' + id + ')' : id;
 }
 function extend(target, source) {
-  var key;
+  let key;
   for (key in source) {
     target[key] = source[key];
   }
   return target;
 }
-var preserveAspectRatioMap = {
+const preserveAspectRatioMap = {
   'full': NONE,
   'lefttop': 'xMinYMin',
   'leftcenter': 'xMinYMid',
@@ -150,11 +150,11 @@ export function processHatchingAttrs(element, attrs) {
 // Build path segments
 //
 
-var buildArcPath = function buildArcPath(x, y, innerR, outerR, startAngleCos, startAngleSin, endAngleCos, endAngleSin, isCircle, longFlag) {
+const buildArcPath = function (x, y, innerR, outerR, startAngleCos, startAngleSin, endAngleCos, endAngleSin, isCircle, longFlag) {
   return ['M', (x + outerR * startAngleCos).toFixed(ARC_COORD_PREC), (y - outerR * startAngleSin).toFixed(ARC_COORD_PREC), 'A', outerR.toFixed(ARC_COORD_PREC), outerR.toFixed(ARC_COORD_PREC), 0, longFlag, 0, (x + outerR * endAngleCos).toFixed(ARC_COORD_PREC), (y - outerR * endAngleSin).toFixed(ARC_COORD_PREC), isCircle ? 'M' : 'L', (x + innerR * endAngleCos).toFixed(5), (y - innerR * endAngleSin).toFixed(ARC_COORD_PREC), 'A', innerR.toFixed(ARC_COORD_PREC), innerR.toFixed(ARC_COORD_PREC), 0, longFlag, 1, (x + innerR * startAngleCos).toFixed(ARC_COORD_PREC), (y - innerR * startAngleSin).toFixed(ARC_COORD_PREC), 'Z'].join(' ');
 };
 function buildPathSegments(points, type) {
-  var list = [['M', 0, 0]];
+  let list = [['M', 0, 0]];
   switch (type) {
     case 'line':
       list = buildLineSegments(points);
@@ -179,9 +179,9 @@ function buildCurveSegments(points, close) {
 }
 function buildSegments(points, buildSimpleSegment, close) {
   var _points$;
-  var i;
-  var ii;
-  var list = [];
+  let i;
+  let ii;
+  const list = [];
   if ((_points$ = points[0]) !== null && _points$ !== void 0 && _points$.length) {
     for (i = 0, ii = points.length; i < ii; ++i) {
       buildSimpleSegment(points[i], close, list);
@@ -192,10 +192,10 @@ function buildSegments(points, buildSimpleSegment, close) {
   return list;
 }
 function buildSimpleLineSegment(points, close, list) {
-  var i = 0;
-  var k0 = list.length;
-  var k = k0;
-  var ii = (points || []).length;
+  let i = 0;
+  const k0 = list.length;
+  let k = k0;
+  const ii = (points || []).length;
   if (ii) {
     // backward compatibility
     if (points[0].x !== undefined) {
@@ -215,9 +215,9 @@ function buildSimpleLineSegment(points, close, list) {
   return list;
 }
 function buildSimpleCurveSegment(points, close, list) {
-  var i;
-  var k = list.length;
-  var ii = (points || []).length;
+  let i;
+  let k = list.length;
+  const ii = (points || []).length;
   if (ii) {
     // backward compatibility
     if (points[0].x !== undefined) {
@@ -238,13 +238,13 @@ function buildSimpleCurveSegment(points, close, list) {
   return list;
 }
 function combinePathParam(segments) {
-  var d = [];
-  var k = 0;
-  var i;
-  var ii = segments.length;
-  var segment;
-  var j;
-  var jj;
+  const d = [];
+  let k = 0;
+  let i;
+  const ii = segments.length;
+  let segment;
+  let j;
+  let jj;
   for (i = 0; i < ii; ++i) {
     segment = segments[i];
     for (j = 0, jj = segment.length; j < jj; ++j) {
@@ -254,11 +254,11 @@ function combinePathParam(segments) {
   return d.join(' ');
 }
 function compensateSegments(oldSegments, newSegments, type) {
-  var oldLength = oldSegments.length;
-  var newLength = newSegments.length;
-  var i;
-  var originalNewSegments;
-  var makeEqualSegments = type.indexOf('area') !== -1 ? makeEqualAreaSegments : makeEqualLineSegments;
+  const oldLength = oldSegments.length;
+  const newLength = newSegments.length;
+  let i;
+  let originalNewSegments;
+  const makeEqualSegments = type.indexOf('area') !== -1 ? makeEqualAreaSegments : makeEqualLineSegments;
   if (oldLength === 0) {
     for (i = 0; i < newLength; i++) {
       oldSegments.push(newSegments[i].slice(0));
@@ -272,8 +272,8 @@ function compensateSegments(oldSegments, newSegments, type) {
   return originalNewSegments;
 }
 function prepareConstSegment(constSeg, type) {
-  var x = constSeg[constSeg.length - 2];
-  var y = constSeg[constSeg.length - 1];
+  const x = constSeg[constSeg.length - 2];
+  const y = constSeg[constSeg.length - 1];
   switch (type) {
     case 'line':
     case 'area':
@@ -288,20 +288,20 @@ function prepareConstSegment(constSeg, type) {
   }
 }
 function makeEqualLineSegments(short, long, type) {
-  var constSeg = short[short.length - 1].slice();
-  var i = short.length;
+  const constSeg = short[short.length - 1].slice();
+  let i = short.length;
   prepareConstSegment(constSeg, type);
   for (; i < long.length; i++) {
     short[i] = constSeg.slice(0);
   }
 }
 function makeEqualAreaSegments(short, long, type) {
-  var i;
-  var head;
-  var shortLength = short.length;
-  var longLength = long.length;
-  var constsSeg1;
-  var constsSeg2;
+  let i;
+  let head;
+  const shortLength = short.length;
+  const longLength = long.length;
+  let constsSeg1;
+  let constsSeg2;
   if ((shortLength - 1) % 2 === 0 && (longLength - 1) % 2 === 0) {
     i = (shortLength - 1) / 2 - 1;
     head = short.slice(0, i + 1);
@@ -309,16 +309,16 @@ function makeEqualAreaSegments(short, long, type) {
     constsSeg2 = short.slice(i + 1)[0].slice(0);
     prepareConstSegment(constsSeg1, type);
     prepareConstSegment(constsSeg2, type);
-    for (var j = i; j < (longLength - 1) / 2 - 1; j++) {
+    for (let j = i; j < (longLength - 1) / 2 - 1; j++) {
       short.splice(j + 1, 0, constsSeg1);
       short.splice(j + 3, 0, constsSeg2);
     }
   }
 }
 function baseCss(that, styles) {
-  var elemStyles = that._styles;
-  var key;
-  var value;
+  const elemStyles = that._styles;
+  let key;
+  let value;
   styles = styles || {};
   for (key in styles) {
     value = styles[key];
@@ -340,8 +340,8 @@ function baseCss(that, styles) {
   return that;
 }
 function fixFuncIri(wrapper, attribute) {
-  var element = wrapper.element;
-  var id = wrapper.attr(attribute);
+  const element = wrapper.element;
+  const id = wrapper.attr(attribute);
   if (id && id.indexOf('DevExpress') !== -1) {
     element.removeAttribute(attribute);
     element.setAttribute(attribute, getFuncIri(id, wrapper.renderer.pathModified));
@@ -349,17 +349,17 @@ function fixFuncIri(wrapper, attribute) {
 }
 function baseAttr(that, attrs) {
   attrs = attrs || {};
-  var settings = that._settings;
-  var attributes = {};
-  var key;
-  var value;
-  var elem = that.element;
-  var renderer = that.renderer;
-  var rtl = renderer.rtl;
-  var hasTransformations;
-  var recalculateDashStyle;
-  var sw;
-  var i;
+  const settings = that._settings;
+  const attributes = {};
+  let key;
+  let value;
+  const elem = that.element;
+  const renderer = that.renderer;
+  const rtl = renderer.rtl;
+  let hasTransformations;
+  let recalculateDashStyle;
+  let sw;
+  let i;
   if (!isObjectArgument(attrs)) {
     if (attrs in settings) {
       return settings[attrs];
@@ -426,8 +426,8 @@ function baseAttr(that, attrs) {
   return that;
 }
 function pathAttr(attrs) {
-  var that = this;
-  var segments;
+  const that = this;
+  let segments;
   if (isObjectArgument(attrs)) {
     attrs = extend({}, attrs);
     segments = attrs.segments;
@@ -444,13 +444,13 @@ function pathAttr(attrs) {
   return baseAttr(that, attrs);
 }
 function arcAttr(attrs) {
-  var settings = this._settings;
-  var x;
-  var y;
-  var innerRadius;
-  var outerRadius;
-  var startAngle;
-  var endAngle;
+  const settings = this._settings;
+  let x;
+  let y;
+  let innerRadius;
+  let outerRadius;
+  let startAngle;
+  let endAngle;
   if (isObjectArgument(attrs)) {
     attrs = extend({}, attrs);
     if ('x' in attrs || 'y' in attrs || 'innerRadius' in attrs || 'outerRadius' in attrs || 'startAngle' in attrs || 'endAngle' in attrs) {
@@ -472,14 +472,14 @@ function arcAttr(attrs) {
   return baseAttr(this, attrs);
 }
 function rectAttr(attrs) {
-  var that = this;
-  var x;
-  var y;
-  var width;
-  var height;
-  var sw;
-  var maxSW;
-  var newSW;
+  const that = this;
+  let x;
+  let y;
+  let width;
+  let height;
+  let sw;
+  let maxSW;
+  let newSW;
   if (isObjectArgument(attrs)) {
     attrs = extend({}, attrs);
     if (attrs.x !== undefined || attrs.y !== undefined || attrs.width !== undefined || attrs.height !== undefined || attrs[KEY_STROKE_WIDTH] !== undefined) {
@@ -503,14 +503,14 @@ function rectAttr(attrs) {
   return baseAttr(that, attrs);
 }
 function textAttr(attrs) {
-  var that = this;
-  var isResetRequired;
+  const that = this;
+  let isResetRequired;
   if (!isObjectArgument(attrs)) {
     return baseAttr(that, attrs);
   }
   attrs = extend({}, attrs);
-  var settings = that._settings;
-  var wasStroked = isDefined(settings[KEY_STROKE]) && isDefined(settings[KEY_STROKE_WIDTH]);
+  const settings = that._settings;
+  const wasStroked = isDefined(settings[KEY_STROKE]) && isDefined(settings[KEY_STROKE_WIDTH]);
   if (attrs[KEY_TEXT] !== undefined) {
     settings[KEY_TEXT] = attrs[KEY_TEXT];
     delete attrs[KEY_TEXT];
@@ -532,7 +532,7 @@ function textAttr(attrs) {
     alignTextNodes(that, attrs[KEY_TEXTS_ALIGNMENT]);
     delete attrs[KEY_TEXTS_ALIGNMENT];
   }
-  var isStroked = isDefined(settings[KEY_STROKE]) && isDefined(settings[KEY_STROKE_WIDTH]);
+  const isStroked = isDefined(settings[KEY_STROKE]) && isDefined(settings[KEY_STROKE_WIDTH]);
   baseAttr(that, attrs);
   isResetRequired = isResetRequired || isStroked !== wasStroked && settings[KEY_TEXT];
   if (isResetRequired) {
@@ -556,11 +556,11 @@ function textCss(styles) {
   return this;
 }
 function orderHtmlTree(list, line, node, parentStyle, parentClassName) {
-  var style;
-  var realStyle;
-  var i;
-  var ii;
-  var nodes;
+  let style;
+  let realStyle;
+  let i;
+  let ii;
+  let nodes;
   if (node.wholeText !== undefined) {
     list.push({
       value: node.wholeText,
@@ -599,10 +599,10 @@ function orderHtmlTree(list, line, node, parentStyle, parentClassName) {
   return line;
 }
 function adjustLineHeights(items) {
-  var i;
-  var ii;
-  var currentItem = items[0];
-  var item;
+  let i;
+  let ii;
+  let currentItem = items[0];
+  let item;
   for (i = 1, ii = items.length; i < ii; ++i) {
     item = items[i];
     if (item.line === currentItem.line) {
@@ -616,8 +616,8 @@ function adjustLineHeights(items) {
   }
 }
 function removeExtraAttrs(html) {
-  var findTagAttrs = /(?:(<[a-z0-9]+\s*))([\s\S]*?)(>|\/>)/gi;
-  var findStyleAndClassAttrs = /(style|class)\s*=\s*(["'])(?:(?!\2).)*\2\s?/gi;
+  const findTagAttrs = /(?:(<[a-z0-9]+\s*))([\s\S]*?)(>|\/>)/gi;
+  const findStyleAndClassAttrs = /(style|class)\s*=\s*(["'])(?:(?!\2).)*\2\s?/gi;
   return html.replace(findTagAttrs, function (allTagAttrs, p1, p2, p3) {
     p2 = (p2 && p2.match(findStyleAndClassAttrs) || []).map(function (str) {
       return str;
@@ -626,8 +626,8 @@ function removeExtraAttrs(html) {
   });
 }
 function parseHTML(text) {
-  var items = [];
-  var div = domAdapter.createElement('div');
+  const items = [];
+  const div = domAdapter.createElement('div');
   div.innerHTML = text.replace(/\r/g, '').replace(/\n/g, '<br/>').replace(/style=/g, 'data-style=');
   div.querySelectorAll('[data-style]').forEach(element => {
     element.style = element.getAttribute('data-style');
@@ -638,9 +638,9 @@ function parseHTML(text) {
   return items;
 }
 function parseMultiline(text) {
-  var texts = text.replace(/\r/g, '').split(/\n/g);
-  var i = 0;
-  var items = [];
+  const texts = text.replace(/\r/g, '').split(/\n/g);
+  let i = 0;
+  const items = [];
   for (; i < texts.length; i++) {
     items.push({
       value: texts[i].trim(),
@@ -651,9 +651,9 @@ function parseMultiline(text) {
   return items;
 }
 function createTspans(items, element, fieldName) {
-  var i;
-  var ii;
-  var item;
+  let i;
+  let ii;
+  let item;
   for (i = 0, ii = items.length; i < ii; ++i) {
     item = items[i];
     item[fieldName] = createElement('tspan');
@@ -674,18 +674,18 @@ function restoreText() {
   }
 }
 function applyEllipsis(maxWidth) {
-  var that = this;
-  var lines;
-  var hasEllipsis = false;
-  var i;
-  var ii;
-  var lineParts;
-  var j;
-  var jj;
-  var text;
+  const that = this;
+  let lines;
+  let hasEllipsis = false;
+  let i;
+  let ii;
+  let lineParts;
+  let j;
+  let jj;
+  let text;
   restoreText.call(that);
-  var ellipsis = that.renderer.text(ELLIPSIS).attr(that._styles).append(that.renderer.root);
-  var ellipsisWidth = ellipsis.getBBox().width;
+  const ellipsis = that.renderer.text(ELLIPSIS).attr(that._styles).append(that.renderer.root);
+  const ellipsisWidth = ellipsis.getBBox().width;
   if (that._getElementBBox().width > maxWidth) {
     if (maxWidth - ellipsisWidth < 0) {
       maxWidth = 0;
@@ -714,7 +714,7 @@ function applyEllipsis(maxWidth) {
   return hasEllipsis;
 }
 function cloneAndRemoveAttrs(node) {
-  var clone;
+  let clone;
   if (node) {
     clone = node.cloneNode();
     clone.removeAttribute('y');
@@ -723,32 +723,32 @@ function cloneAndRemoveAttrs(node) {
   return clone || node;
 }
 function detachTitleElements(element) {
-  var titleElements = domAdapter.querySelectorAll(element, 'title');
-  for (var i = 0; i < titleElements.length; i++) {
+  const titleElements = domAdapter.querySelectorAll(element, 'title');
+  for (let i = 0; i < titleElements.length; i++) {
     element.removeChild(titleElements[i]);
   }
   return titleElements;
 }
 function detachAndStoreTitleElements(element) {
-  var titleElements = detachTitleElements(element);
+  const titleElements = detachTitleElements(element);
   return () => {
-    for (var i = 0; i < titleElements.length; i++) {
+    for (let i = 0; i < titleElements.length; i++) {
       element.appendChild(titleElements[i]);
     }
   };
 }
 function setMaxSize(maxWidth, maxHeight) {
-  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var that = this;
-  var lines = [];
-  var textChanged = false;
-  var textIsEmpty = false;
-  var ellipsisMaxWidth = maxWidth;
+  let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  const that = this;
+  let lines = [];
+  let textChanged = false;
+  let textIsEmpty = false;
+  let ellipsisMaxWidth = maxWidth;
   restoreText.call(that);
-  var restoreTitleElement = detachAndStoreTitleElements(this.element);
-  var ellipsis = that.renderer.text(ELLIPSIS).attr(that._styles).append(that.renderer.root);
-  var ellipsisWidth = ellipsis.getBBox().width;
-  var {
+  const restoreTitleElement = detachAndStoreTitleElements(this.element);
+  const ellipsis = that.renderer.text(ELLIPSIS).attr(that._styles).append(that.renderer.root);
+  const ellipsisWidth = ellipsis.getBBox().width;
+  const {
     width,
     height
   } = that._getElementBBox();
@@ -788,8 +788,8 @@ function setMaxSize(maxWidth, maxHeight) {
   };
 }
 function getIndexForEllipsis(text, maxWidth, startBox, endBox) {
-  var k;
-  var kk;
+  let k;
+  let kk;
   if (startBox <= maxWidth && endBox > maxWidth) {
     for (k = 1, kk = text.value.length; k <= kk; ++k) {
       if (startBox + text.tspan.getSubStringLength(0, k) > maxWidth) {
@@ -802,12 +802,12 @@ function getTextWidth(text) {
   return text.value.length ? text.tspan.getSubStringLength(0, text.value.length) : 0;
 }
 function prepareLines(element, texts, maxWidth) {
-  var lines = [];
-  var i;
-  var ii;
-  var text;
-  var startBox;
-  var endBox;
+  let lines = [];
+  let i;
+  let ii;
+  let text;
+  let startBox;
+  let endBox;
   if (texts) {
     for (i = 0, ii = texts.length; i < ii; ++i) {
       text = texts[i];
@@ -842,36 +842,36 @@ function prepareLines(element, texts, maxWidth) {
   return lines;
 }
 function getSpaceBreakIndex(text, maxWidth) {
-  var initialIndices = text.startBox > 0 ? [0] : [];
-  var spaceIndices = text.value.split('').reduce((indices, char, index) => {
+  const initialIndices = text.startBox > 0 ? [0] : [];
+  const spaceIndices = text.value.split('').reduce((indices, char, index) => {
     if (char === ' ') {
       indices.push(index);
     }
     return indices;
   }, initialIndices);
-  var spaceIndex = 0;
+  let spaceIndex = 0;
   while (spaceIndices[spaceIndex + 1] !== undefined && text.startBox + text.tspan.getSubStringLength(0, spaceIndices[spaceIndex + 1]) < maxWidth) {
     spaceIndex++;
   }
   return spaceIndices[spaceIndex];
 }
 function getWordBreakIndex(text, maxWidth) {
-  for (var i = 0; i < text.value.length - 1; i++) {
+  for (let i = 0; i < text.value.length - 1; i++) {
     if (text.startBox + text.tspan.getSubStringLength(0, i + 1) > maxWidth) {
       return i;
     }
   }
 }
 function getEllipsisString(ellipsisMaxWidth, _ref) {
-  var {
+  let {
     hideOverflowEllipsis
   } = _ref;
   return hideOverflowEllipsis && ellipsisMaxWidth === 0 ? '' : ELLIPSIS;
 }
 function setEllipsis(text, ellipsisMaxWidth, options) {
-  var ellipsis = getEllipsisString(ellipsisMaxWidth, options);
+  const ellipsis = getEllipsisString(ellipsisMaxWidth, options);
   if (text.value.length && text.tspan.parentNode) {
-    for (var i = text.value.length - 1; i >= 1; i--) {
+    for (let i = text.value.length - 1; i >= 1; i--) {
       if (text.startBox + text.tspan.getSubStringLength(0, i) < ellipsisMaxWidth) {
         setNewText(text, i, ellipsis);
         break;
@@ -882,19 +882,19 @@ function setEllipsis(text, ellipsisMaxWidth, options) {
   }
 }
 function wordWrap(text, maxWidth, ellipsisMaxWidth, options, lastStepBreakIndex) {
-  var wholeText = text.value;
-  var breakIndex;
+  const wholeText = text.value;
+  let breakIndex;
   if (options.wordWrap !== 'none') {
     breakIndex = options.wordWrap === 'normal' ? getSpaceBreakIndex(text, maxWidth) : getWordBreakIndex(text, maxWidth);
   }
-  var restLines = [];
-  var restText;
+  let restLines = [];
+  let restText;
   if (isFinite(breakIndex) && !(lastStepBreakIndex === 0 && breakIndex === 0)) {
     setNewText(text, breakIndex, '');
-    var newTextOffset = wholeText[breakIndex] === ' ' ? 1 : 0;
-    var restString = wholeText.slice(breakIndex + newTextOffset);
+    const newTextOffset = wholeText[breakIndex] === ' ' ? 1 : 0;
+    const restString = wholeText.slice(breakIndex + newTextOffset);
     if (restString.length) {
-      var restTspan = cloneAndRemoveAttrs(text.tspan);
+      const restTspan = cloneAndRemoveAttrs(text.tspan);
       restTspan.textContent = restString;
       text.tspan.parentNode.appendChild(restTspan);
       restText = extend(extend({}, text), {
@@ -924,7 +924,7 @@ function wordWrap(text, maxWidth, ellipsisMaxWidth, options, lastStepBreakIndex)
   } else {
     text.tspan.parentNode.removeChild(text.tspan);
   }
-  var parts = [];
+  const parts = [];
   if (restText) {
     parts.push(restText);
   }
@@ -939,13 +939,13 @@ function calculateLineHeight(line, lineHeight) {
   }, 0);
 }
 function setMaxHeight(lines, ellipsisMaxWidth, options, maxHeight, lineHeight) {
-  var textOverflow = options.textOverflow;
+  const textOverflow = options.textOverflow;
   if (!isFinite(maxHeight) || Number(maxHeight) === 0 || textOverflow === 'none') {
     return lines;
   }
-  var result = lines.reduce((_ref2, l, index, arr) => {
-    var [lines, commonHeight] = _ref2;
-    var height = calculateLineHeight(l, lineHeight);
+  const result = lines.reduce((_ref2, l, index, arr) => {
+    let [lines, commonHeight] = _ref2;
+    const height = calculateLineHeight(l, lineHeight);
     commonHeight += height;
     if (commonHeight < maxHeight) {
       lines.push(l);
@@ -954,9 +954,9 @@ function setMaxHeight(lines, ellipsisMaxWidth, options, maxHeight, lineHeight) {
         removeTextSpan(item);
       });
       if (textOverflow === 'ellipsis') {
-        var prevLine = arr[index - 1];
+        const prevLine = arr[index - 1];
         if (prevLine) {
-          var text = prevLine.parts[prevLine.parts.length - 1];
+          const text = prevLine.parts[prevLine.parts.length - 1];
           if (!text.hasEllipsis) {
             if (ellipsisMaxWidth === 0 || text.endBox < ellipsisMaxWidth) {
               setNewText(text, text.value.length, getEllipsisString(ellipsisMaxWidth, options));
@@ -981,8 +981,8 @@ function setMaxHeight(lines, ellipsisMaxWidth, options, maxHeight, lineHeight) {
 }
 function applyOverflowRules(element, texts, maxWidth, ellipsisMaxWidth, options) {
   if (!texts) {
-    var textValue = element.textContent;
-    var text = {
+    const textValue = element.textContent;
+    const text = {
       value: textValue,
       height: 0,
       line: 0
@@ -992,8 +992,8 @@ function applyOverflowRules(element, texts, maxWidth, ellipsisMaxWidth, options)
     texts = [text];
   }
   return texts.reduce((_ref3, text) => {
-    var [lines, startBox, endBox, stop, lineNumber] = _ref3;
-    var line = lines[lines.length - 1];
+    let [lines, startBox, endBox, stop, lineNumber] = _ref3;
+    const line = lines[lines.length - 1];
     if (stop) {
       return [lines, startBox, endBox, stop];
     }
@@ -1015,7 +1015,7 @@ function applyOverflowRules(element, texts, maxWidth, ellipsisMaxWidth, options)
     text.endBox = endBox = startBox + getTextWidth(text);
     startBox = endBox;
     if (isDefined(maxWidth) && endBox > maxWidth) {
-      var wordWrapLines = wordWrap(text, maxWidth, ellipsisMaxWidth, options);
+      const wordWrapLines = wordWrap(text, maxWidth, ellipsisMaxWidth, options);
       if (!wordWrapLines.length) {
         lines = [];
         stop = true;
@@ -1027,8 +1027,8 @@ function applyOverflowRules(element, texts, maxWidth, ellipsisMaxWidth, options)
   }, [[], 0, 0, false, 0])[0];
 }
 function setNewText(text, index) {
-  var insertString = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : ELLIPSIS;
-  var newText = text.value.substr(0, index) + insertString;
+  let insertString = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : ELLIPSIS;
+  const newText = text.value.substr(0, index) + insertString;
   text.value = text.tspan.textContent = newText;
   text.stroke && (text.stroke.textContent = newText);
   if (insertString === ELLIPSIS) {
@@ -1040,8 +1040,8 @@ function removeTextSpan(text) {
   text.stroke && text.stroke.parentNode && text.stroke.parentNode.removeChild(text.stroke);
 }
 function createTextNodes(wrapper, text, isStroked) {
-  var items;
-  var parsedHtml;
+  let items;
+  let parsedHtml;
   wrapper._texts = null;
   wrapper.clear();
   if (text === null) return;
@@ -1079,19 +1079,19 @@ function getItemLineHeight(item, defaultValue) {
 }
 function locateTextNodes(wrapper) {
   if (!wrapper._texts) return;
-  var items = wrapper._texts;
-  var x = wrapper._settings.x;
-  var lineHeight = wrapper._getLineHeight();
-  var i;
-  var ii;
-  var item = items[0];
+  const items = wrapper._texts;
+  const x = wrapper._settings.x;
+  const lineHeight = wrapper._getLineHeight();
+  let i;
+  let ii;
+  let item = items[0];
   setTextNodeAttribute(item, 'x', x);
   setTextNodeAttribute(item, 'y', wrapper._settings.y);
   for (i = 1, ii = items.length; i < ii; ++i) {
     item = items[i];
     if (parseFloat(item.height) >= 0) {
       setTextNodeAttribute(item, 'x', x);
-      var height = getItemLineHeight(item, lineHeight);
+      const height = getItemLineHeight(item, lineHeight);
       setTextNodeAttribute(item, 'dy', height); // T177039
     }
   }
@@ -1100,35 +1100,35 @@ function alignTextNodes(wrapper, alignment) {
   if (!wrapper._texts || alignment === 'center') {
     return;
   }
-  var items = wrapper._texts;
-  var direction = alignment === 'left' ? -1 : 1;
-  var maxTextWidth = Math.max.apply(Math, items.map(t => {
+  const items = wrapper._texts;
+  const direction = alignment === 'left' ? -1 : 1;
+  const maxTextWidth = Math.max.apply(Math, items.map(t => {
     return getTextWidth(t);
   }));
-  for (var i = 0; i < items.length; i++) {
-    var item = items[i];
-    var textWidth = getTextWidth(item);
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    const textWidth = getTextWidth(item);
     if (maxTextWidth !== 0 && maxTextWidth !== textWidth) {
       setTextNodeAttribute(item, 'dx', direction * round((maxTextWidth - textWidth) / 2 * 10) / 10);
     }
   }
 }
 function maxLengthFontSize(fontSize1, fontSize2) {
-  var parsedHeight1 = parseFloat(fontSize1);
-  var parsedHeight2 = parseFloat(fontSize2);
-  var height1 = parsedHeight1 || DEFAULT_FONT_SIZE;
-  var height2 = parsedHeight2 || DEFAULT_FONT_SIZE;
+  const parsedHeight1 = parseFloat(fontSize1);
+  const parsedHeight2 = parseFloat(fontSize2);
+  const height1 = parsedHeight1 || DEFAULT_FONT_SIZE;
+  const height2 = parsedHeight2 || DEFAULT_FONT_SIZE;
   return height1 > height2 ? !isNaN(parsedHeight1) ? fontSize1 : height1 : !isNaN(parsedHeight2) ? fontSize2 : height2;
 }
 function strokeTextNodes(wrapper) {
   if (!wrapper._texts) return;
-  var items = wrapper._texts;
-  var stroke = wrapper._settings[KEY_STROKE];
-  var strokeWidth = wrapper._settings[KEY_STROKE_WIDTH];
-  var strokeOpacity = wrapper._settings[KEY_STROKE_OPACITY] || 1;
-  var tspan;
-  var i;
-  var ii;
+  const items = wrapper._texts;
+  const stroke = wrapper._settings[KEY_STROKE];
+  const strokeWidth = wrapper._settings[KEY_STROKE_WIDTH];
+  const strokeOpacity = wrapper._settings[KEY_STROKE_OPACITY] || 1;
+  let tspan;
+  let i;
+  let ii;
   for (i = 0, ii = items.length; i < ii; ++i) {
     tspan = items[i].stroke;
     tspan.setAttribute(KEY_STROKE, stroke);
@@ -1139,12 +1139,12 @@ function strokeTextNodes(wrapper) {
 }
 function baseAnimate(that, params, options, complete) {
   options = options || {};
-  var key;
-  var value;
-  var renderer = that.renderer;
-  var settings = that._settings;
-  var animationParams = {};
-  var defaults = {
+  let key;
+  let value;
+  const renderer = that.renderer;
+  const settings = that._settings;
+  const animationParams = {};
+  const defaults = {
     translateX: 0,
     translateY: 0,
     scaleX: 1,
@@ -1184,10 +1184,10 @@ function baseAnimate(that, params, options, complete) {
   return that;
 }
 function pathAnimate(params, options, complete) {
-  var that = this;
-  var curSegments = that.segments || [];
-  var newSegments;
-  var endSegments;
+  const that = this;
+  const curSegments = that.segments || [];
+  let newSegments;
+  let endSegments;
   if (that.renderer.animationEnabled() && 'points' in params) {
     newSegments = buildPathSegments(params.points, that.type);
     endSegments = compensateSegments(curSegments, newSegments, that.type);
@@ -1201,9 +1201,9 @@ function pathAnimate(params, options, complete) {
   return baseAnimate(that, params, options, complete);
 }
 function arcAnimate(params, options, complete) {
-  var that = this;
-  var settings = that._settings;
-  var arcParams = {
+  const that = this;
+  const settings = that._settings;
+  const arcParams = {
     from: {},
     to: {}
   };
@@ -1231,7 +1231,7 @@ function arcAnimate(params, options, complete) {
   return baseAnimate(that, params, options, complete);
 }
 function buildLink(target, parameters) {
-  var obj = {
+  const obj = {
     is: false,
     name: parameters.name || parameters,
     after: parameters.after
@@ -1245,8 +1245,8 @@ function buildLink(target, parameters) {
 }
 
 // SvgElement
-export var SvgElement = function SvgElement(renderer, tagName, type) {
-  var that = this;
+export let SvgElement = function (renderer, tagName, type) {
+  const that = this;
   that.renderer = renderer;
   that.element = createElement(tagName);
   that._settings = {};
@@ -1260,12 +1260,12 @@ function removeFuncIriCallback(callback) {
 }
 SvgElement.prototype = {
   constructor: SvgElement,
-  _getJQElement: function _getJQElement() {
+  _getJQElement: function () {
     return this._$element || (this._$element = $(this.element));
   },
-  _addFixIRICallback: function _addFixIRICallback() {
-    var that = this;
-    var fn = function fn() {
+  _addFixIRICallback: function () {
+    const that = this;
+    const fn = function () {
       fixFuncIri(that, 'fill');
       fixFuncIri(that, 'clip-path');
       fixFuncIri(that, 'filter');
@@ -1275,9 +1275,9 @@ SvgElement.prototype = {
     fixFuncIriCallbacks.add(fn);
     that._addFixIRICallback = function () {};
   },
-  _clearChildrenFuncIri: function _clearChildrenFuncIri() {
-    var clearChildren = function clearChildren(element) {
-      var i;
+  _clearChildrenFuncIri: function () {
+    const clearChildren = function (element) {
+      let i;
       for (i = 0; i < element.childNodes.length; i++) {
         removeFuncIriCallback(element.childNodes[i]._fixFuncIri);
         clearChildren(element.childNodes[i]);
@@ -1285,93 +1285,93 @@ SvgElement.prototype = {
     };
     clearChildren(this.element);
   },
-  dispose: function dispose() {
+  dispose: function () {
     removeFuncIriCallback(this.element._fixFuncIri);
     this._clearChildrenFuncIri();
     this._getJQElement().remove();
     return this;
   },
-  append: function append(parent) {
+  append: function (parent) {
     (parent || this.renderer.root).element.appendChild(this.element);
     return this;
   },
-  remove: function remove() {
-    var element = this.element;
+  remove: function () {
+    const element = this.element;
     element.parentNode && element.parentNode.removeChild(element);
     return this;
   },
   // NOTE: Though it is not actually required I think it would be better to explicitly declare usage of link mechanism
-  enableLinks: function enableLinks() {
+  enableLinks: function () {
     this._links = [];
     return this;
   },
-  virtualLink: function virtualLink(parameters) {
+  virtualLink: function (parameters) {
     linkItem({
       _link: buildLink(null, parameters)
     }, this);
     return this;
   },
-  linkAfter: function linkAfter(name) {
+  linkAfter: function (name) {
     this._linkAfter = name;
     return this;
   },
-  linkOn: function linkOn(target, parameters) {
+  linkOn: function (target, parameters) {
     this._link = buildLink(target, parameters);
     linkItem(this, target);
     return this;
   },
-  linkOff: function linkOff() {
+  linkOff: function () {
     unlinkItem(this);
     this._link = null;
     return this;
   },
   // It might be better to traverse list to start (not to end) as widget components more likely will be rendered in the same order as they were created
-  linkAppend: function linkAppend() {
-    var link = this._link;
-    var items = link.to._links;
-    var i;
-    var next;
+  linkAppend: function () {
+    const link = this._link;
+    const items = link.to._links;
+    let i;
+    let next;
     for (i = link.i + 1; (next = items[i]) && !next._link.is; ++i);
     this._insert(link.to, next);
     link.is = true;
     return this;
   },
   // The method exists only for being overridden in vml
-  _insert: function _insert(parent, next) {
+  _insert: function (parent, next) {
     parent.element.insertBefore(this.element, next ? next.element : null);
   },
-  linkRemove: function linkRemove() {
+  linkRemove: function () {
     this.remove();
     this._link.is = false;
     return this;
   },
-  clear: function clear() {
+  clear: function () {
     this._clearChildrenFuncIri(); // T711457
     this._getJQElement().empty();
     return this;
   },
-  toBackground: function toBackground() {
-    var elem = this.element;
-    var parent = elem.parentNode;
+  toBackground: function () {
+    const elem = this.element;
+    const parent = elem.parentNode;
     parent && parent.insertBefore(elem, parent.firstChild);
     return this;
   },
-  toForeground: function toForeground() {
-    var elem = this.element;
-    var parent = elem.parentNode;
+  toForeground: function () {
+    const elem = this.element;
+    const parent = elem.parentNode;
     parent && parent.appendChild(elem);
     return this;
   },
-  attr: function attr(attrs) {
+  attr: function (attrs) {
     return baseAttr(this, attrs);
   },
-  smartAttr: function smartAttr(attrs) {
+  smartAttr: function (attrs) {
     return this.attr(processHatchingAttrs(this, attrs));
   },
-  css: function css(styles) {
+  css: function (styles) {
     return baseCss(this, styles);
   },
-  animate: function animate(params, options, complete) {
+  animate: function (params, options, complete) {
     return baseAnimate(this, params, options, complete);
   },
   sharp(pos, sharpDirection) {
@@ -1381,15 +1381,15 @@ SvgElement.prototype = {
     });
   },
   _applyTransformation() {
-    var tr = this._settings;
-    var rotateX;
-    var rotateY;
-    var transformations = [];
-    var sharpMode = tr.sharp;
-    var trDirection = tr.sharpDirection || 1;
-    var strokeOdd = tr[KEY_STROKE_WIDTH] % 2;
-    var correctionX = strokeOdd && (sharpMode === 'h' || sharpMode === true) ? SHARPING_CORRECTION * trDirection : 0;
-    var correctionY = strokeOdd && (sharpMode === 'v' || sharpMode === true) ? SHARPING_CORRECTION * trDirection : 0;
+    const tr = this._settings;
+    let rotateX;
+    let rotateY;
+    const transformations = [];
+    const sharpMode = tr.sharp;
+    const trDirection = tr.sharpDirection || 1;
+    const strokeOdd = tr[KEY_STROKE_WIDTH] % 2;
+    const correctionX = strokeOdd && (sharpMode === 'h' || sharpMode === true) ? SHARPING_CORRECTION * trDirection : 0;
+    const correctionY = strokeOdd && (sharpMode === 'v' || sharpMode === true) ? SHARPING_CORRECTION * trDirection : 0;
     transformations.push('translate(' + ((tr.translateX || 0) + correctionX) + ',' + ((tr.translateY || 0) + correctionY) + ')');
     if (tr.rotate) {
       if ('rotateX' in tr) {
@@ -1404,8 +1404,8 @@ SvgElement.prototype = {
       }
       transformations.push('rotate(' + tr.rotate + ',' + (rotateX || 0) + ',' + (rotateY || 0) + ')');
     }
-    var scaleXDefined = isDefined(tr.scaleX);
-    var scaleYDefined = isDefined(tr.scaleY);
+    const scaleXDefined = isDefined(tr.scaleX);
+    const scaleYDefined = isDefined(tr.scaleY);
     if (scaleXDefined || scaleYDefined) {
       transformations.push('scale(' + (scaleXDefined ? tr.scaleX : 1) + ',' + (scaleYDefined ? tr.scaleY : 1) + ')');
     }
@@ -1413,8 +1413,8 @@ SvgElement.prototype = {
       this.element.setAttribute('transform', transformations.join(' '));
     }
   },
-  move: function move(x, y, animate, animOptions) {
-    var obj = {};
+  move: function (x, y, animate, animOptions) {
+    const obj = {};
     isDefined(x) && (obj.translateX = x);
     isDefined(y) && (obj.translateY = y);
     if (!animate) {
@@ -1424,8 +1424,8 @@ SvgElement.prototype = {
     }
     return this;
   },
-  rotate: function rotate(angle, x, y, animate, animOptions) {
-    var obj = {
+  rotate: function (angle, x, y, animate, animOptions) {
+    const obj = {
       rotate: angle || 0
     };
     isDefined(x) && (obj.rotateX = x);
@@ -1437,9 +1437,9 @@ SvgElement.prototype = {
     }
     return this;
   },
-  _getElementBBox: function _getElementBBox() {
-    var elem = this.element;
-    var bBox;
+  _getElementBBox: function () {
+    const elem = this.element;
+    let bBox;
     try {
       bBox = elem.getBBox && elem.getBBox();
     } catch (e) {}
@@ -1451,9 +1451,9 @@ SvgElement.prototype = {
     };
   },
   // TODO do we need to round results and consider rotation coordinates?
-  getBBox: function getBBox() {
-    var transformation = this._settings;
-    var bBox = this._getElementBBox();
+  getBBox: function () {
+    const transformation = this._settings;
+    let bBox = this._getElementBBox();
     if (transformation.rotate) {
       bBox = rotateBBox(bBox, [('rotateX' in transformation ? transformation.rotateX : transformation.x) || 0, ('rotateY' in transformation ? transformation.rotateY : transformation.y) || 0], -transformation.rotate); // Angle is transformed from svg to right-handed cartesian space
     } else {
@@ -1461,28 +1461,28 @@ SvgElement.prototype = {
     }
     return bBox;
   },
-  markup: function markup() {
+  markup: function () {
     return getSvgMarkup(this.element);
   },
-  getOffset: function getOffset() {
+  getOffset: function () {
     return this._getJQElement().offset();
   },
-  stopAnimation: function stopAnimation(disableComplete) {
-    var animation = this.animation;
+  stopAnimation: function (disableComplete) {
+    const animation = this.animation;
     animation && animation.stop(disableComplete);
     return this;
   },
-  setTitle: function setTitle(text) {
-    var titleElem = createElement('title');
+  setTitle: function (text) {
+    const titleElem = createElement('title');
     titleElem.textContent = text || '';
     this.element.appendChild(titleElem);
   },
   removeTitle() {
     detachTitleElements(this.element);
   },
-  data: function data(obj, val) {
-    var elem = this.element;
-    var key;
+  data: function (obj, val) {
+    const elem = this.element;
+    let key;
     if (val !== undefined) {
       elem[obj] = val;
     } else {
@@ -1492,20 +1492,20 @@ SvgElement.prototype = {
     }
     return this;
   },
-  on: function on() {
-    var args = [this._getJQElement()];
+  on: function () {
+    const args = [this._getJQElement()];
     args.push.apply(args, arguments);
     eventsEngine.on.apply(eventsEngine, args);
     return this;
   },
-  off: function off() {
-    var args = [this._getJQElement()];
+  off: function () {
+    const args = [this._getJQElement()];
     args.push.apply(args, arguments);
     eventsEngine.off.apply(eventsEngine, args);
     return this;
   },
-  trigger: function trigger() {
-    var args = [this._getJQElement()];
+  trigger: function () {
+    const args = [this._getJQElement()];
     args.push.apply(args, arguments);
     eventsEngine.trigger.apply(eventsEngine, args);
     return this;
@@ -1514,7 +1514,7 @@ SvgElement.prototype = {
 // SvgElement
 
 // PathSvgElement
-export var PathSvgElement = function PathSvgElement(renderer, type) {
+export let PathSvgElement = function (renderer, type) {
   SvgElement.call(this, renderer, 'path', type);
 };
 PathSvgElement.prototype = objectCreate(SvgElement.prototype);
@@ -1526,7 +1526,7 @@ extend(PathSvgElement.prototype, {
 // PathSvgElement
 
 // ArcSvgElement
-export var ArcSvgElement = function ArcSvgElement(renderer) {
+export let ArcSvgElement = function (renderer) {
   SvgElement.call(this, renderer, 'path', 'arc');
 };
 ArcSvgElement.prototype = objectCreate(SvgElement.prototype);
@@ -1538,7 +1538,7 @@ extend(ArcSvgElement.prototype, {
 // ArcSvgElement
 
 // RectSvgElement
-export var RectSvgElement = function RectSvgElement(renderer) {
+export let RectSvgElement = function (renderer) {
   SvgElement.call(this, renderer, 'rect');
 };
 RectSvgElement.prototype = objectCreate(SvgElement.prototype);
@@ -1549,7 +1549,7 @@ extend(RectSvgElement.prototype, {
 // RectSvgElement
 
 // TextSvgElement
-export var TextSvgElement = function TextSvgElement(renderer) {
+export let TextSvgElement = function (renderer) {
   SvgElement.call(this, renderer, 'text');
   this.css({
     'white-space': 'pre'
@@ -1570,17 +1570,17 @@ extend(TextSvgElement.prototype, {
 // TextSvgElement
 
 function updateIndexes(items, k) {
-  var i;
-  var item;
+  let i;
+  let item;
   for (i = k; item = items[i]; ++i) {
     item._link.i = i;
   }
 }
 function linkItem(target, container) {
-  var items = container._links;
-  var key = target._link.after = target._link.after || container._linkAfter;
-  var i;
-  var item;
+  const items = container._links;
+  const key = target._link.after = target._link.after || container._linkAfter;
+  let i;
+  let item;
   if (key) {
     for (i = 0; (item = items[i]) && item._link.name !== key; ++i);
     if (item) {
@@ -1593,14 +1593,14 @@ function linkItem(target, container) {
   updateIndexes(items, i);
 }
 function unlinkItem(target) {
-  var i;
-  var items = target._link.to._links;
+  let i;
+  const items = target._link.to._links;
   for (i = 0; items[i] !== target; ++i);
   items.splice(i, 1);
   updateIndexes(items, i);
 }
 export function Renderer(options) {
-  var that = this;
+  const that = this;
   that.root = that._createElement('svg', {
     xmlns: 'http://www.w3.org/2000/svg',
     version: '1.1',
@@ -1630,8 +1630,8 @@ export function Renderer(options) {
 }
 Renderer.prototype = {
   constructor: Renderer,
-  _init: function _init() {
-    var that = this;
+  _init: function () {
+    const that = this;
     that._defs = that._createElement('defs').append(that.root);
     that._animationController = new AnimationController(that.root.element);
     that._animation = {
@@ -1640,8 +1640,8 @@ Renderer.prototype = {
       easing: 'easeOutCubic'
     };
   },
-  setOptions: function setOptions(options) {
-    var that = this;
+  setOptions: function (options) {
+    const that = this;
     that.rtl = !!options.rtl;
     that.encodeHtml = !!options.encodeHtml;
     that.updateAnimationOptions(options.animation || {});
@@ -1650,13 +1650,13 @@ Renderer.prototype = {
     });
     return that;
   },
-  _createElement: function _createElement(tagName, attr, type) {
-    var elem = new SvgElement(this, tagName, type);
+  _createElement: function (tagName, attr, type) {
+    const elem = new SvgElement(this, tagName, type);
     attr && elem.attr(attr);
     return elem;
   },
-  lock: function lock() {
-    var that = this;
+  lock: function () {
+    const that = this;
     if (that._locker === 0) {
       that._backed = !that._$container.is(':visible');
       if (that._backed) {
@@ -1666,8 +1666,8 @@ Renderer.prototype = {
     ++that._locker;
     return that;
   },
-  unlock: function unlock() {
-    var that = this;
+  unlock: function () {
+    const that = this;
     --that._locker;
     if (that._locker === 0) {
       if (that._backed) {
@@ -1677,7 +1677,7 @@ Renderer.prototype = {
     }
     return that;
   },
-  resize: function resize(width, height) {
+  resize: function (width, height) {
     if (width >= 0 && height >= 0) {
       this.root.attr({
         width: width,
@@ -1686,9 +1686,9 @@ Renderer.prototype = {
     }
     return this;
   },
-  dispose: function dispose() {
-    var that = this;
-    var key;
+  dispose: function () {
+    const that = this;
+    let key;
     that.root.dispose();
     that._defs.dispose();
     that._animationController.dispose();
@@ -1698,32 +1698,32 @@ Renderer.prototype = {
     }
     return that;
   },
-  animationEnabled: function animationEnabled() {
+  animationEnabled: function () {
     return !!this._animation.enabled;
   },
-  updateAnimationOptions: function updateAnimationOptions(newOptions) {
+  updateAnimationOptions: function (newOptions) {
     extend(this._animation, newOptions);
     return this;
   },
-  stopAllAnimations: function stopAllAnimations(lock) {
+  stopAllAnimations: function (lock) {
     this._animationController[lock ? 'lock' : 'stop']();
     return this;
   },
-  animateElement: function animateElement(element, params, options) {
+  animateElement: function (element, params, options) {
     this._animationController.animateElement(element, params, options);
     return this;
   },
-  svg: function svg() {
+  svg: function () {
     return this.root.markup();
   },
-  getRootOffset: function getRootOffset() {
+  getRootOffset: function () {
     return this.root.getOffset();
   },
-  onEndAnimation: function onEndAnimation(endAnimation) {
+  onEndAnimation: function (endAnimation) {
     this._animationController.onEndAnimation(endAnimation);
   },
-  rect: function rect(x, y, width, height) {
-    var elem = new RectSvgElement(this);
+  rect: function (x, y, width, height) {
+    const elem = new RectSvgElement(this);
     return elem.attr({
       x: x || 0,
       y: y || 0,
@@ -1731,21 +1731,21 @@ Renderer.prototype = {
       height: height || 0
     });
   },
-  simpleRect: function simpleRect() {
+  simpleRect: function () {
     return this._createElement('rect');
   },
-  circle: function circle(x, y, r) {
+  circle: function (x, y, r) {
     return this._createElement('circle', {
       cx: x || 0,
       cy: y || 0,
       r: r || 0
     });
   },
-  g: function g() {
+  g: function () {
     return this._createElement('g');
   },
-  image: function image(x, y, w, h, href, location) {
-    var image = this._createElement('image', {
+  image: function (x, y, w, h, href, location) {
+    const image = this._createElement('image', {
       x: x || 0,
       y: y || 0,
       width: w || 0,
@@ -1756,16 +1756,16 @@ Renderer.prototype = {
     return image;
   },
   // to combine different d attributes use helper methods
-  path: function path(points, type) {
-    var elem = new PathSvgElement(this, type);
+  path: function (points, type) {
+    const elem = new PathSvgElement(this, type);
     return elem.attr({
       points: points || []
     });
   },
   // TODO check B232257
   // TODO animate end angle special case
-  arc: function arc(x, y, innerRadius, outerRadius, startAngle, endAngle) {
-    var elem = new ArcSvgElement(this);
+  arc: function (x, y, innerRadius, outerRadius, startAngle, endAngle) {
+    const elem = new ArcSvgElement(this);
     return elem.attr({
       x: x || 0,
       y: y || 0,
@@ -1775,89 +1775,88 @@ Renderer.prototype = {
       endAngle: endAngle || 0
     });
   },
-  text: function text(_text, x, y) {
-    var elem = new TextSvgElement(this);
+  text: function (text, x, y) {
+    const elem = new TextSvgElement(this);
     return elem.attr({
-      text: _text,
+      text: text,
       x: x || 0,
       y: y || 0
     });
   },
-  linearGradient: function linearGradient(stops) {
-    var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : getNextDefsSvgId();
-    var rotationAngle = arguments.length > 2 ? arguments[2] : undefined;
-    var gradient = this._createElement('linearGradient', {
+  linearGradient: function (stops) {
+    let id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : getNextDefsSvgId();
+    let rotationAngle = arguments.length > 2 ? arguments[2] : undefined;
+    const gradient = this._createElement('linearGradient', {
       id,
-      gradientTransform: "rotate(".concat(rotationAngle || 0, ")")
+      gradientTransform: `rotate(${rotationAngle || 0})`
     }).append(this._defs);
     gradient.id = id;
     this._createGradientStops(stops, gradient);
     return gradient;
   },
-  radialGradient: function radialGradient(stops, id) {
-    var gradient = this._createElement('radialGradient', {
+  radialGradient: function (stops, id) {
+    const gradient = this._createElement('radialGradient', {
       id
     }).append(this._defs);
     this._createGradientStops(stops, gradient);
     return gradient;
   },
-  _createGradientStops: function _createGradientStops(stops, group) {
+  _createGradientStops: function (stops, group) {
     stops.forEach(stop => {
-      var _stop$stopColor;
       this._createElement('stop', {
         offset: stop.offset,
-        'stop-color': (_stop$stopColor = stop['stop-color']) !== null && _stop$stopColor !== void 0 ? _stop$stopColor : stop.color,
+        'stop-color': stop['stop-color'] ?? stop.color,
         'stop-opacity': stop.opacity
       }).append(group);
     });
   },
   // appended automatically
-  pattern: function pattern(color, hatching, _id) {
+  pattern: function (color, hatching, _id) {
     hatching = hatching || {};
-    var that = this;
-    var step = hatching.step || 6;
-    var stepTo2 = step / 2;
-    var stepBy15 = step * 1.5;
-    var id = _id || getNextDefsSvgId();
-    var d = normalizeEnum(hatching.direction) === 'right' ? 'M ' + stepTo2 + ' ' + -stepTo2 + ' L ' + -stepTo2 + ' ' + stepTo2 + ' M 0 ' + step + ' L ' + step + ' 0 M ' + stepBy15 + ' ' + stepTo2 + ' L ' + stepTo2 + ' ' + stepBy15 : 'M 0 0 L ' + step + ' ' + step + ' M ' + -stepTo2 + ' ' + stepTo2 + ' L ' + stepTo2 + ' ' + stepBy15 + ' M ' + stepTo2 + ' ' + -stepTo2 + ' L ' + stepBy15 + ' ' + stepTo2;
-    var pattern = that._createElement('pattern', {
+    const that = this;
+    const step = hatching.step || 6;
+    const stepTo2 = step / 2;
+    const stepBy15 = step * 1.5;
+    const id = _id || getNextDefsSvgId();
+    const d = normalizeEnum(hatching.direction) === 'right' ? 'M ' + stepTo2 + ' ' + -stepTo2 + ' L ' + -stepTo2 + ' ' + stepTo2 + ' M 0 ' + step + ' L ' + step + ' 0 M ' + stepBy15 + ' ' + stepTo2 + ' L ' + stepTo2 + ' ' + stepBy15 : 'M 0 0 L ' + step + ' ' + step + ' M ' + -stepTo2 + ' ' + stepTo2 + ' L ' + stepTo2 + ' ' + stepBy15 + ' M ' + stepTo2 + ' ' + -stepTo2 + ' L ' + stepBy15 + ' ' + stepTo2;
+    const pattern = that._createElement('pattern', {
       id: id,
       width: step,
       height: step,
       patternUnits: 'userSpaceOnUse'
     }).append(that._defs);
     pattern.id = id;
-    var rect = that.rect(0, 0, step, step).attr({
+    const rect = that.rect(0, 0, step, step).attr({
       fill: color,
       opacity: hatching.opacity
     }).append(pattern);
-    var path = new PathSvgElement(this).attr({
+    const path = new PathSvgElement(this).attr({
       d: d,
       'stroke-width': hatching.width || 1,
       stroke: color
     }).append(pattern);
     return pattern;
   },
-  customPattern: function customPattern(id, template, width, height) {
-    var option = {
+  customPattern: function (id, template, width, height) {
+    const option = {
       id,
       width,
       height,
       patternContentUnits: 'userSpaceOnUse',
       patternUnits: this._getPatternUnits(width, height)
     };
-    var pattern = this._createElement('pattern', option).append(this._defs);
+    const pattern = this._createElement('pattern', option).append(this._defs);
     template.render({
       container: pattern.element
     });
     return pattern;
   },
-  _getPatternUnits: function _getPatternUnits(width, height) {
+  _getPatternUnits: function (width, height) {
     if (Number(width) && Number(height)) {
       return 'userSpaceOnUse';
     }
   },
-  _getPointsWithYOffset: function _getPointsWithYOffset(points, offset) {
+  _getPointsWithYOffset: function (points, offset) {
     return points.map(function (point, index) {
       if (index % 2 !== 0) {
         return point + offset;
@@ -1866,13 +1865,13 @@ Renderer.prototype = {
     });
   },
   // appended automatically
-  clipShape: function clipShape(method, methodArgs) {
-    var that = this;
-    var id = getNextDefsSvgId();
-    var clipPath = that._createElement('clipPath', {
+  clipShape: function (method, methodArgs) {
+    const that = this;
+    const id = getNextDefsSvgId();
+    let clipPath = that._createElement('clipPath', {
       id: id
     }).append(that._defs);
-    var shape = method.apply(that, methodArgs).append(clipPath);
+    const shape = method.apply(that, methodArgs).append(clipPath);
     shape.id = id;
     shape.remove = function () {
       throw 'Not implemented';
@@ -1893,39 +1892,39 @@ Renderer.prototype = {
     return this.clipShape(this.circle, arguments);
   },
   // appended automatically
-  shadowFilter: function shadowFilter(x, y, width, height, offsetX, offsetY, blur, color, opacity) {
-    var that = this;
-    var id = getNextDefsSvgId();
-    var filter = that._createElement('filter', {
+  shadowFilter: function (x, y, width, height, offsetX, offsetY, blur, color, opacity) {
+    const that = this;
+    const id = getNextDefsSvgId();
+    const filter = that._createElement('filter', {
       id: id,
       x: x || 0,
       y: y || 0,
       width: width || 0,
       height: height || 0
     }).append(that._defs);
-    var gaussianBlur = that._createElement('feGaussianBlur', {
+    const gaussianBlur = that._createElement('feGaussianBlur', {
       'in': 'SourceGraphic',
       'result': 'gaussianBlurResult',
       'stdDeviation': blur || 0
     }).append(filter);
-    var offset = that._createElement('feOffset', {
+    const offset = that._createElement('feOffset', {
       'in': 'gaussianBlurResult',
       'result': 'offsetResult',
       'dx': offsetX || 0,
       'dy': offsetY || 0
     }).append(filter);
-    var flood = that._createElement('feFlood', {
+    const flood = that._createElement('feFlood', {
       'result': 'floodResult',
       'flood-color': color || '',
       'flood-opacity': opacity
     }).append(filter);
-    var composite = that._createElement('feComposite', {
+    const composite = that._createElement('feComposite', {
       'in': 'floodResult',
       'in2': 'offsetResult',
       'operator': 'in',
       'result': 'compositeResult'
     }).append(filter);
-    var finalComposite = that._createElement('feComposite', {
+    const finalComposite = that._createElement('feComposite', {
       'in': 'SourceGraphic',
       'in2': 'compositeResult',
       'operator': 'over'
@@ -1937,10 +1936,10 @@ Renderer.prototype = {
     filter.composite = composite;
     filter.finalComposite = finalComposite;
     filter.attr = function (attrs) {
-      var that = this;
-      var filterAttrs = {};
-      var offsetAttrs = {};
-      var floodAttrs = {};
+      const that = this;
+      const filterAttrs = {};
+      const offsetAttrs = {};
+      const floodAttrs = {};
       'x' in attrs && (filterAttrs.x = attrs.x);
       'y' in attrs && (filterAttrs.y = attrs.y);
       'width' in attrs && (filterAttrs.width = attrs.width);
@@ -1959,14 +1958,14 @@ Renderer.prototype = {
     };
     return filter;
   },
-  brightFilter: function brightFilter(type, slope) {
-    var that = this;
-    var id = getNextDefsSvgId();
-    var filter = that._createElement('filter', {
+  brightFilter: function (type, slope) {
+    const that = this;
+    const id = getNextDefsSvgId();
+    const filter = that._createElement('filter', {
       id: id
     }).append(that._defs);
-    var componentTransferElement = that._createElement('feComponentTransfer').append(filter);
-    var attrs = {
+    const componentTransferElement = that._createElement('feComponentTransfer').append(filter);
+    const attrs = {
       type: type,
       slope: slope
     };
@@ -1976,13 +1975,13 @@ Renderer.prototype = {
     that._createElement('feFuncB', attrs).append(componentTransferElement);
     return filter;
   },
-  getGrayScaleFilter: function getGrayScaleFilter() {
+  getGrayScaleFilter: function () {
     if (this._grayScaleFilter) {
       return this._grayScaleFilter;
     }
-    var that = this;
-    var id = getNextDefsSvgId();
-    var filter = that._createElement('filter', {
+    const that = this;
+    const id = getNextDefsSvgId();
+    const filter = that._createElement('filter', {
       id: id
     }).append(that._defs);
     that._createElement('feColorMatrix').attr({
@@ -1993,25 +1992,25 @@ Renderer.prototype = {
     that._grayScaleFilter = filter;
     return filter;
   },
-  lightenFilter: function lightenFilter(id) {
-    var coef = 1.3;
-    var filter = this._createElement('filter', {
+  lightenFilter: function (id) {
+    const coef = 1.3;
+    const filter = this._createElement('filter', {
       id
     }).append(this._defs);
     this._createElement('feColorMatrix', {
       type: 'matrix',
-      values: "".concat(coef, " 0 0 0 0 0 ").concat(coef, " 0 0 0 0 0 ").concat(coef, " 0 0 0 0 0 1 0")
+      values: `${coef} 0 0 0 0 0 ${coef} 0 0 0 0 0 ${coef} 0 0 0 0 0 1 0`
     }).append(filter);
     filter.id = id;
     return filter;
   },
-  initDefsElements: function initDefsElements() {
-    var storage = this._defsElementsStorage = this._defsElementsStorage || {
+  initDefsElements: function () {
+    const storage = this._defsElementsStorage = this._defsElementsStorage || {
       byHash: {},
       baseId: getNextDefsSvgId()
     };
-    var byHash = storage.byHash;
-    var name;
+    const byHash = storage.byHash;
+    let name;
     for (name in byHash) {
       byHash[name].pattern.dispose();
     }
@@ -2019,22 +2018,22 @@ Renderer.prototype = {
     storage.refToHash = {};
     storage.nextId = 0;
   },
-  drawPattern: function drawPattern(_ref4, storageId, nextId) {
-    var {
+  drawPattern: function (_ref4, storageId, nextId) {
+    let {
       color,
       hatching
     } = _ref4;
-    return this.pattern(color, hatching, "".concat(storageId, "-hatching-").concat(nextId++));
+    return this.pattern(color, hatching, `${storageId}-hatching-${nextId++}`);
   },
-  drawFilter: function drawFilter(_, storageId, nextId) {
-    return this.lightenFilter("".concat(storageId, "-lightening-").concat(nextId++));
+  drawFilter: function (_, storageId, nextId) {
+    return this.lightenFilter(`${storageId}-lightening-${nextId++}`);
   },
-  lockDefsElements: function lockDefsElements(attrs, ref, type) {
-    var storage = this._defsElementsStorage;
-    var storageItem;
-    var hash = type === 'pattern' ? getHatchingHash(attrs) : LIGHTENING_HASH;
-    var method = type === 'pattern' ? this.drawPattern : this.drawFilter;
-    var pattern;
+  lockDefsElements: function (attrs, ref, type) {
+    const storage = this._defsElementsStorage;
+    let storageItem;
+    const hash = type === 'pattern' ? getHatchingHash(attrs) : LIGHTENING_HASH;
+    const method = type === 'pattern' ? this.drawPattern : this.drawFilter;
+    let pattern;
     if (storage.refToHash[ref] !== hash) {
       if (ref) {
         this.releaseDefsElements(ref);
@@ -2053,10 +2052,10 @@ Renderer.prototype = {
     }
     return ref;
   },
-  releaseDefsElements: function releaseDefsElements(ref) {
-    var storage = this._defsElementsStorage;
-    var hash = storage.refToHash[ref];
-    var storageItem = storage.byHash[hash];
+  releaseDefsElements: function (ref) {
+    const storage = this._defsElementsStorage;
+    const hash = storage.refToHash[ref];
+    const storageItem = storage.byHash[hash];
     if (storageItem && --storageItem.count === 0) {
       storageItem.pattern.dispose();
       delete storage.byHash[hash];
@@ -2065,7 +2064,7 @@ Renderer.prototype = {
   }
 };
 function getHatchingHash(_ref5) {
-  var {
+  let {
     color,
     hatching
   } = _ref5;
@@ -2073,29 +2072,29 @@ function getHatchingHash(_ref5) {
 }
 
 // paths modifier
-var fixFuncIriCallbacks = function () {
-  var callbacks = [];
+const fixFuncIriCallbacks = function () {
+  let callbacks = [];
   return {
-    add: function add(fn) {
+    add: function (fn) {
       callbacks.push(fn);
     },
-    remove: function remove(fn) {
+    remove: function (fn) {
       callbacks = callbacks.filter(function (el) {
         return el !== fn;
       });
     },
-    removeByRenderer: function removeByRenderer(renderer) {
+    removeByRenderer: function (renderer) {
       callbacks = callbacks.filter(function (el) {
         return el.renderer !== renderer;
       });
     },
-    fire: function fire() {
+    fire: function () {
       callbacks.forEach(function (fn) {
         fn();
       });
     }
   };
 }();
-export var refreshPaths = function refreshPaths() {
+export const refreshPaths = function () {
   fixFuncIriCallbacks.fire();
 };

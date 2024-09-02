@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/appointments/rendering_strategies/m_appointments_positioning_strategy_base.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -20,32 +20,30 @@ const APPOINTMENT_MIN_COUNT = 1;
 const APPOINTMENT_DEFAULT_WIDTH = 40;
 const COLLECTOR_WIDTH_IN_PERCENTS = 75;
 const APPOINTMENT_INCREASED_WIDTH = 50;
-let AppointmentPositioningStrategy = /*#__PURE__*/function () {
-  function AppointmentPositioningStrategy(renderingStrategy) {
+class AppointmentPositioningStrategy {
+  constructor(renderingStrategy) {
     this._renderingStrategy = renderingStrategy;
   }
-  var _proto = AppointmentPositioningStrategy.prototype;
-  _proto.getDropDownAppointmentWidth = function getDropDownAppointmentWidth(intervalCount, isAllDay) {
+  getDropDownAppointmentWidth(intervalCount, isAllDay) {
     if (isAllDay || !(0, _type.isDefined)(isAllDay)) {
       return COLLECTOR_WIDTH_IN_PERCENTS * this._renderingStrategy.cellWidth / 100;
     }
     return COLLECTOR_DEFAULT_WIDTH;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.getCollectorTopOffset = function getCollectorTopOffset(allDay) {
+  getCollectorTopOffset(allDay) {
     return COLLECTOR_DEFAULT_OFFSET;
-  };
-  _proto.getCollectorLeftOffset = function getCollectorLeftOffset() {
+  }
+  getCollectorLeftOffset() {
     return COLLECTOR_DEFAULT_OFFSET;
-  };
-  _proto.getAppointmentDefaultOffset = function getAppointmentDefaultOffset() {
+  }
+  getAppointmentDefaultOffset() {
     if (this._renderingStrategy._isCompactTheme()) {
       return COMPACT_THEME_APPOINTMENT_DEFAULT_OFFSET;
     }
     return this._renderingStrategy.appointmentOffset;
-  };
-  _proto.getDynamicAppointmentCountPerCell = function getDynamicAppointmentCountPerCell() {
+  }
+  getDynamicAppointmentCountPerCell() {
     const renderingStrategy = this._renderingStrategy;
     const {
       cellHeight
@@ -59,19 +57,18 @@ let AppointmentPositioningStrategy = /*#__PURE__*/function () {
       };
     }
     return allDayCount;
-  };
-  _proto.getDropDownAppointmentHeight = function getDropDownAppointmentHeight() {
+  }
+  getDropDownAppointmentHeight() {
     return undefined;
-  };
-  _proto._getAppointmentMinCount = function _getAppointmentMinCount() {
+  }
+  _getAppointmentMinCount() {
     return APPOINTMENT_MIN_COUNT;
-  };
-  _proto._calculateDynamicAppointmentCountPerCell = function _calculateDynamicAppointmentCountPerCell() {
+  }
+  _calculateDynamicAppointmentCountPerCell() {
     return Math.floor(this._renderingStrategy._getAppointmentMaxWidth() / APPOINTMENT_INCREASED_WIDTH);
-  };
-  _proto._getAppointmentDefaultWidth = function _getAppointmentDefaultWidth() {
+  }
+  _getAppointmentDefaultWidth() {
     return APPOINTMENT_DEFAULT_WIDTH;
-  };
-  return AppointmentPositioningStrategy;
-}();
+  }
+}
 var _default = exports.default = AppointmentPositioningStrategy;

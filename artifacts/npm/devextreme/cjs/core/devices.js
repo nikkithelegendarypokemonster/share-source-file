@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/devices.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -107,7 +107,7 @@ const UA_PARSERS = {
   }
 };
 const UA_PARSERS_ARRAY = [UA_PARSERS.appleTouchDevice, UA_PARSERS.android, UA_PARSERS.generic];
-let Devices = /*#__PURE__*/function () {
+class Devices {
   /**
   * @name DevicesObject.ctor
   * @publicName ctor(options)
@@ -115,7 +115,7 @@ let Devices = /*#__PURE__*/function () {
   * @param1_field1 window:Window
   * @hidden
   */
-  function Devices(options) {
+  constructor(options) {
     this._window = (options === null || options === void 0 ? void 0 : options.window) || window;
     this._realDevice = this._getDevice();
     this._currentDevice = undefined;
@@ -127,8 +127,7 @@ let Devices = /*#__PURE__*/function () {
       _resize_callbacks.default.add(this._recalculateOrientation.bind(this));
     }
   }
-  var _proto = Devices.prototype;
-  _proto.current = function current(deviceOrName) {
+  current(deviceOrName) {
     if (deviceOrName) {
       this._currentDevice = this._getDevice(deviceOrName);
       this._forced = true;
@@ -152,34 +151,34 @@ let Devices = /*#__PURE__*/function () {
       this._currentDevice = this._getDevice(deviceOrName);
     }
     return this._currentDevice;
-  };
-  _proto.real = function real(forceDevice) {
+  }
+  real(forceDevice) {
     return (0, _extend.extend)({}, this._realDevice);
-  };
-  _proto.orientation = function orientation() {
+  }
+  orientation() {
     return this._currentOrientation;
-  };
-  _proto.isForced = function isForced() {
+  }
+  isForced() {
     return this._forced;
-  };
-  _proto.isRippleEmulator = function isRippleEmulator() {
+  }
+  isRippleEmulator() {
     return !!this._window.tinyHippos;
-  };
-  _proto._getCssClasses = function _getCssClasses(device) {
+  }
+  _getCssClasses(device) {
     const result = [];
     const realDevice = this._realDevice;
     device = device || this.current();
 
     // TODO: use real device here?
     if (device.deviceType) {
-      result.push("dx-device-".concat(device.deviceType));
+      result.push(`dx-device-${device.deviceType}`);
       if (device.deviceType !== 'desktop') {
         result.push('dx-device-mobile');
       }
     }
-    result.push("dx-device-".concat(realDevice.platform));
+    result.push(`dx-device-${realDevice.platform}`);
     if (realDevice.version && realDevice.version.length) {
-      result.push("dx-device-".concat(realDevice.platform, "-").concat(realDevice.version[0]));
+      result.push(`dx-device-${realDevice.platform}-${realDevice.version[0]}`);
     }
     if (this.isSimulator()) {
       result.push('dx-simulator');
@@ -188,26 +187,26 @@ let Devices = /*#__PURE__*/function () {
       result.push('dx-rtl');
     }
     return result;
-  };
-  _proto.attachCssClasses = function attachCssClasses(element, device) {
+  }
+  attachCssClasses(element, device) {
     this._deviceClasses = this._getCssClasses(device).join(' ');
     (0, _renderer.default)(element).addClass(this._deviceClasses);
-  };
-  _proto.detachCssClasses = function detachCssClasses(element) {
+  }
+  detachCssClasses(element) {
     (0, _renderer.default)(element).removeClass(this._deviceClasses);
-  };
-  _proto.isSimulator = function isSimulator() {
+  }
+  isSimulator() {
     // NOTE: error may happen due to same-origin policy
     try {
       return this._isSimulator || (0, _window.hasWindow)() && this._window.top !== this._window.self && this._window.top['dx-force-device'] || this.isRippleEmulator();
     } catch (e) {
       return false;
     }
-  };
-  _proto.forceSimulator = function forceSimulator() {
+  }
+  forceSimulator() {
     this._isSimulator = true;
-  };
-  _proto._getDevice = function _getDevice(deviceName) {
+  }
+  _getDevice(deviceName) {
     if (deviceName === 'genericPhone') {
       deviceName = {
         deviceType: 'phone',
@@ -230,15 +229,15 @@ let Devices = /*#__PURE__*/function () {
       }
       return this._fromUA(ua);
     }
-  };
-  _proto._getDeviceOrNameFromWindowScope = function _getDeviceOrNameFromWindowScope() {
+  }
+  _getDeviceOrNameFromWindowScope() {
     let result;
     if ((0, _window.hasWindow)() && (this._window.top['dx-force-device-object'] || this._window.top['dx-force-device'])) {
       result = this._window.top['dx-force-device-object'] || this._window.top['dx-force-device'];
     }
     return result;
-  };
-  _proto._getDeviceNameFromSessionStorage = function _getDeviceNameFromSessionStorage() {
+  }
+  _getDeviceNameFromSessionStorage() {
     const sessionStorage = (0, _storage.sessionStorage)();
     if (!sessionStorage) {
       return;
@@ -249,8 +248,8 @@ let Devices = /*#__PURE__*/function () {
     } catch (ex) {
       return deviceOrName;
     }
-  };
-  _proto._fromConfig = function _fromConfig(config) {
+  }
+  _fromConfig(config) {
     const result = (0, _extend.extend)({}, DEFAULT_DEVICE, this._currentDevice, config);
     const shortcuts = {
       phone: result.deviceType === 'phone',
@@ -260,8 +259,8 @@ let Devices = /*#__PURE__*/function () {
       generic: result.platform === 'generic'
     };
     return (0, _extend.extend)(result, shortcuts);
-  };
-  _proto._fromUA = function _fromUA(ua) {
+  }
+  _fromUA(ua) {
     for (let idx = 0; idx < UA_PARSERS_ARRAY.length; idx += 1) {
       const parser = UA_PARSERS_ARRAY[idx];
       const config = parser(ua);
@@ -270,8 +269,8 @@ let Devices = /*#__PURE__*/function () {
       }
     }
     return DEFAULT_DEVICE;
-  };
-  _proto._changeOrientation = function _changeOrientation() {
+  }
+  _changeOrientation() {
     const $window = (0, _renderer.default)(this._window);
     const orientation = (0, _size.getHeight)($window) > (0, _size.getWidth)($window) ? 'portrait' : 'landscape';
     if (this._currentOrientation === orientation) {
@@ -281,25 +280,24 @@ let Devices = /*#__PURE__*/function () {
     this._eventsStrategy.fireEvent('orientationChanged', [{
       orientation: orientation
     }]);
-  };
-  _proto._recalculateOrientation = function _recalculateOrientation() {
+  }
+  _recalculateOrientation() {
     const windowWidth = (0, _size.getWidth)(this._window);
     if (this._currentWidth === windowWidth) {
       return;
     }
     this._currentWidth = windowWidth;
     this._changeOrientation();
-  };
-  _proto.on = function on(eventName, eventHandler) {
+  }
+  on(eventName, eventHandler) {
     this._eventsStrategy.on(eventName, eventHandler);
     return this;
-  };
-  _proto.off = function off(eventName, eventHandler) {
+  }
+  off(eventName, eventHandler) {
     this._eventsStrategy.off(eventName, eventHandler);
     return this;
-  };
-  return Devices;
-}();
+  }
+}
 const devices = new Devices();
 const viewPortElement = (0, _view_port.value)();
 if (viewPortElement) {

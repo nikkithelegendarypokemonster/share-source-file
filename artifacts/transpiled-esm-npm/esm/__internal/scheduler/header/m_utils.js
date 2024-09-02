@@ -5,49 +5,49 @@ import { isFunction, isObject } from '../../../core/utils/type';
 import dateLocalization from '../../../localization/date';
 import messageLocalization from '../../../localization/message';
 import { VIEWS } from '../m_constants';
-var DAY_FORMAT = 'd';
-var DAYS_IN_WORK_WEEK = 5;
-var {
+const DAY_FORMAT = 'd';
+const DAYS_IN_WORK_WEEK = 5;
+const {
   correctDateWithUnitBeginning: getPeriodStart,
   getFirstWeekDate: getWeekStart,
   getLastMonthDay,
   addDateInterval
 } = dateUtils;
-var {
+const {
   format: formatDate
 } = dateLocalization;
-var MS_DURATION = {
+const MS_DURATION = {
   milliseconds: 1
 };
-var DAY_DURATION = {
+const DAY_DURATION = {
   days: 1
 };
-var WEEK_DURATION = {
+const WEEK_DURATION = {
   days: 7
 };
-var SATURDAY_INDEX = 6;
-var SUNDAY_INDEX = 0;
-var subMS = date => addDateInterval(date, MS_DURATION, -1);
-var addMS = date => addDateInterval(date, MS_DURATION, 1);
-var nextDay = date => addDateInterval(date, DAY_DURATION, 1);
-export var nextWeek = date => addDateInterval(date, WEEK_DURATION, 1);
-var nextMonth = date => {
-  var days = getLastMonthDay(date);
+const SATURDAY_INDEX = 6;
+const SUNDAY_INDEX = 0;
+const subMS = date => addDateInterval(date, MS_DURATION, -1);
+const addMS = date => addDateInterval(date, MS_DURATION, 1);
+const nextDay = date => addDateInterval(date, DAY_DURATION, 1);
+export const nextWeek = date => addDateInterval(date, WEEK_DURATION, 1);
+const nextMonth = date => {
+  const days = getLastMonthDay(date);
   return addDateInterval(date, {
     days
   }, 1);
 };
-var isWeekend = date => date.getDay() === SATURDAY_INDEX || date.getDay() === SUNDAY_INDEX;
-var getWorkWeekStart = firstDayOfWeek => {
-  var date = new Date(firstDayOfWeek);
+const isWeekend = date => date.getDay() === SATURDAY_INDEX || date.getDay() === SUNDAY_INDEX;
+const getWorkWeekStart = firstDayOfWeek => {
+  let date = new Date(firstDayOfWeek);
   while (isWeekend(date)) {
     date = nextDay(date);
   }
   return date;
 };
-var getDateAfterWorkWeek = workWeekStart => {
-  var date = new Date(workWeekStart);
-  var workDaysCount = 0;
+const getDateAfterWorkWeek = workWeekStart => {
+  let date = new Date(workWeekStart);
+  let workDaysCount = 0;
   while (workDaysCount < DAYS_IN_WORK_WEEK) {
     if (!isWeekend(date)) {
       workDaysCount++;
@@ -56,19 +56,19 @@ var getDateAfterWorkWeek = workWeekStart => {
   }
   return date;
 };
-var nextAgendaStart = (date, agendaDuration) => addDateInterval(date, {
+const nextAgendaStart = (date, agendaDuration) => addDateInterval(date, {
   days: agendaDuration
 }, 1);
-var getInterval = options => {
-  var startDate = getIntervalStartDate(options);
-  var endDate = getIntervalEndDate(startDate, options);
+const getInterval = options => {
+  const startDate = getIntervalStartDate(options);
+  const endDate = getIntervalEndDate(startDate, options);
   return {
     startDate,
     endDate
   };
 };
-var getIntervalStartDate = options => {
-  var {
+const getIntervalStartDate = options => {
+  const {
     date,
     step,
     firstDayOfWeek
@@ -81,30 +81,30 @@ var getIntervalStartDate = options => {
       return getPeriodStart(date, step, false, firstDayOfWeek);
     case 'workWeek':
       // eslint-disable-next-line no-case-declarations
-      var firstWeekDay = getWeekStart(date, firstDayOfWeek);
+      const firstWeekDay = getWeekStart(date, firstDayOfWeek);
       return getWorkWeekStart(firstWeekDay);
     case 'agenda':
       return new Date(date);
   }
 };
-var getIntervalEndDate = (startDate, options) => {
-  var {
+const getIntervalEndDate = (startDate, options) => {
+  const {
     intervalCount,
     step,
     agendaDuration
   } = options;
-  var periodStartDate;
-  var periodEndDate;
-  var nextPeriodStartDate = new Date(startDate);
-  for (var i = 0; i < intervalCount; i++) {
+  let periodStartDate;
+  let periodEndDate;
+  let nextPeriodStartDate = new Date(startDate);
+  for (let i = 0; i < intervalCount; i++) {
     periodStartDate = nextPeriodStartDate;
     periodEndDate = getPeriodEndDate(periodStartDate, step, agendaDuration);
     nextPeriodStartDate = getNextPeriodStartDate(periodEndDate, step);
   }
   return periodEndDate;
 };
-var getPeriodEndDate = (currentPeriodStartDate, step, agendaDuration) => {
-  var date;
+const getPeriodEndDate = (currentPeriodStartDate, step, agendaDuration) => {
+  let date;
   // eslint-disable-next-line default-case
   switch (step) {
     case 'day':
@@ -125,8 +125,8 @@ var getPeriodEndDate = (currentPeriodStartDate, step, agendaDuration) => {
   }
   return subMS(date);
 };
-var getNextPeriodStartDate = (currentPeriodEndDate, step) => {
-  var date = addMS(currentPeriodEndDate);
+const getNextPeriodStartDate = (currentPeriodEndDate, step) => {
+  let date = addMS(currentPeriodEndDate);
   if (step === 'workWeek') {
     while (isWeekend(date)) {
       date = nextDay(date);
@@ -134,14 +134,14 @@ var getNextPeriodStartDate = (currentPeriodEndDate, step) => {
   }
   return date;
 };
-export var getNextIntervalDate = (options, direction) => {
-  var {
+export const getNextIntervalDate = (options, direction) => {
+  const {
     date,
     step,
     intervalCount,
     agendaDuration
   } = options;
-  var dayDuration;
+  let dayDuration;
   // eslint-disable-next-line default-case
   switch (step) {
     case 'day':
@@ -161,74 +161,74 @@ export var getNextIntervalDate = (options, direction) => {
     days: dayDuration
   }, direction);
 };
-var getNextMonthDate = (date, intervalCount, direction) => {
-  var currentDate = date.getDate();
-  var currentMonthFirstDate = new Date(new Date(date.getTime()).setDate(1));
-  var thatMonthFirstDate = new Date(currentMonthFirstDate.setMonth(currentMonthFirstDate.getMonth() + intervalCount * direction));
-  var thatMonthDuration = getLastMonthDay(thatMonthFirstDate);
-  var minDate = currentDate < thatMonthDuration ? currentDate : thatMonthDuration;
-  var currentMonthMinDate = new Date(new Date(date.getTime()).setDate(minDate));
-  var thatMonthMinDate = new Date(currentMonthMinDate.setMonth(currentMonthMinDate.getMonth() + intervalCount * direction));
+const getNextMonthDate = (date, intervalCount, direction) => {
+  const currentDate = date.getDate();
+  const currentMonthFirstDate = new Date(new Date(date.getTime()).setDate(1));
+  const thatMonthFirstDate = new Date(currentMonthFirstDate.setMonth(currentMonthFirstDate.getMonth() + intervalCount * direction));
+  const thatMonthDuration = getLastMonthDay(thatMonthFirstDate);
+  const minDate = currentDate < thatMonthDuration ? currentDate : thatMonthDuration;
+  const currentMonthMinDate = new Date(new Date(date.getTime()).setDate(minDate));
+  const thatMonthMinDate = new Date(currentMonthMinDate.setMonth(currentMonthMinDate.getMonth() + intervalCount * direction));
   return thatMonthMinDate;
 };
-var getDateMonthFormatter = isShort => {
-  var monthType = isShort ? 'abbreviated' : 'wide';
-  var months = dateLocalization.getMonthNames(monthType);
+const getDateMonthFormatter = isShort => {
+  const monthType = isShort ? 'abbreviated' : 'wide';
+  const months = dateLocalization.getMonthNames(monthType);
   return date => {
-    var day = formatDate(date, 'day');
-    var month = months[date.getMonth()];
-    return "".concat(day, " ").concat(month);
+    const day = formatDate(date, 'day');
+    const month = months[date.getMonth()];
+    return `${day} ${month}`;
   };
 };
-var formatMonthYear = date => {
-  var months = dateLocalization.getMonthNames('abbreviated');
-  var month = months[date.getMonth()];
-  var year = formatDate(date, 'year');
-  return "".concat(month, " ").concat(year);
+const formatMonthYear = date => {
+  const months = dateLocalization.getMonthNames('abbreviated');
+  const month = months[date.getMonth()];
+  const year = formatDate(date, 'year');
+  return `${month} ${year}`;
 };
-var getDateMonthYearFormatter = isShort => date => {
-  var dateMonthFormat = getDateMonthFormatter(isShort);
-  var dateMonth = dateMonthFormat(date);
-  var year = formatDate(date, 'year');
-  return "".concat(dateMonth, " ").concat(year);
+const getDateMonthYearFormatter = isShort => date => {
+  const dateMonthFormat = getDateMonthFormatter(isShort);
+  const dateMonth = dateMonthFormat(date);
+  const year = formatDate(date, 'year');
+  return `${dateMonth} ${year}`;
 };
-var getDifferentYearCaption = (startDate, endDate) => {
-  var firstDateText = formatDate(startDate, getDateMonthYearFormatter(true));
-  var lastDateDateText = formatDate(endDate, getDateMonthYearFormatter(true));
-  return "".concat(firstDateText, "-").concat(lastDateDateText);
+const getDifferentYearCaption = (startDate, endDate) => {
+  const firstDateText = formatDate(startDate, getDateMonthYearFormatter(true));
+  const lastDateDateText = formatDate(endDate, getDateMonthYearFormatter(true));
+  return `${firstDateText}-${lastDateDateText}`;
 };
-var getSameYearCaption = (startDate, endDate, isShort) => {
-  var isDifferentMonthDates = startDate.getMonth() !== endDate.getMonth();
-  var useShortFormat = isDifferentMonthDates || isShort;
-  var firstDateFormat = isDifferentMonthDates ? getDateMonthFormatter(useShortFormat) : DAY_FORMAT;
-  var firstDateText = formatDate(startDate, firstDateFormat);
-  var lastDateText = formatDate(endDate, getDateMonthYearFormatter(useShortFormat));
-  return "".concat(firstDateText, "-").concat(lastDateText);
+const getSameYearCaption = (startDate, endDate, isShort) => {
+  const isDifferentMonthDates = startDate.getMonth() !== endDate.getMonth();
+  const useShortFormat = isDifferentMonthDates || isShort;
+  const firstDateFormat = isDifferentMonthDates ? getDateMonthFormatter(useShortFormat) : DAY_FORMAT;
+  const firstDateText = formatDate(startDate, firstDateFormat);
+  const lastDateText = formatDate(endDate, getDateMonthYearFormatter(useShortFormat));
+  return `${firstDateText}-${lastDateText}`;
 };
-var getSameDateCaption = (date, step, isShort) => {
-  var useShortFormat = step === 'agenda' ? isShort : false;
-  var dateMonthFormat = getDateMonthFormatter(useShortFormat);
-  var dateMonth = dateMonthFormat(date);
-  var year = formatDate(date, 'year');
-  return "".concat(dateMonth, " ").concat(year);
+const getSameDateCaption = (date, step, isShort) => {
+  const useShortFormat = step === 'agenda' ? isShort : false;
+  const dateMonthFormat = getDateMonthFormatter(useShortFormat);
+  const dateMonth = dateMonthFormat(date);
+  const year = formatDate(date, 'year');
+  return `${dateMonth} ${year}`;
 };
-var formatCaptionByMonths = (startDate, endDate, isShort) => {
-  var isDifferentYears = startDate.getFullYear() !== endDate.getFullYear();
+const formatCaptionByMonths = (startDate, endDate, isShort) => {
+  const isDifferentYears = startDate.getFullYear() !== endDate.getFullYear();
   if (isDifferentYears) {
     return getDifferentYearCaption(startDate, endDate);
   }
   return getSameYearCaption(startDate, endDate, isShort);
 };
-var formatMonthViewCaption = (startDate, endDate) => {
+const formatMonthViewCaption = (startDate, endDate) => {
   if (dateUtils.sameMonth(startDate, endDate)) {
     return formatDate(startDate, 'monthandyear');
   }
-  var isSameYear = dateUtils.sameYear(startDate, endDate);
-  var firstDateText = isSameYear ? dateLocalization.getMonthNames('abbreviated')[startDate.getMonth()] : formatMonthYear(startDate);
-  var lastDateText = formatMonthYear(endDate);
-  return "".concat(firstDateText, "-").concat(lastDateText);
+  const isSameYear = dateUtils.sameYear(startDate, endDate);
+  const firstDateText = isSameYear ? dateLocalization.getMonthNames('abbreviated')[startDate.getMonth()] : formatMonthYear(startDate);
+  const lastDateText = formatMonthYear(endDate);
+  return `${firstDateText}-${lastDateText}`;
 };
-var getCaptionText = (startDate, endDate, isShort, step) => {
+const getCaptionText = (startDate, endDate, isShort, step) => {
   if (dateUtils.sameDate(startDate, endDate)) {
     return getSameDateCaption(startDate, step, isShort);
   }
@@ -237,12 +237,12 @@ var getCaptionText = (startDate, endDate, isShort, step) => {
   }
   return formatCaptionByMonths(startDate, endDate, isShort);
 };
-export var getCaption = (options, isShort, customizationFunction) => {
-  var {
+export const getCaption = (options, isShort, customizationFunction) => {
+  const {
     startDate,
     endDate
   } = getInterval(options);
-  var text = getCaptionText(startDate, endDate, isShort, options.step);
+  let text = getCaptionText(startDate, endDate, isShort, options.step);
   if (isFunction(customizationFunction)) {
     text = customizationFunction({
       startDate,
@@ -256,7 +256,7 @@ export var getCaption = (options, isShort, customizationFunction) => {
     text
   };
 };
-var STEP_MAP = {
+const STEP_MAP = {
   day: 'day',
   week: 'week',
   workWeek: 'workWeek',
@@ -267,39 +267,39 @@ var STEP_MAP = {
   timelineMonth: 'month',
   agenda: 'agenda'
 };
-export var getStep = view => STEP_MAP[getViewType(view)];
-export var getViewType = view => {
+export const getStep = view => STEP_MAP[getViewType(view)];
+export const getViewType = view => {
   if (isObject(view) && view.type) {
     return view.type;
   }
   return view;
 };
-export var getViewName = view => {
+export const getViewName = view => {
   if (isObject(view)) {
     return view.name ? view.name : view.type;
   }
   return view;
 };
-export var getViewText = view => {
+export const getViewText = view => {
   if (view.name) return view.name;
-  var viewName = camelize(view.type || view, true);
-  return messageLocalization.format("dxScheduler-switcher".concat(viewName));
+  const viewName = camelize(view.type || view, true);
+  return messageLocalization.format(`dxScheduler-switcher${viewName}`);
 };
-var isValidView = view => Object.values(VIEWS).includes(view);
-export var validateViews = views => {
+const isValidView = view => Object.values(VIEWS).includes(view);
+export const validateViews = views => {
   views.forEach(view => {
-    var viewType = getViewType(view);
+    const viewType = getViewType(view);
     if (!isValidView(viewType)) {
       errors.log('W0008', viewType);
     }
   });
 };
-export var formatViews = views => {
+export const formatViews = views => {
   validateViews(views);
   return views.map(view => {
-    var text = getViewText(view);
-    var type = getViewType(view);
-    var name = getViewName(view);
+    const text = getViewText(view);
+    const type = getViewType(view);
+    const name = getViewName(view);
     return {
       text,
       name,
@@ -311,4 +311,4 @@ export var formatViews = views => {
     };
   });
 };
-export var isOneView = (views, selectedView) => views.length === 1 && views[0].name === selectedView;
+export const isOneView = (views, selectedView) => views.length === 1 && views[0].name === selectedView;

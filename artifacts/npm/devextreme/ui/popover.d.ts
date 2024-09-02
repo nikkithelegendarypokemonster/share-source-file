@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/popover.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -41,160 +41,225 @@ import {
 } from '../common';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_popover_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxPopover>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_popover_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxPopover>;
 
 /**
- * The type of the hiding event handler&apos;s argument.
+ * @docid _ui_popover_HidingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type HidingEvent = Cancelable & EventInfo<dxPopover>;
 
 /**
- * The type of the hidden event handler&apos;s argument.
+ * @docid _ui_popover_HiddenEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type HiddenEvent = EventInfo<dxPopover>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_popover_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxPopover>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_popover_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxPopover> & ChangedOptionInfo;
 
 /**
- * The type of the showing event handler&apos;s argument.
+ * @docid _ui_popover_ShowingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type ShowingEvent = Cancelable & EventInfo<dxPopover>;
 
 /**
- * The type of the shown event handler&apos;s argument.
+ * @docid _ui_popover_ShownEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ShownEvent = EventInfo<dxPopover>;
 
 /**
- * The type of the titleRendered event handler&apos;s argument.
+ * @docid _ui_popover_TitleRenderedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,TitleRenderedInfo
  */
 export type TitleRenderedEvent = EventInfo<dxPopover> & TitleRenderedInfo;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxPopoverOptions<TComponent> extends dxPopupOptions<TComponent> {
     /**
-     * Configures UI component visibility animations. This object contains two fields: show and hide.
+     * @docid
+     * @public
+     * @type object
      */
     animation?: dxPopoverAnimation;
     /**
-     * Specifies whether to close the UI component if a user clicks outside the popover window or outside the target element.
-     * @deprecated Use the hideOnOutsideClick option instead.
+     * @docid
+     * @deprecated dxPopoverOptions.hideOnOutsideClick
+     * @type_function_param1 event:event
+     * @default true
+     * @public
      */
     closeOnOutsideClick?: boolean | ((event: DxEvent<MouseEvent | PointerEvent | TouchEvent>) => boolean);
     /**
-     * Specifies the UI component&apos;s height.
+     * @docid
+     * @default "auto"
+     * @public
      */
     height?: number | string | (() => number | string);
     /**
-     * Specifies properties of popover hiding. Ignored if the shading property is set to true.
+     * @docid
+     * @default undefined
+     * @public
      */
     hideEvent?: {
       /**
-       * The delay in milliseconds after which the UI component is hidden.
+       * @docid
+       * @default undefined
        */
       delay?: number;
       /**
-       * Specifies the event names on which the UI component is hidden.
+       * @docid
+       * @default undefined
        */
       name?: string;
     } | string;
     /**
-     * Specifies whether to hide the UI component if a user clicks outside the popover window or outside the target element.
+     * @docid
+     * @type boolean | function
+     * @type_function_param1 event:event
+     * @default true
+     * @public
      */
     hideOnOutsideClick?: boolean | ((event: DxEvent<MouseEvent | PointerEvent | TouchEvent>) => boolean);
     /**
-     * Specifies whether to hide the widget when users scroll one of its parent elements.
+     * @docid
+     * @default true
+     * @public
      */
     hideOnParentScroll?: boolean;
     /**
-     * An object defining UI component positioning properties.
+     * @docid
+     * @default { my: 'top center', at: 'bottom center', collision: 'fit flip' }
+     * @public
      */
     position?: Position | PositionConfig;
     /**
-     * Specifies whether to shade the background when the UI component is active.
+     * @docid
+     * @default false
+     * @public
      */
     shading?: boolean;
     /**
-     * Specifies properties for displaying the UI component.
+     * @docid
+     * @default undefined
+     * @public
      */
     showEvent?: {
       /**
-       * The delay in milliseconds after which the UI component is displayed.
+       * @docid
+       * @default undefined
        */
       delay?: number;
       /**
-       * Specifies the event names on which the UI component is shown.
+       * @docid
+       * @default undefined
        */
       name?: string;
     } | string;
     /**
-     * A Boolean value specifying whether or not to display the title in the overlay window.
+     * @docid
+     * @default false
+     * @public
      */
     showTitle?: boolean;
     /**
-     * Specifies the element against which to position the widget.
+     * @docid
+     * @default undefined
+     * @public
      */
     target?: string | UserDefinedElement;
     /**
-     * Specifies the UI component&apos;s width.
+     * @docid
+     * @default "auto"
+     * @public
      */
     width?: number | string | (() => number | string);
 }
 /**
- * Configures UI component visibility animations. This object contains two fields: show and hide.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.ui
  */
 export interface dxPopoverAnimation extends dxPopupAnimation {
     /**
-     * An object that defines the animation properties used when the UI component is being hidden.
+     * @docid dxPopoverOptions.animation.hide
+     * @default { type: "fade", to: 0 }
+     * @public
      */
     hide?: AnimationConfig;
     /**
-     * An object that defines the animation properties used when the UI component is being shown.
+     * @docid dxPopoverOptions.animation.show
+     * @default { type: "fade", from: 0, to: 1 }
+     * @public
      */
     show?: AnimationConfig;
 }
 /**
- * The Popover is a UI component that shows notifications within a box with an arrow pointing to a specified UI element.
+ * @docid
+ * @inherits dxPopup
+ * @hasTranscludedContent
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxPopover<TProperties = Properties> extends dxPopup<TProperties> {
     show(): DxPromise<boolean>;
     /**
-     * Shows the UI component for a target element.
+     * @docid
+     * @publicName show(target)
+     * @param1 target:string|Element|jQuery
+     * @return Promise<boolean>
+     * @public
      */
     show(target: string | UserDefinedElement): DxPromise<boolean>;
 }
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 interface PopoverInstance extends dxPopover<Properties> { }
 
+/** @public */
 export type Properties = dxPopoverOptions<PopoverInstance>;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = Properties;
 
 

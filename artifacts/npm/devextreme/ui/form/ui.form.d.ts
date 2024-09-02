@@ -1,30 +1,38 @@
 /**
 * DevExtreme (ui/form/ui.form.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /**
- * Specifies dependency between the screen factor and the count of columns.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @hidden
  */
 export interface ColCountResponsible {
     /**
-     * The count of columns for a large screen size.
+     * @docid
+     * @default undefined
+     * @public
      */
     lg?: number;
     /**
-     * The count of columns for a middle-sized screen.
+     * @docid
+     * @default undefined
+     * @public
      */
     md?: number;
     /**
-     * The count of columns for a small-sized screen.
+     * @docid
+     * @default undefined
+     * @public
      */
     sm?: number;
     /**
-     * The count of columns for an extra small-sized screen.
+     * @docid
+     * @default undefined
+     * @public
      */
     xs?: number;
 }

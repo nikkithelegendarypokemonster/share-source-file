@@ -1,34 +1,34 @@
 import $ from '../../../../core/renderer';
 import { isDefined } from '../../../../core/utils/type';
 import messageLocalization from '../../../../localization/message';
-var SORT_CLASS = 'dx-sort';
-var SORT_NONE_CLASS = 'dx-sort-none';
-var SORTUP_CLASS = 'dx-sort-up';
-var SORTDOWN_CLASS = 'dx-sort-down';
-var SORT_INDEX_CLASS = 'dx-sort-index';
-var SORT_INDEX_ICON_CLASS = 'dx-sort-index-icon';
-var HEADERS_ACTION_CLASS = 'action';
+const SORT_CLASS = 'dx-sort';
+const SORT_NONE_CLASS = 'dx-sort-none';
+const SORTUP_CLASS = 'dx-sort-up';
+const SORTDOWN_CLASS = 'dx-sort-down';
+const SORT_INDEX_CLASS = 'dx-sort-index';
+const SORT_INDEX_ICON_CLASS = 'dx-sort-index-icon';
+const HEADERS_ACTION_CLASS = 'action';
 // TODO improve types of this mixin
 //  Now all members - protected by default (it may be wrong)
 // TODO getController
-var sortingMixin = Base => class SortingMixin extends Base {
+const sortingMixin = Base => class SortingMixin extends Base {
   _applyColumnState(options) {
-    var that = this;
-    var ariaSortState;
-    var $sortIndicator;
-    var sortingMode = that.option('sorting.mode');
-    var {
+    const that = this;
+    let ariaSortState;
+    let $sortIndicator;
+    const sortingMode = that.option('sorting.mode');
+    const {
       rootElement
     } = options;
-    var {
+    const {
       column
     } = options;
-    var $indicatorsContainer = that._getIndicatorContainer(rootElement);
+    const $indicatorsContainer = that._getIndicatorContainer(rootElement);
     if (options.name === 'sort') {
-      rootElement.find(".".concat(SORT_CLASS)).remove();
+      rootElement.find(`.${SORT_CLASS}`).remove();
       !$indicatorsContainer.children().length && $indicatorsContainer.remove();
-      var isSortingAllowed = sortingMode !== 'none' && column.allowSorting;
-      var hasSeveralSortIndexes = that.getController && !!that.getController('columns').columnOption('sortIndex:1');
+      const isSortingAllowed = sortingMode !== 'none' && column.allowSorting;
+      const hasSeveralSortIndexes = that.getController && !!that.getController('columns').columnOption('sortIndex:1');
       if (!isDefined(column.groupIndex) && (isSortingAllowed || isDefined(column.sortOrder))) {
         ariaSortState = column.sortOrder === 'asc' ? 'ascending' : 'descending';
         $sortIndicator = super._applyColumnState(options).toggleClass(SORTUP_CLASS, column.sortOrder === 'asc').toggleClass(SORTDOWN_CLASS, column.sortOrder === 'desc');
@@ -48,7 +48,7 @@ var sortingMixin = Base => class SortingMixin extends Base {
   _setAriaSortAttribute(column, ariaSortState, $rootElement, hasSeveralSortIndexes) {
     $rootElement.removeAttr('aria-roledescription');
     if (column.isGrouped) {
-      var description = this.localize('dxDataGrid-ariaNotSortedColumn');
+      let description = this.localize('dxDataGrid-ariaNotSortedColumn');
       if (isDefined(column.sortOrder)) {
         description = column.sortOrder === 'asc' ? this.localize('dxDataGrid-ariaSortedAscendingColumn') : this.localize('dxDataGrid-ariaSortedDescendingColumn');
       }
@@ -58,12 +58,12 @@ var sortingMixin = Base => class SortingMixin extends Base {
     } else {
       this.setAria('sort', ariaSortState, $rootElement);
       if (hasSeveralSortIndexes && column.sortIndex >= 0) {
-        var ariaColumnHeader = messageLocalization.format('dxDataGrid-ariaColumnHeader');
-        var ariaSortIndex = messageLocalization.format('dxDataGrid-ariaSortIndex',
+        const ariaColumnHeader = messageLocalization.format('dxDataGrid-ariaColumnHeader');
+        const ariaSortIndex = messageLocalization.format('dxDataGrid-ariaSortIndex',
         // @ts-expect-error
         column.sortIndex + 1);
-        var _description = "".concat(ariaColumnHeader, ", ").concat(ariaSortIndex);
-        this.setAria('roledescription', _description, $rootElement);
+        const description = `${ariaColumnHeader}, ${ariaSortIndex}`;
+        this.setAria('roledescription', description, $rootElement);
       }
     }
   }
@@ -77,13 +77,13 @@ var sortingMixin = Base => class SortingMixin extends Base {
     return super._getIndicatorClassName(name);
   }
   _renderIndicator(options) {
-    var {
+    const {
       column
     } = options;
-    var $container = options.container;
-    var $indicator = options.indicator;
+    const $container = options.container;
+    const $indicator = options.indicator;
     if (options.name === 'sort') {
-      var rtlEnabled = this.option('rtlEnabled');
+      const rtlEnabled = this.option('rtlEnabled');
       if (!isDefined(column.sortOrder)) {
         $indicator && $indicator.addClass(SORT_NONE_CLASS);
       }
@@ -101,8 +101,8 @@ var sortingMixin = Base => class SortingMixin extends Base {
     return super._updateIndicator.apply(this, arguments);
   }
   _getIndicatorElements($cell, returnAll) {
-    var $indicatorElements = super._getIndicatorElements($cell);
-    return returnAll ? $indicatorElements : $indicatorElements && $indicatorElements.not(".".concat(SORT_NONE_CLASS));
+    const $indicatorElements = super._getIndicatorElements($cell);
+    return returnAll ? $indicatorElements : $indicatorElements && $indicatorElements.not(`.${SORT_NONE_CLASS}`);
   }
 };
 export default sortingMixin;

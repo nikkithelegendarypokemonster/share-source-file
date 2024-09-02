@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/utils/ajax.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,26 +9,26 @@
 import { Deferred } from './deferred';
 import httpRequest from '../../core/http_request';
 import { getWindow } from '../../core/utils/window';
-var window = getWindow();
+const window = getWindow();
 import { isDefined } from './type';
 import injector from './dependency_injector';
 import { isCrossDomain, getJsonpCallbackName as getJsonpOptions, getRequestHeaders, getRequestOptions, evalScript, evalCrossDomainScript, getMethod } from './ajax_utils';
-var SUCCESS = 'success';
-var ERROR = 'error';
-var TIMEOUT = 'timeout';
-var NO_CONTENT = 'nocontent';
-var PARSER_ERROR = 'parsererror';
-var isStatusSuccess = function isStatusSuccess(status) {
+const SUCCESS = 'success';
+const ERROR = 'error';
+const TIMEOUT = 'timeout';
+const NO_CONTENT = 'nocontent';
+const PARSER_ERROR = 'parsererror';
+const isStatusSuccess = function (status) {
   return 200 <= status && status < 300;
 };
-var hasContent = function hasContent(status) {
+const hasContent = function (status) {
   return status !== 204;
 };
-var getDataFromResponse = function getDataFromResponse(xhr) {
+const getDataFromResponse = function (xhr) {
   return xhr.responseType && xhr.responseType !== 'text' || typeof xhr.responseText !== 'string' ? xhr.response : xhr.responseText;
 };
-var postProcess = function postProcess(deferred, xhr, dataType) {
-  var data = getDataFromResponse(xhr);
+const postProcess = function (deferred, xhr, dataType) {
+  const data = getDataFromResponse(xhr);
   switch (dataType) {
     case 'jsonp':
       evalScript(data);
@@ -48,40 +48,40 @@ var postProcess = function postProcess(deferred, xhr, dataType) {
       deferred.resolve(data, SUCCESS, xhr);
   }
 };
-var setHttpTimeout = function setHttpTimeout(timeout, xhr) {
+const setHttpTimeout = function (timeout, xhr) {
   return timeout && setTimeout(function () {
     xhr.customStatus = TIMEOUT;
     xhr.abort();
   }, timeout);
 };
-var sendRequest = function sendRequest(options) {
-  var xhr = httpRequest.getXhr();
-  var d = new Deferred();
-  var result = d.promise();
-  var async = isDefined(options.async) ? options.async : true;
-  var dataType = options.dataType;
-  var timeout = options.timeout || 0;
-  var timeoutId;
+const sendRequest = function (options) {
+  const xhr = httpRequest.getXhr();
+  const d = new Deferred();
+  const result = d.promise();
+  const async = isDefined(options.async) ? options.async : true;
+  const dataType = options.dataType;
+  const timeout = options.timeout || 0;
+  let timeoutId;
   options.crossDomain = isCrossDomain(options.url);
-  var needScriptEvaluation = dataType === 'jsonp' || dataType === 'script';
+  const needScriptEvaluation = dataType === 'jsonp' || dataType === 'script';
   if (options.cache === undefined) {
     options.cache = !needScriptEvaluation;
   }
-  var callbackName = getJsonpOptions(options);
-  var headers = getRequestHeaders(options);
-  var requestOptions = getRequestOptions(options, headers);
-  var url = requestOptions.url;
-  var parameters = requestOptions.parameters;
+  const callbackName = getJsonpOptions(options);
+  const headers = getRequestHeaders(options);
+  const requestOptions = getRequestOptions(options, headers);
+  const url = requestOptions.url;
+  const parameters = requestOptions.parameters;
   if (callbackName) {
     window[callbackName] = function (data) {
       d.resolve(data, SUCCESS, xhr);
     };
   }
   if (options.crossDomain && needScriptEvaluation) {
-    var reject = function reject() {
+    const reject = function () {
       d.reject(xhr, ERROR);
     };
-    var resolve = function resolve() {
+    const resolve = function () {
       if (dataType === 'jsonp') return;
       d.resolve(null, SUCCESS, xhr);
     };
@@ -117,14 +117,14 @@ var sendRequest = function sendRequest(options) {
     xhr.upload['onabort'] = options.upload['onabort'];
   }
   if (options.xhrFields) {
-    for (var field in options.xhrFields) {
+    for (const field in options.xhrFields) {
       xhr[field] = options.xhrFields[field];
     }
   }
   if (options.responseType === 'arraybuffer') {
     xhr.responseType = options.responseType;
   }
-  for (var name in headers) {
+  for (const name in headers) {
     if (Object.prototype.hasOwnProperty.call(headers, name) && isDefined(headers[name])) {
       xhr.setRequestHeader(name, headers[name]);
     }

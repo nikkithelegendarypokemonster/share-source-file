@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/renovation/ui/button.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -27,14 +27,7 @@ var _base_props = require("./common/base_props");
 var _message = _interopRequireDefault(require("../../localization/message"));
 const _excluded = ["accessKey", "activeStateEnabled", "children", "className", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "icon", "iconPosition", "iconTemplate", "onClick", "onKeyDown", "onSubmit", "pressed", "rtlEnabled", "stylingMode", "tabIndex", "template", "templateData", "text", "type", "useInkRipple", "useSubmitBehavior", "visible", "width"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const stylingModes = ['outlined', 'text', 'contained'];
 const getCssClasses = model => {
@@ -48,8 +41,8 @@ const getCssClasses = model => {
   const isValidStylingMode = stylingMode && stylingModes.includes(stylingMode);
   const classesMap = {
     'dx-button': true,
-    ["dx-button-mode-".concat(isValidStylingMode ? stylingMode : 'contained')]: true,
-    ["dx-button-".concat(type !== null && type !== void 0 ? type : 'normal')]: true,
+    [`dx-button-mode-${isValidStylingMode ? stylingMode : 'contained'}`]: true,
+    [`dx-button-${type ?? 'normal'}`]: true,
     'dx-button-has-text': !!text,
     'dx-button-has-icon': !!icon,
     'dx-button-icon-right': iconPosition !== 'left'
@@ -102,7 +95,7 @@ const viewFunction = viewModel => {
   }), null, viewModel.widgetRef));
 };
 exports.viewFunction = viewFunction;
-const ButtonProps = exports.ButtonProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(_base_props.BaseWidgetProps), Object.getOwnPropertyDescriptors({
+const ButtonProps = exports.ButtonProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(_base_props.BaseWidgetProps), Object.getOwnPropertyDescriptors({
   activeStateEnabled: true,
   hoverStateEnabled: true,
   icon: '',
@@ -126,37 +119,33 @@ const defaultOptionRules = exports.defaultOptionRules = (0, _utils.createDefault
   }
 }]);
 const getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => (0, _inferno.normalizeProps)((0, _inferno.createComponentVNode)(2, TemplateProp, _extends({}, props))) : TemplateProp);
-let Button = exports.Button = /*#__PURE__*/function (_InfernoWrapperCompon) {
-  _inheritsLoose(Button, _InfernoWrapperCompon);
-  function Button(props) {
-    var _this;
-    _this = _InfernoWrapperCompon.call(this, props) || this;
-    _this.state = {};
-    _this.contentRef = (0, _inferno.createRef)();
-    _this.inkRippleRef = (0, _inferno.createRef)();
-    _this.submitInputRef = (0, _inferno.createRef)();
-    _this.widgetRef = (0, _inferno.createRef)();
-    _this.__getterCache = {};
-    _this.focus = _this.focus.bind(_assertThisInitialized(_this));
-    _this.activate = _this.activate.bind(_assertThisInitialized(_this));
-    _this.deactivate = _this.deactivate.bind(_assertThisInitialized(_this));
-    _this.submitEffect = _this.submitEffect.bind(_assertThisInitialized(_this));
-    _this.onActive = _this.onActive.bind(_assertThisInitialized(_this));
-    _this.onInactive = _this.onInactive.bind(_assertThisInitialized(_this));
-    _this.onWidgetClick = _this.onWidgetClick.bind(_assertThisInitialized(_this));
-    _this.keyDown = _this.keyDown.bind(_assertThisInitialized(_this));
-    _this.emitClickEvent = _this.emitClickEvent.bind(_assertThisInitialized(_this));
-    return _this;
+class Button extends _inferno2.InfernoWrapperComponent {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.contentRef = (0, _inferno.createRef)();
+    this.inkRippleRef = (0, _inferno.createRef)();
+    this.submitInputRef = (0, _inferno.createRef)();
+    this.widgetRef = (0, _inferno.createRef)();
+    this.__getterCache = {};
+    this.focus = this.focus.bind(this);
+    this.activate = this.activate.bind(this);
+    this.deactivate = this.deactivate.bind(this);
+    this.submitEffect = this.submitEffect.bind(this);
+    this.onActive = this.onActive.bind(this);
+    this.onInactive = this.onInactive.bind(this);
+    this.onWidgetClick = this.onWidgetClick.bind(this);
+    this.keyDown = this.keyDown.bind(this);
+    this.emitClickEvent = this.emitClickEvent.bind(this);
   }
-  var _proto = Button.prototype;
-  _proto.createEffects = function createEffects() {
+  createEffects() {
     return [new _inferno2.InfernoEffect(this.submitEffect, [this.props.onSubmit, this.props.useSubmitBehavior]), (0, _inferno2.createReRenderEffect)()];
-  };
-  _proto.updateEffects = function updateEffects() {
+  }
+  updateEffects() {
     var _this$_effects$;
-    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([this.props.onSubmit, this.props.useSubmitBehavior]);
-  };
-  _proto.submitEffect = function submitEffect() {
+    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 || _this$_effects$.update([this.props.onSubmit, this.props.useSubmitBehavior]);
+  }
+  submitEffect() {
     const namespace = 'UIFeedback';
     const {
       onSubmit,
@@ -174,8 +163,8 @@ let Button = exports.Button = /*#__PURE__*/function (_InfernoWrapperCompon) {
       });
     }
     return undefined;
-  };
-  _proto.onActive = function onActive(event) {
+  }
+  onActive(event) {
     const {
       useInkRipple
     } = this.props;
@@ -183,8 +172,8 @@ let Button = exports.Button = /*#__PURE__*/function (_InfernoWrapperCompon) {
       element: this.contentRef.current,
       event
     });
-  };
-  _proto.onInactive = function onInactive(event) {
+  }
+  onInactive(event) {
     const {
       useInkRipple
     } = this.props;
@@ -192,18 +181,18 @@ let Button = exports.Button = /*#__PURE__*/function (_InfernoWrapperCompon) {
       element: this.contentRef.current,
       event
     });
-  };
-  _proto.onWidgetClick = function onWidgetClick(event) {
+  }
+  onWidgetClick(event) {
     const {
       onClick,
       useSubmitBehavior
     } = this.props;
-    onClick === null || onClick === void 0 ? void 0 : onClick({
+    onClick === null || onClick === void 0 || onClick({
       event
     });
     useSubmitBehavior && this.submitInputRef.current.click();
-  };
-  _proto.keyDown = function keyDown(e) {
+  }
+  keyDown(e) {
     const {
       onKeyDown
     } = this.props;
@@ -221,26 +210,107 @@ let Button = exports.Button = /*#__PURE__*/function (_InfernoWrapperCompon) {
       this.emitClickEvent();
     }
     return undefined;
-  };
-  _proto.emitClickEvent = function emitClickEvent() {
+  }
+  emitClickEvent() {
     this.contentRef.current.click();
-  };
-  _proto.focus = function focus() {
+  }
+  get aria() {
+    const {
+      icon,
+      text
+    } = this.props;
+    let label = text ?? '';
+    if (!text && icon) {
+      const iconSource = (0, _icon.getImageSourceType)(icon);
+      switch (iconSource) {
+        case 'image':
+          {
+            const notURLRegexp = /^(?!(?:https?:\/\/)|(?:ftp:\/\/)|(?:www\.))[^\s]+$/;
+            const isPathToImage = !icon.includes('base64') && notURLRegexp.test(icon);
+            label = isPathToImage ? icon.replace(/.+\/([^.]+)\..+$/, '$1') : '';
+            break;
+          }
+        case 'dxIcon':
+          label = _message.default.format((0, _inflector.camelize)(icon, true)) || icon;
+          break;
+        case 'fontIcon':
+          label = icon;
+          break;
+        case 'svg':
+          {
+            var _titleRegexp$exec;
+            const titleRegexp = /<title>(.*?)<\/title>/;
+            const title = ((_titleRegexp$exec = titleRegexp.exec(icon)) === null || _titleRegexp$exec === void 0 ? void 0 : _titleRegexp$exec[1]) ?? '';
+            label = title;
+            break;
+          }
+        default:
+          break;
+      }
+    }
+    return _extends({
+      role: 'button'
+    }, label ? {
+      label
+    } : {});
+  }
+  get cssClasses() {
+    return getCssClasses(this.props);
+  }
+  get iconSource() {
+    const {
+      icon
+    } = this.props;
+    return icon ?? '';
+  }
+  get inkRippleConfig() {
+    if (this.__getterCache['inkRippleConfig'] !== undefined) {
+      return this.__getterCache['inkRippleConfig'];
+    }
+    return this.__getterCache['inkRippleConfig'] = (() => {
+      const {
+        icon,
+        text
+      } = this.props;
+      return !text && icon ? {
+        isCentered: true,
+        useHoldAnimation: false,
+        waveSizeCoefficient: 1
+      } : {};
+    })();
+  }
+  get buttonTemplateData() {
+    const {
+      icon,
+      templateData,
+      text
+    } = this.props;
+    return _extends({
+      icon,
+      text
+    }, templateData);
+  }
+  get restAttributes() {
+    const _this$props = this.props,
+      restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
+    return restProps;
+  }
+  focus() {
     this.widgetRef.current.focus();
-  };
-  _proto.activate = function activate() {
+  }
+  activate() {
     this.widgetRef.current.activate();
-  };
-  _proto.deactivate = function deactivate() {
+  }
+  deactivate() {
     this.widgetRef.current.deactivate();
-  };
-  _proto.componentWillUpdate = function componentWillUpdate(nextProps, nextState, context) {
-    _InfernoWrapperCompon.prototype.componentWillUpdate.call(this);
+  }
+  componentWillUpdate(nextProps, nextState, context) {
+    super.componentWillUpdate();
     if (this.props['icon'] !== nextProps['icon'] || this.props['text'] !== nextProps['text']) {
       this.__getterCache['inkRippleConfig'] = undefined;
     }
-  };
-  _proto.render = function render() {
+  }
+  render() {
     const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
@@ -263,106 +333,12 @@ let Button = exports.Button = /*#__PURE__*/function (_InfernoWrapperCompon) {
       buttonTemplateData: this.buttonTemplateData,
       restAttributes: this.restAttributes
     });
-  };
-  _createClass(Button, [{
-    key: "aria",
-    get: function () {
-      const {
-        icon,
-        text
-      } = this.props;
-      let label = text !== null && text !== void 0 ? text : '';
-      if (!text && icon) {
-        const iconSource = (0, _icon.getImageSourceType)(icon);
-        switch (iconSource) {
-          case 'image':
-            {
-              const notURLRegexp = /^(?!(?:https?:\/\/)|(?:ftp:\/\/)|(?:www\.))[^\s]+$/;
-              const isPathToImage = !icon.includes('base64') && notURLRegexp.test(icon);
-              label = isPathToImage ? icon.replace(/.+\/([^.]+)\..+$/, '$1') : '';
-              break;
-            }
-          case 'dxIcon':
-            label = _message.default.format((0, _inflector.camelize)(icon, true)) || icon;
-            break;
-          case 'fontIcon':
-            label = icon;
-            break;
-          case 'svg':
-            {
-              var _titleRegexp$exec$, _titleRegexp$exec;
-              const titleRegexp = /<title>(.*?)<\/title>/;
-              const title = (_titleRegexp$exec$ = (_titleRegexp$exec = titleRegexp.exec(icon)) === null || _titleRegexp$exec === void 0 ? void 0 : _titleRegexp$exec[1]) !== null && _titleRegexp$exec$ !== void 0 ? _titleRegexp$exec$ : '';
-              label = title;
-              break;
-            }
-          default:
-            break;
-        }
-      }
-      return _extends({
-        role: 'button'
-      }, label ? {
-        label
-      } : {});
-    }
-  }, {
-    key: "cssClasses",
-    get: function () {
-      return getCssClasses(this.props);
-    }
-  }, {
-    key: "iconSource",
-    get: function () {
-      const {
-        icon
-      } = this.props;
-      return icon !== null && icon !== void 0 ? icon : '';
-    }
-  }, {
-    key: "inkRippleConfig",
-    get: function () {
-      if (this.__getterCache['inkRippleConfig'] !== undefined) {
-        return this.__getterCache['inkRippleConfig'];
-      }
-      return this.__getterCache['inkRippleConfig'] = (() => {
-        const {
-          icon,
-          text
-        } = this.props;
-        return !text && icon ? {
-          isCentered: true,
-          useHoldAnimation: false,
-          waveSizeCoefficient: 1
-        } : {};
-      })();
-    }
-  }, {
-    key: "buttonTemplateData",
-    get: function () {
-      const {
-        icon,
-        templateData,
-        text
-      } = this.props;
-      return _extends({
-        icon,
-        text
-      }, templateData);
-    }
-  }, {
-    key: "restAttributes",
-    get: function () {
-      const _this$props = this.props,
-        restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
-      return restProps;
-    }
-  }]);
-  return Button;
-}(_inferno2.InfernoWrapperComponent);
-Button.defaultProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(ButtonProps), Object.getOwnPropertyDescriptors(_extends({}, (0, _utils.convertRulesToOptions)(defaultOptionRules)))));
+  }
+}
+exports.Button = Button;
+Button.defaultProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(ButtonProps), Object.getOwnPropertyDescriptors(_extends({}, (0, _utils.convertRulesToOptions)(defaultOptionRules)))));
 const __defaultOptionRules = [];
 function defaultOptions(rule) {
   __defaultOptionRules.push(rule);
-  Button.defaultProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(Button.defaultProps), Object.getOwnPropertyDescriptors((0, _utils.convertRulesToOptions)(defaultOptionRules)), Object.getOwnPropertyDescriptors((0, _utils.convertRulesToOptions)(__defaultOptionRules))));
+  Button.defaultProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(Button.defaultProps), Object.getOwnPropertyDescriptors((0, _utils.convertRulesToOptions)(defaultOptionRules)), Object.getOwnPropertyDescriptors((0, _utils.convertRulesToOptions)(__defaultOptionRules))));
 }

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (renovation/component_wrapper/common/template_wrapper.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -20,21 +20,17 @@ var _element = require("../../../core/element");
 var _type = require("../../../core/utils/type");
 const _excluded = ["isEqual"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 function isDxElementWrapper(element) {
   return !!element.toArray;
 }
 function buildTemplateArgs(model, template) {
-  var _model$data;
   const args = {
     template,
     model: _extends({}, model)
   };
-  const _ref = (_model$data = model.data) !== null && _model$data !== void 0 ? _model$data : {},
+  const _ref = model.data ?? {},
     {
       isEqual
     } = _ref,
@@ -46,11 +42,10 @@ function buildTemplateArgs(model, template) {
   return args;
 }
 function renderTemplateContent(props, container) {
-  var _props$model;
   const {
     data,
     index
-  } = (_props$model = props.model) !== null && _props$model !== void 0 ? _props$model : {
+  } = props.model ?? {
     data: {}
   };
   if (data) {
@@ -83,16 +78,12 @@ function removeDifferentElements(oldChildren, newChildren) {
     }
   });
 }
-let TemplateWrapper = exports.TemplateWrapper = /*#__PURE__*/function (_InfernoComponent) {
-  _inheritsLoose(TemplateWrapper, _InfernoComponent);
-  function TemplateWrapper(props) {
-    var _this;
-    _this = _InfernoComponent.call(this, props) || this;
-    _this.renderTemplate = _this.renderTemplate.bind(_assertThisInitialized(_this));
-    return _this;
+class TemplateWrapper extends _inferno.InfernoComponent {
+  constructor(props) {
+    super(props);
+    this.renderTemplate = this.renderTemplate.bind(this);
   }
-  var _proto = TemplateWrapper.prototype;
-  _proto.renderTemplate = function renderTemplate() {
+  renderTemplate() {
     const node = (0, _inferno2.findDOMfromVNode)(this.$LI, true);
     if (!(node !== null && node !== void 0 && node.parentNode)) {
       return () => {};
@@ -107,8 +98,8 @@ let TemplateWrapper = exports.TemplateWrapper = /*#__PURE__*/function (_InfernoC
       removeDifferentElements($oldContainerContent, $actualContainerContent);
       container.appendChild(node);
     };
-  };
-  _proto.shouldComponentUpdate = function shouldComponentUpdate(nextProps) {
+  }
+  shouldComponentUpdate(nextProps) {
     const {
       model,
       template
@@ -118,7 +109,7 @@ let TemplateWrapper = exports.TemplateWrapper = /*#__PURE__*/function (_InfernoC
       model: nextModel,
       template: nextTemplate
     } = nextProps;
-    const equalityComparer = isEqual !== null && isEqual !== void 0 ? isEqual : _shallow_equals.shallowEquals;
+    const equalityComparer = isEqual ?? _shallow_equals.shallowEquals;
     if (template !== nextTemplate) {
       return true;
     }
@@ -137,16 +128,16 @@ let TemplateWrapper = exports.TemplateWrapper = /*#__PURE__*/function (_InfernoC
       return true;
     }
     return !equalityComparer(data, nextData);
-  };
-  _proto.createEffects = function createEffects() {
+  }
+  createEffects() {
     return [new _inferno.InfernoEffect(this.renderTemplate, [this.props.template, this.props.model])];
-  };
-  _proto.updateEffects = function updateEffects() {
+  }
+  updateEffects() {
     this._effects[0].update([this.props.template, this.props.model]);
-  };
-  _proto.componentWillUnmount = function componentWillUnmount() {};
-  _proto.render = function render() {
+  }
+  componentWillUnmount() {}
+  render() {
     return null;
-  };
-  return TemplateWrapper;
-}(_inferno.InfernoComponent);
+  }
+}
+exports.TemplateWrapper = TemplateWrapper;

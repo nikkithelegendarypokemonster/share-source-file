@@ -2,7 +2,7 @@ import { extend } from '../../core/utils/extend';
 import { each } from '../../core/utils/iterator';
 import { isString } from '../../core/utils/type';
 import messageLocalization from '../../localization/message';
-export var defaultPermissions = {
+export const defaultPermissions = {
   create: false,
   copy: false,
   move: false,
@@ -95,21 +95,21 @@ export class FileManagerCommandManager {
     this._actions = extend(this._actions, actions);
   }
   executeCommand(command, arg) {
-    var commandName = isString(command) ? command : command.name;
-    var action = this._actions[commandName];
+    const commandName = isString(command) ? command : command.name;
+    const action = this._actions[commandName];
     if (action) {
       return action(arg);
     }
   }
   updatePermissions(permissions) {
-    var resultPermissions = extend({}, defaultPermissions, permissions);
+    const resultPermissions = extend({}, defaultPermissions, permissions);
     this._permissions = resultPermissions;
     each(this._permissions, permission => {
       this._commandMap[permission].enabled = this._permissions[permission];
     });
   }
   setCommandEnabled(commandName, enabled) {
-    var command = this.getCommandByName(commandName);
+    const command = this.getCommandByName(commandName);
     if (command) {
       command.enabled = enabled;
     }
@@ -118,14 +118,14 @@ export class FileManagerCommandManager {
     return this._commandMap[name];
   }
   isCommandAvailable(commandName, itemInfos) {
-    var command = this.getCommandByName(commandName);
+    const command = this.getCommandByName(commandName);
     if (!command || !command.enabled) {
       return false;
     }
     if (command.noFileItemRequired) {
       return true;
     }
-    var itemsLength = itemInfos && itemInfos.length || 0;
+    const itemsLength = itemInfos && itemInfos.length || 0;
     if (itemsLength === 0 || itemInfos.some(item => item.fileItem.isRoot() || item.fileItem.isParentFolder)) {
       return false;
     }

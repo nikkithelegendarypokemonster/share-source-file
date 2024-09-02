@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.vi.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -200,8 +200,10 @@
             "dxDataGrid-filterPanelCreateFilter": "Tạo Bộ lọc",
             "dxDataGrid-filterPanelClearFilter": "Loại bỏ",
             "dxDataGrid-filterPanelFilterEnabledHint": "Kích hoạt Bộ lọc",
+            "dxDataGrid-masterDetail": "Cell with details",
             "dxTreeList-ariaTreeList": "Tree list with {0} rows and {1} columns",
             "dxTreeList-ariaSearchInGrid": "Search in the tree list",
+            "dxTreeList-ariaExpandableInstruction": "Press Ctrl + right arrow to expand the focused node and Ctrl + left arrow to collapse it",
             "dxTreeList-ariaToolbar": "Tree list toolbar",
             "dxTreeList-editingAddRowToNode": "Thêm",
             "dxPager-infoText": "Trang {0} của {1} ({2} mục)",
@@ -233,6 +235,7 @@
             "dxPivotGrid-dataFieldArea": "Thả các trường dữ liệu vào đây",
             "dxPivotGrid-rowFieldArea": "Thả các trường của hàng vào đây",
             "dxPivotGrid-filterFieldArea": "Thả bộ lọc các trường vào đây",
+            "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
             "dxScheduler-editorLabelTitle": "Chủ đề",
             "dxScheduler-editorLabelStartDate": "Ngày bắt đầu",
             "dxScheduler-editorLabelEndDate": "Ngày kết thúc",
@@ -279,6 +282,10 @@
             "dxScheduler-confirmRecurrenceDeleteOccurrence": "Xóa Lịch hẹn",
             "dxScheduler-noTimezoneTitle": "Không có múi giờ",
             "dxScheduler-moreAppointments": "{0} thêm",
+            "dxCalendar-currentDay": "Today",
+            "dxCalendar-currentMonth": "Current month",
+            "dxCalendar-currentYear": "Current year",
+            "dxCalendar-currentYearRange": "Current year range",
             "dxCalendar-todayButtonText": "Hôm nay",
             "dxCalendar-ariaWidgetName": "Lịch",
             "dxCalendar-previousMonthButtonLabel": "Previous month",
@@ -293,6 +300,9 @@
             "dxCalendar-captionYearLabel": "Year selection",
             "dxCalendar-captionDecadeLabel": "Decade selection",
             "dxCalendar-captionCenturyLabel": "Century selection",
+            "dxCalendar-selectedDate": "The selected date is {0}",
+            "dxCalendar-selectedDateRange": "The selected date range is from {0} to {1}",
+            "dxCalendar-readOnlyLabel": "Read-only calendar",
             "dxColorView-ariaRed": "Đỏ",
             "dxColorView-ariaGreen": "Xanh lá",
             "dxColorView-ariaBlue": "Xanh nước biển",
@@ -686,7 +696,8 @@
             "dxMultiView-elementAriaRoleDescription": "MultiView",
             "dxMultiView-elementAriaLabel": "Use the arrow keys or swipe to navigate between views",
             "dxMultiView-itemAriaRoleDescription": "View",
-            "dxMultiView-itemAriaLabel": "{0} of {1}"
+            "dxMultiView-itemAriaLabel": "{0} of {1}",
+            "dxSplitter-resizeHandleAriaLabel": "Split bar"
         }
     });
 }));

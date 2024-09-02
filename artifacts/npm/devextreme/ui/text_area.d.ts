@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/text_area.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22,116 +22,172 @@ import dxTextBox, {
 } from './text_box';
 
 /**
- * The type of the change event handler&apos;s argument.
+ * @docid _ui_text_area_ChangeEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ChangeEvent = NativeEventInfo<dxTextArea, Event>;
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_text_area_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxTextArea>;
 
 /**
- * The type of the copy event handler&apos;s argument.
+ * @docid _ui_text_area_CopyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CopyEvent = NativeEventInfo<dxTextArea, ClipboardEvent>;
 
 /**
- * The type of the cut event handler&apos;s argument.
+ * @docid _ui_text_area_CutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CutEvent = NativeEventInfo<dxTextArea, ClipboardEvent>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_text_area_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxTextArea>;
 
 /**
- * The type of the enterKey event handler&apos;s argument.
+ * @docid _ui_text_area_EnterKeyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type EnterKeyEvent = NativeEventInfo<dxTextArea, KeyboardEvent>;
 
 /**
- * The type of the focusIn event handler&apos;s argument.
+ * @docid _ui_text_area_FocusInEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusInEvent = NativeEventInfo<dxTextArea, FocusEvent>;
 
 /**
- * The type of the focusOut event handler&apos;s argument.
+ * @docid _ui_text_area_FocusOutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusOutEvent = NativeEventInfo<dxTextArea, FocusEvent>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_text_area_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxTextArea>;
 
 /**
- * The type of the input event handler&apos;s argument.
+ * @docid _ui_text_area_InputEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type InputEvent = NativeEventInfo<dxTextArea, UIEvent & { target: HTMLInputElement }>;
 
 /**
- * The type of the keyDown event handler&apos;s argument.
+ * @docid _ui_text_area_KeyDownEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyDownEvent = NativeEventInfo<dxTextArea, KeyboardEvent>;
 
+/** @public */
 export type KeyPressEvent = NativeEventInfo<dxTextArea, KeyboardEvent>;
 
 /**
- * The type of the keyUp event handler&apos;s argument.
+ * @docid _ui_text_area_KeyUpEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyUpEvent = NativeEventInfo<dxTextArea, KeyboardEvent>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_text_area_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxTextArea> & ChangedOptionInfo;
 
 /**
- * The type of the paste event handler&apos;s argument.
+ * @docid _ui_text_area_PasteEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type PasteEvent = NativeEventInfo<dxTextArea, ClipboardEvent>;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_text_area_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxTextArea, KeyboardEvent | MouseEvent | PointerEvent | TouchEvent | Event> & ValueChangedInfo;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxTextAreaOptions extends dxTextBoxOptions<dxTextArea> {
     /**
-     * A Boolean value specifying whether or not the auto resizing mode is enabled.
+     * @docid
+     * @default false
+     * @public
      */
     autoResizeEnabled?: boolean;
     /**
-     * Specifies the maximum height of the UI component.
+     * @docid
+     * @default undefined
+     * @public
      */
     maxHeight?: number | string;
     /**
-     * Specifies the minimum height of the UI component.
+     * @docid
+     * @default undefined
+     * @public
      */
     minHeight?: number | string;
     /**
-     * Specifies whether or not the UI component checks the inner text for spelling mistakes.
+     * @docid
+     * @default true
+     * @public
      */
     spellcheck?: boolean;
 }
 /**
- * The TextArea is a UI component that enables a user to enter and edit a multi-line text.
+ * @docid
+ * @isEditor
+ * @inherits dxTextBox
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxTextArea extends dxTextBox<dxTextAreaOptions> { }
 
+/** @public */
 export type Properties = dxTextAreaOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxTextAreaOptions;
 
 

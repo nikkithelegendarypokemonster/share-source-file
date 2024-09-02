@@ -416,13 +416,12 @@ const SlideAnimationConfigurator = {
 };
 const FadeAnimationConfigurator = {
   setup: function ($element, config) {
-    var _from$opacity, _to$opacity;
     const from = config.from;
     const to = config.to;
     const defaultFromOpacity = config.type === 'fadeOut' ? 1 : 0;
     const defaultToOpacity = config.type === 'fadeOut' ? 0 : 1;
-    let fromOpacity = (0, _type.isPlainObject)(from) ? String((_from$opacity = from.opacity) !== null && _from$opacity !== void 0 ? _from$opacity : defaultFromOpacity) : String(from);
-    let toOpacity = (0, _type.isPlainObject)(to) ? String((_to$opacity = to.opacity) !== null && _to$opacity !== void 0 ? _to$opacity : defaultToOpacity) : String(to);
+    let fromOpacity = (0, _type.isPlainObject)(from) ? String(from.opacity ?? defaultFromOpacity) : String(from);
+    let toOpacity = (0, _type.isPlainObject)(to) ? String(to.opacity ?? defaultToOpacity) : String(to);
     if (!config.skipElementInitialStyles) {
       fromOpacity = $element.css('opacity');
     }

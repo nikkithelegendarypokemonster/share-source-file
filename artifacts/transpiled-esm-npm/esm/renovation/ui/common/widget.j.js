@@ -3,7 +3,7 @@ import BaseComponent from '../../component_wrapper/common/component';
 import { Widget as WidgetComponent } from './widget';
 export default class Widget extends BaseComponent {
   getProps() {
-    var props = super.getProps();
+    const props = super.getProps();
     props.onKeyDown = this._wrapKeyDownHandler(props.onKeyDown);
     return props;
   }

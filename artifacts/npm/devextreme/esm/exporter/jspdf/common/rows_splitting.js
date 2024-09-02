@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/exporter/jspdf/common/rows_splitting.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,11 +12,11 @@ import { getPageWidth, getPageHeight } from './pdf_utils';
 import { roundToThreeDecimals } from './draw_utils';
 import { getMultiPageRowPages, checkPageContainsOnlyHeader } from './rows_spliting_utils/get_multipage_row_pages';
 import { createOnSplitMultiPageRow } from './rows_spliting_utils/create_on_split_multipage_row';
-var COORDINATE_EPSILON = 0.001;
+const COORDINATE_EPSILON = 0.001;
 function convertToCellsArray(rows) {
   return [].concat.apply([], rows.map(rowInfo => {
     return rowInfo.cells.filter(cell => !isDefined(cell.pdfCell.isMerged)).map(cellInfo => {
-      return _extends({}, cellInfo.pdfCell._rect, {
+      return Object.assign({}, cellInfo.pdfCell._rect, {
         sourceCellInfo: _extends({}, cellInfo.pdfCell, {
           gridCell: cellInfo.gridCell
         })
@@ -29,19 +29,19 @@ function splitByPages(doc, rowsInfo, options, onSeparateRectHorizontally, onSepa
     // Empty Table
     return [[]];
   }
-  var maxBottomRight = {
+  const maxBottomRight = {
     x: getPageWidth(doc) - options.margin.right,
     y: getPageHeight(doc) - options.margin.bottom
   };
-  var headerRows = rowsInfo.filter(r => r.rowType === 'header');
-  var headerHeight = headerRows.reduce((accumulator, row) => {
+  const headerRows = rowsInfo.filter(r => r.rowType === 'header');
+  const headerHeight = headerRows.reduce((accumulator, row) => {
     return accumulator + row.height;
   }, 0);
-  var verticallyPages = splitRectsByPages(convertToCellsArray(rowsInfo), options.margin.top, 'y', 'h', (isFirstPage, currentCoordinate) => {
-    var additionalHeight = !isFirstPage && options.repeatHeaders ? headerHeight : 0;
+  const verticallyPages = splitRectsByPages(convertToCellsArray(rowsInfo), options.margin.top, 'y', 'h', (isFirstPage, currentCoordinate) => {
+    const additionalHeight = !isFirstPage && options.repeatHeaders ? headerHeight : 0;
     return roundToThreeDecimals(currentCoordinate + additionalHeight) <= roundToThreeDecimals(maxBottomRight.y);
   }, (rect, currentPageMaxRectCoordinate, currentPageRects, rectsToSplit) => {
-    var args = {
+    const args = {
       sourceRect: rect,
       topRect: {
         x: rect.x,
@@ -61,10 +61,10 @@ function splitByPages(doc, rowsInfo, options, onSeparateRectHorizontally, onSepa
     rectsToSplit.push(args.bottomRect);
   }, createOnSplitMultiPageRow(doc, options, headerHeight, maxBottomRight));
   if (options.repeatHeaders) {
-    for (var i = 1; i < verticallyPages.length; i++) {
+    for (let i = 1; i < verticallyPages.length; i++) {
       verticallyPages[i].forEach(rect => rect.y += headerHeight);
       // create deep copy of headers for each page
-      var headerCells = convertToCellsArray(headerRows);
+      const headerCells = convertToCellsArray(headerRows);
       headerCells.forEach(cell => {
         cell.y -= options.topLeft.y;
         // cell.x -= options.topLeft.x; don't forget to uncomment this line after fixing topleft.x issue
@@ -72,10 +72,10 @@ function splitByPages(doc, rowsInfo, options, onSeparateRectHorizontally, onSepa
       verticallyPages[i] = [...headerCells, ...verticallyPages[i]];
     }
   }
-  var pageIndex = 0;
+  let pageIndex = 0;
   while (pageIndex < verticallyPages.length) {
-    var horizontallyPages = splitRectsByPages(verticallyPages[pageIndex], options.margin.left, 'x', 'w', (pagesLength, currentCoordinate) => roundToThreeDecimals(currentCoordinate) <= roundToThreeDecimals(maxBottomRight.x), (rect, currentPageMaxRectCoordinate, currentPageRects, rectsToSplit) => {
-      var args = {
+    const horizontallyPages = splitRectsByPages(verticallyPages[pageIndex], options.margin.left, 'x', 'w', (pagesLength, currentCoordinate) => roundToThreeDecimals(currentCoordinate) <= roundToThreeDecimals(maxBottomRight.x), (rect, currentPageMaxRectCoordinate, currentPageRects, rectsToSplit) => {
+      const args = {
         sourceRect: rect,
         leftRect: {
           x: rect.x,
@@ -102,19 +102,19 @@ function splitByPages(doc, rowsInfo, options, onSeparateRectHorizontally, onSepa
     }
   }
   return verticallyPages.map(rects => {
-    return rects.map(rect => _extends({}, rect.sourceCellInfo, {
+    return rects.map(rect => Object.assign({}, rect.sourceCellInfo, {
       _rect: rect
     }));
   });
 }
 function splitRectsByPages(rects, marginValue, coordinate, dimension, isFitToPage, onSeparateCallback, onSplitMultiPageRow) {
-  var pages = [];
-  var rectsToSplit = [...rects];
-  var isFitToPageForMultiPageRow = (isFirstPage, rectHeight) => isFitToPage(isFirstPage, rectHeight + marginValue);
-  var _loop = function _loop() {
-    var currentPageMaxRectCoordinate = 0;
-    var currentPageRects = rectsToSplit.filter(rect => {
-      var currentRectCoordinate = rect[coordinate] + rect[dimension];
+  const pages = [];
+  const rectsToSplit = [...rects];
+  const isFitToPageForMultiPageRow = (isFirstPage, rectHeight) => isFitToPage(isFirstPage, rectHeight + marginValue);
+  while (rectsToSplit.length > 0) {
+    let currentPageMaxRectCoordinate = 0;
+    const currentPageRects = rectsToSplit.filter(rect => {
+      const currentRectCoordinate = rect[coordinate] + rect[dimension];
       if (isFitToPage(pages.length === 0, currentRectCoordinate)) {
         if (currentPageMaxRectCoordinate <= currentRectCoordinate) {
           currentPageMaxRectCoordinate = currentRectCoordinate;
@@ -124,23 +124,23 @@ function splitRectsByPages(rects, marginValue, coordinate, dimension, isFitToPag
         return false;
       }
     });
-    var isCurrentPageContainsOnlyHeader = checkPageContainsOnlyHeader(currentPageRects, pages.length === 0);
-    var multiPageRowPages = getMultiPageRowPages(currentPageRects, rectsToSplit, isCurrentPageContainsOnlyHeader, onSplitMultiPageRow, isFitToPageForMultiPageRow);
-    var rectsToSeparate = rectsToSplit.filter(rect => {
+    const isCurrentPageContainsOnlyHeader = checkPageContainsOnlyHeader(currentPageRects, pages.length === 0);
+    const multiPageRowPages = getMultiPageRowPages(currentPageRects, rectsToSplit, isCurrentPageContainsOnlyHeader, onSplitMultiPageRow, isFitToPageForMultiPageRow);
+    const rectsToSeparate = rectsToSplit.filter(rect => {
       // Check cells that have 'coordinate' less than 'currentPageMaxRectCoordinate'
-      var currentRectLeft = rect[coordinate];
-      var currentRectRight = rect[coordinate] + rect[dimension];
+      const currentRectLeft = rect[coordinate];
+      const currentRectRight = rect[coordinate] + rect[dimension];
       return currentPageMaxRectCoordinate - currentRectLeft > COORDINATE_EPSILON && currentRectRight - currentPageMaxRectCoordinate > COORDINATE_EPSILON;
     });
     rectsToSeparate.forEach(rect => {
       onSeparateCallback(rect, currentPageMaxRectCoordinate, currentPageRects, rectsToSplit);
-      var index = rectsToSplit.indexOf(rect);
+      const index = rectsToSplit.indexOf(rect);
       if (index !== -1) {
         rectsToSplit.splice(index, 1);
       }
     });
     currentPageRects.forEach(rect => {
-      var index = rectsToSplit.indexOf(rect);
+      const index = rectsToSplit.indexOf(rect);
       if (index !== -1) {
         rectsToSplit.splice(index, 1);
       }
@@ -148,9 +148,9 @@ function splitRectsByPages(rects, marginValue, coordinate, dimension, isFitToPag
     rectsToSplit.forEach(rect => {
       rect[coordinate] = isDefined(currentPageMaxRectCoordinate) ? rect[coordinate] - currentPageMaxRectCoordinate + marginValue : rect[coordinate];
     });
-    var firstPageContainsHeaderAndMultiPageRow = isCurrentPageContainsOnlyHeader && multiPageRowPages.length > 0;
+    const firstPageContainsHeaderAndMultiPageRow = isCurrentPageContainsOnlyHeader && multiPageRowPages.length > 0;
     if (firstPageContainsHeaderAndMultiPageRow) {
-      var [firstPage, ...restOfPages] = multiPageRowPages;
+      const [firstPage, ...restOfPages] = multiPageRowPages;
       pages.push([...currentPageRects, ...firstPage]);
       pages.push(...restOfPages);
     } else if (currentPageRects.length > 0) {
@@ -161,11 +161,8 @@ function splitRectsByPages(rects, marginValue, coordinate, dimension, isFitToPag
       pages.push(rectsToSplit);
     } else {
       pages.push(rectsToSplit);
-      return 1; // break
+      break;
     }
-  };
-  while (rectsToSplit.length > 0) {
-    if (_loop()) break;
   }
   return pages;
 }

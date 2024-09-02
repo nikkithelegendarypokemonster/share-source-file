@@ -1,28 +1,28 @@
 /**
 * DevExtreme (esm/renovation/ui/common/dom_component_wrapper.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["valueChange"],
+const _excluded = ["valueChange"],
   _excluded2 = ["componentProps", "componentType", "templateNames"];
 import { createVNode } from "inferno";
 import { InfernoEffect, InfernoComponent } from '@devextreme/runtime/inferno';
 import { renderTemplate, hasTemplate } from '@devextreme/runtime/inferno';
-import { ConfigContext } from '../../common/config_context';
+import { ConfigContext } from '../../../__internal/core/r1/config_context';
 import { getUpdatedOptions } from './utils/get_updated_options';
-var normalizeProps = props => Object.keys(props).reduce((accumulator, key) => {
+const normalizeProps = props => Object.keys(props).reduce((accumulator, key) => {
   if (props[key] !== undefined) {
     accumulator[key] = props[key];
   }
   return accumulator;
 }, {});
-export var viewFunction = _ref => {
-  var {
+export const viewFunction = _ref => {
+  let {
     props: {
       componentProps: {
         className
@@ -33,9 +33,15 @@ export var viewFunction = _ref => {
   } = _ref;
   return normalizeProps(createVNode(1, "div", className, null, 1, _extends({}, restAttributes), null, widgetRef));
 };
-export var DomComponentWrapperProps = {};
+export const DomComponentWrapperProps = {};
 import { createRef as infernoCreateRef } from 'inferno';
 export class DomComponentWrapper extends InfernoComponent {
+  get config() {
+    if (this.context[ConfigContext.id]) {
+      return this.context[ConfigContext.id];
+    }
+    return ConfigContext.defaultValue;
+  }
   constructor(props) {
     super(props);
     this.state = {};
@@ -44,21 +50,15 @@ export class DomComponentWrapper extends InfernoComponent {
     this.setupWidget = this.setupWidget.bind(this);
     this.updateWidget = this.updateWidget.bind(this);
   }
-  get config() {
-    if (this.context[ConfigContext.id]) {
-      return this.context[ConfigContext.id];
-    }
-    return ConfigContext.defaultValue;
-  }
   createEffects() {
     return [new InfernoEffect(this.setupWidget, []), new InfernoEffect(this.updateWidget, [this.props.componentProps, this.config, this.props.templateNames])];
   }
   updateEffects() {
     var _this$_effects$;
-    (_this$_effects$ = this._effects[1]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([this.props.componentProps, this.config, this.props.templateNames]);
+    (_this$_effects$ = this._effects[1]) === null || _this$_effects$ === void 0 || _this$_effects$.update([this.props.componentProps, this.config, this.props.templateNames]);
   }
   setupWidget() {
-    var componentInstance = new this.props.componentType(this.widgetRef.current, this.properties);
+    const componentInstance = new this.props.componentType(this.widgetRef.current, this.properties);
     this.instance = componentInstance;
     return () => {
       componentInstance.dispose();
@@ -66,15 +66,15 @@ export class DomComponentWrapper extends InfernoComponent {
     };
   }
   updateWidget() {
-    var instance = this.getInstance();
+    const instance = this.getInstance();
     if (!instance) {
       return;
     }
-    var updatedOptions = getUpdatedOptions(this.prevProps || {}, this.properties);
+    const updatedOptions = getUpdatedOptions(this.prevProps || {}, this.properties);
     if (updatedOptions.length) {
       instance.beginUpdate();
       updatedOptions.forEach(_ref2 => {
-        var {
+        let {
           path,
           value
         } = _ref2;
@@ -86,24 +86,24 @@ export class DomComponentWrapper extends InfernoComponent {
   }
   get properties() {
     var _this$config;
-    var normalizedProps = normalizeProps(this.props.componentProps);
-    var {
+    const normalizedProps = normalizeProps(this.props.componentProps);
+    const {
         valueChange
       } = normalizedProps,
       restProps = _objectWithoutPropertiesLoose(normalizedProps, _excluded);
-    var properties = _extends({
+    const properties = _extends({
       rtlEnabled: !!((_this$config = this.config) !== null && _this$config !== void 0 && _this$config.rtlEnabled),
       isRenovated: true
     }, restProps);
     if (valueChange) {
       properties.onValueChanged = _ref3 => {
-        var {
+        let {
           value
         } = _ref3;
         return valueChange(value);
       };
     }
-    var templates = this.props.templateNames;
+    const templates = this.props.templateNames;
     templates.forEach(name => {
       if (hasTemplate(name, properties, this)) {
         properties[name] = (item, index, container) => {
@@ -118,7 +118,7 @@ export class DomComponentWrapper extends InfernoComponent {
     return properties;
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded2);
     return restProps;
   }
@@ -126,7 +126,7 @@ export class DomComponentWrapper extends InfernoComponent {
     return this.instance;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       widgetRef: this.widgetRef,

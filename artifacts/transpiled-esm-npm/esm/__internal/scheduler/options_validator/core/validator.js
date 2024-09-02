@@ -4,9 +4,9 @@ export class Validator {
     this.rules = rules;
   }
   validate(options) {
-    var value = this.valueSelector(options);
-    var errors = this.rules.reduce((result, rule) => {
-      var validationResult = rule(value);
+    const value = this.valueSelector(options);
+    const errors = this.rules.reduce((result, rule) => {
+      const validationResult = rule(value);
       if (validationResult !== true) {
         result[rule.name] = validationResult;
       }

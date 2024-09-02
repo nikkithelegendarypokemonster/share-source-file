@@ -5,10 +5,10 @@ import { name as clickEventName } from '../../../../events/click';
 import eventsEngine from '../../../../events/core/events_engine';
 import messageLocalization from '../../../../localization/message';
 import modules from '../m_modules';
-var ERROR_ROW_CLASS = 'dx-error-row';
-var ERROR_MESSAGE_CLASS = 'dx-error-message';
-var ERROR_CLOSEBUTTON_CLASS = 'dx-closebutton';
-var ACTION_CLASS = 'action';
+const ERROR_ROW_CLASS = 'dx-error-row';
+const ERROR_MESSAGE_CLASS = 'dx-error-message';
+const ERROR_CLOSEBUTTON_CLASS = 'dx-closebutton';
+const ACTION_CLASS = 'action';
 export class ErrorHandlingController extends modules.ViewController {
   init() {
     this._resizingController = this.getController('resizing');
@@ -17,23 +17,23 @@ export class ErrorHandlingController extends modules.ViewController {
     this._rowsView = this.getView('rowsView');
   }
   _createErrorRow(error, $tableElements) {
-    var $errorRow;
-    var $closeButton;
-    var $errorMessage = this._renderErrorMessage(error);
+    let $errorRow;
+    let $closeButton;
+    const $errorMessage = this._renderErrorMessage(error);
     if ($tableElements) {
       $errorRow = $('<tr>').attr('role', 'row').addClass(ERROR_ROW_CLASS);
       $closeButton = $('<div>').addClass(ERROR_CLOSEBUTTON_CLASS).addClass(this.addWidgetPrefix(ACTION_CLASS));
       eventsEngine.on($closeButton, clickEventName, this.createAction(args => {
-        var _a, _b;
-        var e = args.event;
-        var $errorRow;
-        var errorRowIndex = $(e.currentTarget).closest(".".concat(ERROR_ROW_CLASS)).index();
+        var _this$_resizingContro, _this$_resizingContro2;
+        const e = args.event;
+        let $errorRow;
+        const errorRowIndex = $(e.currentTarget).closest(`.${ERROR_ROW_CLASS}`).index();
         e.stopPropagation();
         each($tableElements, (_, tableElement) => {
           $errorRow = $(tableElement).children('tbody').children('tr').eq(errorRowIndex);
           this.removeErrorRow($errorRow);
         });
-        (_b = (_a = this._resizingController) === null || _a === void 0 ? void 0 : _a.fireContentReadyAction) === null || _b === void 0 ? void 0 : _b.call(_a);
+        (_this$_resizingContro = this._resizingController) === null || _this$_resizingContro === void 0 || (_this$_resizingContro2 = _this$_resizingContro.fireContentReadyAction) === null || _this$_resizingContro2 === void 0 || _this$_resizingContro2.call(_this$_resizingContro);
       }));
       $('<td>')
       // @ts-expect-errors
@@ -46,36 +46,36 @@ export class ErrorHandlingController extends modules.ViewController {
     return $errorMessage;
   }
   _renderErrorMessage(error) {
-    var message = error.url ? error.message.replace(error.url, '') : error.message || error;
-    var $message = $('<div>').attr('role', 'alert').attr('aria-roledescription', messageLocalization.format('dxDataGrid-ariaError')).addClass(ERROR_MESSAGE_CLASS).text(message);
+    const message = error.url ? error.message.replace(error.url, '') : error.message || error;
+    const $message = $('<div>').attr('role', 'alert').attr('aria-roledescription', messageLocalization.format('dxDataGrid-ariaError')).addClass(ERROR_MESSAGE_CLASS).text(message);
     if (error.url) {
       $('<a>').attr('href', error.url).text(error.url).appendTo($message);
     }
     return $message;
   }
   renderErrorRow(error, rowIndex, $popupContent) {
-    var _a, _b;
-    var that = this;
-    var $errorMessageElement;
-    var $firstErrorRow;
+    var _this$_resizingContro3, _this$_resizingContro4;
+    const that = this;
+    let $errorMessageElement;
+    let $firstErrorRow;
     if ($popupContent) {
-      $popupContent.find(".".concat(ERROR_MESSAGE_CLASS)).remove();
+      $popupContent.find(`.${ERROR_MESSAGE_CLASS}`).remove();
       $errorMessageElement = that._createErrorRow(error);
       $popupContent.prepend($errorMessageElement);
       return $errorMessageElement;
     }
-    var viewElement = rowIndex >= 0 || !that._columnHeadersView.isVisible() ? that._rowsView : that._columnHeadersView;
-    var $tableElements = viewElement.getTableElements();
+    const viewElement = rowIndex >= 0 || !that._columnHeadersView.isVisible() ? that._rowsView : that._columnHeadersView;
+    const $tableElements = viewElement.getTableElements();
     each($tableElements, (_, tableElement) => {
       $errorMessageElement = that._createErrorRow(error, $tableElements);
       $firstErrorRow = $firstErrorRow || $errorMessageElement;
       if (rowIndex >= 0) {
-        var $row = viewElement._getRowElements($(tableElement)).eq(rowIndex);
+        const $row = viewElement._getRowElements($(tableElement)).eq(rowIndex);
         that.removeErrorRow($row.next());
         $errorMessageElement.insertAfter($row);
       } else {
-        var $tbody = $(tableElement).children('tbody');
-        var rowElements = $tbody.children('tr');
+        const $tbody = $(tableElement).children('tbody');
+        const rowElements = $tbody.children('tr');
         if (that._columnHeadersView.isVisible()) {
           that.removeErrorRow(rowElements.last());
           $(tableElement).append($errorMessageElement);
@@ -85,16 +85,16 @@ export class ErrorHandlingController extends modules.ViewController {
         }
       }
     });
-    (_b = (_a = this._resizingController) === null || _a === void 0 ? void 0 : _a.fireContentReadyAction) === null || _b === void 0 ? void 0 : _b.call(_a);
+    (_this$_resizingContro3 = this._resizingController) === null || _this$_resizingContro3 === void 0 || (_this$_resizingContro4 = _this$_resizingContro3.fireContentReadyAction) === null || _this$_resizingContro4 === void 0 || _this$_resizingContro4.call(_this$_resizingContro3);
     return $firstErrorRow;
   }
   removeErrorRow($row) {
     if (!$row) {
-      var $columnHeaders = this._columnHeadersView && this._columnHeadersView.element();
-      $row = $columnHeaders && $columnHeaders.find(".".concat(ERROR_ROW_CLASS));
+      const $columnHeaders = this._columnHeadersView && this._columnHeadersView.element();
+      $row = $columnHeaders && $columnHeaders.find(`.${ERROR_ROW_CLASS}`);
       if (!$row || !$row.length) {
-        var $rowsViewElement = this._rowsView.element();
-        $row = $rowsViewElement && $rowsViewElement.find(".".concat(ERROR_ROW_CLASS));
+        const $rowsViewElement = this._rowsView.element();
+        $row = $rowsViewElement && $rowsViewElement.find(`.${ERROR_ROW_CLASS}`);
       }
     }
     $row && $row.hasClass(ERROR_ROW_CLASS) && $row.remove();
@@ -109,7 +109,7 @@ export class ErrorHandlingController extends modules.ViewController {
     }
   }
 }
-var data = Base => class ErrorHandlingDataControllerExtends extends Base {
+const data = Base => class ErrorHandlingDataControllerExtends extends Base {
   init() {
     super.init();
     this.dataErrorOccurred.add((error, $popupContent) => {
@@ -118,17 +118,17 @@ var data = Base => class ErrorHandlingDataControllerExtends extends Base {
       }
     });
     this.changed.add(e => {
-      var _a, _b;
       if (e && e.changeType === 'loadError') {
         return;
       }
       if (this._editingController && !this._editingController.hasChanges()) {
-        (_b = (_a = this._errorHandlingController) === null || _a === void 0 ? void 0 : _a.removeErrorRow) === null || _b === void 0 ? void 0 : _b.call(_a);
+        var _this$_errorHandlingC, _this$_errorHandlingC2;
+        (_this$_errorHandlingC = this._errorHandlingController) === null || _this$_errorHandlingC === void 0 || (_this$_errorHandlingC2 = _this$_errorHandlingC.removeErrorRow) === null || _this$_errorHandlingC2 === void 0 || _this$_errorHandlingC2.call(_this$_errorHandlingC);
       }
     });
   }
 };
-export var errorHandlingModule = {
+export const errorHandlingModule = {
   defaultOptions() {
     return {
       errorRowEnabled: true

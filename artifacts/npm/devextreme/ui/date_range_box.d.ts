@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/date_range_box.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -29,199 +29,309 @@ import {
 } from './editor/editor';
 
 /**
- * The type of the change event handler&apos;s argument.
+ * @docid _ui_date_range_box_ChangeEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ChangeEvent = NativeEventInfo<dxDateRangeBox>;
 
 /**
- * The type of the closed event handler&apos;s argument.
+ * @docid _ui_date_range_box_ClosedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ClosedEvent = EventInfo<dxDateRangeBox>;
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_date_range_box_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxDateRangeBox>;
 
 /**
- * The type of the copy event handler&apos;s argument.
+ * @docid _ui_date_range_box_CopyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CopyEvent = NativeEventInfo<dxDateRangeBox, ClipboardEvent>;
 
 /**
- * The type of the cut event handler&apos;s argument.
+ * @docid _ui_date_range_box_CutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type CutEvent = NativeEventInfo<dxDateRangeBox, ClipboardEvent>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_date_range_box_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxDateRangeBox>;
 
 /**
- * The type of the enterKey event handler&apos;s argument.
+ * @docid _ui_date_range_box_EnterKeyEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type EnterKeyEvent = NativeEventInfo<dxDateRangeBox, KeyboardEvent>;
 
 /**
- * The type of the focusIn event handler&apos;s argument.
+ * @docid _ui_date_range_box_FocusInEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusInEvent = NativeEventInfo<dxDateRangeBox, FocusEvent>;
 
 /**
- * The type of the focusOut event handler&apos;s argument.
+ * @docid _ui_date_range_box_FocusOutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusOutEvent = NativeEventInfo<dxDateRangeBox, FocusEvent>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_date_range_box_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxDateRangeBox>;
 
 /**
- * The type of the input event handler&apos;s argument.
+ * @docid _ui_date_range_box_InputEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type InputEvent = NativeEventInfo<dxDateRangeBox, UIEvent & { target: HTMLInputElement }>;
 
 /**
- * The type of the keyDown event handler&apos;s argument.
+ * @docid _ui_date_range_box_KeyDownEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyDownEvent = NativeEventInfo<dxDateRangeBox, KeyboardEvent>;
 
+/** @public */
 export type KeyPressEvent = NativeEventInfo<dxDateRangeBox, KeyboardEvent>;
 
 /**
- * The type of the keyUp event handler&apos;s argument.
+ * @docid _ui_date_range_box_KeyUpEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type KeyUpEvent = NativeEventInfo<dxDateRangeBox, KeyboardEvent>;
 
 /**
- * The type of the opened event handler&apos;s argument.
+ * @docid _ui_date_range_box_OpenedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type OpenedEvent = EventInfo<dxDateRangeBox>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_date_range_box_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxDateRangeBox> & ChangedOptionInfo;
 
 /**
- * The type of the paste event handler&apos;s argument.
+ * @docid _ui_date_range_box_PasteEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type PasteEvent = NativeEventInfo<dxDateRangeBox, ClipboardEvent>;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_date_range_box_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxDateRangeBox, KeyboardEvent | MouseEvent | PointerEvent | Event> & ValueChangedInfo;
 
+/** @public */
 export type DropDownButtonTemplateData = DropDownButtonTemplateDataModel;
 
 /**
- * 
+ * @public
+ * @docid dxDateRangeBoxOptions
+ * @type object
  */
 export type Properties = Omit<DateBoxBaseOptions<dxDateRangeBox>, 'inputAttr' | 'label' | 'maxLength' | 'name' | 'placeholder' | 'text'> & {
     /**
-     * Specifies whether the UI component disables date selection before the start date and after the end date.
+     * @docid dxDateRangeBoxOptions.disableOutOfRangeSelection
+     * @default false
+     * @public
      */
     disableOutOfRangeSelection?: boolean;
     /**
-     * Specifies the range&apos;s end date.
+     * @docid dxDateRangeBoxOptions.endDate
+     * @default null
+     * @public
+     * @fires dxDateRangeBoxOptions.onOptionChanged
      */
     endDate?: Date | number | string;
     /**
-     * Specifies the attributes passed to the end date input field.
+     * @docid dxDateRangeBoxOptions.endDateInputAttr
+     * @default {}
+     * @public
      */
     endDateInputAttr?: any;
     /**
-     * Specifies the label of the end date input field.
+     * @docid dxDateRangeBoxOptions.endDateLabel
+     * @default "End Date"
+     * @public
      */
     endDateLabel?: string;
     /**
-     * Specifies the name attribute of the end date input field.
+     * @docid dxDateRangeBoxOptions.endDateName
+     * @default ""
+     * @public
      */
     endDateName?: string;
     /**
-     * Specifies the message displayed if the specified end date is later than the max value or earlier than the min value.
+     * @docid dxDateRangeBoxOptions.endDateOutOfRangeMessage
+     * @default "End date is out of range"
+     * @public
      */
     endDateOutOfRangeMessage?: string;
     /**
-     * Specifies a placeholder for the end date input field.
+     * @docid dxDateRangeBoxOptions.endDatePlaceholder
+     * @default ""
+     * @public
      */
     endDatePlaceholder?: string;
     /**
-     * Returns the text displayed by the end date input field.
+     * @docid dxDateRangeBoxOptions.endDateText
+     * @readonly
+     * @public
      */
     endDateText?: string;
     /**
-     * Specifies a message for invalid end date input.
+     * @docid dxDateRangeBoxOptions.invalidEndDateMessage
+     * @default "End value must be a date"
+     * @public
      */
     invalidEndDateMessage?: string;
     /**
-     * Specifies a message for invalid start date input.
+     * @docid dxDateRangeBoxOptions.invalidStartDateMessage
+     * @default "Start value must be a date"
+     * @public
      */
     invalidStartDateMessage?: string;
     /**
-     * Specifies whether the UI component displays a single-month calendar or a multi-month calendar.
+     * @docid dxDateRangeBoxOptions.multiView
+     * @default true
+     * @default false &for(iOS)
+     * @default false &for(Android)
+     * @public
      */
     multiView?: boolean;
     /**
-     * Specifies whether a user can open the popup calendar by clicking an input field.
+     * @docid dxDateRangeBoxOptions.openOnFieldClick
+     * @default true
+     * @public
      */
     openOnFieldClick?: boolean;
     /**
-     * Specifies the start date of date range.
+     * @docid dxDateRangeBoxOptions.startDate
+     * @default null
+     * @public
+     * @fires dxDateRangeBoxOptions.onOptionChanged
      */
     startDate?: Date | number | string;
     /**
-     * Specifies the attributes passed to the start date input field.
+     * @docid dxDateRangeBoxOptions.startDateInputAttr
+     * @default {}
+     * @public
      */
     startDateInputAttr?: any;
     /**
-     * Specifies a label of the start date input field.
+     * @docid dxDateRangeBoxOptions.startDateLabel
+     * @default "Start Date"
+     * @public
      */
     startDateLabel?: string;
     /**
-     * Specifies the name attribute of the start date input field.
+     * @docid dxDateRangeBoxOptions.startDateName
+     * @default ""
+     * @public
      */
     startDateName?: string;
     /**
-     * Specifies the message displayed if the specified start date is later than the max value or earlier than the min value.
+     * @docid dxDateRangeBoxOptions.startDateOutOfRangeMessage
+     * @default "Start date is out of range"
+     * @public
      */
     startDateOutOfRangeMessage?: string;
     /**
-     * Specifies a placeholder for the start date input field.
+     * @docid dxDateRangeBoxOptions.startDatePlaceholder
+     * @default ""
+     * @public
      */
     startDatePlaceholder?: string;
     /**
-     * Returns the text displayed by the start date input field.
+     * @docid dxDateRangeBoxOptions.startDateText
+     * @readonly
+     * @public
      */
     startDateText?: string;
     /**
-     * An array that specifies the selected range (start and end dates).
+     * @docid dxDateRangeBoxOptions.value
+     * @default [null,null]
+     * @public
      */
     value?: Array<Date | number | string>;
 };
 
 /**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
  */
 declare const DateRangeBoxBase: Omit<typeof DateBoxBase, 'new' | 'prototype'> & (new(element: UserDefinedElement, options?: Properties) => Omit<DateBoxBase<Properties>, 'field' | 'reset'>);
 
 /**
- * DateRangeBox is a UI component that allows a user to select a date range (pick or enter start and end dates).
+ * @docid
+ * @isEditor
+ * @inherits DateBoxBase
+ * @namespace DevExpress.ui
+ * @options Properties
+ * @public
  */
 export default class dxDateRangeBox extends DateRangeBoxBase {
   /**
-   * Gets the `` element of the UI component&apos;s end date field.
+   * @docid
+   * @publicName endDateField()
+   * @public
    */
   endDateField(): DxElement;
   /**
-   * Gets the `` element of the UI component&apos;s start date field.
+   * @docid
+   * @publicName startDateField()
+   * @public
    */
   startDateField(): DxElement;
   /**
-   * Resets the value property to the value passed as an argument.
+   * @docid
+   * @publicName reset(value)
+   * @public
    */
   reset(value?: Array<Date | number | string | null>): void;
 }

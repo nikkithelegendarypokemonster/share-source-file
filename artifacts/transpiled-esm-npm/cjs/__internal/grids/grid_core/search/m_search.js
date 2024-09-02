@@ -11,15 +11,17 @@ var _query = _interopRequireDefault(require("../../../../data/query"));
 var _message = _interopRequireDefault(require("../../../../localization/message"));
 var _m_utils = _interopRequireDefault(require("../m_utils"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */ /* eslint-disable @typescript-eslint/method-signature-style */ // @ts-expect-error
+/* eslint-disable max-classes-per-file */
+/* eslint-disable @typescript-eslint/method-signature-style */
+
+// @ts-expect-error
+
 const SEARCH_PANEL_CLASS = 'search-panel';
 const SEARCH_TEXT_CLASS = 'search-text';
 const HEADER_PANEL_CLASS = 'header-panel';
 const FILTERING_TIMEOUT = 700;
 function allowSearch(column) {
-  var _a;
-  return !!((_a = column.allowSearch) !== null && _a !== void 0 ? _a : column.allowFiltering);
+  return !!(column.allowSearch ?? column.allowFiltering);
 }
 function parseValue(column, text) {
   const {
@@ -33,13 +35,8 @@ function parseValue(column, text) {
   }
   return column.parseValue(text);
 }
-const dataController = base => /*#__PURE__*/function (_base) {
-  _inheritsLoose(SearchDataControllerExtender, _base);
-  function SearchDataControllerExtender() {
-    return _base.apply(this, arguments) || this;
-  }
-  var _proto = SearchDataControllerExtender.prototype;
-  _proto.optionChanged = function optionChanged(args) {
+const dataController = base => class SearchDataControllerExtender extends base {
+  optionChanged(args) {
     switch (args.fullName) {
       case 'searchPanel.text':
       case 'searchPanel':
@@ -47,21 +44,21 @@ const dataController = base => /*#__PURE__*/function (_base) {
         args.handled = true;
         break;
       default:
-        _base.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  _proto.publicMethods = function publicMethods() {
-    return _base.prototype.publicMethods.call(this).concat(['searchByText']);
-  };
-  _proto._calculateAdditionalFilter = function _calculateAdditionalFilter() {
-    const filter = _base.prototype._calculateAdditionalFilter.call(this);
+  }
+  publicMethods() {
+    return super.publicMethods().concat(['searchByText']);
+  }
+  _calculateAdditionalFilter() {
+    const filter = super._calculateAdditionalFilter();
     const searchFilter = this.calculateSearchFilter(this.option('searchPanel.text'));
     return _m_utils.default.combineFilters([filter, searchFilter]);
-  };
-  _proto.searchByText = function searchByText(text) {
+  }
+  searchByText(text) {
     this.option('searchPanel.text', text);
-  };
-  _proto.calculateSearchFilter = function calculateSearchFilter(text) {
+  }
+  calculateSearchFilter(text) {
     let i;
     let column;
     const columns = this._columnsController.getColumns();
@@ -100,16 +97,10 @@ const dataController = base => /*#__PURE__*/function (_base) {
       return ['!'];
     }
     return _m_utils.default.combineFilters(filters, 'or');
-  };
-  return SearchDataControllerExtender;
-}(base);
-const headerPanel = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(SearchHeaderPanelExtender, _Base);
-  function SearchHeaderPanelExtender() {
-    return _Base.apply(this, arguments) || this;
   }
-  var _proto2 = SearchHeaderPanelExtender.prototype;
-  _proto2.optionChanged = function optionChanged(args) {
+};
+const headerPanel = Base => class SearchHeaderPanelExtender extends Base {
+  optionChanged(args) {
     if (args.name === 'searchPanel') {
       if (args.fullName === 'searchPanel.text') {
         const editor = this.getSearchTextEditor();
@@ -121,14 +112,14 @@ const headerPanel = Base => /*#__PURE__*/function (_Base) {
       }
       args.handled = true;
     } else {
-      _Base.prototype.optionChanged.call(this, args);
+      super.optionChanged(args);
     }
-  };
-  _proto2._getToolbarItems = function _getToolbarItems() {
-    const items = _Base.prototype._getToolbarItems.call(this);
+  }
+  _getToolbarItems() {
+    const items = super._getToolbarItems();
     return this._prepareSearchItem(items);
-  };
-  _proto2._prepareSearchItem = function _prepareSearchItem(items) {
+  }
+  _prepareSearchItem(items) {
     const that = this;
     const dataController = this._dataController;
     const searchPanelOptions = this.option('searchPanel');
@@ -148,7 +139,7 @@ const headerPanel = Base => /*#__PURE__*/function (_Base) {
             },
             editorOptions: {
               inputAttr: {
-                'aria-label': _message.default.format("".concat(that.component.NAME, "-ariaSearchInGrid"))
+                'aria-label': _message.default.format(`${that.component.NAME}-ariaSearchInGrid`)
               }
             }
           });
@@ -162,52 +153,47 @@ const headerPanel = Base => /*#__PURE__*/function (_Base) {
       items.push(toolbarItem);
     }
     return items;
-  };
-  _proto2.getSearchTextEditor = function getSearchTextEditor() {
+  }
+  getSearchTextEditor() {
     const that = this;
     const $element = that.element();
-    const $searchPanel = $element.find(".".concat(that.addWidgetPrefix(SEARCH_PANEL_CLASS))).filter(function () {
-      return (0, _renderer.default)(this).closest(".".concat(that.addWidgetPrefix(HEADER_PANEL_CLASS))).is($element);
+    const $searchPanel = $element.find(`.${that.addWidgetPrefix(SEARCH_PANEL_CLASS)}`).filter(function () {
+      return (0, _renderer.default)(this).closest(`.${that.addWidgetPrefix(HEADER_PANEL_CLASS)}`).is($element);
     });
     if ($searchPanel.length) {
       return $searchPanel.dxTextBox('instance');
     }
     return null;
-  };
-  _proto2.isVisible = function isVisible() {
-    const searchPanelOptions = this.option('searchPanel');
-    return _Base.prototype.isVisible.call(this) || !!(searchPanelOptions === null || searchPanelOptions === void 0 ? void 0 : searchPanelOptions.visible);
-  };
-  return SearchHeaderPanelExtender;
-}(Base);
-const rowsView = Base => /*#__PURE__*/function (_Base2) {
-  _inheritsLoose(SearchRowsViewExtender, _Base2);
-  function SearchRowsViewExtender() {
-    return _Base2.apply(this, arguments) || this;
   }
-  var _proto3 = SearchRowsViewExtender.prototype;
-  _proto3.init = function init() {
-    _Base2.prototype.init.apply(this, arguments);
+  isVisible() {
+    const searchPanelOptions = this.option('searchPanel');
+    return super.isVisible() || !!(searchPanelOptions !== null && searchPanelOptions !== void 0 && searchPanelOptions.visible);
+  }
+};
+const rowsView = Base => class SearchRowsViewExtender extends Base {
+  init() {
+    super.init.apply(this, arguments);
     this._searchParams = [];
     this._dataController = this.getController('data');
-  };
-  _proto3.dispose = function dispose() {
+  }
+  dispose() {
     clearTimeout(this._highlightTimer);
-    _Base2.prototype.dispose.call(this);
-  };
-  _proto3._getFormattedSearchText = function _getFormattedSearchText(column, searchText) {
+    super.dispose();
+  }
+  _getFormattedSearchText(column, searchText) {
     const value = parseValue(column, searchText);
     const formatOptions = _m_utils.default.getFormatOptionsByColumn(column, 'search');
     return _m_utils.default.formatValue(value, formatOptions);
-  };
-  _proto3._getStringNormalizer = function _getStringNormalizer() {
-    var _a, _b, _c, _d;
+  }
+  _getStringNormalizer() {
+    var _this$_dataController, _this$_dataController2, _dataSource$loadOptio;
     const isCaseSensitive = this.option('searchPanel.highlightCaseSensitive');
-    const dataSource = (_b = (_a = this._dataController) === null || _a === void 0 ? void 0 : _a.getDataSource) === null || _b === void 0 ? void 0 : _b.call(_a);
-    const langParams = (_d = (_c = dataSource === null || dataSource === void 0 ? void 0 : dataSource.loadOptions) === null || _c === void 0 ? void 0 : _c.call(dataSource)) === null || _d === void 0 ? void 0 : _d.langParams;
+    const dataSource = (_this$_dataController = this._dataController) === null || _this$_dataController === void 0 || (_this$_dataController2 = _this$_dataController.getDataSource) === null || _this$_dataController2 === void 0 ? void 0 : _this$_dataController2.call(_this$_dataController);
+    const langParams = dataSource === null || dataSource === void 0 || (_dataSource$loadOptio = dataSource.loadOptions) === null || _dataSource$loadOptio === void 0 || (_dataSource$loadOptio = _dataSource$loadOptio.call(dataSource)) === null || _dataSource$loadOptio === void 0 ? void 0 : _dataSource$loadOptio.langParams;
     return str => (0, _data.toComparable)(str, isCaseSensitive, langParams);
-  };
-  _proto3._findHighlightingTextNodes = function _findHighlightingTextNodes(column, cellElement, searchText) {
+  }
+  _findHighlightingTextNodes(column, cellElement, searchText) {
+    var _$items;
     const that = this;
     let $parent = cellElement.parent();
     let $items;
@@ -224,15 +210,14 @@ const rowsView = Base => /*#__PURE__*/function (_Base2) {
         $items = $parent.children('td').eq(columnIndex).find('*');
       }
     }
-    $items = ($items === null || $items === void 0 ? void 0 : $items.length) ? $items : $parent.find('*');
+    $items = (_$items = $items) !== null && _$items !== void 0 && _$items.length ? $items : $parent.find('*');
     $items.each((_, element) => {
-      var _a, _b;
       const $contents = (0, _renderer.default)(element).contents();
       for (let i = 0; i < $contents.length; i++) {
         const node = $contents.get(i);
         if (node.nodeType === 3) {
           // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-          const normalizedText = stringNormalizer((_b = (_a = node.textContent) !== null && _a !== void 0 ? _a : node.nodeValue) !== null && _b !== void 0 ? _b : '');
+          const normalizedText = stringNormalizer(node.textContent ?? node.nodeValue ?? '');
           if (normalizedText.includes(normalizedSearchText)) {
             resultTextNodes.push(node);
           }
@@ -240,8 +225,8 @@ const rowsView = Base => /*#__PURE__*/function (_Base2) {
       }
     });
     return resultTextNodes;
-  };
-  _proto3._highlightSearchTextCore = function _highlightSearchTextCore($textNode, searchText) {
+  }
+  _highlightSearchTextCore($textNode, searchText) {
     const that = this;
     const $searchTextSpan = (0, _renderer.default)('<span>').addClass(that.addWidgetPrefix(SEARCH_TEXT_CLASS));
     const text = $textNode.text();
@@ -259,8 +244,8 @@ const rowsView = Base => /*#__PURE__*/function (_Base2) {
       $textNode = (0, _renderer.default)(_dom_adapter.default.createTextNode(text.substr(index + searchText.length))).insertAfter($searchTextSpan);
       return that._highlightSearchTextCore($textNode, searchText);
     }
-  };
-  _proto3._highlightSearchText = function _highlightSearchText(cellElement, isEquals, column) {
+  }
+  _highlightSearchText(cellElement, isEquals, column) {
     const that = this;
     const stringNormalizer = this._getStringNormalizer();
     let searchText = that.option('searchPanel.text');
@@ -271,7 +256,7 @@ const rowsView = Base => /*#__PURE__*/function (_Base2) {
       const textNodes = that._findHighlightingTextNodes(column, cellElement, searchText);
       textNodes.forEach(textNode => {
         if (isEquals) {
-          if (stringNormalizer((0, _renderer.default)(textNode).text()) === stringNormalizer(searchText !== null && searchText !== void 0 ? searchText : '')) {
+          if (stringNormalizer((0, _renderer.default)(textNode).text()) === stringNormalizer(searchText ?? '')) {
             (0, _renderer.default)(textNode).replaceWith((0, _renderer.default)('<span>').addClass(that.addWidgetPrefix(SEARCH_TEXT_CLASS)).text((0, _renderer.default)(textNode).text()));
           }
         } else {
@@ -279,9 +264,9 @@ const rowsView = Base => /*#__PURE__*/function (_Base2) {
         }
       });
     }
-  };
-  _proto3._renderCore = function _renderCore() {
-    const deferred = _Base2.prototype._renderCore.apply(this, arguments);
+  }
+  _renderCore() {
+    const deferred = super._renderCore.apply(this, arguments);
     // T103538
     if (this.option().rowTemplate || this.option('dataRowTemplate')) {
       if (this.option('templatesRenderAsynchronously')) {
@@ -294,8 +279,8 @@ const rowsView = Base => /*#__PURE__*/function (_Base2) {
       }
     }
     return deferred;
-  };
-  _proto3._updateCell = function _updateCell($cell, parameters) {
+  }
+  _updateCell($cell, parameters) {
     const {
       column
     } = parameters;
@@ -317,10 +302,9 @@ const rowsView = Base => /*#__PURE__*/function (_Base2) {
         this._highlightSearchText($cell, isEquals, column);
       }
     }
-    _Base2.prototype._updateCell.call(this, $cell, parameters);
-  };
-  return SearchRowsViewExtender;
-}(Base);
+    super._updateCell($cell, parameters);
+  }
+};
 const searchModule = exports.searchModule = {
   defaultOptions() {
     return {

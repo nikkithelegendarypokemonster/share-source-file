@@ -1,15 +1,15 @@
 /* global window */
 
 import domAdapter from '../dom_adapter';
-var hasWindowValue = typeof window !== 'undefined';
-var hasWindow = () => hasWindowValue;
-var windowObject = hasWindow() ? window : undefined;
+let hasWindowValue = typeof window !== 'undefined';
+const hasWindow = () => hasWindowValue;
+let windowObject = hasWindow() ? window : undefined;
 if (!windowObject) {
   windowObject = {};
   windowObject.window = windowObject;
 }
-var getWindow = () => windowObject;
-var setWindow = (newWindowObject, hasWindow) => {
+const getWindow = () => windowObject;
+const setWindow = (newWindowObject, hasWindow) => {
   if (hasWindow === undefined) {
     hasWindowValue = typeof window !== 'undefined' && window === newWindowObject;
   } else {
@@ -17,8 +17,8 @@ var setWindow = (newWindowObject, hasWindow) => {
   }
   windowObject = newWindowObject;
 };
-var hasProperty = prop => hasWindow() && prop in windowObject;
-var defaultScreenFactorFunc = width => {
+const hasProperty = prop => hasWindow() && prop in windowObject;
+const defaultScreenFactorFunc = width => {
   if (width < 768) {
     return 'xs';
   } else if (width < 992) {
@@ -29,12 +29,12 @@ var defaultScreenFactorFunc = width => {
     return 'lg';
   }
 };
-var getCurrentScreenFactor = screenFactorCallback => {
-  var screenFactorFunc = screenFactorCallback || defaultScreenFactorFunc;
-  var windowWidth = domAdapter.getDocumentElement()['clientWidth'];
+const getCurrentScreenFactor = screenFactorCallback => {
+  const screenFactorFunc = screenFactorCallback || defaultScreenFactorFunc;
+  const windowWidth = domAdapter.getDocumentElement()['clientWidth'];
   return screenFactorFunc(windowWidth);
 };
-var getNavigator = () => hasWindow() ? windowObject.navigator : {
+const getNavigator = () => hasWindow() ? windowObject.navigator : {
   userAgent: ''
 };
 export { hasWindow, getWindow, setWindow, hasProperty, defaultScreenFactorFunc, getCurrentScreenFactor, getNavigator };

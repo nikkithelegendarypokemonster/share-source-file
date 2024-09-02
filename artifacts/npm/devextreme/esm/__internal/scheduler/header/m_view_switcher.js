@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/header/m_view_switcher.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,26 +9,26 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import { isFluent } from '../../../ui/themes';
 import { formatViews, getViewName, isOneView } from './m_utils';
-var VIEW_SWITCHER_CLASS = 'dx-scheduler-view-switcher';
-var VIEW_SWITCHER_DROP_DOWN_BUTTON_CLASS = 'dx-scheduler-view-switcher-dropdown-button';
-var VIEW_SWITCHER_DROP_DOWN_BUTTON_CONTENT_CLASS = 'dx-scheduler-view-switcher-dropdown-button-content';
-var getViewsAndSelectedView = header => {
-  var views = formatViews(header.views);
-  var selectedView = getViewName(header.currentView);
-  var isSelectedViewInViews = views.some(view => view.name === selectedView);
+const VIEW_SWITCHER_CLASS = 'dx-scheduler-view-switcher';
+const VIEW_SWITCHER_DROP_DOWN_BUTTON_CLASS = 'dx-scheduler-view-switcher-dropdown-button';
+const VIEW_SWITCHER_DROP_DOWN_BUTTON_CONTENT_CLASS = 'dx-scheduler-view-switcher-dropdown-button-content';
+const getViewsAndSelectedView = header => {
+  const views = formatViews(header.views);
+  let selectedView = getViewName(header.currentView);
+  const isSelectedViewInViews = views.some(view => view.name === selectedView);
   selectedView = isSelectedViewInViews ? selectedView : undefined;
   return {
     selectedView,
     views
   };
 };
-export var getViewSwitcher = (header, item) => {
-  var {
+export const getViewSwitcher = (header, item) => {
+  const {
     selectedView,
     views
   } = getViewsAndSelectedView(header);
   // @ts-expect-error
-  var stylingMode = isFluent() ? 'outlined' : 'contained';
+  const stylingMode = isFluent() ? 'outlined' : 'contained';
   return _extends({
     widget: 'dxButtonGroup',
     locateInMenu: 'auto',
@@ -39,13 +39,13 @@ export var getViewSwitcher = (header, item) => {
       selectedItemKeys: [selectedView],
       stylingMode,
       onItemClick: e => {
-        var {
+        const {
           view
         } = e.itemData;
         header._updateCurrentView(view);
       },
       onContentReady: e => {
-        var viewSwitcher = e.component;
+        const viewSwitcher = e.component;
         header._addEvent('currentView', view => {
           viewSwitcher.option('selectedItemKeys', [getViewName(view)]);
         });
@@ -53,12 +53,12 @@ export var getViewSwitcher = (header, item) => {
     }
   }, item);
 };
-export var getDropDownViewSwitcher = (header, item) => {
-  var {
+export const getDropDownViewSwitcher = (header, item) => {
+  const {
     selectedView,
     views
   } = getViewsAndSelectedView(header);
-  var oneView = isOneView(views, selectedView);
+  const oneView = isOneView(views, selectedView);
   return _extends({
     widget: 'dxDropDownButton',
     locateInMenu: 'never',
@@ -74,15 +74,15 @@ export var getDropDownViewSwitcher = (header, item) => {
         class: VIEW_SWITCHER_DROP_DOWN_BUTTON_CLASS
       },
       onItemClick: e => {
-        var {
+        const {
           view
         } = e.itemData;
         header._updateCurrentView(view);
       },
       onContentReady: e => {
-        var viewSwitcher = e.component;
+        const viewSwitcher = e.component;
         header._addEvent('currentView', view => {
-          var views = formatViews(header.views);
+          const views = formatViews(header.views);
           if (isOneView(views, view)) {
             header.repaint();
           }

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/widget/ui.search_box_mixin.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,39 +15,56 @@ import {
 } from '../../common';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
+ * @docid
+ * @hidden
  */
 export interface SearchBoxMixinOptions {
     /**
-     * Configures the search panel.
+     * @docid
+     * @default {}
+     * @public
+     * @type dxTextBoxOptions
      */
     searchEditorOptions?: TextBoxProperties;
     /**
-     * Specifies whether the search panel is visible.
+     * @docid
+     * @default false
+     * @public
      */
     searchEnabled?: boolean;
     /**
-     * Specifies a data object&apos;s field name or an expression whose value is compared to the search string.
+     * @docid
+     * @type getter|Array<getter>
+     * @default null
+     * @public
      */
     searchExpr?: string | Function | Array<string | Function>;
     /**
-     * Specifies a comparison operation used to search UI component items.
+     * @docid
+     * @default 'contains'
+     * @public
      */
     searchMode?: SearchMode;
     /**
-     * Specifies a delay in milliseconds between when a user finishes typing, and the search is executed.
+     * @docid
+     * @default undefined
+     * @public
      */
     searchTimeout?: number;
     /**
-     * Specifies the current search string.
+     * @docid
+     * @default ""
+     * @public
      */
     searchValue?: string;
 }
 /**
-                                                                    * 
-                                                                    * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-                                                                    */
-                                                                   export default class SearchBoxMixin {
+ * @docid
+ * @hidden
+ * @options SearchBoxMixinOptions
+ */
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+export default class SearchBoxMixin {
     constructor(options?: SearchBoxMixinOptions);
 }

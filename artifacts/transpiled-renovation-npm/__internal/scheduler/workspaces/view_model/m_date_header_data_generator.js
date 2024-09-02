@@ -6,24 +6,17 @@ Object.defineProperty(exports, "__esModule", {
 exports.DateHeaderDataGenerator = void 0;
 var _date = _interopRequireDefault(require("../../../../core/utils/date"));
 var _m_constants = require("../../../scheduler/m_constants");
-var _index = require("../../__migration/utils/index");
+var _index = require("../../../scheduler/r1/utils/index");
 var _m_utils_time_zone = _interopRequireDefault(require("../../m_utils_time_zone"));
+const _excluded = ["startDate", "endDate", "isFirstGroupCell", "isLastGroupCell"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-var __rest = void 0 && (void 0).__rest || function (s, e) {
-  var t = {};
-  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-let DateHeaderDataGenerator = exports.DateHeaderDataGenerator = /*#__PURE__*/function () {
-  function DateHeaderDataGenerator(_viewDataGenerator) {
+class DateHeaderDataGenerator {
+  constructor(_viewDataGenerator) {
     this._viewDataGenerator = _viewDataGenerator;
   }
-  var _proto = DateHeaderDataGenerator.prototype;
-  _proto.getCompleteDateHeaderMap = function getCompleteDateHeaderMap(options, completeViewDataMap) {
+  getCompleteDateHeaderMap(options, completeViewDataMap) {
     const {
       isGenerateWeekDaysHeaderData
     } = options;
@@ -35,8 +28,8 @@ let DateHeaderDataGenerator = exports.DateHeaderDataGenerator = /*#__PURE__*/fun
     const dateRow = this._generateHeaderDateRow(options, completeViewDataMap);
     result.push(dateRow);
     return result;
-  };
-  _proto._generateWeekDaysHeaderRowMap = function _generateWeekDaysHeaderRowMap(options, completeViewDataMap) {
+  }
+  _generateWeekDaysHeaderRowMap(options, completeViewDataMap) {
     const {
       isGroupedByDate,
       groups,
@@ -60,7 +53,7 @@ let DateHeaderDataGenerator = exports.DateHeaderDataGenerator = /*#__PURE__*/fun
     for (let dayIndex = 0; dayIndex < daysInView; dayIndex += 1) {
       const cell = completeViewDataMap[index][dayIndex * colSpan];
       const shiftedStartDate = _m_utils_time_zone.default.addOffsetsWithoutDST(cell.startDate, -viewOffset);
-      weekDaysRow.push(_extends(_extends({}, cell), {
+      weekDaysRow.push(_extends({}, cell, {
         colSpan,
         text: (0, _index.formatWeekdayAndDay)(shiftedStartDate),
         isFirstGroupCell: false,
@@ -68,8 +61,8 @@ let DateHeaderDataGenerator = exports.DateHeaderDataGenerator = /*#__PURE__*/fun
       }));
     }
     return weekDaysRow;
-  };
-  _proto._generateHeaderDateRow = function _generateHeaderDateRow(options, completeViewDataMap) {
+  }
+  _generateHeaderDateRow(options, completeViewDataMap) {
     const {
       today,
       isGroupedByDate,
@@ -103,14 +96,13 @@ let DateHeaderDataGenerator = exports.DateHeaderDataGenerator = /*#__PURE__*/fun
     const slicedByColumnsData = isGroupedByDate ? completeViewDataMap[index].filter((_, columnIndex) => columnIndex % horizontalGroupCount === 0) : completeViewDataMap[index];
     // NOTE: Should leave dates as is when creating time row in timelines.
     const shouldShiftDatesForHeaderText = !(0, _index.isTimelineView)(viewType) || viewType === _m_constants.VIEWS.TIMELINE_MONTH;
-    return slicedByColumnsData.map((_a, idx) => {
-      var {
+    return slicedByColumnsData.map((_ref, idx) => {
+      let {
           startDate,
-          endDate,
           isFirstGroupCell,
           isLastGroupCell
-        } = _a,
-        restProps = __rest(_a, ["startDate", "endDate", "isFirstGroupCell", "isLastGroupCell"]);
+        } = _ref,
+        restProps = _objectWithoutPropertiesLoose(_ref, _excluded);
       const shiftedStartDate = _m_utils_time_zone.default.addOffsetsWithoutDST(startDate, -viewOffset);
       const shiftedStartDateForHeaderText = shouldShiftDatesForHeaderText ? shiftedStartDate : startDate;
       const text = (0, _index.getHeaderCellText)(idx % cellCountInGroupRow, shiftedStartDateForHeaderText, headerCellTextFormat, getDateForHeaderText, {
@@ -120,7 +112,7 @@ let DateHeaderDataGenerator = exports.DateHeaderDataGenerator = /*#__PURE__*/fun
         cellCountInDay,
         viewOffset
       });
-      return _extends(_extends({}, restProps), {
+      return _extends({}, restProps, {
         startDate,
         text,
         today: _date.default.sameDate(shiftedStartDate, today),
@@ -129,8 +121,8 @@ let DateHeaderDataGenerator = exports.DateHeaderDataGenerator = /*#__PURE__*/fun
         isLastGroupCell: isGroupedByDate || isLastGroupCell && !isVerticalGrouping
       });
     });
-  };
-  _proto.generateDateHeaderData = function generateDateHeaderData(completeDateHeaderMap, completeViewDataMap, options) {
+  }
+  generateDateHeaderData(completeDateHeaderMap, completeViewDataMap, options) {
     const {
       isGenerateWeekDaysHeaderData,
       cellWidth,
@@ -161,8 +153,8 @@ let DateHeaderDataGenerator = exports.DateHeaderDataGenerator = /*#__PURE__*/fun
       weekDayRightVirtualCellCount: weekDayRowConfig.rightVirtualCellCount,
       isMonthDateHeader
     };
-  };
-  _proto._generateDateHeaderDataRow = function _generateDateHeaderDataRow(options, completeDateHeaderMap, completeViewDataMap, baseColSpan, rowIndex, cellWidth) {
+  }
+  _generateDateHeaderDataRow(options, completeDateHeaderMap, completeViewDataMap, baseColSpan, rowIndex, cellWidth) {
     const {
       startCellIndex,
       cellCount,
@@ -189,6 +181,6 @@ let DateHeaderDataGenerator = exports.DateHeaderDataGenerator = /*#__PURE__*/fun
       rightVirtualCellCount: finalRightVirtualCellCount,
       rightVirtualCellWidth: isProvideVirtualCellsWidth ? finalRightVirtualCellWidth : undefined
     };
-  };
-  return DateHeaderDataGenerator;
-}();
+  }
+}
+exports.DateHeaderDataGenerator = DateHeaderDataGenerator;

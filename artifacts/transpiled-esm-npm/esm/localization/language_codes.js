@@ -1,5 +1,5 @@
 import localizationCoreUtils from './core';
-var LANGUAGE_CODES = {
+const LANGUAGE_CODES = {
   'ar': 1,
   'bg': 2,
   'ca': 3,

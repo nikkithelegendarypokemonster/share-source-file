@@ -1,13 +1,13 @@
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["children", "className", "data", "disabled", "onDragEnd", "onDragMove", "onDragStart"];
+const _excluded = ["children", "className", "data", "disabled", "onDragEnd", "onDragMove", "onDragStart"];
 import { createVNode, normalizeProps } from "inferno";
 import { InfernoEffect, InfernoComponent } from '@devextreme/runtime/inferno';
 import { start, move, end } from '../../../events/drag';
 import eventsEngine from '../../../events/core/events_engine';
 import { combineClasses } from '../../utils/combine_classes';
-export var viewFunction = _ref => {
-  var {
+export const viewFunction = _ref => {
+  let {
     cssClasses,
     props: {
       children
@@ -17,7 +17,7 @@ export var viewFunction = _ref => {
   } = _ref;
   return normalizeProps(createVNode(1, "div", cssClasses, children, 0, _extends({}, restAttributes), null, widgetRef));
 };
-export var DraggableContainerProps = {
+export const DraggableContainerProps = {
   className: ''
 };
 import { createRef as infernoCreateRef } from 'inferno';
@@ -39,7 +39,7 @@ export class DraggableContainer extends InfernoComponent {
   }
   updateEffects() {
     var _this$_effects$;
-    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([this.props.disabled, this.props.data, this.props.onDragStart, this.props.onDragMove, this.props.onDragEnd]);
+    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 || _this$_effects$.update([this.props.disabled, this.props.data, this.props.onDragStart, this.props.onDragMove, this.props.onDragEnd]);
   }
   dragEffect() {
     if (this.props.disabled) {
@@ -55,11 +55,11 @@ export class DraggableContainer extends InfernoComponent {
     };
   }
   get cssClasses() {
-    var {
+    const {
       className,
       disabled
     } = this.props;
-    var classesMap = {
+    const classesMap = {
       [className]: !!className,
       'dx-draggable': true,
       'dx-draggable-dragging': this.state.isDragging,
@@ -71,28 +71,28 @@ export class DraggableContainer extends InfernoComponent {
     this.setState(__state_argument => ({
       isDragging: true
     }));
-    var dragStartArgs = this.getEventArgs(event);
-    var {
+    const dragStartArgs = this.getEventArgs(event);
+    const {
       onDragStart
     } = this.props;
-    onDragStart === null || onDragStart === void 0 ? void 0 : onDragStart(dragStartArgs);
+    onDragStart === null || onDragStart === void 0 || onDragStart(dragStartArgs);
   }
   dragMoveHandler(event) {
-    var dragMoveArgs = this.getEventArgs(event);
-    var {
+    const dragMoveArgs = this.getEventArgs(event);
+    const {
       onDragMove
     } = this.props;
-    onDragMove === null || onDragMove === void 0 ? void 0 : onDragMove(dragMoveArgs);
+    onDragMove === null || onDragMove === void 0 || onDragMove(dragMoveArgs);
   }
   dragEndHandler(event) {
     this.setState(__state_argument => ({
       isDragging: false
     }));
-    var dragEndArgs = this.getEventArgs(event);
-    var {
+    const dragEndArgs = this.getEventArgs(event);
+    const {
       onDragEnd
     } = this.props;
-    onDragEnd === null || onDragEnd === void 0 ? void 0 : onDragEnd(dragEndArgs);
+    onDragEnd === null || onDragEnd === void 0 || onDragEnd(dragEndArgs);
   }
   getEventArgs(e) {
     return {
@@ -102,12 +102,12 @@ export class DraggableContainer extends InfernoComponent {
     };
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       isDragging: this.state.isDragging,

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/grid_core/filter/m_filter_builder.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -21,20 +21,13 @@ var _scroll_view = _interopRequireDefault(require("../../../../ui/scroll_view"))
 var _accessibility = require("../../../../ui/shared/accessibility");
 var _m_modules = _interopRequireDefault(require("../m_modules"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-let FilterBuilderView = exports.FilterBuilderView = /*#__PURE__*/function (_modules$View) {
-  _inheritsLoose(FilterBuilderView, _modules$View);
-  function FilterBuilderView() {
-    return _modules$View.apply(this, arguments) || this;
-  }
-  var _proto = FilterBuilderView.prototype;
-  _proto.init = function init() {
-    _modules$View.prototype.init.call(this);
+class FilterBuilderView extends _m_modules.default.View {
+  init() {
+    super.init();
     this._columnsController = this.getController('columns');
     this._filterSyncController = this.getController('filterSync');
-  };
-  _proto.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     switch (args.name) {
       case 'filterBuilder':
       case 'filterBuilderPopup':
@@ -42,20 +35,20 @@ let FilterBuilderView = exports.FilterBuilderView = /*#__PURE__*/function (_modu
         args.handled = true;
         break;
       default:
-        _modules$View.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  _proto._renderCore = function _renderCore() {
+  }
+  _renderCore() {
     this._updatePopupOptions();
-  };
-  _proto._updatePopupOptions = function _updatePopupOptions() {
+  }
+  _updatePopupOptions() {
     if (this.option('filterBuilderPopup.visible')) {
       this._initPopup();
     } else if (this._filterBuilderPopup) {
       this._filterBuilderPopup.hide();
     }
-  };
-  _proto._disposePopup = function _disposePopup() {
+  }
+  _disposePopup() {
     if (this._filterBuilderPopup) {
       this._filterBuilderPopup.dispose();
       this._filterBuilderPopup = undefined;
@@ -64,8 +57,8 @@ let FilterBuilderView = exports.FilterBuilderView = /*#__PURE__*/function (_modu
       this._filterBuilder.dispose();
       this._filterBuilder = undefined;
     }
-  };
-  _proto._initPopup = function _initPopup() {
+  }
+  _initPopup() {
     const that = this;
     that._disposePopup();
     that._filterBuilderPopup = that._createComponent(that.element(), _ui.default, (0, _extend.extend)({
@@ -85,8 +78,8 @@ let FilterBuilderView = exports.FilterBuilderView = /*#__PURE__*/function (_modu
         that._disposePopup();
       }
     }));
-  };
-  _proto._getPopupContentTemplate = function _getPopupContentTemplate(contentElement) {
+  }
+  _getPopupContentTemplate(contentElement) {
     const $contentElement = (0, _renderer.default)(contentElement);
     const $filterBuilderContainer = (0, _renderer.default)('<div>').appendTo((0, _renderer.default)(contentElement));
     this._filterBuilder = this._createComponent($filterBuilderContainer, _filter_builder.default, (0, _extend.extend)({
@@ -98,8 +91,8 @@ let FilterBuilderView = exports.FilterBuilderView = /*#__PURE__*/function (_modu
     this._createComponent($contentElement, _scroll_view.default, {
       direction: 'both'
     });
-  };
-  _proto._getPopupToolbarItems = function _getPopupToolbarItems() {
+  }
+  _getPopupToolbarItems() {
     const that = this;
     return [{
       toolbar: 'bottom',
@@ -124,9 +117,9 @@ let FilterBuilderView = exports.FilterBuilderView = /*#__PURE__*/function (_modu
         }
       }
     }];
-  };
-  return FilterBuilderView;
-}(_m_modules.default.View);
+  }
+}
+exports.FilterBuilderView = FilterBuilderView;
 const filterBuilderModule = exports.filterBuilderModule = {
   defaultOptions() {
     return {

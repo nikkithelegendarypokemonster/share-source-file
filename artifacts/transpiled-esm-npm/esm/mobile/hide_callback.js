@@ -1,26 +1,26 @@
-export var hideCallback = function () {
-  var callbacks = [];
+export const hideCallback = function () {
+  let callbacks = [];
   return {
-    add: function add(callback) {
+    add: function (callback) {
       if (!callbacks.includes(callback)) {
         callbacks.push(callback);
       }
     },
-    remove: function remove(callback) {
-      var indexOfCallback = callbacks.indexOf(callback);
+    remove: function (callback) {
+      const indexOfCallback = callbacks.indexOf(callback);
       if (indexOfCallback !== -1) {
         callbacks.splice(indexOfCallback, 1);
       }
     },
-    fire: function fire() {
-      var callback = callbacks.pop();
-      var result = !!callback;
+    fire: function () {
+      const callback = callbacks.pop();
+      const result = !!callback;
       if (result) {
         callback();
       }
       return result;
     },
-    hasCallback: function hasCallback() {
+    hasCallback: function () {
       return callbacks.length > 0;
     }
   };

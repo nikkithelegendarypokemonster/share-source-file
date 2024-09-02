@@ -19,7 +19,7 @@ describe('byte utils', () => {
     expected: 0b11111111111111111111111111101101
   } // eslint-disable-line max-len
   ])('performs left rotation', _ref => {
-    var {
+    let {
       value,
       count,
       expected
@@ -39,7 +39,7 @@ describe('byte utils', () => {
     value: 'Lorem ipsum dolor sit amet',
     expected: [76, 111, 114, 101, 109, 32, 105, 112, 115, 117, 109, 32, 100, 111, 108, 111, 114, 32, 115, 105, 116, 32, 97, 109, 101, 116]
   }])('gets bytes from string', _ref2 => {
-    var {
+    let {
       value,
       expected
     } = _ref2;
@@ -58,7 +58,7 @@ describe('byte utils', () => {
     value: 'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQ=',
     expected: [76, 111, 114, 101, 109, 32, 105, 112, 115, 117, 109, 32, 100, 111, 108, 111, 114, 32, 115, 105, 116, 32, 97, 109, 101, 116]
   }])('gets bytes from base64 string', _ref3 => {
-    var {
+    let {
       value,
       expected
     } = _ref3;
@@ -77,7 +77,7 @@ describe('byte utils', () => {
     value: '4c6f72656d20697073756d20646f6c6f722073697420616d6574',
     expected: [76, 111, 114, 101, 109, 32, 105, 112, 115, 117, 109, 32, 100, 111, 108, 111, 114, 32, 115, 105, 116, 32, 97, 109, 101, 116]
   }])('gets bytes from hex string', _ref4 => {
-    var {
+    let {
       value,
       expected
     } = _ref4;
@@ -106,7 +106,7 @@ describe('byte utils', () => {
     expected: [6, 111, 114, 101, 109, 32, 105, 112, 115, 117, 109, 0]
   } // eslint-disable-line max-len
   ])('converts words to bytes', _ref5 => {
-    var {
+    let {
       value,
       expected
     } = _ref5;
@@ -135,7 +135,7 @@ describe('byte utils', () => {
     expected: [0x66f7265, 0x6d206970, 0x73756d00]
   } // eslint-disable-line max-len
   ])('converts bytes to words', _ref6 => {
-    var {
+    let {
       value,
       expected
     } = _ref6;
@@ -151,7 +151,7 @@ describe('byte utils', () => {
     value: [0x66f7265, 0x6d206970, 0x73756d00],
     expected: '066f72656d20697073756d00'
   }])('converts words to hex string', _ref7 => {
-    var {
+    let {
       value,
       expected
     } = _ref7;
@@ -167,7 +167,7 @@ describe('byte utils', () => {
     value: [6, 111, 114, 101, 109, 32, 105, 112, 115, 117, 109],
     expected: '066f72656d20697073756d'
   }])('converts bytes to hex string', _ref8 => {
-    var {
+    let {
       value,
       expected
     } = _ref8;
@@ -190,7 +190,7 @@ describe('byte utils', () => {
     value2: [105, 112, 115, 117, 109],
     expected: [6, 111, 114, 101, 109, 32, 105, 112, 115, 117, 109]
   }])('concatenate byte arrays', _ref9 => {
-    var {
+    let {
       value1,
       value2,
       expected

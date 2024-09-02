@@ -1,5 +1,5 @@
 import $ from '../../../core/renderer';
-var DATE_TIME_SHADER_CLASS = 'dx-scheduler-date-time-shader';
+const DATE_TIME_SHADER_CLASS = 'dx-scheduler-date-time-shader';
 class CurrentTimeShader {
   constructor(_workSpace) {
     this._workSpace = _workSpace;
@@ -22,7 +22,7 @@ class CurrentTimeShader {
     return $('<div>').addClass(DATE_TIME_SHADER_CLASS);
   }
   clean() {
-    this._$container && this._$container.find(".".concat(DATE_TIME_SHADER_CLASS)).remove();
+    this._$container && this._$container.find(`.${DATE_TIME_SHADER_CLASS}`).remove();
   }
 }
 export default CurrentTimeShader;

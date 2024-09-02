@@ -1,6 +1,6 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
 // !!! AUTO-GENERATED FILE, DO NOT EDIT
-export var defaultMessages = {
+export const defaultMessages = {
   "en": {
     "Yes": "Yes",
     "No": "No",
@@ -181,7 +181,9 @@ export var defaultMessages = {
     "dxDataGrid-filterPanelCreateFilter": "Create Filter",
     "dxDataGrid-filterPanelClearFilter": "Clear",
     "dxDataGrid-filterPanelFilterEnabledHint": "Enable the filter",
+    "dxDataGrid-masterDetail": "Cell with details",
     "dxTreeList-ariaTreeList": "Tree list with {0} rows and {1} columns",
+    "dxTreeList-ariaExpandableInstruction": "Press Ctrl + right arrow to expand the focused node and Ctrl + left arrow to collapse it",
     "dxTreeList-ariaSearchInGrid": "Search in the tree list",
     "dxTreeList-ariaToolbar": "Tree list toolbar",
     "dxTreeList-editingAddRowToNode": "Add",
@@ -214,6 +216,7 @@ export var defaultMessages = {
     "dxPivotGrid-dataFieldArea": "Drop Data Fields Here",
     "dxPivotGrid-rowFieldArea": "Drop Row Fields Here",
     "dxPivotGrid-filterFieldArea": "Drop Filter Fields Here",
+    "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
     "dxScheduler-editorLabelTitle": "Subject",
     "dxScheduler-editorLabelStartDate": "Start Date",
     "dxScheduler-editorLabelEndDate": "End Date",
@@ -260,6 +263,10 @@ export var defaultMessages = {
     "dxScheduler-confirmRecurrenceDeleteOccurrence": "Delete appointment",
     "dxScheduler-noTimezoneTitle": "No timezone",
     "dxScheduler-moreAppointments": "{0} more",
+    "dxCalendar-currentDay": "Today",
+    "dxCalendar-currentMonth": "Current month",
+    "dxCalendar-currentYear": "Current year",
+    "dxCalendar-currentYearRange": "Current year range",
     "dxCalendar-todayButtonText": "Today",
     "dxCalendar-ariaWidgetName": "Calendar",
     "dxCalendar-previousMonthButtonLabel": "Previous month",
@@ -274,6 +281,9 @@ export var defaultMessages = {
     "dxCalendar-captionYearLabel": "Year selection",
     "dxCalendar-captionDecadeLabel": "Decade selection",
     "dxCalendar-captionCenturyLabel": "Century selection",
+    "dxCalendar-selectedDate": "The selected date is {0}",
+    "dxCalendar-selectedDateRange": "The selected date range is from {0} to {1}",
+    "dxCalendar-readOnlyLabel": "Read-only calendar",
     "dxColorView-ariaRed": "Red",
     "dxColorView-ariaGreen": "Green",
     "dxColorView-ariaBlue": "Blue",
@@ -667,6 +677,7 @@ export var defaultMessages = {
     "dxMultiView-elementAriaRoleDescription": "MultiView",
     "dxMultiView-elementAriaLabel": "Use the arrow keys or swipe to navigate between views",
     "dxMultiView-itemAriaRoleDescription": "View",
-    "dxMultiView-itemAriaLabel": "{0} of {1}"
+    "dxMultiView-itemAriaLabel": "{0} of {1}",
+    "dxSplitter-resizeHandleAriaLabel": "Split bar"
   }
 };

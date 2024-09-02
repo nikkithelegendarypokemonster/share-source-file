@@ -11,29 +11,22 @@ var _callbacks = _interopRequireDefault(require("../../../core/utils/callbacks")
 var _editor = _interopRequireDefault(require("../../../ui/editor/editor"));
 var _dom = require("../../utils/dom");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const INVALID_MESSAGE_AUTO = 'dx-invalid-message-auto';
 const VALIDATION_TARGET = 'dx-validation-target';
-let Editor = exports.default = /*#__PURE__*/function (_Component) {
-  _inheritsLoose(Editor, _Component);
-  function Editor() {
-    return _Component.apply(this, arguments) || this;
-  }
-  var _proto = Editor.prototype;
-  _proto.getProps = function getProps() {
-    const props = _Component.prototype.getProps.call(this);
+class Editor extends _component.default {
+  getProps() {
+    const props = super.getProps();
     props.onFocusIn = () => {
       const isValidationMessageShownOnFocus = this.option('validationMessageMode') === 'auto';
       if (isValidationMessageShownOnFocus) {
         const $validationMessageWrapper = (0, _renderer.default)((0, _dom.querySelectorInSameDocument)(this.element(), '.dx-invalid-message.dx-overlay-wrapper'));
-        $validationMessageWrapper === null || $validationMessageWrapper === void 0 ? void 0 : $validationMessageWrapper.removeClass(INVALID_MESSAGE_AUTO);
+        $validationMessageWrapper === null || $validationMessageWrapper === void 0 || $validationMessageWrapper.removeClass(INVALID_MESSAGE_AUTO);
         const timeToWaitBeforeShow = 150;
         if (this.showValidationMessageTimeout) {
           clearTimeout(this.showValidationMessageTimeout);
         }
         this.showValidationMessageTimeout = setTimeout(() => {
-          $validationMessageWrapper === null || $validationMessageWrapper === void 0 ? void 0 : $validationMessageWrapper.addClass(INVALID_MESSAGE_AUTO);
+          $validationMessageWrapper === null || $validationMessageWrapper === void 0 || $validationMessageWrapper.addClass(INVALID_MESSAGE_AUTO);
         }, timeToWaitBeforeShow);
       }
     };
@@ -41,47 +34,47 @@ let Editor = exports.default = /*#__PURE__*/function (_Component) {
       this._valueChangeEventInstance = e;
     };
     return props;
-  };
-  _proto._createElement = function _createElement(element) {
-    _Component.prototype._createElement.call(this, element);
+  }
+  _createElement(element) {
+    super._createElement(element);
     this.showValidationMessageTimeout = undefined;
     this.validationRequest = (0, _callbacks.default)();
     (0, _element_data.data)(this.$element()[0], VALIDATION_TARGET, this);
-  };
-  _proto._render = function _render() {
+  }
+  _render() {
     var _this$option;
-    (_this$option = this.option('_onMarkupRendered')) === null || _this$option === void 0 ? void 0 : _this$option();
-  };
-  _proto._init = function _init() {
-    _Component.prototype._init.call(this);
+    (_this$option = this.option('_onMarkupRendered')) === null || _this$option === void 0 || _this$option();
+  }
+  _init() {
+    super._init();
     this._initialValue = this.option('value');
-  };
-  _proto._initializeComponent = function _initializeComponent() {
-    _Component.prototype._initializeComponent.call(this);
+  }
+  _initializeComponent() {
+    super._initializeComponent();
     this._valueChangeAction = this._createActionByOption('onValueChanged', {
       excludeValidators: ['disabled', 'readOnly']
     });
-  };
-  _proto._initOptions = function _initOptions(options) {
-    _Component.prototype._initOptions.call(this, options);
+  }
+  _initOptions(options) {
+    super._initOptions(options);
     this.option(_validation_engine.default.initValidationOptions(options));
-  };
-  _proto._getDefaultOptions = function _getDefaultOptions() {
-    return (0, _extend.extend)(_Component.prototype._getDefaultOptions.call(this), {
+  }
+  _getDefaultOptions() {
+    return (0, _extend.extend)(super._getDefaultOptions(), {
       validationMessageOffset: {
         h: 0,
         v: 0
       },
       validationTooltipOptions: {}
     });
-  };
-  _proto._bindInnerWidgetOptions = function _bindInnerWidgetOptions(innerWidget, optionsContainer) {
+  }
+  _bindInnerWidgetOptions(innerWidget, optionsContainer) {
     const innerWidgetOptions = (0, _extend.extend)({}, innerWidget.option());
     const syncOptions = () => this._silent(optionsContainer, innerWidgetOptions);
     syncOptions();
     innerWidget.on('optionChanged', syncOptions);
-  };
-  _proto._raiseValidation = function _raiseValidation(value, previousValue) {
+  }
+  _raiseValidation(value, previousValue) {
     const areValuesEmpty = !(0, _type.isDefined)(value) && !(0, _type.isDefined)(previousValue);
     if (value !== previousValue && !areValuesEmpty) {
       this.validationRequest.fire({
@@ -89,18 +82,18 @@ let Editor = exports.default = /*#__PURE__*/function (_Component) {
         editor: this
       });
     }
-  };
-  _proto._raiseValueChangeAction = function _raiseValueChangeAction(value, previousValue) {
+  }
+  _raiseValueChangeAction(value, previousValue) {
     var _this$_valueChangeAct;
-    (_this$_valueChangeAct = this._valueChangeAction) === null || _this$_valueChangeAct === void 0 ? void 0 : _this$_valueChangeAct.call(this, {
+    (_this$_valueChangeAct = this._valueChangeAction) === null || _this$_valueChangeAct === void 0 || _this$_valueChangeAct.call(this, {
       element: this.$element(),
       previousValue,
       value,
       event: this._valueChangeEventInstance
     });
     this._valueChangeEventInstance = undefined;
-  };
-  _proto._optionChanged = function _optionChanged(option) {
+  }
+  _optionChanged(option) {
     const {
       name,
       previousValue,
@@ -129,17 +122,17 @@ let Editor = exports.default = /*#__PURE__*/function (_Component) {
       default:
         break;
     }
-    _Component.prototype._optionChanged.call(this, option);
-  };
-  _proto.clear = function clear() {
+    super._optionChanged(option);
+  }
+  clear() {
     const {
       value
     } = this._getDefaultOptions();
     this.option({
       value
     });
-  };
-  _proto.reset = function reset() {
+  }
+  reset() {
     let value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
     if (arguments.length) {
       this._initialValue = value;
@@ -147,16 +140,16 @@ let Editor = exports.default = /*#__PURE__*/function (_Component) {
     this.option('value', this._initialValue);
     this.option('isDirty', false);
     this.option('isValid', true);
-  };
-  _proto._dispose = function _dispose() {
-    _Component.prototype._dispose.call(this);
+  }
+  _dispose() {
+    super._dispose();
     (0, _element_data.data)(this.element(), VALIDATION_TARGET, null);
     if (this.showValidationMessageTimeout) {
       clearTimeout(this.showValidationMessageTimeout);
     }
-  };
-  return Editor;
-}(_component.default);
+  }
+}
+exports.default = Editor;
 const prevIsEditor = _editor.default.isEditor;
 const newIsEditor = instance => prevIsEditor(instance) || instance instanceof Editor;
 Editor.isEditor = newIsEditor;

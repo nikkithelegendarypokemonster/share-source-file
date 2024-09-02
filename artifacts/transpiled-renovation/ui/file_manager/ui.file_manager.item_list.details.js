@@ -6,14 +6,14 @@ var _extend = require("../../core/utils/extend");
 var _uiFile_manager = require("./ui.file_manager.common");
 var _type = require("../../core/utils/type");
 var _message = _interopRequireDefault(require("../../localization/message"));
-var _ui = _interopRequireDefault(require("../data_grid/ui.data_grid"));
+var _data_grid = _interopRequireDefault(require("../../ui/data_grid"));
 var _uiFile_manager2 = _interopRequireDefault(require("./ui.file_manager.item_list"));
 var _uiFile_manager3 = _interopRequireDefault(require("./ui.file_manager.file_actions_button"));
 var _deferred = require("../../core/utils/deferred");
 var _file_items_controller = require("./file_items_controller");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+// NOTE: Using the "public" export here for the theme-builder deps check
+
 const FILE_MANAGER_DETAILS_ITEM_LIST_CLASS = 'dx-filemanager-details';
 const FILE_MANAGER_DETAILS_ITEM_THUMBNAIL_CLASS = 'dx-filemanager-details-item-thumbnail';
 const FILE_MANAGER_DETAILS_ITEM_NAME_CLASS = 'dx-filemanager-details-item-name';
@@ -50,13 +50,8 @@ const DEFAULT_COLUMN_CONFIGS = {
     sortOrder: 'asc'
   }
 };
-let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
-  _inheritsLoose(FileManagerDetailsItemList, _FileManagerItemListB);
-  function FileManagerDetailsItemList() {
-    return _FileManagerItemListB.apply(this, arguments) || this;
-  }
-  var _proto = FileManagerDetailsItemList.prototype;
-  _proto._initMarkup = function _initMarkup() {
+class FileManagerDetailsItemList extends _uiFile_manager2.default {
+  _initMarkup() {
     this._itemCount = 0;
     this._focusedItem = null;
     this._hasParentDirectoryItem = false;
@@ -66,12 +61,12 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
     this.$element().addClass(FILE_MANAGER_DETAILS_ITEM_LIST_CLASS);
     this._createFilesView();
     this._contextMenu.option('onContextMenuHidden', () => this._onContextMenuHidden());
-    _FileManagerItemListB.prototype._initMarkup.call(this);
-  };
-  _proto._createFilesView = function _createFilesView() {
+    super._initMarkup();
+  }
+  _createFilesView() {
     const $filesView = (0, _renderer.default)('<div>').appendTo(this.$element());
     const selectionMode = this._isMultipleSelectionMode() ? 'multiple' : 'none';
-    this._filesView = this._createComponent($filesView, _ui.default, {
+    this._filesView = this._createComponent($filesView, _data_grid.default, {
       dataSource: this._createDataSource(),
       hoverStateEnabled: true,
       selection: {
@@ -104,8 +99,8 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
       onOptionChanged: this._onFilesViewOptionChanged.bind(this),
       onContentReady: this._onContentReady.bind(this)
     });
-  };
-  _proto._createColumns = function _createColumns() {
+  }
+  _createColumns() {
     let columns = this.option('detailColumns');
     columns = columns.slice(0);
     columns = columns.map(column => {
@@ -126,8 +121,8 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
     }));
     columns.forEach(column => this._updateColumnDataField(column));
     return columns;
-  };
-  _proto._getPreparedColumn = function _getPreparedColumn(columnOptions) {
+  }
+  _getPreparedColumn(columnOptions) {
     const result = {};
     let resultCssClass = '';
     if (this._isDefaultColumn(columnOptions.dataField)) {
@@ -136,7 +131,7 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
       switch (columnOptions.dataField) {
         case 'thumbnail':
           defaultConfig.cellTemplate = this._createThumbnailColumnCell.bind(this);
-          defaultConfig.calculateSortValue = "fileItem.".concat(defaultConfig.calculateSortValue);
+          defaultConfig.calculateSortValue = `fileItem.${defaultConfig.calculateSortValue}`;
           break;
         case 'name':
           defaultConfig.cellTemplate = this._createNameColumnCell.bind(this);
@@ -157,22 +152,22 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
     }
     (0, _uiFile_manager.extendAttributes)(result, columnOptions, ['alignment', 'caption', 'dataField', 'dataType', 'hidingPriority', 'sortIndex', 'sortOrder', 'visible', 'visibleIndex', 'width']);
     if (columnOptions.cssClass) {
-      resultCssClass = "".concat(resultCssClass, " ").concat(columnOptions.cssClass);
+      resultCssClass = `${resultCssClass} ${columnOptions.cssClass}`;
     }
     if (resultCssClass) {
       result.cssClass = resultCssClass;
     }
     return result;
-  };
-  _proto._updateColumnDataField = function _updateColumnDataField(column) {
+  }
+  _updateColumnDataField(column) {
     const dataItemSuffix = this._isDefaultColumn(column.dataField) ? '' : 'dataItem.';
     column.dataField = 'fileItem.' + dataItemSuffix + column.dataField;
     return column;
-  };
-  _proto._isDefaultColumn = function _isDefaultColumn(columnDataField) {
+  }
+  _isDefaultColumn(columnDataField) {
     return !!DEFAULT_COLUMN_CONFIGS[columnDataField];
-  };
-  _proto._onFileItemActionButtonClick = function _onFileItemActionButtonClick(_ref) {
+  }
+  _onFileItemActionButtonClick(_ref) {
     let {
       component,
       element,
@@ -191,32 +186,32 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
     this._showContextMenu(items, element, event, target);
     this._activeFileActionsButton = component;
     this._activeFileActionsButton.setActive(true);
-  };
-  _proto._onContextMenuHidden = function _onContextMenuHidden() {
+  }
+  _onContextMenuHidden() {
     if (this._activeFileActionsButton) {
       this._activeFileActionsButton.setActive(false);
     }
-  };
-  _proto._getItemThumbnailCssClass = function _getItemThumbnailCssClass() {
+  }
+  _getItemThumbnailCssClass() {
     return FILE_MANAGER_DETAILS_ITEM_THUMBNAIL_CLASS;
-  };
-  _proto._getItemSelector = function _getItemSelector() {
-    return ".".concat(DATA_GRID_DATA_ROW_CLASS);
-  };
-  _proto._onItemDblClick = function _onItemDblClick(e) {
+  }
+  _getItemSelector() {
+    return `.${DATA_GRID_DATA_ROW_CLASS}`;
+  }
+  _onItemDblClick(e) {
     const $row = (0, _renderer.default)(e.currentTarget);
     const fileItemInfo = $row.data('item');
     this._raiseSelectedItemOpened(fileItemInfo);
-  };
-  _proto._isAllItemsSelected = function _isAllItemsSelected() {
+  }
+  _isAllItemsSelected() {
     const selectableItemsCount = this._hasParentDirectoryItem ? this._itemCount - 1 : this._itemCount;
     const selectedRowKeys = this._filesView.option('selectedRowKeys');
     if (!selectedRowKeys.length) {
       return false;
     }
     return selectedRowKeys.length >= selectableItemsCount ? true : undefined;
-  };
-  _proto._onEditorPreparing = function _onEditorPreparing(_ref2) {
+  }
+  _onEditorPreparing(_ref2) {
     let {
       component,
       command,
@@ -241,8 +236,8 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
       editorOptions.value = this._isAllItemsSelected();
       editorOptions.onValueChanged = args => this._onSelectAllCheckBoxValueChanged(args);
     }
-  };
-  _proto._onSelectAllCheckBoxValueChanged = function _onSelectAllCheckBoxValueChanged(_ref4) {
+  }
+  _onSelectAllCheckBoxValueChanged(_ref4) {
     let {
       event,
       previousValue,
@@ -263,8 +258,8 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
       this._filesView.deselectAll();
     }
     event.preventDefault();
-  };
-  _proto._onRowPrepared = function _onRowPrepared(_ref5) {
+  }
+  _onRowPrepared(_ref5) {
     let {
       rowType,
       rowElement,
@@ -277,8 +272,8 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
         $row.addClass(FILE_MANAGER_PARENT_DIRECTORY_ITEM);
       }
     }
-  };
-  _proto._onContextMenuPreparing = function _onContextMenuPreparing(e) {
+  }
+  _onContextMenuPreparing(e) {
     if (!this._isDesktop()) {
       return;
     }
@@ -299,8 +294,8 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
     });
     this._raiseContextMenuShowing(eventArgs);
     e.items = eventArgs.cancel ? [] : this._contextMenu.createContextMenuItems(fileItems, null, item);
-  };
-  _proto._onFilesViewSelectionChanged = function _onFilesViewSelectionChanged(_ref6) {
+  }
+  _onFilesViewSelectionChanged(_ref6) {
     let {
       component,
       selectedRowsData,
@@ -322,8 +317,8 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
       currentSelectedItemKeys: currentSelectedRowKeys,
       currentDeselectedItemKeys: currentDeselectedRowKeys
     });
-  };
-  _proto._onFilesViewFocusedRowChanged = function _onFilesViewFocusedRowChanged(e) {
+  }
+  _onFilesViewFocusedRowChanged(e) {
     var _e$row2;
     if (!this._isMultipleSelectionMode()) {
       var _e$row;
@@ -335,8 +330,8 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
       itemKey: fileSystemItem === null || fileSystemItem === void 0 ? void 0 : fileSystemItem.key,
       itemElement: e.rowElement
     });
-  };
-  _proto._onFilesViewOptionChanged = function _onFilesViewOptionChanged(_ref7) {
+  }
+  _onFilesViewOptionChanged(_ref7) {
     let {
       fullName
     } = _ref7;
@@ -346,14 +341,14 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
         sortIndex: 0
       });
     }
-  };
-  _proto._resetFocus = function _resetFocus() {
+  }
+  _resetFocus() {
     this._setFocusedItemKey(undefined);
-  };
-  _proto._createThumbnailColumnCell = function _createThumbnailColumnCell(container, cellInfo) {
+  }
+  _createThumbnailColumnCell(container, cellInfo) {
     this._getItemThumbnailContainer(cellInfo.data).appendTo(container);
-  };
-  _proto._createNameColumnCell = function _createNameColumnCell(container, cellInfo) {
+  }
+  _createNameColumnCell(container, cellInfo) {
     const $button = (0, _renderer.default)('<div>');
     const $name = (0, _renderer.default)('<span>').text(cellInfo.data.fileItem.name).addClass(FILE_MANAGER_DETAILS_ITEM_NAME_CLASS);
     const $wrapper = (0, _renderer.default)('<div>').append($name, $button).addClass(FILE_MANAGER_DETAILS_ITEM_NAME_WRAPPER_CLASS);
@@ -361,18 +356,18 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
     this._createComponent($button, _uiFile_manager3.default, {
       onClick: e => this._onFileItemActionButtonClick(e)
     });
-  };
-  _proto._calculateSizeColumnCellValue = function _calculateSizeColumnCellValue(rowData) {
+  }
+  _calculateSizeColumnCellValue(rowData) {
     return rowData.fileItem.isDirectory ? '' : (0, _uiFile_manager.getDisplayFileSize)(rowData.fileItem.size);
-  };
-  _proto._selectItem = function _selectItem(fileItemInfo) {
+  }
+  _selectItem(fileItemInfo) {
     const selectItemFunc = this._isMultipleSelectionMode() ? this._selectItemMultipleSelection : this._selectItemSingleSelection;
     selectItemFunc.call(this, fileItemInfo);
-  };
-  _proto._deselectItem = function _deselectItem(item) {
+  }
+  _deselectItem(item) {
     this._filesView.deselectRows([item.fileItem.key]);
-  };
-  _proto._selectItemSingleSelection = function _selectItemSingleSelection(fileItemInfo) {
+  }
+  _selectItemSingleSelection(fileItemInfo) {
     if (!this._focusedItem || !fileItemInfo || this._focusedItem.fileItem.key !== fileItemInfo.fileItem.key) {
       const oldFocusedItem = this._focusedItem;
       this._focusedItem = fileItemInfo;
@@ -393,8 +388,8 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
         currentDeselectedItemKeys: deselectedKeys
       });
     }
-  };
-  _proto._selectItemMultipleSelection = function _selectItemMultipleSelection(_ref8) {
+  }
+  _selectItemMultipleSelection(_ref8) {
     let {
       fileItem
     } = _ref8;
@@ -403,22 +398,22 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
       const preserve = selectionController.isSelectionWithCheckboxes();
       this._filesView.selectRows([fileItem.key], preserve);
     }
-  };
-  _proto._setSelectedItemKeys = function _setSelectedItemKeys(itemKeys) {
+  }
+  _setSelectedItemKeys(itemKeys) {
     this._filesView.option('selectedRowKeys', itemKeys);
-  };
-  _proto._setFocusedItemKey = function _setFocusedItemKey(itemKey) {
+  }
+  _setFocusedItemKey(itemKey) {
     var _this$_filesView;
-    (_this$_filesView = this._filesView) === null || _this$_filesView === void 0 ? void 0 : _this$_filesView.option('focusedRowKey', itemKey);
-  };
-  _proto.clearSelection = function clearSelection() {
+    (_this$_filesView = this._filesView) === null || _this$_filesView === void 0 || _this$_filesView.option('focusedRowKey', itemKey);
+  }
+  clearSelection() {
     if (this._isMultipleSelectionMode()) {
       this._filesView.clearSelection();
     } else {
       this._filesView.option('focusedRowIndex', -1);
     }
-  };
-  _proto.refresh = function refresh(options, operation) {
+  }
+  refresh(options, operation) {
     const actualOptions = {
       dataSource: this._createDataSource()
     };
@@ -439,18 +434,17 @@ let FileManagerDetailsItemList = /*#__PURE__*/function (_FileManagerItemListB) {
     this._filesView.option(actualOptions);
     this._refreshDeferred = new _deferred.Deferred();
     return this._refreshDeferred.promise();
-  };
-  _proto._getScrollable = function _getScrollable() {
+  }
+  _getScrollable() {
     return this._filesView.getScrollable();
-  };
-  _proto.getSelectedItems = function getSelectedItems() {
+  }
+  getSelectedItems() {
     if (this._isMultipleSelectionMode()) {
       return this._filesView.getSelectedRowsData();
     }
     return this._focusedItem && !this._isParentDirectoryItem(this._focusedItem) ? [this._focusedItem] : [];
-  };
-  return FileManagerDetailsItemList;
-}(_uiFile_manager2.default);
+  }
+}
 var _default = exports.default = FileManagerDetailsItemList;
 module.exports = exports.default;
 module.exports.default = exports.default;

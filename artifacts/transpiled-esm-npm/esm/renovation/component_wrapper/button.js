@@ -13,9 +13,9 @@ export default class ButtonWrapper extends Component {
     return ['space', 'enter'];
   }
   getProps() {
-    var props = super.getProps();
+    const props = super.getProps();
     props.onClick = _ref => {
-      var {
+      let {
         event
       } = _ref;
       this._clickAction({
@@ -23,7 +23,7 @@ export default class ButtonWrapper extends Component {
         validationGroup: this._validationGroupConfig
       });
     };
-    var iconType = getImageSourceType(props.icon);
+    const iconType = getImageSourceType(props.icon);
     if (iconType === 'svg') {
       props.iconTemplate = this._createTemplateComponent(() => props.icon);
     }
@@ -35,27 +35,27 @@ export default class ButtonWrapper extends Component {
     };
   }
   _toggleActiveState(_, value) {
-    var button = this.viewRef;
+    const button = this.viewRef;
     value ? button.activate() : button.deactivate();
   }
   _getSubmitAction() {
-    var needValidate = true;
-    var validationStatus = 'valid';
+    let needValidate = true;
+    let validationStatus = 'valid';
     return this._createAction(_ref2 => {
-      var {
+      let {
         event,
         submitInput
       } = _ref2;
       if (needValidate) {
-        var validationGroup = this._validationGroupConfig;
+        const validationGroup = this._validationGroupConfig;
         if (validationGroup !== undefined && validationGroup !== '') {
-          var validationResult = validationGroup.validate();
+          const validationResult = validationGroup.validate();
           validationStatus = validationResult.status;
           if (validationResult.status === 'pending') {
             needValidate = false;
             this.option('disabled', true);
             validationResult.complete.then(_ref3 => {
-              var {
+              let {
                 status
               } = _ref3;
               this.option('disabled', false);
@@ -77,9 +77,9 @@ export default class ButtonWrapper extends Component {
   }
   _initMarkup() {
     super._initMarkup();
-    var $content = this.$element().find('.dx-button-content');
-    var $template = $content.children().filter('.dx-template-wrapper');
-    var $input = $content.children().filter('.dx-button-submit-input');
+    const $content = this.$element().find('.dx-button-content').first();
+    const $template = $content.children().filter('.dx-template-wrapper');
+    const $input = $content.children().filter('.dx-button-submit-input');
     if ($template.length) {
       $template.addClass('dx-button-content');
       $template.append($input);
@@ -92,8 +92,8 @@ export default class ButtonWrapper extends Component {
     }));
   }
   _findGroup() {
-    var $element = this.$element();
-    var validationGroup = this.option('validationGroup');
+    const $element = this.$element();
+    const validationGroup = this.option('validationGroup');
     return validationGroup !== undefined && validationGroup !== '' ? validationGroup : ValidationEngine.findGroup($element, this._modelByElement($element));
   }
   _createClickAction() {

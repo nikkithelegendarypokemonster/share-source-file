@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/grid_core/editing/const.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,7 +11,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.VIEWPORT_TOP_NEW_ROW_POSITION = exports.VIEWPORT_BOTTOM_NEW_ROW_POSITION = exports.TARGET_COMPONENT_NAME = exports.ROW_SELECTED_CLASS = exports.ROW_SELECTED = exports.ROW_REMOVED = exports.ROW_MODIFIED = exports.ROW_INSERTED = exports.ROW_CLASS = exports.ROW_BASED_MODES = exports.REQUIRED_EDITOR_LABELLEDBY_MODES = exports.READONLY_CLASS = exports.PAGE_TOP_NEW_ROW_POSITION = exports.PAGE_BOTTOM_NEW_ROW_POSITION = exports.MODES_WITH_DELAYED_FOCUS = exports.METHOD_NAMES = exports.LINK_ICON_CLASS = exports.LINK_CLASS = exports.LAST_NEW_ROW_POSITION = exports.INSERT_INDEX = exports.FORM_BUTTONS_CONTAINER_CLASS = exports.FOCUS_OVERLAY_CLASS = exports.FOCUSABLE_ELEMENT_SELECTOR = exports.FOCUSABLE_ELEMENT_CLASS = exports.FIRST_NEW_ROW_POSITION = exports.EDIT_ROW = exports.EDIT_POPUP_FORM_CLASS = exports.EDIT_POPUP_CLASS = exports.EDIT_MODE_ROW = exports.EDIT_MODE_POPUP = exports.EDIT_MODE_FORM = exports.EDIT_MODE_CELL = exports.EDIT_MODE_BATCH = exports.EDIT_MODES = exports.EDIT_LINK_CLASS = exports.EDIT_ICON_CLASS = exports.EDIT_FORM_ITEM_CLASS = exports.EDIT_FORM_CLASS = exports.EDIT_BUTTON_CLASS = exports.EDITOR_CELL_CLASS = exports.EDITORS_INPUT_SELECTOR = exports.EDITING_POPUP_OPTION_NAME = exports.EDITING_NAMESPACE = exports.EDITING_FORM_OPTION_NAME = exports.EDITING_EDITROWKEY_OPTION_NAME = exports.EDITING_EDITCOLUMNNAME_OPTION_NAME = exports.EDITING_CHANGES_OPTION_NAME = exports.DROPDOWN_EDITOR_OVERLAY_CLASS = exports.DEFAULT_START_EDIT_ACTION = exports.DATA_ROW_CLASS = exports.DATA_EDIT_DATA_UPDATE_TYPE = exports.DATA_EDIT_DATA_REMOVE_TYPE = exports.DATA_EDIT_DATA_INSERT_TYPE = exports.COMMAND_EDIT_WITH_ICONS_CLASS = exports.COMMAND_EDIT_CLASS = exports.CELL_MODIFIED_CLASS = exports.CELL_MODIFIED = exports.CELL_FOCUS_DISABLED_CLASS = exports.CELL_BASED_MODES = exports.BUTTON_NAMES = exports.BUTTON_CLASS = exports.ADD_ROW_BUTTON_CLASS = exports.ACTION_OPTION_NAMES = void 0;
+exports.VIEWPORT_TOP_NEW_ROW_POSITION = exports.VIEWPORT_BOTTOM_NEW_ROW_POSITION = exports.TARGET_COMPONENT_NAME = exports.ROW_SELECTED_CLASS = exports.ROW_SELECTED = exports.ROW_REMOVED = exports.ROW_MODIFIED = exports.ROW_INSERTED = exports.ROW_CLASS = exports.ROW_BASED_MODES = exports.REQUIRED_EDITOR_LABELLEDBY_MODES = exports.READONLY_CLASS = exports.PAGE_TOP_NEW_ROW_POSITION = exports.PAGE_BOTTOM_NEW_ROW_POSITION = exports.MODES_WITH_DELAYED_FOCUS = exports.METHOD_NAMES = exports.LINK_ICON_CLASS = exports.LINK_CLASS = exports.LAST_NEW_ROW_POSITION = exports.INSERT_INDEX = exports.FORM_BUTTONS_CONTAINER_CLASS = exports.FOCUS_OVERLAY_CLASS = exports.FOCUSABLE_ELEMENT_SELECTOR = exports.FOCUSABLE_ELEMENT_CLASS = exports.FIRST_NEW_ROW_POSITION = exports.FILTER_ROW_CLASS = exports.EDIT_ROW = exports.EDIT_POPUP_FORM_CLASS = exports.EDIT_POPUP_CLASS = exports.EDIT_MODE_ROW = exports.EDIT_MODE_POPUP = exports.EDIT_MODE_FORM = exports.EDIT_MODE_CELL = exports.EDIT_MODE_BATCH = exports.EDIT_MODES = exports.EDIT_LINK_CLASS = exports.EDIT_ICON_CLASS = exports.EDIT_FORM_ITEM_CLASS = exports.EDIT_FORM_CLASS = exports.EDIT_BUTTON_CLASS = exports.EDITOR_CELL_CLASS = exports.EDITORS_INPUT_SELECTOR = exports.EDITING_POPUP_OPTION_NAME = exports.EDITING_NAMESPACE = exports.EDITING_FORM_OPTION_NAME = exports.EDITING_EDITROWKEY_OPTION_NAME = exports.EDITING_EDITCOLUMNNAME_OPTION_NAME = exports.EDITING_CHANGES_OPTION_NAME = exports.DROPDOWN_EDITOR_OVERLAY_CLASS = exports.DEFAULT_START_EDIT_ACTION = exports.DATA_ROW_CLASS = exports.DATA_EDIT_DATA_UPDATE_TYPE = exports.DATA_EDIT_DATA_REMOVE_TYPE = exports.DATA_EDIT_DATA_INSERT_TYPE = exports.COMMAND_EDIT_WITH_ICONS_CLASS = exports.COMMAND_EDIT_CLASS = exports.CELL_MODIFIED_CLASS = exports.CELL_MODIFIED = exports.CELL_FOCUS_DISABLED_CLASS = exports.CELL_BASED_MODES = exports.BUTTON_NAMES = exports.BUTTON_CLASS = exports.ADD_ROW_BUTTON_CLASS = exports.ACTION_OPTION_NAMES = void 0;
 var _ui = _interopRequireDefault(require("../../../../ui/scroll_view/ui.scrollable"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const EDITOR_CELL_CLASS = exports.EDITOR_CELL_CLASS = 'dx-editor-cell';
@@ -27,7 +27,7 @@ const EDITING_EDITROWKEY_OPTION_NAME = exports.EDITING_EDITROWKEY_OPTION_NAME = 
 const EDITING_EDITCOLUMNNAME_OPTION_NAME = exports.EDITING_EDITCOLUMNNAME_OPTION_NAME = 'editing.editColumnName';
 const TARGET_COMPONENT_NAME = exports.TARGET_COMPONENT_NAME = 'targetComponent';
 const EDITORS_INPUT_SELECTOR = exports.EDITORS_INPUT_SELECTOR = 'input:not([type=\'hidden\'])';
-const FOCUSABLE_ELEMENT_SELECTOR = exports.FOCUSABLE_ELEMENT_SELECTOR = "[tabindex]:not([disabled]), ".concat(EDITORS_INPUT_SELECTOR, ":not([disabled])");
+const FOCUSABLE_ELEMENT_SELECTOR = exports.FOCUSABLE_ELEMENT_SELECTOR = `[tabindex]:not([disabled]), ${EDITORS_INPUT_SELECTOR}:not([disabled])`;
 const EDIT_MODE_BATCH = exports.EDIT_MODE_BATCH = 'batch';
 const EDIT_MODE_ROW = exports.EDIT_MODE_ROW = 'row';
 const EDIT_MODE_CELL = exports.EDIT_MODE_CELL = 'cell';
@@ -51,7 +51,7 @@ const LINK_ICON_CLASS = exports.LINK_ICON_CLASS = 'dx-link-icon';
 const ROW_SELECTED = exports.ROW_SELECTED = 'dx-selection';
 const EDIT_BUTTON_CLASS = exports.EDIT_BUTTON_CLASS = 'dx-edit-button';
 const COMMAND_EDIT_CLASS = exports.COMMAND_EDIT_CLASS = 'dx-command-edit';
-const COMMAND_EDIT_WITH_ICONS_CLASS = exports.COMMAND_EDIT_WITH_ICONS_CLASS = "".concat(COMMAND_EDIT_CLASS, "-with-icons");
+const COMMAND_EDIT_WITH_ICONS_CLASS = exports.COMMAND_EDIT_WITH_ICONS_CLASS = `${COMMAND_EDIT_CLASS}-with-icons`;
 const INSERT_INDEX = exports.INSERT_INDEX = '__DX_INSERT_INDEX__';
 const ROW_INSERTED = exports.ROW_INSERTED = 'dx-row-inserted';
 const ROW_MODIFIED = exports.ROW_MODIFIED = 'dx-row-modified';
@@ -96,6 +96,7 @@ const ADD_ROW_BUTTON_CLASS = exports.ADD_ROW_BUTTON_CLASS = 'addrow-button';
 const DROPDOWN_EDITOR_OVERLAY_CLASS = exports.DROPDOWN_EDITOR_OVERLAY_CLASS = 'dx-dropdowneditor-overlay';
 const DATA_ROW_CLASS = exports.DATA_ROW_CLASS = 'dx-data-row';
 const ROW_REMOVED = exports.ROW_REMOVED = 'dx-row-removed';
+const FILTER_ROW_CLASS = exports.FILTER_ROW_CLASS = 'filter-row';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isRenovatedScrollable = !!_ui.default.IS_RENOVATED_WIDGET;
 const EDIT_FORM_ITEM_CLASS = exports.EDIT_FORM_ITEM_CLASS = 'edit-form-item';

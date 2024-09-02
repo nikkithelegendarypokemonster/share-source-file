@@ -71,7 +71,7 @@ function getItemsOffset($elements, isVertical, $itemsContainer) {
   for (let i = 0; i < $elements.length; i += $item.length) {
     $item = $elements.eq(i);
     if ($item.attr('item-group')) {
-      $item = $itemsContainer.find("[item-group='".concat($item.attr('item-group'), "']"));
+      $item = $itemsContainer.find(`[item-group='${$item.attr('item-group')}']`);
     }
     if ($item.is(':visible')) {
       const offset = {
@@ -246,7 +246,8 @@ const Sortable = exports.Sortable = _dom_component.default.inherit({
       return groupFilter ? (0, _renderer.default)(root).find(groupSelector).filter(groupFilter) : element.find(groupSelector);
     };
     const disposeScrollWrapper = function () {
-      scrollWrapper === null || scrollWrapper === void 0 ? void 0 : scrollWrapper.dispose();
+      var _scrollWrapper;
+      (_scrollWrapper = scrollWrapper) === null || _scrollWrapper === void 0 || _scrollWrapper.dispose();
       scrollWrapper = null;
     };
     const invokeOnDraggingEvent = function () {
@@ -271,7 +272,7 @@ const Sortable = exports.Sortable = _dom_component.default.inherit({
         sourceGroup = $sourceGroup.attr('group');
         sourceIndex = getIndex((groupSelector ? $sourceGroup : element).find(itemSelector), $sourceItem);
         if ($sourceItem.attr('item-group')) {
-          $sourceItem = $sourceGroup.find("[item-group='".concat($sourceItem.attr('item-group'), "']"));
+          $sourceItem = $sourceGroup.find(`[item-group='${$sourceItem.attr('item-group')}']`);
         }
         that._renderDraggable($sourceItem);
         $targetItem = that._renderItem($sourceItem, 'target').addClass(targetClass);
@@ -312,7 +313,7 @@ const Sortable = exports.Sortable = _dom_component.default.inherit({
         $targetGroup.addClass(targetClass);
         const $itemContainer = $targetGroup.find(itemContainerSelector);
         const $items = $itemContainer.find(itemSelector);
-        const targetSortable = $targetGroup.closest(".".concat(SORTABLE_CLASS)).data('dxSortableOld');
+        const targetSortable = $targetGroup.closest(`.${SORTABLE_CLASS}`).data('dxSortableOld');
         const useIndicator = targetSortable.option('useIndicator');
         const isVertical = (targetSortable || that).option('direction') === 'vertical';
         const itemsOffset = getItemsOffset($items, isVertical, $itemContainer);

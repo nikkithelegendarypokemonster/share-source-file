@@ -1,17 +1,17 @@
 /**
 * DevExtreme (esm/__internal/grids/pivot_grid/field_chooser/const.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-export var ATTRIBUTES = {
+export const ATTRIBUTES = {
   treeViewItem: 'tree-view-item',
   allowScrolling: 'allow-scrolling',
   itemGroup: 'item-group'
 };
-export var CLASSES = {
+export const CLASSES = {
   area: {
     self: 'dx-area',
     box: 'dx-area-box',
@@ -49,7 +49,7 @@ export var CLASSES = {
   row: 'dx-row',
   widget: 'dx-widget'
 };
-export var ICONS = {
+export const ICONS = {
   all: 'smalliconslayout',
   column: 'columnfield',
   row: 'rowfield',
@@ -59,12 +59,12 @@ export var ICONS = {
   hierarchy: 'hierarchy',
   dimension: 'detailslayout'
 };
-export var SORTABLE_CONST = {
+export const SORTABLE_CONST = {
   targets: {
     drag: 'drag'
   }
 };
-export var SORT_ORDER = {
+export const SORT_ORDER = {
   descending: 'desc',
   ascending: 'asc'
 };

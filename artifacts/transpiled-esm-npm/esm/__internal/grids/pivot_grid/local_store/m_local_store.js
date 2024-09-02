@@ -14,9 +14,9 @@ import dataQuery from '../../../../data/query';
 // @ts-expect-error
 import { aggregators } from '../../../../data/utils';
 import { discoverObjectFields, getFiltersByPath, setDefaultFieldValueFormatting, setFieldProperty, storeDrillDownMixin } from '../m_widget_utils';
-var PATH_DELIMETER = '/./';
-var LocalStore = Class.inherit(function () {
-  var DATE_INTERVAL_SELECTORS = {
+const PATH_DELIMETER = '/./';
+const LocalStore = Class.inherit(function () {
+  const DATE_INTERVAL_SELECTORS = {
     year(date) {
       return date && date.getFullYear();
     },
@@ -40,7 +40,7 @@ var LocalStore = Class.inherit(function () {
   }
   function getDateValue(dataSelector) {
     return function (data) {
-      var value = dataSelector(data);
+      let value = dataSelector(data);
       if (value && !(value instanceof Date)) {
         value = dateSerialization.deserializeDate(value);
       }
@@ -49,19 +49,19 @@ var LocalStore = Class.inherit(function () {
   }
   function prepareFields(fields) {
     each(fields || [], (_, field) => {
-      var fieldSelector;
-      var intervalSelector;
-      var {
+      let fieldSelector;
+      let intervalSelector;
+      const {
         dataField
       } = field;
-      var groupInterval;
-      var {
+      let groupInterval;
+      const {
         levels
       } = field;
-      var dataSelector;
+      let dataSelector;
       if (!field.selector) {
         if (!dataField) {
-          dataSelector = function dataSelector(data) {
+          dataSelector = function (data) {
             return data;
           };
         } else {
@@ -72,15 +72,15 @@ var LocalStore = Class.inherit(function () {
         }
         if (field.dataType === 'date') {
           intervalSelector = DATE_INTERVAL_SELECTORS[field.groupInterval];
-          var valueSelector = getDateValue(dataSelector);
-          fieldSelector = function fieldSelector(data) {
-            var value = valueSelector(data);
+          const valueSelector = getDateValue(dataSelector);
+          fieldSelector = function (data) {
+            const value = valueSelector(data);
             return intervalSelector ? intervalSelector(value) : value;
           };
         } else if (field.dataType === 'number') {
           groupInterval = isNumeric(field.groupInterval) && field.groupInterval > 0 && field.groupInterval;
-          fieldSelector = function fieldSelector(data) {
-            var value = dataSelector(data);
+          fieldSelector = function (data) {
+            let value = dataSelector(data);
             if (isString(value)) {
               value = Number(value);
             }
@@ -94,8 +94,8 @@ var LocalStore = Class.inherit(function () {
       }
     });
   }
-  var addHierarchyItem = function addHierarchyItem(value, hierarchyItems, pathHash, childrenHash) {
-    var hierarchyItem = childrenHash[pathHash];
+  const addHierarchyItem = function (value, hierarchyItems, pathHash, childrenHash) {
+    let hierarchyItem = childrenHash[pathHash];
     if (!hierarchyItem) {
       hierarchyItem = {
         value,
@@ -108,15 +108,15 @@ var LocalStore = Class.inherit(function () {
     return hierarchyItem;
   };
   function fillHierarchyItemIndexesCore(indexes, options, children, expandIndex, pathHash) {
-    var dimension = options.dimensions[expandIndex];
-    var {
+    const dimension = options.dimensions[expandIndex];
+    const {
       expandedPathsHash
     } = options;
-    var dimensionValue;
-    var hierarchyItem;
+    let dimensionValue;
+    let hierarchyItem;
     if (dimension) {
       dimensionValue = dimension.selector(options.data);
-      pathHash = pathHash !== undefined ? pathHash + PATH_DELIMETER + dimensionValue : "".concat(dimensionValue);
+      pathHash = pathHash !== undefined ? pathHash + PATH_DELIMETER + dimensionValue : `${dimensionValue}`;
       hierarchyItem = addHierarchyItem(dimensionValue, children, pathHash, options.childrenHash);
       indexes.push(hierarchyItem.index);
       if (expandedPathsHash && expandedPathsHash[pathHash] || dimension.expanded) {
@@ -128,12 +128,12 @@ var LocalStore = Class.inherit(function () {
     }
   }
   function generateHierarchyItems(data, loadOptions, headers, headerName) {
-    var result = [0];
-    var expandIndex = loadOptions.headerName === headerName ? loadOptions.path.length : 0;
-    var expandedPaths = headerName === 'rows' ? loadOptions.rowExpandedPaths : loadOptions.columnExpandedPaths;
-    var options = {
+    const result = [0];
+    const expandIndex = loadOptions.headerName === headerName ? loadOptions.path.length : 0;
+    const expandedPaths = headerName === 'rows' ? loadOptions.rowExpandedPaths : loadOptions.columnExpandedPaths;
+    const options = {
       data,
-      childrenHash: headers["".concat(headerName, "Hash")],
+      childrenHash: headers[`${headerName}Hash`],
       dimensions: loadOptions[headerName],
       expandedPathsHash: loadOptions.headerName !== headerName && expandedPaths && expandedPaths.hash
     };
@@ -141,13 +141,13 @@ var LocalStore = Class.inherit(function () {
     return result;
   }
   function generateAggregationCells(data, cells, headers, options) {
-    var cellSet = [];
-    var x;
-    var y;
-    var rowIndex;
-    var columnIndex;
-    var rowIndexes = generateHierarchyItems(data, options, headers, 'rows');
-    var columnIndexes = generateHierarchyItems(data, options, headers, 'columns');
+    const cellSet = [];
+    let x;
+    let y;
+    let rowIndex;
+    let columnIndex;
+    const rowIndexes = generateHierarchyItems(data, options, headers, 'rows');
+    const columnIndexes = generateHierarchyItems(data, options, headers, 'columns');
     for (y = 0; y < rowIndexes.length; y += 1) {
       rowIndex = rowIndexes[y];
       cells[rowIndex] = cells[rowIndex] || [];
@@ -160,9 +160,9 @@ var LocalStore = Class.inherit(function () {
   }
   function fillHashExpandedPath(expandedPaths) {
     if (expandedPaths) {
-      var hash = expandedPaths.hash = {};
+      const hash = expandedPaths.hash = {};
       expandedPaths.forEach(path => {
-        var pathValue = path.map(value => "".concat(value)).join(PATH_DELIMETER);
+        const pathValue = path.map(value => `${value}`).join(PATH_DELIMETER);
         hash[pathValue] = true;
       });
     }
@@ -183,7 +183,7 @@ var LocalStore = Class.inherit(function () {
       field.calculateCustomSummary = field.calculateCustomSummary || noop;
       return {
         seed() {
-          var options = {
+          const options = {
             summaryProcess: 'start',
             totalValue: undefined
           };
@@ -207,13 +207,13 @@ var LocalStore = Class.inherit(function () {
     return aggregators[field.summaryType] || aggregators.count;
   }
   function aggregationStep(measures, aggregationCells, data) {
-    for (var aggregatorIndex = 0; aggregatorIndex < measures.length; aggregatorIndex += 1) {
-      var cellField = measures[aggregatorIndex];
-      var cellValue = cellField.selector(data);
-      var aggregator = getAggregator(cellField);
-      var isAggregatorSeedFunction = typeof aggregator.seed === 'function';
-      for (var cellSetIndex = 0; cellSetIndex < aggregationCells.length; cellSetIndex += 1) {
-        var cell = aggregationCells[cellSetIndex];
+    for (let aggregatorIndex = 0; aggregatorIndex < measures.length; aggregatorIndex += 1) {
+      const cellField = measures[aggregatorIndex];
+      const cellValue = cellField.selector(data);
+      const aggregator = getAggregator(cellField);
+      const isAggregatorSeedFunction = typeof aggregator.seed === 'function';
+      for (let cellSetIndex = 0; cellSetIndex < aggregationCells.length; cellSetIndex += 1) {
+        const cell = aggregationCells[cellSetIndex];
         if (cell.length <= aggregatorIndex) {
           cell[aggregatorIndex] = isAggregatorSeedFunction ? aggregator.seed() : aggregator.seed;
         }
@@ -227,7 +227,7 @@ var LocalStore = Class.inherit(function () {
   }
   function aggregationFinalize(measures, cells) {
     each(measures, (aggregatorIndex, cellField) => {
-      var aggregator = getAggregator(cellField);
+      const aggregator = getAggregator(cellField);
       if (aggregator.finalize) {
         each(cells, (_, row) => {
           each(row, (_, cell) => {
@@ -240,11 +240,11 @@ var LocalStore = Class.inherit(function () {
     });
   }
   function areValuesEqual(filterValue, fieldValue) {
-    var valueOfFilter = filterValue && filterValue.valueOf();
-    var valueOfField = fieldValue && fieldValue.valueOf();
+    let valueOfFilter = filterValue && filterValue.valueOf();
+    let valueOfField = fieldValue && fieldValue.valueOf();
     if (Array.isArray(filterValue)) {
       fieldValue = fieldValue || [];
-      for (var i = 0; i < filterValue.length; i += 1) {
+      for (let i = 0; i < filterValue.length; i += 1) {
         valueOfFilter = filterValue[i] && filterValue[i].valueOf();
         valueOfField = fieldValue[i] && fieldValue[i].valueOf();
         if (valueOfFilter !== valueOfField) {
@@ -256,26 +256,26 @@ var LocalStore = Class.inherit(function () {
     return valueOfFilter === valueOfField;
   }
   function getGroupValue(levels, data) {
-    var value = [];
+    const value = [];
     each(levels, (_, field) => {
       value.push(field.selector(data));
     });
     return value;
   }
   function createDimensionFilters(dimension) {
-    var filters = [];
+    const filters = [];
     each(dimension, (_, field) => {
-      var filterValues = field.filterValues || [];
-      var {
+      const filterValues = field.filterValues || [];
+      const {
         groupName
       } = field;
       if (groupName && isNumeric(field.groupIndex)) {
         return;
       }
-      var filter = function filter(dataItem) {
-        var value = field.levels ? getGroupValue(field.levels, dataItem) : field.selector(dataItem);
-        var result = false;
-        for (var i = 0; i < filterValues.length; i += 1) {
+      const filter = function (dataItem) {
+        const value = field.levels ? getGroupValue(field.levels, dataItem) : field.selector(dataItem);
+        let result = false;
+        for (let i = 0; i < filterValues.length; i += 1) {
           if (areValuesEqual(filterValues[i], value)) {
             result = true;
             break;
@@ -288,15 +288,15 @@ var LocalStore = Class.inherit(function () {
     return filters;
   }
   function createFilter(options) {
-    var filters = createDimensionFilters(options.rows).concat(createDimensionFilters(options.columns)).concat(createDimensionFilters(options.filters));
-    var expandedDimensions = options[options.headerName];
-    var {
+    const filters = createDimensionFilters(options.rows).concat(createDimensionFilters(options.columns)).concat(createDimensionFilters(options.filters));
+    const expandedDimensions = options[options.headerName];
+    const {
       path
     } = options;
     if (expandedDimensions) {
       filters.push(dataItem => {
-        var expandValue;
-        for (var i = 0; i < path.length; i += 1) {
+        let expandValue;
+        for (let i = 0; i < path.length; i += 1) {
           expandValue = expandedDimensions[i].selector(dataItem);
           if (toComparable(expandValue, true) !== toComparable(path[i], true)) {
             return false;
@@ -306,7 +306,7 @@ var LocalStore = Class.inherit(function () {
       });
     }
     return function (dataItem) {
-      for (var i = 0; i < filters.length; i += 1) {
+      for (let i = 0; i < filters.length; i += 1) {
         if (!filters[i](dataItem)) {
           return false;
         }
@@ -315,7 +315,7 @@ var LocalStore = Class.inherit(function () {
     };
   }
   function loadCore(items, options, notifyProgress) {
-    var headers = {
+    const headers = {
       columns: [],
       rows: [],
       columnsHash: {
@@ -325,16 +325,16 @@ var LocalStore = Class.inherit(function () {
         length: 1
       }
     };
-    var values = [];
-    var aggregationCells;
-    var data;
+    const values = [];
+    let aggregationCells;
+    let data;
     // @ts-expect-error
-    var d = new Deferred();
-    var i = 0;
-    var filter = createFilter(options);
+    const d = new Deferred();
+    let i = 0;
+    const filter = createFilter(options);
     function processData() {
-      var t = new Date();
-      var startIndex = i;
+      const t = new Date();
+      const startIndex = i;
       for (; i < items.length; i += 1) {
         if (i > startIndex && i % 10000 === 0) {
           if (new Date() - t >= 300) {
@@ -363,7 +363,7 @@ var LocalStore = Class.inherit(function () {
     return d;
   }
   function filterDataSource(dataSource, fieldSelectors) {
-    var filter = dataSource.filter();
+    let filter = dataSource.filter();
     if (dataSource.store() instanceof CustomStore && filter) {
       filter = processFilter(filter, fieldSelectors);
       return dataQuery(dataSource.items()).filter(filter).toArray();
@@ -372,15 +372,15 @@ var LocalStore = Class.inherit(function () {
   }
   function loadDataSource(dataSource, fieldSelectors, reload) {
     // @ts-expect-error
-    var d = new Deferred();
-    var customizeStoreLoadOptionsHandler = function customizeStoreLoadOptionsHandler(options) {
+    const d = new Deferred();
+    const customizeStoreLoadOptionsHandler = function (options) {
       if (dataSource.store() instanceof ArrayStore) {
         options.storeLoadOptions.filter = processFilter(options.storeLoadOptions.filter, fieldSelectors);
       }
     };
     dataSource.on('customizeStoreLoadOptions', customizeStoreLoadOptionsHandler);
     if (!dataSource.isLoaded() || reload) {
-      var loadDeferred = reload ? dataSource.load() : dataSource.reload();
+      const loadDeferred = reload ? dataSource.load() : dataSource.reload();
       when(loadDeferred).done(() => {
         loadDataSource(dataSource, fieldSelectors).done(() => {
           d.resolve(filterDataSource(dataSource, fieldSelectors));
@@ -396,7 +396,7 @@ var LocalStore = Class.inherit(function () {
   function fillSelectorsByFields(selectors, fields) {
     fields.forEach(field => {
       if (field.dataField && field.dataType === 'date') {
-        var valueSelector = getDateValue(getDataSelector(field.dataField));
+        const valueSelector = getDateValue(getDataSelector(field.dataField));
         selectors[field.dataField] = function (data) {
           return valueSelector(data);
         };
@@ -404,7 +404,7 @@ var LocalStore = Class.inherit(function () {
     });
   }
   function getFieldSelectors(options) {
-    var selectors = {};
+    const selectors = {};
     if (Array.isArray(options)) {
       fillSelectorsByFields(selectors, options);
     } else if (options) {
@@ -422,7 +422,7 @@ var LocalStore = Class.inherit(function () {
     if (isString(filter[0]) && (filter[1] instanceof Date || filter[2] instanceof Date)) {
       filter[0] = fieldSelectors[filter[0]];
     }
-    for (var i = 0; i < filter.length; i += 1) {
+    for (let i = 0; i < filter.length; i += 1) {
       filter[i] = processFilter(filter[i], fieldSelectors);
     }
     return filter;
@@ -434,10 +434,10 @@ var LocalStore = Class.inherit(function () {
       this._dataSource.paginate(false);
     },
     getFields(fields) {
-      var that = this;
-      var dataSource = that._dataSource;
+      const that = this;
+      const dataSource = that._dataSource;
       // @ts-expect-error
-      var d = new Deferred();
+      const d = new Deferred();
       loadDataSource(dataSource, getFieldSelectors(fields)).done(data => {
         d.resolve(discoverObjectFields(data, fields));
       }).fail(d.reject);
@@ -447,10 +447,10 @@ var LocalStore = Class.inherit(function () {
       return this._dataSource.key();
     },
     load(options) {
-      var that = this;
-      var dataSource = that._dataSource;
+      const that = this;
+      const dataSource = that._dataSource;
       // @ts-expect-error
-      var d = new Deferred();
+      const d = new Deferred();
       prepareLoadOption(options);
       loadDataSource(dataSource, getFieldSelectors(options), options.reload).done(data => {
         when(loadCore(data, options, that._progressChanged)).done(d.resolve);
@@ -458,7 +458,7 @@ var LocalStore = Class.inherit(function () {
       return d;
     },
     filter() {
-      var dataSource = this._dataSource;
+      const dataSource = this._dataSource;
       return dataSource.filter.apply(dataSource, arguments);
     },
     supportPaging() {
@@ -468,26 +468,26 @@ var LocalStore = Class.inherit(function () {
       loadOptions = loadOptions || {};
       params = params || {};
       prepareLoadOption(loadOptions);
-      var drillDownItems = [];
-      var items = this._dataSource.items();
-      var item;
-      var {
+      const drillDownItems = [];
+      const items = this._dataSource.items();
+      let item;
+      const {
         maxRowCount
       } = params;
-      var {
+      const {
         customColumns
       } = params;
-      var filter = createFilter(loadOptions);
-      var pathFilter = createFilter({
+      const filter = createFilter(loadOptions);
+      const pathFilter = createFilter({
         rows: getFiltersByPath(loadOptions.rows, params.rowPath),
         columns: getFiltersByPath(loadOptions.columns, params.columnPath),
         filters: []
       });
-      for (var i = 0; i < items.length; i += 1) {
+      for (let i = 0; i < items.length; i += 1) {
         if (pathFilter(items[i]) && filter(items[i])) {
           if (customColumns) {
             item = {};
-            for (var j = 0; j < customColumns.length; j += 1) {
+            for (let j = 0; j < customColumns.length; j += 1) {
               item[customColumns[j]] = items[i][customColumns[j]];
             }
           } else {

@@ -2,16 +2,16 @@ import domAdapter from '../dom_adapter';
 import injector from './dependency_injector';
 import { hasWindow } from './window';
 import callOnce from './call_once';
-var callbacks = [];
-var subscribeReady = callOnce(() => {
-  var removeListener = domAdapter.listen(domAdapter.getDocument(), 'DOMContentLoaded', () => {
+let callbacks = [];
+const subscribeReady = callOnce(() => {
+  const removeListener = domAdapter.listen(domAdapter.getDocument(), 'DOMContentLoaded', () => {
     readyCallbacks.fire();
     removeListener();
   });
 });
-var readyCallbacks = {
+const readyCallbacks = {
   add: callback => {
-    var windowExists = hasWindow();
+    const windowExists = hasWindow();
     if (windowExists && domAdapter.getReadyState() !== 'loading') {
       callback();
     } else {

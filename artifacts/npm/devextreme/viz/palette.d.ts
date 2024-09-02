@@ -1,7 +1,7 @@
 /**
 * DevExtreme (viz/palette.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -19,26 +19,45 @@ export {
 };
 
 /**
- * Gets the current palette&apos;s name.
+ * @docid viz.currentPalette
+ * @publicName currentPalette()
+ * @static
+ * @public
  */
 export function currentPalette(): string;
 
 /**
- * Changes the current palette for all data visualization UI components on the page.
+ * @docid viz.currentPalette
+ * @publicName currentPalette(paletteName)
+ * @static
+ * @public
  */
 export function currentPalette(paletteName: string): void;
 
 /**
- * Returns a subset of palette colors.
+ * @docid viz.generateColors
+ * @publicName generateColors(palette, count, options)
+ * @param1 palette:Enums.Palette|Array<string>
+ * @param3_field paletteExtensionMode:Enums.PaletteExtensionMode
+ * @static
+ * @public
  */
 export function generateColors(palette: Palette | Array<string>, count: number, options: { paletteExtensionMode?: PaletteExtensionMode; baseColorSet?: PaletteColorSet }): Array<string>;
 
 /**
- * Gets the color sets of a predefined or registered palette.
+ * @docid viz.getPalette
+ * @publicName getPalette(paletteName)
+ * @return object
+ * @static
+ * @public
  */
 export function getPalette(paletteName: string): any;
 
 /**
- * Registers a new palette.
+ * @docid viz.registerPalette
+ * @publicName registerPalette(paletteName, palette)
+ * @param2 palette:object
+ * @static
+ * @public
  */
 export function registerPalette(paletteName: string, palette: any): void;

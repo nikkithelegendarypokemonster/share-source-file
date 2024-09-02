@@ -4,10 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _errors = _interopRequireDefault(require("../../../core/errors"));
 var _math = require("../../../core/utils/math");
-var _query = _interopRequireDefault(require("../../../data/query"));
-var _timezones_data = _interopRequireDefault(require("./timezones_data"));
+var _config = _interopRequireDefault(require("../../../core/config"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 /* eslint-disable radix */
 
@@ -38,12 +36,11 @@ const parseTimezone = timeZoneConfig => {
     dateList
   };
 };
-let TimeZoneCache = /*#__PURE__*/function () {
-  function TimeZoneCache() {
+class TimeZoneCache {
+  constructor() {
     this.map = new Map();
   }
-  var _proto = TimeZoneCache.prototype;
-  _proto.tryGet = function tryGet(id) {
+  tryGet(id) {
     if (!this.map.get(id)) {
       const config = timeZoneDataUtils.getTimezoneById(id);
       if (!config) {
@@ -53,32 +50,20 @@ let TimeZoneCache = /*#__PURE__*/function () {
       this.map.set(id, timeZoneInfo);
     }
     return this.map.get(id);
-  };
-  return TimeZoneCache;
-}();
+  }
+}
 const tzCache = new TimeZoneCache();
 const timeZoneDataUtils = {
   _tzCache: tzCache,
-  _timeZones: _timezones_data.default.zones,
-  getDisplayedTimeZones(timestamp) {
-    const timeZones = this._timeZones.map(timezone => {
-      const timeZoneInfo = parseTimezone(timezone);
-      const offset = this.getUtcOffset(timeZoneInfo, timestamp);
-      const title = "(GMT ".concat(this.formatOffset(offset), ") ").concat(this.formatId(timezone.id));
-      return {
-        offset,
-        title,
-        id: timezone.id
-      };
-    });
-    return (0, _query.default)(timeZones).sortBy('offset').toArray();
+  getTimeZonesOld() {
+    return (0, _config.default)().timezones ?? [];
   },
   formatOffset(offset) {
     const hours = Math.floor(offset);
     const minutesInDecimal = offset - hours;
     const signString = (0, _math.sign)(offset) >= 0 ? '+' : '-';
-    const hoursString = "0".concat(Math.abs(hours)).slice(-2);
-    const minutesString = minutesInDecimal > 0 ? ":".concat(minutesInDecimal * 60) : ':00';
+    const hoursString = `0${Math.abs(hours)}`.slice(-2);
+    const minutesString = minutesInDecimal > 0 ? `:${minutesInDecimal * 60}` : ':00';
     return signString + hoursString + minutesString;
   },
   formatId(id) {
@@ -88,14 +73,13 @@ const timeZoneDataUtils = {
     if (!id) {
       return undefined;
     }
-    const tzList = this._timeZones;
+    const tzList = this.getTimeZonesOld();
     for (let i = 0; i < tzList.length; i++) {
       const currentId = tzList[i].id;
       if (currentId === id) {
         return tzList[i];
       }
     }
-    _errors.default.log('W0009', id);
     return undefined;
   },
   getTimeZoneOffsetById(id, timestamp) {

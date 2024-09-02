@@ -3,7 +3,7 @@ import BaseComponent from '../../../component_wrapper/common/component';
 import { Form as FormComponent } from './form';
 export default class Form extends BaseComponent {
   getProps() {
-    var props = super.getProps();
+    const props = super.getProps();
     props.onKeyDown = this._wrapKeyDownHandler(props.onKeyDown);
     return props;
   }

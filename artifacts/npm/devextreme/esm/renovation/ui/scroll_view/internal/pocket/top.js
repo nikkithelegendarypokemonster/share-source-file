@@ -1,14 +1,14 @@
 /**
 * DevExtreme (esm/renovation/ui/scroll_view/internal/pocket/top.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-var _excluded = ["pocketState", "pocketTop", "pullDownIconAngle", "pullDownOpacity", "pullDownTranslateTop", "pulledDownText", "pullingDownText", "refreshStrategy", "refreshingText", "topPocketRef", "topPocketTranslateTop", "visible"];
+const _excluded = ["pocketState", "pocketTop", "pullDownIconAngle", "pullDownOpacity", "pullDownTranslateTop", "pulledDownText", "pullingDownText", "refreshStrategy", "refreshingText", "topPocketRef", "topPocketTranslateTop", "visible"];
 import { createVNode, createComponentVNode } from "inferno";
 import { BaseInfernoComponent } from '@devextreme/runtime/inferno';
 import { normalizeStyles } from '@devextreme/runtime/inferno';
@@ -17,8 +17,8 @@ import { combineClasses } from '../../../../utils/combine_classes';
 import messageLocalization from '../../../../../localization/message';
 import { PULLDOWN_ICON_CLASS, SCROLLVIEW_PULLDOWN, SCROLLVIEW_PULLDOWN_IMAGE_CLASS, SCROLLVIEW_PULLDOWN_INDICATOR_CLASS, SCROLLVIEW_PULLDOWN_READY_CLASS, SCROLLVIEW_PULLDOWN_LOADING_CLASS, SCROLLVIEW_PULLDOWN_TEXT_CLASS, SCROLLVIEW_PULLDOWN_VISIBLE_TEXT_CLASS, SCROLLVIEW_TOP_POCKET_CLASS, TopPocketState } from '../../common/consts';
 import { current, isMaterial } from '../../../../../ui/themes';
-export var viewFunction = viewModel => {
-  var {
+export const viewFunction = viewModel => {
+  const {
     props: {
       pulledDownText,
       pullingDownText,
@@ -44,7 +44,7 @@ export var viewFunction = viewModel => {
     "style": normalizeStyles(topPocketStyles)
   }, null, topPocketRef);
 };
-export var TopPocketProps = {
+export const TopPocketProps = {
   get pullingDownText() {
     return isMaterial(current()) ? '' : messageLocalization.format('dxScrollView-pullingDownText');
   },
@@ -82,11 +82,11 @@ export class TopPocket extends BaseInfernoComponent {
     return this.props.pocketState === TopPocketState.STATE_REFRESHING ? SCROLLVIEW_PULLDOWN_VISIBLE_TEXT_CLASS : undefined;
   }
   get pullDownClasses() {
-    var {
+    const {
       pocketState,
       visible
     } = this.props;
-    var classesMap = {
+    const classesMap = {
       [SCROLLVIEW_PULLDOWN]: true,
       [SCROLLVIEW_PULLDOWN_READY_CLASS]: pocketState === TopPocketState.STATE_READY,
       [SCROLLVIEW_PULLDOWN_LOADING_CLASS]: pocketState === TopPocketState.STATE_REFRESHING,
@@ -95,7 +95,7 @@ export class TopPocket extends BaseInfernoComponent {
     return combineClasses(classesMap);
   }
   get topPocketClasses() {
-    var classesMap = {
+    const classesMap = {
       [SCROLLVIEW_TOP_POCKET_CLASS]: true,
       'dx-state-invisible': !this.props.visible
     };
@@ -109,7 +109,7 @@ export class TopPocket extends BaseInfernoComponent {
       if (this.props.refreshStrategy === 'swipeDown') {
         return {
           opacity: this.props.pullDownOpacity,
-          transform: "translate(0px, ".concat(this.props.pullDownTranslateTop, "px)")
+          transform: `translate(0px, ${this.props.pullDownTranslateTop}px)`
         };
       }
       return undefined;
@@ -122,8 +122,8 @@ export class TopPocket extends BaseInfernoComponent {
     return this.__getterCache['topPocketStyles'] = (() => {
       if (this.props.refreshStrategy === 'pullDown') {
         return {
-          top: "".concat(-this.props.pocketTop, "px"),
-          transform: "translate(0px, ".concat(this.props.topPocketTranslateTop, "px)")
+          top: `${-this.props.pocketTop}px`,
+          transform: `translate(0px, ${this.props.topPocketTranslateTop}px)`
         };
       }
       return undefined;
@@ -135,12 +135,12 @@ export class TopPocket extends BaseInfernoComponent {
     }
     return this.__getterCache['pullDownIconStyles'] = (() => {
       return {
-        transform: "rotate(".concat(this.props.pullDownIconAngle, "deg)")
+        transform: `rotate(${this.props.pullDownIconAngle}deg)`
       };
     })();
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
@@ -156,7 +156,7 @@ export class TopPocket extends BaseInfernoComponent {
     }
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       pullDownRef: this.pullDownRef,

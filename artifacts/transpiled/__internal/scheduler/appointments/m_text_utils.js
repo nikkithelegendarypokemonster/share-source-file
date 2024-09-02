@@ -35,11 +35,11 @@ const formatDates = (startDate, endDate, formatType) => {
   const isSameDate = startDate.getDate() === endDate.getDate();
   switch (formatType) {
     case 'DATETIME':
-      return [_date2.default.format(startDate, dateFormat), ' ', _date2.default.format(startDate, timeFormat), ' - ', isSameDate ? '' : "".concat(_date2.default.format(endDate, dateFormat), " "), _date2.default.format(endDate, timeFormat)].join('');
+      return [_date2.default.format(startDate, dateFormat), ' ', _date2.default.format(startDate, timeFormat), ' - ', isSameDate ? '' : `${_date2.default.format(endDate, dateFormat)} `, _date2.default.format(endDate, timeFormat)].join('');
     case 'TIME':
-      return "".concat(_date2.default.format(startDate, timeFormat), " - ").concat(_date2.default.format(endDate, timeFormat));
+      return `${_date2.default.format(startDate, timeFormat)} - ${_date2.default.format(endDate, timeFormat)}`;
     case 'DATE':
-      return "".concat(_date2.default.format(startDate, dateFormat)).concat(isSameDate ? '' : " - ".concat(_date2.default.format(endDate, dateFormat)));
+      return `${_date2.default.format(startDate, dateFormat)}${isSameDate ? '' : ` - ${_date2.default.format(endDate, dateFormat)}`}`;
     default:
       break;
   }

@@ -436,7 +436,7 @@ const corePlugin = {
       items: [],
       _hideToolTipForDrag: false,
       tooltip: new _tooltip.Tooltip({
-        cssClass: "".concat(this._rootClassPrefix, "-annotation-tooltip"),
+        cssClass: `${this._rootClassPrefix}-annotation-tooltip`,
         eventTrigger: this._eventTrigger,
         widgetRoot: this.element(),
         widget: this
@@ -461,7 +461,7 @@ const corePlugin = {
   extenders: {
     _createHtmlStructure() {
       this._annotationsGroup = this._renderer.g().attr({
-        'class': "".concat(this._rootClassPrefix, "-annotations")
+        'class': `${this._rootClassPrefix}-annotations`
       }).css(this._getAnnotationStyles()).linkOn(this._renderer.root, 'annotations').linkAppend();
       _events_engine.default.on(getDocument(), POINTER_ACTION, e => {
         if (this._disposed) {

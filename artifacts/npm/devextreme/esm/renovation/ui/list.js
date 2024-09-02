@@ -1,21 +1,21 @@
 /**
 * DevExtreme (esm/renovation/ui/list.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["accessKey", "activeStateEnabled", "className", "dataSource", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "itemTemplate", "onClick", "onItemClick", "onKeyDown", "rtlEnabled", "tabIndex", "visible", "width"];
+const _excluded = ["accessKey", "activeStateEnabled", "className", "dataSource", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "itemTemplate", "onClick", "onItemClick", "onKeyDown", "rtlEnabled", "tabIndex", "visible", "width"];
 import { createComponentVNode, normalizeProps } from "inferno";
 import { BaseInfernoComponent } from '@devextreme/runtime/inferno';
 import LegacyList from '../../ui/list';
 import { DomComponentWrapper } from './common/dom_component_wrapper';
 import { BaseWidgetProps } from './common/base_props';
-export var viewFunction = _ref => {
-  var {
+export const viewFunction = _ref => {
+  let {
     componentProps,
     restAttributes
   } = _ref;
@@ -25,8 +25,8 @@ export var viewFunction = _ref => {
     "templateNames": ['itemTemplate']
   }, restAttributes)));
 };
-export var ListProps = BaseWidgetProps;
-var getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => normalizeProps(createComponentVNode(2, TemplateProp, _extends({}, props))) : TemplateProp);
+export const ListProps = BaseWidgetProps;
+const getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => normalizeProps(createComponentVNode(2, TemplateProp, _extends({}, props))) : TemplateProp);
 export class List extends BaseInfernoComponent {
   constructor(props) {
     super(props);
@@ -36,12 +36,12 @@ export class List extends BaseInfernoComponent {
     return this.props;
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
         itemTemplate: getTemplate(props.itemTemplate)

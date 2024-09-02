@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/responsive_box.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -32,162 +32,224 @@ export {
 };
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_responsive_box_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxResponsiveBox<TItem, TKey>>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_responsive_box_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxResponsiveBox<TItem, TKey>>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_responsive_box_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent<TItem extends ItemLike = any, TKey = any> = InitializedEventInfo<dxResponsiveBox<TItem, TKey>>;
 
 /**
- * The type of the itemClick event handler&apos;s argument.
+ * @docid _ui_responsive_box_ItemClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemClickEvent<TItem extends ItemLike = any, TKey = any> = NativeEventInfo<dxResponsiveBox<TItem, TKey>, MouseEvent | PointerEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the itemContextMenu event handler&apos;s argument.
+ * @docid _ui_responsive_box_ItemContextMenuEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemContextMenuEvent<TItem extends ItemLike = any, TKey = any> = NativeEventInfo<dxResponsiveBox<TItem, TKey>, MouseEvent | PointerEvent | TouchEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the itemHold event handler&apos;s argument.
+ * @docid _ui_responsive_box_ItemHoldEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemHoldEvent<TItem extends ItemLike = any, TKey = any> = NativeEventInfo<dxResponsiveBox<TItem, TKey>, MouseEvent | PointerEvent | TouchEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the itemRendered event handler&apos;s argument.
+ * @docid _ui_responsive_box_ItemRenderedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ItemInfo
  */
 export type ItemRenderedEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxResponsiveBox<TItem, TKey>> & ItemInfo<TItem>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_responsive_box_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxResponsiveBox<TItem, TKey>> & ChangedOptionInfo;
 
 /**
- * 
- * @deprecated 
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @public
+ * @docid
  */
 export interface dxResponsiveBoxOptions<
   TItem extends ItemLike = any,
   TKey = any,
   > extends CollectionWidgetOptions<dxResponsiveBox<TItem, TKey>, TItem, TKey> {
     /**
-     * Specifies the collection of columns for the grid used to position layout elements.
+     * @docid
+     * @public
      */
     cols?: Array<{
       /**
-       * The column&apos;s base width. Calculated automatically when the singleColumnScreen property arranges all elements in a single column.
+       * @docid
+       * @default 0
        */
       baseSize?: number | string;
       /**
-       * The column width ratio.
+       * @docid
+       * @default 1
        */
       ratio?: number;
       /**
-       * Decides on which screens the current column is rendered.
+       * @docid
+       * @default undefined
        */
       screen?: string;
       /**
-       * A factor that defines how much a column width shrinks relative to the rest of the columns in the container.
+       * @docid
+       * @default 1
        */
       shrink?: number;
     }>;
     /**
-     * Binds the UI component to data.
+     * @docid
+     * @type string | Array<string | dxResponsiveBoxItem | any> | Store | DataSource | DataSourceOptions | null
+     * @default null
+     * @public
      */
     dataSource?: DataSourceLike<TItem, TKey> | null;
     /**
-     * Specifies the UI component&apos;s height.
+     * @docid
+     * @default '100%'
+     * @public
      */
     height?: number | string | (() => number | string);
     /**
-     * An array of items displayed by the UI component.
+     * @docid
+     * @type Array<string | dxResponsiveBoxItem | any>
+     * @fires dxResponsiveBoxOptions.onOptionChanged
+     * @public
      */
     items?: Array<TItem>;
     /**
-     * Specifies the collection of rows for the grid used to position layout elements.
+     * @docid
+     * @public
      */
     rows?: Array<{
       /**
-       * The row&apos;s base height. Calculated automatically when the singleColumnScreen property arranges all elements in a single column.
+       * @docid
+       * @default 0
        */
       baseSize?: number | string;
       /**
-       * The row height ratio.
+       * @docid
+       * @default 1
        */
       ratio?: number;
       /**
-       * Decides on which screens the current row is rendered.
+       * @docid
+       * @default undefined
        */
       screen?: string;
       /**
-       * A factor that defines how much a row height shrinks relative to the rest of the rows in the container.
+       * @docid
+       * @default 1
        */
       shrink?: number;
     }>;
     /**
-     * Specifies the function returning the size qualifier depending on the screen&apos;s width.
+     * @docid
+     * @default null
+     * @public
      */
     screenByWidth?: Function;
     /**
-     * Specifies on which screens all layout elements should be arranged in a single column. Accepts a single or several size qualifiers separated by a space.
+     * @docid
+     * @default ""
+     * @public
      */
     singleColumnScreen?: string;
     /**
-     * Specifies the UI component&apos;s width.
+     * @docid
+     * @default '100%'
+     * @public
      */
     width?: number | string | (() => number | string);
 }
 /**
- * The ResponsiveBox UI component allows you to create an application or a website with a layout adapted to different screen sizes.
+ * @docid
+ * @inherits CollectionWidget
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxResponsiveBox<
   TItem extends ItemLike = any,
   TKey = any,
   > extends CollectionWidget<dxResponsiveBoxOptions<TItem, TKey>, TItem, TKey> { }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxResponsiveBox
+ */
 export type Item = dxResponsiveBoxItem;
 
 /**
  * @deprecated Use Item instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
  */
 export interface dxResponsiveBoxItem extends CollectionWidgetItem {
     /**
-     * Specifies the item location and size against the UI component grid.
+     * @docid
+     * @public
      */
     location?: {
       /**
-       * Specifies which column the element should occupy. Accepts an index from the cols array.
+       * @docid
        */
       col?: number;
       /**
-       * Specifies how many columns the element should span.
+       * @docid
+       * @default undefined
        */
       colspan?: number;
       /**
-       * Specifies which row the element should occupy. Accepts an index from the rows array.
+       * @docid
        */
       row?: number;
       /**
-       * Specifies how many rows the element should span.
+       * @docid
+       * @default undefined
        */
       rowspan?: number;
       /**
-       * Decides on which screens the current location settings should be applied to the element.
+       * @docid
+       * @default undefined
        */
       screen?: string;
     } | Array<{ col?: number; colspan?: number; row?: number; rowspan?: number; screen?: string }>;
 }
 
+/** @public */
 export type ExplicitTypes<
   TItem extends ItemLike,
   TKey,
@@ -203,15 +265,13 @@ export type ExplicitTypes<
   OptionChangedEvent: OptionChangedEvent<TItem, TKey>;
 };
 
+/** @public */
 export type Properties<
   TItem extends ItemLike = any,
   TKey = any,
 > = dxResponsiveBoxOptions<TItem, TKey>;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options<
   TItem extends ItemLike = any,
   TKey = any,

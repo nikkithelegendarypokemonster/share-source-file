@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/viz/core/themes/generic/light/index.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22,7 +22,7 @@ import treeMap from './tree_map';
 import vectorMap from './vector_map';
 export default [{
   baseThemeName: undefined,
-  theme: _extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends({
+  theme: _extends({
     name: 'generic.light',
     isDefault: true,
     font: {
@@ -168,7 +168,7 @@ export default [{
         textOverflow: 'ellipsis'
       }
     }
-  }, chart), funnel), gauge), bar_gauge), vectorMap), pieChart), polarChart), rangeSelector), sankey), sparkline), bullet), treeMap)
+  }, chart, funnel, gauge, bar_gauge, vectorMap, pieChart, polarChart, rangeSelector, sankey, sparkline, bullet, treeMap)
 }, {
   baseThemeName: 'generic.light',
   theme: {

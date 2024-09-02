@@ -3,7 +3,7 @@ import BaseComponent from '../../../component_wrapper/editors/check_box';
 import { CheckBox as CheckBoxComponent, defaultOptions } from './check_box';
 export default class CheckBox extends BaseComponent {
   getProps() {
-    var props = super.getProps();
+    const props = super.getProps();
     props.onKeyDown = this._wrapKeyDownHandler(props.onKeyDown);
     return props;
   }

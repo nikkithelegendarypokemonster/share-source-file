@@ -69,7 +69,7 @@ const configMethod = function () {
   const newConfig = arguments.length <= 0 ? undefined : arguments[0];
   deprecatedFields.forEach(deprecatedField => {
     if (newConfig[deprecatedField]) {
-      const message = "Now, the ".concat(deprecatedField, " is selected based on the specified locale.");
+      const message = `Now, the ${deprecatedField} is selected based on the specified locale.`;
       _errors.default.log('W0003', 'config', deprecatedField, '19.2', message);
     }
   });

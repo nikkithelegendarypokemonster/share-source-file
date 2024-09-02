@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/html_editor.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -48,450 +48,672 @@ export {
     ToolbarItemLocation,
 };
 
+/** @public */
 export type HtmlEditorFormat = 'background' | 'bold' | 'color' | 'font' | 'italic' | 'link' | 'size' | 'strike' | 'script' | 'underline' | 'blockquote' | 'header' | 'indent' | 'list' | 'align' | 'code-block';
+/** @public */
 export type HtmlEditorImageUploadMode = 'base64' | 'server' | 'both';
+/** @public */
 export type HtmlEditorImageUploadTab = 'url' | 'file';
+/** @public */
 export type HtmlEditorPredefinedContextMenuItem = 'background' | 'bold' | 'color' | 'font' | 'italic' | 'link' | 'image' | 'strike' | 'subscript' | 'superscript' | 'underline' | 'blockquote' | 'increaseIndent' | 'decreaseIndent' | 'orderedList' | 'bulletList' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'alignJustify' | 'codeBlock' | 'variable' | 'undo' | 'redo' | 'clear' | 'insertTable' | 'insertHeaderRow' | 'insertRowAbove' | 'insertRowBelow' | 'insertColumnLeft' | 'insertColumnRight' | 'deleteColumn' | 'deleteRow' | 'deleteTable' | 'cellProperties' | 'tableProperties';
+/** @public */
 export type HtmlEditorPredefinedToolbarItem = 'background' | 'bold' | 'color' | 'font' | 'italic' | 'link' | 'image' | 'size' | 'strike' | 'subscript' | 'superscript' | 'underline' | 'blockquote' | 'header' | 'increaseIndent' | 'decreaseIndent' | 'orderedList' | 'bulletList' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'alignJustify' | 'codeBlock' | 'variable' | 'separator' | 'undo' | 'redo' | 'clear' | 'cellProperties' | 'tableProperties' | 'insertTable' | 'insertHeaderRow' | 'insertRowAbove' | 'insertRowBelow' | 'insertColumnLeft' | 'insertColumnRight' | 'deleteColumn' | 'deleteRow' | 'deleteTable';
+/** @public */
 export type MarkupType = 'html' | 'markdown';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_html_editor_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxHtmlEditor>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_html_editor_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxHtmlEditor>;
 
 /**
- * The type of the focusIn event handler&apos;s argument.
+ * @docid _ui_html_editor_FocusInEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusInEvent = NativeEventInfo<dxHtmlEditor, FocusEvent>;
 
 /**
- * The type of the focusOut event handler&apos;s argument.
+ * @docid _ui_html_editor_FocusOutEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type FocusOutEvent = NativeEventInfo<dxHtmlEditor, FocusEvent>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_html_editor_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxHtmlEditor>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_html_editor_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxHtmlEditor> & ChangedOptionInfo;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_html_editor_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxHtmlEditor, KeyboardEvent | ClipboardEvent | Event> & ValueChangedInfo;
 
+/** @public */
 export interface MentionTemplateData {
     readonly marker: string;
     readonly id?: string | number;
     readonly value?: any;
 }
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxHtmlEditorOptions extends EditorOptions<dxHtmlEditor> {
     /**
-     * Allows users to break content into multiple lines within a single block element. The Shift + Enter key combination generates the new line.
+     * @docid
+     * @default false
+     * @public
      */
     allowSoftLineBreak?: boolean;
     /**
-     * Allows you to customize the DevExtreme Quill and 3rd-party modules.
+     * @docid
+     * @type_function_param1 config:object
+     * @public
      */
     customizeModules?: ((config: any) => void);
     /**
-     * Specifies whether the UI component can be focused using keyboard navigation.
+     * @docid
+     * @default true
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * Configures media resizing.
+     * @docid
+     * @default null
+     * @public
      */
     mediaResizing?: dxHtmlEditorMediaResizing;
     /**
-     * Configures table resize.
+     * @docid
+     * @default null
+     * @public
      */
     tableResizing?: dxHtmlEditorTableResizing;
     /**
-     * Configures mentions.
+     * @docid
+     * @default null
+     * @public
      */
     mentions?: Array<dxHtmlEditorMention>;
     /**
-     * Configures table context menu settings.
+     * @docid
+     * @default null
+     * @public
      */
     tableContextMenu?: dxHtmlEditorTableContextMenu;
     /**
-     * Configures the image upload.
+     * @docid
+     * @default { tabs: ["url"], fileUploadMode: 'base64', uploadUrl: undefined, uploadDirectory: undefined }
+     * @public
      */
     imageUpload?: dxHtmlEditorImageUpload;
     /**
-     * The value to be assigned to the `name` attribute of the underlying HTML element.
+     * @docid
+     * @hidden false
+     * @public
      */
     name?: string;
     /**
-     * A function that is executed when the UI component gets focus.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/html_editor:FocusInEvent}
+     * @action
+     * @public
      */
     onFocusIn?: ((e: FocusInEvent) => void);
     /**
-     * A function that is executed when the UI component loses focus.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/html_editor:FocusOutEvent}
+     * @action
+     * @public
      */
     onFocusOut?: ((e: FocusOutEvent) => void);
     /**
-     * Specifies the text displayed when the input field is empty.
+     * @docid
+     * @default ""
+     * @public
      */
     placeholder?: string;
     /**
-     * Configures the UI component&apos;s toolbar.
+     * @docid
+     * @default null
+     * @public
      */
     toolbar?: dxHtmlEditorToolbar;
     /**
-     * Specifies in which markup language the value is stored.
+     * @docid
+     * @default "html"
+     * @public
      */
     valueType?: MarkupType;
     /**
-     * Configures variables, which are placeholders to be replaced with actual values when processing text.
+     * @docid
+     * @default null
+     * @public
      */
     variables?: dxHtmlEditorVariables;
     /**
-     * Specifies how the HtmlEditor&apos;s toolbar and content field are styled.
+     * @docid
+     * @default 'outlined'
+     * @public
      */
     stylingMode?: EditorStyle;
 }
 /**
- * HtmlEditor is a WYSIWYG editor that allows you to format textual and visual content and to output it in HTML or Markdown. HtmlEditor is built on top of and requires the DevExtreme Quill.
+ * @docid
+ * @inherits Editor
+ * @hasTranscludedContent
+ * @isEditor
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxHtmlEditor extends Editor<dxHtmlEditorOptions> {
     /**
-     * Removes focus from the content field of the editor.
+     * @docid
+     * @publicName blur()
+     * @public
      */
     blur(): void;
     /**
-     * Clears the history of changes.
+     * @docid
+     * @publicName clearHistory()
+     * @public
      */
     clearHistory(): void;
     /**
-     * Deletes content from the given range.
+     * @docid
+     * @publicName delete(index, length)
+     * @public
      */
     delete(index: number, length: number): void;
     /**
-     * Applies a format to the selected content. Cannot be used with embedded formats.
+     * @docid
+     * @publicName format(formatName, formatValue)
+     * @param1 formatName:Enums.HtmlEditorFormat|string
+     * @public
      */
     format(formatName: HtmlEditorFormat | string, formatValue: any): void;
     /**
-     * Applies a single block format to all lines in the given range.
+     * @docid
+     * @publicName formatLine(index, length, formatName, formatValue)
+     * @param3 formatName:Enums.HtmlEditorFormat|string
+     * @public
      */
     formatLine(index: number, length: number, formatName: HtmlEditorFormat | string, formatValue: any): void;
     /**
-     * Applies several block formats to all lines in the given range.
+     * @docid
+     * @publicName formatLine(index, length, formats)
+     * @param3 formats:object
+     * @public
      */
     formatLine(index: number, length: number, formats: any): void;
     /**
-     * Applies a single text format to all characters in the given range.
+     * @docid
+     * @publicName formatText(index, length, formatName, formatValue)
+     * @param3 formatName:Enums.HtmlEditorFormat|string
+     * @public
      */
     formatText(index: number, length: number, formatName: HtmlEditorFormat | string, formatValue: any): void;
     /**
-     * Applies several text formats to all characters in the given range.
+     * @docid
+     * @publicName formatText(index, length, formats)
+     * @param3 formats:object
+     * @public
      */
     formatText(index: number, length: number, formats: any): void;
     /**
-     * Gets a format, module, or Parchment.
+     * @docid
+     * @publicName get(componentPath)
+     * @return Object
+     * @public
      */
     get(componentPath: string): any;
     /**
-     * Retrieves the pixel position and size of a selection at a specified location.
+     * @docid
+     * @publicName getBounds(index, length)
+     * @return Object
+     * @public
      */
     getBounds(index: number, length: number): any;
     /**
-     * Retrieves formatting of the text within the current selection range.
+     * @docid
+     * @publicName getFormat()
+     * @return Object
+     * @public
      */
     getFormat(): any;
     /**
-     * Gets formats applied to the content in the specified range.
+     * @docid
+     * @publicName getFormat(index, length)
+     * @return Object
+     * @public
      */
     getFormat(index: number, length: number): any;
     /**
-     * Gets the entire content&apos;s length.
+     * @docid
+     * @publicName getLength()
+     * @public
      */
     getLength(): number;
     /**
-     * Gets the instance of a module.
+     * @docid
+     * @publicName getModule(moduleName)
+     * @return Object
+     * @public
      */
     getModule(moduleName: string): any;
     /**
-     * Gets the DevExtreme Quill&apos;s instance.
+     * @docid
+     * @publicName getQuillInstance()
+     * @return Object
+     * @public
      */
     getQuillInstance(): any;
     /**
-     * Gets the selected content&apos;s position and length.
+     * @docid
+     * @publicName getSelection()
+     * @return Object
+     * @public
      */
     getSelection(focus?: boolean | undefined): any;
     /**
-     * Retrieves text content from the HtmlEditor.
+     * @docid
+     * @publicName getText(index, length)
+     * @public
      */
     getText(index: number, length: number): string;
     /**
-     * Inserts an embedded content at the specified position.
+     * @docid
+     * @publicName insertEmbed(index, type, config)
+     * @public
      */
     insertEmbed(index: number, type: string, config: any): void;
     /**
-     * Inserts text into the HtmlEditor.
+     * @docid
+     * @publicName insertText(index, text, formatName, formatValue)
+     * @param3 formatName:Enums.HtmlEditorFormat|string
+     * @public
      */
     insertText(index: number, text: string, formatName: HtmlEditorFormat | string, formatValue: any): void;
     /**
-     * Inserts formatted text at the specified position. Used with all formats except embedded.
+     * @docid
+     * @publicName insertText(index, text, formats)
+     * @param3 formats:object
+     * @public
      */
     insertText(index: number, text: string, formats: any): void;
     /**
-     * Reapplies the most recent undone change. Repeated calls reapply preceding undone changes.
+     * @docid
+     * @publicName redo()
+     * @public
      */
     redo(): void;
     /**
-     * Registers custom formats and modules.
+     * @docid
+     * @publicName register(components)
+     * @param1 modules:Object
+     * @public
      */
     register(modules: any): void;
     /**
-     * Removes all formatting and embedded content from the specified range.
+     * @docid
+     * @publicName removeFormat(index, length)
+     * @public
      */
     removeFormat(index: number, length: number): void;
     /**
-     * Selects and highlights content in the specified range.
+     * @docid
+     * @publicName setSelection(index, length)
+     * @public
      */
     setSelection(index: number, length: number): void;
     /**
-     * Reverses the most recent change. Repeated calls reverse preceding changes.
+     * @docid
+     * @publicName undo()
+     * @public
      */
     undo(): void;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxHtmlEditorMediaResizing {
     /**
-     * Specifies media types that can be resized. Currently, only images are supported.
+     * @docid
+     * @default ["image"]
+     * @public
      */
     allowedTargets?: Array<string>;
     /**
-     * Enables media resizing.
+     * @docid
+     * @default false
+     * @public
      */
     enabled?: boolean;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxHtmlEditorTableResizing {
  /**
-   * The minimum column width.
-   */
+  * @docid
+  * @default 40
+  * @public
+  */
   minColumnWidth?: number;
  /**
-  * The minimum row height.
+  * @docid
+  * @default 24
+  * @public
   */
  minRowHeight?: number;
  /**
-  * Enables users to resize tables.
+  * @docid
+  * @default false
+  * @public
   */
  enabled?: boolean;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxHtmlEditorImageUpload {
   /**
-   * Specifies a target Url for the upload request.
+   * @docid
+   * @default undefined
+   * @public
    */
   uploadUrl?: string;
   /**
-   * Specifies a target directory for uploaded images.
+   * @docid
+   * @default undefined
+   * @public
    */
   uploadDirectory?: string;
   /**
-    * Specifies how the HtmlEditor UI component uploads files.
-    */
+   * @docid
+   * @default 'base64'
+   * @public
+   */
    fileUploadMode?: HtmlEditorImageUploadMode;
      /**
-     * Contains an array of tabs in the &apos;Add an Image&apos; dialog.
-     */
+   * @docid
+   * @default ["url"]
+   * @type Array<dxHtmlEditorImageUploadTabItem, Enums.HtmlEditorImageUploadTab>
+   * @public
+   */
     tabs?: Array<ImageUploadTab | HtmlEditorImageUploadTab>;
     /**
-     * Configures the file uploader options.
-     */
+    * @docid
+    * @default null
+    * @type dxFileUploaderOptions
+    * @public
+    */
     fileUploaderOptions?: fileUploaderProperties;
  }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxHtmlEditor
+ */
 export type ImageUploadTab = dxHtmlEditorImageUploadTabItem;
 
  /**
- * @deprecated Use ImageUploadTab instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+  * @deprecated Use ImageUploadTab instead
+  * @namespace DevExpress.ui
+  */
 export interface dxHtmlEditorImageUploadTabItem {
     /**
-     * Specifies the tab&apos;s name.
+     * @docid
+     * @default undefined
+     * @public
      */
     name?: HtmlEditorImageUploadTab;
  }
 
 /**
- * Configures table context menu settings.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxHtmlEditorTableContextMenu {
     /**
-     * Specifies whether to enable the table context menu.
+     * @docid
+     * @default false
+     * @public
      */
     enabled?: boolean;
     /**
-     * Configures context menu items.
+     * @docid
+     * @type Array<dxHtmlEditorTableContextMenuItem,Enums.HtmlEditorPredefinedContextMenuItem>
+     * @public
      */
     items?: Array<ContextMenuItem | HtmlEditorPredefinedContextMenuItem>;
 }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxHtmlEditor
+ */
 export type ContextMenuItem = dxHtmlEditorTableContextMenuItem;
 
 /**
  * @deprecated Use ContextMenuItem instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
  */
 export interface dxHtmlEditorTableContextMenuItem extends MenuBasePlainItem {
     /**
-     * A name used to identify the context menu item.
+     * @docid
+     * @default undefined
+     * @public
      */
     name?: HtmlEditorPredefinedContextMenuItem;
     /**
-     * Configures nested context menu items.
+     * @docid
+     * @public
+     * @type Array<dxHtmlEditorTableContextMenuItem,Enums.HtmlEditorPredefinedContextMenuItem>
      */
     items?: Array<ContextMenuItem | HtmlEditorPredefinedContextMenuItem>;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxHtmlEditorMention {
     /**
-     * Provides data for the suggestion list.
+     * @docid
+     * @default null
+     * @public
+     * @type Store|DataSource|DataSourceOptions|string|Array<any>|null
      */
     dataSource?: DataSourceLike<any> | null;
     /**
-     * Specifies the data field whose values should be displayed in the suggestion list.
+     * @docid
+     * @default "this"
+     * @type_function_param1 item:object
+     * @public
      */
     displayExpr?: string | ((item: any) => string);
     /**
-     * Specifies a custom template for suggestion list items.
+     * @docid
+     * @default "item"
+     * @type_function_param1 itemData:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     itemTemplate?: template | ((itemData: any, itemIndex: number, itemElement: DxElement) => string | UserDefinedElement);
     /**
-     * Specifies the prefix that a user enters to activate mentions. You can use different prefixes with different dataSources.
+     * @docid
+     * @default "@"
+     * @public
      */
     marker?: string;
     /**
-     * Specifies the minimum number of characters that a user should type to trigger the search.
+     * @docid
+     * @default 0
+     * @public
      */
     minSearchLength?: number;
     /**
-     * Specifies one or several data fields to search.
+     * @docid
+     * @type getter|Array<getter>
+     * @default "this"
+     * @public
      */
     searchExpr?: string | Function | Array<string | Function>;
     /**
-     * Specifies the delay between when a user stops typing and when the search is executed.
+     * @docid
+     * @default 500
+     * @public
      */
     searchTimeout?: number;
     /**
-     * Specifies a custom template for mentions.
+     * @docid
+     * @default null
+     * @type_function_param1 mentionData:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     template?: template | ((mentionData: MentionTemplateData, contentElement: DxElement) => string | UserDefinedElement);
     /**
-     * Specifies which data field provides unique values to the template&apos;s `id` parameter.
+     * @docid
+     * @default "this"
+     * @public
      */
     valueExpr?: string | Function;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxHtmlEditorToolbar {
     /**
-     * Specifies the container in which to place the toolbar.
+     * @docid
+     * @public
      */
     container?: string | UserDefinedElement;
     /**
-     * Configures toolbar items. These items allow users to format text and execute commands.
+     * @docid
+     * @type Array<dxHtmlEditorToolbarItem,Enums.HtmlEditorPredefinedToolbarItem>
+     * @public
      */
     items?: Array<ToolbarItem | HtmlEditorPredefinedToolbarItem>;
     /**
-     * Specifies whether or not items are arranged into multiple lines when their combined width exceeds the toolbar width.
+     * @docid
+     * @default true
+     * @public
      */
     multiline?: boolean;
 }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxHtmlEditor
+ */
 export type ToolbarItem = dxHtmlEditorToolbarItem;
 
 /**
  * @deprecated Use ToolbarItem instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
  */
 export interface dxHtmlEditorToolbarItem extends dxToolbarItem {
     /**
-     * Specifies the predefined item that this object customizes or a format with multiple choices.
+     * @docid
+     * @public
      */
     name?: HtmlEditorPredefinedToolbarItem | string;
     /**
-     * Specifies the predefined item that this object customizes or a format with multiple choices.
-     * @deprecated Use name instead.
+     * @docid
+     * @deprecated dxHtmlEditorToolbarItem.name
      */
     formatName?: HtmlEditorPredefinedToolbarItem | string;
     /**
-     * Specifies values for a format with multiple choices. Should be used with the name.
+     * @docid
+     * @public
      */
     acceptedValues?: Array<string | number | boolean>;
     /**
-     * Specifies values for a format with multiple choices.
-     * @deprecated Use acceptedValues instead.
+     * @docid
+     * @deprecated dxHtmlEditorToolbarItem.acceptedValues
      */
     formatValues?: Array<string | number | boolean>;
     /**
-     * Specifies a location for the item on the toolbar.
+     * @docid
+     * @default "before"
+     * @public
      */
     location?: ToolbarItemLocation;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxHtmlEditorVariables {
     /**
-     * Specifies a collection of variables available for a user.
+     * @docid
+     * @default null
+     * @public
+     * @type Store|DataSource|DataSourceOptions|string|Array<string>|null
      */
     dataSource?: DataSourceLike<string> | null;
     /**
-     * Specifies the special character(s) that should surround the variables.
+     * @docid
+     * @default ""
+     * @public
      */
     escapeChar?: string | Array<string>;
 }
 
+/** @public */
 export type Properties = dxHtmlEditorOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxHtmlEditorOptions;
 
 

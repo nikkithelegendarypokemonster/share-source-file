@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/workspaces/view_model/m_time_panel_data_generator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,24 +15,17 @@ exports.TimePanelDataGenerator = void 0;
 var _date = _interopRequireDefault(require("../../../../core/utils/date"));
 var _date2 = require("../../../core/utils/date");
 var _math = require("../../../core/utils/math");
-var _index = require("../../__migration/utils/index");
+var _index = require("../../../scheduler/r1/utils/index");
+const _excluded = ["allDay", "startDate", "endDate", "groups", "groupIndex", "isFirstGroupCell", "isLastGroupCell", "index"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-var __rest = void 0 && (void 0).__rest || function (s, e) {
-  var t = {};
-  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 const toMs = _date.default.dateToMilliseconds;
-let TimePanelDataGenerator = exports.TimePanelDataGenerator = /*#__PURE__*/function () {
-  function TimePanelDataGenerator(_viewDataGenerator) {
+class TimePanelDataGenerator {
+  constructor(_viewDataGenerator) {
     this._viewDataGenerator = _viewDataGenerator;
   }
-  var _proto = TimePanelDataGenerator.prototype;
-  _proto.getCompleteTimePanelMap = function getCompleteTimePanelMap(options, completeViewDataMap) {
+  getCompleteTimePanelMap(options, completeViewDataMap) {
     const {
       startViewDate,
       cellDuration,
@@ -68,18 +61,17 @@ let TimePanelDataGenerator = exports.TimePanelDataGenerator = /*#__PURE__*/funct
     let allDayRowsCount = 0;
     let usualCellIndex = 0;
     return completeViewDataMap.map((row, index) => {
-      const _a = row[0],
+      const _row$ = row[0],
         {
           allDay,
           startDate,
-          endDate,
           groups,
           groupIndex,
           isFirstGroupCell,
           isLastGroupCell,
           index: cellIndex
-        } = _a,
-        restCellProps = __rest(_a, ["allDay", "startDate", "endDate", "groups", "groupIndex", "isFirstGroupCell", "isLastGroupCell", "index"]);
+        } = _row$,
+        restCellProps = _objectWithoutPropertiesLoose(_row$, _excluded);
       const highlighted = allDay ? false : this.isTimeCellShouldBeHighlighted(today, viewOffset, {
         startViewDate,
         realEndViewDate,
@@ -101,7 +93,7 @@ let TimePanelDataGenerator = exports.TimePanelDataGenerator = /*#__PURE__*/funct
         usualCellIndex += 1;
       }
       const timeIndex = (index - allDayRowsCount) % rowCountInGroup;
-      return _extends(_extends({}, restCellProps), {
+      return _extends({}, restCellProps, {
         startDate,
         allDay,
         highlighted,
@@ -113,8 +105,8 @@ let TimePanelDataGenerator = exports.TimePanelDataGenerator = /*#__PURE__*/funct
         index: Math.floor(cellIndex / cellCountInGroupRow)
       });
     });
-  };
-  _proto.generateTimePanelData = function generateTimePanelData(completeTimePanelMap, options) {
+  }
+  generateTimePanelData(completeTimePanelMap, options) {
     const {
       startRowIndex,
       rowCount,
@@ -138,8 +130,8 @@ let TimePanelDataGenerator = exports.TimePanelDataGenerator = /*#__PURE__*/funct
     } = this._generateTimePanelDataFromMap(timePanelMap, isVerticalGrouping);
     timePanelData.groupedData = groupedData;
     return timePanelData;
-  };
-  _proto._generateTimePanelDataFromMap = function _generateTimePanelDataFromMap(timePanelMap, isVerticalGrouping) {
+  }
+  _generateTimePanelDataFromMap(timePanelMap, isVerticalGrouping) {
     return timePanelMap.reduce((_ref, cellData) => {
       let {
         previousGroupIndex,
@@ -167,8 +159,8 @@ let TimePanelDataGenerator = exports.TimePanelDataGenerator = /*#__PURE__*/funct
       previousGroupIndex: -1,
       previousGroupedData: []
     });
-  };
-  _proto.isTimeCellShouldBeHighlighted = function isTimeCellShouldBeHighlighted(today, viewOffset, _ref2, cellData) {
+  }
+  isTimeCellShouldBeHighlighted(today, viewOffset, _ref2, cellData) {
     let {
       startViewDate,
       realEndViewDate,
@@ -186,8 +178,8 @@ let TimePanelDataGenerator = exports.TimePanelDataGenerator = /*#__PURE__*/funct
     const realTodayTimeMs = this.getLocalDateTimeInMs(realToday);
     const [startMs, endMs] = this.getHighlightedInterval(cellData);
     return startMs < endMs ? realTodayTimeMs >= startMs && realTodayTimeMs < endMs : realTodayTimeMs >= startMs && realTodayTimeMs < toMs('day') || realTodayTimeMs >= 0 && realTodayTimeMs < endMs;
-  };
-  _proto.getHighlightedInterval = function getHighlightedInterval(_ref3) {
+  }
+  getHighlightedInterval(_ref3) {
     let {
       date,
       index,
@@ -205,12 +197,12 @@ let TimePanelDataGenerator = exports.TimePanelDataGenerator = /*#__PURE__*/funct
       default:
         return [cellTimeMs, (0, _math.shiftIntegerByModule)(cellTimeMs + 2 * duration, toMs('day'))];
     }
-  };
-  _proto.getLocalDateTimeInMs = function getLocalDateTimeInMs(date) {
+  }
+  getLocalDateTimeInMs(date) {
     const dateUtcMs = date.getTime() - date.getTimezoneOffset() * toMs('minute');
     return (0, _math.shiftIntegerByModule)(dateUtcMs, toMs('day'));
-  };
-  _proto.isLastCellInGroup = function isLastCellInGroup(completeViewDataMap, index) {
+  }
+  isLastCellInGroup(completeViewDataMap, index) {
     if (index === completeViewDataMap.length - 1) {
       return true;
     }
@@ -222,6 +214,6 @@ let TimePanelDataGenerator = exports.TimePanelDataGenerator = /*#__PURE__*/funct
       allDay: nextAllDay
     } = completeViewDataMap[index + 1][0];
     return nextAllDay || nextGroupIndex !== currentGroupIndex;
-  };
-  return TimePanelDataGenerator;
-}();
+  }
+}
+exports.TimePanelDataGenerator = TimePanelDataGenerator;

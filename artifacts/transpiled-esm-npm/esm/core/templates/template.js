@@ -13,7 +13,7 @@ export class Template extends TemplateBase {
     this._element = element;
   }
   _renderCore(options) {
-    var transclude = options.transclude;
+    const transclude = options.transclude;
     if (!transclude && !this._compiledTemplate) {
       this._compiledTemplate = getCurrentTemplateEngine().compile(this._element);
     }

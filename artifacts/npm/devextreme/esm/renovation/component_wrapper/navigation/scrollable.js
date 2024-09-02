@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/renovation/component_wrapper/navigation/scrollable.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,7 +14,7 @@ export class ScrollableWrapper extends Component {
   }
   update() {
     var _this$viewRef;
-    (_this$viewRef = this.viewRef) === null || _this$viewRef === void 0 ? void 0 : _this$viewRef.updateHandler();
+    (_this$viewRef = this.viewRef) === null || _this$viewRef === void 0 || _this$viewRef.updateHandler();
     return Deferred().resolve();
   }
   isRenovated() {
@@ -23,7 +23,7 @@ export class ScrollableWrapper extends Component {
   _visibilityChanged() {}
   _dimensionChanged() {
     var _this$viewRef2;
-    (_this$viewRef2 = this.viewRef) === null || _this$viewRef2 === void 0 ? void 0 : _this$viewRef2.updateHandler();
+    (_this$viewRef2 = this.viewRef) === null || _this$viewRef2 === void 0 || _this$viewRef2.updateHandler();
   }
   $content() {
     return this.$element().find('.dx-scrollable-content').eq(0);
@@ -35,7 +35,7 @@ export class ScrollableWrapper extends Component {
     this.viewRef.scrollableRef.prepareDirections(value);
   }
   _optionChanged(option) {
-    var {
+    const {
       name
     } = option;
     if (name === 'useNative') {

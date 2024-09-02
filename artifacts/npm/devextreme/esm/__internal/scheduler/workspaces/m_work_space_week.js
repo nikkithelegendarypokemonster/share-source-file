@@ -1,16 +1,16 @@
 /**
 * DevExtreme (esm/__internal/scheduler/workspaces/m_work_space_week.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import registerComponent from '../../../core/component_registrator';
-import { weekUtils } from '../../scheduler/__migration/utils/index';
+import { weekUtils } from '../../scheduler/r1/utils/index';
 import { VIEWS } from '../m_constants';
 import SchedulerWorkSpaceVertical from './m_work_space_vertical';
-var WEEK_CLASS = 'dx-scheduler-work-space-week';
+const WEEK_CLASS = 'dx-scheduler-work-space-week';
 class SchedulerWorkSpaceWeek extends SchedulerWorkSpaceVertical {
   get type() {
     return VIEWS.WEEK;

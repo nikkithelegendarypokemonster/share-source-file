@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/renovation/component_wrapper/grid_pager.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,7 +12,7 @@ export class GridPagerWrapper extends Component {
     switch (args.name) {
       case 'pageIndex':
         {
-          var pageIndexChanged = this.option('pageIndexChanged');
+          const pageIndexChanged = this.option('pageIndexChanged');
           if (pageIndexChanged) {
             pageIndexChanged(args.value);
           }
@@ -20,7 +20,7 @@ export class GridPagerWrapper extends Component {
         }
       case 'pageSize':
         {
-          var pageSizeChanged = this.option('pageSizeChanged');
+          const pageSizeChanged = this.option('pageSizeChanged');
           if (pageSizeChanged) {
             pageSizeChanged(args.value);
           }

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/exporter/jspdf/common/row_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -21,15 +21,12 @@ var _pdf_utils = require("./pdf_utils");
 const getSum = (a, b) => a + b;
 function calculateColumnWidths(doc, dataProvider, topLeftX, margin, customerColumnWidths) {
   const DEFAULT_WIDTH = 150;
-  const resultWidths = dataProvider.getColumnsWidths().map(width => (0, _pdf_utils.toPdfUnit)(doc, width !== null && width !== void 0 ? width : DEFAULT_WIDTH));
+  const resultWidths = dataProvider.getColumnsWidths().map(width => (0, _pdf_utils.toPdfUnit)(doc, width ?? DEFAULT_WIDTH));
   const totalAutoColumnsWidth = resultWidths.filter((width, index) => !(0, _type.isDefined)(customerColumnWidths[index])).reduce(getSum, 0);
   const totalCustomerColumnsWidth = customerColumnWidths.filter(width => (0, _type.isNumeric)(width)).reduce(getSum, 0);
   const availablePageWidth = getAvailablePageAreaWidth(doc, topLeftX, margin);
   const ratio = totalCustomerColumnsWidth < availablePageWidth ? (availablePageWidth - totalCustomerColumnsWidth) / totalAutoColumnsWidth : 1;
-  return resultWidths.map((width, index) => {
-    var _customerColumnWidths;
-    return (_customerColumnWidths = customerColumnWidths[index]) !== null && _customerColumnWidths !== void 0 ? _customerColumnWidths : width * ratio;
-  });
+  return resultWidths.map((width, index) => customerColumnWidths[index] ?? width * ratio);
 }
 function getAvailablePageAreaWidth(doc, topLeftX, margin) {
   return (0, _pdf_utils.getPageWidth)(doc) - topLeftX - margin.left - margin.right;
@@ -132,13 +129,11 @@ function applyBordersConfig(rows) {
   }
 }
 function calculateCoordinates(doc, rows, options) {
-  var _topLeft$y;
   const topLeft = options === null || options === void 0 ? void 0 : options.topLeft;
   const margin = options === null || options === void 0 ? void 0 : options.margin;
-  let y = ((_topLeft$y = topLeft === null || topLeft === void 0 ? void 0 : topLeft.y) !== null && _topLeft$y !== void 0 ? _topLeft$y : 0) + margin.top;
+  let y = ((topLeft === null || topLeft === void 0 ? void 0 : topLeft.y) ?? 0) + margin.top;
   rows.forEach(row => {
-    var _topLeft$x;
-    let x = ((_topLeft$x = topLeft === null || topLeft === void 0 ? void 0 : topLeft.x) !== null && _topLeft$x !== void 0 ? _topLeft$x : 0) + margin.left;
+    let x = ((topLeft === null || topLeft === void 0 ? void 0 : topLeft.x) ?? 0) + margin.left;
     const intend = row.indentLevel * options.indent;
     row.cells.forEach(cell => {
       cell.pdfCell._rect.x = x + intend;
@@ -149,7 +144,7 @@ function calculateCoordinates(doc, rows, options) {
   });
 }
 function calculateTableSize(doc, cells, options) {
-  var _ref2, _leftPos, _options$topLeft, _ref3, _topPos, _options$topLeft2;
+  var _options$topLeft, _options$topLeft2;
   let leftPos;
   let topPos;
   let rightPos;
@@ -168,8 +163,8 @@ function calculateTableSize(doc, cells, options) {
       bottomPos = cell._rect.y + cell._rect.h;
     }
   });
-  const x = (_ref2 = (_leftPos = leftPos) !== null && _leftPos !== void 0 ? _leftPos : options === null || options === void 0 ? void 0 : (_options$topLeft = options.topLeft) === null || _options$topLeft === void 0 ? void 0 : _options$topLeft.x) !== null && _ref2 !== void 0 ? _ref2 : 0;
-  const y = (_ref3 = (_topPos = topPos) !== null && _topPos !== void 0 ? _topPos : options === null || options === void 0 ? void 0 : (_options$topLeft2 = options.topLeft) === null || _options$topLeft2 === void 0 ? void 0 : _options$topLeft2.y) !== null && _ref3 !== void 0 ? _ref3 : 0;
+  const x = leftPos ?? (options === null || options === void 0 || (_options$topLeft = options.topLeft) === null || _options$topLeft === void 0 ? void 0 : _options$topLeft.x) ?? 0;
+  const y = topPos ?? (options === null || options === void 0 || (_options$topLeft2 = options.topLeft) === null || _options$topLeft2 === void 0 ? void 0 : _options$topLeft2.y) ?? 0;
   const w = (0, _type.isDefined)(rightPos) ? rightPos - x : 0;
   const h = (0, _type.isDefined)(bottomPos) ? bottomPos - y : 0;
   return {

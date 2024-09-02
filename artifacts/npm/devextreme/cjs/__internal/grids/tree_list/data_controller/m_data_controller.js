@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/tree_list/data_controller/m_data_controller.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -19,18 +19,11 @@ var _m_data_controller = require("../../../grids/grid_core/data_controller/m_dat
 var _m_data_source_adapter = _interopRequireDefault(require("../data_source_adapter/m_data_source_adapter"));
 var _m_core = _interopRequireDefault(require("../m_core"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-let TreeListDataController = exports.TreeListDataController = /*#__PURE__*/function (_DataController) {
-  _inheritsLoose(TreeListDataController, _DataController);
-  function TreeListDataController() {
-    return _DataController.apply(this, arguments) || this;
-  }
-  var _proto = TreeListDataController.prototype;
-  _proto._getDataSourceAdapter = function _getDataSourceAdapter() {
+class TreeListDataController extends _m_data_controller.DataController {
+  _getDataSourceAdapter() {
     return _m_data_source_adapter.default;
-  };
-  _proto._getNodeLevel = function _getNodeLevel(node) {
+  }
+  _getNodeLevel(node) {
     let level = -1;
     while (node.parent) {
       if (node.visible) {
@@ -39,8 +32,8 @@ let TreeListDataController = exports.TreeListDataController = /*#__PURE__*/funct
       node = node.parent;
     }
     return level;
-  };
-  _proto._generateDataItem = function _generateDataItem(node, options) {
+  }
+  _generateDataItem(node, options) {
     return {
       rowType: 'data',
       node,
@@ -49,11 +42,11 @@ let TreeListDataController = exports.TreeListDataController = /*#__PURE__*/funct
       isExpanded: this.isRowExpanded(node.key, options),
       level: this._getNodeLevel(node)
     };
-  };
-  _proto._loadOnOptionChange = function _loadOnOptionChange() {
+  }
+  _loadOnOptionChange() {
     this._dataSource.load();
-  };
-  _proto._isItemEquals = function _isItemEquals(item1, item2) {
+  }
+  _isItemEquals(item1, item2) {
     if (item1.isSelected !== item2.isSelected) {
       return false;
     }
@@ -63,41 +56,40 @@ let TreeListDataController = exports.TreeListDataController = /*#__PURE__*/funct
     if (item1.level !== item2.level || item1.isExpanded !== item2.isExpanded) {
       return false;
     }
-    return _DataController.prototype._isItemEquals.apply(this, arguments);
+    return super._isItemEquals.apply(this, arguments);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._isCellChanged = function _isCellChanged(oldRow, newRow, visibleRowIndex, columnIndex, isLiveUpdate) {
+  _isCellChanged(oldRow, newRow, visibleRowIndex, columnIndex, isLiveUpdate) {
     // @ts-expect-error
     const firstDataColumnIndex = this._columnsController.getFirstDataColumnIndex();
     if (columnIndex === firstDataColumnIndex && oldRow.isSelected !== newRow.isSelected) {
       return true;
     }
-    return _DataController.prototype._isCellChanged.apply(this, arguments);
-  };
-  _proto.init = function init() {
+    return super._isCellChanged.apply(this, arguments);
+  }
+  init() {
     this.createAction('onRowExpanding');
     this.createAction('onRowExpanded');
     this.createAction('onRowCollapsing');
     this.createAction('onRowCollapsed');
-    _DataController.prototype.init.apply(this, arguments);
-  };
-  _proto.keyOf = function keyOf(data) {
+    super.init.apply(this, arguments);
+  }
+  keyOf(data) {
     const dataSource = this._dataSource;
     if (dataSource) {
       return dataSource.keyOf(data);
     }
-  };
-  _proto.key = function key() {
+  }
+  key() {
     const dataSource = this._dataSource;
     if (dataSource) {
       return dataSource.getKeyExpr();
     }
-  };
-  _proto.publicMethods = function publicMethods() {
-    return _DataController.prototype.publicMethods.call(this).concat(['expandRow', 'collapseRow', 'isRowExpanded', 'getRootNode', 'getNodeByKey', 'loadDescendants', 'forEachNode']);
-  };
-  _proto.changeRowExpand = function changeRowExpand(key) {
+  }
+  publicMethods() {
+    return super.publicMethods().concat(['expandRow', 'collapseRow', 'isRowExpanded', 'getRootNode', 'getNodeByKey', 'loadDescendants', 'forEachNode']);
+  }
+  changeRowExpand(key) {
     if (this._dataSource) {
       const args = {
         key
@@ -112,28 +104,28 @@ let TreeListDataController = exports.TreeListDataController = /*#__PURE__*/funct
     }
     // @ts-expect-error
     return new _deferred.Deferred().resolve();
-  };
-  _proto.isRowExpanded = function isRowExpanded(key, cache) {
+  }
+  isRowExpanded(key, cache) {
     return this._dataSource && this._dataSource.isRowExpanded(key, cache);
-  };
-  _proto.expandRow = function expandRow(key) {
+  }
+  expandRow(key) {
     if (!this.isRowExpanded(key)) {
       return this.changeRowExpand(key);
     }
     // @ts-expect-error
     return new _deferred.Deferred().resolve();
-  };
-  _proto.collapseRow = function collapseRow(key) {
+  }
+  collapseRow(key) {
     if (this.isRowExpanded(key)) {
       return this.changeRowExpand(key);
     }
     // @ts-expect-error
     return new _deferred.Deferred().resolve();
-  };
-  _proto.getRootNode = function getRootNode() {
+  }
+  getRootNode() {
     return this._dataSource && this._dataSource.getRootNode();
-  };
-  _proto.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     switch (args.name) {
       case 'rootValue':
       case 'parentIdExpr':
@@ -159,32 +151,32 @@ let TreeListDataController = exports.TreeListDataController = /*#__PURE__*/funct
         args.handled = true;
         break;
       default:
-        _DataController.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  _proto.getNodeByKey = function getNodeByKey(key) {
+  }
+  getNodeByKey(key) {
     if (!this._dataSource) {
       return;
     }
     return this._dataSource.getNodeByKey(key);
-  };
-  _proto.getChildNodeKeys = function getChildNodeKeys(parentKey) {
+  }
+  getChildNodeKeys(parentKey) {
     if (!this._dataSource) {
       return;
     }
     return this._dataSource.getChildNodeKeys(parentKey);
-  };
-  _proto.loadDescendants = function loadDescendants(keys, childrenOnly) {
+  }
+  loadDescendants(keys, childrenOnly) {
     if (!this._dataSource) {
       return;
     }
     return this._dataSource.loadDescendants(keys, childrenOnly);
-  };
-  _proto.forEachNode = function forEachNode() {
+  }
+  forEachNode() {
     this._dataSource.forEachNode.apply(this, arguments);
-  };
-  return TreeListDataController;
-}(_m_data_controller.DataController);
+  }
+}
+exports.TreeListDataController = TreeListDataController;
 _m_core.default.registerModule('data', {
   defaultOptions() {
     return (0, _extend.extend)({}, _m_data_controller.dataControllerModule.defaultOptions(), {

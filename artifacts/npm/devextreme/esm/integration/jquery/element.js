@@ -1,17 +1,17 @@
 /**
 * DevExtreme (esm/integration/jquery/element.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { setPublicElementWrapper } from '../../core/element';
 import useJQueryFn from './use_jquery';
-var useJQuery = useJQueryFn();
-var getPublicElement = function getPublicElement($element) {
+const useJQuery = useJQueryFn();
+export function getPublicElementJQuery($element) {
   return $element;
-};
+}
 if (useJQuery) {
-  setPublicElementWrapper(getPublicElement);
+  setPublicElementWrapper(getPublicElementJQuery);
 }

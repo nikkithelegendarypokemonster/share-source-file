@@ -1,6 +1,6 @@
 import { isMaterialBased, isFluent, isMaterial, isCompact, current } from '../../ui/themes';
-var getThemeType = () => {
-  var theme = current();
+const getThemeType = () => {
+  const theme = current();
   return {
     isCompact: isCompact(theme),
     isMaterial: isMaterial(theme),

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/diagram/ui.diagram.menu_helper.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -62,7 +62,7 @@ const DiagramMenuHelper = {
   },
   _getItemOptionTextCore(indexPath) {
     return indexPath.reduce((r, i) => {
-      return r + "items[".concat(i, "].");
+      return r + `items[${i}].`;
     }, '');
   },
   getItemCommandParameter(widget, item, value) {

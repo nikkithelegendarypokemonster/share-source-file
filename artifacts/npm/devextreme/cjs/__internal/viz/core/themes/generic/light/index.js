@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/viz/core/themes/generic/light/index.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -29,7 +29,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 var _default = exports.default = [{
   baseThemeName: undefined,
-  theme: _extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends({
+  theme: _extends({
     name: 'generic.light',
     isDefault: true,
     font: {
@@ -175,7 +175,7 @@ var _default = exports.default = [{
         textOverflow: 'ellipsis'
       }
     }
-  }, _chart.default), _funnel.default), _gauge.default), _bar_gauge.default), _vector_map.default), _pie_chart.default), _polar_chart.default), _range_selector.default), _sankey.default), _sparkline.default), _bullet.default), _tree_map.default)
+  }, _chart.default, _funnel.default, _gauge.default, _bar_gauge.default, _vector_map.default, _pie_chart.default, _polar_chart.default, _range_selector.default, _sankey.default, _sparkline.default, _bullet.default, _tree_map.default)
 }, {
   baseThemeName: 'generic.light',
   theme: {

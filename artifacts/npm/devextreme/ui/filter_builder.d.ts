@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/filter_builder.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -43,156 +43,136 @@ export {
     FilterOperation,
 } from '../common/grids';
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type FilterBuilderOperation = '=' | '<>' | '<' | '<=' | '>' | '>=' | 'contains' | 'endswith' | 'isblank' | 'isnotblank' | 'notcontains' | 'startswith' | 'between';
+/** @public */
 export type GroupOperation = 'and' | 'or' | 'notAnd' | 'notOr';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_filter_builder_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxFilterBuilder>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_filter_builder_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxFilterBuilder>;
 
 /**
- * The type of the editorPrepared event handler&apos;s argument.
+ * @docid _ui_filter_builder_EditorPreparedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type EditorPreparedEvent = EventInfo<dxFilterBuilder> & {
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparedEvent.value */
     readonly value?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparedEvent.setValue */
     readonly setValue: any;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparedEvent.editorElement */
     readonly editorElement: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparedEvent.editorName */
     readonly editorName: string;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparedEvent.dataField */
     readonly dataField?: string;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparedEvent.filterOperation */
     readonly filterOperation?: string;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparedEvent.updateValueTimeout */
     readonly updateValueTimeout?: number;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparedEvent.width */
     readonly width?: number;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparedEvent.readOnly */
     readonly readOnly: boolean;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparedEvent.disabled */
     readonly disabled: boolean;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparedEvent.rtlEnabled */
     readonly rtlEnabled: boolean;
 };
 
 /**
- * The type of the editorPreparing event handler&apos;s argument.
+ * @docid _ui_filter_builder_EditorPreparingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type EditorPreparingEvent = Cancelable & EventInfo<dxFilterBuilder> & {
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparingEvent.value */
     readonly value?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparingEvent.setValue */
     readonly setValue: any;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparingEvent.editorElement */
     readonly editorElement?: DxElement;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparingEvent.editorName */
     editorName: string;
     /**
-     * 
+     * @docid _ui_filter_builder_EditorPreparingEvent.editorOptions
+     * @type object
      */
     editorOptions?: any;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparingEvent.dataField */
     readonly dataField?: string;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparingEvent.filterOperation */
     readonly filterOperation?: string;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparingEvent.updateValueTimeout */
     updateValueTimeout?: number;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparingEvent.width */
     readonly width?: number;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparingEvent.readOnly */
     readonly readOnly: boolean;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparingEvent.disabled */
     readonly disabled: boolean;
-    /**
-     * 
-     */
+    /** @docid _ui_filter_builder_EditorPreparingEvent.rtlEnabled */
     readonly rtlEnabled: boolean;
 };
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_filter_builder_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxFilterBuilder>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_filter_builder_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxFilterBuilder> & ChangedOptionInfo;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_filter_builder_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ValueChangedEvent = EventInfo<dxFilterBuilder> & {
     /**
-     * 
+     * @docid _ui_filter_builder_ValueChangedEvent.value
+     * @type object
      */
     readonly value?: any;
     /**
-     * 
+     * @docid _ui_filter_builder_ValueChangedEvent.previousValue
+     * @type object
      */
     readonly previousValue?: any;
 };
 
+/** @public */
 export type CustomOperationEditorTemplate = {
     readonly value?: string | number | Date;
     readonly field: Field;
     readonly setValue: Function;
 };
 
+/** @public */
 export type FieldEditorTemplate = {
     readonly value?: string | number | Date;
     readonly filterOperation?: string;
@@ -201,269 +181,375 @@ export type FieldEditorTemplate = {
 };
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxFilterBuilderOptions extends WidgetOptions<dxFilterBuilder> {
     /**
-     * Specifies whether the UI component can display hierarchical data fields.
+     * @docid
+     * @default false
+     * @public
      */
     allowHierarchicalFields?: boolean;
     /**
-     * Configures custom filter operations.
+     * @docid
+     * @default []
+     * @public
+     * @type Array<dxFilterBuilderCustomOperation>
      */
     customOperations?: Array<CustomOperation>;
     /**
-     * Configures fields.
+     * @docid
+     * @default []
+     * @public
+     * @type Array<dxFilterBuilderField>
      */
     fields?: Array<Field>;
     /**
-     * Specifies filter operation descriptions.
+     * @docid
+     * @public
      */
     filterOperationDescriptions?: {
       /**
-       * The &apos;between&apos; operation&apos;s description.
+       * @docid
+       * @default "Between"
        */
       between?: string;
       /**
-       * The &apos;contains&apos; operation&apos;s description.
+       * @docid
+       * @default "Contains"
        */
       contains?: string;
       /**
-       * The &apos;endswith&apos; operation&apos;s description.
+       * @docid
+       * @default "Ends with"
        */
       endsWith?: string;
       /**
-       * The &apos;=&apos; operation&apos;s description.
+       * @docid
+       * @default "Equals"
        */
       equal?: string;
       /**
-       * The &apos;&gt;&apos; operation&apos;s description.
+       * @docid
+       * @default "Greater than"
        */
       greaterThan?: string;
       /**
-       * The &apos;&gt;=&apos; operation&apos;s description.
+       * @docid
+       * @default "Greater than or equal to"
        */
       greaterThanOrEqual?: string;
       /**
-       * The &apos;isblank&apos; operation&apos;s description.
+       * @docid
+       * @default "Is blank"
        */
       isBlank?: string;
       /**
-       * The &apos;isnotblank&apos; operation&apos;s description.
+       * @docid
+       * @default "Is not blank"
        */
       isNotBlank?: string;
       /**
-       * The &apos;&lt;&apos; operation&apos;s description.
+       * @docid
+       * @default "Less than"
        */
       lessThan?: string;
       /**
-       * The &apos;&lt;=&apos; operation&apos;s description.
+       * @docid
+       * @default "Less than or equal to"
        */
       lessThanOrEqual?: string;
       /**
-       * The &apos;notcontains&apos; operation&apos;s description.
+       * @docid
+       * @default "Does not contain"
        */
       notContains?: string;
       /**
-       * The &apos;&lt;&gt;&apos; operation&apos;s description.
+       * @docid
+       * @default "Does not equal"
        */
       notEqual?: string;
       /**
-       * The &apos;startswith&apos; operation&apos;s description.
+       * @docid
+       * @default "Starts with"
        */
       startsWith?: string;
     };
     /**
-     * Specifies group operation descriptions.
+     * @docid
+     * @public
      */
     groupOperationDescriptions?: {
       /**
-       * The &apos;and&apos; operation&apos;s description.
+       * @docid
+       * @default "And"
        */
       and?: string;
       /**
-       * The &apos;notand&apos; operation&apos;s description.
+       * @docid
+       * @default "Not And"
        */
       notAnd?: string;
       /**
-       * The &apos;notor&apos; operation&apos;s description.
+       * @docid
+       * @default "Not Or"
        */
       notOr?: string;
       /**
-       * The &apos;or&apos; operation&apos;s description.
+       * @docid
+       * @default "Or"
        */
       or?: string;
     };
     /**
-     * Specifies a set of available group operations.
+     * @docid
+     * @default ['and', 'or', 'notAnd', 'notOr']
+     * @public
      */
     groupOperations?: Array<GroupOperation>;
     /**
-     * Specifies groups&apos; maximum nesting level.
+     * @docid
+     * @default undefined
+     * @public
      */
     maxGroupLevel?: number;
     /**
-     * A function that is executed after an editor is created.
+     * @docid
+     * @type_function_param1 e:{ui/filter_builder:EditorPreparedEvent}
+     * @default null
+     * @action
+     * @public
      */
     onEditorPrepared?: ((e: EditorPreparedEvent) => void);
     /**
-     * A function that is executed before an editor is created.
+     * @docid
+     * @type_function_param1 e:{ui/filter_builder:EditorPreparingEvent}
+     * @default null
+     * @action
+     * @public
      */
     onEditorPreparing?: ((e: EditorPreparingEvent) => void);
     /**
-     * A function that is executed after the UI component&apos;s value is changed.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/filter_builder:ValueChangedEvent}
+     * @action
+     * @public
      */
     onValueChanged?: ((e: ValueChangedEvent) => void);
     /**
-     * Allows you to specify a filter.
+     * @docid
+     * @type Filter expression
+     * @default null
+     * @fires dxFilterBuilderOptions.onValueChanged
+     * @public
      */
     value?: string | Array<any> | Function;
 }
 /**
- * The FilterBuilder UI component allows a user to build complex filter expressions with an unlimited number of filter conditions, combined by logical operations using the UI.
+ * @docid
+ * @inherits Widget
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxFilterBuilder extends Widget<dxFilterBuilderOptions> {
     /**
-     * Gets a filter expression that contains only operations supported by the DataSource.
+     * @docid
+     * @publicName getFilterExpression()
+     * @return Filter expression
+     * @public
      */
     getFilterExpression(): string | Array<any> | Function;
 }
 
+/**
+ * @public
+ */
 export type CustomOperation = dxFilterBuilderCustomOperation;
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use the CustomOperation type instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export interface dxFilterBuilderCustomOperation {
     /**
-     * Specifies a function that returns a filter expression for this custom operation.
+     * @docid
+     * @type_function_param2 field:dxFilterBuilderField
+     * @type_function_return Filter expression
+     * @public
      */
     calculateFilterExpression?: ((filterValue: any, field: Field) => string | Array<any> | Function);
     /**
-     * Specifies the operation&apos;s caption.
+     * @docid
+     * @default undefined
+     * @public
      */
     caption?: string;
     /**
-     * Customizes the field value&apos;s text representation.
+     * @docid
+     * @type_function_param1_field field:dxFilterBuilderField:optional
+     * @public
      */
     customizeText?: ((fieldInfo: { value?: string | number | Date; valueText?: string; field?: Field }) => string);
     /**
-     * Specifies for which data types the operation is available by default.
+     * @docid
+     * @default undefined
+     * @public
      */
     dataTypes?: Array<DataType>;
     /**
-     * Specifies a custom template for the UI component used to edit the field value.
+     * @docid
+     * @type_function_param1 conditionInfo:object
+     * @type_function_param1_field field:dxFilterBuilderField
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     editorTemplate?: template | ((conditionInfo: CustomOperationEditorTemplate, container: DxElement) => string | UserDefinedElement);
     /**
-     * Specifies whether the operation can have a value. If it can, the editor is displayed.
+     * @docid
+     * @default true
+     * @public
      */
     hasValue?: boolean;
     /**
-     * Specifies the icon that should represent the filter operation.
+     * @docid
+     * @default undefined
+     * @public
      */
     icon?: string;
     /**
-     * Specifies the operation&apos;s identifier.
+     * @docid
+     * @default undefined
+     * @public
      */
     name?: string;
 }
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export type FilterLookupDataSource<T> = Exclude<DataSourceLike<T>, string | DataSource>;
 
 /**
- * The FilterBuilder&apos;s field structure.
+ * @public
+ * @docid dxFilterBuilderField
+ * @namespace DevExpress.ui
+ * @type object
  */
 export type Field = dxFilterBuilderField;
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use the Field type instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export interface dxFilterBuilderField {
     /**
-     * Specifies the field&apos;s custom rules to filter data.
+     * @docid
+     * @type_function_return Filter expression
+     * @public
      */
     calculateFilterExpression?: ((filterValue: any, selectedFilterOperation: string) => string | Array<any> | Function);
     /**
-     * Specifies the data field&apos;s caption.
+     * @docid
+     * @default undefined
+     * @public
      */
     caption?: string;
     /**
-     * Customizes the input value&apos;s display text.
+     * @docid
+     * @public
      */
     customizeText?: ((fieldInfo: { value?: string | number | Date; valueText?: string }) => string);
     /**
-     * Specifies the name of a field to be filtered.
+     * @docid
+     * @default undefined
+     * @public
      */
     dataField?: string;
     /**
-     * Casts field values to a specific data type.
+     * @docid
+     * @default "string"
+     * @public
      */
     dataType?: DataType;
     /**
-     * Configures the UI component used to edit the field value.
+     * @docid
+     * @public
      */
     editorOptions?: any;
     /**
-     * Specifies the editor&apos;s custom template.
+     * @docid
+     * @type_function_param1 conditionInfo:object
+     * @type_function_param1_field field:dxFilterBuilderField
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     editorTemplate?: template | ((conditionInfo: FieldEditorTemplate, container: DxElement) => string | UserDefinedElement);
     /**
-     * Specifies the false value text. Applies only if dataType is &apos;boolean&apos;.
+     * @docid
+     * @default "false"
+     * @public
      */
     falseText?: string;
     /**
-     * Specifies a set of available filter operations.
+     * @docid
+     * @default undefined
+     * @public
      */
     filterOperations?: Array<FilterBuilderOperation | string>;
     /**
-     * Formats a value before it is displayed.
+     * @docid
+     * @default ""
+     * @public
      */
     format?: Format;
     /**
-     * Configures the lookup field.
+     * @docid
+     * @default undefined
+     * @public
      */
     lookup?: {
       /**
-       * Specifies whether to display the Clear button in the lookup field while it is being edited.
+       * @docid
+       * @default false
        */
       allowClearing?: boolean;
       /**
-       * Specifies the lookup data source.
+       * @docid
+       * @default undefined
+       * @type Array<any> | Store | DataSourceOptions
        */
       dataSource?: FilterLookupDataSource<any> | null;
       /**
-       * Specifies the data field whose values should be displayed.
+       * @docid
+       * @default undefined
+       * @type_function_param1 data:object
        */
       displayExpr?: string | ((data: any) => string);
       /**
-       * Specifies the data field whose values should be replaced with values from the displayExpr field.
+       * @docid
+       * @default undefined
+       * @type_function_param1 data:object
        */
       valueExpr?: string | ((data: any) => string | number | boolean);
     };
     /**
-     * Specifies the field&apos;s name. Use it to distinguish the field from other fields when they have identical dataField values.
+     * @docid
+     * @default undefined
+     * @public
      */
     name?: string;
     /**
-     * Specifies the true value text. Applies only if dataType is &apos;boolean&apos;.
+     * @docid
+     * @default "true"
+     * @public
      */
     trueText?: string;
 }
 
+/** @public */
 export type Properties = dxFilterBuilderOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxFilterBuilderOptions;
 
 

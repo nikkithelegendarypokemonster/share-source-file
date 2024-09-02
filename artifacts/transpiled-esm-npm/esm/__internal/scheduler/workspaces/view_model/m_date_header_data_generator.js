@@ -1,35 +1,29 @@
+import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var __rest = this && this.__rest || function (s, e) {
-  var t = {};
-  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
+const _excluded = ["startDate", "endDate", "isFirstGroupCell", "isLastGroupCell"];
 import dateUtils from '../../../../core/utils/date';
 import { VIEWS } from '../../../scheduler/m_constants';
-import { formatWeekdayAndDay, getDisplayedCellCount, getGroupCount, getHeaderCellText, getHorizontalGroupCount, getTotalCellCountByCompleteData, isTimelineView } from '../../__migration/utils/index';
+import { formatWeekdayAndDay, getDisplayedCellCount, getGroupCount, getHeaderCellText, getHorizontalGroupCount, getTotalCellCountByCompleteData, isTimelineView } from '../../../scheduler/r1/utils/index';
 import timeZoneUtils from '../../m_utils_time_zone';
 export class DateHeaderDataGenerator {
   constructor(_viewDataGenerator) {
     this._viewDataGenerator = _viewDataGenerator;
   }
   getCompleteDateHeaderMap(options, completeViewDataMap) {
-    var {
+    const {
       isGenerateWeekDaysHeaderData
     } = options;
-    var result = [];
+    const result = [];
     if (isGenerateWeekDaysHeaderData) {
-      var weekDaysRow = this._generateWeekDaysHeaderRowMap(options, completeViewDataMap);
+      const weekDaysRow = this._generateWeekDaysHeaderRowMap(options, completeViewDataMap);
       result.push(weekDaysRow);
     }
-    var dateRow = this._generateHeaderDateRow(options, completeViewDataMap);
+    const dateRow = this._generateHeaderDateRow(options, completeViewDataMap);
     result.push(dateRow);
     return result;
   }
   _generateWeekDaysHeaderRowMap(options, completeViewDataMap) {
-    var {
+    const {
       isGroupedByDate,
       groups,
       groupOrientation,
@@ -40,19 +34,19 @@ export class DateHeaderDataGenerator {
       intervalCount,
       viewOffset
     } = options;
-    var cellCountInDay = this._viewDataGenerator.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
-    var horizontalGroupCount = getHorizontalGroupCount(groups, groupOrientation);
-    var index = completeViewDataMap[0][0].allDay ? 1 : 0;
-    var colSpan = isGroupedByDate ? horizontalGroupCount * cellCountInDay : cellCountInDay;
-    var groupCount = getGroupCount(groups);
-    var datesRepeatCount = isHorizontalGrouping && !isGroupedByDate ? groupCount : 1;
-    var daysInGroup = this._viewDataGenerator.daysInInterval * intervalCount;
-    var daysInView = daysInGroup * datesRepeatCount;
-    var weekDaysRow = [];
-    for (var dayIndex = 0; dayIndex < daysInView; dayIndex += 1) {
-      var cell = completeViewDataMap[index][dayIndex * colSpan];
-      var shiftedStartDate = timeZoneUtils.addOffsetsWithoutDST(cell.startDate, -viewOffset);
-      weekDaysRow.push(_extends(_extends({}, cell), {
+    const cellCountInDay = this._viewDataGenerator.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
+    const horizontalGroupCount = getHorizontalGroupCount(groups, groupOrientation);
+    const index = completeViewDataMap[0][0].allDay ? 1 : 0;
+    const colSpan = isGroupedByDate ? horizontalGroupCount * cellCountInDay : cellCountInDay;
+    const groupCount = getGroupCount(groups);
+    const datesRepeatCount = isHorizontalGrouping && !isGroupedByDate ? groupCount : 1;
+    const daysInGroup = this._viewDataGenerator.daysInInterval * intervalCount;
+    const daysInView = daysInGroup * datesRepeatCount;
+    const weekDaysRow = [];
+    for (let dayIndex = 0; dayIndex < daysInView; dayIndex += 1) {
+      const cell = completeViewDataMap[index][dayIndex * colSpan];
+      const shiftedStartDate = timeZoneUtils.addOffsetsWithoutDST(cell.startDate, -viewOffset);
+      weekDaysRow.push(_extends({}, cell, {
         colSpan,
         text: formatWeekdayAndDay(shiftedStartDate),
         isFirstGroupCell: false,
@@ -62,7 +56,7 @@ export class DateHeaderDataGenerator {
     return weekDaysRow;
   }
   _generateHeaderDateRow(options, completeViewDataMap) {
-    var {
+    const {
       today,
       isGroupedByDate,
       groupOrientation,
@@ -79,11 +73,11 @@ export class DateHeaderDataGenerator {
       viewType,
       viewOffset
     } = options;
-    var horizontalGroupCount = getHorizontalGroupCount(groups, groupOrientation);
-    var index = completeViewDataMap[0][0].allDay ? 1 : 0;
-    var colSpan = isGroupedByDate ? horizontalGroupCount : 1;
-    var isVerticalGrouping = groupOrientation === 'vertical';
-    var cellCountInGroupRow = this._viewDataGenerator.getCellCount({
+    const horizontalGroupCount = getHorizontalGroupCount(groups, groupOrientation);
+    const index = completeViewDataMap[0][0].allDay ? 1 : 0;
+    const colSpan = isGroupedByDate ? horizontalGroupCount : 1;
+    const isVerticalGrouping = groupOrientation === 'vertical';
+    const cellCountInGroupRow = this._viewDataGenerator.getCellCount({
       intervalCount,
       currentDate,
       viewType,
@@ -91,28 +85,27 @@ export class DateHeaderDataGenerator {
       startDayHour,
       endDayHour
     });
-    var cellCountInDay = this._viewDataGenerator.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
-    var slicedByColumnsData = isGroupedByDate ? completeViewDataMap[index].filter((_, columnIndex) => columnIndex % horizontalGroupCount === 0) : completeViewDataMap[index];
+    const cellCountInDay = this._viewDataGenerator.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
+    const slicedByColumnsData = isGroupedByDate ? completeViewDataMap[index].filter((_, columnIndex) => columnIndex % horizontalGroupCount === 0) : completeViewDataMap[index];
     // NOTE: Should leave dates as is when creating time row in timelines.
-    var shouldShiftDatesForHeaderText = !isTimelineView(viewType) || viewType === VIEWS.TIMELINE_MONTH;
-    return slicedByColumnsData.map((_a, idx) => {
-      var {
+    const shouldShiftDatesForHeaderText = !isTimelineView(viewType) || viewType === VIEWS.TIMELINE_MONTH;
+    return slicedByColumnsData.map((_ref, idx) => {
+      let {
           startDate,
-          endDate,
           isFirstGroupCell,
           isLastGroupCell
-        } = _a,
-        restProps = __rest(_a, ["startDate", "endDate", "isFirstGroupCell", "isLastGroupCell"]);
-      var shiftedStartDate = timeZoneUtils.addOffsetsWithoutDST(startDate, -viewOffset);
-      var shiftedStartDateForHeaderText = shouldShiftDatesForHeaderText ? shiftedStartDate : startDate;
-      var text = getHeaderCellText(idx % cellCountInGroupRow, shiftedStartDateForHeaderText, headerCellTextFormat, getDateForHeaderText, {
+        } = _ref,
+        restProps = _objectWithoutPropertiesLoose(_ref, _excluded);
+      const shiftedStartDate = timeZoneUtils.addOffsetsWithoutDST(startDate, -viewOffset);
+      const shiftedStartDateForHeaderText = shouldShiftDatesForHeaderText ? shiftedStartDate : startDate;
+      const text = getHeaderCellText(idx % cellCountInGroupRow, shiftedStartDateForHeaderText, headerCellTextFormat, getDateForHeaderText, {
         interval,
         startViewDate,
         startDayHour,
         cellCountInDay,
         viewOffset
       });
-      return _extends(_extends({}, restProps), {
+      return _extends({}, restProps, {
         startDate,
         text,
         today: dateUtils.sameDate(shiftedStartDate, today),
@@ -123,7 +116,7 @@ export class DateHeaderDataGenerator {
     });
   }
   generateDateHeaderData(completeDateHeaderMap, completeViewDataMap, options) {
-    var {
+    const {
       isGenerateWeekDaysHeaderData,
       cellWidth,
       isProvideVirtualCellsWidth,
@@ -132,14 +125,14 @@ export class DateHeaderDataGenerator {
       hoursInterval,
       isMonthDateHeader
     } = options;
-    var dataMap = [];
-    var weekDayRowConfig = {};
-    var validCellWidth = cellWidth || 0;
+    const dataMap = [];
+    let weekDayRowConfig = {};
+    const validCellWidth = cellWidth || 0;
     if (isGenerateWeekDaysHeaderData) {
       weekDayRowConfig = this._generateDateHeaderDataRow(options, completeDateHeaderMap, completeViewDataMap, this._viewDataGenerator.getCellCountInDay(startDayHour, endDayHour, hoursInterval), 0, validCellWidth);
       dataMap.push(weekDayRowConfig.dateRow);
     }
-    var datesRowConfig = this._generateDateHeaderDataRow(options, completeDateHeaderMap, completeViewDataMap, 1, isGenerateWeekDaysHeaderData ? 1 : 0, validCellWidth);
+    const datesRowConfig = this._generateDateHeaderDataRow(options, completeDateHeaderMap, completeViewDataMap, 1, isGenerateWeekDaysHeaderData ? 1 : 0, validCellWidth);
     dataMap.push(datesRowConfig.dateRow);
     return {
       dataMap,
@@ -155,7 +148,7 @@ export class DateHeaderDataGenerator {
     };
   }
   _generateDateHeaderDataRow(options, completeDateHeaderMap, completeViewDataMap, baseColSpan, rowIndex, cellWidth) {
-    var {
+    const {
       startCellIndex,
       cellCount,
       isProvideVirtualCellsWidth,
@@ -163,17 +156,17 @@ export class DateHeaderDataGenerator {
       groupOrientation,
       isGroupedByDate
     } = options;
-    var horizontalGroupCount = getHorizontalGroupCount(groups, groupOrientation);
-    var colSpan = isGroupedByDate ? horizontalGroupCount * baseColSpan : baseColSpan;
-    var leftVirtualCellCount = Math.floor(startCellIndex / colSpan);
-    var displayedCellCount = getDisplayedCellCount(cellCount, completeViewDataMap);
-    var actualCellCount = Math.ceil((startCellIndex + displayedCellCount) / colSpan);
-    var totalCellCount = getTotalCellCountByCompleteData(completeViewDataMap);
-    var dateRow = completeDateHeaderMap[rowIndex].slice(leftVirtualCellCount, actualCellCount);
-    var finalLeftVirtualCellCount = leftVirtualCellCount * colSpan;
-    var finalLeftVirtualCellWidth = finalLeftVirtualCellCount * cellWidth;
-    var finalRightVirtualCellCount = totalCellCount - actualCellCount * colSpan;
-    var finalRightVirtualCellWidth = finalRightVirtualCellCount * cellWidth;
+    const horizontalGroupCount = getHorizontalGroupCount(groups, groupOrientation);
+    const colSpan = isGroupedByDate ? horizontalGroupCount * baseColSpan : baseColSpan;
+    const leftVirtualCellCount = Math.floor(startCellIndex / colSpan);
+    const displayedCellCount = getDisplayedCellCount(cellCount, completeViewDataMap);
+    const actualCellCount = Math.ceil((startCellIndex + displayedCellCount) / colSpan);
+    const totalCellCount = getTotalCellCountByCompleteData(completeViewDataMap);
+    const dateRow = completeDateHeaderMap[rowIndex].slice(leftVirtualCellCount, actualCellCount);
+    const finalLeftVirtualCellCount = leftVirtualCellCount * colSpan;
+    const finalLeftVirtualCellWidth = finalLeftVirtualCellCount * cellWidth;
+    const finalRightVirtualCellCount = totalCellCount - actualCellCount * colSpan;
+    const finalRightVirtualCellWidth = finalRightVirtualCellCount * cellWidth;
     return {
       dateRow,
       leftVirtualCellCount: finalLeftVirtualCellCount,

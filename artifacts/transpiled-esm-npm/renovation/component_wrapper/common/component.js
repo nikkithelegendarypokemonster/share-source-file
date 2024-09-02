@@ -17,52 +17,55 @@ require("../../../events/core/emitter.feedback");
 require("../../../events/hover");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const setDefaultOptionValue = (options, defaultValueGetter) => name => {
   if (Object.prototype.hasOwnProperty.call(options, name) && options[name] === undefined) {
     options[name] = defaultValueGetter(name);
   }
 };
-let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
-  _inheritsLoose(ComponentWrapper, _DOMComponent);
-  function ComponentWrapper(element, options) {
-    var _this;
-    _this = _DOMComponent.call(this, element, options) || this;
-    _this._shouldRaiseContentReady = false;
-    _this.validateKeyDownHandler();
-    return _this;
+class ComponentWrapper extends _dom_component.default {
+  get _propsInfo() {
+    return {
+      allowNull: [],
+      twoWay: [],
+      elements: [],
+      templates: [],
+      props: []
+    };
   }
-  var _proto = ComponentWrapper.prototype;
-  _proto.validateKeyDownHandler = function validateKeyDownHandler() {
+  constructor(element, options) {
+    super(element, options);
+    this._shouldRaiseContentReady = false;
+    this.validateKeyDownHandler();
+  }
+  validateKeyDownHandler() {
     const supportedKeyNames = this.getSupportedKeyNames();
     const hasComponentDefaultKeyHandlers = supportedKeyNames.length > 0;
     const hasComponentKeyDownMethod = typeof this._viewComponent.prototype.keyDown === 'function';
     if (hasComponentDefaultKeyHandlers && !hasComponentKeyDownMethod) {
       throw Error("Component's declaration must have 'keyDown' method.");
     }
-  };
-  _proto._checkContentReadyOption = function _checkContentReadyOption(fullName) {
+  }
+  get viewRef() {
+    var _this$_viewRef;
+    return (_this$_viewRef = this._viewRef) === null || _this$_viewRef === void 0 ? void 0 : _this$_viewRef.current;
+  }
+  _checkContentReadyOption(fullName) {
     const contentReadyOptions = this._getContentReadyOptions().reduce((options, name) => {
       options[name] = true;
       return options;
     }, {});
     this._checkContentReadyOption = optionName => !!contentReadyOptions[optionName];
     return this._checkContentReadyOption(fullName);
-  };
-  _proto._getContentReadyOptions = function _getContentReadyOptions() {
+  }
+  _getContentReadyOptions() {
     return ['rtlEnabled'];
-  };
-  _proto._fireContentReady = function _fireContentReady() {
+  }
+  _fireContentReady() {
     this._actionsMap.onContentReady({});
-  };
-  _proto._getDefaultOptions = function _getDefaultOptions() {
+  }
+  _getDefaultOptions() {
     const viewDefaultProps = this._getViewComponentDefaultProps();
-    return (0, _extend.extend)(true, _DOMComponent.prototype._getDefaultOptions.call(this), viewDefaultProps, this._propsInfo.twoWay.reduce((options, _ref) => {
+    return (0, _extend.extend)(true, super._getDefaultOptions(), viewDefaultProps, this._propsInfo.twoWay.reduce((options, _ref) => {
       let [name, defaultName, eventName] = _ref;
       return _extends({}, options, {
         [name]: viewDefaultProps[defaultName],
@@ -71,18 +74,18 @@ let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
     }, {}), this._propsInfo.templates.reduce((options, name) => _extends({}, options, {
       [name]: null
     }), {}));
-  };
-  _proto._getUnwrappedOption = function _getUnwrappedOption() {
+  }
+  _getUnwrappedOption() {
     const unwrappedProps = {};
     Object.keys(this.option()).forEach(key => {
       unwrappedProps[key] = this.option(key);
     });
     return unwrappedProps;
-  };
-  _proto._initializeComponent = function _initializeComponent() {
+  }
+  _initializeComponent() {
     var _this$_templateManage;
-    _DOMComponent.prototype._initializeComponent.call(this);
-    (_this$_templateManage = this._templateManager) === null || _this$_templateManage === void 0 ? void 0 : _this$_templateManage.addDefaultTemplates(this.getDefaultTemplates());
+    super._initializeComponent();
+    (_this$_templateManage = this._templateManager) === null || _this$_templateManage === void 0 || _this$_templateManage.addDefaultTemplates(this.getDefaultTemplates());
     const optionProxy = this._getUnwrappedOption();
     this._props = this._optionsWithDefaultTemplates(optionProxy);
     this._propsInfo.templates.forEach(template => {
@@ -91,12 +94,12 @@ let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
     Object.keys(this._getActionConfigsFull()).forEach(name => this._addAction(name));
     this._viewRef = (0, _inferno.createRef)();
     this.defaultKeyHandlers = this._createDefaultKeyHandlers();
-  };
-  _proto._initMarkup = function _initMarkup() {
+  }
+  _initMarkup() {
     const props = this.getProps();
     this._renderWrapper(props);
-  };
-  _proto._renderWrapper = function _renderWrapper(props) {
+  }
+  _renderWrapper(props) {
     const containerNode = this.$element()[0];
     if (!this._isNodeReplaced) {
       _inferno_renderer.default.onPreRender();
@@ -111,29 +114,60 @@ let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
       this._fireContentReady();
       this._shouldRaiseContentReady = false;
     }
-  };
-  _proto._silent = function _silent(name, value) {
+  }
+  _silent(name, value) {
     this._options.silent(name, value);
-  };
-  _proto._render = function _render() {};
-  _proto._removeWidget = function _removeWidget() {
+  }
+  _render() {}
+  _removeWidget() {
     _inferno_renderer.default.remove(this.$element()[0]);
-  };
-  _proto._dispose = function _dispose() {
+  }
+  _dispose() {
     this._removeWidget();
-    _DOMComponent.prototype._dispose.call(this);
-  };
-  _proto._getAdditionalActionConfigs = function _getAdditionalActionConfigs() {
+    super._dispose();
+  }
+  get elementAttr() {
+    const element = this.$element()[0];
+    if (!this._elementAttr) {
+      const {
+        attributes
+      } = element;
+      const attrs = Array.from(attributes).filter(attr => {
+        var _attributes$attr$name;
+        return !this._propsInfo.templates.includes(attr.name) && ((_attributes$attr$name = attributes[attr.name]) === null || _attributes$attr$name === void 0 ? void 0 : _attributes$attr$name.specified);
+      }).reduce((result, _ref2) => {
+        let {
+          name,
+          value
+        } = _ref2;
+        const updatedAttributes = result;
+        const isDomAttr = (name in element);
+        updatedAttributes[name] = value === '' && isDomAttr ? element[name] : value;
+        return updatedAttributes;
+      }, {});
+      this._elementAttr = attrs;
+      this._storedClasses = element.getAttribute('class') || '';
+    }
+    const elemStyle = element.style;
+    const style = {};
+    for (let i = 0; i < elemStyle.length; i += 1) {
+      style[elemStyle[i]] = elemStyle.getPropertyValue(elemStyle[i]);
+    }
+    this._elementAttr.style = style;
+    this._elementAttr.class = this._storedClasses;
+    return this._elementAttr;
+  }
+  _getAdditionalActionConfigs() {
     return {
       onContentReady: {
         excludeValidators: ['disabled', 'readOnly']
       }
     };
-  };
-  _proto._getAdditionalProps = function _getAdditionalProps() {
+  }
+  _getAdditionalProps() {
     return [];
-  };
-  _proto._patchOptionValues = function _patchOptionValues(options) {
+  }
+  _patchOptionValues(options) {
     const {
       allowNull,
       elements,
@@ -163,8 +197,8 @@ let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
     });
     allowNull.forEach(setDefaultOptionValue(widgetProps, () => null));
     defaultWidgetPropsKeys.forEach(setDefaultOptionValue(widgetProps, name => defaultOptions[name]));
-    twoWay.forEach(_ref2 => {
-      let [name, defaultName] = _ref2;
+    twoWay.forEach(_ref3 => {
+      let [name, defaultName] = _ref3;
       setDefaultOptionValue(widgetProps, () => defaultOptions[defaultName])(name);
     });
     elements.forEach(name => {
@@ -176,11 +210,11 @@ let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
       }
     });
     return widgetProps;
-  };
-  _proto.getSupportedKeyNames = function getSupportedKeyNames() {
+  }
+  getSupportedKeyNames() {
     return [];
-  };
-  _proto.prepareStyleProp = function prepareStyleProp(props) {
+  }
+  prepareStyleProp(props) {
     if (typeof props.style === 'string') {
       return _extends({}, props, {
         style: {},
@@ -188,9 +222,8 @@ let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
       });
     }
     return props;
-  };
-  _proto.getProps = function getProps() {
-    var _this$elementAttr$cla, _elementAttr$class;
+  }
+  getProps() {
     const {
       elementAttr
     } = this.option();
@@ -203,50 +236,52 @@ let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
       options[template] = this._componentTemplates[template];
     });
     return this.prepareStyleProp(_extends({}, options, this.elementAttr, elementAttr, {
-      className: [...((_this$elementAttr$cla = this.elementAttr.class) !== null && _this$elementAttr$cla !== void 0 ? _this$elementAttr$cla : '').split(' '), ...((_elementAttr$class = elementAttr === null || elementAttr === void 0 ? void 0 : elementAttr.class) !== null && _elementAttr$class !== void 0 ? _elementAttr$class : '').split(' ')].filter((c, i, a) => c && a.indexOf(c) === i).join(' ').trim(),
+      className: [...(this.elementAttr.class ?? '').split(' '), ...((elementAttr === null || elementAttr === void 0 ? void 0 : elementAttr.class) ?? '').split(' ')].filter((c, i, a) => c && a.indexOf(c) === i).join(' ').trim(),
       class: ''
     }, this._actionsMap));
-  };
-  _proto._getActionConfigs = function _getActionConfigs() {
+  }
+  _getActionConfigs() {
     return {};
-  };
-  _proto._getActionConfigsFull = function _getActionConfigsFull() {
+  }
+  _getActionConfigsFull() {
     return _extends({}, this._getActionConfigs(), this._getAdditionalActionConfigs());
-  };
-  _proto.getDefaultTemplates = function getDefaultTemplates() {
+  }
+  getDefaultTemplates() {
     const defaultTemplates = Object.values(this._templatesInfo);
     const result = {};
     defaultTemplates.forEach(template => {
       result[template] = 'dx-renovation-template-mock';
     });
     return result;
-  };
-  _proto._optionsWithDefaultTemplates = function _optionsWithDefaultTemplates(options) {
-    const templateOptions = Object.entries(this._templatesInfo).reduce((result, _ref3) => {
-      var _options$templateName;
-      let [templateName, templateValue] = _ref3;
+  }
+  get _templatesInfo() {
+    return {};
+  }
+  _optionsWithDefaultTemplates(options) {
+    const templateOptions = Object.entries(this._templatesInfo).reduce((result, _ref4) => {
+      let [templateName, templateValue] = _ref4;
       return _extends({}, result, {
-        [templateName]: (_options$templateName = options[templateName]) !== null && _options$templateName !== void 0 ? _options$templateName : templateValue
+        [templateName]: options[templateName] ?? templateValue
       });
     }, {});
     return _extends({}, options, templateOptions);
-  };
-  _proto._init = function _init() {
-    _DOMComponent.prototype._init.call(this);
+  }
+  _init() {
+    super._init();
     this.customKeyHandlers = {};
     this._actionsMap = {};
     this._aria = {};
     this._componentTemplates = {};
-  };
-  _proto._createDefaultKeyHandlers = function _createDefaultKeyHandlers() {
+  }
+  _createDefaultKeyHandlers() {
     const result = {};
     const keys = this.getSupportedKeyNames();
     keys.forEach(key => {
       result[key] = e => this.viewRef.keyDown(_keyboard_processor.default.createKeyDownOptions(e));
     });
     return result;
-  };
-  _proto._addAction = function _addAction(event, actionToAdd) {
+  }
+  _addAction(event, actionToAdd) {
     let action = actionToAdd;
     if (!action) {
       const actionByOption = this._createActionByOption(event, this._getActionConfigsFull()[event]);
@@ -260,8 +295,8 @@ let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
       };
     }
     this._actionsMap[event] = action;
-  };
-  _proto._optionChanged = function _optionChanged(option) {
+  }
+  _optionChanged(option) {
     const {
       fullName,
       name,
@@ -276,10 +311,10 @@ let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
       this._addAction(name);
     }
     this._shouldRaiseContentReady = this._shouldRaiseContentReady || this._checkContentReadyOption(fullName);
-    _DOMComponent.prototype._optionChanged.call(this, option);
+    super._optionChanged(option);
     this._invalidate();
-  };
-  _proto._extractDefaultSlot = function _extractDefaultSlot() {
+  }
+  _extractDefaultSlot() {
     if (this.option('_hasAnonymousTemplateContent')) {
       return _inferno_renderer.default.createElement(_template_wrapper.TemplateWrapper, {
         template: this._getTemplate(this._templateManager.anonymousTemplateName),
@@ -288,8 +323,8 @@ let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
       });
     }
     return null;
-  };
-  _proto._createTemplateComponent = function _createTemplateComponent(templateOption) {
+  }
+  _createTemplateComponent(templateOption) {
     if (!templateOption) {
       return undefined;
     }
@@ -299,8 +334,8 @@ let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
     }
     const templateWrapper = model => _inferno_renderer.default.createElement(_template_wrapper.TemplateWrapper, (0, _template_wrapper.buildTemplateArgs)(model, template));
     return templateWrapper;
-  };
-  _proto._wrapKeyDownHandler = function _wrapKeyDownHandler(initialHandler) {
+  }
+  _wrapKeyDownHandler(initialHandler) {
     return options => {
       const {
         keyName,
@@ -319,11 +354,11 @@ let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
       }
       return initialHandler === null || initialHandler === void 0 ? void 0 : initialHandler(originalEvent, options);
     };
-  };
-  _proto._toPublicElement = function _toPublicElement(element) {
+  }
+  _toPublicElement(element) {
     return (0, _element.getPublicElement)((0, _renderer.default)(element));
-  };
-  _proto._patchElementParam = function _patchElementParam(value) {
+  }
+  _patchElementParam(value) {
     try {
       const result = (0, _renderer.default)(value);
       const element = result === null || result === void 0 ? void 0 : result.get(0);
@@ -331,84 +366,28 @@ let ComponentWrapper = exports.default = /*#__PURE__*/function (_DOMComponent) {
     } catch (error) {
       return value;
     }
-  };
-  _proto.repaint = function repaint() {
+  }
+  repaint() {
     this._isNodeReplaced = false;
     this._shouldRaiseContentReady = true;
     this._removeWidget();
     this._refresh();
-  };
-  _proto._supportedKeys = function _supportedKeys() {
+  }
+  _supportedKeys() {
     return _extends({}, this.defaultKeyHandlers, this.customKeyHandlers);
-  };
-  _proto.registerKeyHandler = function registerKeyHandler(key, handler) {
+  }
+  registerKeyHandler(key, handler) {
     this.customKeyHandlers[key] = handler;
-  };
-  _proto.setAria = function setAria(name, value) {
+  }
+  setAria(name, value) {
     this._aria[name] = value;
     this._initMarkup();
-  };
-  _proto._getViewComponentDefaultProps = function _getViewComponentDefaultProps() {
+  }
+  _getViewComponentDefaultProps() {
     return this._viewComponent.defaultProps || {};
-  };
-  _createClass(ComponentWrapper, [{
-    key: "_propsInfo",
-    get: function () {
-      return {
-        allowNull: [],
-        twoWay: [],
-        elements: [],
-        templates: [],
-        props: []
-      };
-    }
-  }, {
-    key: "viewRef",
-    get: function () {
-      var _this$_viewRef;
-      return (_this$_viewRef = this._viewRef) === null || _this$_viewRef === void 0 ? void 0 : _this$_viewRef.current;
-    }
-  }, {
-    key: "elementAttr",
-    get: function () {
-      const element = this.$element()[0];
-      if (!this._elementAttr) {
-        const {
-          attributes
-        } = element;
-        const attrs = Array.from(attributes).filter(attr => {
-          var _attributes$attr$name;
-          return !this._propsInfo.templates.includes(attr.name) && ((_attributes$attr$name = attributes[attr.name]) === null || _attributes$attr$name === void 0 ? void 0 : _attributes$attr$name.specified);
-        }).reduce((result, _ref4) => {
-          let {
-            name,
-            value
-          } = _ref4;
-          const updatedAttributes = result;
-          const isDomAttr = (name in element);
-          updatedAttributes[name] = value === '' && isDomAttr ? element[name] : value;
-          return updatedAttributes;
-        }, {});
-        this._elementAttr = attrs;
-        this._storedClasses = element.getAttribute('class') || '';
-      }
-      const elemStyle = element.style;
-      const style = {};
-      for (let i = 0; i < elemStyle.length; i += 1) {
-        style[elemStyle[i]] = elemStyle.getPropertyValue(elemStyle[i]);
-      }
-      this._elementAttr.style = style;
-      this._elementAttr.class = this._storedClasses;
-      return this._elementAttr;
-    }
-  }, {
-    key: "_templatesInfo",
-    get: function () {
-      return {};
-    }
-  }]);
-  return ComponentWrapper;
-}(_dom_component.default);
+  }
+}
+exports.default = ComponentWrapper;
 ComponentWrapper.IS_RENOVATED_WIDGET = false;
 ComponentWrapper.IS_RENOVATED_WIDGET = true;
 module.exports = exports.default;

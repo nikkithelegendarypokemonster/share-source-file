@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/viz/core/themes/material/index.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -415,7 +415,7 @@ const themes = [{
 function getMaterialColorScheme(accentName, themeName, accentColor) {
   return {
     theme: {
-      name: "material.".concat(accentName, ".").concat(themeName),
+      name: `material.${accentName}.${themeName}`,
       rangeSelector: {
         selectedRangeColor: accentColor,
         sliderMarker: {
@@ -451,7 +451,7 @@ function getMaterialColorScheme(accentName, themeName, accentColor) {
         }
       }
     },
-    baseThemeName: "material.".concat(themeName)
+    baseThemeName: `material.${themeName}`
   };
 }
 const materialAccents = {
@@ -465,14 +465,14 @@ Object.keys(materialAccents).forEach(accent => {
   const color = materialAccents[accent];
   themes.push(getMaterialColorScheme(accent, 'light', color), getMaterialColorScheme(accent, 'dark', color), {
     theme: {
-      name: "material.".concat(accent, ".light.compact")
+      name: `material.${accent}.light.compact`
     },
-    baseThemeName: "material.".concat(accent, ".light")
+    baseThemeName: `material.${accent}.light`
   }, {
     theme: {
-      name: "material.".concat(accent, ".dark.compact")
+      name: `material.${accent}.dark.compact`
     },
-    baseThemeName: "material.".concat(accent, ".dark")
+    baseThemeName: `material.${accent}.dark`
   });
 });
 var _default = exports.default = themes;

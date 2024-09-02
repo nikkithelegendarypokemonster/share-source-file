@@ -1,13 +1,13 @@
 /**
 * DevExtreme (esm/__internal/filter_builder/m_filter_operations_dictionary.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /* eslint-disable spellcheck/spell-checker */
-var OPERATION_ICONS = {
+const OPERATION_ICONS = {
   '=': 'equal',
   '<>': 'notequal',
   '<': 'less',
@@ -21,7 +21,7 @@ var OPERATION_ICONS = {
   isblank: 'isblank',
   isnotblank: 'isnotblank'
 };
-var OPERATION_NAME = {
+const OPERATION_NAME = {
   '=': 'equal',
   '<>': 'notEqual',
   '<': 'lessThan',

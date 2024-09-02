@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/diagram/ui.diagram.toolbox.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -18,13 +18,13 @@ import ScrollView from '../scroll_view';
 import Tooltip from '../tooltip';
 import { getDiagram } from './diagram.importer';
 import DiagramFloatingPanel from './ui.diagram.floating_panel';
-var DIAGRAM_TOOLBOX_MIN_HEIGHT = 130;
-var DIAGRAM_TOOLBOX_POPUP_CLASS = 'dx-diagram-toolbox-popup';
-var DIAGRAM_TOOLBOX_PANEL_CLASS = 'dx-diagram-toolbox-panel';
-var DIAGRAM_TOOLBOX_INPUT_CONTAINER_CLASS = 'dx-diagram-toolbox-input-container';
-var DIAGRAM_TOOLBOX_INPUT_CLASS = 'dx-diagram-toolbox-input';
-var DIAGRAM_TOOLTIP_DATATOGGLE = 'shape-toolbox-tooltip';
-var DIAGRAM_TOOLBOX_START_DRAG_CLASS = '.dxdi-tb-start-drag-flag';
+const DIAGRAM_TOOLBOX_MIN_HEIGHT = 130;
+const DIAGRAM_TOOLBOX_POPUP_CLASS = 'dx-diagram-toolbox-popup';
+const DIAGRAM_TOOLBOX_PANEL_CLASS = 'dx-diagram-toolbox-panel';
+const DIAGRAM_TOOLBOX_INPUT_CONTAINER_CLASS = 'dx-diagram-toolbox-input-container';
+const DIAGRAM_TOOLBOX_INPUT_CLASS = 'dx-diagram-toolbox-input';
+const DIAGRAM_TOOLTIP_DATATOGGLE = 'shape-toolbox-tooltip';
+const DIAGRAM_TOOLBOX_START_DRAG_CLASS = '.dxdi-tb-start-drag-flag';
 class DiagramToolbox extends DiagramFloatingPanel {
   _init() {
     super._init();
@@ -46,8 +46,8 @@ class DiagramToolbox extends DiagramFloatingPanel {
     return DIAGRAM_TOOLBOX_MIN_HEIGHT;
   }
   _getPopupPosition() {
-    var $parent = this.option('offsetParent');
-    var position = {
+    const $parent = this.option('offsetParent');
+    const position = {
       my: 'left top',
       at: 'left top',
       of: $parent
@@ -60,7 +60,7 @@ class DiagramToolbox extends DiagramFloatingPanel {
     return position;
   }
   _getPopupAnimation() {
-    var $parent = this.option('offsetParent');
+    const $parent = this.option('offsetParent');
     if (this.isMobileView()) {
       return {
         hide: this._getPopupSlideAnimationObject({
@@ -102,7 +102,7 @@ class DiagramToolbox extends DiagramFloatingPanel {
     return super._getPopupAnimation();
   }
   _getPopupOptions() {
-    var options = super._getPopupOptions();
+    const options = super._getPopupOptions();
     if (!this.isMobileView()) {
       return extend(options, {
         showTitle: true,
@@ -123,16 +123,16 @@ class DiagramToolbox extends DiagramFloatingPanel {
     return options;
   }
   _renderPopupContent($parent) {
-    var panelHeight = '100%';
+    let panelHeight = '100%';
     if (this.option('showSearch')) {
-      var $inputContainer = $('<div>').addClass(DIAGRAM_TOOLBOX_INPUT_CONTAINER_CLASS).appendTo($parent);
+      const $inputContainer = $('<div>').addClass(DIAGRAM_TOOLBOX_INPUT_CONTAINER_CLASS).appendTo($parent);
       this._updateElementWidth($inputContainer);
       this._renderSearchInput($inputContainer);
       if (hasWindow()) {
         panelHeight = 'calc(100% - ' + getHeight(this._searchInput.$element()) + 'px)';
       }
     }
-    var $panel = $('<div>').addClass(DIAGRAM_TOOLBOX_PANEL_CLASS).appendTo($parent);
+    const $panel = $('<div>').addClass(DIAGRAM_TOOLBOX_PANEL_CLASS).appendTo($parent);
     setHeight($panel, panelHeight);
     this._updateElementWidth($panel);
     this._renderScrollView($panel);
@@ -144,9 +144,9 @@ class DiagramToolbox extends DiagramFloatingPanel {
   }
   updateMaxHeight() {
     if (this.isMobileView()) return;
-    var maxHeight = 6;
+    let maxHeight = 6;
     if (this._popup) {
-      var $title = this._getPopupTitle();
+      const $title = this._getPopupTitle();
       maxHeight += getOuterHeight($title);
     }
     if (this._accordion) {
@@ -158,7 +158,7 @@ class DiagramToolbox extends DiagramFloatingPanel {
     this.option('maxHeight', maxHeight);
   }
   _renderSearchInput($parent) {
-    var $input = $('<div>').addClass(DIAGRAM_TOOLBOX_INPUT_CLASS).appendTo($parent);
+    const $input = $('<div>').addClass(DIAGRAM_TOOLBOX_INPUT_CLASS).appendTo($parent);
     this._searchInput = this._createComponent($input, TextBox, {
       stylingMode: 'outlined',
       placeholder: messageLocalization.format('dxDiagram-uiSearch'),
@@ -184,38 +184,38 @@ class DiagramToolbox extends DiagramFloatingPanel {
     });
   }
   _renderScrollView($parent) {
-    var $scrollViewWrapper = $('<div>').appendTo($parent);
+    const $scrollViewWrapper = $('<div>').appendTo($parent);
     this._scrollView = this._createComponent($scrollViewWrapper, ScrollView);
 
     // Prevent scroll toolbox content for dragging vertically
-    var _moveIsAllowed = this._scrollView._moveIsAllowed.bind(this._scrollView);
+    const _moveIsAllowed = this._scrollView._moveIsAllowed.bind(this._scrollView);
     this._scrollView._moveIsAllowed = e => {
-      for (var i = 0; i < this._toolboxes.length; i++) {
-        var $element = this._toolboxes[i];
+      for (let i = 0; i < this._toolboxes.length; i++) {
+        const $element = this._toolboxes[i];
         if ($($element).children(DIAGRAM_TOOLBOX_START_DRAG_CLASS).length) {
           return false;
         }
       }
       return _moveIsAllowed(e);
     };
-    var $accordion = $('<div>').appendTo(this._scrollView.content());
+    const $accordion = $('<div>').appendTo(this._scrollView.content());
     this._updateElementWidth($accordion);
     this._renderAccordion($accordion);
   }
   _getAccordionDataSource() {
-    var result = [];
-    var toolboxGroups = this.option('toolboxGroups');
-    for (var i = 0; i < toolboxGroups.length; i++) {
-      var category = toolboxGroups[i].category;
-      var title = toolboxGroups[i].title;
-      var groupObj = {
+    const result = [];
+    const toolboxGroups = this.option('toolboxGroups');
+    for (let i = 0; i < toolboxGroups.length; i++) {
+      const category = toolboxGroups[i].category;
+      const title = toolboxGroups[i].title;
+      const groupObj = {
         category,
         title: title || category,
         expanded: toolboxGroups[i].expanded,
         displayMode: toolboxGroups[i].displayMode,
         shapes: toolboxGroups[i].shapes,
         onTemplate: (widget, $element, data) => {
-          var $toolboxElement = $($element);
+          const $toolboxElement = $($element);
           this._onShapeCategoryRenderedAction({
             category: data.category,
             displayMode: data.displayMode,
@@ -239,13 +239,13 @@ class DiagramToolbox extends DiagramFloatingPanel {
   }
   _createTooltips($toolboxElement) {
     if (this._isTouchMode()) return;
-    var targets = $toolboxElement.find('[data-toggle="' + DIAGRAM_TOOLTIP_DATATOGGLE + '"]');
-    var $container = this.$element();
+    const targets = $toolboxElement.find('[data-toggle="' + DIAGRAM_TOOLTIP_DATATOGGLE + '"]');
+    const $container = this.$element();
     targets.each((index, element) => {
-      var $target = $(element);
-      var title = $target.attr('title');
+      const $target = $(element);
+      const title = $target.attr('title');
       if (title) {
-        var $tooltip = $('<div>').text(title).appendTo($container);
+        const $tooltip = $('<div>').text(title).appendTo($container);
         this._createComponent($tooltip, Tooltip, {
           target: $target.get(0),
           showEvent: 'mouseenter',
@@ -270,7 +270,7 @@ class DiagramToolbox extends DiagramFloatingPanel {
     });
   }
   _isTouchMode() {
-    var {
+    const {
       Browser
     } = getDiagram();
     return Browser.TouchUI;
@@ -294,8 +294,8 @@ class DiagramToolbox extends DiagramFloatingPanel {
       },
       onContentReady: e => {
         e.component.option('selectedItems', []);
-        var items = e.component.option('dataSource');
-        for (var i = 0; i < items.length; i++) {
+        const items = e.component.option('dataSource');
+        for (let i = 0; i < items.length; i++) {
           if (items[i].expanded === false) {
             e.component.collapseItem(i);
           } else if (items[i].expanded === true) {
@@ -333,7 +333,7 @@ class DiagramToolbox extends DiagramFloatingPanel {
   }
   updateTooltips() {
     this._toolboxes.forEach($element => {
-      var $tooltipContainer = $($element);
+      const $tooltipContainer = $($element);
       this._createTooltips($tooltipContainer);
     });
   }

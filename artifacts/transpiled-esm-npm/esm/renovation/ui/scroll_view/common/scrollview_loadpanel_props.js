@@ -1,3 +1,3 @@
-export var ScrollViewLoadPanelProps = {
+export const ScrollViewLoadPanelProps = {
   visible: false
 };

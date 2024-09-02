@@ -1,26 +1,26 @@
 import $ from '../../../../core/renderer';
 import { extend } from '../../../../core/utils/extend';
 import { getDefaultAlignment } from '../../../../core/utils/position';
-var COLUMN_INDICATORS_CLASS = 'dx-column-indicators';
-var GROUP_PANEL_ITEM_CLASS = 'dx-group-panel-item';
-export var ColumnStateMixin = Base => class extends Base {
+const COLUMN_INDICATORS_CLASS = 'dx-column-indicators';
+const GROUP_PANEL_ITEM_CLASS = 'dx-group-panel-item';
+export const ColumnStateMixin = Base => class extends Base {
   /**
    * @extended header_filter_core
    */
   _applyColumnState(options) {
-    var _a;
-    var that = this;
-    var rtlEnabled = this.option('rtlEnabled');
-    var columnAlignment = that._getColumnAlignment(options.column.alignment, rtlEnabled);
-    var parameters = extend(true, {
+    var _that$component;
+    const that = this;
+    const rtlEnabled = this.option('rtlEnabled');
+    const columnAlignment = that._getColumnAlignment(options.column.alignment, rtlEnabled);
+    const parameters = extend(true, {
       columnAlignment
     }, options);
-    var isGroupPanelItem = parameters.rootElement.hasClass(GROUP_PANEL_ITEM_CLASS);
-    var $indicatorsContainer = that._createIndicatorContainer(parameters, isGroupPanelItem);
-    var $span = $('<span>').addClass(that._getIndicatorClassName(options.name));
+    const isGroupPanelItem = parameters.rootElement.hasClass(GROUP_PANEL_ITEM_CLASS);
+    const $indicatorsContainer = that._createIndicatorContainer(parameters, isGroupPanelItem);
+    const $span = $('<span>').addClass(that._getIndicatorClassName(options.name));
     // TODO getController
-    var columnsController = (_a = that.component) === null || _a === void 0 ? void 0 : _a.getController('columns');
-    var indicatorAlignment = (columnsController === null || columnsController === void 0 ? void 0 : columnsController.getHeaderContentAlignment(columnAlignment)) || columnAlignment;
+    const columnsController = (_that$component = that.component) === null || _that$component === void 0 ? void 0 : _that$component.getController('columns');
+    const indicatorAlignment = (columnsController === null || columnsController === void 0 ? void 0 : columnsController.getHeaderContentAlignment(columnAlignment)) || columnAlignment;
     parameters.container = $indicatorsContainer;
     parameters.indicator = $span;
     that._renderIndicator(parameters);
@@ -38,8 +38,8 @@ export var ColumnStateMixin = Base => class extends Base {
     return alignment && alignment !== 'center' ? alignment : getDefaultAlignment(rtlEnabled);
   }
   _createIndicatorContainer(options, ignoreIndicatorAlignment) {
-    var $indicatorsContainer = this._getIndicatorContainer(options.rootElement);
-    var indicatorAlignment = options.columnAlignment === 'left' ? 'right' : 'left';
+    let $indicatorsContainer = this._getIndicatorContainer(options.rootElement);
+    const indicatorAlignment = options.columnAlignment === 'left' ? 'right' : 'left';
     if (!$indicatorsContainer.length) {
       $indicatorsContainer = $('<div>').addClass(COLUMN_INDICATORS_CLASS);
     }
@@ -47,32 +47,32 @@ export var ColumnStateMixin = Base => class extends Base {
     return $indicatorsContainer.css('float', options.showColumnLines && !ignoreIndicatorAlignment ? indicatorAlignment : null);
   }
   _getIndicatorContainer($cell) {
-    return $cell && $cell.find(".".concat(COLUMN_INDICATORS_CLASS));
+    return $cell && $cell.find(`.${COLUMN_INDICATORS_CLASS}`);
   }
   _getIndicatorElements($cell) {
-    var $indicatorContainer = this._getIndicatorContainer($cell);
+    const $indicatorContainer = this._getIndicatorContainer($cell);
     return $indicatorContainer && $indicatorContainer.children();
   }
   /**
    * @extended header_filter_core
    */
   _renderIndicator(options) {
-    var $container = options.container;
-    var $indicator = options.indicator;
+    const $container = options.container;
+    const $indicator = options.indicator;
     $container && $indicator && $container.append($indicator);
   }
   _updateIndicators(indicatorName) {
-    var that = this;
+    const that = this;
     // @ts-expect-error
-    var columns = that.getColumns();
+    const columns = that.getColumns();
     // @ts-expect-error
-    var $cells = that.getColumnElements();
-    var $cell;
+    const $cells = that.getColumnElements();
+    let $cell;
     if (!$cells || columns.length !== $cells.length) return;
-    for (var i = 0; i < columns.length; i++) {
+    for (let i = 0; i < columns.length; i++) {
       $cell = $cells.eq(i);
       that._updateIndicator($cell, columns[i], indicatorName);
-      var rowOptions = $cell.parent().data('options');
+      const rowOptions = $cell.parent().data('options');
       if (rowOptions && rowOptions.cells) {
         rowOptions.cells[$cell.index()].column = columns[i];
       }

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/exporter/jspdf/common/rows_generator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,7 +15,6 @@ var _date = _interopRequireDefault(require("../../../localization/date"));
 var _number = _interopRequireDefault(require("../../../localization/number"));
 var _pdf_utils = require("./pdf_utils");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const defaultStyles = {
   base: {
     font: {
@@ -79,7 +78,6 @@ function generateRowCells(_ref) {
   } = _ref;
   const result = [];
   for (let cellIndex = 0; cellIndex < columns.length; cellIndex++) {
-    var _style$alignment;
     const cellData = dataProvider.getCellData(rowIndex, cellIndex, true);
     const cellStyle = styles[dataProvider.getStyleId(rowIndex, cellIndex)];
     const style = getPdfCellStyle(columns[cellIndex], rowType, cellStyle);
@@ -88,7 +86,7 @@ function generateRowCells(_ref) {
     const pdfCell = {
       text: getFormattedValue(cellData.value, cellStyle.format),
       verticalAlign: 'middle',
-      horizontalAlign: (_style$alignment = style.alignment) !== null && _style$alignment !== void 0 ? _style$alignment : defaultAlignment,
+      horizontalAlign: style.alignment ?? defaultAlignment,
       wordWrapEnabled,
       backgroundColor,
       padding: {
@@ -109,7 +107,7 @@ function generateRowCells(_ref) {
     }
     const cellInfo = {
       gridCell: cellData.cellSourceData,
-      pdfCell: _extends({}, pdfCell, style)
+      pdfCell: Object.assign({}, pdfCell, style)
     };
     if (rowType === 'header') {
       const cellMerging = dataProvider.getCellMerging(rowIndex, cellIndex);
@@ -145,13 +143,13 @@ function getBaseTableStyle() {
   return defaultStyles['base'];
 }
 function getPdfCellStyle(column, rowType, cellStyle) {
-  const styles = _extends({}, defaultStyles['base'], defaultStyles[rowType]);
+  const styles = Object.assign({}, defaultStyles['base'], defaultStyles[rowType]);
   const alignment = rowType === 'header' ? column.alignment : cellStyle.alignment;
   if (alignment) {
     styles.alignment = alignment;
   }
   if (cellStyle.bold && rowType !== 'header') {
-    styles.font = _extends({}, styles.font, {
+    styles.font = Object.assign({}, styles.font, {
       style: 'bold'
     });
   }

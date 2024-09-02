@@ -1,6 +1,6 @@
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["accessKey", "activeStateEnabled", "className", "dataSource", "defaultValue", "disabled", "displayExpr", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "inputAttr", "isDirty", "isValid", "items", "layout", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "tabIndex", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "valueExpr", "visible", "width"];
+const _excluded = ["accessKey", "activeStateEnabled", "className", "dataSource", "defaultValue", "disabled", "displayExpr", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "inputAttr", "isDirty", "isValid", "items", "layout", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "tabIndex", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "valueExpr", "visible", "width"];
 import { createComponentVNode, normalizeProps } from "inferno";
 import { BaseInfernoComponent } from '@devextreme/runtime/inferno';
 import LegacyRadioGroup from '../../../ui/radio_group';
@@ -8,8 +8,8 @@ import { EditorProps } from './common/editor';
 import { EditorStateProps } from './common/editor_state_props';
 import { DomComponentWrapper } from '../common/dom_component_wrapper';
 import devices from '../../../core/devices';
-export var viewFunction = _ref => {
-  var {
+export const viewFunction = _ref => {
+  let {
     componentProps,
     restAttributes
   } = _ref;
@@ -19,13 +19,13 @@ export var viewFunction = _ref => {
     "templateNames": ['itemTemplate']
   }, restAttributes)));
 };
-export var RadioGroupProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(EditorProps), Object.getOwnPropertyDescriptors({
+export const RadioGroupProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(EditorProps), Object.getOwnPropertyDescriptors({
   get layout() {
     return devices.real().deviceType === 'tablet' ? 'horizontal' : 'vertical';
   },
   isReactComponentWrapper: true
 })));
-export var RadioGroupPropsType = {
+export const RadioGroupPropsType = {
   get layout() {
     return RadioGroupProps.layout;
   },
@@ -98,14 +98,14 @@ export class RadioGroup extends BaseInfernoComponent {
     });
   }
   get restAttributes() {
-    var _this$props$value = _extends({}, this.props, {
+    const _this$props$value = _extends({}, this.props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value
       }),
       restProps = _objectWithoutPropertiesLoose(_this$props$value, _excluded);
     return restProps;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value

@@ -1,13 +1,13 @@
 /**
 * DevExtreme (esm/__internal/scheduler/appointments/data_provider/m_appointment_data_source.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { Deferred } from '../../../../core/utils/deferred';
-var STORE_EVENTS = {
+const STORE_EVENTS = {
   updating: 'updating',
   push: 'push'
 };
@@ -17,14 +17,14 @@ export class AppointmentDataSource {
     this._updatedAppointmentKeys = [];
   }
   get keyName() {
-    var store = this._dataSource.store();
+    const store = this._dataSource.store();
     return store.key();
   }
   get isDataSourceInit() {
     return !!this._dataSource;
   }
   _getStoreKey(target) {
-    var store = this._dataSource.store();
+    const store = this._dataSource.store();
     return store.keyOf(target);
   }
   setDataSource(dataSource) {
@@ -33,11 +33,11 @@ export class AppointmentDataSource {
     this._initStoreChangeHandlers();
   }
   _initStoreChangeHandlers() {
-    var dataSource = this._dataSource;
-    var store = dataSource === null || dataSource === void 0 ? void 0 : dataSource.store();
+    const dataSource = this._dataSource;
+    const store = dataSource === null || dataSource === void 0 ? void 0 : dataSource.store();
     if (store) {
       store.on(STORE_EVENTS.updating, key => {
-        var keyName = store.key();
+        const keyName = store.key();
         if (keyName) {
           this._updatedAppointmentKeys.push({
             key: keyName,
@@ -48,17 +48,17 @@ export class AppointmentDataSource {
         }
       });
       store.on(STORE_EVENTS.push, pushItems => {
-        var items = dataSource.items();
-        var keyName = store.key();
+        const items = dataSource.items();
+        const keyName = store.key();
         pushItems.forEach(pushItem => {
-          var itemExists = items.filter(item => item[keyName] === pushItem.key).length !== 0;
+          const itemExists = items.filter(item => item[keyName] === pushItem.key).length !== 0;
           if (itemExists) {
             this._updatedAppointmentKeys.push({
               key: keyName,
               value: pushItem.key
             });
           } else {
-            var {
+            const {
               data
             } = pushItem;
             data && items.push(data);
@@ -82,19 +82,19 @@ export class AppointmentDataSource {
     return this._dataSource.store().insert(rawAppointment).done(() => this._dataSource.load());
   }
   update(target, data) {
-    var key = this._getStoreKey(target);
+    const key = this._getStoreKey(target);
     // @ts-expect-error
-    var d = new Deferred();
+    const d = new Deferred();
     this._dataSource.store().update(key, data).done(result => this._dataSource.load().done(() => d.resolve(result)).fail(d.reject)).fail(d.reject);
     return d.promise();
   }
   remove(rawAppointment) {
-    var key = this._getStoreKey(rawAppointment);
+    const key = this._getStoreKey(rawAppointment);
     return this._dataSource.store().remove(key).done(() => this._dataSource.load());
   }
   destroy() {
-    var _a;
-    var store = (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.store();
+    var _this$_dataSource;
+    const store = (_this$_dataSource = this._dataSource) === null || _this$_dataSource === void 0 ? void 0 : _this$_dataSource.store();
     if (store) {
       store.off(STORE_EVENTS.updating);
       store.off(STORE_EVENTS.push);

@@ -57,7 +57,7 @@ var _default = exports.default = {
     tooltip: {
       customizeTooltip(info) {
         return {
-          text: "".concat(info.item.argument, " ").concat(info.valueText)
+          text: `${info.item.argument} ${info.valueText}`
         };
       }
     },
@@ -75,7 +75,7 @@ var _default = exports.default = {
       verticalOffset: 0,
       showForZeroValues: false,
       customizeText(info) {
-        return "".concat(info.item.argument, " ").concat(info.valueText);
+        return `${info.item.argument} ${info.valueText}`;
       },
       position: 'columns',
       font: {

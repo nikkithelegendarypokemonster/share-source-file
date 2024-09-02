@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/exporter/exceljs/export_merged_ranges_manager.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,15 +9,14 @@
 "use strict";
 
 exports.MergedRangesManager = void 0;
-let MergedRangesManager = exports.MergedRangesManager = /*#__PURE__*/function () {
-  function MergedRangesManager(dataProvider, worksheet) {
+class MergedRangesManager {
+  constructor(dataProvider, worksheet) {
     this.dataProvider = dataProvider;
     this.worksheet = worksheet;
     this.mergedCells = [];
     this.mergedRanges = [];
   }
-  var _proto = MergedRangesManager.prototype;
-  _proto.updateMergedRanges = function updateMergedRanges(excelCell, rowIndex, cellIndex, helpers) {
+  updateMergedRanges(excelCell, rowIndex, cellIndex, helpers) {
     if (helpers._isHeaderCell(rowIndex, cellIndex) && !this.isCellInMergedRanges(rowIndex, cellIndex)) {
       const {
         rowspan,
@@ -37,16 +36,16 @@ let MergedRangesManager = exports.MergedRangesManager = /*#__PURE__*/function ()
         }
       }
     }
-  };
-  _proto.isCellInMergedRanges = function isCellInMergedRanges(rowIndex, cellIndex) {
+  }
+  isCellInMergedRanges(rowIndex, cellIndex) {
     return this.mergedCells[rowIndex] && this.mergedCells[rowIndex][cellIndex];
-  };
-  _proto.findMergedCellInfo = function findMergedCellInfo(rowIndex, cellIndex, isHeaderCell) {
+  }
+  findMergedCellInfo(rowIndex, cellIndex, isHeaderCell) {
     if (isHeaderCell && this.isCellInMergedRanges(rowIndex, cellIndex)) {
       return this.mergedCells[rowIndex][cellIndex];
     }
-  };
-  _proto.updateMergedCells = function updateMergedCells(excelCell, rowIndex, cellIndex, rowspan, colspan) {
+  }
+  updateMergedCells(excelCell, rowIndex, cellIndex, rowspan, colspan) {
     for (let i = rowIndex; i <= rowIndex + rowspan; i++) {
       for (let j = cellIndex; j <= cellIndex + colspan; j++) {
         if (!this.mergedCells[i]) {
@@ -57,15 +56,15 @@ let MergedRangesManager = exports.MergedRangesManager = /*#__PURE__*/function ()
         };
       }
     }
-  };
-  _proto.addMergedRange = function addMergedRange(masterCell, rowspan, colspan) {
+  }
+  addMergedRange(masterCell, rowspan, colspan) {
     this.mergedRanges.push({
       masterCell,
       rowspan,
       colspan
     });
-  };
-  _proto.applyMergedRages = function applyMergedRages() {
+  }
+  applyMergedRages() {
     this.mergedRanges.forEach(range => {
       const startRowIndex = range.masterCell.fullAddress.row;
       const startColumnIndex = range.masterCell.fullAddress.col;
@@ -73,6 +72,6 @@ let MergedRangesManager = exports.MergedRangesManager = /*#__PURE__*/function ()
       const endColumnIndex = startColumnIndex + range.colspan;
       this.worksheet.mergeCells(startRowIndex, startColumnIndex, endRowIndex, endColumnIndex);
     });
-  };
-  return MergedRangesManager;
-}();
+  }
+}
+exports.MergedRangesManager = MergedRangesManager;

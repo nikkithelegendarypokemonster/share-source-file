@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/ui/m_select_box.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-require("../../ui/list/modules/selection");
+require("../ui/list/modules/m_selection");
 var _component_registrator = _interopRequireDefault(require("../../core/component_registrator"));
 var _dom_adapter = _interopRequireDefault(require("../../core/dom_adapter"));
 var _element = require("../../core/element");
@@ -83,9 +83,9 @@ const SelectBox = _ui.default.inherit({
         return undefined;
       },
       leftArrow() {
-        var _a;
+        var _parent$leftArrow;
         searchIfNeeded();
-        (_a = parent.leftArrow) === null || _a === void 0 ? void 0 : _a.apply(this, arguments);
+        (_parent$leftArrow = parent.leftArrow) === null || _parent$leftArrow === void 0 || _parent$leftArrow.apply(this, arguments);
       },
       rightArrow() {
         searchIfNeeded();
@@ -102,7 +102,7 @@ const SelectBox = _ui.default.inherit({
       escape() {
         const result = parent.escape && parent.escape.apply(this, arguments);
         this._cancelEditing();
-        return result !== null && result !== void 0 ? result : true;
+        return result ?? true;
       },
       enter(e) {
         const isOpened = this.option('opened');
@@ -157,12 +157,6 @@ const SelectBox = _ui.default.inherit({
         }
       },
       showSelectionControls: false,
-      /**
-            * @name dxSelectBoxOptions.allowClearing
-            * @type boolean
-            * @default true
-            * @hidden
-            */
       allowClearing: true,
       tooltipEnabled: false,
       openOnFieldClick: true,
@@ -187,7 +181,7 @@ const SelectBox = _ui.default.inherit({
     this._popup.$overlayContent().attr('tabindex', -1);
   },
   _popupWrapperClass() {
-    return "".concat(this.callBase(), " ").concat(SELECTBOX_POPUP_WRAPPER_CLASS);
+    return `${this.callBase()} ${SELECTBOX_POPUP_WRAPPER_CLASS}`;
   },
   _setDeprecatedOptions() {
     this.callBase();
@@ -212,7 +206,6 @@ const SelectBox = _ui.default.inherit({
     }
   },
   _focusSelectedElement() {
-    var _a;
     const searchValue = this._searchValue();
     if (!searchValue) {
       this._focusListElement(null);
@@ -223,7 +216,7 @@ const SelectBox = _ui.default.inherit({
       selectedItem
     } = this.option();
     const $listItems = this._list._itemElements();
-    const index = (_a = items === null || items === void 0 ? void 0 : items.indexOf(selectedItem)) !== null && _a !== void 0 ? _a : -1;
+    const index = (items === null || items === void 0 ? void 0 : items.indexOf(selectedItem)) ?? -1;
     const focusedElement = index !== -1 && !this._isCustomItemSelected() ? $listItems.eq(index) : null;
     this._focusListElement(focusedElement);
   },
@@ -259,8 +252,7 @@ const SelectBox = _ui.default.inherit({
   _renderValue() {
     this._renderInputValue();
     this._setSubmitValue();
-    // @ts-expect-error
-    return new _deferred.Deferred().resolve();
+    return (0, _deferred.Deferred)().resolve();
   },
   _renderInputValue() {
     return this.callBase().always(() => {
@@ -275,8 +267,7 @@ const SelectBox = _ui.default.inherit({
   },
   _renderInputValueImpl() {
     this._renderField();
-    // @ts-expect-error
-    return new _deferred.Deferred().resolve();
+    return (0, _deferred.Deferred)().resolve();
   },
   _setNextItem(step) {
     const item = this._calcNextItem(step);
@@ -284,9 +275,7 @@ const SelectBox = _ui.default.inherit({
     this._setValue(value);
   },
   _setNextValue(e) {
-    const dataSourceIsLoaded = this._dataController.isLoaded()
-    // @ts-expect-error
-    ? new _deferred.Deferred().resolve() : this._dataController.load();
+    const dataSourceIsLoaded = this._dataController.isLoaded() ? (0, _deferred.Deferred)().resolve() : this._dataController.load();
     dataSourceIsLoaded.done(() => {
       const selectedIndex = this._getSelectedIndex();
       const hasPages = this._dataController.pageSize();
@@ -454,7 +443,7 @@ const SelectBox = _ui.default.inherit({
       } = this.option();
       if (acceptCustomValue) {
         if (!saveEditingValue && !this._isValueChanging) {
-          this._updateField(initialSelectedItem !== null && initialSelectedItem !== void 0 ? initialSelectedItem : this._createCustomItem(text));
+          this._updateField(initialSelectedItem ?? this._createCustomItem(text));
           this._clearFilter();
         }
         return;
@@ -496,14 +485,14 @@ const SelectBox = _ui.default.inherit({
     this.callBase(e);
   },
   _cancelSearchIfNeed(e) {
-    var _a;
     const {
       searchEnabled
     } = this.option();
     const isOverlayTarget = this._isOverlayNestedTarget(e === null || e === void 0 ? void 0 : e.relatedTarget);
     const shouldCancelSearch = this._wasSearch() && searchEnabled && !isOverlayTarget;
     if (shouldCancelSearch) {
-      const isPopupVisible = (_a = this._popup) === null || _a === void 0 ? void 0 : _a._hideAnimationProcessing;
+      var _this$_popup;
+      const isPopupVisible = (_this$_popup = this._popup) === null || _this$_popup === void 0 ? void 0 : _this$_popup._hideAnimationProcessing;
       this._clearSearchTimer();
       if (isPopupVisible) {
         this._shouldCancelSearch(true);
@@ -520,7 +509,7 @@ const SelectBox = _ui.default.inherit({
     this._shouldCancelSearchValue = value;
   },
   _isOverlayNestedTarget(target) {
-    return !!(0, _renderer.default)(target).closest(".".concat(SELECTBOX_POPUP_WRAPPER_CLASS)).length;
+    return !!(0, _renderer.default)(target).closest(`.${SELECTBOX_POPUP_WRAPPER_CLASS}`).length;
   },
   _clearTextValue() {
     const selectedItem = this.option('selectedItem');
@@ -585,12 +574,11 @@ const SelectBox = _ui.default.inherit({
   },
   _loadItem(value, cache) {
     const that = this;
-    // @ts-expect-error
-    const deferred = new _deferred.Deferred();
+    const deferred = (0, _deferred.Deferred)();
     this.callBase(value, cache).done(item => {
       deferred.resolve(item);
     }).fail(args => {
-      if (args === null || args === void 0 ? void 0 : args.shouldSkipCallback) {
+      if (args !== null && args !== void 0 && args.shouldSkipCallback) {
         return;
       }
       const selectedItem = that.option('selectedItem');

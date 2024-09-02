@@ -113,7 +113,7 @@ const formatValue = function (value, options) {
   return options.customizeText ? options.customizeText.call(options, formatObject) : formatObject.valueText;
 };
 const getSummaryText = function (summaryItem, summaryTexts) {
-  const displayFormat = summaryItem.displayFormat || summaryItem.columnCaption && summaryTexts["".concat(summaryItem.summaryType, "OtherColumn")] || summaryTexts[summaryItem.summaryType];
+  const displayFormat = summaryItem.displayFormat || summaryItem.columnCaption && summaryTexts[`${summaryItem.summaryType}OtherColumn`] || summaryTexts[summaryItem.summaryType];
   return formatValue(summaryItem.value, {
     format: summaryItem.valueFormat,
     getDisplayFormat(valueText) {
@@ -167,7 +167,7 @@ var _default = exports.default = {
       return;
     }
     const noDataClass = that.addWidgetPrefix(NO_DATA_CLASS);
-    let noDataElement = $element.find(".".concat(noDataClass)).last();
+    let noDataElement = $element.find(`.${noDataClass}`).last();
     const isVisible = this._dataController.isEmpty();
     const isLoading = this._dataController.isLoading();
     if (!noDataElement.length) {
@@ -227,14 +227,14 @@ var _default = exports.default = {
     return index;
   },
   combineFilters(filters, operation) {
-    var _a;
     let resultFilter = [];
     operation = operation || 'and';
     for (let i = 0; i < filters.length; i++) {
+      var _filters$i;
       if (!filters[i]) {
         continue;
       }
-      if (((_a = filters[i]) === null || _a === void 0 ? void 0 : _a.length) === 1 && filters[i][0] === '!') {
+      if (((_filters$i = filters[i]) === null || _filters$i === void 0 ? void 0 : _filters$i.length) === 1 && filters[i][0] === '!') {
         if (operation === 'and') {
           return ['!'];
         }
@@ -473,7 +473,7 @@ var _default = exports.default = {
   },
   isElementInCurrentGrid(controller, $element) {
     if ($element && $element.length) {
-      const $grid = $element.closest(".".concat(controller.getWidgetContainerClass())).parent();
+      const $grid = $element.closest(`.${controller.getWidgetContainerClass()}`).parent();
       return $grid.is(controller.component.$element());
     }
     return false;
@@ -506,6 +506,7 @@ var _default = exports.default = {
         lookupDataSourceOptions = lookupDataSourceOptions({});
       }
     }
+    // @ts-expect-error
     return (0, _utils.normalizeDataSourceOptions)(lookupDataSourceOptions);
   },
   getWrappedLookupDataSource(column, dataSource, filter) {
@@ -522,8 +523,7 @@ var _default = exports.default = {
     let previousTake;
     let previousSkip;
     const sliceItems = (items, loadOptions) => {
-      var _a;
-      const start = (_a = loadOptions.skip) !== null && _a !== void 0 ? _a : 0;
+      const start = loadOptions.skip ?? 0;
       const end = loadOptions.take ? start + loadOptions.take : items.length;
       return items.slice(start, end);
     };
@@ -549,7 +549,7 @@ var _default = exports.default = {
       }
       return d;
     };
-    const lookupDataSource = _extends(_extends({}, lookupDataSourceOptions), {
+    const lookupDataSource = _extends({}, lookupDataSourceOptions, {
       __dataGridSourceFilter: filter,
       load: loadOptions => {
         // @ts-expect-error
@@ -560,9 +560,9 @@ var _default = exports.default = {
             return;
           }
           const filter = this.combineFilters(items.flatMap(data => data.key).map(key => [column.lookup.valueExpr, key]), 'or');
-          const newDataSource = new _data_source.DataSource(_extends(_extends(_extends({}, lookupDataSourceOptions), loadOptions), {
+          const newDataSource = new _data_source.DataSource(_extends({}, lookupDataSourceOptions, loadOptions, {
             filter: this.combineFilters([filter, loadOptions.filter], 'and'),
-            paginate: false
+            paginate: false // pagination is included to filter
           }));
           newDataSource
           // @ts-expect-error
@@ -605,21 +605,21 @@ var _default = exports.default = {
     }
     const logSpecificDeprecatedWarningIfNeed = columns => {
       columns.forEach(column => {
-        var _a;
+        var _column$columns;
         const headerFilter = column.headerFilter || {};
         if ((0, _type.isDefined)(headerFilter.allowSearch)) {
-          logWarning("".concat(specificName, "[].headerFilter.allowSearch"), {
+          logWarning(`${specificName}[].headerFilter.allowSearch`, {
             since,
-            alias: "".concat(specificName, "[].headerFilter.search.enabled")
+            alias: `${specificName}[].headerFilter.search.enabled`
           });
         }
         if ((0, _type.isDefined)(headerFilter.searchMode)) {
-          logWarning("".concat(specificName, "[].headerFilter.searchMode"), {
+          logWarning(`${specificName}[].headerFilter.searchMode`, {
             since,
-            alias: "".concat(specificName, "[].headerFilter.search.mode")
+            alias: `${specificName}[].headerFilter.search.mode`
           });
         }
-        if ((_a = column.columns) === null || _a === void 0 ? void 0 : _a.length) {
+        if ((_column$columns = column.columns) !== null && _column$columns !== void 0 && _column$columns.length) {
           logSpecificDeprecatedWarningIfNeed(column.columns);
         }
       });

@@ -3,7 +3,7 @@ import jQuery from 'jquery';
 import { compare as compareVersions } from '../core/utils/version';
 import errors from '../core/utils/error';
 import useJQueryMethod from './jquery/use_jquery';
-var useJQuery = useJQueryMethod();
+const useJQuery = useJQueryMethod();
 if (useJQuery && compareVersions(jQuery.fn.jquery, [1, 10]) < 0) {
   throw errors.Error('E0012');
 }

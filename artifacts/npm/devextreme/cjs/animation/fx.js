@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/animation/fx.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -424,13 +424,12 @@ const SlideAnimationConfigurator = {
 };
 const FadeAnimationConfigurator = {
   setup: function ($element, config) {
-    var _from$opacity, _to$opacity;
     const from = config.from;
     const to = config.to;
     const defaultFromOpacity = config.type === 'fadeOut' ? 1 : 0;
     const defaultToOpacity = config.type === 'fadeOut' ? 0 : 1;
-    let fromOpacity = (0, _type.isPlainObject)(from) ? String((_from$opacity = from.opacity) !== null && _from$opacity !== void 0 ? _from$opacity : defaultFromOpacity) : String(from);
-    let toOpacity = (0, _type.isPlainObject)(to) ? String((_to$opacity = to.opacity) !== null && _to$opacity !== void 0 ? _to$opacity : defaultToOpacity) : String(to);
+    let fromOpacity = (0, _type.isPlainObject)(from) ? String(from.opacity ?? defaultFromOpacity) : String(from);
+    let toOpacity = (0, _type.isPlainObject)(to) ? String(to.opacity ?? defaultToOpacity) : String(to);
     if (!config.skipElementInitialStyles) {
       fromOpacity = $element.css('opacity');
     }

@@ -33,7 +33,7 @@ function baseOperation(grid) {
     return result;
   };
   const getFullText = function (itemText, parentText) {
-    return parentText ? "".concat(parentText, "/").concat(itemText) : itemText;
+    return parentText ? `${parentText}/${itemText}` : itemText;
   };
   const getSelectedItemsTexts = function (items, parentText) {
     let result = [];
@@ -47,6 +47,7 @@ function baseOperation(grid) {
     return result;
   };
   const headerFilterController = grid && grid.getController('headerFilter');
+  // Override in the private API WA [T1232532]
   const customizeText = function (fieldInfo, options) {
     options = options || {};
     const {

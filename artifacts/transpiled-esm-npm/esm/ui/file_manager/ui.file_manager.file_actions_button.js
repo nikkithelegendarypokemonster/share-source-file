@@ -2,13 +2,13 @@ import $ from '../../core/renderer';
 import { extend } from '../../core/utils/extend';
 import Widget from '../widget/ui.widget';
 import Button from '../button';
-var FILE_MANAGER_FILE_ACTIONS_BUTTON = 'dx-filemanager-file-actions-button';
-var FILE_MANAGER_FILE_ACTIONS_BUTTON_ACTIVATED = 'dx-filemanager-file-actions-button-activated';
-var ACTIVE_STATE_CLASS = 'dx-state-active';
+const FILE_MANAGER_FILE_ACTIONS_BUTTON = 'dx-filemanager-file-actions-button';
+const FILE_MANAGER_FILE_ACTIONS_BUTTON_ACTIVATED = 'dx-filemanager-file-actions-button-activated';
+const ACTIVE_STATE_CLASS = 'dx-state-active';
 class FileManagerFileActionsButton extends Widget {
   _initMarkup() {
     this._createClickAction();
-    var $button = $('<div>');
+    const $button = $('<div>');
     this.$element().append($button).addClass(FILE_MANAGER_FILE_ACTIONS_BUTTON);
     this._button = this._createComponent($button, Button, {
       icon: 'overflow',
@@ -30,7 +30,7 @@ class FileManagerFileActionsButton extends Widget {
     });
   }
   _optionChanged(args) {
-    var name = args.name;
+    const name = args.name;
     switch (name) {
       case 'cssClass':
         this.repaint();

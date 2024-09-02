@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/workspaces/view_model/m_view_data_generator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,31 +14,29 @@ Object.defineProperty(exports, "__esModule", {
 exports.ViewDataGenerator = void 0;
 var _date = _interopRequireDefault(require("../../../../core/utils/date"));
 var _date2 = require("../../../core/utils/date");
-var _index = require("../../__migration/utils/index");
+var _index = require("../../../scheduler/r1/utils/index");
 var _m_constants = require("../../m_constants");
 var _m_utils_time_zone = _interopRequireDefault(require("../../m_utils_time_zone"));
 var _m_utils = require("../../resources/m_utils");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const toMs = _date.default.dateToMilliseconds;
-let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
-  function ViewDataGenerator() {
+class ViewDataGenerator {
+  constructor() {
     this.daysInInterval = 1;
     this.isWorkView = false;
     this.tableAllDay = false;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  var _proto = ViewDataGenerator.prototype;
-  _proto.isSkippedDate = function isSkippedDate(date) {
+  isSkippedDate(date) {
     return false;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._calculateStartViewDate = function _calculateStartViewDate(options) {};
-  _proto.getStartViewDate = function getStartViewDate(options) {
+  _calculateStartViewDate(options) {}
+  getStartViewDate(options) {
     return this._calculateStartViewDate(options);
-  };
-  _proto.getCompleteViewDataMap = function getCompleteViewDataMap(options) {
+  }
+  getCompleteViewDataMap(options) {
     const {
       groups,
       isGroupedByDate,
@@ -87,13 +85,13 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       viewDataMap = this._transformViewDataMapForGroupingByDate(viewDataMap, groupsList);
     }
     return this._addKeysToCells(viewDataMap);
-  };
-  _proto._transformViewDataMapForHorizontalGrouping = function _transformViewDataMapForHorizontalGrouping(viewDataMap, groupsList) {
+  }
+  _transformViewDataMapForHorizontalGrouping(viewDataMap, groupsList) {
     const result = viewDataMap.map(row => row.slice());
     groupsList.slice(1).forEach((groups, index) => {
       const groupIndex = index + 1;
       viewDataMap.forEach((row, rowIndex) => {
-        const nextGroupRow = row.map(cellData => _extends(_extends({}, cellData), {
+        const nextGroupRow = row.map(cellData => _extends({}, cellData, {
           groups,
           groupIndex
         }));
@@ -101,13 +99,13 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       });
     });
     return result;
-  };
-  _proto._transformViewDataMapForVerticalGrouping = function _transformViewDataMapForVerticalGrouping(viewDataMap, groupsList) {
+  }
+  _transformViewDataMapForVerticalGrouping(viewDataMap, groupsList) {
     const result = viewDataMap.map(row => row.slice());
     groupsList.slice(1).forEach((groups, index) => {
       const groupIndex = index + 1;
       const nextGroupMap = viewDataMap.map(cellsRow => {
-        const nextRow = cellsRow.map(cellData => _extends(_extends({}, cellData), {
+        const nextRow = cellsRow.map(cellData => _extends({}, cellData, {
           groupIndex,
           groups
         }));
@@ -116,16 +114,16 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       result.push(...nextGroupMap);
     });
     return result;
-  };
-  _proto._transformViewDataMapForGroupingByDate = function _transformViewDataMapForGroupingByDate(viewDataMap, groupsList) {
+  }
+  _transformViewDataMapForGroupingByDate(viewDataMap, groupsList) {
     const correctedGroupList = groupsList.slice(1);
     const correctedGroupCount = correctedGroupList.length;
     const result = viewDataMap.map(cellsRow => {
       const groupedByDateCellsRow = cellsRow.reduce((currentRow, cell) => {
-        const rowWithCurrentCell = [...currentRow, _extends(_extends({}, cell), {
+        const rowWithCurrentCell = [...currentRow, _extends({}, cell, {
           isFirstGroupCell: true,
           isLastGroupCell: correctedGroupCount === 0
-        }), ...correctedGroupList.map((groups, index) => _extends(_extends({}, cell), {
+        }), ...correctedGroupList.map((groups, index) => _extends({}, cell, {
           groups,
           groupIndex: index + 1,
           isFirstGroupCell: false,
@@ -136,8 +134,8 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       return groupedByDateCellsRow;
     });
     return result;
-  };
-  _proto._addKeysToCells = function _addKeysToCells(viewDataMap) {
+  }
+  _addKeysToCells(viewDataMap) {
     const totalColumnCount = viewDataMap[0].length;
     const {
       currentViewDataMap: result
@@ -161,8 +159,8 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       currentViewDataMap: viewDataMap
     });
     return result;
-  };
-  _proto.generateViewDataMap = function generateViewDataMap(completeViewDataMap, options) {
+  }
+  generateViewDataMap(completeViewDataMap, options) {
     const {
       rowCount,
       startCellIndex,
@@ -193,11 +191,11 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       allDayPanelMap,
       dateTableMap
     };
-  };
-  _proto._isStandaloneAllDayPanel = function _isStandaloneAllDayPanel(isVerticalGrouping, isAllDayPanelVisible) {
+  }
+  _isStandaloneAllDayPanel(isVerticalGrouping, isAllDayPanelVisible) {
     return !isVerticalGrouping && isAllDayPanelVisible;
-  };
-  _proto.getViewDataFromMap = function getViewDataFromMap(completeViewDataMap, viewDataMap, options) {
+  }
+  getViewDataFromMap(completeViewDataMap, viewDataMap, options) {
     const {
       topVirtualRowHeight,
       bottomVirtualRowHeight,
@@ -280,21 +278,21 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       topVirtualRowCount: startRowIndex,
       bottomVirtualRowCount: totalRowCount - startRowIndex - displayedRowCount
     };
-  };
-  _proto._generateViewCellsData = function _generateViewCellsData(options, rowCount, cellCountInGroupRow) {
+  }
+  _generateViewCellsData(options, rowCount, cellCountInGroupRow) {
     const viewCellsData = [];
     for (let rowIndex = 0; rowIndex < rowCount; rowIndex += 1) {
       viewCellsData.push(this._generateCellsRow(options, false, rowIndex, rowCount, cellCountInGroupRow));
     }
     return viewCellsData;
-  };
-  _proto._generateAllDayPanelData = function _generateAllDayPanelData(options, rowCount, columnCount) {
+  }
+  _generateAllDayPanelData(options, rowCount, columnCount) {
     if (!options.isAllDayPanelVisible) {
       return null;
     }
     return this._generateCellsRow(options, true, 0, rowCount, columnCount);
-  };
-  _proto._generateCellsRow = function _generateCellsRow(options, allDay, rowIndex, rowCount, columnCount) {
+  }
+  _generateCellsRow(options, allDay, rowIndex, rowCount, columnCount) {
     const cellsRow = [];
     for (let columnIndex = 0; columnIndex < columnCount; ++columnIndex) {
       const cellDataValue = this.getCellData(rowIndex, columnIndex, options, allDay);
@@ -304,11 +302,11 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       cellsRow.push(cellDataValue);
     }
     return cellsRow;
-  };
-  _proto.getCellData = function getCellData(rowIndex, columnIndex, options, allDay) {
+  }
+  getCellData(rowIndex, columnIndex, options, allDay) {
     return allDay ? this.prepareAllDayCellData(options, rowIndex, columnIndex) : this.prepareCellData(options, rowIndex, columnIndex);
-  };
-  _proto.prepareCellData = function prepareCellData(options, rowIndex, columnIndex) {
+  }
+  prepareCellData(options, rowIndex, columnIndex) {
     const {
       groups,
       startDayHour,
@@ -329,9 +327,9 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       data.groups = groupsList[0];
     }
     return data;
-  };
-  _proto.prepareAllDayCellData = function prepareAllDayCellData(options, rowIndex, columnIndex) {
-    const data = this.prepareCellData(_extends(_extends({}, options), {
+  }
+  prepareAllDayCellData(options, rowIndex, columnIndex) {
+    const data = this.prepareCellData(_extends({}, options, {
       // NOTE: For all-day cells we should shift cell's dates
       // after trimming these dates time.
       viewOffset: 0
@@ -341,13 +339,13 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
     } = options;
     const startDate = _date.default.trimTime(data.startDate);
     const shiftedStartDate = _date2.dateUtilsTs.addOffsets(startDate, [viewOffset]);
-    return _extends(_extends({}, data), {
+    return _extends({}, data, {
       startDate: shiftedStartDate,
       endDate: shiftedStartDate,
       allDay: true
     });
-  };
-  _proto.getDateByCellIndices = function getDateByCellIndices(options, rowIndex, columnIndex, cellCountInDay) {
+  }
+  getDateByCellIndices(options, rowIndex, columnIndex, cellCountInDay) {
     let {
       startViewDate
     } = options;
@@ -373,31 +371,29 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
     const timeZoneDifference = isStartViewDateDuringDST ? 0 : _date.default.getTimezonesDifference(startViewDate, currentDate);
     currentDate.setTime(currentDate.getTime() + timeZoneDifference);
     return currentDate;
-  };
-  _proto.getMillisecondsOffset = function getMillisecondsOffset(cellIndex, interval, cellCountInDay) {
+  }
+  getMillisecondsOffset(cellIndex, interval, cellCountInDay) {
     const dayIndex = Math.floor(cellIndex / cellCountInDay);
     const realHiddenInterval = dayIndex * this.hiddenInterval;
     return interval * cellIndex + realHiddenInterval;
-  };
-  _proto.getTimeOffsetByColumnIndex = function getTimeOffsetByColumnIndex(columnIndex, firstDayOfWeek, columnCount, intervalCount) {
+  }
+  getTimeOffsetByColumnIndex(columnIndex, firstDayOfWeek, columnCount, intervalCount) {
     const firstDayOfWeekDiff = Math.max(0, firstDayOfWeek - 1);
     const columnsInWeek = columnCount / intervalCount;
     const weekendCount = Math.floor((columnIndex + firstDayOfWeekDiff) / columnsInWeek);
     return weekendCount * 2 * toMs('day');
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.calculateEndDate = function calculateEndDate(startDate, interval, endDayHour) {
+  calculateEndDate(startDate, interval, endDayHour) {
     return this.getCellEndDate(startDate, {
       interval
     });
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._calculateCellIndex = function _calculateCellIndex(rowIndex, columnIndex, rowCount, columnCountBase) {
+  _calculateCellIndex(rowIndex, columnIndex, rowCount, columnCountBase) {
     return (0, _index.calculateCellIndex)(rowIndex, columnIndex, rowCount);
-  };
-  _proto.generateGroupedDataMap = function generateGroupedDataMap(viewDataMap) {
+  }
+  generateGroupedDataMap(viewDataMap) {
     const {
       allDayPanelMap,
       dateTableMap
@@ -437,7 +433,7 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       previousGroupIndex: -1
     });
     const allDayPanelGroupedMap = [];
-    allDayPanelMap === null || allDayPanelMap === void 0 ? void 0 : allDayPanelMap.forEach(cell => {
+    allDayPanelMap === null || allDayPanelMap === void 0 || allDayPanelMap.forEach(cell => {
       const {
         groupIndex
       } = cell.cellData;
@@ -450,8 +446,8 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       allDayPanelGroupedMap,
       dateTableGroupedMap
     };
-  };
-  _proto._isFirstGroupCell = function _isFirstGroupCell(rowIndex, columnIndex, options, rowCount, columnCount) {
+  }
+  _isFirstGroupCell(rowIndex, columnIndex, options, rowCount, columnCount) {
     const {
       groupOrientation,
       groups,
@@ -465,8 +461,8 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       return columnIndex % columnCount === 0;
     }
     return rowIndex % rowCount === 0;
-  };
-  _proto._isLastGroupCell = function _isLastGroupCell(rowIndex, columnIndex, options, rowCount, columnCount) {
+  }
+  _isLastGroupCell(rowIndex, columnIndex, options, rowCount, columnCount) {
     const {
       groupOrientation,
       groups,
@@ -480,8 +476,8 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       return (columnIndex + 1) % columnCount === 0;
     }
     return (rowIndex + 1) % rowCount === 0;
-  };
-  _proto.markSelectedAndFocusedCells = function markSelectedAndFocusedCells(viewDataMap, renderOptions) {
+  }
+  markSelectedAndFocusedCells(viewDataMap, renderOptions) {
     const {
       selectedCells,
       focusedCell
@@ -499,8 +495,8 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       allDayPanelMap: nextAllDayMap,
       dateTableMap: nextDateTableMap
     };
-  };
-  _proto._markSelectedAndFocusedCellsInRow = function _markSelectedAndFocusedCellsInRow(dataRow, selectedCells, focusedCell) {
+  }
+  _markSelectedAndFocusedCellsInRow(dataRow, selectedCells, focusedCell) {
     return dataRow.map(cell => {
       const {
         index,
@@ -521,28 +517,27 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
       if (!isFocused && indexInSelectedCells === -1) {
         return cell;
       }
-      return _extends(_extends({}, cell), {
-        cellData: _extends(_extends({}, cell.cellData), {
+      return _extends({}, cell, {
+        cellData: _extends({}, cell.cellData, {
           isSelected: indexInSelectedCells > -1,
           isFocused
         })
       });
     });
-  };
-  _proto.getInterval = function getInterval(hoursInterval) {
+  }
+  getInterval(hoursInterval) {
     return hoursInterval * toMs('hour');
-  };
-  _proto._getIntervalDuration = function _getIntervalDuration(intervalCount) {
+  }
+  _getIntervalDuration(intervalCount) {
     return toMs('day') * intervalCount;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._setVisibilityDates = function _setVisibilityDates(options) {};
-  _proto.getCellCountInDay = function getCellCountInDay(startDayHour, endDayHour, hoursInterval) {
+  _setVisibilityDates(options) {}
+  getCellCountInDay(startDayHour, endDayHour, hoursInterval) {
     const result = (0, _index.calculateDayDuration)(startDayHour, endDayHour) / hoursInterval;
     return Math.ceil(result);
-  };
-  _proto.getCellCount = function getCellCount(options) {
+  }
+  getCellCount(options) {
     const {
       intervalCount,
       viewType,
@@ -553,8 +548,8 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
     const cellCountInDay = this.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
     const columnCountInDay = (0, _index.isHorizontalView)(viewType) ? cellCountInDay : 1;
     return this.daysInInterval * intervalCount * columnCountInDay;
-  };
-  _proto.getRowCount = function getRowCount(options) {
+  }
+  getRowCount(options) {
     const {
       viewType,
       startDayHour,
@@ -564,20 +559,20 @@ let ViewDataGenerator = exports.ViewDataGenerator = /*#__PURE__*/function () {
     const cellCountInDay = this.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
     const rowCountInDay = !(0, _index.isHorizontalView)(viewType) ? cellCountInDay : 1;
     return rowCountInDay;
-  };
-  _proto.setHiddenInterval = function setHiddenInterval(startDayHour, endDayHour, hoursInterval) {
+  }
+  setHiddenInterval(startDayHour, endDayHour, hoursInterval) {
     this.hiddenInterval = toMs('day') - this.getVisibleDayDuration(startDayHour, endDayHour, hoursInterval);
-  };
-  _proto.getVisibleDayDuration = function getVisibleDayDuration(startDayHour, endDayHour, hoursInterval) {
+  }
+  getVisibleDayDuration(startDayHour, endDayHour, hoursInterval) {
     const cellCountInDay = this.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
     return hoursInterval * cellCountInDay * toMs('hour');
-  };
-  _proto.getFirstDayOfWeek = function getFirstDayOfWeek(firstDayOfWeekOption) {
+  }
+  getFirstDayOfWeek(firstDayOfWeekOption) {
     return firstDayOfWeekOption;
-  };
-  _proto.getCellEndDate = function getCellEndDate(cellStartDate, options) {
+  }
+  getCellEndDate(cellStartDate, options) {
     const durationMs = Math.round(options.interval);
     return _m_utils_time_zone.default.addOffsetsWithoutDST(cellStartDate, durationMs);
-  };
-  return ViewDataGenerator;
-}();
+  }
+}
+exports.ViewDataGenerator = ViewDataGenerator;

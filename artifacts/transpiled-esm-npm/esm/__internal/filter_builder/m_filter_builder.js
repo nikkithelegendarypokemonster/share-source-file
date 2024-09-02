@@ -8,40 +8,40 @@ import { isDefined } from '../../core/utils/type';
 import eventsEngine from '../../events/core/events_engine';
 import { normalizeKeyName } from '../../events/utils/index';
 import messageLocalization from '../../localization/message';
-import { getElementMaxHeightByWindow } from '../../ui/overlay/utils';
-import Popup from '../../ui/popup';
+import Popup from '../../ui/popup/ui.popup';
 import EditorFactoryMixin from '../../ui/shared/ui.editor_factory_mixin';
 import TreeView from '../../ui/tree_view';
 import Widget from '../../ui/widget/ui.widget';
+import { getElementMaxHeightByWindow } from '../ui/overlay/m_utils';
 import { addItem, convertToInnerStructure, createCondition, createEmptyGroup, getAvailableOperations, getCaptionWithParents, getCurrentLookupValueText, getCurrentValueText, getCustomOperation, getDefaultOperation, getField, getFilterExpression, getGroupCriteria, getGroupMenuItem, getGroupValue, getItems, getMergedOperations, getNormalizedFields, getNormalizedFilter, getOperationFromAvailable, getOperationValue, isCondition, isGroup, removeItem, renderValueText, setGroupValue, updateConditionByOperation } from './m_utils';
 // STYLE filterBuilder
-var FILTER_BUILDER_CLASS = 'dx-filterbuilder';
-var FILTER_BUILDER_GROUP_CLASS = "".concat(FILTER_BUILDER_CLASS, "-group");
-var FILTER_BUILDER_GROUP_ITEM_CLASS = "".concat(FILTER_BUILDER_GROUP_CLASS, "-item");
-var FILTER_BUILDER_GROUP_CONTENT_CLASS = "".concat(FILTER_BUILDER_GROUP_CLASS, "-content");
-var FILTER_BUILDER_GROUP_OPERATIONS_CLASS = "".concat(FILTER_BUILDER_GROUP_CLASS, "-operations");
-var FILTER_BUILDER_GROUP_OPERATION_CLASS = "".concat(FILTER_BUILDER_GROUP_CLASS, "-operation");
-var FILTER_BUILDER_ACTION_CLASS = "".concat(FILTER_BUILDER_CLASS, "-action");
-var FILTER_BUILDER_IMAGE_CLASS = "".concat(FILTER_BUILDER_ACTION_CLASS, "-icon");
-var FILTER_BUILDER_IMAGE_ADD_CLASS = 'dx-icon-plus';
-var FILTER_BUILDER_IMAGE_REMOVE_CLASS = 'dx-icon-remove';
-var FILTER_BUILDER_ITEM_TEXT_CLASS = "".concat(FILTER_BUILDER_CLASS, "-text");
-var FILTER_BUILDER_ITEM_FIELD_CLASS = "".concat(FILTER_BUILDER_CLASS, "-item-field");
-var FILTER_BUILDER_ITEM_OPERATION_CLASS = "".concat(FILTER_BUILDER_CLASS, "-item-operation");
-var FILTER_BUILDER_ITEM_VALUE_CLASS = "".concat(FILTER_BUILDER_CLASS, "-item-value");
-var FILTER_BUILDER_ITEM_VALUE_TEXT_CLASS = "".concat(FILTER_BUILDER_CLASS, "-item-value-text");
-var FILTER_BUILDER_OVERLAY_CLASS = "".concat(FILTER_BUILDER_CLASS, "-overlay");
-var FILTER_BUILDER_FILTER_OPERATIONS_CLASS = "".concat(FILTER_BUILDER_CLASS, "-operations");
-var FILTER_BUILDER_FIELDS_CLASS = "".concat(FILTER_BUILDER_CLASS, "-fields");
-var FILTER_BUILDER_ADD_CONDITION_CLASS = "".concat(FILTER_BUILDER_CLASS, "-add-condition");
-var ACTIVE_CLASS = 'dx-state-active';
-var FILTER_BUILDER_MENU_CUSTOM_OPERATION_CLASS = "".concat(FILTER_BUILDER_CLASS, "-menu-custom-operation");
-var SOURCE = 'filterBuilder';
-var DISABLED_STATE_CLASS = 'dx-state-disabled';
-var TAB_KEY = 'tab';
-var ENTER_KEY = 'enter';
-var ESCAPE_KEY = 'escape';
-var ACTIONS = [{
+const FILTER_BUILDER_CLASS = 'dx-filterbuilder';
+const FILTER_BUILDER_GROUP_CLASS = `${FILTER_BUILDER_CLASS}-group`;
+const FILTER_BUILDER_GROUP_ITEM_CLASS = `${FILTER_BUILDER_GROUP_CLASS}-item`;
+const FILTER_BUILDER_GROUP_CONTENT_CLASS = `${FILTER_BUILDER_GROUP_CLASS}-content`;
+const FILTER_BUILDER_GROUP_OPERATIONS_CLASS = `${FILTER_BUILDER_GROUP_CLASS}-operations`;
+const FILTER_BUILDER_GROUP_OPERATION_CLASS = `${FILTER_BUILDER_GROUP_CLASS}-operation`;
+const FILTER_BUILDER_ACTION_CLASS = `${FILTER_BUILDER_CLASS}-action`;
+const FILTER_BUILDER_IMAGE_CLASS = `${FILTER_BUILDER_ACTION_CLASS}-icon`;
+const FILTER_BUILDER_IMAGE_ADD_CLASS = 'dx-icon-plus';
+const FILTER_BUILDER_IMAGE_REMOVE_CLASS = 'dx-icon-remove';
+const FILTER_BUILDER_ITEM_TEXT_CLASS = `${FILTER_BUILDER_CLASS}-text`;
+const FILTER_BUILDER_ITEM_FIELD_CLASS = `${FILTER_BUILDER_CLASS}-item-field`;
+const FILTER_BUILDER_ITEM_OPERATION_CLASS = `${FILTER_BUILDER_CLASS}-item-operation`;
+const FILTER_BUILDER_ITEM_VALUE_CLASS = `${FILTER_BUILDER_CLASS}-item-value`;
+const FILTER_BUILDER_ITEM_VALUE_TEXT_CLASS = `${FILTER_BUILDER_CLASS}-item-value-text`;
+const FILTER_BUILDER_OVERLAY_CLASS = `${FILTER_BUILDER_CLASS}-overlay`;
+const FILTER_BUILDER_FILTER_OPERATIONS_CLASS = `${FILTER_BUILDER_CLASS}-operations`;
+const FILTER_BUILDER_FIELDS_CLASS = `${FILTER_BUILDER_CLASS}-fields`;
+const FILTER_BUILDER_ADD_CONDITION_CLASS = `${FILTER_BUILDER_CLASS}-add-condition`;
+const ACTIVE_CLASS = 'dx-state-active';
+const FILTER_BUILDER_MENU_CUSTOM_OPERATION_CLASS = `${FILTER_BUILDER_CLASS}-menu-custom-operation`;
+const SOURCE = 'filterBuilder';
+const DISABLED_STATE_CLASS = 'dx-state-disabled';
+const TAB_KEY = 'tab';
+const ENTER_KEY = 'enter';
+const ESCAPE_KEY = 'escape';
+const ACTIONS = [{
   name: 'onEditorPreparing',
   config: {
     excludeValidators: ['disabled', 'readOnly'],
@@ -59,14 +59,14 @@ var ACTIONS = [{
     excludeValidators: ['disabled', 'readOnly']
   }
 }];
-var OPERATORS = {
+const OPERATORS = {
   and: 'and',
   or: 'or',
   notAnd: '!and',
   notOr: '!or'
 };
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
-var EditorFactory = EditorFactoryMixin(class {});
+const EditorFactory = EditorFactoryMixin(class {});
 class FilterBuilder extends Widget {
   _getDefaultOptions() {
     // @ts-expect-error
@@ -127,7 +127,7 @@ class FilterBuilder extends Widget {
         break;
       case 'value':
         if (args.value !== args.previousValue) {
-          var disableInvalidateForValue = this._disableInvalidateForValue;
+          const disableInvalidateForValue = this._disableInvalidateForValue;
           if (!disableInvalidateForValue) {
             this._initModel();
             this._invalidate();
@@ -146,8 +146,8 @@ class FilterBuilder extends Widget {
     }
   }
   getFilterExpression() {
-    var fields = this._getNormalizedFields();
-    var value = extend(true, [], this._model);
+    const fields = this._getNormalizedFields();
+    const value = extend(true, [], this._model);
     return getFilterExpression(getNormalizedFilter(value), fields, this._customOperations, SOURCE);
   }
   _getNormalizedFields() {
@@ -155,9 +155,9 @@ class FilterBuilder extends Widget {
   }
   _updateFilter() {
     this._disableInvalidateForValue = true;
-    var value = extend(true, [], this._model);
-    var normalizedValue = getNormalizedFilter(value);
-    var oldValue = getNormalizedFilter(this._getModel(this.option('value')));
+    const value = extend(true, [], this._model);
+    const normalizedValue = getNormalizedFilter(value);
+    const oldValue = getNormalizedFilter(this._getModel(this.option('value')));
     if (JSON.stringify(oldValue) !== JSON.stringify(normalizedValue)) {
       this.option('value', normalizedValue);
     }
@@ -180,8 +180,8 @@ class FilterBuilder extends Widget {
     this._customOperations = getMergedOperations(this.option('customOperations'), this.option('filterOperationDescriptions.between'), this);
   }
   _getDefaultGroupOperation() {
-    var _a, _b;
-    return (_b = (_a = this.option('groupOperations')) === null || _a === void 0 ? void 0 : _a[0]) !== null && _b !== void 0 ? _b : OPERATORS.and;
+    var _this$option;
+    return ((_this$option = this.option('groupOperations')) === null || _this$option === void 0 ? void 0 : _this$option[0]) ?? OPERATORS.and;
   }
   _getModel(value) {
     return convertToInnerStructure(value, this._customOperations, this._getDefaultGroupOperation());
@@ -190,16 +190,16 @@ class FilterBuilder extends Widget {
     this._model = this._getModel(this.option('value'));
   }
   _initActions() {
-    var that = this;
+    const that = this;
     that._actions = {};
     ACTIONS.forEach(action => {
-      var actionConfig = extend({}, action.config);
+      const actionConfig = extend({}, action.config);
       // @ts-expect-error
       that._actions[action.name] = that._createActionByOption(action.name, actionConfig);
     });
   }
   executeAction(actionName, options) {
-    var action = this._actions[actionName];
+    const action = this._actions[actionName];
     return action && action(options);
   }
   _initMarkup() {
@@ -213,12 +213,12 @@ class FilterBuilder extends Widget {
     return $('<div>').addClass(FILTER_BUILDER_GROUP_CLASS).append(this._createConditionItem(condition, parent));
   }
   _createGroupElementByCriteria(criteria, parent) {
-    var groupLevel = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-    var $group = this._createGroupElement(criteria, parent, groupLevel);
-    var $groupContent = $group.find(".".concat(FILTER_BUILDER_GROUP_CONTENT_CLASS));
-    var groupCriteria = getGroupCriteria(criteria);
-    for (var i = 0; i < groupCriteria.length; i++) {
-      var innerCriteria = groupCriteria[i];
+    let groupLevel = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    const $group = this._createGroupElement(criteria, parent, groupLevel);
+    const $groupContent = $group.find(`.${FILTER_BUILDER_GROUP_CONTENT_CLASS}`);
+    const groupCriteria = getGroupCriteria(criteria);
+    for (let i = 0; i < groupCriteria.length; i++) {
+      const innerCriteria = groupCriteria[i];
       if (isGroup(innerCriteria)) {
         this._createGroupElementByCriteria(innerCriteria, criteria, groupLevel + 1).appendTo($groupContent);
       } else if (isCondition(innerCriteria)) {
@@ -228,26 +228,25 @@ class FilterBuilder extends Widget {
     return $group;
   }
   _createGroupElement(criteria, parent, groupLevel) {
-    var $groupItem = $('<div>').addClass(FILTER_BUILDER_GROUP_ITEM_CLASS);
-    var $groupContent = $('<div>').addClass(FILTER_BUILDER_GROUP_CONTENT_CLASS);
-    var $group = $('<div>').addClass(FILTER_BUILDER_GROUP_CLASS).append($groupItem).append($groupContent);
+    const $groupItem = $('<div>').addClass(FILTER_BUILDER_GROUP_ITEM_CLASS);
+    const $groupContent = $('<div>').addClass(FILTER_BUILDER_GROUP_CONTENT_CLASS);
+    const $group = $('<div>').addClass(FILTER_BUILDER_GROUP_CLASS).append($groupItem).append($groupContent);
     if (parent != null) {
       this._createRemoveButton(() => {
         removeItem(parent, criteria);
-        // @ts-expect-error dxElementWrapper remove method is badly typed
         $group.remove();
         this._updateFilter();
       }).appendTo($groupItem);
     }
     this._createGroupOperationButton(criteria).appendTo($groupItem);
     this._createAddButton(() => {
-      var newGroup = createEmptyGroup(this._getDefaultGroupOperation());
+      const newGroup = createEmptyGroup(this._getDefaultGroupOperation());
       addItem(newGroup, criteria);
       this._createGroupElement(newGroup, criteria, groupLevel + 1).appendTo($groupContent);
       this._updateFilter();
     }, () => {
-      var field = this.option('fields')[0];
-      var newCondition = createCondition(field, this._customOperations);
+      const field = this.option('fields')[0];
+      const newCondition = createCondition(field, this._customOperations);
       addItem(newCondition, criteria);
       this._createConditionElement(newCondition, criteria).appendTo($groupContent);
       this._updateFilter();
@@ -258,10 +257,10 @@ class FilterBuilder extends Widget {
     return $('<div>').text(caption);
   }
   _createGroupOperationButton(criteria) {
-    var groupOperations = this._getGroupOperations(criteria);
-    var groupMenuItem = getGroupMenuItem(criteria, groupOperations);
-    var caption = groupMenuItem.text;
-    var $operationButton = groupOperations && groupOperations.length < 2 ? this._createButton(caption).addClass(DISABLED_STATE_CLASS) : this._createButtonWithMenu({
+    const groupOperations = this._getGroupOperations(criteria);
+    let groupMenuItem = getGroupMenuItem(criteria, groupOperations);
+    const caption = groupMenuItem.text;
+    const $operationButton = groupOperations && groupOperations.length < 2 ? this._createButton(caption).addClass(DISABLED_STATE_CLASS) : this._createButtonWithMenu({
       caption,
       menu: {
         items: groupOperations,
@@ -284,17 +283,17 @@ class FilterBuilder extends Widget {
     return $operationButton.addClass(FILTER_BUILDER_ITEM_TEXT_CLASS).addClass(FILTER_BUILDER_GROUP_OPERATION_CLASS).attr('tabindex', 0);
   }
   _createButtonWithMenu(options) {
-    var that = this;
-    var removeMenu = function removeMenu() {
+    const that = this;
+    const removeMenu = function () {
       // @ts-expect-error
-      that.$element().find(".".concat(ACTIVE_CLASS)).removeClass(ACTIVE_CLASS);
+      that.$element().find(`.${ACTIVE_CLASS}`).removeClass(ACTIVE_CLASS);
       // @ts-expect-error
       that.$element().find('.dx-overlay .dx-treeview').remove();
       // @ts-expect-error
       that.$element().find('.dx-overlay').remove();
     };
-    var rtlEnabled = this.option('rtlEnabled');
-    var menuOnItemClickWrapper = function menuOnItemClickWrapper(handler) {
+    const rtlEnabled = this.option('rtlEnabled');
+    const menuOnItemClickWrapper = function (handler) {
       return function (e) {
         handler(e);
         if (e.event.type === 'dxclick') {
@@ -302,8 +301,8 @@ class FilterBuilder extends Widget {
         }
       };
     };
-    var position = rtlEnabled ? 'right' : 'left';
-    var $button = this._createButton(options.caption);
+    const position = rtlEnabled ? 'right' : 'left';
+    const $button = this._createButton(options.caption);
     extend(options.menu, {
       focusStateEnabled: true,
       selectionMode: 'single',
@@ -312,8 +311,8 @@ class FilterBuilder extends Widget {
         $button.removeClass(ACTIVE_CLASS);
       },
       position: {
-        my: "".concat(position, " top"),
-        at: "".concat(position, " bottom"),
+        my: `${position} top`,
+        at: `${position} bottom`,
         offset: '0 1',
         of: $button,
         collision: 'flip'
@@ -322,16 +321,16 @@ class FilterBuilder extends Widget {
       onHidden() {
         removeMenu();
       },
-      cssClass: "".concat(FILTER_BUILDER_OVERLAY_CLASS, " ").concat(options.menu.cssClass),
+      cssClass: `${FILTER_BUILDER_OVERLAY_CLASS} ${options.menu.cssClass}`,
       rtlEnabled
     });
     options.popup = {
       onShown(info) {
-        var treeViewElement = $(info.component.content()).find('.dx-treeview');
+        const treeViewElement = $(info.component.content()).find('.dx-treeview');
         // @ts-expect-error dxElementWrapper doesn't contain widget creation methods types
-        var treeView = treeViewElement.dxTreeView('instance');
+        const treeView = treeViewElement.dxTreeView('instance');
         eventsEngine.on(treeViewElement, 'keyup keydown', e => {
-          var keyName = normalizeKeyName(e);
+          const keyName = normalizeKeyName(e);
           if (e.type === 'keydown' && keyName === TAB_KEY || e.type === 'keyup' && (keyName === ESCAPE_KEY || keyName === ENTER_KEY)) {
             info.component.hide();
             // @ts-expect-error eventsEngine is badly typed
@@ -350,14 +349,14 @@ class FilterBuilder extends Widget {
     return $button;
   }
   _hasValueButton(condition) {
-    var customOperation = getCustomOperation(this._customOperations, condition[1]);
+    const customOperation = getCustomOperation(this._customOperations, condition[1]);
     return customOperation ? customOperation.hasValue !== false : condition[2] !== null;
   }
   _createOperationButtonWithMenu(condition, field) {
-    var that = this;
-    var availableOperations = getAvailableOperations(field, this.option('filterOperationDescriptions'), this._customOperations);
-    var currentOperation = getOperationFromAvailable(getOperationValue(condition), availableOperations);
-    var $operationButton = this._createButtonWithMenu({
+    const that = this;
+    const availableOperations = getAvailableOperations(field, this.option('filterOperationDescriptions'), this._customOperations);
+    let currentOperation = getOperationFromAvailable(getOperationValue(condition), availableOperations);
+    const $operationButton = this._createButtonWithMenu({
       caption: currentOperation.text,
       menu: {
         items: availableOperations,
@@ -372,15 +371,13 @@ class FilterBuilder extends Widget {
           if (currentOperation !== e.itemData) {
             currentOperation = e.itemData;
             updateConditionByOperation(condition, currentOperation.value, that._customOperations);
-            var $valueButton = $operationButton.siblings().filter(".".concat(FILTER_BUILDER_ITEM_VALUE_CLASS));
+            const $valueButton = $operationButton.siblings().filter(`.${FILTER_BUILDER_ITEM_VALUE_CLASS}`);
             if (that._hasValueButton(condition)) {
               if ($valueButton.length !== 0) {
-                // @ts-expect-error
                 $valueButton.remove();
               }
               that._createValueButton(condition, field).appendTo($operationButton.parent());
             } else {
-              // @ts-expect-error
               $valueButton.remove();
             }
             $operationButton.text(currentOperation.text);
@@ -399,14 +396,14 @@ class FilterBuilder extends Widget {
     }
   }
   _createFieldButtonWithMenu(fields, condition, field) {
-    var that = this;
-    var allowHierarchicalFields = this.option('allowHierarchicalFields');
-    var items = getItems(fields, allowHierarchicalFields);
-    var item = getField(field.name || field.dataField, items);
-    var getFullCaption = function getFullCaption(item, items) {
+    const that = this;
+    const allowHierarchicalFields = this.option('allowHierarchicalFields');
+    const items = getItems(fields, allowHierarchicalFields);
+    let item = getField(field.name || field.dataField, items);
+    const getFullCaption = function (item, items) {
       return allowHierarchicalFields ? getCaptionWithParents(item, items) : item.caption;
     };
-    var $fieldButton = this._createButtonWithMenu({
+    const $fieldButton = this._createButtonWithMenu({
       caption: getFullCaption(item, items),
       menu: {
         items,
@@ -420,10 +417,9 @@ class FilterBuilder extends Widget {
             condition[0] = item.name || item.dataField;
             condition[2] = item.dataType === 'object' ? null : '';
             updateConditionByOperation(condition, getDefaultOperation(item), that._customOperations);
-            // @ts-expect-error
-            $fieldButton.siblings().filter(".".concat(FILTER_BUILDER_ITEM_TEXT_CLASS)).remove();
+            $fieldButton.siblings().filter(`.${FILTER_BUILDER_ITEM_TEXT_CLASS}`).remove();
             that._createOperationAndValueButtons(condition, item, $fieldButton.parent());
-            var caption = getFullCaption(item, e.component.option('items'));
+            const caption = getFullCaption(item, e.component.option('items'));
             $fieldButton.text(caption);
             this._updateFilter();
           }
@@ -437,17 +433,15 @@ class FilterBuilder extends Widget {
     return $fieldButton;
   }
   _createConditionItem(condition, parent) {
-    var $item = $('<div>').addClass(FILTER_BUILDER_GROUP_ITEM_CLASS);
-    var fields = this._getNormalizedFields();
-    var field = getField(condition[0], fields);
+    const $item = $('<div>').addClass(FILTER_BUILDER_GROUP_ITEM_CLASS);
+    const fields = this._getNormalizedFields();
+    const field = getField(condition[0], fields);
     this._createRemoveButton(() => {
       removeItem(parent, condition);
-      var isSingleChild = $item.parent().children().length === 1;
+      const isSingleChild = $item.parent().children().length === 1;
       if (isSingleChild) {
-        // @ts-expect-error dxElementWrapper remove method is badly typed
         $item.parent().remove();
       } else {
-        // @ts-expect-error dxElementWrapper remove method is badly typed
         $item.remove();
       }
       this._updateFilter();
@@ -457,8 +451,8 @@ class FilterBuilder extends Widget {
     return $item;
   }
   _getGroupOperations(criteria) {
-    var groupOperations = this.option('groupOperations');
-    var groupOperationDescriptions = this.option('groupOperationDescriptions');
+    let groupOperations = this.option('groupOperations');
+    const groupOperationDescriptions = this.option('groupOperationDescriptions');
     if (!groupOperations || !groupOperations.length) {
       groupOperations = [getGroupValue(criteria).replace('!', 'not')];
     }
@@ -468,13 +462,13 @@ class FilterBuilder extends Widget {
     }));
   }
   _createRemoveButton(handler) {
-    var $removeButton = $('<div>').addClass(FILTER_BUILDER_IMAGE_CLASS).addClass(FILTER_BUILDER_IMAGE_REMOVE_CLASS).addClass(FILTER_BUILDER_ACTION_CLASS).attr('tabindex', 0);
+    const $removeButton = $('<div>').addClass(FILTER_BUILDER_IMAGE_CLASS).addClass(FILTER_BUILDER_IMAGE_REMOVE_CLASS).addClass(FILTER_BUILDER_ACTION_CLASS).attr('tabindex', 0);
     this._subscribeOnClickAndEnterKey($removeButton, handler);
     return $removeButton;
   }
   _createAddButton(addGroupHandler, addConditionHandler, groupLevel) {
-    var $button;
-    var maxGroupLevel = this.option('maxGroupLevel');
+    let $button;
+    const maxGroupLevel = this.option('maxGroupLevel');
     if (isDefined(maxGroupLevel) && groupLevel >= maxGroupLevel) {
       $button = this._createButton();
       this._subscribeOnClickAndEnterKey($button, addConditionHandler);
@@ -499,10 +493,10 @@ class FilterBuilder extends Widget {
     return $button.addClass(FILTER_BUILDER_IMAGE_CLASS).addClass(FILTER_BUILDER_IMAGE_ADD_CLASS).addClass(FILTER_BUILDER_ACTION_CLASS).attr('tabindex', 0);
   }
   _createValueText(item, field, $container) {
-    var that = this;
-    var $text = $('<div>').html('&nbsp;').addClass(FILTER_BUILDER_ITEM_VALUE_TEXT_CLASS).attr('tabindex', 0).appendTo($container);
-    var value = item[2];
-    var customOperation = getCustomOperation(that._customOperations, item[1]);
+    const that = this;
+    const $text = $('<div>').html('&nbsp;').addClass(FILTER_BUILDER_ITEM_VALUE_TEXT_CLASS).attr('tabindex', 0).appendTo($container);
+    const value = item[2];
+    const customOperation = getCustomOperation(that._customOperations, item[1]);
     if (!customOperation && field.lookup) {
       getCurrentLookupValueText(field, value, result => {
         renderValueText($text, result);
@@ -521,7 +515,7 @@ class FilterBuilder extends Widget {
     return $text;
   }
   _updateConditionValue(item, value, callback) {
-    var areValuesDifferent = item[2] !== value;
+    const areValuesDifferent = item[2] !== value;
     if (areValuesDifferent) {
       item[2] = value;
     }
@@ -529,10 +523,10 @@ class FilterBuilder extends Widget {
     this._updateFilter();
   }
   _addDocumentKeyUp($editor, handler) {
-    var isComposing = false; // IME Composing going on
-    var hasCompositionJustEnded = false; // Used to swallow keyup event related to compositionend
-    var document = domAdapter.getDocument();
-    var documentKeyUpHandler = e => {
+    let isComposing = false; // IME Composing going on
+    let hasCompositionJustEnded = false; // Used to swallow keyup event related to compositionend
+    const document = domAdapter.getDocument();
+    const documentKeyUpHandler = e => {
       if (isComposing || hasCompositionJustEnded) {
         // IME composing fires
         hasCompositionJustEnded = false;
@@ -541,7 +535,7 @@ class FilterBuilder extends Widget {
       handler(e);
     };
     eventsEngine.on(document, 'keyup', documentKeyUpHandler);
-    var input = $editor.find('input');
+    const input = $editor.find('input');
     eventsEngine.on(input, 'compositionstart', () => {
       isComposing = true;
     });
@@ -561,8 +555,8 @@ class FilterBuilder extends Widget {
     this._documentKeyUpHandler = documentKeyUpHandler;
   }
   _addDocumentClick($editor, closeEditorFunc) {
-    var document = domAdapter.getDocument();
-    var documentClickHandler = e => {
+    const document = domAdapter.getDocument();
+    const documentClickHandler = e => {
       if (!this._isFocusOnEditorParts($editor, e.target)) {
         // @ts-expect-error eventsEngine is badly typed
         eventsEngine.trigger($editor.find('input'), 'change');
@@ -573,11 +567,11 @@ class FilterBuilder extends Widget {
     this._documentClickHandler = documentClickHandler;
   }
   _isFocusOnEditorParts($editor, target) {
-    var activeElement = target || domAdapter.getActiveElement();
+    const activeElement = target || domAdapter.getActiveElement();
     return $(activeElement).closest($editor.children()).length || $(activeElement).closest('.dx-dropdowneditor-overlay').length;
   }
   _removeEvents() {
-    var document = domAdapter.getDocument();
+    const document = domAdapter.getDocument();
     isDefined(this._documentKeyUpHandler) && eventsEngine.off(document, 'keyup', this._documentKeyUpHandler);
     isDefined(this._documentClickHandler) && eventsEngine.off(document, 'dxpointerdown', this._documentClickHandler);
   }
@@ -587,18 +581,18 @@ class FilterBuilder extends Widget {
     super._dispose();
   }
   _createValueEditorWithEvents(item, field, $container) {
-    var value = item[2];
-    var createValueText = () => {
+    let value = item[2];
+    const createValueText = () => {
       $container.empty();
       this._removeEvents();
       return this._createValueText(item, field, $container);
     };
-    var closeEditor = () => {
+    const closeEditor = () => {
       this._updateConditionValue(item, value, () => {
         createValueText();
       });
     };
-    var options = {
+    const options = {
       value: value === '' ? null : value,
       filterOperation: getOperationValue(item),
       setValue(data) {
@@ -608,13 +602,13 @@ class FilterBuilder extends Widget {
       text: $container.text()
     };
     $container.empty();
-    var $editor = this._createValueEditor($container, field, options);
+    const $editor = this._createValueEditor($container, field, options);
     // @ts-expect-error eventsEngine is badly typed
     eventsEngine.trigger($editor.find('input').not(':hidden').eq(0), 'focus');
     this._removeEvents();
     this._addDocumentClick($editor, closeEditor);
     this._addDocumentKeyUp($editor, e => {
-      var keyName = normalizeKeyName(e);
+      const keyName = normalizeKeyName(e);
       if (keyName === TAB_KEY) {
         if (this._isFocusOnEditorParts($editor)) {
           return;
@@ -642,16 +636,16 @@ class FilterBuilder extends Widget {
     this._fireContentReadyAction();
   }
   _createValueButton(item, field) {
-    var $valueButton = $('<div>').addClass(FILTER_BUILDER_ITEM_TEXT_CLASS).addClass(FILTER_BUILDER_ITEM_VALUE_CLASS);
+    const $valueButton = $('<div>').addClass(FILTER_BUILDER_ITEM_TEXT_CLASS).addClass(FILTER_BUILDER_ITEM_VALUE_CLASS);
     this._createValueText(item, field, $valueButton);
     return $valueButton;
   }
   _createValueEditor($container, field, options) {
-    var $editor = $('<div>').attr('tabindex', 0).appendTo($container);
-    var customOperation = getCustomOperation(this._customOperations, options.filterOperation);
-    var editorTemplate = customOperation && customOperation.editorTemplate ? customOperation.editorTemplate : field.editorTemplate;
+    const $editor = $('<div>').attr('tabindex', 0).appendTo($container);
+    const customOperation = getCustomOperation(this._customOperations, options.filterOperation);
+    const editorTemplate = customOperation && customOperation.editorTemplate ? customOperation.editorTemplate : field.editorTemplate;
     if (editorTemplate) {
-      var template = this._getTemplate(editorTemplate);
+      const template = this._getTemplate(editorTemplate);
       template.render({
         model: extend({
           field
@@ -666,8 +660,8 @@ class FilterBuilder extends Widget {
     return $editor;
   }
   _createPopupWithTreeView(options, $container) {
-    var that = this;
-    var $popup = $('<div>').addClass(options.menu.cssClass).appendTo($container);
+    const that = this;
+    const $popup = $('<div>').addClass(options.menu.cssClass).appendTo($container);
     // @ts-expect-error
     this._createComponent($popup, Popup, {
       onHiding: options.menu.onHiding,
@@ -676,7 +670,7 @@ class FilterBuilder extends Widget {
       position: options.menu.position,
       animation: options.menu.animation,
       contentTemplate(contentElement) {
-        var $menuContainer = $('<div>').appendTo(contentElement);
+        const $menuContainer = $('<div>').appendTo(contentElement);
         // @ts-expect-error
         that._createComponent($menuContainer, TreeView, options.menu);
         // T852701
@@ -688,6 +682,7 @@ class FilterBuilder extends Widget {
       },
       visible: true,
       focusStateEnabled: false,
+      preventScrollEvents: false,
       hideOnParentScroll: this.option('closePopupOnTargetScroll'),
       hideOnOutsideClick: true,
       onShown: options.popup.onShown,

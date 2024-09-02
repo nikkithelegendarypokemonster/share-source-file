@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/check_box.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -19,89 +19,126 @@ import Editor, {
 } from './editor/editor';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_check_box_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxCheckBox>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_check_box_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxCheckBox>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_check_box_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxCheckBox>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_check_box_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxCheckBox> & ChangedOptionInfo;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_check_box_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxCheckBox, KeyboardEvent | MouseEvent | PointerEvent | TouchEvent | Event> & ValueChangedInfo;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxCheckBoxOptions extends EditorOptions<dxCheckBox> {
     /**
-     * Specifies whether the UI component changes its visual state as a result of user interaction.
+     * @docid
+     * @default true
+     * @public
      */
     activeStateEnabled?: boolean;
     /**
-     * Specifies whether users can set the CheckBox state to indeterminate.
+     * @docid
+     * @default false
+     * @public
      */
     enableThreeStateBehavior?: boolean;
     /**
-     * Specifies whether the UI component can be focused using keyboard navigation.
+     * @docid
+     * @default true &for(desktop)
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * Specifies whether the UI component changes its state when a user pauses on it.
+     * @docid
+     * @default true
+     * @public
      */
     hoverStateEnabled?: boolean;
     /**
-     * Specifies the check box icon&apos;s width and height.
+     * @docid
+     * @default undefined
+     * @public
      */
     iconSize?: number | string;
     /**
-     * The value to be assigned to the `name` attribute of the underlying HTML element.
+     * @docid
+     * @hidden false
+     * @public
      */
     name?: string;
     /**
-     * Specifies the text displayed by the check box.
+     * @docid
+     * @default ""
+     * @public
      */
     text?: string;
     /**
-     * Specifies the UI component state.
+     * @docid
+     * @default false
+     * @public
      */
     value?: boolean | null | undefined;
 }
 /**
- * The CheckBox is a small box, which when selected by the end user, shows that a particular feature has been enabled or a specific property has been chosen.
+ * @docid
+ * @isEditor
+ * @inherits Editor
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxCheckBox extends Editor<dxCheckBoxOptions> {
     /**
-      * Removes focus from the check box.
-      */
+     * @docid
+     * @publicName blur()
+     * @public
+     */
      blur(): void;
     /**
-     * Resets the value property to the value passed as an argument.
+     * @docid
+     * @publicName reset(value)
+     * @public
      */
     reset(value?: boolean | null | undefined): void;
 }
 
+/** @public */
 export type Properties = dxCheckBoxOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxCheckBoxOptions;
 
 

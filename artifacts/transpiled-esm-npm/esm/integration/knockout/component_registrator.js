@@ -15,27 +15,27 @@ import Locker from '../../core/utils/locker';
 import { getClosestNodeWithContext } from './utils';
 import config from '../../core/config';
 if (ko) {
-  var LOCKS_DATA_KEY = 'dxKoLocks';
-  var CREATED_WITH_KO_DATA_KEY = 'dxKoCreation';
-  var editorsBindingHandlers = [];
-  var registerComponentKoBinding = function registerComponentKoBinding(componentName, componentClass) {
+  const LOCKS_DATA_KEY = 'dxKoLocks';
+  const CREATED_WITH_KO_DATA_KEY = 'dxKoCreation';
+  const editorsBindingHandlers = [];
+  const registerComponentKoBinding = function (componentName, componentClass) {
     if (Editor.isEditor(componentClass.prototype)) {
       editorsBindingHandlers.push(componentName);
     }
     ko.bindingHandlers[componentName] = {
-      init: function init(domNode, valueAccessor) {
-        var $element = $(domNode);
-        var optionChangedCallbacks = Callbacks();
-        var optionsByReference = {};
-        var component;
-        var knockoutConfig = config().knockout;
-        var isBindingPropertyPredicateName = knockoutConfig && knockoutConfig.isBindingPropertyPredicateName;
-        var isBindingPropertyPredicate;
-        var ctorOptions = {
-          onInitializing: function onInitializing(options) {
+      init: function (domNode, valueAccessor) {
+        const $element = $(domNode);
+        const optionChangedCallbacks = Callbacks();
+        let optionsByReference = {};
+        let component;
+        const knockoutConfig = config().knockout;
+        const isBindingPropertyPredicateName = knockoutConfig && knockoutConfig.isBindingPropertyPredicateName;
+        let isBindingPropertyPredicate;
+        let ctorOptions = {
+          onInitializing: function (options) {
             optionsByReference = this._getOptionsByReference();
             ko.computed(() => {
-              var model = ko.unwrap(valueAccessor());
+              const model = ko.unwrap(valueAccessor());
               if (component) {
                 component.beginUpdate();
               }
@@ -45,20 +45,20 @@ if (ko) {
                 component.endUpdate();
               } else {
                 var _model$onInitializing;
-                model === null || model === void 0 ? void 0 : (_model$onInitializing = model.onInitializing) === null || _model$onInitializing === void 0 ? void 0 : _model$onInitializing.call(this, options);
+                model === null || model === void 0 || (_model$onInitializing = model.onInitializing) === null || _model$onInitializing === void 0 || _model$onInitializing.call(this, options);
               }
             }, null, {
               disposeWhenNodeIsRemoved: domNode
             });
             component = this;
           },
-          modelByElement: function modelByElement($element) {
+          modelByElement: function ($element) {
             if ($element.length) {
-              var node = getClosestNodeWithContext($element.get(0));
+              const node = getClosestNodeWithContext($element.get(0));
               return ko.dataFor(node);
             }
           },
-          nestedComponentOptions: function nestedComponentOptions(component) {
+          nestedComponentOptions: function (component) {
             return {
               modelByElement: component.option('modelByElement'),
               nestedComponentOptions: component.option('nestedComponentOptions')
@@ -66,11 +66,11 @@ if (ko) {
           },
           _optionChangedCallbacks: optionChangedCallbacks,
           integrationOptions: {
-            watchMethod: function watchMethod(fn, callback, options) {
+            watchMethod: function (fn, callback, options) {
               options = options || {};
-              var skipCallback = options.skipImmediate;
-              var watcher = ko.computed(function () {
-                var newValue = ko.unwrap(fn());
+              let skipCallback = options.skipImmediate;
+              const watcher = ko.computed(function () {
+                const newValue = ko.unwrap(fn());
                 if (!skipCallback) {
                   callback(newValue);
                 }
@@ -82,26 +82,26 @@ if (ko) {
             },
             templates: {
               'dx-polymorph-widget': {
-                render: function render(options) {
-                  var widgetName = ko.utils.unwrapObservable(options.model.widget);
+                render: function (options) {
+                  const widgetName = ko.utils.unwrapObservable(options.model.widget);
                   if (!widgetName) {
                     return;
                   }
-                  var markup = $('<div>').attr('data-bind', widgetName + ': options').get(0);
+                  const markup = $('<div>').attr('data-bind', widgetName + ': options').get(0);
                   $(options.container).append(markup);
                   ko.applyBindings(options.model, markup);
                 }
               }
             },
-            createTemplate: function createTemplate(element) {
+            createTemplate: function (element) {
               return new KoTemplate(element);
             }
           }
         };
-        var optionNameToModelMap = {};
-        var applyModelValueToOption = function applyModelValueToOption(optionName, modelValue, unwrap) {
-          var locks = $element.data(LOCKS_DATA_KEY);
-          var optionValue = unwrap ? ko.unwrap(modelValue) : modelValue;
+        const optionNameToModelMap = {};
+        const applyModelValueToOption = function (optionName, modelValue, unwrap) {
+          const locks = $element.data(LOCKS_DATA_KEY);
+          const optionValue = unwrap ? ko.unwrap(modelValue) : modelValue;
           if (ko.isWriteableObservable(modelValue)) {
             optionNameToModelMap[optionName] = modelValue;
           }
@@ -123,14 +123,14 @@ if (ko) {
             ctorOptions[optionName] = optionValue;
           }
         };
-        var handleOptionChanged = function handleOptionChanged(args) {
-          var optionName = args.fullName;
-          var optionValue = args.value;
+        const handleOptionChanged = function (args) {
+          const optionName = args.fullName;
+          const optionValue = args.value;
           if (!(optionName in optionNameToModelMap)) {
             return;
           }
-          var $element = this._$element;
-          var locks = $element.data(LOCKS_DATA_KEY);
+          const $element = this._$element;
+          const locks = $element.data(LOCKS_DATA_KEY);
           if (locks.locked(optionName)) {
             return;
           }
@@ -141,20 +141,20 @@ if (ko) {
             locks.release(optionName);
           }
         };
-        var createComponent = function createComponent() {
+        const createComponent = function () {
           optionChangedCallbacks.add(handleOptionChanged);
           $element.data(CREATED_WITH_KO_DATA_KEY, true).data(LOCKS_DATA_KEY, new Locker());
           new componentClass($element, ctorOptions);
           ctorOptions = null;
         };
-        var unwrapModelValue = function unwrapModelValue(currentModel, propertyName, propertyPath) {
+        const unwrapModelValue = function (currentModel, propertyName, propertyPath) {
           if (propertyPath === isBindingPropertyPredicateName) {
             return;
           }
           if (!isBindingPropertyPredicate || isBindingPropertyPredicate(propertyPath, propertyName, currentModel)) {
-            var unwrappedPropertyValue;
+            let unwrappedPropertyValue;
             ko.computed(function () {
-              var propertyValue = currentModel[propertyName];
+              const propertyValue = currentModel[propertyName];
               applyModelValueToOption(propertyPath, propertyValue, true);
               unwrappedPropertyValue = ko.unwrap(propertyValue);
             }, null, {
@@ -170,7 +170,7 @@ if (ko) {
           }
         };
         function unwrapModel(model, propertyPath) {
-          for (var propertyName in model) {
+          for (const propertyName in model) {
             if (Object.prototype.hasOwnProperty.call(model, propertyName)) {
               unwrapModelValue(model, propertyName, propertyPath ? [propertyPath, propertyName].join('.') : propertyName);
             }

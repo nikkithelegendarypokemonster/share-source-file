@@ -1,22 +1,22 @@
 /**
 * DevExtreme (esm/viz/core/center_template.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { patchFontOptions } from '../core/utils';
 import { noop } from '../../core/utils/common';
-var pieChartPlugin = {
+const pieChartPlugin = {
   name: 'center_template_pie_chart',
   init: noop,
-  dispose: function dispose() {
+  dispose: function () {
     this._centerTemplateGroup.linkOff().dispose();
   },
   extenders: {
     _createHtmlStructure() {
-      var patchedFontOptions = patchFontOptions(this._themeManager._font);
+      const patchedFontOptions = patchFontOptions(this._themeManager._font);
       this._centerTemplateGroup = this._renderer.g().attr({
         class: 'dxc-hole-template'
       }).linkOn(this._renderer.root, 'center-template').css(patchedFontOptions).linkAppend();
@@ -27,23 +27,23 @@ var pieChartPlugin = {
   },
   members: {
     _renderCenterTemplate() {
-      var template = this.option('centerTemplate');
-      var centerTemplateGroup = this._centerTemplateGroup.clear();
+      const template = this.option('centerTemplate');
+      const centerTemplateGroup = this._centerTemplateGroup.clear();
       if (!template) {
         return;
       }
       centerTemplateGroup.attr({
         visibility: 'hidden'
       });
-      var center = this._getCenter();
+      const center = this._getCenter();
       this._getTemplate(template).render({
         model: this,
         container: centerTemplateGroup.element,
         onRendered: () => {
-          var group = centerTemplateGroup;
-          var bBox = group.getBBox();
-          var bBoxCenterX = bBox.x + bBox.width / 2;
-          var bBoxCenterY = bBox.y + bBox.height / 2;
+          const group = centerTemplateGroup;
+          const bBox = group.getBBox();
+          const bBoxCenterX = bBox.x + bBox.width / 2;
+          const bBoxCenterY = bBox.y + bBox.height / 2;
           group.move(center.x - bBoxCenterX, center.y - bBoxCenterY);
           group.attr({
             visibility: 'visible'
@@ -55,14 +55,14 @@ var pieChartPlugin = {
   customize(constructor) {
     constructor.addChange({
       code: 'CENTER_TEMPLATE',
-      handler: function handler() {
+      handler: function () {
         this._renderCenterTemplate();
       },
       option: 'centerTemplate'
     });
   }
 };
-var gaugePlugin = {
+const gaugePlugin = {
   name: 'center_template_gauge',
   init: noop,
   dispose: pieChartPlugin.dispose,
@@ -71,7 +71,7 @@ var gaugePlugin = {
       this._createCenterTemplateGroup();
     },
     _renderContent() {
-      var patchedFontOptions = patchFontOptions(this._themeManager._font);
+      const patchedFontOptions = patchFontOptions(this._themeManager._font);
       this._centerTemplateGroup.css(patchedFontOptions);
       this._requestChange(['CENTER_TEMPLATE']);
     },
@@ -89,7 +89,7 @@ var gaugePlugin = {
   },
   customize: pieChartPlugin.customize
 };
-export var plugins = {
+export const plugins = {
   pieChart: pieChartPlugin,
   gauge: gaugePlugin
 };

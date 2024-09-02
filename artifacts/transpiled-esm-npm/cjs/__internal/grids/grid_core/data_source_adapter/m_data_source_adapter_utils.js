@@ -76,14 +76,14 @@ const getPageDataFromCache = function (options, updatePaging) {
 };
 exports.getPageDataFromCache = getPageDataFromCache;
 const fillItemsFromCache = function (items, options, groupCount, fromEnd) {
-  var _a, _b, _c, _d, _e;
+  var _options$cachedData;
   const {
     storeLoadOptions
   } = options;
-  const take = (_b = (_a = options.take) !== null && _a !== void 0 ? _a : storeLoadOptions.take) !== null && _b !== void 0 ? _b : 0;
-  const cachedItems = (_c = options.cachedData) === null || _c === void 0 ? void 0 : _c.items;
+  const take = options.take ?? storeLoadOptions.take ?? 0;
+  const cachedItems = (_options$cachedData = options.cachedData) === null || _options$cachedData === void 0 ? void 0 : _options$cachedData.items;
   if (take && cachedItems) {
-    const skip = (_e = (_d = options.skip) !== null && _d !== void 0 ? _d : storeLoadOptions.skip) !== null && _e !== void 0 ? _e : 0;
+    const skip = options.skip ?? storeLoadOptions.skip ?? 0;
     for (let i = 0; i < take; i += 1) {
       const localIndex = fromEnd ? take - 1 - i : i;
       const cacheItemIndex = localIndex + skip;
@@ -148,7 +148,6 @@ const getGroupItemFromCache = function (cacheItem, groupCount, skips, takes) {
 };
 exports.getGroupItemFromCache = getGroupItemFromCache;
 const updatePagingOptionsByCache = function (cacheItemsFromBegin, options, groupCount) {
-  var _a, _b;
   const cacheItemBeginCount = cacheItemsFromBegin.length;
   const {
     storeLoadOptions
@@ -158,8 +157,8 @@ const updatePagingOptionsByCache = function (cacheItemsFromBegin, options, group
     fillItemsFromCache(cacheItemsFromEnd, options, groupCount, true);
     const cacheItemEndCount = cacheItemsFromEnd.length;
     if (cacheItemBeginCount || cacheItemEndCount) {
-      options.skip = (_a = options.skip) !== null && _a !== void 0 ? _a : storeLoadOptions.skip;
-      options.take = (_b = options.take) !== null && _b !== void 0 ? _b : storeLoadOptions.take;
+      options.skip = options.skip ?? storeLoadOptions.skip;
+      options.take = options.take ?? storeLoadOptions.take;
     }
     if (cacheItemBeginCount) {
       storeLoadOptions.skip += cacheItemBeginCount;
@@ -174,12 +173,11 @@ const updatePagingOptionsByCache = function (cacheItemsFromBegin, options, group
 };
 exports.updatePagingOptionsByCache = updatePagingOptionsByCache;
 const setPageDataToCache = function (options, data, groupCount) {
-  var _a, _b, _c, _d;
   const {
     storeLoadOptions
   } = options;
-  const skip = (_b = (_a = options.skip) !== null && _a !== void 0 ? _a : storeLoadOptions.skip) !== null && _b !== void 0 ? _b : 0;
-  const take = (_d = (_c = options.take) !== null && _c !== void 0 ? _c : storeLoadOptions.take) !== null && _d !== void 0 ? _d : 0;
+  const skip = options.skip ?? storeLoadOptions.skip ?? 0;
+  const take = options.take ?? storeLoadOptions.take ?? 0;
   for (let i = 0; i < take; i += 1) {
     const globalIndex = i + skip;
     const cacheItems = options.cachedData.items;

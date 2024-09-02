@@ -1,50 +1,50 @@
 /**
 * DevExtreme (ui/themes.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /**
-                                                                    * An object that serves as a namespace for the methods that work with DevExtreme CSS Themes.
-                                                                    */
-                                                                   export default class themes {
+ * @docid ui.themes
+ * @namespace DevExpress.ui
+ * @public
+ */
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+export default class themes {
     /**
-     * Gets the current theme&apos;s name.
+     * @docid ui.themes.current
+     * @publicName current()
+     * @static
+     * @public
      */
     static current(): string;
     /**
-     * Sets a theme with a specific name.
+     * @docid ui.themes.current
+     * @publicName current(themeName)
+     * @static
+     * @public
      */
     static current(themeName: string): void;
     /**
-     * Specifies a function to be executed each time a theme is switched.
+     * @docid ui.themes.ready
+     * @publicName ready(callback)
+     * @static
+     * @public
      */
     static ready(callback: Function): void;
     /**
-     * Specifies a function to be executed after a theme is loaded.
+     * @docid ui.themes.initialized
+     * @publicName initialized(callback)
+     * @static
+     * @public
      */
     static initialized(callback: Function): void;
 }
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export function current(): string;
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export function isMaterialBased(theme: string): boolean;
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export function isFluent(theme: string): boolean;
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export function isMaterial(theme: string): boolean;
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 export function isCompact(theme: string): boolean;

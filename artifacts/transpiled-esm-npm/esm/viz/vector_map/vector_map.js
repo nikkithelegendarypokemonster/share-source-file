@@ -9,16 +9,16 @@ import { LayoutControl } from './layout';
 import { MapLayerCollection, getMaxBound } from './map_layer';
 import { TooltipViewer } from './tooltip_viewer';
 import { generateDataKey } from './vector_map.utils';
-var DEFAULT_WIDTH = 800;
-var DEFAULT_HEIGHT = 400;
-var RE_STARTS_LAYERS = /^layers/;
-var RE_ENDS_DATA_SOURCE = /\.dataSource$/;
+const DEFAULT_WIDTH = 800;
+const DEFAULT_HEIGHT = 400;
+const RE_STARTS_LAYERS = /^layers/;
+const RE_ENDS_DATA_SOURCE = /\.dataSource$/;
 import './projection';
 import BaseWidget from '../../__internal/viz/core/m_base_widget';
 function mergeBounds(sumBounds, dataBounds) {
   return dataBounds ? [Math.min(dataBounds[0], dataBounds[2], sumBounds[0]), Math.min(dataBounds[1], dataBounds[3], sumBounds[3]), Math.max(dataBounds[0], dataBounds[2], sumBounds[2]), Math.max(dataBounds[1], dataBounds[3], sumBounds[1])] : sumBounds;
 }
-var dxVectorMap = BaseWidget.inherit({
+const dxVectorMap = BaseWidget.inherit({
   _eventsMap: {
     'onClick': {
       name: 'click'
@@ -40,8 +40,8 @@ var dxVectorMap = BaseWidget.inherit({
   _rootClass: 'dxm-vector-map',
   _themeSection: 'map',
   _fontFields: ['layer:area.label.font', 'layer:marker:dot.label.font', 'layer:marker:bubble.label.font', 'layer:marker:pie.label.font', 'layer:marker:image.label.font', 'legend.font', 'legend.title.font', 'legend.title.subtitle.font'],
-  _initLayerCollection: function _initLayerCollection(dataKey) {
-    var that = this;
+  _initLayerCollection: function (dataKey) {
+    const that = this;
     that._layerCollection = new MapLayerCollection({
       renderer: that._renderer,
       projection: that._projection,
@@ -54,7 +54,7 @@ var dxVectorMap = BaseWidget.inherit({
       notifyDirty: that._notifyDirty,
       notifyReady: that._notifyReady,
       dataReady() {
-        var bounds;
+        let bounds;
         if (that.option('getBoundsFromData') && !that.option('bounds')) {
           that._preventProjectionEvents();
           bounds = that._getBoundsFromData();
@@ -64,8 +64,8 @@ var dxVectorMap = BaseWidget.inherit({
         if (!that.option('projection')) {
           bounds = bounds || that._getBoundsFromData();
           if (Math.ceil(bounds[0]) < -180 || Math.ceil(bounds[3]) < -90 || Math.floor(bounds[2]) > 180 || Math.floor(bounds[1]) > 90) {
-            var longitudeLength = bounds[2] - bounds[0];
-            var latitudeLength = bounds[1] - bounds[3];
+            const longitudeLength = bounds[2] - bounds[0];
+            const latitudeLength = bounds[1] - bounds[3];
             that._projection.setEngine({
               to(coordinates) {
                 return [(coordinates[0] - bounds[0]) * 2 / longitudeLength - 1, (coordinates[1] - bounds[3]) * 2 / latitudeLength - 1];
@@ -80,10 +80,10 @@ var dxVectorMap = BaseWidget.inherit({
     });
   },
   _getBoundsFromData() {
-    var bounds = this._getBoundingBoxFromDataSource();
+    let bounds = this._getBoundingBoxFromDataSource();
     if (!bounds) {
-      var layersBounds = this.getLayers().map(l => l.getBounds()).filter(x => x !== undefined);
-      var boundsByData = getMaxBound(layersBounds);
+      const layersBounds = this.getLayers().map(l => l.getBounds()).filter(x => x !== undefined);
+      const boundsByData = getMaxBound(layersBounds);
       if (boundsByData) {
         bounds = boundsByData;
       }
@@ -92,8 +92,8 @@ var dxVectorMap = BaseWidget.inherit({
     bounds = [bounds[0], bounds[3], bounds[2], bounds[1]];
     return bounds;
   },
-  _initLegendsControl: function _initLegendsControl() {
-    var that = this;
+  _initLegendsControl: function () {
+    const that = this;
     that._legendsControl = new LegendsControl({
       renderer: that._renderer,
       container: that._root,
@@ -105,8 +105,8 @@ var dxVectorMap = BaseWidget.inherit({
       notifyReady: that._notifyReady
     });
   },
-  _initControlBar: function _initControlBar(dataKey) {
-    var that = this;
+  _initControlBar: function (dataKey) {
+    const that = this;
     that._controlBar = new ControlBar({
       renderer: that._renderer,
       container: that._root,
@@ -116,11 +116,11 @@ var dxVectorMap = BaseWidget.inherit({
       dataKey: dataKey
     });
   },
-  _initElements: function _initElements() {
-    var that = this;
-    var dataKey = generateDataKey();
-    var notifyCounter = 0;
-    var preventProjectionEvents;
+  _initElements: function () {
+    const that = this;
+    const dataKey = generateDataKey();
+    let notifyCounter = 0;
+    let preventProjectionEvents;
     that._preventProjectionEvents = function () {
       preventProjectionEvents = true;
     };
@@ -142,14 +142,14 @@ var dxVectorMap = BaseWidget.inherit({
 
     // The `{ eventTrigger: that._eventTrigger }` object cannot be passed to the Projection because later backward option updating is going to be added.
     that._projection = new Projection({
-      centerChanged: function centerChanged(value) {
+      centerChanged: function (value) {
         if (!preventProjectionEvents) {
           that._eventTrigger('centerChanged', {
             center: value
           });
         }
       },
-      zoomChanged: function zoomChanged(value) {
+      zoomChanged: function (value) {
         if (!preventProjectionEvents) {
           that._eventTrigger('zoomFactorChanged', {
             zoomFactor: value
@@ -180,21 +180,21 @@ var dxVectorMap = BaseWidget.inherit({
       layerCollection: that._layerCollection
     });
   },
-  _change_RESUME_LAYOUT: function _change_RESUME_LAYOUT() {
+  _change_RESUME_LAYOUT: function () {
     this._layoutControl.resume();
   },
   _initialChanges: ['PROJECTION', 'RESUME_LAYOUT', 'LAYOUT_INIT', 'BOUNDS', 'MAX_ZOOM_FACTOR', 'ZOOM_FACTOR', 'CENTER'],
   _layoutChangesOrder: ['RESUME_LAYOUT', 'LAYERS'],
   _customChangesOrder: ['EXTRA_ELEMENTS'],
-  _initCore: function _initCore() {
+  _initCore: function () {
     this._root = this._renderer.root.attr({
       align: 'center',
       cursor: 'default'
     });
     this._initElements();
   },
-  _disposeCore: function _disposeCore() {
-    var that = this;
+  _disposeCore: function () {
+    const that = this;
     that._controlBar.dispose();
     that._gestureHandler.dispose();
     that._tracker.dispose();
@@ -206,22 +206,22 @@ var dxVectorMap = BaseWidget.inherit({
     that._projection.dispose();
     that._dataExchanger = that._gestureHandler = that._projection = that._tracker = that._layoutControl = that._root = that._layerCollection = that._controlBar = that._legendsControl = null;
   },
-  _setupInteraction: function _setupInteraction() {
-    var options = {
+  _setupInteraction: function () {
+    const options = {
       centeringEnabled: !!_parseScalar(this._getOption('panningEnabled', true), true),
       zoomingEnabled: !!_parseScalar(this._getOption('zoomingEnabled', true), true)
     };
     this._gestureHandler.setInteraction(options);
     this._controlBar.setInteraction(options);
   },
-  _getDefaultSize: function _getDefaultSize() {
+  _getDefaultSize: function () {
     return {
       width: DEFAULT_WIDTH,
       height: DEFAULT_HEIGHT
     };
   },
-  _applySize: function _applySize(rect) {
-    var layout = {
+  _applySize: function (rect) {
+    const layout = {
       left: rect[0],
       top: rect[1],
       width: rect[2] - rect[0],
@@ -241,7 +241,7 @@ var dxVectorMap = BaseWidget.inherit({
   // T318992
   // Previously mechanism used the "_optionValuesEqual" method but after T318992 usage of "_optionValuesEqual" was stopped
   // and new (more meaningful) method was added - "_optionChanging"
-  _optionChanging: function _optionChanging(name, currentValue, nextValue) {
+  _optionChanging: function (name, currentValue, nextValue) {
     if (currentValue && nextValue) {
       if (RE_STARTS_LAYERS.test(name)) {
         if (currentValue.dataSource && nextValue.dataSource && currentValue !== nextValue) {
@@ -252,7 +252,7 @@ var dxVectorMap = BaseWidget.inherit({
       }
     }
   },
-  _applyChanges: function _applyChanges() {
+  _applyChanges: function () {
     this._notifyDirty();
     this.callBase.apply(this, arguments);
     this._notifyReady();
@@ -274,77 +274,77 @@ var dxVectorMap = BaseWidget.inherit({
     center: 'CENTER'
   },
   _optionChangesOrder: ['PROJECTION', 'BOUNDS', 'MAX_ZOOM_FACTOR', 'ZOOM_FACTOR', 'CENTER', 'BACKGROUND', 'CONTROL_BAR', 'LEGENDS', 'TRACKER', 'INTERACTION'],
-  _change_PROJECTION: function _change_PROJECTION() {
+  _change_PROJECTION: function () {
     this._setProjection();
   },
-  _change_BOUNDS: function _change_BOUNDS() {
+  _change_BOUNDS: function () {
     this._setBounds();
   },
-  _change_MAX_ZOOM_FACTOR: function _change_MAX_ZOOM_FACTOR() {
+  _change_MAX_ZOOM_FACTOR: function () {
     this._setMaxZoom();
   },
-  _change_ZOOM_FACTOR: function _change_ZOOM_FACTOR() {
+  _change_ZOOM_FACTOR: function () {
     this._setZoom();
   },
-  _change_CENTER: function _change_CENTER() {
+  _change_CENTER: function () {
     this._setCenter();
   },
-  _change_BACKGROUND: function _change_BACKGROUND() {
+  _change_BACKGROUND: function () {
     this._setBackgroundOptions();
   },
-  _change_LAYERS: function _change_LAYERS() {
+  _change_LAYERS: function () {
     this._setLayerCollectionOptions();
   },
-  _change_CONTROL_BAR: function _change_CONTROL_BAR() {
+  _change_CONTROL_BAR: function () {
     this._setControlBarOptions();
   },
-  _change_EXTRA_ELEMENTS: function _change_EXTRA_ELEMENTS() {
+  _change_EXTRA_ELEMENTS: function () {
     this._renderExtraElements();
   },
-  _change_LEGENDS: function _change_LEGENDS() {
+  _change_LEGENDS: function () {
     this._setLegendsOptions();
   },
-  _change_TRACKER: function _change_TRACKER() {
+  _change_TRACKER: function () {
     this._setTrackerOptions();
   },
-  _change_INTERACTION: function _change_INTERACTION() {
+  _change_INTERACTION: function () {
     this._setupInteraction();
   },
   _themeDependentChanges: ['BACKGROUND', 'LAYERS', 'CONTROL_BAR', 'LEGENDS', 'TRACKER', 'INTERACTION'],
-  _setProjection: function _setProjection() {
+  _setProjection: function () {
     this._projection.setEngine(this.option('projection'));
   },
-  _setBounds: function _setBounds() {
+  _setBounds: function () {
     this._projection.setBounds(this.option('bounds'));
   },
-  _setMaxZoom: function _setMaxZoom() {
+  _setMaxZoom: function () {
     this._projection.setMaxZoom(this.option('maxZoomFactor'));
   },
-  _setZoom: function _setZoom() {
+  _setZoom: function () {
     this._projection.setZoom(this.option('zoomFactor'));
   },
-  _setCenter: function _setCenter() {
+  _setCenter: function () {
     this._projection.setCenter(this.option('center'));
   },
-  _setBackgroundOptions: function _setBackgroundOptions() {
+  _setBackgroundOptions: function () {
     this._layerCollection.setBackgroundOptions(this._getOption('background'));
   },
-  _setLayerCollectionOptions: function _setLayerCollectionOptions() {
+  _setLayerCollectionOptions: function () {
     this._layerCollection.setOptions(this.option('layers'));
   },
   _getBoundingBoxFromDataSource() {
-    var that = this;
-    var layers = that._layerCollection.items();
-    var infinityBounds = [Infinity, -Infinity, -Infinity, Infinity];
-    var resultBBox = layers && layers.length ? layers.reduce((sumBBox, l) => {
-      var layerData = l.getData();
-      var itemCount = layerData.count();
+    const that = this;
+    const layers = that._layerCollection.items();
+    const infinityBounds = [Infinity, -Infinity, -Infinity, Infinity];
+    const resultBBox = layers && layers.length ? layers.reduce((sumBBox, l) => {
+      const layerData = l.getData();
+      const itemCount = layerData.count();
       if (itemCount > 0) {
-        var rootBBox = layerData.getBBox();
+        const rootBBox = layerData.getBBox();
         if (rootBBox) {
           sumBBox = mergeBounds(sumBBox, rootBBox);
         } else {
-          for (var i = 0; i < itemCount; i++) {
+          for (let i = 0; i < itemCount; i++) {
             sumBBox = mergeBounds(sumBBox, layerData.getBBox(i));
           }
         }
@@ -353,13 +353,13 @@ var dxVectorMap = BaseWidget.inherit({
     }, infinityBounds) : undefined;
     return resultBBox === infinityBounds ? undefined : resultBBox;
   },
-  _setControlBarOptions: function _setControlBarOptions() {
+  _setControlBarOptions: function () {
     this._controlBar.setOptions(this._getOption('controlBar'));
   },
-  _setLegendsOptions: function _setLegendsOptions() {
+  _setLegendsOptions: function () {
     this._legendsControl.setOptions(this.option('legends'));
   },
-  _setTrackerOptions: function _setTrackerOptions() {
+  _setTrackerOptions: function () {
     this._tracker.setOptions({
       touchEnabled: this._getOption('touchEnabled', true),
       wheelEnabled: this._getOption('wheelEnabled', true)
@@ -368,25 +368,25 @@ var dxVectorMap = BaseWidget.inherit({
   getLayers() {
     return this._layerCollection.items().map(l => l.proxy);
   },
-  getLayerByIndex: function getLayerByIndex(index) {
-    var layer = this._layerCollection.byIndex(index);
+  getLayerByIndex: function (index) {
+    const layer = this._layerCollection.byIndex(index);
     return layer ? layer.proxy : null;
   },
-  getLayerByName: function getLayerByName(name) {
-    var layer = this._layerCollection.byName(name);
+  getLayerByName: function (name) {
+    const layer = this._layerCollection.byName(name);
     return layer ? layer.proxy : null;
   },
-  clearSelection: function clearSelection(_noEvent) {
-    var layers = this._layerCollection.items();
-    var i;
-    var ii = layers.length;
+  clearSelection: function (_noEvent) {
+    const layers = this._layerCollection.items();
+    let i;
+    const ii = layers.length;
     for (i = 0; i < ii; ++i) {
       layers[i].clearSelection(_noEvent);
     }
     return this;
   },
-  center: function center(value) {
-    var that = this;
+  center: function (value) {
+    const that = this;
     if (value === undefined) {
       return that._projection.getCenter();
     } else {
@@ -394,8 +394,8 @@ var dxVectorMap = BaseWidget.inherit({
       return that;
     }
   },
-  zoomFactor: function zoomFactor(value) {
-    var that = this;
+  zoomFactor: function (value) {
+    const that = this;
     if (value === undefined) {
       return that._projection.getZoom();
     } else {
@@ -403,8 +403,8 @@ var dxVectorMap = BaseWidget.inherit({
       return that;
     }
   },
-  viewport: function viewport(value) {
-    var that = this;
+  viewport: function (value) {
+    const that = this;
     if (value === undefined) {
       return that._projection.getViewport();
     } else {
@@ -412,14 +412,14 @@ var dxVectorMap = BaseWidget.inherit({
       return that;
     }
   },
-  convertCoordinates: function convertCoordinates(coordinates) {
+  convertCoordinates: function (coordinates) {
     coordinates = coordinates && coordinates.length ? coordinates : [arguments[0], arguments[1]];
     return this.convertToGeo(coordinates[0], coordinates[1]);
   },
-  convertToGeo: function convertToGeo(x, y) {
+  convertToGeo: function (x, y) {
     return this._projection.fromScreenPoint([x, y]);
   },
-  convertToXY: function convertToXY(longitude, latitude) {
+  convertToXY: function (longitude, latitude) {
     return this._projection.toScreenPoint([longitude, latitude]);
   }
 });

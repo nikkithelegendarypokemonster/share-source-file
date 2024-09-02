@@ -1,9 +1,9 @@
 "use strict";
 
 exports.default = void 0;
-var _ui = _interopRequireDefault(require("./date_range_box/ui.date_range_box"));
+var _m_date_range_box = _interopRequireDefault(require("../__internal/ui/date_range_box/m_date_range_box"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-var _default = exports.default = _ui.default;
+var _default = exports.default = _m_date_range_box.default; // STYLE dateRangeBox
 /**
  * @name dxDateRangeBoxOptions.inputAttr
  * @hidden

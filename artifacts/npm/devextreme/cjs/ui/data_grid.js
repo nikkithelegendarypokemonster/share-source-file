@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/data_grid.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,6 +12,7 @@ exports.default = void 0;
 var _m_widget = _interopRequireDefault(require("../__internal/grids/data_grid/m_widget"));
 var _filter_builder = _interopRequireDefault(require("./filter_builder"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+// STYLE dataGrid
 // NOTE: This redundant import allows to build
 // dependencies between components correctly by theme-builder
 // eslint-disable-next-line no-unused-vars

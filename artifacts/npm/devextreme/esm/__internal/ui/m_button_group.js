@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/ui/m_button_group.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,25 +14,25 @@ import { isDefined, isFunction } from '../../core/utils/type';
 import Button from '../../ui/button';
 import CollectionWidget from '../../ui/collection/ui.collection_widget.edit';
 import Widget from '../../ui/widget/ui.widget';
-var BUTTON_GROUP_CLASS = 'dx-buttongroup';
-var BUTTON_GROUP_WRAPPER_CLASS = "".concat(BUTTON_GROUP_CLASS, "-wrapper");
-var BUTTON_GROUP_ITEM_CLASS = "".concat(BUTTON_GROUP_CLASS, "-item");
-var BUTTON_GROUP_FIRST_ITEM_CLASS = "".concat(BUTTON_GROUP_CLASS, "-first-item");
-var BUTTON_GROUP_LAST_ITEM_CLASS = "".concat(BUTTON_GROUP_CLASS, "-last-item");
-var BUTTON_GROUP_ITEM_HAS_WIDTH = "".concat(BUTTON_GROUP_ITEM_CLASS, "-has-width");
-var SHAPE_STANDARD_CLASS = 'dx-shape-standard';
-var BUTTON_GROUP_STYLING_MODE_CLASS = {
+const BUTTON_GROUP_CLASS = 'dx-buttongroup';
+const BUTTON_GROUP_WRAPPER_CLASS = `${BUTTON_GROUP_CLASS}-wrapper`;
+const BUTTON_GROUP_ITEM_CLASS = `${BUTTON_GROUP_CLASS}-item`;
+const BUTTON_GROUP_FIRST_ITEM_CLASS = `${BUTTON_GROUP_CLASS}-first-item`;
+const BUTTON_GROUP_LAST_ITEM_CLASS = `${BUTTON_GROUP_CLASS}-last-item`;
+const BUTTON_GROUP_ITEM_HAS_WIDTH = `${BUTTON_GROUP_ITEM_CLASS}-has-width`;
+const SHAPE_STANDARD_CLASS = 'dx-shape-standard';
+const BUTTON_GROUP_STYLING_MODE_CLASS = {
   contained: 'dx-buttongroup-mode-contained',
   outlined: 'dx-buttongroup-mode-outlined',
   text: 'dx-buttongroup-mode-text'
 };
-var ButtonCollection = CollectionWidget.inherit({
+const ButtonCollection = CollectionWidget.inherit({
   _initTemplates() {
     this.callBase();
     this._templateManager.addDefaultTemplates({
       item: new BindableTemplate(($container, data, model) => {
         this._prepareItemStyles($container);
-        var template = this.option('buttonTemplate');
+        const template = this.option('buttonTemplate');
         this._createComponent($container, Button, extend({}, model, data, this._getBasicButtonOptions(), {
           _templateData: this._hasCustomTemplate(template) ? model : {},
           template: model.template || template
@@ -61,9 +61,9 @@ var ButtonCollection = CollectionWidget.inherit({
     return 'dx-item-selected dx-state-selected';
   },
   _prepareItemStyles($item) {
-    var itemIndex = $item.data('dxItemIndex');
+    const itemIndex = $item.data('dxItemIndex');
     itemIndex === 0 && $item.addClass(BUTTON_GROUP_FIRST_ITEM_CLASS);
-    var items = this.option('items');
+    const items = this.option('items');
     items && itemIndex === items.length - 1 && $item.addClass(BUTTON_GROUP_LAST_ITEM_CLASS);
     $item.addClass(SHAPE_STANDARD_CLASS);
   },
@@ -98,7 +98,7 @@ var ButtonCollection = CollectionWidget.inherit({
     this.callBase(e);
   }
 });
-var ButtonGroup = Widget.inherit({
+const ButtonGroup = Widget.inherit({
   _getDefaultOptions() {
     return extend(this.callBase(), {
       hoverStateEnabled: true,
@@ -130,15 +130,14 @@ var ButtonGroup = Widget.inherit({
     this.callBase();
   },
   _renderStylingMode() {
-    var _a;
-    var {
+    const {
       stylingMode
     } = this.option();
     // eslint-disable-next-line no-restricted-syntax, guard-for-in
-    for (var key in BUTTON_GROUP_STYLING_MODE_CLASS) {
+    for (const key in BUTTON_GROUP_STYLING_MODE_CLASS) {
       this.$element().removeClass(BUTTON_GROUP_STYLING_MODE_CLASS[key]);
     }
-    this.$element().addClass((_a = BUTTON_GROUP_STYLING_MODE_CLASS[stylingMode]) !== null && _a !== void 0 ? _a : BUTTON_GROUP_STYLING_MODE_CLASS.contained);
+    this.$element().addClass(BUTTON_GROUP_STYLING_MODE_CLASS[stylingMode] ?? BUTTON_GROUP_STYLING_MODE_CLASS.contained);
   },
   _fireSelectionChangeEvent(addedItems, removedItems) {
     this._createActionByOption('onSelectionChanged', {
@@ -149,9 +148,9 @@ var ButtonGroup = Widget.inherit({
     });
   },
   _renderButtons() {
-    var $buttons = $('<div>').addClass(BUTTON_GROUP_WRAPPER_CLASS).appendTo(this.$element());
-    var selectedItems = this.option('selectedItems');
-    var options = {
+    const $buttons = $('<div>').addClass(BUTTON_GROUP_WRAPPER_CLASS).appendTo(this.$element());
+    const selectedItems = this.option('selectedItems');
+    const options = {
       selectionMode: this.option('selectionMode'),
       items: this.option('items'),
       keyExpr: this.option('keyExpr'),
@@ -167,7 +166,7 @@ var ButtonGroup = Widget.inherit({
       noDataText: '',
       selectionRequired: false,
       onItemRendered: e => {
-        var width = this.option('width');
+        const width = this.option('width');
         isDefined(width) && $(e.itemElement).addClass(BUTTON_GROUP_ITEM_HAS_WIDTH);
       },
       onSelectionChanged: e => {

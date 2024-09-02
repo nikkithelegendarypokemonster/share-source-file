@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/renovation/ui/editors/common/text_editor_props.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,17 +10,12 @@
 
 exports.TextEditorProps = void 0;
 var _themes = require("../../../../ui/themes");
-const TextEditorProps = exports.TextEditorProps = Object.defineProperties({
+const TextEditorProps = exports.TextEditorProps = {
   maxLength: null,
   spellCheck: false,
   valueChangeEvent: 'change',
+  get stylingMode() {
+    return (0, _themes.isMaterial)((0, _themes.current)()) ? 'filled' : 'outlined';
+  },
   defaultValue: ''
-}, {
-  stylingMode: {
-    get: function () {
-      return (0, _themes.isMaterial)((0, _themes.current)()) ? 'filled' : 'outlined';
-    },
-    configurable: true,
-    enumerable: true
-  }
-});
+};

@@ -1,50 +1,60 @@
 /**
 * DevExtreme (exporter/export_load_panel.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /**
- * Configures the load panel.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress
  */
 export interface ExportLoadPanel {
     /**
-     * Specifies whether the load panel is enabled.
+     * @docid
+     * @default true
      */
     enabled?: boolean;
     /**
-     * Specifies text displayed on the load panel.
+     * @docid
+     * @default "Exporting..."
      */
     text?: string;
     /**
-     * Specifies the width of the load panel in pixels.
+     * @docid
+     * @default 200
      */
     width?: number;
     /**
-     * Specifies the height of the load panel in pixels.
+     * @docid
+     * @default 90
      */
     height?: number;
     /**
-     * Specifies whether to show the loading indicator.
+     * @docid
+     * @default true
      */
     showIndicator?: boolean;
     /**
-     * Specifies a URL pointing to an image to be used as a loading indicator.
+     * @docid
+     * @default ""
      */
     indicatorSrc?: string;
     /**
-     * Specifies whether to show the pane of the load panel.
+     * @docid
+     * @default true
      */
     showPane?: boolean;
     /**
-     * Specifies whether to shade the UI component when the load panel is shown.
+     * @docid
+     * @default false
      */
     shading?: boolean;
     /**
-     * Specifies the shading color. Applies only if shading is true.
+     * @docid
+     * @default ''
      */
     shadingColor?: string;
 }

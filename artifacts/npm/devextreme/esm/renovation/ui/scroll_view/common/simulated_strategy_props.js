@@ -1,15 +1,14 @@
 /**
 * DevExtreme (esm/renovation/ui/scroll_view/common/simulated_strategy_props.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-import _extends from "@babel/runtime/helpers/esm/extends";
 import { BaseScrollableProps } from './base_scrollable_props';
 import { isDesktop } from '../utils/get_default_option_value';
-export var ScrollableSimulatedProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(BaseScrollableProps), Object.getOwnPropertyDescriptors({
+export const ScrollableSimulatedProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(BaseScrollableProps), Object.getOwnPropertyDescriptors({
   inertiaEnabled: true,
   useKeyboard: true,
   get showScrollbar() {

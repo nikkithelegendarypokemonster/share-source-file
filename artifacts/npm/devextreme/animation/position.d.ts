@@ -1,7 +1,7 @@
 /**
 * DevExtreme (animation/position.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -16,89 +16,108 @@ import {
     VerticalAlignment,
 } from '../common';
 
+/** @public */
 export type CollisionResolution = 'fit' | 'flip' | 'flipfit' | 'none';
+/** @public */
 export type CollisionResolutionCombination = 'fit' | 'fit flip' | 'fit flipfit' | 'fit none' | 'flip' | 'flip fit' | 'flip none' | 'flipfit' | 'flipfit fit' | 'flipfit none' | 'none' | 'none fit' | 'none flip' | 'none flipfit';
 
 /**
- * Configures the position of an overlay element.
+ * @docid
+ * @namespace DevExpress
+ * @type object
+ * @public
  */
 export interface PositionConfig {
     /**
-     * Specifies the target element&apos;s side or corner where the overlay element should be positioned.
+     * @docid
+     * @public
      */
     at?: PositionAlignment | {
       /**
-       * Specifies a position in the horizontal direction (for left, right, or center alignment).
+       * @docid
        */
       x?: HorizontalAlignment;
       /**
-       * Specifies a position in the vertical direction (for top, bottom, or center alignment).
+       * @docid
        */
       y?: VerticalAlignment;
     };
     /**
-     * A boundary element in which the overlay element must be positioned.
+     * @docid
+     * @public
      */
     boundary?: string | UserDefinedElement | Window;
     /**
-     * Specifies the offset of boundaries from the boundary element.
+     * @docid
+     * @public
      */
     boundaryOffset?: string | {
       /**
-       * Specifies a horizontal offset.
+       * @docid
+       * @default 0
        */
       x?: number;
       /**
-       * Specifies a vertical offset.
+       * @docid
+       * @default 0
        */
       y?: number;
     };
     /**
-     * Specifies how to resolve collisions - when the overlay element exceeds the boundary element.
+     * @docid
+     * @public
      */
     collision?: CollisionResolutionCombination | {
       /**
-       * Specifies how to resolve horizontal collisions.
+       * @docid
+       * @default 'none'
        */
       x?: CollisionResolution;
       /**
-       * Specifies how to resolve vertical collisions.
+       * @docid
+       * @default 'none'
        */
       y?: CollisionResolution;
     };
     /**
-     * Specifies the overlay element&apos;s side or corner to align with a target element.
+     * @docid
+     * @public
      */
     my?: PositionAlignment | {
       /**
-       * Specifies a position in the horizontal direction (for left, right, or center alignment).
+       * @docid
        */
       x?: HorizontalAlignment;
       /**
-       * Specifies a position in the vertical direction (for top, bottom, or center alignment).
+       * @docid
        */
       y?: VerticalAlignment;
     };
     /**
-     * The target element relative to which the overlay element should be positioned.
+     * @docid
+     * @public
      */
     of?: string | UserDefinedElement | Window;
     /**
-     * Specifies the overlay element&apos;s offset from a specified position.
+     * @docid
+     * @public
      */
     offset?: string | {
       /**
-       * Specifies a horizontal offset.
+       * @docid
+       * @default 0
        */
       x?: number;
       /**
-       * Specifies a vertical offset.
+       * @docid
+       * @default 0
        */
       y?: number;
     };
 }
 
 /**
+ * @public
  * @deprecated Use the PositionConfig type instead
  */
 export interface positionConfig extends PositionConfig { }

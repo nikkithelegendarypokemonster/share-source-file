@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/load_panel.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -35,133 +35,196 @@ import {
 } from '../common';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_load_panel_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxLoadPanel>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_load_panel_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxLoadPanel>;
 
 /**
- * The type of the hiding event handler&apos;s argument.
+ * @docid _ui_load_panel_HidingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type HidingEvent = Cancelable & EventInfo<dxLoadPanel>;
 
 /**
- * The type of the hidden event handler&apos;s argument.
+ * @docid _ui_load_panel_HiddenEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type HiddenEvent = EventInfo<dxLoadPanel>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_load_panel_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxLoadPanel>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_load_panel_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxLoadPanel> & ChangedOptionInfo;
 
 /**
- * The type of the showing event handler&apos;s argument.
+ * @docid _ui_load_panel_ShowingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type ShowingEvent = Cancelable & EventInfo<dxLoadPanel>;
 
 /**
- * The type of the shown event handler&apos;s argument.
+ * @docid _ui_load_panel_ShownEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ShownEvent = EventInfo<dxLoadPanel>;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxLoadPanelOptions extends dxOverlayOptions<dxLoadPanel> {
     /**
-     * Configures UI component visibility animations. This object contains two fields: show and hide.
+     * @docid
+     * @default null
+     * @public
+     * @type object
      */
     animation?: dxLoadPanelAnimation;
     /**
-     * Specifies the UI component&apos;s container.
+     * @docid
+     * @default undefined
+     * @public
      */
     container?: string | UserDefinedElement;
     /**
-     * The delay in milliseconds after which the load panel is displayed.
+     * @docid
+     * @default 0
+     * @public
      */
     delay?: number;
     /**
-     * Specifies whether or not the UI component can be focused.
+     * @docid
+     * @default false
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * Specifies the UI component&apos;s height.
+     * @docid
+     * @default 90
+     * @default 60 &for(Material)
+     * @default 'auto' &for(Fluent)
+     * @public
      */
     height?: number | string | (() => number | string);
     /**
-     * A URL pointing to an image to be used as a load indicator.
+     * @docid
+     * @default ""
+     * @public
      */
     indicatorSrc?: string;
     /**
-     * Specifies the maximum height the UI component can reach while resizing.
+     * @docid
+     * @default 60 &for(Material)
+     * @public
      */
     maxHeight?: number | string | (() => number | string);
     /**
-     * Specifies the maximum width the UI component can reach while resizing.
+     * @docid
+     * @default 60 &for(Material)
+     * @public
      */
     maxWidth?: number | string | (() => number | string);
     /**
-     * Specifies the text displayed in the load panel. Ignored in the Material Design theme.
+     * @docid
+     * @default "Loading ..."
+     * @default "" &for(Material)
+     * @public
      */
     message?: string;
     /**
-     * Positions the UI component.
+     * @docid
+     * @public
      */
     position?: PositionAlignment | PositionConfig | Function;
     /**
-     * Specifies the shading color. Applies only if shading is enabled.
+     * @docid
+     * @default 'transparent'
+     * @default '' &for(Android|iOS)
+     * @public
      */
     shadingColor?: string;
     /**
-     * A Boolean value specifying whether or not to show a load indicator.
+     * @docid
+     * @default true
+     * @public
      */
     showIndicator?: boolean;
     /**
-     * A Boolean value specifying whether or not to show the pane behind the load indicator.
+     * @docid
+     * @default true
+     * @public
      */
     showPane?: boolean;
     /**
-     * Specifies the UI component&apos;s width.
+     * @docid
+     * @default 222
+     * @default 60 &for(Material)
+     * @default 'auto' &for(Fluent)
+     * @public
      */
     width?: number | string | (() => number | string);
 }
 /**
- * Configures UI component visibility animations. This object contains two fields: show and hide.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.ui
  */
 export interface dxLoadPanelAnimation extends dxOverlayAnimation {
     /**
-     * An object that defines the animation properties used when the UI component is being hidden.
+     * @docid dxLoadPanelOptions.animation.hide
+     * @default null
+     * @public
      */
     hide?: AnimationConfig;
     /**
-     * An object that defines the animation properties used when the UI component is being shown.
+     * @docid dxLoadPanelOptions.animation.show
+     * @default null
+     * @public
      */
     show?: AnimationConfig;
 }
 /**
- * The LoadPanel is an overlay UI component notifying the viewer that loading is in progress.
+ * @docid
+ * @inherits dxOverlay
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxLoadPanel extends dxOverlay<dxLoadPanelOptions> { }
 
+/** @public */
 export type Properties = dxLoadPanelOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxLoadPanelOptions;
 
 

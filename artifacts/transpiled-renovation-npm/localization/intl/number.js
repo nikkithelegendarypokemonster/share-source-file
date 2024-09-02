@@ -51,8 +51,7 @@ var _default = exports.default = {
     if (format === 'percent') {
       config.style = 'percent';
     } else if (format === 'currency') {
-      var _formatConfig$useCurr;
-      const useAccountingStyle = (_formatConfig$useCurr = formatConfig.useCurrencyAccountingStyle) !== null && _formatConfig$useCurr !== void 0 ? _formatConfig$useCurr : (0, _config.default)().defaultUseCurrencyAccountingStyle;
+      const useAccountingStyle = formatConfig.useCurrencyAccountingStyle ?? (0, _config.default)().defaultUseCurrencyAccountingStyle;
       config.style = 'currency';
       config.currency = formatConfig.currency || (0, _config.default)().defaultCurrency;
       config.currencySign = CURRENCY_STYLES[+useAccountingStyle];

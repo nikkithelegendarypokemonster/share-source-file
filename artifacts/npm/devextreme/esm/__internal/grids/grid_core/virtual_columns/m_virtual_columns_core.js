@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/grid_core/virtual_columns/m_virtual_columns_core.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,22 +12,22 @@ export function foreachColumnInfo(info, callback, rowIndex, offsets, columnCount
   offsets = offsets || [];
   lastProcessedIndexes = lastProcessedIndexes || [];
   offsets[rowIndex] = offsets[rowIndex] || 0;
-  var row = info[rowIndex];
-  var startIndex = lastProcessedIndexes[rowIndex] + 1 || 0;
-  var processedColumnCount = 0;
-  var colIndex;
+  const row = info[rowIndex];
+  const startIndex = lastProcessedIndexes[rowIndex] + 1 || 0;
+  let processedColumnCount = 0;
+  let colIndex;
   if (!row) {
     return;
   }
   for (colIndex = startIndex; colIndex < row.length; colIndex++) {
-    var cell = row[colIndex];
-    var visibleIndex = colIndex + offsets[rowIndex];
-    var colspan = cell.colspan || 1;
+    const cell = row[colIndex];
+    const visibleIndex = colIndex + offsets[rowIndex];
+    const colspan = cell.colspan || 1;
     foreachColumnInfo(info, callback, rowIndex + (cell.rowspan || 1), offsets, colspan, lastProcessedIndexes);
     offsets[rowIndex] += colspan - 1;
     processedColumnCount += colspan;
     if (cell.rowspan) {
-      for (var i = rowIndex + 1; i < rowIndex + cell.rowspan; i++) {
+      for (let i = rowIndex + 1; i < rowIndex + cell.rowspan; i++) {
         offsets[i] = offsets[i] || 0;
         offsets[i] += cell.colspan || 1;
       }
@@ -42,12 +42,12 @@ export function foreachColumnInfo(info, callback, rowIndex, offsets, columnCount
   lastProcessedIndexes[rowIndex] = colIndex;
 }
 export function createColumnsInfo(info, startIndex, endIndex) {
-  var newInfo = [];
+  const newInfo = [];
   foreachColumnInfo(info, (columnInfo, visibleIndex, rowIndex) => {
-    var cell = columnInfo;
-    var colspan;
-    var cellColspan = cell.colspan || 1;
-    var isVisible = visibleIndex + cellColspan - 1 >= startIndex && visibleIndex < endIndex;
+    let cell = columnInfo;
+    let colspan;
+    const cellColspan = cell.colspan || 1;
+    const isVisible = visibleIndex + cellColspan - 1 >= startIndex && visibleIndex < endIndex;
     newInfo[rowIndex] = newInfo[rowIndex] || [];
     if (isVisible) {
       if (visibleIndex < startIndex) {
@@ -70,7 +70,7 @@ export function createColumnsInfo(info, startIndex, endIndex) {
     }
     return undefined;
   });
-  for (var i = 0; i < newInfo.length; i++) {
+  for (let i = 0; i < newInfo.length; i++) {
     newInfo[i] = newInfo[i] || [];
   }
   return newInfo;

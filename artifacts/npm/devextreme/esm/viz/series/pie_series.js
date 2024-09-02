@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/series/pie_series.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,39 +13,39 @@ import { chart } from './scatter_series';
 import { normalizeAngle, map, extractColor } from '../core/utils';
 import { extend } from '../../core/utils/extend';
 import { chart as barChart } from './bar_series';
-var chartScatterSeries = chart;
-var barSeries = barChart.bar;
-var _extend = extend;
-var _each = each;
-var _noop = noop;
-var _map = map;
-var _isFinite = isFinite;
-var _max = Math.max;
-var ANIMATION_DURATION = 0.7;
-var INSIDE = 'inside';
-export var pie = _extend({}, barSeries, {
-  _setGroupsSettings: function _setGroupsSettings() {
+const chartScatterSeries = chart;
+const barSeries = barChart.bar;
+const _extend = extend;
+const _each = each;
+const _noop = noop;
+const _map = map;
+const _isFinite = isFinite;
+const _max = Math.max;
+const ANIMATION_DURATION = 0.7;
+const INSIDE = 'inside';
+export const pie = _extend({}, barSeries, {
+  _setGroupsSettings: function () {
     chartScatterSeries._setGroupsSettings.apply(this, arguments);
     this._labelsGroup.attr({
       'pointer-events': null
     });
   },
   _createErrorBarGroup: _noop,
-  _drawPoint: function _drawPoint(options) {
-    var point = options.point;
-    var legendCallback = this._legendCallback;
+  _drawPoint: function (options) {
+    const point = options.point;
+    const legendCallback = this._legendCallback;
     chartScatterSeries._drawPoint.call(this, options);
     !point.isVisible() && point.setInvisibility();
     point.isSelected() && legendCallback();
   },
-  _getOldPoint: function _getOldPoint(data, oldPointsByArgument, index) {
-    var point = (this._points || [])[index];
+  _getOldPoint: function (data, oldPointsByArgument, index) {
+    const point = (this._points || [])[index];
     if (point) {
       oldPointsByArgument[point.argument.valueOf()] = oldPointsByArgument[point.argument.valueOf()].filter(p => p !== point);
     }
     return point;
   },
-  adjustLabels: function adjustLabels(moveLabelsFromCenter) {
+  adjustLabels: function (moveLabelsFromCenter) {
     return (this._points || []).reduce((r, p) => {
       if (p._label.isVisible()) {
         p.setLabelTrackerData();
@@ -58,8 +58,8 @@ export var pie = _extend({}, barSeries, {
   _applyElementsClipRect: _noop,
   getColor: _noop,
   areErrorBarsVisible: _noop,
-  drawLabelsWOPoints: function drawLabelsWOPoints() {
-    var that = this;
+  drawLabelsWOPoints: function () {
+    const that = this;
     if (that._options.label.position === INSIDE) {
       return false;
     }
@@ -69,49 +69,49 @@ export var pie = _extend({}, barSeries, {
     });
     return true;
   },
-  getPointsCount: function getPointsCount() {
+  getPointsCount: function () {
     return this._data.filter(d => this._checkData(d)).length;
   },
-  setMaxPointsCount: function setMaxPointsCount(count) {
+  setMaxPointsCount: function (count) {
     this._pointsCount = count;
   },
-  _getCreatingPointOptions: function _getCreatingPointOptions(data, dataIndex) {
+  _getCreatingPointOptions: function (data, dataIndex) {
     return this._getPointOptions(data, dataIndex);
   },
-  _updateOptions: function _updateOptions(options) {
+  _updateOptions: function (options) {
     this.labelSpace = 0;
     this.innerRadius = this.type === 'pie' ? 0 : options.innerRadius;
   },
-  _checkData: function _checkData(data, skippedFields) {
-    var base = barSeries._checkData.call(this, data, skippedFields, {
+  _checkData: function (data, skippedFields) {
+    const base = barSeries._checkData.call(this, data, skippedFields, {
       value: this.getValueFields()[0]
     });
     return this._options.paintNullPoints ? base : base && data.value !== null;
   },
   _createGroups: chartScatterSeries._createGroups,
-  _setMarkerGroupSettings: function _setMarkerGroupSettings() {
+  _setMarkerGroupSettings: function () {
     this._markersGroup.attr({
       'class': 'dxc-markers'
     });
   },
   _getMainColor(data, point) {
-    var pointsByArg = this.getPointsByArg(data.argument);
-    var argumentIndex = point ? pointsByArg.indexOf(point) : pointsByArg.length;
+    const pointsByArg = this.getPointsByArg(data.argument);
+    const argumentIndex = point ? pointsByArg.indexOf(point) : pointsByArg.length;
     return this._options.mainSeriesColor(data.argument, argumentIndex, this._pointsCount);
   },
-  _getPointOptions: function _getPointOptions(data) {
+  _getPointOptions: function (data) {
     return this._parsePointOptions(this._preparePointOptions(), this._options.label, data);
   },
-  _getRangeData: function _getRangeData() {
+  _getRangeData: function () {
     return this._rangeData;
   },
-  _createPointStyles: function _createPointStyles(pointOptions, data, point) {
+  _createPointStyles: function (pointOptions, data, point) {
     var _pointOptions$color;
-    var that = this;
-    var mainColor = extractColor(pointOptions.color, true) || that._getMainColor(data, point);
-    var colorId = (_pointOptions$color = pointOptions.color) === null || _pointOptions$color === void 0 ? void 0 : _pointOptions$color.fillId;
-    var hoverStyle = pointOptions.hoverStyle || {};
-    var selectionStyle = pointOptions.selectionStyle || {};
+    const that = this;
+    const mainColor = extractColor(pointOptions.color, true) || that._getMainColor(data, point);
+    const colorId = (_pointOptions$color = pointOptions.color) === null || _pointOptions$color === void 0 ? void 0 : _pointOptions$color.fillId;
+    const hoverStyle = pointOptions.hoverStyle || {};
+    const selectionStyle = pointOptions.selectionStyle || {};
     if (colorId) {
       that._turnOffHatching(hoverStyle, selectionStyle);
     }
@@ -127,10 +127,10 @@ export var pie = _extend({}, barSeries, {
       }
     };
   },
-  _getArrangeMinShownValue: function _getArrangeMinShownValue(points, total) {
-    var minSegmentSize = this._options.minSegmentSize;
-    var totalMinSegmentSize = 0;
-    var totalNotMinValues = 0;
+  _getArrangeMinShownValue: function (points, total) {
+    const minSegmentSize = this._options.minSegmentSize;
+    let totalMinSegmentSize = 0;
+    let totalNotMinValues = 0;
     total = total || points.length;
     _each(points, function (_, point) {
       if (point.isVisible()) {
@@ -143,14 +143,14 @@ export var pie = _extend({}, barSeries, {
     });
     return totalMinSegmentSize < 360 ? minSegmentSize * totalNotMinValues / (360 - totalMinSegmentSize) : 0;
   },
-  _applyArrangeCorrection: function _applyArrangeCorrection(points, minShownValue, total) {
-    var options = this._options;
-    var isClockWise = options.segmentsDirection !== 'anticlockwise';
-    var shiftedAngle = _isFinite(options.startAngle) ? normalizeAngle(options.startAngle) : 0;
-    var minSegmentSize = options.minSegmentSize;
-    var percent;
-    var correction = 0;
-    var zeroTotalCorrection = 0;
+  _applyArrangeCorrection: function (points, minShownValue, total) {
+    const options = this._options;
+    const isClockWise = options.segmentsDirection !== 'anticlockwise';
+    const shiftedAngle = _isFinite(options.startAngle) ? normalizeAngle(options.startAngle) : 0;
+    const minSegmentSize = options.minSegmentSize;
+    let percent;
+    let correction = 0;
+    let zeroTotalCorrection = 0;
     if (total === 0) {
       total = points.filter(function (el) {
         return el.isVisible();
@@ -158,8 +158,8 @@ export var pie = _extend({}, barSeries, {
       zeroTotalCorrection = 1;
     }
     _each(isClockWise ? points : points.concat([]).reverse(), function (_, point) {
-      var val = point.isVisible() ? zeroTotalCorrection || point.normalInitialValue : 0;
-      var updatedZeroValue;
+      const val = point.isVisible() ? zeroTotalCorrection || point.normalInitialValue : 0;
+      let updatedZeroValue;
       if (minSegmentSize && point.isVisible() && val < minShownValue) {
         updatedZeroValue = minShownValue;
       }
@@ -175,24 +175,24 @@ export var pie = _extend({}, barSeries, {
       }
     };
   },
-  _removePoint: function _removePoint(point) {
-    var points = this.getPointsByArg(point.argument);
+  _removePoint: function (point) {
+    const points = this.getPointsByArg(point.argument);
     points.splice(points.indexOf(point), 1); // T485210
     point.dispose();
   },
-  arrangePoints: function arrangePoints() {
-    var that = this;
-    var originalPoints = that._points || [];
-    var minSegmentSize = that._options.minSegmentSize;
-    var minShownValue;
-    var isAllPointsNegative = true;
-    var i = 0;
-    var len = originalPoints.length;
+  arrangePoints: function () {
+    const that = this;
+    const originalPoints = that._points || [];
+    const minSegmentSize = that._options.minSegmentSize;
+    let minShownValue;
+    let isAllPointsNegative = true;
+    let i = 0;
+    const len = originalPoints.length;
     while (i < len && isAllPointsNegative) {
       isAllPointsNegative = originalPoints[i].value <= 0;
       i++;
     }
-    var points = that._points = _map(originalPoints, function (point) {
+    const points = that._points = _map(originalPoints, function (point) {
       if (point.value === null || !isAllPointsNegative && point.value < 0) {
         that._removePoint(point);
         return null;
@@ -200,13 +200,13 @@ export var pie = _extend({}, barSeries, {
         return point;
       }
     });
-    var maxValue = points.reduce(function (max, p) {
+    const maxValue = points.reduce(function (max, p) {
       return _max(max, Math.abs(p.initialValue));
     }, 0);
     points.forEach(function (p) {
       p.normalInitialValue = p.initialValue / (maxValue !== 0 ? maxValue : 1);
     });
-    var total = points.reduce(function (total, point) {
+    const total = points.reduce(function (total, point) {
       return total + (point.isVisible() ? point.normalInitialValue : 0);
     }, 0);
     if (minSegmentSize) {
@@ -214,23 +214,23 @@ export var pie = _extend({}, barSeries, {
     }
     that._applyArrangeCorrection(points, minShownValue, total);
   },
-  correctPosition: function correctPosition(correction, canvas) {
+  correctPosition: function (correction, canvas) {
     _each(this._points, function (_, point) {
       point.correctPosition(correction);
     });
     this.setVisibleArea(canvas);
   },
-  correctRadius: function correctRadius(correction) {
+  correctRadius: function (correction) {
     this._points.forEach(function (point) {
       point.correctRadius(correction);
     });
   },
-  correctLabelRadius: function correctLabelRadius(labelRadius) {
+  correctLabelRadius: function (labelRadius) {
     this._points.forEach(function (point) {
       point.correctLabelRadius(labelRadius);
     });
   },
-  setVisibleArea: function setVisibleArea(canvas) {
+  setVisibleArea: function (canvas) {
     this._visibleArea = {
       minX: canvas.left,
       maxX: canvas.width - canvas.right,
@@ -239,34 +239,34 @@ export var pie = _extend({}, barSeries, {
     };
   },
   _applyVisibleArea: _noop,
-  _animate: function _animate(firstDrawing) {
-    var that = this;
-    var points = that._points;
-    var pointsCount = points && points.length;
-    var completeFunc = function completeFunc() {
+  _animate: function (firstDrawing) {
+    const that = this;
+    const points = that._points;
+    const pointsCount = points && points.length;
+    const completeFunc = function () {
       that._animateComplete();
     };
-    var animatePoint;
+    let animatePoint;
     if (firstDrawing) {
-      animatePoint = function animatePoint(p, i) {
+      animatePoint = function (p, i) {
         p.animate(i === pointsCount - 1 ? completeFunc : undefined, ANIMATION_DURATION, (1 - ANIMATION_DURATION) * i / (pointsCount - 1));
       };
     } else {
-      animatePoint = function animatePoint(p, i) {
+      animatePoint = function (p, i) {
         p.animate(i === pointsCount - 1 ? completeFunc : undefined);
       };
     }
     points.forEach(animatePoint);
   },
-  getVisiblePoints: function getVisiblePoints() {
+  getVisiblePoints: function () {
     return _map(this._points, function (p) {
       return p.isVisible() ? p : null;
     });
   },
-  getPointsByKeys: function getPointsByKeys(arg, argumentIndex) {
-    var pointsByArg = this.getPointsByArg(arg);
+  getPointsByKeys: function (arg, argumentIndex) {
+    const pointsByArg = this.getPointsByArg(arg);
     return pointsByArg[argumentIndex] && [pointsByArg[argumentIndex]] || [];
   }
 });
-export var doughnut = pie;
-export var donut = pie;
+export const doughnut = pie;
+export const donut = pie;

@@ -1,16 +1,16 @@
 import dateUtils from '../../../core/utils/date';
 import dateLocalization from '../../../localization/date';
-export var createFormattedDateText = options => {
-  var {
+export const createFormattedDateText = options => {
+  const {
     startDate,
     endDate,
     allDay,
     format
   } = options;
-  var formatType = format || getFormatType(startDate, endDate, allDay);
+  const formatType = format || getFormatType(startDate, endDate, allDay);
   return formatDates(startDate, endDate, formatType);
 };
-export var getFormatType = (startDate, endDate, isAllDay, isDateAndTimeView) => {
+export const getFormatType = (startDate, endDate, isAllDay, isDateAndTimeView) => {
   if (isAllDay) {
     return 'DATE';
   }
@@ -20,17 +20,17 @@ export var getFormatType = (startDate, endDate, isAllDay, isDateAndTimeView) => 
   return 'DATETIME';
 };
 // @ts-expect-error
-export var formatDates = (startDate, endDate, formatType) => {
-  var dateFormat = 'monthandday';
-  var timeFormat = 'shorttime';
-  var isSameDate = startDate.getDate() === endDate.getDate();
+export const formatDates = (startDate, endDate, formatType) => {
+  const dateFormat = 'monthandday';
+  const timeFormat = 'shorttime';
+  const isSameDate = startDate.getDate() === endDate.getDate();
   switch (formatType) {
     case 'DATETIME':
-      return [dateLocalization.format(startDate, dateFormat), ' ', dateLocalization.format(startDate, timeFormat), ' - ', isSameDate ? '' : "".concat(dateLocalization.format(endDate, dateFormat), " "), dateLocalization.format(endDate, timeFormat)].join('');
+      return [dateLocalization.format(startDate, dateFormat), ' ', dateLocalization.format(startDate, timeFormat), ' - ', isSameDate ? '' : `${dateLocalization.format(endDate, dateFormat)} `, dateLocalization.format(endDate, timeFormat)].join('');
     case 'TIME':
-      return "".concat(dateLocalization.format(startDate, timeFormat), " - ").concat(dateLocalization.format(endDate, timeFormat));
+      return `${dateLocalization.format(startDate, timeFormat)} - ${dateLocalization.format(endDate, timeFormat)}`;
     case 'DATE':
-      return "".concat(dateLocalization.format(startDate, dateFormat)).concat(isSameDate ? '' : " - ".concat(dateLocalization.format(endDate, dateFormat)));
+      return `${dateLocalization.format(startDate, dateFormat)}${isSameDate ? '' : ` - ${dateLocalization.format(endDate, dateFormat)}`}`;
     default:
       break;
   }

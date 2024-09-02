@@ -1,4 +1,4 @@
-var ErrorCode = {
+const ErrorCode = {
   NoAccess: 0,
   FileExists: 1,
   FileNotFound: 2,

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/appointments/m_appointment.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,20 +13,21 @@ import DOMComponent from '../../../core/dom_component';
 import $ from '../../../core/renderer';
 import { Deferred } from '../../../core/utils/deferred';
 import { extend } from '../../../core/utils/extend';
+import { isDefined } from '../../../core/utils/type';
 import eventsEngine from '../../../events/core/events_engine';
 import pointerEvents from '../../../events/pointer';
 import { addNamespace } from '../../../events/utils/index';
 import dateLocalization from '../../../localization/date';
 import messageLocalization from '../../../localization/message';
 import Resizable from '../../../ui/resizable';
-import { hide, show } from '../../../ui/tooltip/ui.tooltip';
+import { hide, show } from '../../ui/tooltip/m_tooltip';
 import { ALL_DAY_APPOINTMENT_CLASS, APPOINTMENT_CONTENT_CLASSES, APPOINTMENT_DRAG_SOURCE_CLASS, APPOINTMENT_HAS_RESOURCE_COLOR_CLASS, DIRECTION_APPOINTMENT_CLASSES, EMPTY_APPOINTMENT_CLASS, RECURRENCE_APPOINTMENT_CLASS, REDUCED_APPOINTMENT_CLASS, REDUCED_APPOINTMENT_ICON, REDUCED_APPOINTMENT_PARTS_CLASSES } from '../m_classes';
 import { ExpressionUtils } from '../m_expression_utils';
 import { getRecurrenceProcessor } from '../m_recurrence';
-var DEFAULT_HORIZONTAL_HANDLES = 'left right';
-var DEFAULT_VERTICAL_HANDLES = 'top bottom';
-var REDUCED_APPOINTMENT_POINTERENTER_EVENT_NAME = addNamespace(pointerEvents.enter, 'dxSchedulerAppointment');
-var REDUCED_APPOINTMENT_POINTERLEAVE_EVENT_NAME = addNamespace(pointerEvents.leave, 'dxSchedulerAppointment');
+const DEFAULT_HORIZONTAL_HANDLES = 'left right';
+const DEFAULT_VERTICAL_HANDLES = 'top bottom';
+const REDUCED_APPOINTMENT_POINTERENTER_EVENT_NAME = addNamespace(pointerEvents.enter, 'dxSchedulerAppointment');
+const REDUCED_APPOINTMENT_POINTERLEAVE_EVENT_NAME = addNamespace(pointerEvents.leave, 'dxSchedulerAppointment');
 export class Appointment extends DOMComponent {
   get coloredElement() {
     return this.$element();
@@ -60,14 +61,14 @@ export class Appointment extends DOMComponent {
     });
   }
   notifyObserver(subject, args) {
-    var observer = this.option('observer');
+    const observer = this.option('observer');
     if (observer) {
       observer.fire(subject, args);
     }
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   invoke(funcName) {
-    var observer = this.option('observer');
+    const observer = this.option('observer');
     if (observer) {
       return observer.fire.apply(observer, arguments);
     }
@@ -76,6 +77,7 @@ export class Appointment extends DOMComponent {
     switch (args.name) {
       case 'data':
       case 'groupIndex':
+      case 'groupTexts':
       case 'geometry':
       case 'allowDrag':
       case 'allowResize':
@@ -97,13 +99,13 @@ export class Appointment extends DOMComponent {
     }
   }
   _getHorizontalResizingRule() {
-    var reducedHandles = {
+    const reducedHandles = {
       head: this.option('rtlEnabled') ? 'right' : 'left',
       body: '',
       tail: this.option('rtlEnabled') ? 'left' : 'right'
     };
-    var getResizableStep = this.option('getResizableStep');
-    var step = getResizableStep ? getResizableStep() : 0;
+    const getResizableStep = this.option('getResizableStep');
+    const step = getResizableStep ? getResizableStep() : 0;
     return {
       handles: this.option('reduced') ? reducedHandles[this.option('reduced')] : DEFAULT_HORIZONTAL_HANDLES,
       minHeight: 0,
@@ -113,7 +115,7 @@ export class Appointment extends DOMComponent {
     };
   }
   _getVerticalResizingRule() {
-    var height = Math.round(this.invoke('getCellHeight'));
+    const height = Math.round(this.invoke('getCellHeight'));
     return {
       handles: DEFAULT_VERTICAL_HANDLES,
       minWidth: 0,
@@ -126,13 +128,14 @@ export class Appointment extends DOMComponent {
     // @ts-expect-error
     super._render();
     this._renderAppointmentGeometry();
+    this._renderAriaLabel();
     this._renderEmptyClass();
     this._renderReducedAppointment();
     this._renderAllDayClass();
     this._renderDragSourceClass();
     this._renderDirection();
     this.$element().data('dxAppointmentStartDate', this.option('startDate'));
-    var text = ExpressionUtils.getField(this.option('dataAccessors'), 'text', this.rawAppointment);
+    const text = ExpressionUtils.getField(this.option('dataAccessors'), 'text', this.rawAppointment);
     this.$element().attr('title', text);
     this.$element().attr('role', 'button');
     this._renderRecurrenceClass();
@@ -140,12 +143,12 @@ export class Appointment extends DOMComponent {
     this._setResourceColor();
   }
   _setResourceColor() {
-    var appointmentConfig = {
+    const appointmentConfig = {
       itemData: this.rawAppointment,
       groupIndex: this.option('groupIndex'),
       groups: this.option('groups')
     };
-    var deferredColor = this.option('getAppointmentColor')(appointmentConfig);
+    const deferredColor = this.option('getAppointmentColor')(appointmentConfig);
     deferredColor.done(color => {
       if (color) {
         this.coloredElement.css('backgroundColor', color);
@@ -153,9 +156,36 @@ export class Appointment extends DOMComponent {
       }
     });
   }
+  _getGroupText() {
+    const groupTexts = this.option('groupTexts');
+    if (!(groupTexts !== null && groupTexts !== void 0 && groupTexts.length)) {
+      return '';
+    }
+    const groupText = groupTexts.join(', ');
+    // @ts-expect-error
+    return messageLocalization.format('dxScheduler-appointmentAriaLabel-group', groupText);
+  }
+  _getDateText() {
+    const startDateText = this._localizeDate(this._getStartDate());
+    const endDateText = this._localizeDate(this._getEndDate());
+    const dateText = startDateText === endDateText ? `${startDateText}` : `${startDateText} - ${endDateText}`;
+    // @ts-expect-error
+    const {
+      partIndex,
+      partTotalCount
+    } = this.option();
+    const partText = isDefined(partIndex) ? ` (${partIndex + 1}/${partTotalCount})` : '';
+    return `${dateText}${partText}`;
+  }
+  _renderAriaLabel() {
+    // @ts-expect-error
+    const $element = this.$element();
+    const ariaLabel = [this._getDateText(), this._getGroupText()].filter(label => !!label).join(', ');
+    $element.attr('aria-label', `${ariaLabel}, `);
+  }
   _renderAppointmentGeometry() {
-    var geometry = this.option('geometry');
-    var $element = this.$element();
+    const geometry = this.option('geometry');
+    const $element = this.$element();
     move($element, {
       top: geometry.top,
       left: geometry.left
@@ -166,25 +196,27 @@ export class Appointment extends DOMComponent {
     });
   }
   _renderEmptyClass() {
-    var geometry = this.option('geometry');
+    const geometry = this.option('geometry');
     if (geometry.empty || this.option('isCompact')) {
       this.$element().addClass(EMPTY_APPOINTMENT_CLASS);
     }
   }
   _renderReducedAppointment() {
-    var reducedPart = this.option('reduced');
+    const reducedPart = this.option('reduced');
     if (!reducedPart) {
       return;
     }
     this.$element().toggleClass(REDUCED_APPOINTMENT_CLASS, true).toggleClass(REDUCED_APPOINTMENT_PARTS_CLASSES[reducedPart], true);
     this._renderAppointmentReducedIcon();
   }
+  _localizeDate(date) {
+    return `${dateLocalization.format(date, 'monthAndDay')}, ${dateLocalization.format(date, 'year')}`;
+  }
   _renderAppointmentReducedIcon() {
-    var $icon = $('<div>').addClass(REDUCED_APPOINTMENT_ICON).appendTo(this.$element());
-    var endDate = this._getEndDate();
-    var tooltipLabel = messageLocalization.format('dxScheduler-editorLabelEndDate');
-    var tooltipText = [tooltipLabel, ': ', dateLocalization.format(endDate, 'monthAndDay'), ', ', dateLocalization.format(endDate, 'year')].join('');
-    // @ts-expect-error
+    const $icon = $('<div>').addClass(REDUCED_APPOINTMENT_ICON).appendTo(this.$element());
+    const endDate = this._getEndDate();
+    const tooltipLabel = messageLocalization.format('dxScheduler-editorLabelEndDate');
+    const tooltipText = [tooltipLabel, ': ', this._localizeDate(endDate)].join('');
     eventsEngine.off($icon, REDUCED_APPOINTMENT_POINTERENTER_EVENT_NAME);
     eventsEngine.on($icon, REDUCED_APPOINTMENT_POINTERENTER_EVENT_NAME, () => {
       show({
@@ -192,14 +224,20 @@ export class Appointment extends DOMComponent {
         content: tooltipText
       });
     });
-    // @ts-expect-error
     eventsEngine.off($icon, REDUCED_APPOINTMENT_POINTERLEAVE_EVENT_NAME);
     eventsEngine.on($icon, REDUCED_APPOINTMENT_POINTERLEAVE_EVENT_NAME, () => {
       hide();
     });
   }
   _getEndDate() {
-    var result = ExpressionUtils.getField(this.option('dataAccessors'), 'endDate', this.rawAppointment);
+    const result = ExpressionUtils.getField(this.option('dataAccessors'), 'endDate', this.rawAppointment);
+    if (result) {
+      return new Date(result);
+    }
+    return result;
+  }
+  _getStartDate() {
+    const result = ExpressionUtils.getField(this.option('dataAccessors'), 'startDate', this.rawAppointment);
     if (result) {
       return new Date(result);
     }
@@ -212,7 +250,7 @@ export class Appointment extends DOMComponent {
     this.$element().toggleClass(APPOINTMENT_DRAG_SOURCE_CLASS, !!this.option('isDragSource'));
   }
   _renderRecurrenceClass() {
-    var rule = ExpressionUtils.getField(this.option('dataAccessors'), 'recurrenceRule', this.rawAppointment);
+    const rule = ExpressionUtils.getField(this.option('dataAccessors'), 'recurrenceRule', this.rawAppointment);
     if (getRecurrenceProcessor().isValidRecurrenceRule(rule)) {
       this.$element().addClass(RECURRENCE_APPOINTMENT_CLASS);
     }
@@ -221,7 +259,7 @@ export class Appointment extends DOMComponent {
     this.$element().addClass(DIRECTION_APPOINTMENT_CLASSES[this.option('direction')]);
   }
   _createResizingConfig() {
-    var config = this.option('direction') === 'vertical' ? this._getVerticalResizingRule() : this._getHorizontalResizingRule();
+    const config = this.option('direction') === 'vertical' ? this._getVerticalResizingRule() : this._getHorizontalResizingRule();
     if (!this.invoke('isGroupedByDate')) {
       config.stepPrecision = 'strict';
     }
@@ -240,7 +278,7 @@ export class Appointment extends DOMComponent {
 registerComponent('dxSchedulerAppointment', Appointment);
 export class AgendaAppointment extends Appointment {
   get coloredElement() {
-    return this.$element().find(".".concat(APPOINTMENT_CONTENT_CLASSES.AGENDA_MARKER));
+    return this.$element().find(`.${APPOINTMENT_CONTENT_CLASSES.AGENDA_MARKER}`);
   }
   _getDefaultOptions() {
     return extend(super._getDefaultOptions(), {
@@ -250,17 +288,17 @@ export class AgendaAppointment extends Appointment {
   }
   _renderResourceList(container, list) {
     list.forEach(item => {
-      var itemContainer = $('<div>').addClass(APPOINTMENT_CONTENT_CLASSES.AGENDA_RESOURCE_LIST_ITEM).appendTo(container);
-      $('<div>').text("".concat(item.label, ":")).appendTo(itemContainer);
+      const itemContainer = $('<div>').addClass(APPOINTMENT_CONTENT_CLASSES.AGENDA_RESOURCE_LIST_ITEM).appendTo(container);
+      $('<div>').text(`${item.label}:`).appendTo(itemContainer);
       $('<div>').addClass(APPOINTMENT_CONTENT_CLASSES.AGENDA_RESOURCE_LIST_ITEM_VALUE).text(item.values.join(', ')).appendTo(itemContainer);
     });
   }
   _render() {
     super._render();
-    var createPlainResourceListAsync = this.option('createPlainResourceListAsync');
+    const createPlainResourceListAsync = this.option('createPlainResourceListAsync');
     createPlainResourceListAsync(this.rawAppointment).done(list => {
-      var parent = this.$element().find(".".concat(APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_CONTENT_DETAILS));
-      var container = $('<div>').addClass(APPOINTMENT_CONTENT_CLASSES.AGENDA_RESOURCE_LIST).appendTo(parent);
+      const parent = this.$element().find(`.${APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_CONTENT_DETAILS}`);
+      const container = $('<div>').addClass(APPOINTMENT_CONTENT_CLASSES.AGENDA_RESOURCE_LIST).appendTo(parent);
       this._renderResourceList(container, list);
     });
   }

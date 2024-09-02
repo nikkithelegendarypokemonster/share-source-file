@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/exporter/jspdf/export_data_grid.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -25,7 +25,7 @@ function _getFullOptions(options) {
     throw Error('The "jsPDFDocument" field must contain a jsPDF instance.');
   }
   if ((0, _type.isDefined)(options.autoTableOptions)) {
-    _errors.default.log('W0001', 'Export', 'autoTableOptions', '22.1', "You can migrate from exporting to PDF with the AutoTable plugin to a new export system. See the following topic for more information: ".concat(HOW_TO_MIGRATE_ARTICLE));
+    _errors.default.log('W0001', 'Export', 'autoTableOptions', '22.1', `You can migrate from exporting to PDF with the AutoTable plugin to a new export system. See the following topic for more information: ${HOW_TO_MIGRATE_ARTICLE}`);
   }
   return _export.Export.getFullOptions(options);
 }

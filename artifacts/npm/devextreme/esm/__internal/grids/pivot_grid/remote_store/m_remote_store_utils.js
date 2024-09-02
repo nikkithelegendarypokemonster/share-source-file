@@ -1,16 +1,16 @@
 /**
 * DevExtreme (esm/__internal/grids/pivot_grid/remote_store/m_remote_store_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-var forEachGroup = function forEachGroup(data, callback, level) {
+const forEachGroup = function (data, callback, level) {
   data = data || [];
   level = level || 0;
-  for (var i = 0; i < data.length; i += 1) {
-    var group = data[i];
+  for (let i = 0; i < data.length; i += 1) {
+    const group = data[i];
     callback(group, level);
     if (group && group.items && group.items.length) {
       forEachGroup(group.items, callback, level + 1);

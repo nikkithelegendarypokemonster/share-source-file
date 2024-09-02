@@ -14,7 +14,7 @@ import treeMap from './tree_map';
 import vectorMap from './vector_map';
 export default [{
   baseThemeName: undefined,
-  theme: _extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends(_extends({
+  theme: _extends({
     name: 'generic.light',
     isDefault: true,
     font: {
@@ -160,7 +160,7 @@ export default [{
         textOverflow: 'ellipsis'
       }
     }
-  }, chart), funnel), gauge), bar_gauge), vectorMap), pieChart), polarChart), rangeSelector), sankey), sparkline), bullet), treeMap)
+  }, chart, funnel, gauge, bar_gauge, vectorMap, pieChart, polarChart, rangeSelector, sankey, sparkline, bullet, treeMap)
 }, {
   baseThemeName: 'generic.light',
   theme: {

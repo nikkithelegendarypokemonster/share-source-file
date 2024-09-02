@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/renovation/ui/scroll_view/utils/get_boundary_props.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22,13 +22,13 @@ export function isReachedBottom(element, scrollOffsetTop, pocketHeight, epsilon)
   return Math.round(getScrollTopMax(element) - scrollOffsetTop - pocketHeight) <= epsilon;
 }
 export function getBoundaryProps(direction, scrollOffset, element) {
-  var pocketHeight = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-  var {
+  let pocketHeight = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+  const {
     left,
     top
   } = scrollOffset;
-  var boundaryProps = {};
-  var {
+  const boundaryProps = {};
+  const {
     isHorizontal,
     isVertical
   } = new ScrollDirection(direction);

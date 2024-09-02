@@ -1,11 +1,12 @@
 "use strict";
 
-exports.default = void 0;
-var _query_implementation = require("./query_implementation");
-const query = function () {
-  const impl = Array.isArray(arguments[0]) ? 'array' : 'remote';
-  return _query_implementation.queryImpl[impl].apply(this, arguments);
-};
-var _default = exports.default = query;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    return _m_query.default;
+  }
+});
+var _m_query = _interopRequireDefault(require("../__internal/data/m_query"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 module.exports = exports.default;
 module.exports.default = exports.default;

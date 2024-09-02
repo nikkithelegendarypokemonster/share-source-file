@@ -32,7 +32,7 @@ function compareSignatures(args) {
     const modulus = bigIntFromBytes(args.key.n);
     const expected = modExp(signature, exponent, modulus);
     return expected === actual;
-  } catch (_a) {
+  } catch {
     return true;
   }
 }

@@ -1,20 +1,20 @@
 /**
 * DevExtreme (esm/viz/axes/constant_line.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { isDefined } from '../../core/utils/type';
 export default function createConstantLine(axis, options) {
-  var labelOptions = options.label || {};
-  var labelPosition = labelOptions.position || 'inside';
-  var parsedValue;
-  var valueIsParsed = false;
-  var lastStoredCoordinates;
+  const labelOptions = options.label || {};
+  const labelPosition = labelOptions.position || 'inside';
+  let parsedValue;
+  let valueIsParsed = false;
+  let lastStoredCoordinates;
   axis._checkAlignmentConstantLineLabels(labelOptions);
-  var storedCoord;
+  let storedCoord;
   return {
     options,
     labelOptions,
@@ -33,19 +33,19 @@ export default function createConstantLine(axis, options) {
       if (!isDefined(options.value) || axis._translator.getBusinessRange().isEmpty()) {
         return this;
       }
-      var canvas = axis._getCanvasStartEnd();
-      var parsedValue = this.getParsedValue();
+      const canvas = axis._getCanvasStartEnd();
+      const parsedValue = this.getParsedValue();
       this.coord = axis._getConstantLinePos(parsedValue, canvas.start, canvas.end);
-      var rootGroup = options.displayBehindSeries ? axis._axisConstantLineGroups.under : axis._axisConstantLineGroups.above;
-      var group = rootGroup[labelPosition];
+      const rootGroup = options.displayBehindSeries ? axis._axisConstantLineGroups.under : axis._axisConstantLineGroups.above;
+      let group = rootGroup[labelPosition];
       if (!group) {
-        var side = axis._isHorizontal ? labelOptions.verticalAlignment : labelOptions.horizontalAlignment;
+        const side = axis._isHorizontal ? labelOptions.verticalAlignment : labelOptions.horizontalAlignment;
         group = rootGroup[side];
       }
       if (!isDefined(this.coord)) {
         return this;
       }
-      var path = axis._createConstantLine(this.coord, {
+      const path = axis._createConstantLine(this.coord, {
         stroke: options.color,
         'stroke-width': options.width,
         dashStyle: options.dashStyle
@@ -62,8 +62,8 @@ export default function createConstantLine(axis, options) {
       this.label && this.label.remove();
     },
     updatePosition(animate) {
-      var canvas = axis._getCanvasStartEnd();
-      var coord = axis._getConstantLinePos(this.getParsedValue(), canvas.start, canvas.end);
+      const canvas = axis._getCanvasStartEnd();
+      const coord = axis._getConstantLinePos(this.getParsedValue(), canvas.start, canvas.end);
       if (!isDefined(coord)) {
         return;
       }

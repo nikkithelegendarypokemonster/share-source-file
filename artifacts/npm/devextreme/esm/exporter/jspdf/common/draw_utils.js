@@ -1,13 +1,13 @@
 /**
 * DevExtreme (esm/exporter/jspdf/common/draw_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-var _excluded = ["_rect", "gridCell"];
+const _excluded = ["_rect", "gridCell"];
 import { isDefined } from '../../../core/utils/type';
 import { extend } from '../../../core/utils/extend';
 import { calculateTextHeight, toPdfUnit } from './pdf_utils';
@@ -19,31 +19,31 @@ function roundToThreeDecimals(value) {
 }
 function drawCellsContent(doc, customDrawCell, cellsArray, docStyles) {
   cellsArray.forEach(cell => {
-    var {
+    const {
         _rect,
         gridCell
       } = cell,
       pdfCell = _objectWithoutPropertiesLoose(cell, _excluded);
-    var {
+    const {
       x,
       y,
       w,
       h
     } = _rect;
-    var rect = {
+    const rect = {
       x,
       y,
       w,
       h
     };
-    var eventArg = {
+    const eventArg = {
       doc,
       rect,
       pdfCell,
       gridCell,
       cancel: false
     };
-    customDrawCell === null || customDrawCell === void 0 ? void 0 : customDrawCell(eventArg);
+    customDrawCell === null || customDrawCell === void 0 || customDrawCell(eventArg);
     if (!eventArg.cancel) {
       drawCellBackground(doc, cell);
       drawCellText(doc, cell, docStyles);
@@ -61,33 +61,33 @@ function drawRect(doc, x, y, width, height, style) {
   }
 }
 function getLineHeightShift(doc) {
-  var DEFAULT_LINE_HEIGHT = 1.15;
+  const DEFAULT_LINE_HEIGHT = 1.15;
 
   // TODO: check lineHeightFactor from text options. Currently supports only doc options - https://github.com/MrRio/jsPDF/issues/3234
   return (doc.getLineHeightFactor() - DEFAULT_LINE_HEIGHT) * doc.getFontSize();
 }
 function drawTextInRect(doc, text, rect, verticalAlign, horizontalAlign, jsPDFTextOptions) {
-  var textArray = text.split('\n');
-  var linesCount = textArray.length;
-  var heightOfOneLine = calculateTextHeight(doc, textArray[0], doc.getFont(), {
+  const textArray = text.split('\n');
+  const linesCount = textArray.length;
+  const heightOfOneLine = calculateTextHeight(doc, textArray[0], doc.getFont(), {
     wordWrapEnabled: false,
     targetRectWidth: 1000000000
   });
-  var vAlign = verticalAlign !== null && verticalAlign !== void 0 ? verticalAlign : 'middle';
-  var hAlign = horizontalAlign !== null && horizontalAlign !== void 0 ? horizontalAlign : 'left';
-  var verticalAlignCoefficientsMap = {
+  const vAlign = verticalAlign ?? 'middle';
+  const hAlign = horizontalAlign ?? 'left';
+  const verticalAlignCoefficientsMap = {
     top: 0,
     middle: 0.5,
     bottom: 1
   };
-  var horizontalAlignMap = {
+  const horizontalAlignMap = {
     left: 0,
     center: 0.5,
     right: 1
   };
-  var y = rect.y + rect.h * verticalAlignCoefficientsMap[vAlign] - heightOfOneLine * (linesCount - 1) * verticalAlignCoefficientsMap[vAlign] + getLineHeightShift(doc);
-  var x = rect.x + rect.w * horizontalAlignMap[hAlign];
-  var textOptions = extend({
+  const y = rect.y + rect.h * verticalAlignCoefficientsMap[vAlign] - heightOfOneLine * (linesCount - 1) * verticalAlignCoefficientsMap[vAlign] + getLineHeightShift(doc);
+  const x = rect.x + rect.w * horizontalAlignMap[hAlign];
+  const textOptions = extend({
     baseline: vAlign,
     align: hAlign
   }, jsPDFTextOptions);
@@ -102,7 +102,7 @@ function drawCellBackground(doc, cell) {
 function drawCellText(doc, cell, docStyles) {
   if (isDefined(cell.text) && cell.text !== '') {
     // TODO: use cell.text.trim() ?
-    var {
+    const {
       textColor,
       font,
       _rect,
@@ -112,16 +112,15 @@ function drawCellText(doc, cell, docStyles) {
       textColor,
       font
     }, docStyles);
-    var textRect = {
+    const textRect = {
       x: _rect.x + padding.left,
       y: _rect.y + padding.top,
       w: _rect.w - (padding.left + padding.right),
       h: _rect.h - (padding.top + padding.bottom)
     };
     if (isDefined(cell._textLeftOffset) || isDefined(cell._textTopOffset)) {
-      var _cell$_textLeftOffset, _cell$_textTopOffset;
-      textRect.x = textRect.x + ((_cell$_textLeftOffset = cell._textLeftOffset) !== null && _cell$_textLeftOffset !== void 0 ? _cell$_textLeftOffset : 0);
-      textRect.y = textRect.y + ((_cell$_textTopOffset = cell._textTopOffset) !== null && _cell$_textTopOffset !== void 0 ? _cell$_textTopOffset : 0);
+      textRect.x = textRect.x + (cell._textLeftOffset ?? 0);
+      textRect.y = textRect.y + (cell._textTopOffset ?? 0);
       doc.saveGraphicsState(); // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#saveGraphicsState
       clipOutsideRectContent(doc, cell._rect.x, cell._rect.y, cell._rect.w, cell._rect.h);
     }
@@ -143,7 +142,7 @@ function drawGridLines(doc, rect, options, docStyles) {
   drawBorders(doc, rect, options, docStyles);
 }
 function drawBorders(doc, rect, _ref, docStyles) {
-  var {
+  let {
     borderWidth,
     borderColor,
     drawLeftBorder = true,
@@ -182,13 +181,13 @@ function drawBorders(doc, rect, _ref, docStyles) {
   }
 }
 function setTextStyles(doc, _ref2, docStyles) {
-  var {
+  let {
     textColor,
     font
   } = _ref2;
   trySetColor(doc, 'text', isDefined(textColor) ? textColor : docStyles.textColor);
-  var currentFont = isDefined(font) ? extend({}, docStyles.font, font) : docStyles.font;
-  var docFont = doc.getFont();
+  const currentFont = isDefined(font) ? extend({}, docStyles.font, font) : docStyles.font;
+  const docFont = doc.getFont();
   if (currentFont.name !== docFont.fontName || currentFont.style !== docFont.fontStyle || isDefined(currentFont.weight) // fontWeight logic, https://raw.githack.com/MrRio/jsPDF/master/docs/jspdf.js.html#line4842
   ) {
     doc.setFont(currentFont.name, currentFont.style, currentFont.weight);
@@ -198,26 +197,26 @@ function setTextStyles(doc, _ref2, docStyles) {
   }
 }
 function setLinesStyles(doc, _ref3, docStyles) {
-  var {
+  let {
     borderWidth,
     borderColor
   } = _ref3;
-  var currentBorderWidth = isDefined(borderWidth) ? borderWidth : docStyles.borderWidth;
+  const currentBorderWidth = isDefined(borderWidth) ? borderWidth : docStyles.borderWidth;
   if (currentBorderWidth !== getDocBorderWidth(doc)) {
     setDocBorderWidth(doc, toPdfUnit(doc, currentBorderWidth));
   }
   trySetColor(doc, 'draw', isDefined(borderColor) ? borderColor : docStyles.borderColor);
 }
 function trySetColor(doc, target, color) {
-  var getterName = "get".concat(capitalizeFirstLetter(target), "Color");
-  var setterName = "set".concat(capitalizeFirstLetter(target), "Color");
-  var {
+  const getterName = `get${capitalizeFirstLetter(target)}Color`;
+  const setterName = `set${capitalizeFirstLetter(target)}Color`;
+  const {
     ch1 = color,
     ch2,
     ch3,
     ch4
   } = color;
-  var normalizedColor = doc.__private__.decodeColorString(doc.__private__.encodeColorString({
+  const normalizedColor = doc.__private__.decodeColorString(doc.__private__.encodeColorString({
     ch1,
     ch2,
     ch3,
@@ -229,7 +228,7 @@ function trySetColor(doc, target, color) {
   }
 }
 function getDocumentStyles(doc) {
-  var docFont = doc.getFont();
+  const docFont = doc.getFont();
   return {
     borderWidth: getDocBorderWidth(doc),
     borderColor: doc.getDrawColor(),
@@ -242,17 +241,17 @@ function getDocumentStyles(doc) {
   };
 }
 function setDocumentStyles(doc, styles) {
-  var {
+  const {
     borderWidth,
     borderColor,
     font,
     textColor
   } = styles;
-  var docFont = doc.getFont();
+  const docFont = doc.getFont();
   if (docFont.fontName !== font.name || docFont.fontStyle !== font.style) {
     doc.setFont(font.name, font.style, undefined);
   }
-  var docFontSize = doc.getFontSize();
+  const docFontSize = doc.getFontSize();
   if (docFontSize !== font.size) {
     doc.setFontSize(font.size);
   }
@@ -271,12 +270,11 @@ function addNewPage(doc) {
   resetDocBorderWidth(doc);
 }
 function getDocBorderWidth(doc) {
-  var _doc$__borderWidth;
   // The 'getLineWidth' method was implemented in 2.5.0 version - https://github.com/parallax/jsPDF/pull/3324
   if (isDefined(doc.getLineWidth)) {
     return doc.getLineWidth();
   }
-  return (_doc$__borderWidth = doc.__borderWidth) !== null && _doc$__borderWidth !== void 0 ? _doc$__borderWidth : 0.200025; // // https://github.com/parallax/jsPDF/blob/a56c882e2c139e74a9adaea0baa78fb1386cbf23/src/jspdf.js#L4946
+  return doc.__borderWidth ?? 0.200025; // // https://github.com/parallax/jsPDF/blob/a56c882e2c139e74a9adaea0baa78fb1386cbf23/src/jspdf.js#L4946
 }
 function setDocBorderWidth(doc, width) {
   doc.setLineWidth(width);

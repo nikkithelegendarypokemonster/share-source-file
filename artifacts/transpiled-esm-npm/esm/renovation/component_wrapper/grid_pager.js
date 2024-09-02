@@ -4,7 +4,7 @@ export class GridPagerWrapper extends Component {
     switch (args.name) {
       case 'pageIndex':
         {
-          var pageIndexChanged = this.option('pageIndexChanged');
+          const pageIndexChanged = this.option('pageIndexChanged');
           if (pageIndexChanged) {
             pageIndexChanged(args.value);
           }
@@ -12,7 +12,7 @@ export class GridPagerWrapper extends Component {
         }
       case 'pageSize':
         {
-          var pageSizeChanged = this.option('pageSizeChanged');
+          const pageSizeChanged = this.option('pageSizeChanged');
           if (pageSizeChanged) {
             pageSizeChanged(args.value);
           }

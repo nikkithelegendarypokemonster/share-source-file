@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/validation_summary.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -20,56 +20,81 @@ import CollectionWidget, {
 } from './collection/ui.collection_widget.base';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_validation_summary_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxValidationSummary<TItem, TKey>>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_validation_summary_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxValidationSummary<TItem, TKey>>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_validation_summary_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent<TItem extends ItemLike = any, TKey = any> = InitializedEventInfo<dxValidationSummary<TItem, TKey>>;
 
 /**
- * The type of the itemClick event handler&apos;s argument.
+ * @docid _ui_validation_summary_ItemClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemClickEvent<TItem extends ItemLike = any, TKey = any> = NativeEventInfo<dxValidationSummary<TItem, TKey>, MouseEvent | PointerEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_validation_summary_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxValidationSummary<TItem, TKey>> & ChangedOptionInfo;
 
 /**
- * 
- * @deprecated 
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @public
+ * @docid
  */
 export interface dxValidationSummaryOptions<
     TItem extends ItemLike = any,
     TKey = any,
 > extends CollectionWidgetOptions<dxValidationSummary<TItem, TKey>, TItem, TKey> {
     /**
-     * Specifies the validation group for which summary should be generated.
+     * @docid
+     * @ref
+     * @public
      */
     validationGroup?: string;
 }
 /**
- * A UI component for displaying the result of checking validation rules for editors.
+ * @docid
+ * @inherits CollectionWidget
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxValidationSummary<
     TItem extends ItemLike = any,
     TKey = any,
 > extends CollectionWidget<dxValidationSummaryOptions<TItem, TKey>, TItem, TKey> {
     /**
-     * Resubscribes the ValidationSummary to a target ValidationGroup.
+     * @docid
+     * @publicName refreshValidationGroup()
+     * @public
      */
     refreshValidationGroup(): void;
 }
 
+/** @public */
 export type ExplicitTypes<
     TItem extends ItemLike,
     TKey,
@@ -82,15 +107,13 @@ export type ExplicitTypes<
     OptionChangedEvent: OptionChangedEvent<TItem, TKey>;
 };
 
+/** @public */
 export type Properties<
     TItem extends ItemLike = any,
     TKey = any,
 > = dxValidationSummaryOptions<TItem, TKey>;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options<
     TItem extends ItemLike = any,
     TKey = any,

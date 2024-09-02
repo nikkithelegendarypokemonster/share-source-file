@@ -1,5 +1,5 @@
 import { convertToScreenSizeQualifier } from '../responsive_box/screen_utils';
-export var FormProps = {
+export const FormProps = {
   scrollingEnabled: false,
   screenByWidth: convertToScreenSizeQualifier
 };

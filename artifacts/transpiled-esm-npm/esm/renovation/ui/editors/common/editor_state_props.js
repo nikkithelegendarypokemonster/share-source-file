@@ -1,5 +1,5 @@
 import devices from '../../../../core/devices';
-export var EditorStateProps = {
+export const EditorStateProps = {
   hoverStateEnabled: true,
   activeStateEnabled: true,
   get focusStateEnabled() {

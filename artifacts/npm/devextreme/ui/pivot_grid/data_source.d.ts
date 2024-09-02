@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/pivot_grid/data_source.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -41,419 +41,642 @@ export {
     SummaryType,
 };
 
+/** @public */
 export type PivotGridArea = 'column' | 'data' | 'filter' | 'row';
+/** @public */
 export type PivotGridDataType = 'date' | 'number' | 'string';
+/** @public */
 export type PivotGridGroupInterval = 'day' | 'dayOfWeek' | 'month' | 'quarter' | 'year';
+/** @public */
 export type PivotGridRunningTotalMode = 'column' | 'row';
+/** @public */
 export type PivotGridSortBy = 'displayText' | 'value' | 'none';
+/** @public */
 export type PivotGridStoreType = 'array' | 'local' | 'odata' | 'xmla';
+/** @public */
 export type PivotGridSummaryDisplayMode = 'absoluteVariation' | 'percentOfColumnGrandTotal' | 'percentOfColumnTotal' | 'percentOfGrandTotal' | 'percentOfRowGrandTotal' | 'percentOfRowTotal' | 'percentVariation';
 
 /**
- * An object exposing methods that manipulate a summary cell and provide access to its neighboring cells.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
  */
 export interface dxPivotGridSummaryCell {
     /**
-     * Gets the child cell in a specified direction.
+     * @docid
+     * @publicName child(direction, fieldValue)
+     * @public
      */
     child(direction: string, fieldValue: number | string): dxPivotGridSummaryCell;
     /**
-     * Gets all child cells in a specified direction.
+     * @docid
+     * @publicName children(direction)
+     * @public
      */
     children(direction: string): Array<dxPivotGridSummaryCell>;
     /**
-     * Gets a pivot grid field that corresponds to the summary cell.
+     * @docid
+     * @publicName field(area)
+     * @return PivotGridDataSourceOptions.fields
+     * @public
      */
     field(area: string): Field;
     /**
-     * Gets the Grand Total of the entire pivot grid.
+     * @docid
+     * @publicName grandTotal()
+     * @public
      */
     grandTotal(): dxPivotGridSummaryCell;
     /**
-     * Gets a partial Grand Total cell of a row or column.
+     * @docid
+     * @publicName grandTotal(direction)
+     * @public
      */
     grandTotal(direction: string): dxPivotGridSummaryCell;
     /**
-     * Indicates whether the summaryDisplayMode or calculateSummaryValue post-processed the summary value.
+     * @docid
+     * @publicName isPostProcessed(field)
+     * @param1 field:PivotGridDataSourceOptions.fields|string
+     * @public
      */
     isPostProcessed(field: Field | string): boolean;
     /**
-     * Gets the cell next to the current one in a specified direction.
+     * @docid
+     * @publicName next(direction)
+     * @public
      */
     next(direction: string): dxPivotGridSummaryCell;
     /**
-     * Gets the cell next to current in a specified direction.
+     * @docid
+     * @publicName next(direction, allowCrossGroup)
+     * @param2 allowCrossGroup:bool
+     * @public
      */
     next(direction: string, allowCrossGroup: boolean): dxPivotGridSummaryCell;
     /**
-     * Gets the parent cell in a specified direction.
+     * @docid
+     * @publicName parent(direction)
+     * @public
      */
     parent(direction: string): dxPivotGridSummaryCell;
     /**
-     * Gets the cell prior to the current one in a specified direction.
+     * @docid
+     * @publicName prev(direction)
+     * @public
      */
     prev(direction: string): dxPivotGridSummaryCell;
     /**
-     * Gets the cell previous to current in a specified direction.
+     * @docid
+     * @publicName prev(direction, allowCrossGroup)
+     * @param2 allowCrossGroup:bool
+     * @public
      */
     prev(direction: string, allowCrossGroup: boolean): dxPivotGridSummaryCell;
     /**
-     * Gets the cell located by the path of the source cell with one field value changed.
+     * @docid
+     * @publicName slice(field, value)
+     * @param1 field:PivotGridDataSourceOptions.fields
+     * @public
      */
     slice(field: Field, value: number | string): dxPivotGridSummaryCell;
     /**
-     * Gets the summary cell value.
+     * @docid
+     * @publicName value()
+     * @public
      */
     value(): any;
     /**
-     * Gets the value of any field associated with the summary cell.
+     * @docid
+     * @publicName value(field)
+     * @param1 field:PivotGridDataSourceOptions.fields|string
+     * @public
      */
     value(field: Field | string): any;
     /**
-     * Gets the value of any field associated with the summary cell.
+     * @docid
+     * @publicName value(field, postProcessed)
+     * @param1 field:PivotGridDataSourceOptions.fields|string
+     * @public
      */
     value(field: Field | string, postProcessed: boolean): any;
     /**
-     * Gets the summary cell value.
+     * @docid
+     * @publicName value(postProcessed)
+     * @public
      */
     value(postProcessed: boolean): any;
 }
 
+/** @public */
 export type Options = PivotGridDataSourceOptions;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.data
+ * @deprecated Use Options instead
+ * @docid
  */
 export interface PivotGridDataSourceOptions {
     /**
-     * Configures pivot grid fields.
+     * @docid
+     * @type Array<Object>
+     * @default undefined
+     * @public
      */
     fields?: Array<Field>;
     /**
-     * Specifies data filtering conditions. Cannot be used with an XmlaStore.
+     * @docid
+     * @type Filter expression
+     * @public
      */
     filter?: string | Array<any> | Function;
     /**
-     * A function that is executed after data is successfully loaded.
+     * @docid
+     * @action
+     * @public
      */
     onChanged?: Function;
     /**
-     * A function that is executed when all fields are loaded from the store and they are ready to be displayed in the PivotGrid.
+     * @docid
+     * @type_function_param1 fields:Array<PivotGridDataSourceOptions.fields>
+     * @action
+     * @public
      */
     onFieldsPrepared?: ((fields: Array<Field>) => void);
     /**
-     * A function that is executed when data loading fails.
+     * @docid
+     * @type_function_param1 error:Object
+     * @action
+     * @public
      */
     onLoadError?: ((error: any) => void);
     /**
-     * A function that is executed when the data loading status changes.
+     * @docid
+     * @action
+     * @public
      */
     onLoadingChanged?: ((isLoading: boolean) => void);
     /**
-     * Specifies whether the PivotGridDataSource should load data in portions. Can be used only with an XmlaStore.
+     * @docid
+     * @default false
+     * @public
      */
     paginate?: boolean;
     /**
-     * Specifies whether the data processing operations (filtering, grouping, sorting, summary calculation) should be performed on the server.
+     * @docid
+     * @default false
+     * @public
      */
     remoteOperations?: boolean;
     /**
-     * Specifies whether to auto-generate pivot grid fields from the store&apos;s data.
+     * @docid
+     * @default true
+     * @public
      */
     retrieveFields?: boolean;
     /**
-     * Configures the DataSource&apos;s underlying store.
+     * @docid
+     * @public
      */
     store?: Store | StoreOptions | XmlaStore | (XmlaStoreOptions & { type: 'xmla' }) | Array<{
       /**
-       * Specifies the PivotGridDataSource&apos;s storage type.
+       * @docid
        */
       type?: PivotGridStoreType;
     }> | {
       /**
-       * Specifies the PivotGridDataSource&apos;s storage type.
+       * @docid
        */
       type?: PivotGridStoreType;
     };
 }
 
 /**
- * Configures pivot grid fields.
+ * @public
+ * @docid PivotGridDataSourceOptions.fields
+ * @namespace DevExpress.data.PivotGridDataSource
  */
 export type Field = PivotGridDataSourceField;
 
 /**
+ * @namespace DevExpress.data
  * @deprecated Use Field instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export interface PivotGridDataSourceField {
     /**
-     * Specifies whether to take neighboring groups&apos; summary values into account when calculating a running total and absolute or percent variation.
+     * @docid PivotGridDataSourceOptions.fields.allowCrossGroupCalculation
+     * @default false
+     * @public
      */
     allowCrossGroupCalculation?: boolean;
     /**
-     * Allows users to expand/collapse all header items within the same header level. Ignored if the PivotGridDataSource&apos;s paginate property is true.
+     * @docid PivotGridDataSourceOptions.fields.allowExpandAll
+     * @default false
+     * @public
      */
     allowExpandAll?: boolean;
     /**
-     * Specifies whether a user can filter the field&apos;s values.
+     * @docid PivotGridDataSourceOptions.fields.allowFiltering
+     * @default false
+     * @public
      */
     allowFiltering?: boolean;
     /**
-     * Specifies whether a user can change the field&apos;s sorting.
+     * @docid PivotGridDataSourceOptions.fields.allowSorting
+     * @default false
+     * @public
      */
     allowSorting?: boolean;
     /**
-     * Allows users to sort the pivot grid by summary values instead of field values. Ignored if the PivotGridDataSource&apos;s paginate property is true.
+     * @docid PivotGridDataSourceOptions.fields.allowSortingBySummary
+     * @default false
+     * @public
      */
     allowSortingBySummary?: boolean;
     /**
-     * Specifies the field&apos;s area.
+     * @docid PivotGridDataSourceOptions.fields.area
+     * @type Enums.PivotGridArea
+     * @default undefined
+     * @acceptValues undefined
+     * @public
      */
     area?: PivotGridArea | undefined;
     /**
-     * Specifies the field&apos;s order among the other fields in the same area. Corresponds to the field&apos;s order in the fields array by default.
+     * @docid PivotGridDataSourceOptions.fields.areaIndex
+     * @default undefined
+     * @public
      */
     areaIndex?: number;
     /**
-     * Specifies a custom aggregate function. Applies only if the summaryType is &apos;custom&apos; and the remoteOperations is false. Cannot be used with an XmlaStore.
+     * @docid PivotGridDataSourceOptions.fields.calculateCustomSummary
+     * @public
      */
     calculateCustomSummary?: ((options: { summaryProcess?: string; value?: any; totalValue?: any }) => void);
     /**
-     * Specifies a custom post-processing function for summary values.
+     * @docid PivotGridDataSourceOptions.fields.calculateSummaryValue
+     * @default undefined
+     * @public
      */
     calculateSummaryValue?: ((e: dxPivotGridSummaryCell) => number | null);
     /**
-     * Specifies the field&apos;s caption to be displayed in the field chooser and on the field panel.
+     * @docid PivotGridDataSourceOptions.fields.caption
+     * @default undefined
+     * @public
      */
     caption?: string;
     /**
-     * Customizes the text displayed in summary cells.
+     * @docid PivotGridDataSourceOptions.fields.customizeText
+     * @public
      */
     customizeText?: ((cellInfo: { value?: string | number | Date; valueText?: string }) => string);
     /**
-     * Specifies which data source field provides data for the pivot grid field.
+     * @docid PivotGridDataSourceOptions.fields.dataField
+     * @default undefined
+     * @public
      */
     dataField?: string;
     /**
-     * Casts field values to a specific data type.
+     * @docid PivotGridDataSourceOptions.fields.dataType
+     * @default undefined
+     * @public
      */
     dataType?: PivotGridDataType;
     /**
-     * Specifies the name of the directory in which the field is located when displayed in the field chooser.
+     * @docid PivotGridDataSourceOptions.fields.displayFolder
+     * @default undefined
+     * @public
      */
     displayFolder?: string;
     /**
-     * Specifies whether to expand all items within the field&apos;s header level.
+     * @docid PivotGridDataSourceOptions.fields.expanded
+     * @default false
+     * @public
      */
     expanded?: boolean;
     /**
-     * Specifies whether a user changes the current filter by including (selecting) or excluding (clearing the selection of) values.
+     * @docid PivotGridDataSourceOptions.fields.filterType
+     * @default 'include'
+     * @public
      */
     filterType?: FilterType;
     /**
-     * Specifies the values by which the field is filtered.
+     * @docid PivotGridDataSourceOptions.fields.filterValues
+     * @default undefined
+     * @public
      */
     filterValues?: Array<any>;
     /**
-     * Formats field values before they are displayed.
+     * @docid PivotGridDataSourceOptions.fields.format
+     * @default ''
+     * @public
      */
     format?: Format;
     /**
-     * Specifies the field&apos;s index within its group.
+     * @docid PivotGridDataSourceOptions.fields.groupIndex
+     * @default undefined
+     * @public
      */
     groupIndex?: number;
     /**
-     * Specifies how the field&apos;s values are combined into groups for the headers. Cannot be used with an XmlaStore.
+     * @docid PivotGridDataSourceOptions.fields.groupInterval
+     * @default undefined
+     * @public
      */
     groupInterval?: PivotGridGroupInterval | number;
     /**
-     * Specifies the name of the field&apos;s group.
+     * @docid PivotGridDataSourceOptions.fields.groupName
+     * @default undefined
+     * @public
      */
     groupName?: string;
     /**
-     * Configures the field&apos;s header filter.
+     * @docid PivotGridDataSourceOptions.fields.headerFilter
+     * @public
      */
     headerFilter?: {
         allowSearch?: boolean;
         /**
-         * Specifies whether a &apos;Select All&apos; option is available to users.
+         * @docid PivotGridDataSourceOptions.fields.headerFilter.allowSelectAll
+         * @default true
          */
         allowSelectAll?: boolean;
         height?: number;
         /**
-         * Configures the header filter&apos;s search functionality.
+         * @docid PivotGridDataSourceOptions.fields.headerFilter.search
          */
         search?: HeaderFilterSearchConfig;
         width?: number;
     };
     /**
-     * Specifies whether the field should be treated as a measure (a field providing data for calculation).
+     * @docid PivotGridDataSourceOptions.fields.isMeasure
+     * @default undefined
+     * @public
      */
     isMeasure?: boolean;
     /**
-     * Specifies the field&apos;s identifier.
+     * @docid PivotGridDataSourceOptions.fields.name
+     * @default undefined
+     * @public
      */
     name?: string;
     /**
-     * Specifies whether to calculate the running total by rows or by columns.
+     * @docid PivotGridDataSourceOptions.fields.runningTotal
+     * @default undefined
+     * @public
      */
     runningTotal?: PivotGridRunningTotalMode;
     /**
-     * Specifies a function that combines the field&apos;s values into groups for the headers. Cannot be used with an XmlaStore or remote operations.
+     * @docid PivotGridDataSourceOptions.fields.selector
+     * @type function(data)
+     * @default undefined
+     * @public
      */
     selector?: Function;
     /**
-     * Specifies whether to display the field&apos;s grand totals. Applies only if the field is in the data area.
+     * @docid PivotGridDataSourceOptions.fields.showGrandTotals
+     * @default true
+     * @public
      */
     showGrandTotals?: boolean;
     /**
-     * Specifies whether to display the field&apos;s totals.
+     * @docid PivotGridDataSourceOptions.fields.showTotals
+     * @default true
+     * @public
      */
     showTotals?: boolean;
     /**
-     * Specifies whether to display the field&apos;s summary values. Applies only if the field is in the data area. Inherits the showTotals&apos; value by default.
+     * @docid PivotGridDataSourceOptions.fields.showValues
+     * @default undefined
+     * @public
      */
     showValues?: boolean;
     /**
-     * Specifies how the field&apos;s values in the headers should be sorted.
+     * @docid PivotGridDataSourceOptions.fields.sortBy
+     * @default undefined
+     * @public
      */
     sortBy?: PivotGridSortBy;
     /**
-     * Sorts the field&apos;s values in the headers by the specified measure&apos;s summary values. Accepts the measure&apos;s name, caption, dataField, or index in the fields array.
+     * @docid PivotGridDataSourceOptions.fields.sortBySummaryField
+     * @default undefined
+     * @public
      */
     sortBySummaryField?: string;
     /**
-     * Specifies a path to the column or row whose summary values should be used to sort the field&apos;s values in the headers.
+     * @docid PivotGridDataSourceOptions.fields.sortBySummaryPath
+     * @default undefined
+     * @public
      */
     sortBySummaryPath?: Array<number | string>;
     /**
-     * Specifies the field values&apos; sorting order.
+     * @docid PivotGridDataSourceOptions.fields.sortOrder
+     * @default 'asc'
+     * @public
      */
     sortOrder?: SortOrder;
     /**
-     * Specifies a custom comparison function that sorts the field&apos;s values in the headers.
+     * @docid PivotGridDataSourceOptions.fields.sortingMethod
+     * @default undefined
+     * @public
      */
     sortingMethod?: ((a: { value?: string | number; children?: Array<any> }, b: { value?: string | number; children?: Array<any> }) => number);
     /**
-     * Specifies a predefined post-processing function. Does not apply when the calculateSummaryValue property is set.
+     * @docid PivotGridDataSourceOptions.fields.summaryDisplayMode
+     * @default undefined
+     * @public
      */
     summaryDisplayMode?: PivotGridSummaryDisplayMode;
     /**
-     * Specifies how to aggregate the field&apos;s data. Cannot be used with an XmlaStore.
+     * @docid PivotGridDataSourceOptions.fields.summaryType
+     * @default 'count'
+     * @public
      */
     summaryType?: SummaryType | string;
     /**
-     * Specifies whether the field is visible in the pivot grid and field chooser.
+     * @docid PivotGridDataSourceOptions.fields.visible
+     * @default true
+     * @public
      */
     visible?: boolean;
     /**
-     * Specifies the field&apos;s width in pixels when the field is displayed in the pivot grid.
+     * @docid PivotGridDataSourceOptions.fields.width
+     * @default undefined
+     * @public
      */
     width?: number;
     /**
-     * Specifies whether text that does not fit into a header item should be wrapped.
+     * @docid PivotGridDataSourceOptions.fields.wordWrapEnabled
+     * @default undefined
+     * @public
      */
     wordWrapEnabled?: boolean;
 }
 /**
- * The PivotGridDataSource is an object that provides an API for processing data from an underlying store. This object is used in the PivotGrid UI component.
+ * @docid
+ * @namespace DevExpress.data
+ * @public
+ * @options PivotGridDataSourceOptions
  */
 export default class PivotGridDataSource {
     constructor(options?: Options);
     /**
-     * Collapses all header items of a field with the specified identifier.
+     * @docid
+     * @publicName collapseAll(id)
+     * @public
      */
     collapseAll(id: number | string): void;
     /**
-     * Collapses a specific header item.
+     * @docid
+     * @publicName collapseHeaderItem(area, path)
+     * @public
      */
     collapseHeaderItem(area: string, path: Array<string | number | Date>): void;
     /**
-     * Provides access to the facts that were used to calculate a specific summary value.
+     * @docid
+     * @publicName createDrillDownDataSource(options)
+     * @param1_field columnPath:Array<string, number, Date>
+     * @param1_field rowPath:Array<string, number, Date>
+     * @public
      */
     createDrillDownDataSource(options: { columnPath?: Array<string | number | Date>; rowPath?: Array<string | number | Date>; dataIndex?: number; maxRowCount?: number; customColumns?: Array<string> }): DataSource;
     /**
-     * Disposes of all the resources allocated to the PivotGridDataSource instance.
+     * @docid
+     * @publicName dispose()
+     * @public
      */
     dispose(): void;
     /**
-     * Expands all the header items of a field with the specified identifier.
+     * @docid
+     * @publicName expandAll(id)
+     * @public
      */
     expandAll(id: number | string): void;
     /**
-     * Expands a specific header item.
+     * @docid
+     * @publicName expandHeaderItem(area, path)
+     * @param2 path:Array<Object>
+     * @public
      */
     expandHeaderItem(area: string, path: Array<any>): void;
     /**
-     * Gets all the properties of a field with the specified identifier.
+     * @docid
+     * @publicName field(id)
+     * @return object
+     * @public
      */
     field(id: number | string): any;
     /**
-     * Updates field options&apos; values.
+     * @docid
+     * @publicName field(id, options)
+     * @param2 options:object
+     * @public
      */
     field(id: number | string, options: any): void;
     /**
-     * Gets all the fields including those generated automatically.
+     * @docid
+     * @publicName fields()
+     * @return Array<PivotGridDataSourceOptions.fields>
+     * @public
      */
     fields(): Array<Field>;
     /**
-     * Specifies a new fields collection.
+     * @docid
+     * @publicName fields(fields)
+     * @param1 fields:Array<PivotGridDataSourceOptions.fields>
+     * @public
      */
     fields(fields: Array<Field>): void;
     /**
-     * Gets the filter property&apos;s value. Does not affect an XmlaStore.
+     * @docid
+     * @publicName filter()
+     * @return object
+     * @public
      */
     filter(): any;
     /**
-     * Sets the filter property&apos;s value. Does not affect an XmlaStore.
+     * @docid
+     * @publicName filter(filterExpr)
+     * @param1 filterExpr:object
+     * @public
      */
     filter(filterExpr: any): void;
     /**
-     * Gets all the fields within an area.
+     * @docid
+     * @publicName getAreaFields(area, collectGroups)
+     * @return Array<PivotGridDataSourceOptions.fields>
+     * @public
      */
     getAreaFields(area: string, collectGroups: boolean): Array<Field>;
     /**
-     * Gets the loaded data. Another data portion is loaded every time a header item is expanded.
+     * @docid
+     * @publicName getData()
+     * @return object
+     * @public
      */
     getData(): any;
     /**
-     * Checks whether the PivotGridDataSource is loading data.
+     * @docid
+     * @publicName isLoading()
+     * @public
      */
     isLoading(): boolean;
     /**
-     * Starts loading data.
+     * @docid
+     * @publicName load()
+     * @return Promise<any>
+     * @public
      */
     load(): DxPromise<any>;
     /**
-     * Detaches all event handlers from a single event.
+     * @docid
+     * @publicName off(eventName)
+     * @param1 eventName:string
+     * @return this
+     * @public
      */
     off(eventName: EventName): this;
     /**
-     * Detaches a particular event handler from a single event.
+     * @docid
+     * @publicName off(eventName, eventHandler)
+     * @param1 eventName:string
+     * @return this
+     * @public
      */
     off(eventName: EventName, eventHandler: Function): this;
     /**
-     * Subscribes to an event.
+     * @docid
+     * @publicName on(eventName, eventHandler)
+     * @param1 eventName:string
+     * @return this
+     * @public
      */
     on(eventName: EventName, eventHandler: Function): this;
     /**
-     * Subscribes to events.
+     * @docid
+     * @publicName on(events)
+     * @param1 events:object
+     * @return this
+     * @public
      */
     on(events: { [key in EventName]?: Function }): this;
     /**
-     * Clears the loaded PivotGridDataSource data and calls the load() method.
+     * @docid
+     * @publicName reload()
+     * @return Promise<any>
+     * @public
      */
     reload(): DxPromise<any>;
     /**
-     * Gets the current PivotGridDataSource state. Part of the PivotGrid UI component&apos;s state storing feature.
+     * @docid
+     * @publicName state()
+     * @return object
+     * @public
      */
     state(): any;
     /**
-     * Sets the PivotGridDataSource state. Part of the PivotGrid UI component&apos;s state storing feature.
+     * @docid
+     * @publicName state(state)
+     * @param1 state:object
+     * @public
      */
     state(state: any): void;
 }

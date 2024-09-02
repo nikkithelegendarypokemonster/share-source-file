@@ -14,36 +14,29 @@ var _m_utils = _interopRequireDefault(require("../m_utils"));
 var _const = require("./const");
 var _dom = require("./dom");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-const rowsView = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(RowsViewRowDraggingExtender, _Base);
-  function RowsViewRowDraggingExtender() {
-    return _Base.apply(this, arguments) || this;
-  }
-  var _proto = RowsViewRowDraggingExtender.prototype;
-  _proto.init = function init() {
-    _Base.prototype.init.apply(this, arguments);
+const rowsView = Base => class RowsViewRowDraggingExtender extends Base {
+  init() {
+    super.init.apply(this, arguments);
     this._updateHandleColumn();
-  };
-  _proto.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     if (args.name === 'rowDragging') {
       this._updateHandleColumn();
       this._invalidate(true, true);
       args.handled = true;
     }
-    _Base.prototype.optionChanged.apply(this, arguments);
-  };
-  _proto._allowReordering = function _allowReordering() {
+    super.optionChanged.apply(this, arguments);
+  }
+  _allowReordering() {
     const rowDragging = this.option('rowDragging');
     return !!(rowDragging && (rowDragging.allowReordering || rowDragging.allowDropInsideItem || rowDragging.group));
-  };
-  _proto._updateHandleColumn = function _updateHandleColumn() {
+  }
+  _updateHandleColumn() {
     const rowDragging = this.option('rowDragging');
     const allowReordering = this._allowReordering();
     const columnsController = this._columnsController;
     const isHandleColumnVisible = allowReordering && rowDragging.showDragIcons;
-    columnsController === null || columnsController === void 0 ? void 0 : columnsController.addCommandColumn({
+    columnsController === null || columnsController === void 0 || columnsController.addCommandColumn({
       type: 'drag',
       command: 'drag',
       visibleIndex: -2,
@@ -57,12 +50,12 @@ const rowsView = Base => /*#__PURE__*/function (_Base) {
       cellTemplate: this._getHandleTemplate(),
       visible: isHandleColumnVisible
     });
-    columnsController === null || columnsController === void 0 ? void 0 : columnsController.columnOption('type:drag', 'visible', isHandleColumnVisible);
-  };
-  _proto._renderContent = function _renderContent() {
+    columnsController === null || columnsController === void 0 || columnsController.columnOption('type:drag', 'visible', isHandleColumnVisible);
+  }
+  _renderContent() {
     const rowDragging = this.option('rowDragging');
     const allowReordering = this._allowReordering();
-    const $content = _Base.prototype._renderContent.apply(this, arguments);
+    const $content = super._renderContent.apply(this, arguments);
     // @ts-expect-error
     const isFixedTableRendering = this._isFixedTableRendering;
     const sortableName = '_sortable';
@@ -70,12 +63,12 @@ const rowsView = Base => /*#__PURE__*/function (_Base) {
     const currentSortableName = isFixedTableRendering ? sortableFixedName : sortableName;
     const anotherSortableName = isFixedTableRendering ? sortableName : sortableFixedName;
     const togglePointerEventsStyle = toggle => {
-      var _a;
+      var _this$sortableFixedNa;
       // T929503
-      (_a = this[sortableFixedName]) === null || _a === void 0 ? void 0 : _a.$element().css('pointerEvents', toggle ? 'auto' : '');
+      (_this$sortableFixedNa = this[sortableFixedName]) === null || _this$sortableFixedNa === void 0 || _this$sortableFixedNa.$element().css('pointerEvents', toggle ? 'auto' : '');
     };
     const rowSelector = '.dx-row:not(.dx-freespace-row):not(.dx-virtual-row):not(.dx-header-row):not(.dx-footer-row)';
-    const filter = this.option('dataRowTemplate') ? "> table > tbody".concat(rowSelector) : "> table > tbody > ".concat(rowSelector);
+    const filter = this.option('dataRowTemplate') ? `> table > tbody${rowSelector}` : `> table > tbody > ${rowSelector}`;
     if ((allowReordering || this[currentSortableName]) && $content.length) {
       this[currentSortableName] = this._createComponent($content, _sortable.default, (0, _extend.extend)({
         component: this.component,
@@ -100,34 +93,36 @@ const rowsView = Base => /*#__PURE__*/function (_Base) {
           this._synchronizeScrollLeftPosition(gridInstance);
         },
         dragTemplate: this._getDraggableRowTemplate(),
-        handle: rowDragging.showDragIcons && ".".concat(_const.CLASSES.commandDrag),
+        handle: rowDragging.showDragIcons && `.${_const.CLASSES.commandDrag}`,
         dropFeedbackMode: 'indicate'
       }, rowDragging, {
         onDragStart: e => {
-          var _a, _b;
+          var _this$getController, _rowDragging$onDragSt;
           // TODO getController
-          (_a = this.getController('keyboardNavigation')) === null || _a === void 0 ? void 0 : _a._resetFocusedCell();
+          (_this$getController = this.getController('keyboardNavigation')) === null || _this$getController === void 0 || _this$getController._resetFocusedCell();
           const row = e.component.getVisibleRows()[e.fromIndex];
           e.itemData = row && row.data;
           const isDataRow = row && row.rowType === 'data';
           e.cancel = !allowReordering || !isDataRow;
-          (_b = rowDragging.onDragStart) === null || _b === void 0 ? void 0 : _b.call(rowDragging, e);
+          (_rowDragging$onDragSt = rowDragging.onDragStart) === null || _rowDragging$onDragSt === void 0 || _rowDragging$onDragSt.call(rowDragging, e);
         },
-        onDragEnter: () => {
-          togglePointerEventsStyle(true);
+        onDragEnter: e => {
+          if (e.fromComponent !== e.toComponent) {
+            togglePointerEventsStyle(true);
+          }
         },
         onDragLeave: () => {
           togglePointerEventsStyle(false);
         },
         onDragEnd: e => {
-          var _a;
+          var _rowDragging$onDragEn;
           togglePointerEventsStyle(false);
-          (_a = rowDragging.onDragEnd) === null || _a === void 0 ? void 0 : _a.call(rowDragging, e);
+          (_rowDragging$onDragEn = rowDragging.onDragEnd) === null || _rowDragging$onDragEn === void 0 || _rowDragging$onDragEn.call(rowDragging, e);
         },
         onAdd: e => {
-          var _a;
+          var _rowDragging$onAdd;
           togglePointerEventsStyle(false);
-          (_a = rowDragging.onAdd) === null || _a === void 0 ? void 0 : _a.call(rowDragging, e);
+          (_rowDragging$onAdd = rowDragging.onAdd) === null || _rowDragging$onAdd === void 0 || _rowDragging$onAdd.call(rowDragging, e);
         },
         dropFeedbackMode: rowDragging.dropFeedbackMode,
         onOptionChanged: e => {
@@ -143,16 +138,16 @@ const rowsView = Base => /*#__PURE__*/function (_Base) {
       $content.toggleClass(_const.CLASSES.sortableWithoutHandle, allowReordering && !rowDragging.showDragIcons);
     }
     return $content;
-  };
-  _proto._renderCore = function _renderCore(e) {
-    _Base.prototype._renderCore.apply(this, arguments);
+  }
+  _renderCore(e) {
+    super._renderCore.apply(this, arguments);
     if (e && e.changeType === 'update' && e.repaintChangesOnly && _m_utils.default.isVirtualRowRendering(this)) {
       (0, _common.deferUpdate)(() => {
         this._updateSortable();
       });
     }
-  };
-  _proto._updateSortable = function _updateSortable() {
+  }
+  _updateSortable() {
     const offset = this._dataController.getRowIndexOffset();
     // @ts-expect-error
     const offsetDiff = offset - this._previousOffset;
@@ -161,19 +156,19 @@ const rowsView = Base => /*#__PURE__*/function (_Base) {
       const toIndex = sortable === null || sortable === void 0 ? void 0 : sortable.option('toIndex');
       // @ts-expect-error
       if ((0, _type.isDefined)(toIndex) && (0, _type.isDefined)(this._previousOffset)) {
-        sortable === null || sortable === void 0 ? void 0 : sortable.option('toIndex', toIndex - offsetDiff);
+        sortable === null || sortable === void 0 || sortable.option('toIndex', toIndex - offsetDiff);
       }
-      sortable === null || sortable === void 0 ? void 0 : sortable.option('offset', offset);
-      sortable === null || sortable === void 0 ? void 0 : sortable.update();
+      sortable === null || sortable === void 0 || sortable.option('offset', offset);
+      sortable === null || sortable === void 0 || sortable.update();
     });
     // @ts-expect-error
     this._previousOffset = offset;
-  };
-  _proto._resizeCore = function _resizeCore() {
-    _Base.prototype._resizeCore.apply(this, arguments);
+  }
+  _resizeCore() {
+    super._resizeCore.apply(this, arguments);
     this._updateSortable();
-  };
-  _proto._getDraggableGridOptions = function _getDraggableGridOptions(options) {
+  }
+  _getDraggableGridOptions(options) {
     const gridOptions = this.option();
     const columns = this.getColumns();
     const $rowElement = (0, _renderer.default)(this.getRowElement(options.rowIndex));
@@ -205,14 +200,14 @@ const rowsView = Base => /*#__PURE__*/function (_Base) {
         (0, _renderer.default)(e.rowElement).replaceWith($rowElement.eq(rowsView._isFixedTableRendering ? 1 : 0).clone());
       }
     };
-  };
-  _proto._synchronizeScrollLeftPosition = function _synchronizeScrollLeftPosition(gridInstance) {
+  }
+  _synchronizeScrollLeftPosition(gridInstance) {
     const scrollable = gridInstance === null || gridInstance === void 0 ? void 0 : gridInstance.getScrollable();
-    scrollable === null || scrollable === void 0 ? void 0 : scrollable.scrollTo({
+    scrollable === null || scrollable === void 0 || scrollable.scrollTo({
       x: this._scrollLeft
     });
-  };
-  _proto._getDraggableRowTemplate = function _getDraggableRowTemplate() {
+  }
+  _getDraggableRowTemplate() {
     return options => {
       const $rootElement = this.component.$element();
       const $dataGridContainer = (0, _renderer.default)('<div>');
@@ -222,16 +217,15 @@ const rowsView = Base => /*#__PURE__*/function (_Base) {
       const gridOptions = this._getDraggableGridOptions(row);
       // @ts-expect-error
       this._createComponent($dataGridContainer, this.component.NAME, gridOptions);
-      $dataGridContainer.find('.dx-gridbase-container').children(":not(.".concat(this.addWidgetPrefix(_const.CLASSES.rowsView), ")")).hide();
+      $dataGridContainer.find('.dx-gridbase-container').children(`:not(.${this.addWidgetPrefix(_const.CLASSES.rowsView)})`).hide();
       $dataGridContainer.addClass(this.addWidgetPrefix(_const.CLASSES.dragView));
       return $dataGridContainer;
     };
-  };
-  _proto._getHandleTemplate = function _getHandleTemplate() {
+  }
+  _getHandleTemplate() {
     return _dom.GridCoreRowDraggingDom.createHandleTemplateFunc(string => this.addWidgetPrefix(string));
-  };
-  return RowsViewRowDraggingExtender;
-}(Base);
+  }
+};
 const rowDraggingModule = exports.rowDraggingModule = {
   defaultOptions() {
     return {

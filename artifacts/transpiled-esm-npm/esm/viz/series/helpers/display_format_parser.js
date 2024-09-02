@@ -1,7 +1,7 @@
 import { formatDate, formatNumber } from '../../../localization';
-var startPlaceHolderChar = '{';
-var endPlaceHolderChar = '}';
-var placeholderFormatDelimiter = ':';
+const startPlaceHolderChar = '{';
+const endPlaceHolderChar = '}';
+const placeholderFormatDelimiter = ':';
 function formatValue(value, format) {
   if (format) {
     if (value instanceof Date) {
@@ -14,8 +14,8 @@ function formatValue(value, format) {
   return value;
 }
 function getValueByPlaceHolder(placeHolder, pointInfo) {
-  var customFormat = '';
-  var customFormatIndex = placeHolder.indexOf(placeholderFormatDelimiter);
+  let customFormat = '';
+  const customFormatIndex = placeHolder.indexOf(placeholderFormatDelimiter);
   if (customFormatIndex > 0) {
     customFormat = placeHolder.substr(customFormatIndex + 1);
     placeHolder = placeHolder.substr(0, customFormatIndex);
@@ -23,14 +23,14 @@ function getValueByPlaceHolder(placeHolder, pointInfo) {
   return formatValue(pointInfo[placeHolder], customFormat);
 }
 export function processDisplayFormat(displayFormat, pointInfo) {
-  var actualText = displayFormat;
-  var continueProcess = true;
+  let actualText = displayFormat;
+  let continueProcess = true;
   while (continueProcess) {
-    var startBracketIndex = actualText.indexOf(startPlaceHolderChar);
-    var endBracketIndex = actualText.indexOf(endPlaceHolderChar);
+    const startBracketIndex = actualText.indexOf(startPlaceHolderChar);
+    const endBracketIndex = actualText.indexOf(endPlaceHolderChar);
     if (startBracketIndex >= 0 && endBracketIndex > 0) {
-      var placeHolder = actualText.substring(startBracketIndex + 1, endBracketIndex);
-      var value = getValueByPlaceHolder(placeHolder, pointInfo);
+      const placeHolder = actualText.substring(startBracketIndex + 1, endBracketIndex);
+      const value = getValueByPlaceHolder(placeHolder, pointInfo);
       actualText = actualText.substr(0, startBracketIndex) + value + actualText.substr(endBracketIndex + 1);
     } else {
       continueProcess = false;

@@ -87,7 +87,7 @@ function getCommonBorderWidth(elements, direction) {
   return width;
 }
 function clickedOnFieldsArea($targetElement) {
-  return $targetElement.closest(".".concat(FIELDS_CLASS)).length || $targetElement.find(".".concat(FIELDS_CLASS)).length;
+  return $targetElement.closest(`.${FIELDS_CLASS}`).length || $targetElement.find(`.${FIELDS_CLASS}`).length;
 }
 const PivotGrid = exports.PivotGrid = _ui2.default.inherit({
   _getDefaultOptions() {
@@ -369,7 +369,7 @@ const PivotGrid = exports.PivotGrid = _ui2.default.inherit({
         that.updateDimensions();
         break;
       case 'rowHeaderLayout':
-        that._tableElement().find(".".concat(ROW_AREA_CELL_CLASS)).toggleClass('dx-area-tree-view', args.value === 'tree');
+        that._tableElement().find(`.${ROW_AREA_CELL_CLASS}`).toggleClass('dx-area-tree-view', args.value === 'tree');
         that._dataController.updateViewOptions(that._getDataControllerOptions());
         break;
       case 'height':
@@ -442,7 +442,6 @@ const PivotGrid = exports.PivotGrid = _ui2.default.inherit({
     return cellsCount > this.option('renderCellCountLimit');
   },
   _renderFieldChooser() {
-    var _a;
     const that = this;
     const container = that._pivotGridContainer;
     const fieldChooserOptions = that.option('fieldChooser') || {};
@@ -477,7 +476,7 @@ const PivotGrid = exports.PivotGrid = _ui2.default.inherit({
       width: undefined,
       height: undefined,
       headerFilter: that.option('headerFilter'),
-      encodeHtml: (_a = that.option('fieldChooser.encodeHtml')) !== null && _a !== void 0 ? _a : that.option('encodeHtml'),
+      encodeHtml: that.option('fieldChooser.encodeHtml') ?? that.option('encodeHtml'),
       applyChangesMode: fieldChooserOptions.applyChangesMode,
       onContextMenuPreparing(e) {
         that._trigger('onContextMenuPreparing', e);
@@ -550,11 +549,11 @@ const PivotGrid = exports.PivotGrid = _ui2.default.inherit({
     let items = [];
     const texts = that.option('texts');
     if (e.area === 'row' || e.area === 'column') {
-      const areaFields = e["".concat(e.area, "Fields")];
+      const areaFields = e[`${e.area}Fields`];
       const oppositeAreaFields = e[e.area === 'column' ? 'rowFields' : 'columnFields'];
       const field = e.cell.path && areaFields[e.cell.path.length - 1];
       const dataSource = that.getDataSource();
-      if (field && field.allowExpandAll && e.cell.path.length < e["".concat(e.area, "Fields")].length && !dataSource.paginate()) {
+      if (field && field.allowExpandAll && e.cell.path.length < e[`${e.area}Fields`].length && !dataSource.paginate()) {
         items.push({
           beginGroup: true,
           icon: 'none',
@@ -584,7 +583,7 @@ const PivotGrid = exports.PivotGrid = _ui2.default.inherit({
             const showDataFieldCaption = !(0, _type.isDefined)(e.cell.dataIndex) && e.dataFields.length > 1;
             const textFormat = e.area === 'column' ? texts.sortColumnBySummary : texts.sortRowBySummary;
             const checked = (0, _m_widget_utils.findField)(e.dataFields, field.sortBySummaryField) === dataIndex && (e.cell.path || []).join('/') === (field.sortBySummaryPath || []).join('/');
-            const text = (0, _string.format)(textFormat, showDataFieldCaption ? "".concat(field.caption, " - ").concat(dataField.caption) : field.caption);
+            const text = (0, _string.format)(textFormat, showDataFieldCaption ? `${field.caption} - ${dataField.caption}` : field.caption);
             items.push({
               beginGroup: sortingBySummaryItemCount === 0,
               icon: checked ? field.sortOrder === 'desc' ? 'sortdowntext' : 'sortuptext' : 'none',
@@ -721,7 +720,7 @@ const PivotGrid = exports.PivotGrid = _ui2.default.inherit({
     if (isLoading) {
       if (progress) {
         if (new Date() - that._startLoadingTime >= 1000) {
-          that._loadPanel.option('message', "".concat(Math.floor(progress * 100), "%"));
+          that._loadPanel.option('message', `${Math.floor(progress * 100)}%`);
         }
       } else {
         that._loadPanel.option('message', that.option('loadPanel.text'));
@@ -746,7 +745,7 @@ const PivotGrid = exports.PivotGrid = _ui2.default.inherit({
   },
   _renderDescriptionArea() {
     const $element = this.$element();
-    const $descriptionCell = $element.find(".".concat(DESCRIPTION_AREA_CELL_CLASS));
+    const $descriptionCell = $element.find(`.${DESCRIPTION_AREA_CELL_CLASS}`);
     const $toolbarContainer = (0, _renderer.default)(DIV).addClass('dx-pivotgrid-toolbar');
     const fieldPanel = this.option('fieldPanel');
     const $filterHeader = $element.find('.dx-filter-header');
@@ -971,7 +970,7 @@ const PivotGrid = exports.PivotGrid = _ui2.default.inherit({
     return this.$element().find('table').first();
   },
   addWidgetPrefix(className) {
-    return "dx-pivotgrid-".concat(className);
+    return `dx-pivotgrid-${className}`;
   },
   resize() {
     this.updateDimensions();
@@ -989,10 +988,10 @@ const PivotGrid = exports.PivotGrid = _ui2.default.inherit({
     let rowsAreaWidth = 0;
     let hasRowsScroll;
     let hasColumnsScroll;
-    const dataAreaCell = tableElement.find(".".concat(DATA_AREA_CELL_CLASS));
-    const rowAreaCell = tableElement.find(".".concat(ROW_AREA_CELL_CLASS));
-    const columnAreaCell = tableElement.find(".".concat(COLUMN_AREA_CELL_CLASS));
-    const descriptionCell = tableElement.find(".".concat(DESCRIPTION_AREA_CELL_CLASS));
+    const dataAreaCell = tableElement.find(`.${DATA_AREA_CELL_CLASS}`);
+    const rowAreaCell = tableElement.find(`.${ROW_AREA_CELL_CLASS}`);
+    const columnAreaCell = tableElement.find(`.${COLUMN_AREA_CELL_CLASS}`);
+    const descriptionCell = tableElement.find(`.${DESCRIPTION_AREA_CELL_CLASS}`);
     const filterHeaderCell = tableElement.find('.dx-filter-header');
     const columnHeaderCell = tableElement.find('.dx-column-header');
     const rowFieldsHeader = that._rowFields;
@@ -1033,7 +1032,7 @@ const PivotGrid = exports.PivotGrid = _ui2.default.inherit({
       const correctDataTableHeight = (0, _size.getHeight)(that._dataArea.tableElement()) - (0, _size.getHeight)(that._dataArea.headElement());
       const hasVerticalScrollbar = calculateHasScroll(dataAreaHeight, correctDataTableHeight);
       that._dataArea.tableElement().css({
-        width: that._hasHeight && hasVerticalScrollbar && scrollBarWidth ? "calc(100% - ".concat(scrollBarWidth, "px)") : '100%'
+        width: that._hasHeight && hasVerticalScrollbar && scrollBarWidth ? `calc(100% - ${scrollBarWidth}px)` : '100%'
       });
       const resultWidths = that._dataArea.getColumnsWidth();
       const rowsAreaHeights = needSynchronizeFieldPanel ? rowHeights.slice(1) : rowHeights;

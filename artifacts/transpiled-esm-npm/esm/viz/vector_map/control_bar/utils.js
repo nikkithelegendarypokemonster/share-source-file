@@ -1,4 +1,4 @@
-export var createTracker = (renderer, root) => renderer.g().attr({
+export const createTracker = (renderer, root) => renderer.g().attr({
   stroke: 'none',
   'stroke-width': 0,
   fill: '#000000',
@@ -6,19 +6,19 @@ export var createTracker = (renderer, root) => renderer.g().attr({
 }).css({
   cursor: 'pointer'
 }).append(root);
-export var createVisibilityGroup = function createVisibilityGroup(renderer, root) {
-  var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+export const createVisibilityGroup = function (renderer, root) {
+  let className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
   return renderer.g().attr({
     'class': className
   }).append(root);
 };
-export var toggleDisplay = (blocks, isVisible) => {
-  var cssDisplayBlock = {
+export const toggleDisplay = (blocks, isVisible) => {
+  const cssDisplayBlock = {
     display: 'block'
   };
-  var cssDisplayNone = {
+  const cssDisplayNone = {
     display: 'none'
   };
-  var style = isVisible ? cssDisplayBlock : cssDisplayNone;
+  const style = isVisible ? cssDisplayBlock : cssDisplayNone;
   blocks.map(item => item.css(style));
 };

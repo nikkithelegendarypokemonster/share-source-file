@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/translators/logarithmic_translator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,27 +9,27 @@
 import { raiseToExt as raiseTo, getLogExt as getLog } from '../core/utils';
 import { isDefined } from '../../core/utils/type';
 export default {
-  fromValue: function fromValue(value) {
+  fromValue: function (value) {
     return value !== null ? getLog(value, this._canvasOptions.base, this._businessRange.allowNegatives, this._businessRange.linearThreshold) : value;
   },
-  toValue: function toValue(value) {
+  toValue: function (value) {
     return value !== null ? raiseTo(value, this._canvasOptions.base, this._businessRange.allowNegatives, this._businessRange.linearThreshold) : value;
   },
-  getMinBarSize: function getMinBarSize(minBarSize) {
-    var visibleArea = this.getCanvasVisibleArea();
-    var minValue = this.from(visibleArea.min + minBarSize);
-    var canvasOptions = this._canvasOptions;
-    var startValue = this.fromValue(this.from(visibleArea.min));
-    var endValue = this.fromValue(minValue !== null && minValue !== void 0 ? minValue : this.from(visibleArea.max));
-    var value = Math.abs(startValue - endValue);
+  getMinBarSize: function (minBarSize) {
+    const visibleArea = this.getCanvasVisibleArea();
+    const minValue = this.from(visibleArea.min + minBarSize);
+    const canvasOptions = this._canvasOptions;
+    const startValue = this.fromValue(this.from(visibleArea.min));
+    const endValue = this.fromValue(minValue ?? this.from(visibleArea.max));
+    const value = Math.abs(startValue - endValue);
     return Math.pow(canvasOptions.base, value);
   },
-  checkMinBarSize: function checkMinBarSize(initialValue, minShownValue, stackValue) {
-    var canvasOptions = this._canvasOptions;
-    var prevValue = stackValue ? stackValue - initialValue : 0;
-    var baseMethod = this.constructor.prototype.checkMinBarSize;
-    var minBarSize;
-    var updateValue;
+  checkMinBarSize: function (initialValue, minShownValue, stackValue) {
+    const canvasOptions = this._canvasOptions;
+    const prevValue = stackValue ? stackValue - initialValue : 0;
+    const baseMethod = this.constructor.prototype.checkMinBarSize;
+    let minBarSize;
+    let updateValue;
     if (isDefined(minShownValue) && prevValue > 0) {
       minBarSize = baseMethod(this.fromValue(stackValue / prevValue), this.fromValue(minShownValue) - canvasOptions.rangeMinVisible);
       updateValue = Math.pow(canvasOptions.base, this.fromValue(prevValue) + minBarSize) - prevValue;

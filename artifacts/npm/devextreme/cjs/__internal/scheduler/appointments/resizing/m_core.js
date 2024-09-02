@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/appointments/resizing/m_core.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -133,7 +133,7 @@ const getAppointmentDateRange = options => {
   const relativeAppointmentRect = getRelativeAppointmentRect(options.appointmentRect, options.parentAppointmentRect);
   const cellInfo = getAppointmentCellsInfo(options);
   const considerTime = !options.isDateAndTimeView || appointmentSettings.allDay;
-  const extendedOptions = _extends(_extends(_extends({}, options), cellInfo), {
+  const extendedOptions = _extends({}, options, cellInfo, {
     considerTime,
     relativeAppointmentRect
   });

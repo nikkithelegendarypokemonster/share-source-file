@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/accordion.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -34,168 +34,259 @@ import CollectionWidget, {
     SelectionChangedInfo,
 } from './collection/ui.collection_widget.base';
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 type ItemLike = string | Item | any;
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_accordion_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxAccordion<TItem, TKey>>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_accordion_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxAccordion<TItem, TKey>>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_accordion_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent<TItem extends ItemLike = any, TKey = any> = InitializedEventInfo<dxAccordion<TItem, TKey>>;
 
 /**
- * The type of the itemClick event handler&apos;s argument.
+ * @docid _ui_accordion_ItemClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemClickEvent<TItem extends ItemLike = any, TKey = any> = NativeEventInfo<dxAccordion<TItem, TKey>, KeyboardEvent | MouseEvent | PointerEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the itemContextMenu event handler&apos;s argument.
+ * @docid _ui_accordion_ItemContextMenuEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemContextMenuEvent<TItem extends ItemLike = any, TKey = any> = NativeEventInfo<dxAccordion<TItem, TKey>, MouseEvent | PointerEvent | TouchEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the itemHold event handler&apos;s argument.
+ * @docid _ui_accordion_ItemHoldEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemHoldEvent<TItem extends ItemLike = any, TKey = any> = NativeEventInfo<dxAccordion<TItem, TKey>, MouseEvent | PointerEvent | TouchEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the itemRendered event handler&apos;s argument.
+ * @docid _ui_accordion_ItemRenderedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ItemInfo
  */
 export type ItemRenderedEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxAccordion<TItem, TKey>> & ItemInfo<TItem>;
 
 /**
- * The type of the itemTitleClick event handler&apos;s argument.
+ * @docid _ui_accordion_ItemTitleClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemTitleClickEvent<TItem extends ItemLike = any, TKey = any> = NativeEventInfo<dxAccordion<TItem, TKey>, MouseEvent | PointerEvent> & ItemInfo<TItem>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_accordion_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxAccordion<TItem, TKey>> & ChangedOptionInfo;
 
 /**
- * The type of the selectionChanged event handler&apos;s argument.
+ * @docid _ui_accordion_SelectionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,SelectionChangedInfo
  */
 export type SelectionChangedEvent<TItem extends ItemLike = any, TKey = any> = EventInfo<dxAccordion<TItem, TKey>> & SelectionChangedInfo<TItem>;
 
 /**
- * 
- * @deprecated 
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @public
+ * @docid
  */
 export interface dxAccordionOptions<
     TItem extends ItemLike = any,
     TKey = any,
 > extends CollectionWidgetOptions<dxAccordion<TItem, TKey>, TItem, TKey> {
     /**
-     * A number specifying the time in milliseconds spent on the animation of the expanding or collapsing of a panel.
+     * @docid
+     * @default 300
+     * @default 200 &for(Material)
+     * @default 200 &for(Fluent)
+     * @public
      */
     animationDuration?: number;
     /**
-     * Specifies whether all items can be collapsed or whether at least one item must always be expanded.
+     * @docid
+     * @default false
+     * @public
      */
     collapsible?: boolean;
     /**
-     * Binds the UI component to data.
+     * @docid
+     * @type string | Array<string | dxAccordionItem | any> | Store | DataSource | DataSourceOptions | null
+     * @default null
+     * @public
      */
     dataSource?: DataSourceLike<TItem, TKey> | null;
     /**
-     * Specifies whether to render the panel&apos;s content when it is displayed. If false, the content is rendered immediately.
+     * @docid
+     * @default true
+     * @public
      */
     deferRendering?: boolean;
     /**
-     * Specifies whether the UI component can be focused using keyboard navigation.
+     * @docid
+     * @default true &for(desktop)
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * Specifies the UI component&apos;s height.
+     * @docid
+     * @default undefined
+     * @public
      */
     height?: number | string | (() => number | string);
     /**
-     * Specifies whether the UI component changes its state when a user pauses on it.
+     * @docid
+     * @default true
+     * @public
      */
     hoverStateEnabled?: boolean;
     /**
-     * Specifies a custom template for items.
+     * @docid
+     * @default "item"
+     * @type_function_param1 itemData:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     itemTemplate?: template | ((itemData: TItem, itemIndex: number, itemElement: DxElement) => string | UserDefinedElement);
     /**
-     * Specifies a custom template for item titles.
+     * @docid
+     * @default "title"
+     * @type_function_param1 itemData:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     itemTitleTemplate?: template | ((itemData: TItem, itemIndex: number, itemElement: DxElement) => string | UserDefinedElement);
     /**
-     * An array of items displayed by the UI component.
+     * @docid
+     * @type Array<string | dxAccordionItem | any>
+     * @fires dxAccordionOptions.onOptionChanged
+     * @public
      */
     items?: Array<TItem>;
     /**
-     * Specifies whether the UI component can expand several items or only a single item at once.
+     * @docid
+     * @default false
+     * @public
      */
     multiple?: boolean;
     /**
-     * A function that is executed when an accordion item&apos;s title is clicked or tapped.
+     * @docid
+     * @default null
+     * @type function
+     * @type_function_param1 e:{ui/accordion:ItemTitleClickEvent}
+     * @action
+     * @public
      */
     onItemTitleClick?: ((e: ItemTitleClickEvent<TItem, TKey>) => void) | string;
     /**
-     * Specifies whether to repaint only those elements whose data changed.
+     * @docid
+     * @default false
+     * @public
      */
     repaintChangesOnly?: boolean;
     /**
-     * The index number of the currently expanded item.
+     * @docid
+     * @default 0
+     * @public
      */
     selectedIndex?: number;
 }
 /**
- * The Accordion UI component contains several panels displayed one under another. These panels can be collapsed or expanded by an end user, which makes this UI component very useful for presenting information in a limited amount of space.
+ * @docid
+ * @inherits CollectionWidget
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxAccordion<
     TItem extends ItemLike = any,
     TKey = any,
 > extends CollectionWidget<dxAccordionOptions<TItem, TKey>, TItem, TKey> {
     /**
-     * Collapses an item with a specific index.
+     * @docid
+     * @publicName collapseItem(index)
+     * @param1 index:numeric
+     * @return Promise<void>
+     * @public
      */
     collapseItem(index: number): DxPromise<void>;
     /**
-     * Expands an item with a specific index.
+     * @docid
+     * @publicName expandItem(index)
+     * @param1 index:numeric
+     * @return Promise<void>
+     * @public
      */
     expandItem(index: number): DxPromise<void>;
     /**
-     * Updates the dimensions of the UI component contents.
+     * @docid
+     * @publicName updateDimensions()
+     * @return Promise<void>
+     * @public
      */
     updateDimensions(): DxPromise<void>;
 }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxAccordion
+ */
 export type Item = dxAccordionItem;
 
 /**
  * @deprecated Use Item instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
  */
 export interface dxAccordionItem extends CollectionWidgetItem {
     /**
-     * Specifies the icon to be displayed in the panel&apos;s title.
+     * @docid
+     * @public
      */
     icon?: string;
     /**
-     * Specifies text displayed for the UI component item title.
+     * @docid
+     * @public
      */
     title?: string;
     /**
-     * Specifies a template that should be used to render the title for this item only.
+     * @docid
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     titleTemplate?: template | (() => string | UserDefinedElement);
 }
 
+/** @public */
 export type ExplicitTypes<
     TItem extends ItemLike,
     TKey,
@@ -213,15 +304,13 @@ export type ExplicitTypes<
     SelectionChangedEvent: SelectionChangedEvent<TItem, TKey>;
 };
 
+/** @public */
 export type Properties<
     TItem extends ItemLike = any,
     TKey = any,
 > = dxAccordionOptions<TItem, TKey>;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options<
     TItem extends ItemLike = any,
     TKey = any,

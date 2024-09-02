@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/lookup.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -55,216 +55,341 @@ export {
 };
 
 /**
- * The type of the closed event handler&apos;s argument.
+ * @docid _ui_lookup_ClosedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ClosedEvent = EventInfo<dxLookup>;
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_lookup_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxLookup>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_lookup_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxLookup>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_lookup_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxLookup>;
 
 /**
- * The type of the itemClick event handler&apos;s argument.
+ * @docid _ui_lookup_ItemClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemClickEvent = NativeEventInfo<dxLookup, KeyboardEvent | MouseEvent | PointerEvent> & ItemInfo;
 
 /**
- * The type of the opened event handler&apos;s argument.
+ * @docid _ui_lookup_OpenedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type OpenedEvent = EventInfo<dxLookup>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_lookup_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxLookup> & ChangedOptionInfo;
 
 /**
- * The type of the pageLoading event handler&apos;s argument.
+ * @docid _ui_lookup_PageLoadingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type PageLoadingEvent = EventInfo<dxLookup>;
 
 /**
- * The type of the pullRefresh event handler&apos;s argument.
+ * @docid _ui_lookup_PullRefreshEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type PullRefreshEvent = EventInfo<dxLookup>;
 
 /**
- * The type of the scroll event handler&apos;s argument.
+ * @docid _ui_lookup_ScrollEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ScrollInfo
  */
 export type ScrollEvent = NativeEventInfo<dxLookup, MouseEvent | Event> & ScrollInfo;
 
 /**
- * The type of the selectionChanged event handler&apos;s argument.
+ * @docid _ui_lookup_SelectionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,SelectionChangedInfo
  */
 export type SelectionChangedEvent = EventInfo<dxLookup> & SelectionChangedInfo;
 
+/** @public */
 export type TitleRenderedEvent = EventInfo<dxLookup> & TitleRenderedInfo;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_lookup_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxLookup, KeyboardEvent | MouseEvent | PointerEvent | Event> & ValueChangedInfo;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxLookupOptions extends dxDropDownListOptions<dxLookup> {
     /**
-     * The text displayed on the Apply button.
+     * @docid
+     * @default "OK"
+     * @public
      */
     applyButtonText?: string;
     /**
-     * Specifies the way an end user applies the selected value.
+     * @docid
+     * @hidden false
+     * @public
      */
     applyValueMode?: ApplyValueMode;
     /**
-     * The text displayed on the Cancel button.
+     * @docid
+     * @default "Cancel"
+     * @public
      */
     cancelButtonText?: string;
     /**
-     * Specifies whether or not the UI component cleans the search box when the popup window is displayed.
+     * @docid
+     * @default true
+     * @public
      */
     cleanSearchOnOpening?: boolean;
     /**
-     * The text displayed on the Clear button.
+     * @docid
+     * @default "Clear"
+     * @public
      */
     clearButtonText?: string;
     /**
-     * Specifies a custom template for the input field.
+     * @docid
+     * @default null
+     * @type_function_param1 selectedItem:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     fieldTemplate?: template | ((selectedItem: any, fieldElement: DxElement) => string | UserDefinedElement);
     /**
-     * Specifies whether the UI component can be focused using keyboard navigation.
+     * @docid
+     * @default false
+     * @default true &for(desktop)
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * A Boolean value specifying whether or not to display the lookup in full-screen mode.
-     * @deprecated Use the dropDownOptions option instead.
+     * @docid
+     * @default false
+     * @default true &for(iPhone)
+     * @public
+     * @deprecated dxLookupOptions.dropDownOptions
      */
     fullScreen?: boolean;
     /**
-     * Specifies a custom template for group captions.
+     * @docid
+     * @default "group"
+     * @type_function_param1 itemData:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     groupTemplate?: template | ((itemData: any, itemIndex: number, itemElement: DxElement) => string | UserDefinedElement);
     /**
-     * Specifies whether data items should be grouped.
+     * @docid
+     * @default false
+     * @public
      */
     grouped?: boolean;
     /**
-     * The text displayed on the button used to load the next page from the data source.
+     * @docid
+     * @default "More"
+     * @public
      */
     nextButtonText?: string;
     /**
-     * A function that is executed before the next page is loaded.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/lookup:PageLoadingEvent}
+     * @action
+     * @public
      */
     onPageLoading?: ((e: PageLoadingEvent) => void);
     /**
-     * A function that is executed when the &apos;pull to refresh&apos; gesture is performed on the drop-down item list. Supported on mobile devices only.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/lookup:PullRefreshEvent}
+     * @action
+     * @public
      */
     onPullRefresh?: ((e: PullRefreshEvent) => void);
     /**
-     * A function that is executed on each scroll gesture performed on the drop-down item list.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/lookup:ScrollEvent}
+     * @action
+     * @public
      */
     onScroll?: ((e: ScrollEvent) => void);
     /**
-     * A function that is executed after the UI component&apos;s value is changed.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/lookup:ValueChangedEvent}
+     * @action
+     * @public
      */
     onValueChanged?: ((e: ValueChangedEvent) => void);
     /**
-     * Specifies whether the next page is loaded when a user scrolls the UI component to the bottom or when the &apos;next&apos; button is clicked.
+     * @docid
+     * @default "scrollBottom"
+     * @public
      */
     pageLoadMode?: PageLoadMode;
     /**
-     * Specifies the text shown in the pullDown panel, which is displayed when the UI component is scrolled to the bottom.
+     * @docid
+     * @default "Loading..."
+     * @public
      */
     pageLoadingText?: string;
     /**
-     * The text displayed by the UI component when nothing is selected.
+     * @docid
+     * @default "Select"
+     * @public
      */
     placeholder?: string;
     /**
-     * A Boolean value specifying whether or not the UI component supports the &apos;pull down to refresh&apos; gesture.
+     * @docid
+     * @default false
+     * @public
      */
     pullRefreshEnabled?: boolean;
     /**
-     * Specifies the text displayed in the pullDown panel when the UI component is pulled below the refresh threshold.
+     * @docid
+     * @default "Release to refresh..."
+     * @public
      */
     pulledDownText?: string;
     /**
-     * Specifies the text shown in the pullDown panel while the list is being pulled down to the refresh threshold.
+     * @docid
+     * @default "Pull down to refresh..."
+     * @public
      */
     pullingDownText?: string;
     /**
-     * Specifies the text displayed in the pullDown panel while the UI component is being refreshed.
+     * @docid
+     * @default "Refreshing..."
+     * @public
      */
     refreshingText?: string;
     /**
-     * Specifies whether the search box is visible.
+     * @docid
+     * @default true
+     * @publicName searchEnabled
+     * @default false &for(Material)
+     * @public
      */
     searchEnabled?: boolean;
     /**
-     * The text that is provided as a hint in the lookup&apos;s search bar.
+     * @docid
+     * @default "Search"
+     * @public
      */
     searchPlaceholder?: string;
     /**
-     * Specifies whether to display the Cancel button in the lookup window.
+     * @docid
+     * @default true
+     * @publicName showCancelButton
+     * @default false &for(Material)
+     * @public
      */
     showCancelButton?: boolean;
     /**
-     * Specifies whether to display the Clear button in the lookup window.
+     * @docid
+     * @default false
+     * @public
      */
     showClearButton?: boolean;
     /**
-     * Specifies the DOM events after which the UI component&apos;s search results should be updated.
+     * @docid
+     * @default "input change keyup"
+     * @public
      */
     searchStartEvent?: string;
     /**
-     * Specifies whether or not the UI component uses native scrolling.
+     * @docid
+     * @default true
+     * @default false &for(desktop except Mac)
+     * @public
      */
     useNativeScrolling?: boolean;
     /**
-     * Specifies whether to show lookup contents in the Popover UI component.
+     * @docid
+     * @default false
+     * @default true &for(desktop|iOS)
+     * @publicName usePopover
+     * @default false &for(Material)
+     * @public
      */
     usePopover?: boolean;
     /**
-     * Specifies the DOM events after which the UI component&apos;s value should be updated.
-     * @deprecated 
+     * @docid
+     * @deprecated
+     * @default "input change keyup"
+     * @public
      */
     valueChangeEvent?: string;
     /**
-     * Specifies whether to vertically align the drop-down menu so that the selected item is in its center. Applies only in Material Design themes.
+     * @docid
+     * @default false
+     * @default true &for(Material)
+     * @public
      */
     dropDownCentered?: boolean;
     /**
-     * Configures the drop-down field.
+     * @docid
+     * @type dxPopoverOptions
      */
     dropDownOptions?: PopoverProperties;
 
 }
 /**
- * The Lookup is a UI component that allows an end user to search for an item in a collection shown in a drop-down menu.
+ * @docid
+ * @isEditor
+ * @inherits dxDropDownList
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxLookup extends dxDropDownList<dxLookupOptions> { }
 
+/** @public */
 export type Properties = dxLookupOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxLookupOptions;
 
 

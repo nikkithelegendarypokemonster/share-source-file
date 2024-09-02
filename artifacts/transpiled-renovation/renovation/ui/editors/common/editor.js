@@ -13,14 +13,7 @@ var _validation_message = require("../../overlays/validation_message");
 var _utils = require("../../../../core/options/utils");
 const _excluded = ["accessKey", "activeStateEnabled", "aria", "children", "className", "classes", "defaultValue", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "inputAttr", "isDirty", "isValid", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "tabIndex", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "visible", "width"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const getCssClasses = model => {
   const {
@@ -31,7 +24,7 @@ const getCssClasses = model => {
   const classesMap = {
     'dx-state-readonly': !!readOnly,
     'dx-invalid': !isValid,
-    ["".concat(classes)]: !!classes
+    [String(classes)]: !!classes
   };
   return (0, _combine_classes.combineClasses)(classesMap);
 };
@@ -100,7 +93,7 @@ const viewFunction = viewModel => {
   }), null, widgetRef));
 };
 exports.viewFunction = viewFunction;
-const EditorProps = exports.EditorProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(_base_props.BaseWidgetProps), Object.getOwnPropertyDescriptors({
+const EditorProps = exports.EditorProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(_base_props.BaseWidgetProps), Object.getOwnPropertyDescriptors({
   readOnly: false,
   name: '',
   validationError: null,
@@ -114,206 +107,173 @@ const EditorProps = exports.EditorProps = Object.create(Object.prototype, _exten
   defaultValue: null,
   valueChange: () => {}
 })));
-const EditorPropsType = exports.EditorPropsType = Object.defineProperties({}, {
-  readOnly: {
-    get: function () {
-      return EditorProps.readOnly;
-    },
-    configurable: true,
-    enumerable: true
+const EditorPropsType = exports.EditorPropsType = {
+  get readOnly() {
+    return EditorProps.readOnly;
   },
-  name: {
-    get: function () {
-      return EditorProps.name;
-    },
-    configurable: true,
-    enumerable: true
+  get name() {
+    return EditorProps.name;
   },
-  validationError: {
-    get: function () {
-      return EditorProps.validationError;
-    },
-    configurable: true,
-    enumerable: true
+  get validationError() {
+    return EditorProps.validationError;
   },
-  validationErrors: {
-    get: function () {
-      return EditorProps.validationErrors;
-    },
-    configurable: true,
-    enumerable: true
+  get validationErrors() {
+    return EditorProps.validationErrors;
   },
-  validationMessageMode: {
-    get: function () {
-      return EditorProps.validationMessageMode;
-    },
-    configurable: true,
-    enumerable: true
+  get validationMessageMode() {
+    return EditorProps.validationMessageMode;
   },
-  validationMessagePosition: {
-    get: function () {
-      return EditorProps.validationMessagePosition;
-    },
-    configurable: true,
-    enumerable: true
+  get validationMessagePosition() {
+    return EditorProps.validationMessagePosition;
   },
-  validationStatus: {
-    get: function () {
-      return EditorProps.validationStatus;
-    },
-    configurable: true,
-    enumerable: true
+  get validationStatus() {
+    return EditorProps.validationStatus;
   },
-  isValid: {
-    get: function () {
-      return EditorProps.isValid;
-    },
-    configurable: true,
-    enumerable: true
+  get isValid() {
+    return EditorProps.isValid;
   },
-  isDirty: {
-    get: function () {
-      return EditorProps.isDirty;
-    },
-    configurable: true,
-    enumerable: true
+  get isDirty() {
+    return EditorProps.isDirty;
   },
-  inputAttr: {
-    get: function () {
-      return EditorProps.inputAttr;
-    },
-    configurable: true,
-    enumerable: true
+  get inputAttr() {
+    return EditorProps.inputAttr;
   },
-  defaultValue: {
-    get: function () {
-      return EditorProps.defaultValue;
-    },
-    configurable: true,
-    enumerable: true
+  get defaultValue() {
+    return EditorProps.defaultValue;
   },
-  valueChange: {
-    get: function () {
-      return EditorProps.valueChange;
-    },
-    configurable: true,
-    enumerable: true
+  get valueChange() {
+    return EditorProps.valueChange;
   },
-  className: {
-    get: function () {
-      return EditorProps.className;
-    },
-    configurable: true,
-    enumerable: true
+  get className() {
+    return EditorProps.className;
   },
-  activeStateEnabled: {
-    get: function () {
-      return EditorProps.activeStateEnabled;
-    },
-    configurable: true,
-    enumerable: true
+  get activeStateEnabled() {
+    return EditorProps.activeStateEnabled;
   },
-  disabled: {
-    get: function () {
-      return EditorProps.disabled;
-    },
-    configurable: true,
-    enumerable: true
+  get disabled() {
+    return EditorProps.disabled;
   },
-  focusStateEnabled: {
-    get: function () {
-      return EditorProps.focusStateEnabled;
-    },
-    configurable: true,
-    enumerable: true
+  get focusStateEnabled() {
+    return EditorProps.focusStateEnabled;
   },
-  hoverStateEnabled: {
-    get: function () {
-      return EditorProps.hoverStateEnabled;
-    },
-    configurable: true,
-    enumerable: true
+  get hoverStateEnabled() {
+    return EditorProps.hoverStateEnabled;
   },
-  tabIndex: {
-    get: function () {
-      return EditorProps.tabIndex;
-    },
-    configurable: true,
-    enumerable: true
+  get tabIndex() {
+    return EditorProps.tabIndex;
   },
-  visible: {
-    get: function () {
-      return EditorProps.visible;
-    },
-    configurable: true,
-    enumerable: true
+  get visible() {
+    return EditorProps.visible;
   },
-  aria: {
-    get: function () {
-      return _widget.WidgetProps.aria;
-    },
-    configurable: true,
-    enumerable: true
+  get aria() {
+    return _widget.WidgetProps.aria;
   },
-  classes: {
-    get: function () {
-      return _widget.WidgetProps.classes;
-    },
-    configurable: true,
-    enumerable: true
+  get classes() {
+    return _widget.WidgetProps.classes;
   }
-});
-let Editor = exports.Editor = /*#__PURE__*/function (_InfernoWrapperCompon) {
-  _inheritsLoose(Editor, _InfernoWrapperCompon);
-  function Editor(props) {
-    var _this;
-    _this = _InfernoWrapperCompon.call(this, props) || this;
-    _this.widgetRef = (0, _inferno.createRef)();
-    _this.rootElementRef = (0, _inferno.createRef)();
-    _this.__getterCache = {};
-    _this.state = {
-      validationMessageGuid: "dx-".concat(new _guid.default()),
+};
+class Editor extends _inferno2.InfernoWrapperComponent {
+  constructor(props) {
+    super(props);
+    this.widgetRef = (0, _inferno.createRef)();
+    this.rootElementRef = (0, _inferno.createRef)();
+    this.__getterCache = {};
+    this.state = {
+      validationMessageGuid: `dx-${new _guid.default()}`,
       isValidationMessageVisible: false,
-      value: _this.props.value !== undefined ? _this.props.value : _this.props.defaultValue
+      value: this.props.value !== undefined ? this.props.value : this.props.defaultValue
     };
-    _this.updateValidationMessageVisibility = _this.updateValidationMessageVisibility.bind(_assertThisInitialized(_this));
-    _this.focus = _this.focus.bind(_assertThisInitialized(_this));
-    _this.blur = _this.blur.bind(_assertThisInitialized(_this));
-    _this.onFocusIn = _this.onFocusIn.bind(_assertThisInitialized(_this));
-    return _this;
+    this.updateValidationMessageVisibility = this.updateValidationMessageVisibility.bind(this);
+    this.focus = this.focus.bind(this);
+    this.blur = this.blur.bind(this);
+    this.onFocusIn = this.onFocusIn.bind(this);
   }
-  var _proto = Editor.prototype;
-  _proto.createEffects = function createEffects() {
+  createEffects() {
     return [new _inferno2.InfernoEffect(this.updateValidationMessageVisibility, [this.props.isValid, this.props.validationStatus, this.props.validationError, this.props.validationErrors]), (0, _inferno2.createReRenderEffect)()];
-  };
-  _proto.updateEffects = function updateEffects() {
+  }
+  updateEffects() {
     var _this$_effects$;
-    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([this.props.isValid, this.props.validationStatus, this.props.validationError, this.props.validationErrors]);
-  };
-  _proto.updateValidationMessageVisibility = function updateValidationMessageVisibility() {
+    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 || _this$_effects$.update([this.props.isValid, this.props.validationStatus, this.props.validationError, this.props.validationErrors]);
+  }
+  updateValidationMessageVisibility() {
     this.setState(__state_argument => ({
       isValidationMessageVisible: this.shouldShowValidationMessage
     }));
-  };
-  _proto.onFocusIn = function onFocusIn(event) {
+  }
+  onFocusIn(event) {
     const {
       onFocusIn
     } = this.props;
-    onFocusIn === null || onFocusIn === void 0 ? void 0 : onFocusIn(event);
-  };
-  _proto.focus = function focus() {
+    onFocusIn === null || onFocusIn === void 0 || onFocusIn(event);
+  }
+  get cssClasses() {
+    return `${getCssClasses(_extends({}, this.props, {
+      value: this.props.value !== undefined ? this.props.value : this.state.value
+    }))}`;
+  }
+  get shouldShowValidationMessage() {
+    const {
+      isValid,
+      validationStatus
+    } = this.props;
+    const validationErrors = this.validationErrors ?? [];
+    const isEditorValid = isValid && validationStatus !== 'invalid';
+    return !isEditorValid && validationErrors.length > 0;
+  }
+  get aria() {
+    const {
+      isValid,
+      readOnly
+    } = this.props;
+    const result = {
+      readonly: readOnly ? 'true' : 'false',
+      invalid: !isValid ? 'true' : 'false'
+    };
+    if (this.shouldShowValidationMessage) {
+      result.describedBy = this.state.validationMessageGuid;
+    }
+    return _extends({}, result, this.props.aria);
+  }
+  get validationErrors() {
+    if (this.__getterCache['validationErrors'] !== undefined) {
+      return this.__getterCache['validationErrors'];
+    }
+    return this.__getterCache['validationErrors'] = (() => {
+      const {
+        validationError,
+        validationErrors
+      } = this.props;
+      let allValidationErrors = validationErrors && [...validationErrors];
+      if (!allValidationErrors && validationError) {
+        allValidationErrors = [_extends({}, validationError)];
+      }
+      return allValidationErrors;
+    })();
+  }
+  get validationMessageTarget() {
+    var _this$rootElementRef;
+    return (_this$rootElementRef = this.rootElementRef) === null || _this$rootElementRef === void 0 ? void 0 : _this$rootElementRef.current;
+  }
+  get restAttributes() {
+    const _this$props$value = _extends({}, this.props, {
+        value: this.props.value !== undefined ? this.props.value : this.state.value
+      }),
+      restProps = _objectWithoutPropertiesLoose(_this$props$value, _excluded);
+    return restProps;
+  }
+  focus() {
     this.widgetRef.current.focus();
-  };
-  _proto.blur = function blur() {
+  }
+  blur() {
     this.widgetRef.current.blur();
-  };
-  _proto.componentWillUpdate = function componentWillUpdate(nextProps, nextState, context) {
-    _InfernoWrapperCompon.prototype.componentWillUpdate.call(this);
+  }
+  componentWillUpdate(nextProps, nextState, context) {
+    super.componentWillUpdate();
     if (this.props['validationError'] !== nextProps['validationError'] || this.props['validationErrors'] !== nextProps['validationErrors']) {
       this.__getterCache['validationErrors'] = undefined;
     }
-  };
-  _proto.render = function render() {
+  }
+  render() {
     const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
@@ -331,78 +291,9 @@ let Editor = exports.Editor = /*#__PURE__*/function (_InfernoWrapperCompon) {
       validationMessageTarget: this.validationMessageTarget,
       restAttributes: this.restAttributes
     });
-  };
-  _createClass(Editor, [{
-    key: "cssClasses",
-    get: function () {
-      return "".concat(getCssClasses(_extends({}, this.props, {
-        value: this.props.value !== undefined ? this.props.value : this.state.value
-      })));
-    }
-  }, {
-    key: "shouldShowValidationMessage",
-    get: function () {
-      var _this$validationError;
-      const {
-        isValid,
-        validationStatus
-      } = this.props;
-      const validationErrors = (_this$validationError = this.validationErrors) !== null && _this$validationError !== void 0 ? _this$validationError : [];
-      const isEditorValid = isValid && validationStatus !== 'invalid';
-      return !isEditorValid && validationErrors.length > 0;
-    }
-  }, {
-    key: "aria",
-    get: function () {
-      const {
-        isValid,
-        readOnly
-      } = this.props;
-      const result = {
-        readonly: readOnly ? 'true' : 'false',
-        invalid: !isValid ? 'true' : 'false'
-      };
-      if (this.shouldShowValidationMessage) {
-        result.describedBy = this.state.validationMessageGuid;
-      }
-      return _extends({}, result, this.props.aria);
-    }
-  }, {
-    key: "validationErrors",
-    get: function () {
-      if (this.__getterCache['validationErrors'] !== undefined) {
-        return this.__getterCache['validationErrors'];
-      }
-      return this.__getterCache['validationErrors'] = (() => {
-        const {
-          validationError,
-          validationErrors
-        } = this.props;
-        let allValidationErrors = validationErrors && [...validationErrors];
-        if (!allValidationErrors && validationError) {
-          allValidationErrors = [_extends({}, validationError)];
-        }
-        return allValidationErrors;
-      })();
-    }
-  }, {
-    key: "validationMessageTarget",
-    get: function () {
-      var _this$rootElementRef;
-      return (_this$rootElementRef = this.rootElementRef) === null || _this$rootElementRef === void 0 ? void 0 : _this$rootElementRef.current;
-    }
-  }, {
-    key: "restAttributes",
-    get: function () {
-      const _this$props$value = _extends({}, this.props, {
-          value: this.props.value !== undefined ? this.props.value : this.state.value
-        }),
-        restProps = _objectWithoutPropertiesLoose(_this$props$value, _excluded);
-      return restProps;
-    }
-  }]);
-  return Editor;
-}(_inferno2.InfernoWrapperComponent);
+  }
+}
+exports.Editor = Editor;
 function __processTwoWayProps(defaultProps) {
   const twoWayProps = ['value'];
   return Object.keys(defaultProps).reduce((props, propName) => {
@@ -416,5 +307,5 @@ Editor.defaultProps = EditorPropsType;
 const __defaultOptionRules = [];
 function defaultOptions(rule) {
   __defaultOptionRules.push(rule);
-  Editor.defaultProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(Editor.defaultProps), Object.getOwnPropertyDescriptors(__processTwoWayProps((0, _utils.convertRulesToOptions)(__defaultOptionRules)))));
+  Editor.defaultProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(Editor.defaultProps), Object.getOwnPropertyDescriptors(__processTwoWayProps((0, _utils.convertRulesToOptions)(__defaultOptionRules)))));
 }

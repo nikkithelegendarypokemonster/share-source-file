@@ -1,24 +1,24 @@
 /**
 * DevExtreme (esm/renovation/ui/editors/number_box.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["accessKey", "activeStateEnabled", "className", "defaultValue", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "inputAttr", "invalidValueMessage", "isDirty", "isValid", "label", "labelMode", "max", "min", "mode", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "showSpinButtons", "step", "tabIndex", "useLargeSpinButtons", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "visible", "width"];
+const _excluded = ["accessKey", "activeStateEnabled", "className", "defaultValue", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "inputAttr", "invalidValueMessage", "isDirty", "isValid", "label", "labelMode", "max", "min", "mode", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "showSpinButtons", "step", "tabIndex", "useLargeSpinButtons", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "visible", "width"];
 import { createComponentVNode, normalizeProps } from "inferno";
 import { BaseInfernoComponent } from '@devextreme/runtime/inferno';
 import LegacyNumberBox from '../../../ui/number_box';
-import { DomComponentWrapper } from '../common/dom_component_wrapper';
+import { DomComponentWrapper } from '../../../__internal/core/r1/dom_component_wrapper';
 import { EditorProps } from './common/editor';
 import { EditorStateProps } from './common/editor_state_props';
 import { EditorLabelProps } from './common/editor_label_props';
-var DEFAULT_VALUE = 0;
-export var viewFunction = _ref => {
-  var {
+const DEFAULT_VALUE = 0;
+export const viewFunction = _ref => {
+  let {
     componentProps,
     restAttributes
   } = _ref;
@@ -28,11 +28,11 @@ export var viewFunction = _ref => {
     "templateNames": []
   }, restAttributes)));
 };
-export var NumberBoxProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(EditorProps), Object.getOwnPropertyDescriptors({
+export const NumberBoxProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(EditorProps), Object.getOwnPropertyDescriptors({
   defaultValue: DEFAULT_VALUE,
   isReactComponentWrapper: true
 })));
-export var NumberBoxPropsType = {
+export const NumberBoxPropsType = {
   get defaultValue() {
     return NumberBoxProps.defaultValue;
   },
@@ -108,14 +108,14 @@ export class NumberBox extends BaseInfernoComponent {
     });
   }
   get restAttributes() {
-    var _this$props$value = _extends({}, this.props, {
+    const _this$props$value = _extends({}, this.props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value
       }),
       restProps = _objectWithoutPropertiesLoose(_this$props$value, _excluded);
     return restProps;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value

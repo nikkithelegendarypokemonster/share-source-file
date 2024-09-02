@@ -1,38 +1,38 @@
 import Sankey from './sankey';
 import { Tracker } from '../components/tracker';
-var proto = Sankey.prototype;
-var DATA_KEY_BASE = '__sankey_data_';
-var dataKeyModifier = 0;
+const proto = Sankey.prototype;
+const DATA_KEY_BASE = '__sankey_data_';
+let dataKeyModifier = 0;
 proto._eventsMap.onNodeClick = {
   name: 'nodeClick'
 };
 proto._eventsMap.onLinkClick = {
   name: 'linkClick'
 };
-var getDataKey = function getDataKey() {
+const getDataKey = function () {
   return DATA_KEY_BASE + dataKeyModifier++;
 };
-export var plugin = {
+export const plugin = {
   name: 'tracker',
-  init: function init() {
-    var that = this;
-    var dataKey = getDataKey();
+  init: function () {
+    const that = this;
+    const dataKey = getDataKey();
     that._tracker = new Tracker({
       widget: that,
       root: that._renderer.root,
-      getData: function getData(e) {
-        var target = e.target;
+      getData: function (e) {
+        const target = e.target;
         return target[dataKey];
       },
-      getNode: function getNode(index) {
+      getNode: function (index) {
         if (index < that._nodes.length) {
           return that._nodes[index];
         } else {
           return that._links[index - that._nodes.length];
         }
       },
-      click: function click(e) {
-        var eventName = this.getData(e.event) < that._nodes.length ? 'nodeClick' : 'linkClick';
+      click: function (e) {
+        const eventName = this.getData(e.event) < that._nodes.length ? 'nodeClick' : 'linkClick';
         that._eventTrigger(eventName, {
           target: e.node,
           event: e.event
@@ -41,12 +41,12 @@ export var plugin = {
     });
     this._dataKey = dataKey;
   },
-  dispose: function dispose() {
+  dispose: function () {
     this._tracker.dispose();
   },
   extenders: {
-    _change_LINKS_DRAW: function _change_LINKS_DRAW() {
-      var dataKey = this._dataKey;
+    _change_LINKS_DRAW: function () {
+      const dataKey = this._dataKey;
       this._nodes.concat(this._links).forEach(function (item, index) {
         item.element.data(dataKey, index);
       });

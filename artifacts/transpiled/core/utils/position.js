@@ -5,7 +5,7 @@ var _config = _interopRequireDefault(require("../config"));
 var _type = require("../utils/type");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const getDefaultAlignment = isRtlEnabled => {
-  const rtlEnabled = isRtlEnabled !== null && isRtlEnabled !== void 0 ? isRtlEnabled : (0, _config.default)().rtlEnabled;
+  const rtlEnabled = isRtlEnabled ?? (0, _config.default)().rtlEnabled;
   return rtlEnabled ? 'right' : 'left';
 };
 exports.getDefaultAlignment = getDefaultAlignment;

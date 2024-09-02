@@ -3,22 +3,16 @@
 var _m_validating = require("../../grids/grid_core/validating/m_validating");
 var _m_core = _interopRequireDefault(require("./m_core"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable @typescript-eslint/no-unused-vars */
-const editingControllerExtender = Base => /*#__PURE__*/function (_validatingModule$ext) {
-  _inheritsLoose(TreeListEditingControllerExtender, _validatingModule$ext);
-  function TreeListEditingControllerExtender() {
-    return _validatingModule$ext.apply(this, arguments) || this;
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+const editingControllerExtender = Base => class TreeListEditingControllerExtender extends _m_validating.validatingModule.extenders.controllers.editing(Base) {
+  processDataItem(item) {
+    super.processDataItemTreeListHack.apply(this, arguments);
   }
-  var _proto = TreeListEditingControllerExtender.prototype;
-  _proto.processDataItem = function processDataItem(item) {
-    _validatingModule$ext.prototype.processDataItemTreeListHack.apply(this, arguments);
-  };
-  _proto.processItems = function processItems(items, e) {
-    return _validatingModule$ext.prototype.processItemsTreeListHack.apply(this, arguments);
-  };
-  return TreeListEditingControllerExtender;
-}(_m_validating.validatingModule.extenders.controllers.editing(Base));
+  processItems(items, e) {
+    return super.processItemsTreeListHack.apply(this, arguments);
+  }
+};
 _m_core.default.registerModule('validating', {
   defaultOptions: _m_validating.validatingModule.defaultOptions,
   controllers: _m_validating.validatingModule.controllers,

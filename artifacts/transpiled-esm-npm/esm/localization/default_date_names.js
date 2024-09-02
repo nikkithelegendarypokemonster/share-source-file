@@ -1,12 +1,12 @@
 import { map } from '../core/utils/iterator';
-var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-var DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-var PERIODS = ['AM', 'PM'];
-var QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4'];
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const PERIODS = ['AM', 'PM'];
+const QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4'];
 
 // TODO: optimize
-var cutCaptions = (captions, format) => {
-  var lengthByFormat = {
+const cutCaptions = (captions, format) => {
+  const lengthByFormat = {
     abbreviated: 3,
     short: 2,
     narrow: 1
@@ -16,16 +16,16 @@ var cutCaptions = (captions, format) => {
   });
 };
 export default {
-  getMonthNames: function getMonthNames(format) {
+  getMonthNames: function (format) {
     return cutCaptions(MONTHS, format);
   },
-  getDayNames: function getDayNames(format) {
+  getDayNames: function (format) {
     return cutCaptions(DAYS, format);
   },
-  getQuarterNames: function getQuarterNames(format) {
+  getQuarterNames: function (format) {
     return QUARTERS;
   },
-  getPeriodNames: function getPeriodNames(format) {
+  getPeriodNames: function (format) {
     return PERIODS;
   }
 };

@@ -66,11 +66,11 @@ class DataOption extends Component {
   }
   _showLoadPanel() {
     var _this$_getLoadPanel;
-    (_this$_getLoadPanel = this._getLoadPanel()) === null || _this$_getLoadPanel === void 0 ? void 0 : _this$_getLoadPanel.show();
+    (_this$_getLoadPanel = this._getLoadPanel()) === null || _this$_getLoadPanel === void 0 || _this$_getLoadPanel.show();
   }
   _hideLoadPanel() {
     var _this$_getLoadPanel2;
-    (_this$_getLoadPanel2 = this._getLoadPanel()) === null || _this$_getLoadPanel2 === void 0 ? void 0 : _this$_getLoadPanel2.hide();
+    (_this$_getLoadPanel2 = this._getLoadPanel()) === null || _this$_getLoadPanel2 === void 0 || _this$_getLoadPanel2.hide();
   }
   _getStore() {
     return this._dataSource.store();

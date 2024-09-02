@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/shaders/m_current_time_shader_horizontal.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -16,15 +16,8 @@ var _position = require("../../../core/utils/position");
 var _size = require("../../../core/utils/size");
 var _m_current_time_shader = _interopRequireDefault(require("./m_current_time_shader"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-let HorizontalCurrentTimeShader = /*#__PURE__*/function (_CurrentTimeShader) {
-  _inheritsLoose(HorizontalCurrentTimeShader, _CurrentTimeShader);
-  function HorizontalCurrentTimeShader() {
-    return _CurrentTimeShader.apply(this, arguments) || this;
-  }
-  var _proto = HorizontalCurrentTimeShader.prototype;
-  _proto.renderShader = function renderShader() {
+class HorizontalCurrentTimeShader extends _m_current_time_shader.default {
+  renderShader() {
     const groupCount = this._workSpace._isHorizontalGroupedWorkSpace() ? this._workSpace._getGroupCount() : 1;
     for (let i = 0; i < groupCount; i += 1) {
       const isFirstShader = i === 0;
@@ -36,8 +29,8 @@ let HorizontalCurrentTimeShader = /*#__PURE__*/function (_CurrentTimeShader) {
       }
       !isFirstShader && this._shader.push($shader);
     }
-  };
-  _proto._customizeShader = function _customizeShader($shader, groupIndex) {
+  }
+  _customizeShader($shader, groupIndex) {
     const shaderWidth = this._workSpace.getIndicationWidth();
     this._applyShaderWidth($shader, shaderWidth);
     if (groupIndex >= 1) {
@@ -47,8 +40,8 @@ let HorizontalCurrentTimeShader = /*#__PURE__*/function (_CurrentTimeShader) {
     } else {
       $shader.css('left', 0);
     }
-  };
-  _proto._applyShaderWidth = function _applyShaderWidth($shader, width) {
+  }
+  _applyShaderWidth($shader, width) {
     const maxWidth = (0, _position.getBoundingRect)(this._$container.get(0)).width;
     if (width > maxWidth) {
       width = maxWidth;
@@ -56,8 +49,8 @@ let HorizontalCurrentTimeShader = /*#__PURE__*/function (_CurrentTimeShader) {
     if (width > 0) {
       (0, _size.setWidth)($shader, width);
     }
-  };
-  _proto._customizeGroupedByDateShader = function _customizeGroupedByDateShader($shader, groupIndex) {
+  }
+  _customizeGroupedByDateShader($shader, groupIndex) {
     const cellCount = this._workSpace.getIndicationCellCount();
     const integerPart = Math.floor(cellCount);
     const fractionPart = cellCount - integerPart;
@@ -72,7 +65,6 @@ let HorizontalCurrentTimeShader = /*#__PURE__*/function (_CurrentTimeShader) {
       shaderLeft = workSpace.getCellWidth() * integerPart * workSpace._getGroupCount() + groupIndex * workSpace.getCellWidth();
     }
     $shader.css('left', shaderLeft);
-  };
-  return HorizontalCurrentTimeShader;
-}(_m_current_time_shader.default);
+  }
+}
 var _default = exports.default = HorizontalCurrentTimeShader;

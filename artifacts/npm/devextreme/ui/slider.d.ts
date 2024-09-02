@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/slider.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -37,146 +37,196 @@ export {
 };
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_slider_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxSlider>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_slider_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxSlider>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_slider_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxSlider>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_slider_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxSlider> & ChangedOptionInfo;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_slider_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxSlider, KeyboardEvent | MouseEvent | PointerEvent | TouchEvent | UIEvent | Event> & ValueChangedInfo;
 
 /**
  * @deprecated Use /common/SliderValueChangeMode instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type ValueChangeMode = SliderValueChangeMode;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxSliderOptions extends dxSliderBaseOptions<dxSlider> {
     /**
-     * The current slider value.
+     * @docid
+     * @default 50
+     * @public
      */
     value?: number;
 }
 /**
- * The Slider is a UI component that allows an end user to set a numeric value on a continuous range of possible values.
+ * @docid
+ * @isEditor
+ * @inherits dxSliderBase
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxSlider extends dxTrackBar<dxSliderOptions> {
     /**
-     * Resets the value property to the value passed as an argument.
+     * @docid
+     * @publicName reset(value)
+     * @public
      */
     reset(value?: number): void;
 }
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @hidden
+ * @namespace DevExpress.ui
  */
 export interface dxSliderBaseOptions<TComponent> extends dxTrackBarOptions<TComponent> {
     /**
-     * Specifies whether the UI component changes its visual state as a result of user interaction.
+     * @docid
+     * @default true
+     * @public
      */
     activeStateEnabled?: boolean;
     /**
-     * Specifies whether the UI component can be focused using keyboard navigation.
+     * @docid
+     * @default true &for(desktop)
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * Specifies whether the UI component changes its state when a user pauses on it.
+     * @docid
+     * @default true
+     * @public
      */
     hoverStateEnabled?: boolean;
     /**
-     * Specifies the step by which a handle moves when a user presses Page Up or Page Down.
+     * @docid
+     * @default 1
+     * @public
      */
     keyStep?: number;
     /**
-     * Configures the labels displayed at the min and max values.
+     * @docid
+     * @public
      */
     label?: {
       /**
-       * Formats a value before it is displayed in a label.
+       * @docid
+       * @default function(value) { return value }
        */
       format?: Format;
       /**
-       * Specifies whether labels are over or under the scale.
+       * @docid
+       * @default 'bottom'
        */
       position?: VerticalEdge;
       /**
-       * Specifies whether slider labels are visible.
+       * @docid
+       * @default false
        */
       visible?: boolean;
     };
     /**
-     * The value to be assigned to the `name` attribute of the underlying HTML element.
+     * @docid
+     * @hidden false
+     * @public
      */
     name?: string;
     /**
-     * Specifies whether to highlight the selected range.
+     * @docid
+     * @default true
+     * @public
      */
     showRange?: boolean;
     /**
-     * Specifies the step by which the UI component&apos;s value changes when a user drags a handler.
+     * @docid
+     * @default 1
+     * @public
      */
     step?: number;
     /**
-     * Configures a tooltip.
+     * @docid
+     * @public
      */
     tooltip?: {
       /**
-       * Specifies whether a tooltip is enabled.
+       * @docid
+       * @default false
        */
       enabled?: boolean;
       /**
-       * Specifies a tooltip&apos;s display format.
+       * @docid
+       * @default function(value) { return value }
        */
       format?: Format;
       /**
-       * Specifies whether a tooltip is over or under the slider.
+       * @docid
+       * @default 'top'
        */
       position?: VerticalEdge;
       /**
-       * Specifies when the UI component shows a tooltip.
+       * @docid
+       * @default 'onHover'
        */
       showMode?: TooltipShowMode;
     };
     /**
-      * Specifies when to change the component&apos;s value.
-      */
+     * @docid
+     * @default 'onHandleMove'
+     * @public
+     */
      valueChangeMode?: SliderValueChangeMode;
 }
 
 /**
-                                                                   * A base class for track bar UI components.
-                                                                   * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-                                                                   */
-                                                                  export interface dxSliderBase { }
+ * @docid
+ * @inherits dxTrackBar
+ * @hidden
+ * @namespace DevExpress.ui
+ * @options dxSliderBaseOptions
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface dxSliderBase { }
 
+/** @public */
 export type Properties = dxSliderOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxSliderOptions;
 
 

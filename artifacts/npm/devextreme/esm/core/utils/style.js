@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/utils/style.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,24 +10,24 @@ import { camelize } from './inflector';
 import callOnce from './call_once';
 import { isNumeric, isString } from './type';
 import domAdapter from '../dom_adapter';
-var jsPrefixes = ['', 'Webkit', 'Moz', 'O', 'Ms'];
-var cssPrefixes = {
+const jsPrefixes = ['', 'Webkit', 'Moz', 'O', 'Ms'];
+const cssPrefixes = {
   '': '',
   'Webkit': '-webkit-',
   'Moz': '-moz-',
   'O': '-o-',
   'ms': '-ms-'
 };
-var getStyles = callOnce(function () {
+const getStyles = callOnce(function () {
   return domAdapter.createElement('dx').style;
 });
-var forEachPrefixes = function forEachPrefixes(prop, callBack) {
+const forEachPrefixes = function (prop, callBack) {
   prop = camelize(prop, true);
-  var result;
-  for (var i = 0, cssPrefixesCount = jsPrefixes.length; i < cssPrefixesCount; i++) {
-    var jsPrefix = jsPrefixes[i];
-    var prefixedProp = jsPrefix + prop;
-    var lowerPrefixedProp = camelize(prefixedProp);
+  let result;
+  for (let i = 0, cssPrefixesCount = jsPrefixes.length; i < cssPrefixesCount; i++) {
+    const jsPrefix = jsPrefixes[i];
+    const prefixedProp = jsPrefix + prop;
+    const lowerPrefixedProp = camelize(prefixedProp);
     result = callBack(lowerPrefixedProp, jsPrefix);
     if (result === undefined) {
       result = callBack(prefixedProp, jsPrefix);
@@ -38,29 +38,29 @@ var forEachPrefixes = function forEachPrefixes(prop, callBack) {
   }
   return result || '';
 };
-var styleProp = function styleProp(name) {
+const styleProp = function (name) {
   if (name in getStyles()) {
     return name;
   }
-  var originalName = name;
+  const originalName = name;
   name = name.charAt(0).toUpperCase() + name.substr(1);
-  for (var i = 1; i < jsPrefixes.length; i++) {
-    var prefixedProp = jsPrefixes[i].toLowerCase() + name;
+  for (let i = 1; i < jsPrefixes.length; i++) {
+    const prefixedProp = jsPrefixes[i].toLowerCase() + name;
     if (prefixedProp in getStyles()) {
       return prefixedProp;
     }
   }
   return originalName;
 };
-var stylePropPrefix = function stylePropPrefix(prop) {
+const stylePropPrefix = function (prop) {
   return forEachPrefixes(prop, function (specific, jsPrefix) {
     if (specific in getStyles()) {
       return cssPrefixes[jsPrefix];
     }
   });
 };
-var pxExceptions = ['fillOpacity', 'columnCount', 'flexGrow', 'flexShrink', 'fontWeight', 'lineHeight', 'opacity', 'zIndex', 'zoom'];
-var parsePixelValue = function parsePixelValue(value) {
+const pxExceptions = ['fillOpacity', 'columnCount', 'flexGrow', 'flexShrink', 'fontWeight', 'lineHeight', 'opacity', 'zIndex', 'zoom'];
+const parsePixelValue = function (value) {
   if (isNumeric(value)) {
     return value;
   } else if (isString(value)) {
@@ -68,38 +68,38 @@ var parsePixelValue = function parsePixelValue(value) {
   }
   return NaN;
 };
-var normalizeStyleProp = function normalizeStyleProp(prop, value) {
+const normalizeStyleProp = function (prop, value) {
   if (isNumeric(value) && pxExceptions.indexOf(prop) === -1) {
     value += 'px';
   }
   return value;
 };
-var setDimensionProperty = function setDimensionProperty(elements, propertyName, value) {
+const setDimensionProperty = function (elements, propertyName, value) {
   if (elements) {
     value = isNumeric(value) ? value += 'px' : value;
-    for (var i = 0; i < elements.length; ++i) {
+    for (let i = 0; i < elements.length; ++i) {
       elements[i].style[propertyName] = value;
     }
   }
 };
-var setWidth = function setWidth(elements, value) {
+const setWidth = function (elements, value) {
   setDimensionProperty(elements, 'width', value);
 };
-var setHeight = function setHeight(elements, value) {
+const setHeight = function (elements, value) {
   setDimensionProperty(elements, 'height', value);
 };
-var setStyle = function setStyle(element, styleString) {
-  var resetStyle = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+const setStyle = function (element, styleString) {
+  let resetStyle = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
   if (resetStyle) {
-    var styleList = [].slice.call(element.style);
+    const styleList = [].slice.call(element.style);
     styleList.forEach(propertyName => {
       element.style.removeProperty(propertyName);
     });
   }
   styleString.split(';').forEach(style => {
-    var parts = style.split(':').map(stylePart => stylePart.trim());
+    const parts = style.split(':').map(stylePart => stylePart.trim());
     if (parts.length === 2) {
-      var [property, value] = parts;
+      const [property, value] = parts;
       element.style[property] = value;
     }
   });

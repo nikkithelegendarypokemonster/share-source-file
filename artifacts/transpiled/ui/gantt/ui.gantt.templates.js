@@ -4,12 +4,11 @@ exports.GanttTemplatesManager = void 0;
 var _renderer = _interopRequireDefault(require("../../core/renderer"));
 var _element = require("../../core/element");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-let GanttTemplatesManager = exports.GanttTemplatesManager = /*#__PURE__*/function () {
-  function GanttTemplatesManager(gantt) {
+class GanttTemplatesManager {
+  constructor(gantt) {
     this._gantt = gantt;
   }
-  var _proto = GanttTemplatesManager.prototype;
-  _proto.getTaskTooltipContentTemplateFunc = function getTaskTooltipContentTemplateFunc(taskTooltipContentTemplateOption) {
+  getTaskTooltipContentTemplateFunc(taskTooltipContentTemplateOption) {
     const isTooltipShowing = true;
     const template = taskTooltipContentTemplateOption && this._gantt._getTemplate(taskTooltipContentTemplateOption);
     const createTemplateFunction = template && ((container, item, callback) => {
@@ -23,8 +22,8 @@ let GanttTemplatesManager = exports.GanttTemplatesManager = /*#__PURE__*/functio
       return isTooltipShowing;
     });
     return createTemplateFunction;
-  };
-  _proto.getTaskProgressTooltipContentTemplateFunc = function getTaskProgressTooltipContentTemplateFunc(taskTooltipContentTemplateOption) {
+  }
+  getTaskProgressTooltipContentTemplateFunc(taskTooltipContentTemplateOption) {
     const isTooltipShowing = true;
     const template = taskTooltipContentTemplateOption && this._gantt._getTemplate(taskTooltipContentTemplateOption);
     const createTemplateFunction = template && ((container, item, callback) => {
@@ -38,8 +37,8 @@ let GanttTemplatesManager = exports.GanttTemplatesManager = /*#__PURE__*/functio
       return isTooltipShowing;
     });
     return createTemplateFunction;
-  };
-  _proto.getTaskTimeTooltipContentTemplateFunc = function getTaskTimeTooltipContentTemplateFunc(taskTooltipContentTemplateOption) {
+  }
+  getTaskTimeTooltipContentTemplateFunc(taskTooltipContentTemplateOption) {
     const isTooltipShowing = true;
     const template = taskTooltipContentTemplateOption && this._gantt._getTemplate(taskTooltipContentTemplateOption);
     const createTemplateFunction = template && ((container, item, callback) => {
@@ -53,8 +52,8 @@ let GanttTemplatesManager = exports.GanttTemplatesManager = /*#__PURE__*/functio
       return isTooltipShowing;
     });
     return createTemplateFunction;
-  };
-  _proto.getTaskContentTemplateFunc = function getTaskContentTemplateFunc(taskContentTemplateOption) {
+  }
+  getTaskContentTemplateFunc(taskContentTemplateOption) {
     const isTaskShowing = true;
     const template = taskContentTemplateOption && this._gantt._getTemplate(taskContentTemplateOption);
     const createTemplateFunction = template && ((container, item, callback, index) => {
@@ -69,6 +68,6 @@ let GanttTemplatesManager = exports.GanttTemplatesManager = /*#__PURE__*/functio
       return isTaskShowing;
     });
     return createTemplateFunction;
-  };
-  return GanttTemplatesManager;
-}();
+  }
+}
+exports.GanttTemplatesManager = GanttTemplatesManager;

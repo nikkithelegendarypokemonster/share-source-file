@@ -4,7 +4,7 @@ import DevExpress from './core';
 /// BUNDLER_PARTS
 /* fileManagement (dx.module-core.js) */
 
-var fileManagement = require('../../../bundles/modules/file_management');
+const fileManagement = require('../../../bundles/modules/file_management');
 DevExpress.fileManagement = fileManagement;
 
 /// BUNDLER_PARTS_END

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/shaders/m_current_time_shader_horizontal.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,10 +11,10 @@ import { setWidth } from '../../../core/utils/size';
 import CurrentTimeShader from './m_current_time_shader';
 class HorizontalCurrentTimeShader extends CurrentTimeShader {
   renderShader() {
-    var groupCount = this._workSpace._isHorizontalGroupedWorkSpace() ? this._workSpace._getGroupCount() : 1;
-    for (var i = 0; i < groupCount; i += 1) {
-      var isFirstShader = i === 0;
-      var $shader = isFirstShader ? this._$shader : this.createShader();
+    const groupCount = this._workSpace._isHorizontalGroupedWorkSpace() ? this._workSpace._getGroupCount() : 1;
+    for (let i = 0; i < groupCount; i += 1) {
+      const isFirstShader = i === 0;
+      const $shader = isFirstShader ? this._$shader : this.createShader();
       if (this._workSpace.isGroupedByDate()) {
         this._customizeGroupedByDateShader($shader, i);
       } else {
@@ -24,18 +24,18 @@ class HorizontalCurrentTimeShader extends CurrentTimeShader {
     }
   }
   _customizeShader($shader, groupIndex) {
-    var shaderWidth = this._workSpace.getIndicationWidth();
+    const shaderWidth = this._workSpace.getIndicationWidth();
     this._applyShaderWidth($shader, shaderWidth);
     if (groupIndex >= 1) {
-      var workSpace = this._workSpace;
-      var indicationWidth = workSpace._getCellCount() * workSpace.getCellWidth();
+      const workSpace = this._workSpace;
+      const indicationWidth = workSpace._getCellCount() * workSpace.getCellWidth();
       $shader.css('left', indicationWidth);
     } else {
       $shader.css('left', 0);
     }
   }
   _applyShaderWidth($shader, width) {
-    var maxWidth = getBoundingRect(this._$container.get(0)).width;
+    const maxWidth = getBoundingRect(this._$container.get(0)).width;
     if (width > maxWidth) {
       width = maxWidth;
     }
@@ -44,13 +44,13 @@ class HorizontalCurrentTimeShader extends CurrentTimeShader {
     }
   }
   _customizeGroupedByDateShader($shader, groupIndex) {
-    var cellCount = this._workSpace.getIndicationCellCount();
-    var integerPart = Math.floor(cellCount);
-    var fractionPart = cellCount - integerPart;
-    var isFirstShaderPart = groupIndex === 0;
-    var workSpace = this._workSpace;
-    var shaderWidth = isFirstShaderPart ? workSpace.getIndicationWidth() : fractionPart * workSpace.getCellWidth();
-    var shaderLeft;
+    const cellCount = this._workSpace.getIndicationCellCount();
+    const integerPart = Math.floor(cellCount);
+    const fractionPart = cellCount - integerPart;
+    const isFirstShaderPart = groupIndex === 0;
+    const workSpace = this._workSpace;
+    const shaderWidth = isFirstShaderPart ? workSpace.getIndicationWidth() : fractionPart * workSpace.getCellWidth();
+    let shaderLeft;
     this._applyShaderWidth($shader, shaderWidth);
     if (isFirstShaderPart) {
       shaderLeft = workSpace._getCellCount() * workSpace.getCellWidth() * groupIndex;

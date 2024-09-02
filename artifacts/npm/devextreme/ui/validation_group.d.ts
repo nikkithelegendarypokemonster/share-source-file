@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/validation_group.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -38,77 +38,101 @@ export {
 };
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_validation_group_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxValidationGroup>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_validation_group_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxValidationGroup>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_validation_group_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxValidationGroup> & ChangedOptionInfo;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxValidationGroupOptions extends DOMComponentOptions<dxValidationGroup> {
 }
 /**
- * The ValidationGroup is a UI component that allows you to validate several editors simultaneously.
+ * @docid
+ * @inherits DOMComponent
+ * @hasTranscludedContent
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxValidationGroup extends DOMComponent<dxValidationGroupOptions> {
     /**
-     * Resets the value and validation result of the editors that are included to the current validation group.
+     * @docid
+     * @publicName reset()
+     * @public
      */
     reset(): void;
     /**
-     * Validates rules of the validators that belong to the current validation group.
+     * @docid
+     * @publicName validate()
+     * @public
+     * @return dxValidationGroupResult
      */
     validate(): ValidationResult;
 }
 
+/** @public */
 export type ValidationResult = dxValidationGroupResult;
 
 /**
- * A group validation result.
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @type object
+ * @namespace DevExpress.ui
+ * @deprecated {ui/validation_group.ValidationResult}
  */
 export interface dxValidationGroupResult {
     /**
-     * An array of the validation rules that failed.
+     * @docid
+     * @public
      */
     brokenRules?: Array<RequiredRule | NumericRule | RangeRule | StringLengthRule | CustomRule | CompareRule | PatternRule | EmailRule | AsyncRule>;
     /**
-     * A promise that is fulfilled when all async rules are validated.
+     * @docid
+     * @type Promise<dxValidationGroupResult>
+     * @public
      */
     complete?: DxPromise<dxValidationGroupResult>;
     /**
-     * Indicates whether all the rules checked for the group are satisfied.
+     * @docid
+     * @public
      */
     isValid?: boolean;
     /**
-     * Indicates the validation status.
+     * @docid
+     * @public
      */
     status?: ValidationStatus;
     /**
-     * Validator UI components included in the validated group.
+     * @docid
+     * @public
      */
     validators?: Array<any>;
 }
 
+/** @public */
 export type Properties = dxValidationGroupOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxValidationGroupOptions;
 
 

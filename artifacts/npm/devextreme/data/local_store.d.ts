@@ -1,7 +1,7 @@
 /**
 * DevExtreme (data/local_store.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,36 +10,45 @@ import ArrayStore, {
     ArrayStoreOptions,
 } from './array_store';
 
+/** @public */
 export type Options<
     TItem = any,
     TKey = any,
 > = LocalStoreOptions<TItem, TKey>;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.data
+ * @deprecated Use Options instead
  */
 export interface LocalStoreOptions<
     TItem = any,
     TKey = any,
 > extends ArrayStoreOptions<TItem, TKey> {
     /**
-     * Specifies a delay in milliseconds between when data changes and the moment these changes are saved in the local storage. Applies only if immediate is false.
+     * @docid
+     * @default 10000
+     * @public
      */
     flushInterval?: number;
     /**
-     * Specifies whether the LocalStore saves changes in the local storage immediately.
+     * @docid
+     * @default false
+     * @public
      */
     immediate?: boolean;
     /**
-     * Specifies the name under which data should be saved in the local storage. The `dx-data-localStore-` prefix will be added to the name.
+     * @docid
+     * @public
      */
     name?: string;
 }
 
 /**
- * The LocalStore is a store that provides an interface for loading and editing data from HTML Web Storage (also known as window.localStorage) and handling related events.
+ * @docid
+ * @inherits ArrayStore
+ * @public
+ * @options LocalStoreOptions
  */
 export default class LocalStore<
     TItem = any,
@@ -47,7 +56,9 @@ export default class LocalStore<
 > extends ArrayStore<TItem, TKey> {
     constructor(options?: Options<TItem, TKey>);
     /**
-     * Removes data from the local storage.
+     * @docid
+     * @publicName clear()
+     * @public
      */
     clear(): void;
 }

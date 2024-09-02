@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/hierarchical_collection/ui.hierarchical_collection_widget.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,8 +12,10 @@ import CollectionWidget, {
 } from '../collection/ui.collection_widget.base';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
+ * @docid
+ * @type object
+ * @hidden
  */
 export interface HierarchicalCollectionWidgetOptions<
     TComponent extends HierarchicalCollectionWidget<any, TItem, TKey>,
@@ -21,37 +23,55 @@ export interface HierarchicalCollectionWidgetOptions<
     TKey = any,
 > extends CollectionWidgetOptions<TComponent, TItem, TKey> {
     /**
-     * Specifies the name of the data source item field whose value defines whether or not the corresponding UI component item is disabled.
+     * @docid
+     * @default 'disabled'
+     * @public
      */
     disabledExpr?: string | Function;
     /**
-     * Specifies the data field whose values should be displayed.
+     * @docid
+     * @default 'text'
+     * @type_function_param1 item:object
+     * @public
      */
     displayExpr?: string | ((item: TItem) => string);
     /**
-     * Specifies whether the UI component can be focused using keyboard navigation.
+     * @docid
+     * @default true &for(desktop)
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * Specifies whether the UI component changes its state when a user pauses on it.
+     * @docid
+     * @default true
+     * @public
      */
     hoverStateEnabled?: boolean;
     /**
-     * Specifies which data field contains nested items.
+     * @docid
+     * @default 'items'
+     * @public
      */
     itemsExpr?: string | Function;
     /**
-     * Specifies which data field provides keys for TreeView items.
+     * @docid
+     * @default 'id'
+     * @public
      */
     keyExpr?: string | Function;
     /**
-     * Specifies the name of the data source item field whose value defines whether or not the corresponding UI component items is selected.
+     * @docid
+     * @default 'selected'
+     * @public
      */
     selectedExpr?: string | Function;
 }
 /**
- * The base class for UI components containing an item collection.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @inherits CollectionWidget
+ * @hidden
+ * @namespace DevExpress.ui
+ * @options HierarchicalCollectionWidgetOptions
  */
 export default class HierarchicalCollectionWidget<
     TProperties extends HierarchicalCollectionWidgetOptions<any, TItem, TKey>,

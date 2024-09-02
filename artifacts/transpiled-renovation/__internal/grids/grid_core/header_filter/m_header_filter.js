@@ -24,8 +24,6 @@ var _m_modules = _interopRequireDefault(require("../../../grids/grid_core/m_modu
 var _m_utils = _interopRequireDefault(require("../m_utils"));
 var _m_header_filter_core = require("./m_header_filter_core");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); } /* eslint-disable max-classes-per-file */
 const DATE_INTERVAL_FORMATS = {
   month(value) {
@@ -58,9 +56,10 @@ function ungroupUTCDates(items, dateParts, dates) {
 function convertDataFromUTCToLocal(data, column) {
   const dates = ungroupUTCDates(data);
   const query = (0, _query.default)(dates);
-  const group = _m_utils.default.getHeaderFilterGroupParameters(_extends(_extends({}, column), {
+  const group = _m_utils.default.getHeaderFilterGroupParameters(_extends({}, column, {
     calculateCellValue: date => date
   }));
+  // @ts-expect-error
   return _store_helper.default.queryByOptions(query, {
     group
   }).toArray();
@@ -84,24 +83,19 @@ const getFormatOptions = function (value, column, currentLevel) {
         const firstValueText = _m_utils.default.formatValue(value, formatOptions);
         const secondValue = value + groupInterval[currentLevel];
         const secondValueText = _m_utils.default.formatValue(secondValue, formatOptions);
-        return firstValueText && secondValueText ? "".concat(firstValueText, " - ").concat(secondValueText) : '';
+        return firstValueText && secondValueText ? `${firstValueText} - ${secondValueText}` : '';
       };
     }
   }
   return result;
 };
-let HeaderFilterController = exports.HeaderFilterController = /*#__PURE__*/function (_Modules$ViewControll) {
-  _inheritsLoose(HeaderFilterController, _Modules$ViewControll);
-  function HeaderFilterController() {
-    return _Modules$ViewControll.apply(this, arguments) || this;
-  }
-  var _proto = HeaderFilterController.prototype;
-  _proto.init = function init() {
+class HeaderFilterController extends _m_modules.default.ViewController {
+  init() {
     this._columnsController = this.getController('columns');
     this._dataController = this.getController('data');
     this._headerFilterView = this.getView('headerFilterView');
-  };
-  _proto._updateSelectedState = function _updateSelectedState(items, column) {
+  }
+  _updateSelectedState(items, column) {
     let i = items.length;
     const isExclude = column.filterType === 'exclude';
     while (i--) {
@@ -111,8 +105,8 @@ let HeaderFilterController = exports.HeaderFilterController = /*#__PURE__*/funct
       }
       (0, _m_header_filter_core.updateHeaderFilterItemSelectionState)(item, _m_utils.default.getIndexByKey(items[i].value, column.filterValues, null) > -1, isExclude);
     }
-  };
-  _proto._normalizeGroupItem = function _normalizeGroupItem(item, currentLevel, options) {
+  }
+  _normalizeGroupItem(item, currentLevel, options) {
     let value;
     let displayValue;
     const {
@@ -149,15 +143,17 @@ let HeaderFilterController = exports.HeaderFilterController = /*#__PURE__*/funct
     }
     item.text = this.getHeaderItemText(displayValue, column, currentLevel, options.headerFilterOptions);
     return item;
-  };
-  _proto.getHeaderItemText = function getHeaderItemText(displayValue, column, currentLevel, headerFilterOptions) {
+  }
+  // Used in the filter/m_filter_custom_operations as public method
+  // Used in the private API WA [T1232532]
+  getHeaderItemText(displayValue, column, currentLevel, headerFilterOptions) {
     let text = _m_utils.default.formatValue(displayValue, getFormatOptions(displayValue, column, currentLevel));
     if (!text) {
       text = headerFilterOptions.texts.emptyValue;
     }
     return text;
-  };
-  _proto._processGroupItems = function _processGroupItems(groupItems, currentLevel, path, options) {
+  }
+  _processGroupItems(groupItems, currentLevel, path, options) {
     const that = this;
     let displaySelector;
     let valueSelector;
@@ -193,13 +189,13 @@ let HeaderFilterController = exports.HeaderFilterController = /*#__PURE__*/funct
       }
       path.pop();
     }
-  };
-  _proto.getDataSource = function getDataSource(column) {
-    var _a;
+  }
+  getDataSource(column) {
+    var _column$headerFilter;
     const dataSource = this._dataController.dataSource();
     const remoteGrouping = dataSource === null || dataSource === void 0 ? void 0 : dataSource.remoteOperations().grouping;
     const group = _m_utils.default.getHeaderFilterGroupParameters(column, remoteGrouping);
-    const headerFilterDataSource = (_a = column.headerFilter) === null || _a === void 0 ? void 0 : _a.dataSource;
+    const headerFilterDataSource = (_column$headerFilter = column.headerFilter) === null || _column$headerFilter === void 0 ? void 0 : _column$headerFilter.dataSource;
     const headerFilterOptions = this.option('headerFilter');
     let isLookup = false;
     const options = {
@@ -207,6 +203,7 @@ let HeaderFilterController = exports.HeaderFilterController = /*#__PURE__*/funct
     };
     if (!dataSource) return;
     if ((0, _type.isDefined)(headerFilterDataSource) && !(0, _type.isFunction)(headerFilterDataSource)) {
+      // @ts-expect-error
       options.dataSource = (0, _utils.normalizeDataSourceOptions)(headerFilterDataSource);
     } else if (column.lookup) {
       isLookup = true;
@@ -272,11 +269,11 @@ let HeaderFilterController = exports.HeaderFilterController = /*#__PURE__*/funct
       return items;
     };
     return options.dataSource;
-  };
-  _proto.getCurrentColumn = function getCurrentColumn() {
+  }
+  getCurrentColumn() {
     return this._currentColumn;
-  };
-  _proto.showHeaderFilterMenu = function showHeaderFilterMenu(columnIndex, isGroupPanel) {
+  }
+  showHeaderFilterMenu(columnIndex, isGroupPanel) {
     const columnsController = this._columnsController;
     const column = (0, _extend.extend)(true, {}, this._columnsController.getColumns()[columnIndex]);
     if (column) {
@@ -298,8 +295,8 @@ let HeaderFilterController = exports.HeaderFilterController = /*#__PURE__*/funct
         }
       });
     }
-  };
-  _proto.showHeaderFilterMenuBase = function showHeaderFilterMenuBase(options) {
+  }
+  showHeaderFilterMenuBase(options) {
     const that = this;
     const {
       column
@@ -323,7 +320,7 @@ let HeaderFilterController = exports.HeaderFilterController = /*#__PURE__*/funct
           });
         },
         onHidden: () => {
-          previousOnHidden === null || previousOnHidden === void 0 ? void 0 : previousOnHidden();
+          previousOnHidden === null || previousOnHidden === void 0 || previousOnHidden();
           (0, _accessibility.restoreFocus)(this);
         }
       });
@@ -334,19 +331,14 @@ let HeaderFilterController = exports.HeaderFilterController = /*#__PURE__*/funct
       }
       that._headerFilterView.showHeaderFilterMenu(options.columnElement, options);
     }
-  };
-  _proto.hideHeaderFilterMenu = function hideHeaderFilterMenu() {
-    this._headerFilterView.hideHeaderFilterMenu();
-  };
-  return HeaderFilterController;
-}(_m_modules.default.ViewController);
-const columnHeadersView = Base => /*#__PURE__*/function (_headerFilterMixin) {
-  _inheritsLoose(ColumnHeadersViewHeaderFilterExtender, _headerFilterMixin);
-  function ColumnHeadersViewHeaderFilterExtender() {
-    return _headerFilterMixin.apply(this, arguments) || this;
   }
-  var _proto2 = ColumnHeadersViewHeaderFilterExtender.prototype;
-  _proto2._renderCellContent = function _renderCellContent($cell, options) {
+  hideHeaderFilterMenu() {
+    this._headerFilterView.hideHeaderFilterMenu();
+  }
+}
+exports.HeaderFilterController = HeaderFilterController;
+const columnHeadersView = Base => class ColumnHeadersViewHeaderFilterExtender extends (0, _m_header_filter_core.headerFilterMixin)(Base) {
+  _renderCellContent($cell, options) {
     const that = this;
     let $headerFilterIndicator;
     const {
@@ -361,9 +353,9 @@ const columnHeadersView = Base => /*#__PURE__*/function (_headerFilterMixin) {
       });
       $headerFilterIndicator && that._subscribeToIndicatorEvent($headerFilterIndicator, column, 'headerFilter');
     }
-    _headerFilterMixin.prototype._renderCellContent.apply(this, arguments);
-  };
-  _proto2._subscribeToIndicatorEvent = function _subscribeToIndicatorEvent($indicator, column, indicatorName) {
+    super._renderCellContent.apply(this, arguments);
+  }
+  _subscribeToIndicatorEvent($indicator, column, indicatorName) {
     if (indicatorName === 'headerFilter') {
       _events_engine.default.on($indicator, _click.name, this.createAction(e => {
         e.event.stopPropagation();
@@ -371,20 +363,20 @@ const columnHeadersView = Base => /*#__PURE__*/function (_headerFilterMixin) {
         this._headerFilterController.showHeaderFilterMenu(column.index, false);
       }));
     }
-  };
-  _proto2._updateIndicator = function _updateIndicator($cell, column, indicatorName) {
-    const $indicator = _headerFilterMixin.prototype._updateIndicator.call(this, $cell, column, indicatorName);
+  }
+  _updateIndicator($cell, column, indicatorName) {
+    const $indicator = super._updateIndicator($cell, column, indicatorName);
     $indicator && this._subscribeToIndicatorEvent($indicator, column, indicatorName);
-  };
-  _proto2._updateHeaderFilterIndicators = function _updateHeaderFilterIndicators() {
+  }
+  _updateHeaderFilterIndicators() {
     if (this.option('headerFilter.visible')) {
       this._updateIndicators('headerFilter');
     }
-  };
-  _proto2._needUpdateFilterIndicators = function _needUpdateFilterIndicators() {
+  }
+  _needUpdateFilterIndicators() {
     return true;
-  };
-  _proto2._columnOptionChanged = function _columnOptionChanged(e) {
+  }
+  _columnOptionChanged(e) {
     const {
       optionNames
     } = e;
@@ -395,20 +387,14 @@ const columnHeadersView = Base => /*#__PURE__*/function (_headerFilterMixin) {
       this._updateHeaderFilterIndicators();
     }
     if (!isHeaderFilterValuesAndTypeChanged) {
-      _headerFilterMixin.prototype._columnOptionChanged.call(this, e);
+      super._columnOptionChanged(e);
     }
-  };
-  return ColumnHeadersViewHeaderFilterExtender;
-}((0, _m_header_filter_core.headerFilterMixin)(Base));
-const headerPanel = Base => /*#__PURE__*/function (_headerFilterMixin2) {
-  _inheritsLoose(HeaderPanelHeaderFilterExtender, _headerFilterMixin2);
-  function HeaderPanelHeaderFilterExtender() {
-    return _headerFilterMixin2.apply(this, arguments) || this;
   }
-  var _proto3 = HeaderPanelHeaderFilterExtender.prototype;
-  _proto3._createGroupPanelItem = function _createGroupPanelItem($rootElement, groupColumn) {
+};
+const headerPanel = Base => class HeaderPanelHeaderFilterExtender extends (0, _m_header_filter_core.headerFilterMixin)(Base) {
+  _createGroupPanelItem($rootElement, groupColumn) {
     const that = this;
-    const $item = _headerFilterMixin2.prototype._createGroupPanelItem.apply(that, arguments);
+    const $item = super._createGroupPanelItem.apply(that, arguments);
     let $headerFilterIndicator;
     if (!groupColumn.command && (0, _m_header_filter_core.allowHeaderFiltering)(groupColumn) && that.option('headerFilter.visible')) {
       $headerFilterIndicator = that._applyColumnState({
@@ -431,27 +417,21 @@ const headerPanel = Base => /*#__PURE__*/function (_headerFilterMixin2) {
       }));
     }
     return $item;
-  };
-  return HeaderPanelHeaderFilterExtender;
-}((0, _m_header_filter_core.headerFilterMixin)(Base));
+  }
+};
 function invertFilterExpression(filter) {
   return ['!', filter];
 }
-const data = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(DataControllerFilterRowExtender, _Base);
-  function DataControllerFilterRowExtender() {
-    return _Base.apply(this, arguments) || this;
-  }
-  var _proto4 = DataControllerFilterRowExtender.prototype;
-  _proto4.skipCalculateColumnFilters = function skipCalculateColumnFilters() {
+const data = Base => class DataControllerFilterRowExtender extends Base {
+  skipCalculateColumnFilters() {
     return false;
-  };
-  _proto4._calculateAdditionalFilter = function _calculateAdditionalFilter() {
+  }
+  _calculateAdditionalFilter() {
     if (this.skipCalculateColumnFilters()) {
-      return _Base.prototype._calculateAdditionalFilter.call(this);
+      return super._calculateAdditionalFilter();
     }
     const that = this;
-    const filters = [_Base.prototype._calculateAdditionalFilter.call(this)];
+    const filters = [super._calculateAdditionalFilter()];
     const columns = that._columnsController.getVisibleColumns(null, true);
     const headerFilterController = this._headerFilterController;
     const currentColumn = headerFilterController.getCurrentColumn();
@@ -481,9 +461,8 @@ const data = Base => /*#__PURE__*/function (_Base) {
       }
     });
     return _m_utils.default.combineFilters(filters);
-  };
-  return DataControllerFilterRowExtender;
-}(Base);
+  }
+};
 const headerFilterModule = exports.headerFilterModule = {
   defaultOptions() {
     return {

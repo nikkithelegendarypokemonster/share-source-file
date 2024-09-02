@@ -1,44 +1,65 @@
 /**
 * DevExtreme (viz/vector_map/projection.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
+/** @public */
 export type VectorMapProjection = 'equirectangular' | 'lambert' | 'mercator' | 'miller';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.viz
+ * @type object
  */
 export interface VectorMapProjectionConfig {
     /**
-     * Specifies the projection&apos;s ratio of the width to the height.
+     * @docid
+     * @default 1
+     * @public
      */
     aspectRatio?: number;
     /**
-     * Converts coordinates from [x, y] to [lon, lat].
+     * @docid
+     * @public
      */
     from?: ((coordinates: Array<number>) => Array<number>);
     /**
-     * Converts coordinates from [lon, lat] to [x, y].
+     * @docid
+     * @public
      */
     to?: ((coordinates: Array<number>) => Array<number>);
 }
 
 /**
-                                                                  * Creates a new projection.
-                                                                  * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-                                                                  */
-                                                                 export const projection: {
+ * @docid viz.map.projection
+ * @publicName projection(data)
+ * @param1 data:VectorMapProjectionConfig
+ * @return object
+ * @static
+ * @namespace DevExpress.viz.map
+ */
+// eslint-disable-next-line @typescript-eslint/init-declarations
+export const projection: {
     /**
-     * Adds a new projection to the internal projection storage.
+     * @docid viz.map.projection.add
+     * @publicName add(name, projectionConfig)
+     * @param2 projectionConfig:VectorMapProjectionConfig|object
+     * @namespace DevExpress.viz.map.projection
+     * @static
+     * @public
      */
     add(name: string, projectionConfig: VectorMapProjectionConfig | any): void;
 
     /**
-     * Gets a predefined or custom projection from the projection storage.
+     * @docid viz.map.projection.get
+     * @publicName get(name)
+     * @return object
+     * @namespace DevExpress.viz.map.projection
+     * @static
+     * @hidden
      */
     get(name: VectorMapProjection | string): any;
 

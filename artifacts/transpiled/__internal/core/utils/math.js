@@ -6,13 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.shiftIntegerByModule = void 0;
 const shiftIntegerByModule = (integerValue, moduleValue) => {
   if (!Number.isInteger(integerValue)) {
-    throw Error("Passed integer value ".concat(integerValue, " is not an integer."));
+    throw Error(`Passed integer value ${integerValue} is not an integer.`);
   }
   if (!Number.isInteger(moduleValue)) {
-    throw Error("Passed module value ".concat(moduleValue, " is not an integer."));
+    throw Error(`Passed module value ${moduleValue} is not an integer.`);
   }
   if (moduleValue <= 0) {
-    throw Error("Passed module value ".concat(moduleValue, " must be > 0."));
+    throw Error(`Passed module value ${moduleValue} must be > 0.`);
   }
   const normalizedInteger = integerValue % moduleValue;
   switch (true) {
@@ -25,7 +25,7 @@ const shiftIntegerByModule = (integerValue, moduleValue) => {
     case normalizedInteger < 0:
       return moduleValue + normalizedInteger;
     default:
-      throw Error("Unexpected division (".concat(integerValue, " % ").concat(moduleValue, ") occurred."));
+      throw Error(`Unexpected division (${integerValue} % ${moduleValue}) occurred.`);
   }
 };
 exports.shiftIntegerByModule = shiftIntegerByModule;

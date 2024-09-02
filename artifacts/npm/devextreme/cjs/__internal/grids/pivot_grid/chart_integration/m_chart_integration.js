@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/pivot_grid/chart_integration/m_chart_integration.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -99,10 +99,10 @@ function createChartDataSource(pivotGridDataSource, mapOptions, axisDictionary) 
     let argument = (mapOptions.inverted ? rowPathFormatted : columnPathFormatted).join('/');
     if (dataFields.length > 1) {
       if (mapOptions.putDataFieldsInto === 'args' || mapOptions.putDataFieldsInto === 'both') {
-        argument += " | ".concat(dataField.caption);
+        argument += ` | ${dataField.caption}`;
       }
       if (mapOptions.putDataFieldsInto !== 'args') {
-        seriesName += " | ".concat(dataField.caption);
+        seriesName += ` | ${dataField.caption}`;
         if (mapOptions.dataFieldsDisplayMode !== 'singleAxis') {
           axis = dataField.caption;
         }

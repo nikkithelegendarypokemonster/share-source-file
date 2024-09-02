@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/utils/ajax_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,41 +9,41 @@
 import { extendFromObject } from './extend';
 import { getWindow, hasWindow } from './window';
 import domAdapter from '../dom_adapter';
-var window = getWindow();
-var createScript = function createScript(options) {
-  var script = domAdapter.createElement('script');
-  for (var name in options) {
+const window = getWindow();
+const createScript = function (options) {
+  const script = domAdapter.createElement('script');
+  for (const name in options) {
     script[name] = options[name];
   }
   return script;
 };
-var appendToHead = function appendToHead(element) {
+const appendToHead = function (element) {
   return domAdapter.getHead().appendChild(element);
 };
-var removeScript = function removeScript(scriptNode) {
+const removeScript = function (scriptNode) {
   scriptNode.parentNode.removeChild(scriptNode);
 };
-var evalScript = function evalScript(code) {
-  var script = createScript({
+const evalScript = function (code) {
+  const script = createScript({
     text: code
   });
   appendToHead(script);
   removeScript(script);
 };
-var evalCrossDomainScript = function evalCrossDomainScript(url) {
-  var script = createScript({
+const evalCrossDomainScript = function (url) {
+  const script = createScript({
     src: url
   });
   return new Promise(function (resolve, reject) {
-    var events = {
+    const events = {
       'load': resolve,
       'error': reject
     };
-    var loadHandler = function loadHandler(e) {
+    const loadHandler = function (e) {
       events[e.type]();
       removeScript(script);
     };
-    for (var event in events) {
+    for (const event in events) {
       domAdapter.listen(script, event, loadHandler);
     }
     appendToHead(script);
@@ -52,10 +52,10 @@ var evalCrossDomainScript = function evalCrossDomainScript(url) {
 function getMethod(options) {
   return (options.method || 'GET').toUpperCase();
 }
-var paramsConvert = function paramsConvert(params) {
-  var result = [];
-  for (var name in params) {
-    var value = params[name];
+const paramsConvert = function (params) {
+  const result = [];
+  for (const name in params) {
+    let value = params[name];
     if (value === undefined) {
       continue;
     }
@@ -69,17 +69,17 @@ var paramsConvert = function paramsConvert(params) {
   }
   return result.join('&');
 };
-var getContentTypeHeader = function getContentTypeHeader(options) {
-  var defaultContentType;
+const getContentTypeHeader = function (options) {
+  let defaultContentType;
   if (options.data && !options.upload && getMethod(options) !== 'GET') {
     defaultContentType = 'application/x-www-form-urlencoded;charset=utf-8';
   }
   return options.contentType || defaultContentType;
 };
-var getAcceptHeader = function getAcceptHeader(options) {
-  var dataType = options.dataType || '*';
-  var scriptAccept = 'text/javascript, application/javascript, application/ecmascript, application/x-ecmascript';
-  var accepts = {
+const getAcceptHeader = function (options) {
+  const dataType = options.dataType || '*';
+  const scriptAccept = 'text/javascript, application/javascript, application/ecmascript, application/x-ecmascript';
+  const accepts = {
     '*': '*/*',
     text: 'text/plain',
     html: 'text/html',
@@ -91,8 +91,8 @@ var getAcceptHeader = function getAcceptHeader(options) {
   extendFromObject(accepts, options.accepts, true);
   return accepts[dataType] ? accepts[dataType] + (dataType !== '*' ? ', */*; q=0.01' : '') : accepts['*'];
 };
-var getRequestHeaders = function getRequestHeaders(options) {
-  var headers = options.headers || {};
+const getRequestHeaders = function (options) {
+  const headers = options.headers || {};
   headers['Content-Type'] = headers['Content-Type'] || getContentTypeHeader(options);
   headers['Accept'] = headers['Accept'] || getAcceptHeader(options);
   if (!options.crossDomain && !headers['X-Requested-With']) {
@@ -100,20 +100,20 @@ var getRequestHeaders = function getRequestHeaders(options) {
   }
   return headers;
 };
-var getJsonpOptions = function getJsonpOptions(options) {
+const getJsonpOptions = function (options) {
   if (options.dataType === 'jsonp') {
-    var random = Math.random().toString().replace(/\D/g, '');
-    var callbackName = options.jsonpCallback || 'dxCallback' + Date.now() + '_' + random;
-    var callbackParameter = options.jsonp || 'callback';
+    const random = Math.random().toString().replace(/\D/g, '');
+    const callbackName = options.jsonpCallback || 'dxCallback' + Date.now() + '_' + random;
+    const callbackParameter = options.jsonp || 'callback';
     options.data = options.data || {};
     options.data[callbackParameter] = callbackName;
     return callbackName;
   }
 };
-var getRequestOptions = function getRequestOptions(options, headers) {
-  var params = options.data;
-  var paramsAlreadyString = typeof params === 'string';
-  var url = options.url || window.location.href;
+const getRequestOptions = function (options, headers) {
+  let params = options.data;
+  const paramsAlreadyString = typeof params === 'string';
+  let url = options.url || window.location.href;
   if (!paramsAlreadyString && !options.cache) {
     params = params || {};
     params['_'] = Date.now();
@@ -136,13 +136,13 @@ var getRequestOptions = function getRequestOptions(options, headers) {
     parameters: params
   };
 };
-var isCrossDomain = function isCrossDomain(url) {
+const isCrossDomain = function (url) {
   if (!hasWindow()) {
     return true;
   }
-  var crossDomain = false;
-  var originAnchor = domAdapter.createElement('a');
-  var urlAnchor = domAdapter.createElement('a');
+  let crossDomain = false;
+  const originAnchor = domAdapter.createElement('a');
+  const urlAnchor = domAdapter.createElement('a');
   originAnchor.href = window.location.href;
   try {
     urlAnchor.href = url;

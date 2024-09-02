@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/exporter/common/export_load_panel.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,8 +11,8 @@ import { extend } from '../../core/utils/extend';
 import messageLocalization from '../../localization/message';
 import { isDefined } from '../../core/utils/type';
 import LoadPanel from '../../ui/load_panel';
-import gridUtils from '../../ui/grid_core/ui.grid_core.utils';
-var EXPORT_LOAD_PANEL_CLASS = 'dx-export-loadpanel';
+import gridUtils from '../../__internal/grids/grid_core/m_utils';
+const EXPORT_LOAD_PANEL_CLASS = 'dx-export-loadpanel';
 class ExportLoadPanel {
   constructor(component, $targetElement, $container, options) {
     this._$targetElement = $targetElement;

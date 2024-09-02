@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/widget/ui.widget.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -16,74 +16,106 @@ import {
 } from '../../events/index';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
+ * @docid
+ * @type object
  */
 export interface WidgetOptions<TComponent> extends DOMComponentOptions<TComponent> {
     /**
-     * Specifies the shortcut key that sets focus on the UI component.
+     * @docid
+     * @default undefined
+     * @public
      */
     accessKey?: string;
     /**
-     * Specifies whether the UI component changes its visual state as a result of user interaction.
+     * @docid
+     * @default false
+     * @public
      */
     activeStateEnabled?: boolean;
     /**
-     * Specifies whether the UI component responds to user interaction.
+     * @docid
+     * @default false
+     * @public
      */
     disabled?: boolean;
     /**
-     * Specifies whether the UI component can be focused using keyboard navigation.
+     * @docid
+     * @default false
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * Specifies text for a hint that appears when a user pauses on the UI component.
+     * @docid
+     * @default undefined
+     * @public
      */
     hint?: string;
     /**
-     * Specifies whether the UI component changes its state when a user pauses on it.
+     * @docid
+     * @default false
+     * @public
      */
     hoverStateEnabled?: boolean;
     /**
-     * A function that is executed when the UI component is rendered and each time the component is repainted.
+     * @docid
+     * @default null
+     * @action
+     * @public
      */
     onContentReady?: ((e: EventInfo<TComponent>) => void);
     /**
-     * Specifies the number of the element when the Tab key is used for navigating.
+     * @docid
+     * @default 0
+     * @public
      */
     tabIndex?: number;
     /**
-     * Specifies whether the UI component is visible.
+     * @docid
+     * @default true
+     * @public
      */
     visible?: boolean;
 }
 /**
- * The base class for UI components.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @inherits DOMComponent
+ * @hidden
+ * @namespace DevExpress.ui
+ * @options WidgetOptions
  */
 export default class Widget<TProperties> extends DOMComponent<TProperties> {
     /**
-     * Sets focus on the UI component.
+     * @docid
+     * @publicName focus()
+     * @public
      */
     focus(): void;
     /**
-     * Registers a handler to be executed when a user presses a specific key.
+     * @docid
+     * @publicName registerKeyHandler(key, handler)
+     * @public
      */
     registerKeyHandler(key: string, handler: Function): void;
     /**
-     * Renders the component again without reloading data. Use the method to update the component&apos;s markup and appearance dynamically.
+     * @docid
+     * @publicName repaint()
+     * @public
      */
     repaint(): void;
 }
 
 /**
-                                                                                                                                                      * Specifies markup for a UI component item.
-                                                                                                                                                      */
-                                                                                                                                                     export var dxItem: any;
+ * @const dxItem
+ * @section uiWidgetMarkupComponents
+ * @public
+ * @namespace DevExpress.ui
+ */
+// eslint-disable-next-line vars-on-top, import/no-mutable-exports, no-var, @typescript-eslint/init-declarations, @typescript-eslint/no-explicit-any
+export var dxItem: any;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @deprecated
  */
 export type format = Format;

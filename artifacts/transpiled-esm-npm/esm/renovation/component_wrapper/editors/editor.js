@@ -7,22 +7,22 @@ import { data } from '../../../core/element_data';
 import Callbacks from '../../../core/utils/callbacks';
 import OldEditor from '../../../ui/editor/editor';
 import { querySelectorInSameDocument } from '../../utils/dom';
-var INVALID_MESSAGE_AUTO = 'dx-invalid-message-auto';
-var VALIDATION_TARGET = 'dx-validation-target';
+const INVALID_MESSAGE_AUTO = 'dx-invalid-message-auto';
+const VALIDATION_TARGET = 'dx-validation-target';
 export default class Editor extends Component {
   getProps() {
-    var props = super.getProps();
+    const props = super.getProps();
     props.onFocusIn = () => {
-      var isValidationMessageShownOnFocus = this.option('validationMessageMode') === 'auto';
+      const isValidationMessageShownOnFocus = this.option('validationMessageMode') === 'auto';
       if (isValidationMessageShownOnFocus) {
-        var $validationMessageWrapper = $(querySelectorInSameDocument(this.element(), '.dx-invalid-message.dx-overlay-wrapper'));
-        $validationMessageWrapper === null || $validationMessageWrapper === void 0 ? void 0 : $validationMessageWrapper.removeClass(INVALID_MESSAGE_AUTO);
-        var timeToWaitBeforeShow = 150;
+        const $validationMessageWrapper = $(querySelectorInSameDocument(this.element(), '.dx-invalid-message.dx-overlay-wrapper'));
+        $validationMessageWrapper === null || $validationMessageWrapper === void 0 || $validationMessageWrapper.removeClass(INVALID_MESSAGE_AUTO);
+        const timeToWaitBeforeShow = 150;
         if (this.showValidationMessageTimeout) {
           clearTimeout(this.showValidationMessageTimeout);
         }
         this.showValidationMessageTimeout = setTimeout(() => {
-          $validationMessageWrapper === null || $validationMessageWrapper === void 0 ? void 0 : $validationMessageWrapper.addClass(INVALID_MESSAGE_AUTO);
+          $validationMessageWrapper === null || $validationMessageWrapper === void 0 || $validationMessageWrapper.addClass(INVALID_MESSAGE_AUTO);
         }, timeToWaitBeforeShow);
       }
     };
@@ -39,7 +39,7 @@ export default class Editor extends Component {
   }
   _render() {
     var _this$option;
-    (_this$option = this.option('_onMarkupRendered')) === null || _this$option === void 0 ? void 0 : _this$option();
+    (_this$option = this.option('_onMarkupRendered')) === null || _this$option === void 0 || _this$option();
   }
   _init() {
     super._init();
@@ -65,13 +65,13 @@ export default class Editor extends Component {
     });
   }
   _bindInnerWidgetOptions(innerWidget, optionsContainer) {
-    var innerWidgetOptions = extend({}, innerWidget.option());
-    var syncOptions = () => this._silent(optionsContainer, innerWidgetOptions);
+    const innerWidgetOptions = extend({}, innerWidget.option());
+    const syncOptions = () => this._silent(optionsContainer, innerWidgetOptions);
     syncOptions();
     innerWidget.on('optionChanged', syncOptions);
   }
   _raiseValidation(value, previousValue) {
-    var areValuesEmpty = !isDefined(value) && !isDefined(previousValue);
+    const areValuesEmpty = !isDefined(value) && !isDefined(previousValue);
     if (value !== previousValue && !areValuesEmpty) {
       this.validationRequest.fire({
         value,
@@ -81,7 +81,7 @@ export default class Editor extends Component {
   }
   _raiseValueChangeAction(value, previousValue) {
     var _this$_valueChangeAct;
-    (_this$_valueChangeAct = this._valueChangeAction) === null || _this$_valueChangeAct === void 0 ? void 0 : _this$_valueChangeAct.call(this, {
+    (_this$_valueChangeAct = this._valueChangeAction) === null || _this$_valueChangeAct === void 0 || _this$_valueChangeAct.call(this, {
       element: this.$element(),
       previousValue,
       value,
@@ -90,7 +90,7 @@ export default class Editor extends Component {
     this._valueChangeEventInstance = undefined;
   }
   _optionChanged(option) {
-    var {
+    const {
       name,
       previousValue,
       value
@@ -121,7 +121,7 @@ export default class Editor extends Component {
     super._optionChanged(option);
   }
   clear() {
-    var {
+    const {
       value
     } = this._getDefaultOptions();
     this.option({
@@ -129,7 +129,7 @@ export default class Editor extends Component {
     });
   }
   reset() {
-    var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+    let value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
     if (arguments.length) {
       this._initialValue = value;
     }
@@ -145,7 +145,7 @@ export default class Editor extends Component {
     }
   }
 }
-var prevIsEditor = OldEditor.isEditor;
-var newIsEditor = instance => prevIsEditor(instance) || instance instanceof Editor;
+const prevIsEditor = OldEditor.isEditor;
+const newIsEditor = instance => prevIsEditor(instance) || instance instanceof Editor;
 Editor.isEditor = newIsEditor;
 OldEditor.isEditor = newIsEditor;

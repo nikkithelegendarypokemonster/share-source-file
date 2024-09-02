@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/options_validator/core/options_validator_error_handler.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,13 +12,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.OptionsValidatorErrorHandler = void 0;
-let OptionsValidatorErrorHandler = exports.OptionsValidatorErrorHandler = /*#__PURE__*/function () {
-  function OptionsValidatorErrorHandler(validatorNameToErrorCodeMap, globalErrorHandler) {
+class OptionsValidatorErrorHandler {
+  constructor(validatorNameToErrorCodeMap, globalErrorHandler) {
     this.validatorNameToErrorCodeMap = validatorNameToErrorCodeMap;
     this.globalErrorHandler = globalErrorHandler;
   }
-  var _proto = OptionsValidatorErrorHandler.prototype;
-  _proto.handleValidationResult = function handleValidationResult(optionsValidatorResult) {
+  handleValidationResult(optionsValidatorResult) {
     if (optionsValidatorResult === true) {
       return;
     }
@@ -41,6 +40,6 @@ let OptionsValidatorErrorHandler = exports.OptionsValidatorErrorHandler = /*#__P
         this.globalErrorHandler.throwError(errorCode);
       }
     });
-  };
-  return OptionsValidatorErrorHandler;
-}();
+  }
+}
+exports.OptionsValidatorErrorHandler = OptionsValidatorErrorHandler;

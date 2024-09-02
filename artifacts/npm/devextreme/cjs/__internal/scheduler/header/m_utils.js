@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/header/m_utils.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -194,25 +194,25 @@ const getDateMonthFormatter = isShort => {
   return date => {
     const day = formatDate(date, 'day');
     const month = months[date.getMonth()];
-    return "".concat(day, " ").concat(month);
+    return `${day} ${month}`;
   };
 };
 const formatMonthYear = date => {
   const months = _date2.default.getMonthNames('abbreviated');
   const month = months[date.getMonth()];
   const year = formatDate(date, 'year');
-  return "".concat(month, " ").concat(year);
+  return `${month} ${year}`;
 };
 const getDateMonthYearFormatter = isShort => date => {
   const dateMonthFormat = getDateMonthFormatter(isShort);
   const dateMonth = dateMonthFormat(date);
   const year = formatDate(date, 'year');
-  return "".concat(dateMonth, " ").concat(year);
+  return `${dateMonth} ${year}`;
 };
 const getDifferentYearCaption = (startDate, endDate) => {
   const firstDateText = formatDate(startDate, getDateMonthYearFormatter(true));
   const lastDateDateText = formatDate(endDate, getDateMonthYearFormatter(true));
-  return "".concat(firstDateText, "-").concat(lastDateDateText);
+  return `${firstDateText}-${lastDateDateText}`;
 };
 const getSameYearCaption = (startDate, endDate, isShort) => {
   const isDifferentMonthDates = startDate.getMonth() !== endDate.getMonth();
@@ -220,14 +220,14 @@ const getSameYearCaption = (startDate, endDate, isShort) => {
   const firstDateFormat = isDifferentMonthDates ? getDateMonthFormatter(useShortFormat) : DAY_FORMAT;
   const firstDateText = formatDate(startDate, firstDateFormat);
   const lastDateText = formatDate(endDate, getDateMonthYearFormatter(useShortFormat));
-  return "".concat(firstDateText, "-").concat(lastDateText);
+  return `${firstDateText}-${lastDateText}`;
 };
 const getSameDateCaption = (date, step, isShort) => {
   const useShortFormat = step === 'agenda' ? isShort : false;
   const dateMonthFormat = getDateMonthFormatter(useShortFormat);
   const dateMonth = dateMonthFormat(date);
   const year = formatDate(date, 'year');
-  return "".concat(dateMonth, " ").concat(year);
+  return `${dateMonth} ${year}`;
 };
 const formatCaptionByMonths = (startDate, endDate, isShort) => {
   const isDifferentYears = startDate.getFullYear() !== endDate.getFullYear();
@@ -243,7 +243,7 @@ const formatMonthViewCaption = (startDate, endDate) => {
   const isSameYear = _date.default.sameYear(startDate, endDate);
   const firstDateText = isSameYear ? _date2.default.getMonthNames('abbreviated')[startDate.getMonth()] : formatMonthYear(startDate);
   const lastDateText = formatMonthYear(endDate);
-  return "".concat(firstDateText, "-").concat(lastDateText);
+  return `${firstDateText}-${lastDateText}`;
 };
 const getCaptionText = (startDate, endDate, isShort, step) => {
   if (_date.default.sameDate(startDate, endDate)) {
@@ -304,7 +304,7 @@ exports.getViewName = getViewName;
 const getViewText = view => {
   if (view.name) return view.name;
   const viewName = (0, _inflector.camelize)(view.type || view, true);
-  return _message.default.format("dxScheduler-switcher".concat(viewName));
+  return _message.default.format(`dxScheduler-switcher${viewName}`);
 };
 exports.getViewText = getViewText;
 const isValidView = view => Object.values(_m_constants.VIEWS).includes(view);

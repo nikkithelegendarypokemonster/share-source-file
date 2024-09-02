@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/viz/core/themes/generic/light/funnel.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -59,7 +59,7 @@ export default {
     tooltip: {
       customizeTooltip(info) {
         return {
-          text: "".concat(info.item.argument, " ").concat(info.valueText)
+          text: `${info.item.argument} ${info.valueText}`
         };
       }
     },
@@ -77,7 +77,7 @@ export default {
       verticalOffset: 0,
       showForZeroValues: false,
       customizeText(info) {
-        return "".concat(info.item.argument, " ").concat(info.valueText);
+        return `${info.item.argument} ${info.valueText}`;
       },
       position: 'columns',
       font: {

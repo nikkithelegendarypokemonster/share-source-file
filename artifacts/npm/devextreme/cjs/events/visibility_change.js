@@ -1,27 +1,17 @@
 /**
 * DevExtreme (cjs/events/visibility_change.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 "use strict";
 
-exports.triggerShownEvent = exports.triggerResizeEvent = exports.triggerHidingEvent = void 0;
-var _renderer = _interopRequireDefault(require("../core/renderer"));
-var _events_engine = _interopRequireDefault(require("./core/events_engine"));
+exports.triggerShownEvent = exports.triggerResizeEvent = exports.triggerHidingEvent = exports.default = void 0;
+var _m_visibility_change = _interopRequireDefault(require("../__internal/events/m_visibility_change"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-const triggerVisibilityChangeEvent = function (eventName) {
-  const VISIBILITY_CHANGE_SELECTOR = '.dx-visibility-change-handler';
-  return function (element) {
-    const $element = (0, _renderer.default)(element || 'body');
-    const changeHandlers = $element.filter(VISIBILITY_CHANGE_SELECTOR).add($element.find(VISIBILITY_CHANGE_SELECTOR));
-    for (let i = 0; i < changeHandlers.length; i++) {
-      _events_engine.default.triggerHandler(changeHandlers[i], eventName);
-    }
-  };
-};
-const triggerShownEvent = exports.triggerShownEvent = triggerVisibilityChangeEvent('dxshown');
-const triggerHidingEvent = exports.triggerHidingEvent = triggerVisibilityChangeEvent('dxhiding');
-const triggerResizeEvent = exports.triggerResizeEvent = triggerVisibilityChangeEvent('dxresize');
+const triggerShownEvent = exports.triggerShownEvent = _m_visibility_change.default.triggerShownEvent;
+const triggerHidingEvent = exports.triggerHidingEvent = _m_visibility_change.default.triggerHidingEvent;
+const triggerResizeEvent = exports.triggerResizeEvent = _m_visibility_change.default.triggerResizeEvent;
+var _default = exports.default = _m_visibility_change.default;

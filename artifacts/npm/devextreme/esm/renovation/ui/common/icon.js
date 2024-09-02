@@ -1,21 +1,21 @@
 /**
 * DevExtreme (esm/renovation/ui/common/icon.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["iconTemplate", "position", "source"];
+const _excluded = ["iconTemplate", "position", "source"];
 import { createVNode, createFragment, createComponentVNode, normalizeProps } from "inferno";
 import { Fragment } from 'inferno';
 import { BaseInfernoComponent } from '@devextreme/runtime/inferno';
 import { getImageSourceType } from '../../../core/utils/icon';
 import { combineClasses } from '../../utils/combine_classes';
-export var viewFunction = _ref => {
-  var {
+export const viewFunction = _ref => {
+  let {
     iconClassName,
     props: {
       iconTemplate: IconTemplate,
@@ -28,11 +28,11 @@ export var viewFunction = _ref => {
     "src": source
   }), IconTemplate && createVNode(1, "i", iconClassName, IconTemplate({}), 0)], 0);
 };
-export var IconProps = {
+export const IconProps = {
   position: 'left',
   source: ''
 };
-var getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => normalizeProps(createComponentVNode(2, TemplateProp, _extends({}, props))) : TemplateProp);
+const getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => normalizeProps(createComponentVNode(2, TemplateProp, _extends({}, props))) : TemplateProp);
 export class Icon extends BaseInfernoComponent {
   constructor(props) {
     super(props);
@@ -45,16 +45,16 @@ export class Icon extends BaseInfernoComponent {
     return this.props.position !== 'left' ? 'dx-icon-right' : '';
   }
   get iconClassName() {
-    var generalClasses = {
+    const generalClasses = {
       'dx-icon': true,
       [this.cssClass]: !!this.cssClass
     };
-    var {
+    const {
       source
     } = this.props;
     if (this.sourceType === 'dxIcon') {
       return combineClasses(_extends({}, generalClasses, {
-        ["dx-icon-".concat(source)]: true
+        [`dx-icon-${source}`]: true
       }));
     }
     if (this.sourceType === 'fontIcon') {
@@ -73,12 +73,12 @@ export class Icon extends BaseInfernoComponent {
     return '';
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
         iconTemplate: getTemplate(props.iconTemplate)

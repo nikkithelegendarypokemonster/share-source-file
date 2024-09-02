@@ -1,6 +1,6 @@
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["accessKey", "activeStateEnabled", "className", "defaultValue", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "inputAttr", "isDirty", "isValid", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "switchedOffText", "switchedOnText", "tabIndex", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "visible", "width"];
+const _excluded = ["accessKey", "activeStateEnabled", "className", "defaultValue", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "inputAttr", "isDirty", "isValid", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "switchedOffText", "switchedOnText", "tabIndex", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "visible", "width"];
 import { createComponentVNode, normalizeProps } from "inferno";
 import { BaseInfernoComponent } from '@devextreme/runtime/inferno';
 import LegacySwitch from '../../../ui/switch';
@@ -8,8 +8,8 @@ import { EditorProps } from './common/editor';
 import { EditorStateProps } from './common/editor_state_props';
 import { DomComponentWrapper } from '../common/dom_component_wrapper';
 import messageLocalization from '../../../localization/message';
-export var viewFunction = _ref => {
-  var {
+export const viewFunction = _ref => {
+  let {
     componentProps,
     restAttributes
   } = _ref;
@@ -19,7 +19,7 @@ export var viewFunction = _ref => {
     "templateNames": []
   }, restAttributes)));
 };
-export var SwitchProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(EditorProps), Object.getOwnPropertyDescriptors({
+export const SwitchProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(EditorProps), Object.getOwnPropertyDescriptors({
   get switchedOnText() {
     return messageLocalization.format('dxSwitch-switchedOnText');
   },
@@ -29,7 +29,7 @@ export var SwitchProps = Object.create(Object.prototype, _extends(Object.getOwnP
   defaultValue: false,
   isReactComponentWrapper: true
 })));
-export var SwitchPropsType = {
+export const SwitchPropsType = {
   get switchedOnText() {
     return SwitchProps.switchedOnText;
   },
@@ -105,14 +105,14 @@ export class Switch extends BaseInfernoComponent {
     });
   }
   get restAttributes() {
-    var _this$props$value = _extends({}, this.props, {
+    const _this$props$value = _extends({}, this.props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value
       }),
       restProps = _objectWithoutPropertiesLoose(_this$props$value, _excluded);
     return restProps;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value

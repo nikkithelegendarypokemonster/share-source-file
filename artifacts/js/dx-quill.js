@@ -1,5 +1,5 @@
 /*!
- * DevExtreme-Quill Editor v.1.7.0
+ * DevExtreme-Quill Editor v.1.7.1
  * https://js.devexpress.com/
  * Copyright (c) 2020, Developer Express Inc.
  * Copyright (c) 2017, Slab
@@ -2016,10 +2016,15 @@ var EVENTS = ['selectionchange', 'mousedown', 'mouseup', 'click'];
 if ((0,_utils_has_window__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z)()) {
   EVENTS.forEach(function (eventName) {
     document.addEventListener(eventName, function () {
+      var _event$target;
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
-      Array.from(document.querySelectorAll('.ql-container')).forEach(function (node) {
+      var event = args[0];
+      var shadowRoot = event === null || event === void 0 || (_event$target = event.target) === null || _event$target === void 0 ? void 0 : _event$target.shadowRoot;
+      var root = shadowRoot !== null && shadowRoot !== void 0 ? shadowRoot : document;
+      var quillContainers = root.querySelectorAll('.ql-container');
+      Array.from(quillContainers).forEach(function (node) {
         var quill = _instances__WEBPACK_IMPORTED_MODULE_1__/* ["default"].get */ .Z.get(node);
         if (quill && quill.emitter) {
           var _quill$emitter;
@@ -2725,7 +2730,7 @@ Quill.DEFAULTS = {
 Quill.events = _emitter__WEBPACK_IMPORTED_MODULE_5__/* ["default"].events */ .Z.events;
 Quill.sources = _emitter__WEBPACK_IMPORTED_MODULE_5__/* ["default"].sources */ .Z.sources;
 // eslint-disable-next-line no-undef
-Quill.version =  false ? 0 : "1.7.0";
+Quill.version =  false ? 0 : "1.7.1";
 Quill.MS_LIST_DATA_KEY = 'mso-list-data';
 Quill.replaceStyleAttribute = function (html) {
   var tagAttrsRegex = /(?:(<[a-z0-9]+\s*))([\s\S]*?)(>|\/>)/gi;

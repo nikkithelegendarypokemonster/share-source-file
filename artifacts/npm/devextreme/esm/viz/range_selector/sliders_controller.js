@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/range_selector/sliders_controller.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,8 +12,8 @@ import Slider from './slider';
 import { normalizeEnum as _normalizeEnum, rangesAreEqual, adjustVisualRange } from '../core/utils';
 import { isNumeric, isDefined } from '../../core/utils/type';
 import { adjust } from '../../core/utils/math';
-var animationSettings = utils.animationSettings;
-var emptySliderMarkerText = consts.emptySliderMarkerText;
+const animationSettings = utils.animationSettings;
+const emptySliderMarkerText = consts.emptySliderMarkerText;
 function buildRectPoints(left, top, right, bottom) {
   return [left, top, right, top, right, bottom, left, bottom];
 }
@@ -24,10 +24,10 @@ function isGreater(a, b) {
   return a > b;
 }
 function selectClosestValue(target, values) {
-  var start = 0;
-  var end = values ? values.length - 1 : 0;
-  var middle;
-  var val = target;
+  let start = 0;
+  let end = values ? values.length - 1 : 0;
+  let middle;
+  let val = target;
   while (end - start > 1) {
     middle = start + end >> 1;
     val = values[middle];
@@ -60,8 +60,8 @@ function restoreSetSelectedRange(controller) {
   delete controller.setSelectedRange;
 }
 export function SlidersController(params) {
-  var that = this;
-  var sliderParams = {
+  const that = this;
+  const sliderParams = {
     renderer: params.renderer,
     root: params.root,
     trackersGroup: params.trackersGroup,
@@ -87,28 +87,28 @@ export function SlidersController(params) {
 }
 SlidersController.prototype = {
   constructor: SlidersController,
-  dispose: function dispose() {
+  dispose: function () {
     this._sliders[0].dispose();
     this._sliders[1].dispose();
   },
-  getTrackerTargets: function getTrackerTargets() {
+  getTrackerTargets: function () {
     return {
       area: this._areaTracker,
       selectedArea: this._selectedAreaTracker,
       sliders: this._sliders
     };
   },
-  _processSelectionChanged: function _processSelectionChanged(e) {
-    var that = this;
-    var selectedRange = that.getSelectedRange();
+  _processSelectionChanged: function (e) {
+    const that = this;
+    const selectedRange = that.getSelectedRange();
     if (!rangesAreEqual(selectedRange, that._lastSelectedRange)) {
       that._params.updateSelectedRange(selectedRange, that._lastSelectedRange, e);
       that._lastSelectedRange = selectedRange;
     }
   },
-  update: function update(verticalRange, behavior, isCompactMode, sliderHandleOptions, sliderMarkerOptions, shutterOptions, rangeBounds, fullTicks, selectedRangeColor) {
-    var that = this;
-    var screenRange = that._params.translator.getScreenRange();
+  update: function (verticalRange, behavior, isCompactMode, sliderHandleOptions, sliderMarkerOptions, shutterOptions, rangeBounds, fullTicks, selectedRangeColor) {
+    const that = this;
+    const screenRange = that._params.translator.getScreenRange();
     that._verticalRange = verticalRange;
     that._minRange = rangeBounds.minRange;
     that._maxRange = rangeBounds.maxRange;
@@ -133,8 +133,8 @@ SlidersController.prototype = {
     // This is placing sliders and shutter into initial position. They all will be animated from that position when "setSelectedRange" is called.
     that._applyTotalPosition(false);
   },
-  _updateSelectedView: function _updateSelectedView(shutterOptions, selectedRangeColor) {
-    var settings = {
+  _updateSelectedView: function (shutterOptions, selectedRangeColor) {
+    const settings = {
       fill: null,
       'fill-opacity': null,
       stroke: null,
@@ -150,9 +150,9 @@ SlidersController.prototype = {
     }
     this._shutter.attr(settings);
   },
-  _updateSelectedRange: function _updateSelectedRange() {
-    var that = this;
-    var sliders = that._sliders;
+  _updateSelectedRange: function () {
+    const that = this;
+    const sliders = that._sliders;
     sliders[0].cancelAnimation();
     sliders[1].cancelAnimation();
     that._shutter.stopAnimation();
@@ -168,34 +168,34 @@ SlidersController.prototype = {
       restoreSetSelectedRange(that);
     }
   },
-  _applyTotalPosition: function _applyTotalPosition(isAnimated) {
-    var sliders = this._sliders;
+  _applyTotalPosition: function (isAnimated) {
+    const sliders = this._sliders;
     isAnimated = this._animationEnabled && isAnimated;
     sliders[0].applyPosition(isAnimated);
     sliders[1].applyPosition(isAnimated);
-    var areOverlapped = sliders[0].getCloudBorder() > sliders[1].getCloudBorder();
+    const areOverlapped = sliders[0].getCloudBorder() > sliders[1].getCloudBorder();
     sliders[0].setOverlapped(areOverlapped);
     sliders[1].setOverlapped(areOverlapped);
     this._applyAreaTrackersPosition();
     this._applySelectedRangePosition(isAnimated);
   },
-  _applyAreaTrackersPosition: function _applyAreaTrackersPosition() {
-    var that = this;
-    var position1 = that._sliders[0].getPosition();
-    var position2 = that._sliders[1].getPosition();
+  _applyAreaTrackersPosition: function () {
+    const that = this;
+    const position1 = that._sliders[0].getPosition();
+    const position2 = that._sliders[1].getPosition();
     that._selectedAreaTracker.attr({
       points: buildRectPoints(position1, that._verticalRange[0], position2, that._verticalRange[1])
     }).css({
       cursor: Math.abs(that._params.translator.getScreenRange()[1] - that._params.translator.getScreenRange()[0] - position2 + position1) < 0.001 ? 'default' : 'pointer'
     });
   },
-  _applySelectedRangePosition: function _applySelectedRangePosition(isAnimated) {
-    var that = this;
-    var verticalRange = that._verticalRange;
-    var pos1 = that._sliders[0].getPosition();
-    var pos2 = that._sliders[1].getPosition();
-    var screenRange;
-    var points;
+  _applySelectedRangePosition: function (isAnimated) {
+    const that = this;
+    const verticalRange = that._verticalRange;
+    const pos1 = that._sliders[0].getPosition();
+    const pos2 = that._sliders[1].getPosition();
+    let screenRange;
+    let points;
     if (that._isCompactMode) {
       points = [pos1 + Math.ceil(that._shutterOffset), (verticalRange[0] + verticalRange[1]) / 2, pos2 - Math.floor(that._shutterOffset), (verticalRange[0] + verticalRange[1]) / 2];
     } else {
@@ -212,23 +212,23 @@ SlidersController.prototype = {
       });
     }
   },
-  getSelectedRange: function getSelectedRange() {
+  getSelectedRange: function () {
     return {
       startValue: this._sliders[0].getValue(),
       endValue: this._sliders[1].getValue()
     };
   },
-  setSelectedRange: function setSelectedRange(visualRange, e) {
+  setSelectedRange: function (visualRange, e) {
     visualRange = visualRange || {};
-    var that = this;
-    var translator = that._params.translator;
-    var businessRange = translator.getBusinessRange();
-    var compare = businessRange.axisType === 'discrete' ? function (a, b) {
+    const that = this;
+    const translator = that._params.translator;
+    const businessRange = translator.getBusinessRange();
+    const compare = businessRange.axisType === 'discrete' ? function (a, b) {
       return a < b;
     } : function (a, b) {
       return a <= b;
     };
-    var {
+    let {
       startValue,
       endValue
     } = adjustVisualRange({
@@ -246,7 +246,7 @@ SlidersController.prototype = {
     });
     startValue = isNumeric(startValue) ? adjust(startValue) : startValue;
     endValue = isNumeric(endValue) ? adjust(endValue) : endValue;
-    var values = compare(translator.to(startValue, -1), translator.to(endValue, +1)) ? [startValue, endValue] : [endValue, startValue];
+    const values = compare(translator.to(startValue, -1), translator.to(endValue, +1)) ? [startValue, endValue] : [endValue, startValue];
     that._sliders[0].setDisplayValue(values[0]);
     that._sliders[1].setDisplayValue(values[1]);
     that._sliders[0]._position = translator.to(values[0], -1);
@@ -254,11 +254,11 @@ SlidersController.prototype = {
     that._applyTotalPosition(true);
     that._processSelectionChanged(e);
   },
-  beginSelectedAreaMoving: function beginSelectedAreaMoving(initialPosition) {
-    var that = this;
-    var sliders = that._sliders;
-    var offset = (sliders[0].getPosition() + sliders[1].getPosition()) / 2 - initialPosition;
-    var currentPosition = initialPosition;
+  beginSelectedAreaMoving: function (initialPosition) {
+    const that = this;
+    const sliders = that._sliders;
+    const offset = (sliders[0].getPosition() + sliders[1].getPosition()) / 2 - initialPosition;
+    let currentPosition = initialPosition;
     move.complete = function (e) {
       that._dockSelectedArea(e);
     };
@@ -270,25 +270,25 @@ SlidersController.prototype = {
       currentPosition = position;
     }
   },
-  _dockSelectedArea: function _dockSelectedArea(e) {
-    var translator = this._params.translator;
-    var sliders = this._sliders;
+  _dockSelectedArea: function (e) {
+    const translator = this._params.translator;
+    const sliders = this._sliders;
     sliders[0]._position = translator.to(sliders[0].getValue(), -1);
     sliders[1]._position = translator.to(sliders[1].getValue(), +1);
     this._applyTotalPosition(true);
     this._processSelectionChanged(e);
   },
-  moveSelectedArea: function moveSelectedArea(screenPosition, e) {
+  moveSelectedArea: function (screenPosition, e) {
     this._moveSelectedArea(screenPosition, true, e);
     this._dockSelectedArea(e);
   },
-  _moveSelectedArea: function _moveSelectedArea(screenPosition, isAnimated, e) {
-    var that = this;
-    var translator = that._params.translator;
-    var sliders = that._sliders;
-    var interval = sliders[1].getPosition() - sliders[0].getPosition();
-    var startPosition = screenPosition - interval / 2;
-    var endPosition = screenPosition + interval / 2;
+  _moveSelectedArea: function (screenPosition, isAnimated, e) {
+    const that = this;
+    const translator = that._params.translator;
+    const sliders = that._sliders;
+    const interval = sliders[1].getPosition() - sliders[0].getPosition();
+    let startPosition = screenPosition - interval / 2;
+    let endPosition = screenPosition + interval / 2;
     if (startPosition < translator.getScreenRange()[0]) {
       startPosition = translator.getScreenRange()[0];
       endPosition = startPosition + interval;
@@ -299,7 +299,7 @@ SlidersController.prototype = {
     }
 
     // Check for "minRange" and "maxRange" is not performed because it was not performed in the previous code, though I find it strange.
-    var startValue = selectClosestValue(translator.from(startPosition, -1), that._values);
+    const startValue = selectClosestValue(translator.from(startPosition, -1), that._values);
     sliders[0].setDisplayValue(startValue);
     sliders[1].setDisplayValue(selectClosestValue(translator.from(translator.to(startValue, -1) + interval, +1), that._values));
     sliders[0]._position = startPosition;
@@ -309,17 +309,17 @@ SlidersController.prototype = {
       that._processSelectionChanged(e);
     }
   },
-  placeSliderAndBeginMoving: function placeSliderAndBeginMoving(firstPosition, secondPosition, e) {
-    var that = this;
-    var translator = that._params.translator;
-    var sliders = that._sliders;
-    var index = firstPosition < secondPosition ? 0 : 1;
-    var dir = index > 0 ? +1 : -1;
-    var compare = index > 0 ? isGreater : isLess;
-    var antiCompare = index > 0 ? isLess : isGreater;
-    var thresholdPosition;
-    var positions = [];
-    var values = [];
+  placeSliderAndBeginMoving: function (firstPosition, secondPosition, e) {
+    const that = this;
+    const translator = that._params.translator;
+    const sliders = that._sliders;
+    const index = firstPosition < secondPosition ? 0 : 1;
+    const dir = index > 0 ? +1 : -1;
+    const compare = index > 0 ? isGreater : isLess;
+    const antiCompare = index > 0 ? isLess : isGreater;
+    let thresholdPosition;
+    const positions = [];
+    const values = [];
     values[index] = translator.from(firstPosition, dir);
     values[1 - index] = translator.from(secondPosition, -dir);
     positions[1 - index] = secondPosition;
@@ -359,37 +359,37 @@ SlidersController.prototype = {
     if (that._isOnMoving) {
       that._processSelectionChanged(e);
     }
-    var handler = that.beginSliderMoving(1 - index, secondPosition);
+    const handler = that.beginSliderMoving(1 - index, secondPosition);
     sliders[1 - index]._sliderGroup.stopAnimation();
     that._shutter.stopAnimation();
     handler(secondPosition);
     return handler;
   },
-  beginSliderMoving: function beginSliderMoving(initialIndex, initialPosition) {
-    var that = this;
-    var translator = that._params.translator;
-    var sliders = that._sliders;
-    var minPosition = translator.getScreenRange()[0];
-    var maxPosition = translator.getScreenRange()[1];
-    var index = initialIndex;
-    var staticPosition = sliders[1 - index].getPosition();
-    var currentPosition = initialPosition;
-    var dir = index > 0 ? +1 : -1;
-    var compareMin = index > 0 ? isLess : isGreater;
-    var compareMax = index > 0 ? isGreater : isLess;
-    var moveOffset = sliders[index].getPosition() - initialPosition;
-    var swapOffset = compareMin(sliders[index].getPosition(), initialPosition) ? -moveOffset : moveOffset;
+  beginSliderMoving: function (initialIndex, initialPosition) {
+    const that = this;
+    const translator = that._params.translator;
+    const sliders = that._sliders;
+    const minPosition = translator.getScreenRange()[0];
+    const maxPosition = translator.getScreenRange()[1];
+    let index = initialIndex;
+    const staticPosition = sliders[1 - index].getPosition();
+    let currentPosition = initialPosition;
+    let dir = index > 0 ? +1 : -1;
+    let compareMin = index > 0 ? isLess : isGreater;
+    let compareMax = index > 0 ? isGreater : isLess;
+    let moveOffset = sliders[index].getPosition() - initialPosition;
+    let swapOffset = compareMin(sliders[index].getPosition(), initialPosition) ? -moveOffset : moveOffset;
     move.complete = function (e) {
       sliders[index]._setValid(true);
       that._dockSelectedArea(e);
     };
     return move;
     function move(position, e) {
-      var isValid;
-      var temp;
-      var pos;
-      var slider;
-      var value;
+      let isValid;
+      let temp;
+      let pos;
+      let slider;
+      let value;
       if (position !== currentPosition) {
         if (compareMin(position + swapOffset, staticPosition)) {
           isValid = that._allowSlidersSwap;
@@ -415,7 +415,7 @@ SlidersController.prototype = {
           // TODO: Write it as single operation (isValid = ... && ... && ...) when code is stable.
           // Check - if moving slider is closer to static slider than a span of a single category.
           isValid = translator.isValueProlonged ? !compareMin(pos, translator.to(value, dir)) : true;
-          var invalidStateValue;
+          let invalidStateValue;
           // Check - if moving slider is closer to static slider than it is allowed "minRange".
           if (isValid && that._minRange) {
             isValid = !compareMin(pos, translator.to(translator.add(value, that._minRange, dir), dir));
@@ -443,13 +443,13 @@ SlidersController.prototype = {
       currentPosition = position;
     }
   },
-  _changeMovingSlider: function _changeMovingSlider(index) {
-    var that = this;
-    var translator = that._params.translator;
-    var sliders = that._sliders;
-    var position = sliders[1 - index].getPosition();
-    var dir = index > 0 ? +1 : -1;
-    var newValue;
+  _changeMovingSlider: function (index) {
+    const that = this;
+    const translator = that._params.translator;
+    const sliders = that._sliders;
+    const position = sliders[1 - index].getPosition();
+    const dir = index > 0 ? +1 : -1;
+    let newValue;
     sliders[index].setDisplayValue(selectClosestValue(translator.from(position, dir), that._values));
     newValue = translator.from(position, -dir);
     if (translator.isValueProlonged) {
@@ -463,7 +463,7 @@ SlidersController.prototype = {
     sliders[index]._marker._update(); // This is to update "text" element
     sliders[0]._position = sliders[1]._position = position;
   },
-  foregroundSlider: function foregroundSlider(index) {
+  foregroundSlider: function (index) {
     this._sliders[index].toForeground();
   }
 };

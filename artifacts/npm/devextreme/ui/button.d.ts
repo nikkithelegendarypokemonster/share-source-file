@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/button.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -37,102 +37,147 @@ export {
 };
 
 /**
- * The type of the click event handler&apos;s argument.
+ * @docid _ui_button_ClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type ClickEvent = NativeEventInfo<dxButton, KeyboardEvent | MouseEvent | PointerEvent> & {
     /**
-     * 
+     * @docid _ui_button_ClickEvent.validationGroup
+     * @type object
      */
     validationGroup?: any;
 };
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_button_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxButton>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_button_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxButton>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_button_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxButton>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_button_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxButton> & ChangedOptionInfo;
 
+/** @public */
 export type TemplateData = {
     readonly text?: string;
     readonly icon?: string;
 };
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxButtonOptions extends WidgetOptions<dxButton> {
     /**
-     * Specifies whether the UI component changes its visual state as a result of user interaction.
+     * @docid
+     * @default true
+     * @public
      */
     activeStateEnabled?: boolean;
     /**
-     * Specifies whether the UI component can be focused using keyboard navigation.
+     * @docid
+     * @default true &for(desktop)
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * Specifies whether the UI component changes its state when a user pauses on it.
+     * @docid
+     * @default true
+     * @public
      */
     hoverStateEnabled?: boolean;
     /**
-     * Specifies the icon to be displayed on the button.
+     * @docid
+     * @default ""
+     * @public
      */
     icon?: string;
     /**
-     * A function that is executed when the Button is clicked or tapped.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/button:ClickEvent}
+     * @action
+     * @public
      */
     onClick?: ((e: ClickEvent) => void);
     /**
-     * Specifies how the button is styled.
+     * @docid
+     * @default 'contained'
+     * @public
      */
     stylingMode?: ButtonStyle;
     /**
-     * Specifies a custom template for the Button UI component.
+     * @docid
+     * @default "content"
+     * @type_function_param1 buttonData:object
+     * @type_function_return string|Element|jQuery
+     * @public
      */
     template?: template | ((data: TemplateData, contentElement: DxElement) => string | UserDefinedElement);
     /**
-     * The text displayed on the button.
+     * @docid
+     * @default ""
+     * @public
      */
     text?: string;
     /**
-     * Specifies the button type.
+     * @docid
+     * @default 'normal'
+     * @public
      */
     type?: ButtonType;
     /**
-     * Specifies whether the button submits an HTML form.
+     * @docid
+     * @default false
+     * @public
      */
     useSubmitBehavior?: boolean;
     /**
-     * Specifies the name of the validation group to be accessed in the click event handler.
+     * @docid
+     * @default undefined
+     * @public
      */
     validationGroup?: string;
 }
 /**
- * The Button UI component is a simple button that performs specified commands when a user clicks it.
+ * @docid
+ * @inherits Widget
+ * @hasTranscludedContent
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxButton extends Widget<dxButtonOptions> { }
 
+/** @public */
 export type Properties = dxButtonOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxButtonOptions;
 
 

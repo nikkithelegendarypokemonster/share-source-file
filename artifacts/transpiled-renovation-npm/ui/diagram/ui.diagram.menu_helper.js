@@ -54,7 +54,7 @@ const DiagramMenuHelper = {
   },
   _getItemOptionTextCore(indexPath) {
     return indexPath.reduce((r, i) => {
-      return r + "items[".concat(i, "].");
+      return r + `items[${i}].`;
     }, '');
   },
   getItemCommandParameter(widget, item, value) {

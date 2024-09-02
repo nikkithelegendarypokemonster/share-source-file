@@ -1,20 +1,20 @@
 /**
 * DevExtreme (esm/localization/default_date_names.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { map } from '../core/utils/iterator';
-var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-var DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-var PERIODS = ['AM', 'PM'];
-var QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4'];
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const PERIODS = ['AM', 'PM'];
+const QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4'];
 
 // TODO: optimize
-var cutCaptions = (captions, format) => {
-  var lengthByFormat = {
+const cutCaptions = (captions, format) => {
+  const lengthByFormat = {
     abbreviated: 3,
     short: 2,
     narrow: 1
@@ -24,16 +24,16 @@ var cutCaptions = (captions, format) => {
   });
 };
 export default {
-  getMonthNames: function getMonthNames(format) {
+  getMonthNames: function (format) {
     return cutCaptions(MONTHS, format);
   },
-  getDayNames: function getDayNames(format) {
+  getDayNames: function (format) {
     return cutCaptions(DAYS, format);
   },
-  getQuarterNames: function getQuarterNames(format) {
+  getQuarterNames: function (format) {
     return QUARTERS;
   },
-  getPeriodNames: function getPeriodNames(format) {
+  getPeriodNames: function (format) {
     return PERIODS;
   }
 };

@@ -13,10 +13,10 @@ var _style = require("../../core/utils/style");
 var _type = require("../../core/utils/type");
 var _window = require("../../core/utils/window");
 var _uiCollection_widget = _interopRequireDefault(require("../../ui/collection/ui.collection_widget.edit"));
-var _item = _interopRequireDefault(require("../../ui/collection/item"));
+var _m_item = _interopRequireDefault(require("../ui/collection/m_item"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } // eslint-disable-next-line max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
+
 const BOX_CLASS = 'dx-box';
 const BOX_FLEX_CLASS = 'dx-box-flex';
 const BOX_ITEM_CLASS = 'dx-box-item';
@@ -57,19 +57,14 @@ const setFlexProp = (element, prop, value) => {
       return;
     }
     const cssName = (0, _inflector.dasherize)(prop);
-    const styleExpr = "".concat(cssName, ": ").concat(value, ";");
+    const styleExpr = `${cssName}: ${value};`;
     (0, _style.setStyle)(element, styleExpr, false);
   }
 };
-let BoxItem = /*#__PURE__*/function (_CollectionWidgetItem) {
-  _inheritsLoose(BoxItem, _CollectionWidgetItem);
-  function BoxItem() {
-    return _CollectionWidgetItem.apply(this, arguments) || this;
-  }
-  var _proto = BoxItem.prototype;
-  _proto._renderVisible = function _renderVisible(value, oldValue) {
+class BoxItem extends _m_item.default {
+  _renderVisible(value, oldValue) {
     // @ts-expect-error
-    _CollectionWidgetItem.prototype._renderVisible.call(this, value);
+    super._renderVisible(value);
     if ((0, _type.isDefined)(oldValue)) {
       // @ts-expect-error
       this._options.fireItemStateChangedAction({
@@ -78,40 +73,38 @@ let BoxItem = /*#__PURE__*/function (_CollectionWidgetItem) {
         oldState: oldValue
       });
     }
-  };
-  return BoxItem;
-}(_item.default);
-let LayoutStrategy = /*#__PURE__*/function () {
-  function LayoutStrategy($element, option) {
+  }
+}
+class LayoutStrategy {
+  constructor($element, option) {
     this._$element = $element;
     this._option = option;
   }
-  var _proto2 = LayoutStrategy.prototype;
-  _proto2.renderBox = function renderBox() {
+  renderBox() {
     this._$element.css({
-      display: "".concat((0, _style.stylePropPrefix)('flexDirection'), "flex")
+      display: `${(0, _style.stylePropPrefix)('flexDirection')}flex`
     });
     setFlexProp(this._$element.get(0), 'flexDirection', FLEX_DIRECTION_MAP[this._option('direction')]);
-  };
-  _proto2.renderAlign = function renderAlign() {
+  }
+  renderAlign() {
     this._$element.css({
       justifyContent: this._normalizedAlign()
     });
-  };
-  _proto2._normalizedAlign = function _normalizedAlign() {
+  }
+  _normalizedAlign() {
     const align = this._option('align');
     return align in FLEX_JUSTIFY_CONTENT_MAP ? FLEX_JUSTIFY_CONTENT_MAP[align] : align;
-  };
-  _proto2.renderCrossAlign = function renderCrossAlign() {
+  }
+  renderCrossAlign() {
     this._$element.css({
       alignItems: this._normalizedCrossAlign()
     });
-  };
-  _proto2._normalizedCrossAlign = function _normalizedCrossAlign() {
+  }
+  _normalizedCrossAlign() {
     const crossAlign = this._option('crossAlign');
     return crossAlign in FLEX_ALIGN_ITEMS_MAP ? FLEX_ALIGN_ITEMS_MAP[crossAlign] : crossAlign;
-  };
-  _proto2.renderItems = function renderItems($items) {
+  }
+  renderItems($items) {
     const flexPropPrefix = (0, _style.stylePropPrefix)('flexDirection');
     const direction = this._option('direction');
     (0, _iterator.each)($items, function () {
@@ -119,7 +112,7 @@ let LayoutStrategy = /*#__PURE__*/function () {
       const item = $item.data(BOX_ITEM_DATA_KEY);
       // @ts-expect-error
       $item.css({
-        display: "".concat(flexPropPrefix, "flex")
+        display: `${flexPropPrefix}flex`
       }).css(MAXSIZE_MAP[direction], item.maxSize || 'none').css(MINSIZE_MAP[direction], item.minSize || '0');
       setFlexProp($item.get(0), 'flexBasis', item.baseSize || 0);
       setFlexProp($item.get(0), 'flexGrow', item.ratio);
@@ -130,24 +123,18 @@ let LayoutStrategy = /*#__PURE__*/function () {
         (0, _renderer.default)(itemContent).css({
           width: 'auto',
           height: 'auto',
-          display: "".concat((0, _style.stylePropPrefix)('flexDirection'), "flex"),
+          display: `${(0, _style.stylePropPrefix)('flexDirection')}flex`,
           flexBasis: 0
         });
         setFlexProp(itemContent, 'flexGrow', 1);
         setFlexProp(itemContent, 'flexDirection', (0, _renderer.default)(itemContent)[0].style.flexDirection || 'column');
       });
     });
-  };
-  return LayoutStrategy;
-}();
-let Box = /*#__PURE__*/function (_CollectionWidget) {
-  _inheritsLoose(Box, _CollectionWidget);
-  function Box() {
-    return _CollectionWidget.apply(this, arguments) || this;
   }
-  var _proto3 = Box.prototype;
-  _proto3._getDefaultOptions = function _getDefaultOptions() {
-    return (0, _extend.extend)(_CollectionWidget.prototype._getDefaultOptions.call(this), {
+}
+class Box extends _uiCollection_widget.default {
+  _getDefaultOptions() {
+    return (0, _extend.extend)(super._getDefaultOptions(), {
       direction: 'row',
       align: 'start',
       crossAlign: 'stretch',
@@ -156,63 +143,63 @@ let Box = /*#__PURE__*/function (_CollectionWidget) {
       onItemStateChanged: undefined,
       _queue: undefined
     });
-  };
-  _proto3._itemClass = function _itemClass() {
+  }
+  _itemClass() {
     return BOX_ITEM_CLASS;
-  };
-  _proto3._itemDataKey = function _itemDataKey() {
+  }
+  _itemDataKey() {
     return BOX_ITEM_DATA_KEY;
-  };
-  _proto3._itemElements = function _itemElements() {
+  }
+  _itemElements() {
     // @ts-expect-error
     return this._itemContainer().children(this._itemSelector());
-  };
-  _proto3._init = function _init() {
-    _CollectionWidget.prototype._init.call(this);
+  }
+  _init() {
+    super._init();
     // @ts-expect-error
     this.$element().addClass(BOX_FLEX_CLASS);
     this._initLayout();
     this._initBoxQueue();
-  };
-  _proto3._initLayout = function _initLayout() {
+  }
+  _initLayout() {
     // @ts-expect-error
     this._layout = new LayoutStrategy(this.$element(), this.option.bind(this));
-  };
-  _proto3._initBoxQueue = function _initBoxQueue() {
+  }
+  _initBoxQueue() {
     // @ts-expect-error
     this._queue = this.option('_queue') || [];
-  };
-  _proto3._queueIsNotEmpty = function _queueIsNotEmpty() {
+  }
+  _queueIsNotEmpty() {
     // @ts-expect-error
     return this.option('_queue') ? false : !!this._queue.length;
-  };
-  _proto3._pushItemToQueue = function _pushItemToQueue($item, config) {
+  }
+  _pushItemToQueue($item, config) {
     this._queue.push({
       $item,
       config
     });
-  };
-  _proto3._shiftItemFromQueue = function _shiftItemFromQueue() {
+  }
+  _shiftItemFromQueue() {
     return this._queue.shift();
-  };
-  _proto3._initMarkup = function _initMarkup() {
+  }
+  _initMarkup() {
     // @ts-expect-error
     this.$element().addClass(BOX_CLASS);
     this._layout.renderBox();
-    _CollectionWidget.prototype._initMarkup.call(this);
+    super._initMarkup();
     this._renderAlign();
     this._renderActions();
-  };
-  _proto3._renderActions = function _renderActions() {
+  }
+  _renderActions() {
     // @ts-expect-error
     this._onItemStateChanged = this._createActionByOption('onItemStateChanged');
-  };
-  _proto3._renderAlign = function _renderAlign() {
+  }
+  _renderAlign() {
     this._layout.renderAlign();
     this._layout.renderCrossAlign();
-  };
-  _proto3._renderItems = function _renderItems(items) {
-    _CollectionWidget.prototype._renderItems.call(this, items);
+  }
+  _renderItems(items) {
+    super._renderItems(items);
     while (this._queueIsNotEmpty()) {
       const item = this._shiftItemFromQueue();
       // @ts-expect-error
@@ -233,30 +220,30 @@ let Box = /*#__PURE__*/function (_CollectionWidget) {
       }, item.config));
     }
     this._layout.renderItems(this._itemElements());
-  };
-  _proto3._renderItemContent = function _renderItemContent(args) {
+  }
+  _renderItemContent(args) {
     const $itemNode = args.itemData && args.itemData.node;
     if ($itemNode) {
       // @ts-expect-error
       return this._renderItemContentByNode(args, $itemNode);
     }
-    return _CollectionWidget.prototype._renderItemContent.call(this, args);
-  };
-  _proto3._postprocessRenderItem = function _postprocessRenderItem(args) {
+    return super._renderItemContent(args);
+  }
+  _postprocessRenderItem(args) {
     const boxConfig = args.itemData.box;
     if (!boxConfig) {
       return;
     }
     this._pushItemToQueue(args.itemContent, boxConfig);
-  };
-  _proto3._createItemByTemplate = function _createItemByTemplate(itemTemplate, args) {
+  }
+  _createItemByTemplate(itemTemplate, args) {
     if (args.itemData.box) {
       // @ts-expect-error
       return itemTemplate.source ? itemTemplate.source() : (0, _renderer.default)();
     }
-    return _CollectionWidget.prototype._createItemByTemplate.call(this, itemTemplate, args);
-  };
-  _proto3._itemOptionChanged = function _itemOptionChanged(item, property, value, oldValue) {
+    return super._createItemByTemplate(itemTemplate, args);
+  }
+  _itemOptionChanged(item, property, value, oldValue) {
     if (property === 'visible') {
       // @ts-expect-error
       this._onItemStateChanged({
@@ -265,9 +252,9 @@ let Box = /*#__PURE__*/function (_CollectionWidget) {
         oldState: oldValue !== false
       });
     }
-    _CollectionWidget.prototype._itemOptionChanged.call(this, item, property, value);
-  };
-  _proto3._optionChanged = function _optionChanged(args) {
+    super._itemOptionChanged(item, property, value);
+  }
+  _optionChanged(args) {
     switch (args.name) {
       case '_queue':
       case 'direction':
@@ -281,19 +268,19 @@ let Box = /*#__PURE__*/function (_CollectionWidget) {
         this._layout.renderCrossAlign();
         break;
       default:
-        _CollectionWidget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  _proto3._itemOptions = function _itemOptions() {
-    const options = _CollectionWidget.prototype._itemOptions.call(this);
+  }
+  _itemOptions() {
+    const options = super._itemOptions();
     options.fireItemStateChangedAction = e => {
       // @ts-expect-error
       this._onItemStateChanged(e);
     };
     return options;
-  };
-  return Box;
-}(_uiCollection_widget.default); // @ts-expect-error
+  }
+}
+// @ts-expect-error
 Box.ItemClass = BoxItem;
 // @ts-expect-error
 (0, _component_registrator.default)('dxBox', Box);

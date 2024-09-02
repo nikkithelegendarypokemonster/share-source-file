@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/vector_map/data_exchanger.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,30 +12,30 @@ export function DataExchanger() {
 }
 DataExchanger.prototype = {
   constructor: DataExchanger,
-  dispose: function dispose() {
+  dispose: function () {
     this._store = null;
     return this;
   },
-  _get: function _get(category, name) {
-    var store = this._store[category] || (this._store[category] = {});
+  _get: function (category, name) {
+    const store = this._store[category] || (this._store[category] = {});
     return store[name] || (store[name] = {
       callbacks: Callbacks()
     });
   },
-  set: function set(category, name, data) {
-    var item = this._get(category, name);
+  set: function (category, name, data) {
+    const item = this._get(category, name);
     item.data = data;
     item.callbacks.fire(data);
     return this;
   },
-  bind: function bind(category, name, callback) {
-    var item = this._get(category, name);
+  bind: function (category, name, callback) {
+    const item = this._get(category, name);
     item.callbacks.add(callback);
     item.data && callback(item.data);
     return this;
   },
-  unbind: function unbind(category, name, callback) {
-    var item = this._get(category, name);
+  unbind: function (category, name, callback) {
+    const item = this._get(category, name);
     item.callbacks.remove(callback);
     return this;
   }

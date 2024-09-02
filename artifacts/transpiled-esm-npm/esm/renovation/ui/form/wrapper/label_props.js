@@ -1,1 +1,1 @@
-export var LabelProps = {};
+export const LabelProps = {};

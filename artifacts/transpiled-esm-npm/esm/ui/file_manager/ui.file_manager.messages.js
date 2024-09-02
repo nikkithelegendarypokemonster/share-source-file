@@ -1,6 +1,6 @@
 import messageLocalization from '../../localization/message';
 import ErrorCode from '../../file_management/error_codes';
-export var FileManagerMessages = {
+export const FileManagerMessages = {
   get: (errorCode, args) => {
     switch (errorCode) {
       case ErrorCode.NoAccess:

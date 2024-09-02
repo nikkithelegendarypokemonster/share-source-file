@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/workspaces/view_model/m_view_data_generator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,11 +9,11 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import dateUtils from '../../../../core/utils/date';
 import { dateUtilsTs } from '../../../core/utils/date';
-import { calculateCellIndex, calculateDayDuration, getDisplayedCellCount, getDisplayedRowCount, getGroupCount, getIsGroupedAllDayPanel, getKeyByGroup, getStartViewDateWithoutDST, getTotalCellCountByCompleteData, getTotalRowCountByCompleteData, isHorizontalView } from '../../__migration/utils/index';
+import { calculateCellIndex, calculateDayDuration, getDisplayedCellCount, getDisplayedRowCount, getGroupCount, getIsGroupedAllDayPanel, getKeyByGroup, getStartViewDateWithoutDST, getTotalCellCountByCompleteData, getTotalRowCountByCompleteData, isHorizontalView } from '../../../scheduler/r1/utils/index';
 import { HORIZONTAL_GROUP_ORIENTATION } from '../../m_constants';
 import timezoneUtils from '../../m_utils_time_zone';
 import { getAllGroups } from '../../resources/m_utils';
-var toMs = dateUtils.dateToMilliseconds;
+const toMs = dateUtils.dateToMilliseconds;
 export class ViewDataGenerator {
   constructor() {
     this.daysInInterval = 1;
@@ -30,7 +30,7 @@ export class ViewDataGenerator {
     return this._calculateStartViewDate(options);
   }
   getCompleteViewDataMap(options) {
-    var {
+    const {
       groups,
       isGroupedByDate,
       isHorizontalGrouping,
@@ -44,8 +44,8 @@ export class ViewDataGenerator {
     } = options;
     this._setVisibilityDates(options);
     this.setHiddenInterval(startDayHour, endDayHour, hoursInterval);
-    var groupsList = getAllGroups(groups);
-    var cellCountInGroupRow = this.getCellCount({
+    const groupsList = getAllGroups(groups);
+    const cellCountInGroupRow = this.getCellCount({
       intervalCount,
       currentDate,
       viewType,
@@ -53,7 +53,7 @@ export class ViewDataGenerator {
       endDayHour,
       hoursInterval
     });
-    var rowCountInGroup = this.getRowCount({
+    const rowCountInGroup = this.getRowCount({
       intervalCount,
       currentDate,
       viewType,
@@ -61,9 +61,9 @@ export class ViewDataGenerator {
       startDayHour,
       endDayHour
     });
-    var viewDataMap = [];
-    var allDayPanelData = this._generateAllDayPanelData(options, rowCountInGroup, cellCountInGroupRow);
-    var viewCellsData = this._generateViewCellsData(options, rowCountInGroup, cellCountInGroupRow);
+    let viewDataMap = [];
+    const allDayPanelData = this._generateAllDayPanelData(options, rowCountInGroup, cellCountInGroupRow);
+    const viewCellsData = this._generateViewCellsData(options, rowCountInGroup, cellCountInGroupRow);
     if (allDayPanelData) {
       viewDataMap.push(allDayPanelData);
     }
@@ -80,11 +80,11 @@ export class ViewDataGenerator {
     return this._addKeysToCells(viewDataMap);
   }
   _transformViewDataMapForHorizontalGrouping(viewDataMap, groupsList) {
-    var result = viewDataMap.map(row => row.slice());
+    const result = viewDataMap.map(row => row.slice());
     groupsList.slice(1).forEach((groups, index) => {
-      var groupIndex = index + 1;
+      const groupIndex = index + 1;
       viewDataMap.forEach((row, rowIndex) => {
-        var nextGroupRow = row.map(cellData => _extends(_extends({}, cellData), {
+        const nextGroupRow = row.map(cellData => _extends({}, cellData, {
           groups,
           groupIndex
         }));
@@ -94,11 +94,11 @@ export class ViewDataGenerator {
     return result;
   }
   _transformViewDataMapForVerticalGrouping(viewDataMap, groupsList) {
-    var result = viewDataMap.map(row => row.slice());
+    const result = viewDataMap.map(row => row.slice());
     groupsList.slice(1).forEach((groups, index) => {
-      var groupIndex = index + 1;
-      var nextGroupMap = viewDataMap.map(cellsRow => {
-        var nextRow = cellsRow.map(cellData => _extends(_extends({}, cellData), {
+      const groupIndex = index + 1;
+      const nextGroupMap = viewDataMap.map(cellsRow => {
+        const nextRow = cellsRow.map(cellData => _extends({}, cellData, {
           groupIndex,
           groups
         }));
@@ -109,14 +109,14 @@ export class ViewDataGenerator {
     return result;
   }
   _transformViewDataMapForGroupingByDate(viewDataMap, groupsList) {
-    var correctedGroupList = groupsList.slice(1);
-    var correctedGroupCount = correctedGroupList.length;
-    var result = viewDataMap.map(cellsRow => {
-      var groupedByDateCellsRow = cellsRow.reduce((currentRow, cell) => {
-        var rowWithCurrentCell = [...currentRow, _extends(_extends({}, cell), {
+    const correctedGroupList = groupsList.slice(1);
+    const correctedGroupCount = correctedGroupList.length;
+    const result = viewDataMap.map(cellsRow => {
+      const groupedByDateCellsRow = cellsRow.reduce((currentRow, cell) => {
+        const rowWithCurrentCell = [...currentRow, _extends({}, cell, {
           isFirstGroupCell: true,
           isLastGroupCell: correctedGroupCount === 0
-        }), ...correctedGroupList.map((groups, index) => _extends(_extends({}, cell), {
+        }), ...correctedGroupList.map((groups, index) => _extends({}, cell, {
           groups,
           groupIndex: index + 1,
           isFirstGroupCell: false,
@@ -129,17 +129,17 @@ export class ViewDataGenerator {
     return result;
   }
   _addKeysToCells(viewDataMap) {
-    var totalColumnCount = viewDataMap[0].length;
-    var {
+    const totalColumnCount = viewDataMap[0].length;
+    const {
       currentViewDataMap: result
     } = viewDataMap.reduce((_ref, row, rowIndex) => {
-      var {
+      let {
         allDayPanelsCount,
         currentViewDataMap
       } = _ref;
-      var isAllDay = row[0].allDay;
-      var keyBase = (rowIndex - allDayPanelsCount) * totalColumnCount;
-      var currentAllDayPanelsCount = isAllDay ? allDayPanelsCount + 1 : allDayPanelsCount;
+      const isAllDay = row[0].allDay;
+      const keyBase = (rowIndex - allDayPanelsCount) * totalColumnCount;
+      const currentAllDayPanelsCount = isAllDay ? allDayPanelsCount + 1 : allDayPanelsCount;
       currentViewDataMap[rowIndex].forEach((cell, columnIndex) => {
         cell.key = keyBase + columnIndex;
       });
@@ -154,7 +154,7 @@ export class ViewDataGenerator {
     return result;
   }
   generateViewDataMap(completeViewDataMap, options) {
-    var {
+    const {
       rowCount,
       startCellIndex,
       startRowIndex,
@@ -162,8 +162,8 @@ export class ViewDataGenerator {
       isVerticalGrouping,
       isAllDayPanelVisible
     } = options;
-    var sliceCells = (row, rowIndex, startIndex, count) => {
-      var sliceToIndex = count !== undefined ? startIndex + count : undefined;
+    const sliceCells = (row, rowIndex, startIndex, count) => {
+      const sliceToIndex = count !== undefined ? startIndex + count : undefined;
       return row.slice(startIndex, sliceToIndex).map((cellData, columnIndex) => ({
         cellData,
         position: {
@@ -172,14 +172,14 @@ export class ViewDataGenerator {
         }
       }));
     };
-    var correctedStartRowIndex = startRowIndex;
-    var allDayPanelMap = [];
+    let correctedStartRowIndex = startRowIndex;
+    let allDayPanelMap = [];
     if (this._isStandaloneAllDayPanel(isVerticalGrouping, isAllDayPanelVisible)) {
       correctedStartRowIndex++;
       allDayPanelMap = sliceCells(completeViewDataMap[0], 0, startCellIndex, cellCount);
     }
-    var displayedRowCount = getDisplayedRowCount(rowCount, completeViewDataMap);
-    var dateTableMap = completeViewDataMap.slice(correctedStartRowIndex, correctedStartRowIndex + displayedRowCount).map((row, rowIndex) => sliceCells(row, rowIndex, startCellIndex, cellCount));
+    const displayedRowCount = getDisplayedRowCount(rowCount, completeViewDataMap);
+    const dateTableMap = completeViewDataMap.slice(correctedStartRowIndex, correctedStartRowIndex + displayedRowCount).map((row, rowIndex) => sliceCells(row, rowIndex, startCellIndex, cellCount));
     return {
       allDayPanelMap,
       dateTableMap
@@ -189,7 +189,7 @@ export class ViewDataGenerator {
     return !isVerticalGrouping && isAllDayPanelVisible;
   }
   getViewDataFromMap(completeViewDataMap, viewDataMap, options) {
-    var {
+    const {
       topVirtualRowHeight,
       bottomVirtualRowHeight,
       leftVirtualCellWidth,
@@ -203,26 +203,26 @@ export class ViewDataGenerator {
       isVerticalGrouping,
       isAllDayPanelVisible
     } = options;
-    var {
+    const {
       allDayPanelMap,
       dateTableMap
     } = viewDataMap;
-    var {
+    const {
       groupedData
     } = dateTableMap.reduce((_ref2, cellsRow) => {
-      var {
+      let {
         previousGroupIndex,
         groupedData
       } = _ref2;
-      var cellDataRow = cellsRow.map(_ref3 => {
-        var {
+      const cellDataRow = cellsRow.map(_ref3 => {
+        let {
           cellData
         } = _ref3;
         return cellData;
       });
-      var firstCell = cellDataRow[0];
-      var isAllDayRow = firstCell.allDay;
-      var currentGroupIndex = firstCell.groupIndex;
+      const firstCell = cellDataRow[0];
+      const isAllDayRow = firstCell.allDay;
+      const currentGroupIndex = firstCell.groupIndex;
       if (currentGroupIndex !== previousGroupIndex) {
         groupedData.push({
           dateTable: [],
@@ -249,16 +249,16 @@ export class ViewDataGenerator {
     });
     if (this._isStandaloneAllDayPanel(isVerticalGrouping, isAllDayPanelVisible)) {
       groupedData[0].allDayPanel = allDayPanelMap.map(_ref4 => {
-        var {
+        let {
           cellData
         } = _ref4;
         return cellData;
       });
     }
-    var totalCellCount = getTotalCellCountByCompleteData(completeViewDataMap);
-    var totalRowCount = getTotalRowCountByCompleteData(completeViewDataMap);
-    var displayedCellCount = getDisplayedCellCount(cellCount, completeViewDataMap);
-    var displayedRowCount = getDisplayedRowCount(rowCount, completeViewDataMap);
+    const totalCellCount = getTotalCellCountByCompleteData(completeViewDataMap);
+    const totalRowCount = getTotalRowCountByCompleteData(completeViewDataMap);
+    const displayedCellCount = getDisplayedCellCount(cellCount, completeViewDataMap);
+    const displayedRowCount = getDisplayedRowCount(rowCount, completeViewDataMap);
     return {
       groupedData,
       topVirtualRowHeight,
@@ -273,8 +273,8 @@ export class ViewDataGenerator {
     };
   }
   _generateViewCellsData(options, rowCount, cellCountInGroupRow) {
-    var viewCellsData = [];
-    for (var rowIndex = 0; rowIndex < rowCount; rowIndex += 1) {
+    const viewCellsData = [];
+    for (let rowIndex = 0; rowIndex < rowCount; rowIndex += 1) {
       viewCellsData.push(this._generateCellsRow(options, false, rowIndex, rowCount, cellCountInGroupRow));
     }
     return viewCellsData;
@@ -286,9 +286,9 @@ export class ViewDataGenerator {
     return this._generateCellsRow(options, true, 0, rowCount, columnCount);
   }
   _generateCellsRow(options, allDay, rowIndex, rowCount, columnCount) {
-    var cellsRow = [];
-    for (var columnIndex = 0; columnIndex < columnCount; ++columnIndex) {
-      var cellDataValue = this.getCellData(rowIndex, columnIndex, options, allDay);
+    const cellsRow = [];
+    for (let columnIndex = 0; columnIndex < columnCount; ++columnIndex) {
+      const cellDataValue = this.getCellData(rowIndex, columnIndex, options, allDay);
       cellDataValue.index = rowIndex * columnCount + columnIndex;
       cellDataValue.isFirstGroupCell = this._isFirstGroupCell(rowIndex, columnIndex, options, rowCount, columnCount);
       cellDataValue.isLastGroupCell = this._isLastGroupCell(rowIndex, columnIndex, options, rowCount, columnCount);
@@ -300,16 +300,16 @@ export class ViewDataGenerator {
     return allDay ? this.prepareAllDayCellData(options, rowIndex, columnIndex) : this.prepareCellData(options, rowIndex, columnIndex);
   }
   prepareCellData(options, rowIndex, columnIndex) {
-    var {
+    const {
       groups,
       startDayHour,
       endDayHour,
       hoursInterval
     } = options;
-    var groupsList = getAllGroups(groups);
-    var startDate = this.getDateByCellIndices(options, rowIndex, columnIndex, this.getCellCountInDay(startDayHour, endDayHour, hoursInterval));
-    var endDate = this.getCellEndDate(startDate, options);
-    var data = {
+    const groupsList = getAllGroups(groups);
+    const startDate = this.getDateByCellIndices(options, rowIndex, columnIndex, this.getCellCountInDay(startDayHour, endDayHour, hoursInterval));
+    const endDate = this.getCellEndDate(startDate, options);
+    const data = {
       startDate,
       endDate,
       allDay: this.tableAllDay,
@@ -322,58 +322,58 @@ export class ViewDataGenerator {
     return data;
   }
   prepareAllDayCellData(options, rowIndex, columnIndex) {
-    var data = this.prepareCellData(_extends(_extends({}, options), {
+    const data = this.prepareCellData(_extends({}, options, {
       // NOTE: For all-day cells we should shift cell's dates
       // after trimming these dates time.
       viewOffset: 0
     }), rowIndex, columnIndex);
-    var {
+    const {
       viewOffset
     } = options;
-    var startDate = dateUtils.trimTime(data.startDate);
-    var shiftedStartDate = dateUtilsTs.addOffsets(startDate, [viewOffset]);
-    return _extends(_extends({}, data), {
+    const startDate = dateUtils.trimTime(data.startDate);
+    const shiftedStartDate = dateUtilsTs.addOffsets(startDate, [viewOffset]);
+    return _extends({}, data, {
       startDate: shiftedStartDate,
       endDate: shiftedStartDate,
       allDay: true
     });
   }
   getDateByCellIndices(options, rowIndex, columnIndex, cellCountInDay) {
-    var {
+    let {
       startViewDate
     } = options;
-    var {
+    const {
       startDayHour,
       interval,
       firstDayOfWeek,
       intervalCount,
       viewOffset
     } = options;
-    var isStartViewDateDuringDST = startViewDate.getHours() !== Math.floor(startDayHour);
+    const isStartViewDateDuringDST = startViewDate.getHours() !== Math.floor(startDayHour);
     if (isStartViewDateDuringDST) {
-      var dateWithCorrectHours = getStartViewDateWithoutDST(startViewDate, startDayHour);
+      const dateWithCorrectHours = getStartViewDateWithoutDST(startViewDate, startDayHour);
       startViewDate = new Date(dateWithCorrectHours.getTime() - toMs('day'));
     }
-    var columnCountBase = this.getCellCount(options);
-    var rowCountBase = this.getRowCount(options);
-    var cellIndex = this._calculateCellIndex(rowIndex, columnIndex, rowCountBase, columnCountBase);
-    var millisecondsOffset = this.getMillisecondsOffset(cellIndex, interval, cellCountInDay);
-    var offsetByCount = this.isWorkView ? this.getTimeOffsetByColumnIndex(columnIndex, this.getFirstDayOfWeek(firstDayOfWeek), columnCountBase, intervalCount) : 0;
-    var startViewDateTime = startViewDate.getTime();
-    var currentDate = new Date(startViewDateTime + millisecondsOffset + offsetByCount + viewOffset);
-    var timeZoneDifference = isStartViewDateDuringDST ? 0 : dateUtils.getTimezonesDifference(startViewDate, currentDate);
+    const columnCountBase = this.getCellCount(options);
+    const rowCountBase = this.getRowCount(options);
+    const cellIndex = this._calculateCellIndex(rowIndex, columnIndex, rowCountBase, columnCountBase);
+    const millisecondsOffset = this.getMillisecondsOffset(cellIndex, interval, cellCountInDay);
+    const offsetByCount = this.isWorkView ? this.getTimeOffsetByColumnIndex(columnIndex, this.getFirstDayOfWeek(firstDayOfWeek), columnCountBase, intervalCount) : 0;
+    const startViewDateTime = startViewDate.getTime();
+    const currentDate = new Date(startViewDateTime + millisecondsOffset + offsetByCount + viewOffset);
+    const timeZoneDifference = isStartViewDateDuringDST ? 0 : dateUtils.getTimezonesDifference(startViewDate, currentDate);
     currentDate.setTime(currentDate.getTime() + timeZoneDifference);
     return currentDate;
   }
   getMillisecondsOffset(cellIndex, interval, cellCountInDay) {
-    var dayIndex = Math.floor(cellIndex / cellCountInDay);
-    var realHiddenInterval = dayIndex * this.hiddenInterval;
+    const dayIndex = Math.floor(cellIndex / cellCountInDay);
+    const realHiddenInterval = dayIndex * this.hiddenInterval;
     return interval * cellIndex + realHiddenInterval;
   }
   getTimeOffsetByColumnIndex(columnIndex, firstDayOfWeek, columnCount, intervalCount) {
-    var firstDayOfWeekDiff = Math.max(0, firstDayOfWeek - 1);
-    var columnsInWeek = columnCount / intervalCount;
-    var weekendCount = Math.floor((columnIndex + firstDayOfWeekDiff) / columnsInWeek);
+    const firstDayOfWeekDiff = Math.max(0, firstDayOfWeek - 1);
+    const columnsInWeek = columnCount / intervalCount;
+    const weekendCount = Math.floor((columnIndex + firstDayOfWeekDiff) / columnsInWeek);
     return weekendCount * 2 * toMs('day');
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -387,24 +387,24 @@ export class ViewDataGenerator {
     return calculateCellIndex(rowIndex, columnIndex, rowCount);
   }
   generateGroupedDataMap(viewDataMap) {
-    var {
+    const {
       allDayPanelMap,
       dateTableMap
     } = viewDataMap;
-    var {
+    const {
       previousGroupedDataMap: dateTableGroupedMap
     } = dateTableMap.reduce((previousOptions, cellsRow) => {
-      var {
+      const {
         previousGroupedDataMap,
         previousRowIndex,
         previousGroupIndex
       } = previousOptions;
-      var {
+      const {
         groupIndex: currentGroupIndex
       } = cellsRow[0].cellData;
-      var currentRowIndex = currentGroupIndex === previousGroupIndex ? previousRowIndex + 1 : 0;
+      const currentRowIndex = currentGroupIndex === previousGroupIndex ? previousRowIndex + 1 : 0;
       cellsRow.forEach(cell => {
-        var {
+        const {
           groupIndex
         } = cell.cellData;
         if (!previousGroupedDataMap[groupIndex]) {
@@ -425,9 +425,9 @@ export class ViewDataGenerator {
       previousRowIndex: -1,
       previousGroupIndex: -1
     });
-    var allDayPanelGroupedMap = [];
-    allDayPanelMap === null || allDayPanelMap === void 0 ? void 0 : allDayPanelMap.forEach(cell => {
-      var {
+    const allDayPanelGroupedMap = [];
+    allDayPanelMap === null || allDayPanelMap === void 0 || allDayPanelMap.forEach(cell => {
+      const {
         groupIndex
       } = cell.cellData;
       if (!allDayPanelGroupedMap[groupIndex]) {
@@ -441,12 +441,12 @@ export class ViewDataGenerator {
     };
   }
   _isFirstGroupCell(rowIndex, columnIndex, options, rowCount, columnCount) {
-    var {
+    const {
       groupOrientation,
       groups,
       isGroupedByDate
     } = options;
-    var groupCount = getGroupCount(groups);
+    const groupCount = getGroupCount(groups);
     if (isGroupedByDate) {
       return columnIndex % groupCount === 0;
     }
@@ -456,12 +456,12 @@ export class ViewDataGenerator {
     return rowIndex % rowCount === 0;
   }
   _isLastGroupCell(rowIndex, columnIndex, options, rowCount, columnCount) {
-    var {
+    const {
       groupOrientation,
       groups,
       isGroupedByDate
     } = options;
-    var groupCount = getGroupCount(groups);
+    const groupCount = getGroupCount(groups);
     if (isGroupedByDate) {
       return (columnIndex + 1) % groupCount === 0;
     }
@@ -471,19 +471,19 @@ export class ViewDataGenerator {
     return (rowIndex + 1) % rowCount === 0;
   }
   markSelectedAndFocusedCells(viewDataMap, renderOptions) {
-    var {
+    const {
       selectedCells,
       focusedCell
     } = renderOptions;
     if (!selectedCells && !focusedCell) {
       return viewDataMap;
     }
-    var {
+    const {
       allDayPanelMap,
       dateTableMap
     } = viewDataMap;
-    var nextDateTableMap = dateTableMap.map(row => this._markSelectedAndFocusedCellsInRow(row, selectedCells, focusedCell));
-    var nextAllDayMap = this._markSelectedAndFocusedCellsInRow(allDayPanelMap, selectedCells, focusedCell);
+    const nextDateTableMap = dateTableMap.map(row => this._markSelectedAndFocusedCellsInRow(row, selectedCells, focusedCell));
+    const nextAllDayMap = this._markSelectedAndFocusedCellsInRow(allDayPanelMap, selectedCells, focusedCell);
     return {
       allDayPanelMap: nextAllDayMap,
       dateTableMap: nextDateTableMap
@@ -491,14 +491,14 @@ export class ViewDataGenerator {
   }
   _markSelectedAndFocusedCellsInRow(dataRow, selectedCells, focusedCell) {
     return dataRow.map(cell => {
-      var {
+      const {
         index,
         groupIndex,
         allDay,
         startDate
       } = cell.cellData;
-      var indexInSelectedCells = selectedCells.findIndex(_ref5 => {
-        var {
+      const indexInSelectedCells = selectedCells.findIndex(_ref5 => {
+        let {
           index: selectedCellIndex,
           groupIndex: selectedCellGroupIndex,
           allDay: selectedCellAllDay,
@@ -506,12 +506,12 @@ export class ViewDataGenerator {
         } = _ref5;
         return groupIndex === selectedCellGroupIndex && (index === selectedCellIndex || selectedCellIndex === undefined && startDate.getTime() === selectedCellStartDate.getTime()) && !!allDay === !!selectedCellAllDay;
       });
-      var isFocused = !!focusedCell && index === focusedCell.cellData.index && groupIndex === focusedCell.cellData.groupIndex && allDay === focusedCell.cellData.allDay;
+      const isFocused = !!focusedCell && index === focusedCell.cellData.index && groupIndex === focusedCell.cellData.groupIndex && allDay === focusedCell.cellData.allDay;
       if (!isFocused && indexInSelectedCells === -1) {
         return cell;
       }
-      return _extends(_extends({}, cell), {
-        cellData: _extends(_extends({}, cell.cellData), {
+      return _extends({}, cell, {
+        cellData: _extends({}, cell.cellData, {
           isSelected: indexInSelectedCells > -1,
           isFocused
         })
@@ -527,44 +527,44 @@ export class ViewDataGenerator {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _setVisibilityDates(options) {}
   getCellCountInDay(startDayHour, endDayHour, hoursInterval) {
-    var result = calculateDayDuration(startDayHour, endDayHour) / hoursInterval;
+    const result = calculateDayDuration(startDayHour, endDayHour) / hoursInterval;
     return Math.ceil(result);
   }
   getCellCount(options) {
-    var {
+    const {
       intervalCount,
       viewType,
       startDayHour,
       endDayHour,
       hoursInterval
     } = options;
-    var cellCountInDay = this.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
-    var columnCountInDay = isHorizontalView(viewType) ? cellCountInDay : 1;
+    const cellCountInDay = this.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
+    const columnCountInDay = isHorizontalView(viewType) ? cellCountInDay : 1;
     return this.daysInInterval * intervalCount * columnCountInDay;
   }
   getRowCount(options) {
-    var {
+    const {
       viewType,
       startDayHour,
       endDayHour,
       hoursInterval
     } = options;
-    var cellCountInDay = this.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
-    var rowCountInDay = !isHorizontalView(viewType) ? cellCountInDay : 1;
+    const cellCountInDay = this.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
+    const rowCountInDay = !isHorizontalView(viewType) ? cellCountInDay : 1;
     return rowCountInDay;
   }
   setHiddenInterval(startDayHour, endDayHour, hoursInterval) {
     this.hiddenInterval = toMs('day') - this.getVisibleDayDuration(startDayHour, endDayHour, hoursInterval);
   }
   getVisibleDayDuration(startDayHour, endDayHour, hoursInterval) {
-    var cellCountInDay = this.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
+    const cellCountInDay = this.getCellCountInDay(startDayHour, endDayHour, hoursInterval);
     return hoursInterval * cellCountInDay * toMs('hour');
   }
   getFirstDayOfWeek(firstDayOfWeekOption) {
     return firstDayOfWeekOption;
   }
   getCellEndDate(cellStartDate, options) {
-    var durationMs = Math.round(options.interval);
+    const durationMs = Math.round(options.interval);
     return timezoneUtils.addOffsetsWithoutDST(cellStartDate, durationMs);
   }
 }

@@ -8,7 +8,7 @@ class DataGridDataController extends DataController {
     return dataSourceAdapterProvider;
   }
   _getSpecificDataSourceOption() {
-    var dataSource = this.option('dataSource');
+    const dataSource = this.option('dataSource');
     if (dataSource && !Array.isArray(dataSource) && this.option('keyExpr')) {
       errors.log('W1011');
     }

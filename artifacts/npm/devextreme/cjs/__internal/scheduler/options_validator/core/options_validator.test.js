@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/options_validator/core/options_validator.test.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,16 +10,12 @@
 
 var _options_validator = require("./options_validator");
 var _validator = require("./validator");
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-let TestOptionsValidator = /*#__PURE__*/function (_OptionsValidator) {
-  _inheritsLoose(TestOptionsValidator, _OptionsValidator);
+class TestOptionsValidator extends _options_validator.OptionsValidator {
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
-  function TestOptionsValidator(validators) {
-    return _OptionsValidator.call(this, validators) || this;
+  constructor(validators) {
+    super(validators);
   }
-  return TestOptionsValidator;
-}(_options_validator.OptionsValidator);
+}
 const widgetOptions = {
   A: 1,
   B: '1',

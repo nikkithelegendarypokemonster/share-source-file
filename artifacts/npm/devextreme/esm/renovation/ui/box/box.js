@@ -1,21 +1,21 @@
 /**
 * DevExtreme (esm/renovation/ui/box/box.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-var _excluded = ["align", "crossAlign", "direction"];
+const _excluded = ["align", "crossAlign", "direction"];
 import { createComponentVNode } from "inferno";
 import { InfernoWrapperComponent } from '@devextreme/runtime/inferno';
 import { normalizeStyles } from '@devextreme/runtime/inferno';
 import { Widget } from '../common/widget';
 import { BoxProps } from './box_props';
 import { combineClasses } from '../../utils/combine_classes';
-export var viewFunction = viewModel => createComponentVNode(2, Widget, {
+export const viewFunction = viewModel => createComponentVNode(2, Widget, {
   "classes": viewModel.cssClasses,
   "style": normalizeStyles(viewModel.cssStyles)
 });
@@ -34,11 +34,11 @@ export class Box extends InfernoWrapperComponent {
     });
   }
   get cssStyles() {
-    var DIRECTION_MAP = {
+    const DIRECTION_MAP = {
       row: 'row',
       col: 'column'
     };
-    var tryGetFromMap = (prop, map) => prop in map ? map[prop] : prop;
+    const tryGetFromMap = (prop, map) => prop in map ? map[prop] : prop;
     return {
       display: 'flex',
       flexDirection: DIRECTION_MAP[this.props.direction],
@@ -58,12 +58,12 @@ export class Box extends InfernoWrapperComponent {
     };
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       cssClasses: this.cssClasses,

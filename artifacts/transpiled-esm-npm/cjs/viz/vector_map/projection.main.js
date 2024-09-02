@@ -258,7 +258,7 @@ Projection.prototype = {
     const rt = unproject(that._fromTransformed([+1, -1]));
     const rb = unproject(that._fromTransformed([+1, +1]));
     const minMax = findMinMax([selectFarthestPoint(lt[0], lb[0], rt[0], rb[0]), selectFarthestPoint(lt[1], rt[1], lb[1], rb[1])], [selectFarthestPoint(rt[0], rb[0], lt[0], lb[0]), selectFarthestPoint(lb[1], rb[1], lt[1], rt[1])]);
-    return [].concat(minMax.min, minMax.max);
+    return [].concat(minMax.min[0], minMax.max[1], minMax.max[0], minMax.min[1]);
   },
   // T254127
   // There should be no expectation that if viewport is got with `getViewport` and set with `setViewport`
@@ -316,8 +316,8 @@ function setMinMax(engine, p1, p2) {
   engine.min = returnArray(min);
   engine.max = returnArray(max);
 }
-const Engine = /*#__PURE__*/function () {
-  function Engine(parameters) {
+const Engine = class {
+  constructor(parameters) {
     const that = this;
     const project = createProjectMethod(parameters.to);
     const unproject = parameters.from ? createUnprojectMethod(parameters.from) : returnValue(DEFAULT_CENTER);
@@ -332,23 +332,22 @@ const Engine = /*#__PURE__*/function () {
     that.center = returnArray(unproject([0, 0]));
     setMinMax(that, [unproject([-1, 0])[0], unproject([0, +1])[1]], [unproject([+1, 0])[0], unproject([0, -1])[1]]);
   }
-  var _proto = Engine.prototype;
-  _proto.aspectRatio = function aspectRatio(_aspectRatio) {
+  aspectRatio(aspectRatio) {
     const engine = new Engine((0, _extend.extend)(this.source(), {
-      aspectRatio: _aspectRatio
+      aspectRatio: aspectRatio
     }));
     engine.original = this.original;
     engine.min = this.min;
     engine.max = this.max;
     return engine;
-  };
-  _proto.bounds = function bounds(_bounds) {
-    _bounds = _bounds || [];
+  }
+  bounds(bounds) {
+    bounds = bounds || [];
     const parameters = this.source();
     const min = this.min();
     const max = this.max();
-    const b1 = parseAndClampArray([_bounds[0], _bounds[1]], min, max, min);
-    const b2 = parseAndClampArray([_bounds[2], _bounds[3]], min, max, max);
+    const b1 = parseAndClampArray([bounds[0], bounds[1]], min, max, min);
+    const b2 = parseAndClampArray([bounds[2], bounds[3]], min, max, max);
     const p1 = parameters.to(b1);
     const p2 = parameters.to(b2);
     const delta = _min(_abs(p2[0] - p1[0]) > MIN_BOUNDS_RANGE ? _abs(p2[0] - p1[0]) : 2, _abs(p2[1] - p1[1]) > MIN_BOUNDS_RANGE ? _abs(p2[1] - p1[1]) : 2);
@@ -359,9 +358,8 @@ const Engine = /*#__PURE__*/function () {
     engine.original = this.original;
     setMinMax(engine, b1, b2);
     return engine;
-  };
-  return Engine;
-}();
+  }
+};
 function invertVerticalAxis(pair) {
   return [pair[0], -pair[1]];
 }

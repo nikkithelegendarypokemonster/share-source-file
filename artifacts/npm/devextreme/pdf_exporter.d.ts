@@ -1,7 +1,7 @@
 /**
 * DevExtreme (pdf_exporter.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -17,263 +17,366 @@ import {
   DataGridCell as ExcelCell,
 } from './excel_exporter';
 
+/**
+ * @public
+ * @namespace DevExpress.pdfExporter
+ */
 export type DataGridCell = PdfDataGridCell;
 
  /**
- * @deprecated Use DataGridCell instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+  * @namespace DevExpress.pdfExporter
+  * @deprecated Use DataGridCell instead
+  */
 export interface PdfDataGridCell extends ExcelCell {}
 
 /**
- * An object that configures export to PDF settings in a DataGrid cell.
+ * @public
+ * @docid PdfCell
+ * @namespace DevExpress.pdfExporter
  */
 export interface Cell {
   /**
-   * Specifies the background color of the cell.
+   * @docid PdfCell.backgroundColor
+   * @default '#FFFFFF'
+   * @public
    */
   backgroundColor?: string;
   /**
-   * Specifies the color of the cell&apos;s outer borders.
+   * @docid PdfCell.borderColor
+   * @default '#979797'
+   * @public
    */
   borderColor?: string;
   /**
-   * Specifies the width of the cell&apos;s borders.
+   * @docid PdfCell.borderWidth
+   * @default 0.5
+   * @public
    */
   borderWidth?: number;
   /**
-   * Specifies whether to show cell&apos;s left border.
+   * @docid PdfCell.drawLeftBorder
+   * @public
    */
   drawLeftBorder?: boolean;
   /**
-   * Specifies whether to show cell&apos;s top border.
+   * @docid PdfCell.drawTopBorder
+   * @public
    */
   drawTopBorder?: boolean;
   /**
-   * Specifies whether to show cell&apos;s right border.
+   * @docid PdfCell.drawRightBorder
+   * @public
    */
   drawRightBorder?: boolean;
   /**
-   * Specifies whether to show cell&apos;s bottom border.
+   * @docid PdfCell.drawBottomBorder
+   * @public
    */
   drawBottomBorder?: boolean;
   /**
-   * An object that contains information about the font&apos;s size, name, and style.
+   * @docid PdfCell.font
+   * @public
    */
   font?: {
     /**
-     * Specifies the font size.
+     * @docid PdfCell.font.size
+     * @default 10
+     * @public
      */
     size?: number;
     /**
-     * Specifies the font name.
+     * @docid PdfCell.font.name
+     * @public
      */
     name?: string;
     /**
-     * Specifies the font style.
+     * @docid PdfCell.font.style
+     * @default 'normal'
+     * @public
      */
     style?: 'normal' | 'bold' | 'italic';
   };
   /**
-   * Specifies the horizontal alignment for the text inside the exported cell.
+   * @docid PdfCell.horizontalAlign
+   * @public
    */
   horizontalAlign?: 'left' | 'center' | 'right';
   /**
-   * Specifies the top, bottom, left, and right paddings of the DataGrid cell.
+   * @docid PdfCell.padding
+   * @public
    */
   padding?: {
     /**
-     * Specifies the top padding of the DataGrid cell.
+     * @docid PdfCell.padding.top
+     * @public
      */
     top?: number;
     /**
-     * Specifies the left padding of the DataGrid cell.
+     * @docid PdfCell.padding.left
+     * @public
      */
     left?: number;
     /**
-     * Specifies the right padding of the DataGrid cell.
-     */
+      * @docid PdfCell.padding.right
+      * @public
+      */
     right?: number;
     /**
-     * Specifies the bottom padding of the DataGrid cell.
-     */
+      * @docid PdfCell.padding.bottom
+      * @public
+      */
     bottom?: number;
   };
   /**
-   * The cell&apos;s text.
+   * @docid PdfCell.text
+   * @public
    */
   text?: string;
   /**
-   * Specifies the text color for the cell.
+   * @docid PdfCell.textColor
+   * @default '#000000'
+   * @public
    */
   textColor?: string;
   /**
-   * Specifies the vertical alignment for the text inside the exported cell.
+   * @docid PdfCell.verticalAlign
+   * @default 'middle'
+   * @public
    */
   verticalAlign?: 'top' | 'middle' | 'bottom';
   /**
-   * Specifies whether to enable word wrapping in the resulting PDF file.
+   * @docid PdfCell.wordWrapEnabled
+   * @public
    */
   wordWrapEnabled?: boolean;
 }
 
 /**
- * Properties that can be passed as a parameter to the exportDataGrid(options) method from the pdfExporter module.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.pdfExporter
  */
 export interface PdfExportDataGridProps {
     /**
-     * A jsPDF instance. This setting is required.
+     * @docid
+     * @default undefined
+     * @public
      */
     jsPDFDocument?: object;
     /**
-     * A DataGrid instance. This setting is required.
+     * @docid
+     * @default undefined
+     * @public
      */
     component?: dxDataGrid;
     /**
-     * Specifies the top left position of the DataGrid in the exported PDF document. Contains x and y properties. You can locate this position only below the page margins.
+     * @docid
+     * @public
      */
     topLeft?: {
       /**
-       * Specifies the horizontal position of the exported DataGrid.
+       * @docid
+       * @default 0
+       * @public
        */
       x?: number;
       /**
-       * Specifies the vertical position of the exported DataGrid.
+       * @docid
+       * @default 0
+       * @public
        */
       y?: number;
     };
     /**
-     * Specifies a custom width for the exported DataGrid columns.
+     * @docid
+     * @default undefined
+     * @public
      */
     columnWidths?: Array<number>;
     /**
-     * Specifies the width of the indent of data rows relative to their group header row.
+     * @docid
+     * @default 0
+     * @public
      */
     indent?: number;
     /**
-     * Specifies the margin for the top, bottom, left, and right sides of the exported Grid.
+     * @docid
+     * @public
      */
     margin?: {
       /**
-       * Specifies the margin at the top of the page.
+       * @docid
+       * @public
        */
       top?: number;
       /**
-       * Specifies the margin at the left side of the page.
+       * @docid
+       * @public
        */
       left?: number;
       /**
-       * Specifies the margin at the right side of the page.
-       */
+        * @docid
+        * @public
+        */
       right?: number;
       /**
-       * Specifies the margin at the bottom of the page.
-       */
+        * @docid
+        * @public
+        */
       bottom?: number;
     };
     /**
-     * Specifies whether to repeat the DataGrid column headers on each page.
+     * @docid
+     * @default true
+     * @public
      */
     repeatHeaders?: boolean;
     /**
-     * Specifies whether or not to export only selected rows.
+     * @docid
+     * @default false
+     * @public
      */
     selectedRowsOnly?: boolean;
     /**
-     * A function that allows you to draw cell content of the exported DataGrid. This function is executed before the cell is exported.
-     */
+      * @docid
+      * @type_function_param1_field gridCell:PdfDataGridCell
+      * @type_function_param1_field pdfCell:PdfCell
+      * @type_function_param1_field doc:object
+      * @public
+      */
     customDrawCell?: ((options: { gridCell?: DataGridCell; pdfCell?: Cell; doc?: any; rect?: { x: number; y: number; h: number; w: number }; cancel?: boolean }) => void);
     /**
-     * Customizes a cell in PDF after creation.
+     * @docid
+     * @type_function_param1_field gridCell:PdfDataGridCell
+     * @type_function_param1_field pdfCell:PdfCell
+     * @public
      */
     customizeCell?: ((options: { gridCell?: DataGridCell; pdfCell?: Cell }) => void);
     /**
-     * A function that allows you to customize the height of the exported row. This function is executed before the row export.
+     * @docid
+     * @type_function_param1_field rowCells:Array<PdfCell>
+     * @public
      */
     onRowExporting?: ((options: { rowCells?: Array<Cell>; rowHeight?: number }) => void);
     /**
-     * Configures the load panel.
+     * @docid
+     * @public
      */
     loadPanel?: ExportLoadPanel;
 }
 
 /**
- * Exports grid data to a PDF file.
+ * @docid pdfExporter.exportDataGrid
+ * @publicName exportDataGrid(options)
+ * @return Promise<void>
+ * @namespace DevExpress.pdfExporter
+ * @static
+ * @public
  */
 export function exportDataGrid(options: PdfExportDataGridProps): DxPromise<void>;
 
 /**
- * Properties that you can pass as a parameter to the exportGantt(options) method from the pdfExporter module.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @namespace DevExpress.pdfExporter
  */
 export interface PdfExportGanttProps {
   /**
-   * A function that creates a PDF document.
+   * @docid
+   * @type_function_param1 options:object
+   * @public
    */
   createDocumentMethod?: ((options: any) => object);
   /**
-   * A jsPDF instance. This setting is required.
+   * @docid
+   * @default undefined
+   * @public
    */
   jsPDFDocument?: object;
   /**
-   * A Gantt instance. This setting is required.
+   * @docid
+   * @default undefined
+   * @public
    */
   component?: dxGantt;
   /**
-   * Specifies the document size.
+   * @docid
+   * @default undefined
+   * @public
    */
   format?: string | object;
   /**
-   * Specifies whether to use horizontal orientation for the document.
+   * @docid
+   * @default true
+   * @public
    */
   landscape?: boolean;
   /**
-   * Specifies the file name.
+   * @docid
+   * @default undefined
+   * @public
    */
   fileName?: string;
   /**
-   * Specifies the outer indents of the exported area.
+   * @docid
+   * @default undefined
+   * @public
    */
   margins?: object;
   /**
-   * Specifies which part of the component to export (chart area, tree list area, or the entire component).
+   * @docid
+   * @default 'all'
+   * @public
    */
   exportMode?: GanttPdfExportMode;
   /**
-   * Specifies the date range for which to export tasks.
+   * @docid
+   * @public
    */
   dateRange?: GanttPdfExportDateRange | object;
   /**
-   * Specifies the font.
-   */
+  * @docid
+  * @public
+  */
   font?: PdfExportGanttFont;
 }
 
 /**
- * Configures a custom font used for the Gantt data export.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
  */
 export interface PdfExportGanttFont {
   /**
-   * A custom font object.
-   */
+  * @docid
+  * @default undefined
+  * @public
+  */
   fontObject: object;
   /**
-   * The font name.
-   */
+  * @docid
+  * @default undefined
+  * @public
+  */
   name: string;
   /**
-   * The font style.
-   */
+  * @docid
+  * @default 'normal'
+  * @acceptValues "bold" | "normal" | "italic"
+  * @public
+  */
   style?: string;
   /**
-   * The font weight.
-   */
+  * @docid
+  * @default undefined
+  * @acceptValues  "normal" | "bold" | 400 | 700
+  * @public
+  */
   weight?: string | number;
 }
 
 /**
- * Exports Gantt data to a PDF file.
+ * @docid pdfExporter.exportGantt
+ * @publicName exportGantt(options)
+ * @return Promise<any>
+ * @namespace DevExpress.pdfExporter
+ * @static
+ * @public
  */
 export function exportGantt(options: PdfExportGanttProps): DxPromise<any>;

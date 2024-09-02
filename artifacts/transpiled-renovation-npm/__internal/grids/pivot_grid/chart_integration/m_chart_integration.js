@@ -91,10 +91,10 @@ function createChartDataSource(pivotGridDataSource, mapOptions, axisDictionary) 
     let argument = (mapOptions.inverted ? rowPathFormatted : columnPathFormatted).join('/');
     if (dataFields.length > 1) {
       if (mapOptions.putDataFieldsInto === 'args' || mapOptions.putDataFieldsInto === 'both') {
-        argument += " | ".concat(dataField.caption);
+        argument += ` | ${dataField.caption}`;
       }
       if (mapOptions.putDataFieldsInto !== 'args') {
-        seriesName += " | ".concat(dataField.caption);
+        seriesName += ` | ${dataField.caption}`;
         if (mapOptions.dataFieldsDisplayMode !== 'singleAxis') {
           axis = dataField.caption;
         }

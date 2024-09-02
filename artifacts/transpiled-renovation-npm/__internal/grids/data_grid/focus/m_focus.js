@@ -9,16 +9,9 @@ var _m_core = _interopRequireDefault(require("../m_core"));
 var _m_utils = require("../m_utils");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || 9007199254740991 /* IE11 */;
-const data = Base => /*#__PURE__*/function (_focusModule$extender) {
-  _inheritsLoose(FocusDataControllerExtender, _focusModule$extender);
-  function FocusDataControllerExtender() {
-    return _focusModule$extender.apply(this, arguments) || this;
-  }
-  var _proto = FocusDataControllerExtender.prototype;
-  _proto.changeRowExpand = function changeRowExpand(path, isRowClick) {
+const data = Base => class FocusDataControllerExtender extends _m_focus.focusModule.extenders.controllers.data(Base) {
+  changeRowExpand(path, isRowClick) {
     // @ts-expect-error
     if (this.option('focusedRowEnabled') && Array.isArray(path) && this.isRowExpanded(path)) {
       if ((!isRowClick || !this._keyboardNavigationController.isKeyboardEnabled()) && this._isFocusedRowInsideGroup(path)) {
@@ -26,9 +19,9 @@ const data = Base => /*#__PURE__*/function (_focusModule$extender) {
       }
     }
     // @ts-expect-error
-    return _focusModule$extender.prototype.changeRowExpand.call(this, path, isRowClick);
-  };
-  _proto._isFocusedRowInsideGroup = function _isFocusedRowInsideGroup(path) {
+    return super.changeRowExpand(path, isRowClick);
+  }
+  _isFocusedRowInsideGroup(path) {
     const focusedRowKey = this.option('focusedRowKey');
     const rowIndex = this.getRowIndexByKey(focusedRowKey);
     const focusedRow = rowIndex >= 0 && this.getVisibleRows()[rowIndex];
@@ -43,8 +36,8 @@ const data = Base => /*#__PURE__*/function (_focusModule$extender) {
       }
     }
     return true;
-  };
-  _proto._getGroupPath = function _getGroupPath(groupItem, groupCount) {
+  }
+  _getGroupPath(groupItem, groupCount) {
     const groupPath = [];
     let items = [groupItem];
     while (items && items[0] && groupCount) {
@@ -56,8 +49,8 @@ const data = Base => /*#__PURE__*/function (_focusModule$extender) {
       groupCount--;
     }
     return groupPath;
-  };
-  _proto._expandGroupByPath = function _expandGroupByPath(that, groupPath, level) {
+  }
+  _expandGroupByPath(that, groupPath, level) {
     // @ts-expect-error
     const d = new _deferred.Deferred();
     level++;
@@ -69,8 +62,8 @@ const data = Base => /*#__PURE__*/function (_focusModule$extender) {
       }
     }).fail(d.reject);
     return d.promise();
-  };
-  _proto._calculateGlobalRowIndexByGroupedData = function _calculateGlobalRowIndexByGroupedData(key) {
+  }
+  _calculateGlobalRowIndexByGroupedData(key) {
     const that = this;
     const dataSource = that._dataSource;
     const filter = that._generateFilterByKey(key);
@@ -98,8 +91,8 @@ const data = Base => /*#__PURE__*/function (_focusModule$extender) {
       }).fail(deferred.reject);
     }).fail(deferred.reject);
     return deferred.promise();
-  };
-  _proto._calculateExpandedRowGlobalIndex = function _calculateExpandedRowGlobalIndex(deferred, key, groupPath, group) {
+  }
+  _calculateExpandedRowGlobalIndex(deferred, key, groupPath, group) {
     const groupFilter = (0, _m_utils.createGroupFilter)(groupPath, {
       group
     });
@@ -134,12 +127,11 @@ const data = Base => /*#__PURE__*/function (_focusModule$extender) {
       count = groupOffset + dataOffset + groupContinuationCount;
       deferred.resolve(count);
     }).fail(deferred.reject);
-  };
-  return FocusDataControllerExtender;
-}(_m_focus.focusModule.extenders.controllers.data(Base));
-_m_core.default.registerModule('focus', _extends(_extends({}, _m_focus.focusModule), {
-  extenders: _extends(_extends({}, _m_focus.focusModule.extenders), {
-    controllers: _extends(_extends({}, _m_focus.focusModule.extenders.controllers), {
+  }
+};
+_m_core.default.registerModule('focus', _extends({}, _m_focus.focusModule, {
+  extenders: _extends({}, _m_focus.focusModule.extenders, {
+    controllers: _extends({}, _m_focus.focusModule.extenders.controllers, {
       data
     })
   })

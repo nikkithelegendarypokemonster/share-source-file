@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/file_manager/ui.file_manager.adaptivity.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,19 +12,19 @@ import { extend } from '../../core/utils/extend';
 import { isFunction } from '../../core/utils/type';
 import { getWindow, hasWindow } from '../../core/utils/window';
 import Widget from '../widget/ui.widget';
-import Drawer from '../drawer/ui.drawer';
+import Drawer from '../drawer';
 import SplitterControl from '../splitter_control';
-var window = getWindow();
-var ADAPTIVE_STATE_SCREEN_WIDTH = 573;
-var FILE_MANAGER_ADAPTIVITY_DRAWER_PANEL_CLASS = 'dx-filemanager-adaptivity-drawer-panel';
-var DRAWER_PANEL_CONTENT_INITIAL = 'dx-drawer-panel-content-initial';
-var DRAWER_PANEL_CONTENT_ADAPTIVE = 'dx-drawer-panel-content-adaptive';
+const window = getWindow();
+const ADAPTIVE_STATE_SCREEN_WIDTH = 573;
+const FILE_MANAGER_ADAPTIVITY_DRAWER_PANEL_CLASS = 'dx-filemanager-adaptivity-drawer-panel';
+const DRAWER_PANEL_CONTENT_INITIAL = 'dx-drawer-panel-content-initial';
+const DRAWER_PANEL_CONTENT_ADAPTIVE = 'dx-drawer-panel-content-adaptive';
 class FileManagerAdaptivityControl extends Widget {
   _initMarkup() {
     super._initMarkup();
     this._initActions();
     this._isInAdaptiveState = false;
-    var $drawer = $('<div>').appendTo(this.$element());
+    const $drawer = $('<div>').appendTo(this.$element());
     $('<div>').addClass(FILE_MANAGER_ADAPTIVITY_DRAWER_PANEL_CLASS).appendTo($drawer);
     this._drawer = this._createComponent($drawer, Drawer);
     this._drawer.option({
@@ -32,8 +32,8 @@ class FileManagerAdaptivityControl extends Widget {
       template: this._createDrawerTemplate.bind(this)
     });
     $(this._drawer.content()).addClass(DRAWER_PANEL_CONTENT_INITIAL);
-    var $drawerContent = $drawer.find(".".concat(FILE_MANAGER_ADAPTIVITY_DRAWER_PANEL_CLASS)).first();
-    var contentRenderer = this.option('contentTemplate');
+    const $drawerContent = $drawer.find(`.${FILE_MANAGER_ADAPTIVITY_DRAWER_PANEL_CLASS}`).first();
+    const contentRenderer = this.option('contentTemplate');
     if (isFunction(contentRenderer)) {
       contentRenderer($drawerContent);
     }
@@ -67,7 +67,7 @@ class FileManagerAdaptivityControl extends Widget {
     this._setDrawerWidth(e.leftPanelWidth);
   }
   _onActiveStateChanged(_ref) {
-    var {
+    let {
       isActive
     } = _ref;
     this._splitter.disableSplitterCalculation(!isActive);
@@ -87,7 +87,7 @@ class FileManagerAdaptivityControl extends Widget {
     }
   }
   _checkAdaptiveState() {
-    var oldState = this._isInAdaptiveState;
+    const oldState = this._isInAdaptiveState;
     this._isInAdaptiveState = this._isSmallScreen();
     if (oldState !== this._isInAdaptiveState) {
       this.toggleDrawer(!this._isInAdaptiveState, true);
@@ -122,7 +122,7 @@ class FileManagerAdaptivityControl extends Widget {
     });
   }
   _optionChanged(args) {
-    var name = args.name;
+    const name = args.name;
     switch (name) {
       case 'drawerTemplate':
       case 'contentTemplate':
@@ -142,7 +142,7 @@ class FileManagerAdaptivityControl extends Widget {
     this._updateDrawerMaxSize();
     this._drawer.option('animationEnabled', !skipAnimation);
     this._drawer.toggle(showing);
-    var isSplitterActive = this._isDrawerOpened() && !this.isInAdaptiveState();
+    const isSplitterActive = this._isDrawerOpened() && !this.isInAdaptiveState();
     this._splitter.toggleDisabled(!isSplitterActive);
   }
   getSplitterElement() {

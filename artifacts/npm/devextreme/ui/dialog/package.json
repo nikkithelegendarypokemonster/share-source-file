@@ -1,10 +1,5 @@
 {
-  "sideEffects": [
-    "../../esm/events/click.js",
-    "../../esm/events/core/emitter.feedback.js",
-    "../../esm/events/hover.js",
-    "../../esm/ui/toolbar/ui.toolbar.base.js"
-  ],
+  "sideEffects": false,
   "main": "../../cjs/ui/dialog.js",
   "module": "../../esm/ui/dialog.js",
   "typings": "../dialog.d.ts"

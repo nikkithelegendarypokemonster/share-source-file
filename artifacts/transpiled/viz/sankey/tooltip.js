@@ -5,12 +5,12 @@ var _extend2 = require("../../core/utils/extend");
 var _type = require("../../core/utils/type");
 const defaultCustomizeLinkTooltip = formatter => function (info) {
   return {
-    html: "<strong>".concat(info.source, " > ").concat(info.target, "</strong><br/>Weight: ").concat(formatter(info.weight))
+    html: `<strong>${info.source} > ${info.target}</strong><br/>Weight: ${formatter(info.weight)}`
   };
 };
 const defaultCustomizeNodeTooltip = formatter => function (info) {
   return {
-    html: "<strong>".concat(info.label, "</strong><br/>Incoming weight: ").concat(formatter(info.weightIn), "<br/>Outgoing weight: ").concat(formatter(info.weightOut))
+    html: `<strong>${info.label}</strong><br/>Incoming weight: ${formatter(info.weightIn)}<br/>Outgoing weight: ${formatter(info.weightOut)}`
   };
 };
 const generateCustomCallback = function (customCallback, defaultCallback) {

@@ -43,7 +43,7 @@ const getEditingTexts = options => {
   };
 };
 exports.getEditingTexts = getEditingTexts;
-const generateNewRowTempKey = () => "".concat(NEW_ROW_TEMP_KEY_PREFIX).concat(new _guid.default());
+const generateNewRowTempKey = () => `${NEW_ROW_TEMP_KEY_PREFIX}${new _guid.default()}`;
 exports.generateNewRowTempKey = generateNewRowTempKey;
 const isNewRowTempKey = key => typeof key === 'string' && key.startsWith(NEW_ROW_TEMP_KEY_PREFIX) && key.length === NEW_ROW_TEMP_KEY_PREFIX.length + GUID_LENGTH;
 exports.isNewRowTempKey = isNewRowTempKey;
@@ -68,11 +68,11 @@ function isEditable($element) {
   return $element && ($element.is('input') || $element.is('textarea'));
 }
 const getEditorType = item => {
-  var _a;
+  var _column$formItem;
   const {
     column
   } = item;
-  return item.isCustomEditorType ? item.editorType : (_a = column.formItem) === null || _a === void 0 ? void 0 : _a.editorType;
+  return item.isCustomEditorType ? item.editorType : (_column$formItem = column.formItem) === null || _column$formItem === void 0 ? void 0 : _column$formItem.editorType;
 };
 exports.getEditorType = getEditorType;
 const forEachFormItems = (items, callBack) => {

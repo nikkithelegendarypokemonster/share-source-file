@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/file_management/file_system_item.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -10,7 +10,7 @@ import { isString } from '../core/utils/type';
 import { pathCombine, getFileExtension, getPathParts, getName, getEscapedFileName, PATH_SEPARATOR } from './utils';
 class FileSystemItem {
   constructor() {
-    var ctor = isString(arguments[0]) ? this._publicCtor : this._internalCtor;
+    const ctor = isString(arguments[0]) ? this._publicCtor : this._internalCtor;
     ctor.apply(this, arguments);
   }
   _internalCtor(pathInfo, name, isDirectory, key) {
@@ -21,7 +21,7 @@ class FileSystemItem {
     this.key = key || this._getPathByPathInfo(this.getFullPathInfo(), true);
     this.path = pathCombine(this.parentPath, name);
     this.pathKeys = this.pathInfo.map(_ref => {
-      var {
+      let {
         key
       } = _ref;
       return key;
@@ -34,11 +34,11 @@ class FileSystemItem {
   _publicCtor(path, isDirectory, pathKeys) {
     this.path = path || '';
     this.pathKeys = pathKeys || [];
-    var pathInfo = [];
-    var parts = getPathParts(path, true);
-    for (var i = 0; i < parts.length - 1; i++) {
-      var part = parts[i];
-      var pathInfoPart = {
+    const pathInfo = [];
+    const parts = getPathParts(path, true);
+    for (let i = 0; i < parts.length - 1; i++) {
+      const part = parts[i];
+      const pathInfoPart = {
         key: this.pathKeys[i] || part,
         name: getName(part)
       };
@@ -59,7 +59,7 @@ class FileSystemItem {
     this.tooltipText = '';
   }
   getFullPathInfo() {
-    var pathInfo = [...this.pathInfo];
+    const pathInfo = [...this.pathInfo];
     if (!this.isRoot()) {
       pathInfo.push({
         key: this.key,
@@ -78,7 +78,7 @@ class FileSystemItem {
     return item && this.key === item.key;
   }
   createClone() {
-    var result = new FileSystemItem(this.pathInfo, this.name, this.isDirectory, this.key);
+    const result = new FileSystemItem(this.pathInfo, this.name, this.isDirectory, this.key);
     result.key = this.key;
     result.size = this.size;
     result.dateModified = this.dateModified;

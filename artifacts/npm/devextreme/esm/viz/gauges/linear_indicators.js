@@ -1,37 +1,37 @@
 /**
 * DevExtreme (esm/viz/gauges/linear_indicators.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { BaseIndicator, BaseTextCloudMarker, BaseRangeBar } from './base_indicators';
-var _Number = Number;
+const _Number = Number;
 import { normalizeEnum as _normalizeEnum } from '../core/utils';
-var SimpleIndicator = BaseIndicator.inherit({
-  _move: function _move() {
-    var that = this;
-    var delta = that._actualPosition - that._zeroPosition;
+const SimpleIndicator = BaseIndicator.inherit({
+  _move: function () {
+    const that = this;
+    const delta = that._actualPosition - that._zeroPosition;
     that._rootElement.move(that.vertical ? 0 : delta, that.vertical ? delta : 0);
     that._trackerElement && that._trackerElement.move(that.vertical ? 0 : delta, that.vertical ? delta : 0);
   },
-  _isEnabled: function _isEnabled() {
+  _isEnabled: function () {
     this.vertical = this._options.vertical;
     return this._options.length > 0 && this._options.width > 0;
   },
-  _isVisible: function _isVisible() {
+  _isVisible: function () {
     return true;
   },
-  _getTrackerSettings: function _getTrackerSettings() {
-    var options = this._options;
-    var x1;
-    var x2;
-    var y1;
-    var y2;
-    var width = options.width / 2;
-    var length = options.length / 2;
-    var p = this._zeroPosition;
+  _getTrackerSettings: function () {
+    const options = this._options;
+    let x1;
+    let x2;
+    let y1;
+    let y2;
+    let width = options.width / 2;
+    let length = options.length / 2;
+    const p = this._zeroPosition;
     width > 10 || (width = 10);
     length > 10 || (length = 10);
     if (this.vertical) {
@@ -49,25 +49,25 @@ var SimpleIndicator = BaseIndicator.inherit({
       points: [x1, y1, x1, y2, x2, y2, x2, y1]
     };
   },
-  _render: function _render() {
-    var that = this;
+  _render: function () {
+    const that = this;
     that._zeroPosition = that._translator.getCodomainStart();
   },
-  _clear: function _clear() {
+  _clear: function () {
     delete this._element;
   },
-  measure: function measure(layout) {
-    var p = this.vertical ? layout.x : layout.y;
+  measure: function (layout) {
+    const p = this.vertical ? layout.x : layout.y;
     return {
       min: p - this._options.length / 2,
       max: p + this._options.length / 2
     };
   },
-  getTooltipParameters: function getTooltipParameters() {
-    var that = this;
-    var options = that._options;
-    var p = that._actualPosition;
-    var parameters = {
+  getTooltipParameters: function () {
+    const that = this;
+    const options = that._options;
+    const p = that._actualPosition;
+    const parameters = {
       x: p,
       y: p,
       value: that._currentValue,
@@ -78,16 +78,16 @@ var SimpleIndicator = BaseIndicator.inherit({
     return parameters;
   }
 });
-var rectangle = SimpleIndicator.inherit({
-  _render: function _render() {
-    var that = this;
-    var options = that._options;
-    var x1;
-    var x2;
-    var y1;
-    var y2;
+const rectangle = SimpleIndicator.inherit({
+  _render: function () {
+    const that = this;
+    const options = that._options;
+    let x1;
+    let x2;
+    let y1;
+    let y2;
     that.callBase();
-    var p = that._zeroPosition;
+    const p = that._zeroPosition;
     if (that.vertical) {
       x1 = options.x - options.length / 2;
       x2 = options.x + options.length / 2;
@@ -105,14 +105,14 @@ var rectangle = SimpleIndicator.inherit({
     });
   }
 });
-var rhombus = SimpleIndicator.inherit({
-  _render: function _render() {
-    var that = this;
-    var options = that._options;
-    var x;
-    var y;
-    var dx;
-    var dy;
+const rhombus = SimpleIndicator.inherit({
+  _render: function () {
+    const that = this;
+    const options = that._options;
+    let x;
+    let y;
+    let dx;
+    let dy;
     that.callBase();
     if (that.vertical) {
       x = options.x;
@@ -131,12 +131,12 @@ var rhombus = SimpleIndicator.inherit({
     });
   }
 });
-var circle = SimpleIndicator.inherit({
-  _render: function _render() {
-    var that = this;
-    var options = that._options;
-    var x;
-    var y;
+const circle = SimpleIndicator.inherit({
+  _render: function () {
+    const that = this;
+    const options = that._options;
+    let x;
+    let y;
     that.callBase();
     if (that.vertical) {
       x = options.x;
@@ -145,7 +145,7 @@ var circle = SimpleIndicator.inherit({
       x = that._zeroPosition;
       y = options.y;
     }
-    var r = options.length / 2 || 0;
+    const r = options.length / 2 || 0;
     that._element = that._element || that._renderer.circle().append(that._rootElement);
     that._element.attr({
       cx: x,
@@ -157,24 +157,24 @@ var circle = SimpleIndicator.inherit({
 
 // The following is from linearMarker.js
 
-var triangleMarker = SimpleIndicator.inherit({
-  _isEnabled: function _isEnabled() {
-    var that = this;
+const triangleMarker = SimpleIndicator.inherit({
+  _isEnabled: function () {
+    const that = this;
     that.vertical = that._options.vertical;
     that._inverted = that.vertical ? _normalizeEnum(that._options.horizontalOrientation) === 'right' : _normalizeEnum(that._options.verticalOrientation) === 'bottom';
     return that._options.length > 0 && that._options.width > 0;
   },
-  _isVisible: function _isVisible() {
+  _isVisible: function () {
     return true;
   },
-  _render: function _render() {
-    var that = this;
-    var options = that._options;
-    var x1;
-    var x2;
-    var y1;
-    var y2;
-    var settings = {
+  _render: function () {
+    const that = this;
+    const options = that._options;
+    let x1;
+    let x2;
+    let y1;
+    let y2;
+    const settings = {
       stroke: 'none',
       'stroke-width': 0,
       'stroke-linecap': 'square'
@@ -198,16 +198,16 @@ var triangleMarker = SimpleIndicator.inherit({
     that._element = that._element || that._renderer.path([], 'area').append(that._rootElement);
     that._element.attr(settings).sharp();
   },
-  _getTrackerSettings: function _getTrackerSettings() {
-    var that = this;
-    var options = that._options;
-    var width = options.width / 2;
-    var length = _Number(options.length);
-    var x1;
-    var x2;
-    var y1;
-    var y2;
-    var result;
+  _getTrackerSettings: function () {
+    const that = this;
+    const options = that._options;
+    let width = options.width / 2;
+    let length = _Number(options.length);
+    let x1;
+    let x2;
+    let y1;
+    let y2;
+    let result;
     width > 10 || (width = 10);
     length > 20 || (length = 20);
     if (that.vertical) {
@@ -227,11 +227,11 @@ var triangleMarker = SimpleIndicator.inherit({
       points: result
     };
   },
-  measure: function measure(layout) {
-    var that = this;
-    var length = _Number(that._options.length);
-    var minBound;
-    var maxBound;
+  measure: function (layout) {
+    const that = this;
+    const length = _Number(that._options.length);
+    let minBound;
+    let maxBound;
     if (that.vertical) {
       minBound = maxBound = layout.x;
       if (that._inverted) {
@@ -252,31 +252,31 @@ var triangleMarker = SimpleIndicator.inherit({
       max: maxBound
     };
   },
-  getTooltipParameters: function getTooltipParameters() {
-    var that = this;
-    var options = that._options;
-    var s = (that._inverted ? options.length : -options.length) / 2;
-    var parameters = that.callBase();
+  getTooltipParameters: function () {
+    const that = this;
+    const options = that._options;
+    const s = (that._inverted ? options.length : -options.length) / 2;
+    const parameters = that.callBase();
     that.vertical ? parameters.x += s : parameters.y += s;
     parameters.offset = options.length / 2;
     return parameters;
   }
 });
-var textCloud = BaseTextCloudMarker.inherit({
-  _isEnabled: function _isEnabled() {
-    var that = this;
+const textCloud = BaseTextCloudMarker.inherit({
+  _isEnabled: function () {
+    const that = this;
     that.vertical = that._options.vertical;
     that._inverted = that.vertical ? _normalizeEnum(that._options.horizontalOrientation) === 'right' : _normalizeEnum(that._options.verticalOrientation) === 'bottom';
     return true;
   },
-  _isVisible: function _isVisible() {
+  _isVisible: function () {
     return true;
   },
-  _getTextCloudOptions: function _getTextCloudOptions() {
-    var that = this;
-    var x = that._actualPosition;
-    var y = that._actualPosition;
-    var type;
+  _getTextCloudOptions: function () {
+    const that = this;
+    let x = that._actualPosition;
+    let y = that._actualPosition;
+    let type;
     if (that.vertical) {
       x = that._options.x;
       type = that._inverted ? 'top-left' : 'top-right';
@@ -290,11 +290,11 @@ var textCloud = BaseTextCloudMarker.inherit({
       type: type
     };
   },
-  measure: function measure(layout) {
-    var that = this;
-    var minBound;
-    var maxBound;
-    var arrowLength = _Number(that._options.arrowLength) || 0;
+  measure: function (layout) {
+    const that = this;
+    let minBound;
+    let maxBound;
+    const arrowLength = _Number(that._options.arrowLength) || 0;
     that._measureText();
     if (that.vertical) {
       if (that._inverted) {
@@ -320,21 +320,21 @@ var textCloud = BaseTextCloudMarker.inherit({
     };
   },
   _correctCloudType(type, _ref, _ref2) {
-    var {
+    let {
       x,
       y
     } = _ref;
-    var {
+    let {
       width,
       height
     } = _ref2;
     if (type === 'right-top' || type === 'right-bottom') {
       if (x - width < this._translator.getCodomainStart()) {
-        type = "left-".concat(type.split('-')[1]);
+        type = `left-${type.split('-')[1]}`;
       }
     } else if (type === 'top-left' || type === 'top-right') {
       if (y + height > this._translator.getCodomainStart()) {
-        type = "bottom-".concat(type.split('-')[1]);
+        type = `bottom-${type.split('-')[1]}`;
       }
     }
     return type;
@@ -343,28 +343,28 @@ var textCloud = BaseTextCloudMarker.inherit({
 
 // The following is from linearRangeBar.js
 
-var rangeBar = BaseRangeBar.inherit({
-  _isEnabled: function _isEnabled() {
-    var that = this;
+const rangeBar = BaseRangeBar.inherit({
+  _isEnabled: function () {
+    const that = this;
     that.vertical = that._options.vertical;
     that._inverted = that.vertical ? _normalizeEnum(that._options.horizontalOrientation) === 'right' : _normalizeEnum(that._options.verticalOrientation) === 'bottom';
     return that._options.size > 0;
   },
-  _isVisible: function _isVisible() {
+  _isVisible: function () {
     return true;
   },
-  _createBarItem: function _createBarItem() {
+  _createBarItem: function () {
     return this._renderer.path([], 'area').append(this._rootElement);
   },
-  _createTracker: function _createTracker() {
+  _createTracker: function () {
     return this._renderer.path([], 'area');
   },
-  _setBarSides: function _setBarSides() {
-    var that = this;
-    var options = that._options;
-    var size = _Number(options.size);
-    var minSide;
-    var maxSide;
+  _setBarSides: function () {
+    const that = this;
+    const options = that._options;
+    const size = _Number(options.size);
+    let minSide;
+    let maxSide;
     if (that.vertical) {
       if (that._inverted) {
         minSide = options.x;
@@ -387,20 +387,20 @@ var rangeBar = BaseRangeBar.inherit({
     that._minBound = minSide;
     that._maxBound = maxSide;
   },
-  _getSpace: function _getSpace() {
-    var options = this._options;
+  _getSpace: function () {
+    const options = this._options;
     return options.space > 0 ? _Number(options.space) : 0;
   },
-  _isTextVisible: function _isTextVisible() {
-    var textOptions = this._options.text || {};
+  _isTextVisible: function () {
+    const textOptions = this._options.text || {};
     return textOptions.indent > 0 || textOptions.indent < 0;
   },
-  _getTextAlign: function _getTextAlign() {
+  _getTextAlign: function () {
     return this.vertical ? this._options.text.indent > 0 ? 'left' : 'right' : 'center';
   },
-  _setTextItemsSides: function _setTextItemsSides() {
-    var that = this;
-    var indent = _Number(that._options.text.indent);
+  _setTextItemsSides: function () {
+    const that = this;
+    const indent = _Number(that._options.text.indent);
     if (indent > 0) {
       that._lineStart = that._maxSide;
       that._lineEnd = that._maxSide + indent;
@@ -413,17 +413,17 @@ var rangeBar = BaseRangeBar.inherit({
       that._minBound = that._textPosition - (that.vertical ? that._textWidth : that._textHeight / 2);
     }
   },
-  _getPositions: function _getPositions() {
-    var that = this;
-    var startPosition = that._startPosition;
-    var endPosition = that._endPosition;
-    var space = that._space;
-    var basePosition = that._basePosition;
-    var actualPosition = that._actualPosition;
-    var mainPosition1;
-    var mainPosition2;
-    var backPosition1;
-    var backPosition2;
+  _getPositions: function () {
+    const that = this;
+    const startPosition = that._startPosition;
+    const endPosition = that._endPosition;
+    const space = that._space;
+    const basePosition = that._basePosition;
+    const actualPosition = that._actualPosition;
+    let mainPosition1;
+    let mainPosition2;
+    let backPosition1;
+    let backPosition2;
     if (startPosition < endPosition) {
       if (basePosition < actualPosition) {
         mainPosition1 = basePosition;
@@ -454,17 +454,17 @@ var rangeBar = BaseRangeBar.inherit({
       back2: backPosition2
     };
   },
-  _buildItemSettings: function _buildItemSettings(from, to) {
-    var that = this;
-    var side1 = that._minSide;
-    var side2 = that._maxSide;
-    var points = that.vertical ? [side1, from, side1, to, side2, to, side2, from] : [from, side1, from, side2, to, side2, to, side1];
+  _buildItemSettings: function (from, to) {
+    const that = this;
+    const side1 = that._minSide;
+    const side2 = that._maxSide;
+    const points = that.vertical ? [side1, from, side1, to, side2, to, side2, from] : [from, side1, from, side2, to, side2, to, side1];
     return {
       points: points
     };
   },
-  _updateTextPosition: function _updateTextPosition() {
-    var that = this;
+  _updateTextPosition: function () {
+    const that = this;
     that._text.attr(that.vertical ? {
       x: that._textPosition,
       y: that._actualPosition + that._textVerticalOffset
@@ -473,12 +473,12 @@ var rangeBar = BaseRangeBar.inherit({
       y: that._textPosition + that._textVerticalOffset
     });
   },
-  _updateLinePosition: function _updateLinePosition() {
-    var that = this;
-    var actualPosition = that._actualPosition;
-    var side1;
-    var side2;
-    var points;
+  _updateLinePosition: function () {
+    const that = this;
+    const actualPosition = that._actualPosition;
+    let side1;
+    let side2;
+    let points;
     if (that.vertical) {
       if (that._basePosition >= actualPosition) {
         side1 = actualPosition;
@@ -502,10 +502,10 @@ var rangeBar = BaseRangeBar.inherit({
       points: points
     }).sharp();
   },
-  _getTooltipPosition: function _getTooltipPosition() {
-    var that = this;
-    var crossCenter = (that._minSide + that._maxSide) / 2;
-    var alongCenter = (that._basePosition + that._actualPosition) / 2;
+  _getTooltipPosition: function () {
+    const that = this;
+    const crossCenter = (that._minSide + that._maxSide) / 2;
+    const alongCenter = (that._basePosition + that._actualPosition) / 2;
     return that.vertical ? {
       x: crossCenter,
       y: alongCenter
@@ -514,13 +514,13 @@ var rangeBar = BaseRangeBar.inherit({
       y: crossCenter
     };
   },
-  measure: function measure(layout) {
-    var that = this;
-    var size = _Number(that._options.size);
-    var textIndent = _Number(that._options.text.indent);
-    var minBound;
-    var maxBound;
-    var indent;
+  measure: function (layout) {
+    const that = this;
+    const size = _Number(that._options.size);
+    const textIndent = _Number(that._options.text.indent);
+    let minBound;
+    let maxBound;
+    let indent;
     that._measureText();
     if (that.vertical) {
       minBound = maxBound = layout.x;

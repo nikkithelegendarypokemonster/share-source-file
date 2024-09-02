@@ -1,14 +1,14 @@
 /**
 * DevExtreme (esm/renovation/ui/button.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["accessKey", "activeStateEnabled", "children", "className", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "icon", "iconPosition", "iconTemplate", "onClick", "onKeyDown", "onSubmit", "pressed", "rtlEnabled", "stylingMode", "tabIndex", "template", "templateData", "text", "type", "useInkRipple", "useSubmitBehavior", "visible", "width"];
+const _excluded = ["accessKey", "activeStateEnabled", "children", "className", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "icon", "iconPosition", "iconTemplate", "onClick", "onKeyDown", "onSubmit", "pressed", "rtlEnabled", "stylingMode", "tabIndex", "template", "templateData", "text", "type", "useInkRipple", "useSubmitBehavior", "visible", "width"];
 import { createVNode, createComponentVNode, normalizeProps } from "inferno";
 import { InfernoEffect, InfernoWrapperComponent } from '@devextreme/runtime/inferno';
 import { createDefaultOptionRules, convertRulesToOptions } from '../../core/options/utils';
@@ -23,37 +23,37 @@ import { InkRipple } from './common/ink_ripple';
 import { Widget } from './common/widget';
 import { BaseWidgetProps } from './common/base_props';
 import messageLocalization from '../../localization/message';
-var stylingModes = ['outlined', 'text', 'contained'];
-var getCssClasses = model => {
-  var {
+const stylingModes = ['outlined', 'text', 'contained'];
+const getCssClasses = model => {
+  const {
     icon,
     iconPosition,
     stylingMode,
     text,
     type
   } = model;
-  var isValidStylingMode = stylingMode && stylingModes.includes(stylingMode);
-  var classesMap = {
+  const isValidStylingMode = stylingMode && stylingModes.includes(stylingMode);
+  const classesMap = {
     'dx-button': true,
-    ["dx-button-mode-".concat(isValidStylingMode ? stylingMode : 'contained')]: true,
-    ["dx-button-".concat(type !== null && type !== void 0 ? type : 'normal')]: true,
+    [`dx-button-mode-${isValidStylingMode ? stylingMode : 'contained'}`]: true,
+    [`dx-button-${type ?? 'normal'}`]: true,
     'dx-button-has-text': !!text,
     'dx-button-has-icon': !!icon,
     'dx-button-icon-right': iconPosition !== 'left'
   };
   return combineClasses(classesMap);
 };
-export var viewFunction = viewModel => {
-  var {
+export const viewFunction = viewModel => {
+  const {
     children,
     iconPosition,
     iconTemplate: IconTemplate,
     template: ButtonTemplate,
     text
   } = viewModel.props;
-  var renderText = !viewModel.props.template && !children && text !== '';
-  var isIconLeft = iconPosition === 'left';
-  var iconComponent = !viewModel.props.template && !children && (viewModel.iconSource || viewModel.props.iconTemplate) && createComponentVNode(2, Icon, {
+  const renderText = !viewModel.props.template && !children && text !== '';
+  const isIconLeft = iconPosition === 'left';
+  const iconComponent = !viewModel.props.template && !children && (viewModel.iconSource || viewModel.props.iconTemplate) && createComponentVNode(2, Icon, {
     "source": viewModel.iconSource,
     "position": iconPosition,
     "iconTemplate": IconTemplate
@@ -88,7 +88,7 @@ export var viewFunction = viewModel => {
     }, null, viewModel.inkRippleRef)], 0, null, null, viewModel.contentRef)
   }), null, viewModel.widgetRef));
 };
-export var ButtonProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(BaseWidgetProps), Object.getOwnPropertyDescriptors({
+export const ButtonProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(BaseWidgetProps), Object.getOwnPropertyDescriptors({
   activeStateEnabled: true,
   hoverStateEnabled: true,
   icon: '',
@@ -100,7 +100,7 @@ export var ButtonProps = Object.create(Object.prototype, _extends(Object.getOwnP
   useSubmitBehavior: false,
   templateData: Object.freeze({})
 })));
-export var defaultOptionRules = createDefaultOptionRules([{
+export const defaultOptionRules = createDefaultOptionRules([{
   device: () => devices.real().deviceType === 'desktop' && !devices.isSimulator(),
   options: {
     focusStateEnabled: true
@@ -113,7 +113,7 @@ export var defaultOptionRules = createDefaultOptionRules([{
 }]);
 import { createReRenderEffect } from '@devextreme/runtime/inferno';
 import { createRef as infernoCreateRef } from 'inferno';
-var getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => normalizeProps(createComponentVNode(2, TemplateProp, _extends({}, props))) : TemplateProp);
+const getTemplate = TemplateProp => TemplateProp && (TemplateProp.defaultProps ? props => normalizeProps(createComponentVNode(2, TemplateProp, _extends({}, props))) : TemplateProp);
 export class Button extends InfernoWrapperComponent {
   constructor(props) {
     super(props);
@@ -138,11 +138,11 @@ export class Button extends InfernoWrapperComponent {
   }
   updateEffects() {
     var _this$_effects$;
-    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([this.props.onSubmit, this.props.useSubmitBehavior]);
+    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 || _this$_effects$.update([this.props.onSubmit, this.props.useSubmitBehavior]);
   }
   submitEffect() {
-    var namespace = 'UIFeedback';
-    var {
+    const namespace = 'UIFeedback';
+    const {
       onSubmit,
       useSubmitBehavior
     } = this.props;
@@ -160,7 +160,7 @@ export class Button extends InfernoWrapperComponent {
     return undefined;
   }
   onActive(event) {
-    var {
+    const {
       useInkRipple
     } = this.props;
     useInkRipple && this.inkRippleRef.current.showWave({
@@ -169,7 +169,7 @@ export class Button extends InfernoWrapperComponent {
     });
   }
   onInactive(event) {
-    var {
+    const {
       useInkRipple
     } = this.props;
     useInkRipple && this.inkRippleRef.current.hideWave({
@@ -178,25 +178,25 @@ export class Button extends InfernoWrapperComponent {
     });
   }
   onWidgetClick(event) {
-    var {
+    const {
       onClick,
       useSubmitBehavior
     } = this.props;
-    onClick === null || onClick === void 0 ? void 0 : onClick({
+    onClick === null || onClick === void 0 || onClick({
       event
     });
     useSubmitBehavior && this.submitInputRef.current.click();
   }
   keyDown(e) {
-    var {
+    const {
       onKeyDown
     } = this.props;
-    var {
+    const {
       keyName,
       originalEvent,
       which
     } = e;
-    var result = onKeyDown === null || onKeyDown === void 0 ? void 0 : onKeyDown(e);
+    const result = onKeyDown === null || onKeyDown === void 0 ? void 0 : onKeyDown(e);
     if (result !== null && result !== void 0 && result.cancel) {
       return result;
     }
@@ -210,18 +210,18 @@ export class Button extends InfernoWrapperComponent {
     this.contentRef.current.click();
   }
   get aria() {
-    var {
+    const {
       icon,
       text
     } = this.props;
-    var label = text !== null && text !== void 0 ? text : '';
+    let label = text ?? '';
     if (!text && icon) {
-      var iconSource = getImageSourceType(icon);
+      const iconSource = getImageSourceType(icon);
       switch (iconSource) {
         case 'image':
           {
-            var notURLRegexp = /^(?!(?:https?:\/\/)|(?:ftp:\/\/)|(?:www\.))[^\s]+$/;
-            var isPathToImage = !icon.includes('base64') && notURLRegexp.test(icon);
+            const notURLRegexp = /^(?!(?:https?:\/\/)|(?:ftp:\/\/)|(?:www\.))[^\s]+$/;
+            const isPathToImage = !icon.includes('base64') && notURLRegexp.test(icon);
             label = isPathToImage ? icon.replace(/.+\/([^.]+)\..+$/, '$1') : '';
             break;
           }
@@ -233,9 +233,9 @@ export class Button extends InfernoWrapperComponent {
           break;
         case 'svg':
           {
-            var _titleRegexp$exec$, _titleRegexp$exec;
-            var titleRegexp = /<title>(.*?)<\/title>/;
-            var title = (_titleRegexp$exec$ = (_titleRegexp$exec = titleRegexp.exec(icon)) === null || _titleRegexp$exec === void 0 ? void 0 : _titleRegexp$exec[1]) !== null && _titleRegexp$exec$ !== void 0 ? _titleRegexp$exec$ : '';
+            var _titleRegexp$exec;
+            const titleRegexp = /<title>(.*?)<\/title>/;
+            const title = ((_titleRegexp$exec = titleRegexp.exec(icon)) === null || _titleRegexp$exec === void 0 ? void 0 : _titleRegexp$exec[1]) ?? '';
             label = title;
             break;
           }
@@ -253,17 +253,17 @@ export class Button extends InfernoWrapperComponent {
     return getCssClasses(this.props);
   }
   get iconSource() {
-    var {
+    const {
       icon
     } = this.props;
-    return icon !== null && icon !== void 0 ? icon : '';
+    return icon ?? '';
   }
   get inkRippleConfig() {
     if (this.__getterCache['inkRippleConfig'] !== undefined) {
       return this.__getterCache['inkRippleConfig'];
     }
     return this.__getterCache['inkRippleConfig'] = (() => {
-      var {
+      const {
         icon,
         text
       } = this.props;
@@ -275,7 +275,7 @@ export class Button extends InfernoWrapperComponent {
     })();
   }
   get buttonTemplateData() {
-    var {
+    const {
       icon,
       templateData,
       text
@@ -286,7 +286,7 @@ export class Button extends InfernoWrapperComponent {
     }, templateData);
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
@@ -306,7 +306,7 @@ export class Button extends InfernoWrapperComponent {
     }
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
         template: getTemplate(props.template),
@@ -330,9 +330,9 @@ export class Button extends InfernoWrapperComponent {
     });
   }
 }
-Button.defaultProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(ButtonProps), Object.getOwnPropertyDescriptors(_extends({}, convertRulesToOptions(defaultOptionRules)))));
-var __defaultOptionRules = [];
+Button.defaultProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(ButtonProps), Object.getOwnPropertyDescriptors(_extends({}, convertRulesToOptions(defaultOptionRules)))));
+const __defaultOptionRules = [];
 export function defaultOptions(rule) {
   __defaultOptionRules.push(rule);
-  Button.defaultProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(Button.defaultProps), Object.getOwnPropertyDescriptors(convertRulesToOptions(defaultOptionRules)), Object.getOwnPropertyDescriptors(convertRulesToOptions(__defaultOptionRules))));
+  Button.defaultProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(Button.defaultProps), Object.getOwnPropertyDescriptors(convertRulesToOptions(defaultOptionRules)), Object.getOwnPropertyDescriptors(convertRulesToOptions(__defaultOptionRules))));
 }

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/context_menu.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -41,185 +41,291 @@ import {
     SelectionChangedInfo,
 } from './collection/ui.collection_widget.base';
 
+/** @public */
 export type ContextSubmenuDirection = 'auto' | 'left' | 'right';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_context_menu_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent<TKey = any> = EventInfo<dxContextMenu<TKey>>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_context_menu_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent<TKey = any> = EventInfo<dxContextMenu<TKey>>;
 
 /**
- * The type of the hidden event handler&apos;s argument.
+ * @docid _ui_context_menu_HiddenEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type HiddenEvent<TKey = any> = EventInfo<dxContextMenu<TKey>>;
 
 /**
- * The type of the hiding event handler&apos;s argument.
+ * @docid _ui_context_menu_HidingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type HidingEvent<TKey = any> = Cancelable & EventInfo<dxContextMenu<TKey>>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_context_menu_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent<TKey = any> = InitializedEventInfo<dxContextMenu<TKey>>;
 
 /**
- * The type of the itemClick event handler&apos;s argument.
+ * @docid _ui_context_menu_ItemClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemClickEvent<TKey = any> = NativeEventInfo<dxContextMenu<TKey>, KeyboardEvent | MouseEvent | PointerEvent> & ItemInfo<Item>;
 
 /**
- * The type of the itemContextMenu event handler&apos;s argument.
+ * @docid _ui_context_menu_ItemContextMenuEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemContextMenuEvent<TKey = any> = NativeEventInfo<dxContextMenu<TKey>, MouseEvent | PointerEvent | TouchEvent> & ItemInfo<Item>;
 
 /**
- * The type of the itemRendered event handler&apos;s argument.
+ * @docid _ui_context_menu_ItemRenderedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ItemInfo
  */
 export type ItemRenderedEvent<TKey = any> = EventInfo<dxContextMenu<TKey>> & ItemInfo<Item>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_context_menu_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent<TKey = any> = EventInfo<dxContextMenu<TKey>> & ChangedOptionInfo;
 
 /**
- * The type of the positioning event handler&apos;s argument.
+ * @docid _ui_context_menu_PositioningEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo
  */
 export type PositioningEvent<TKey = any> = NativeEventInfo<dxContextMenu<TKey>, MouseEvent | PointerEvent | TouchEvent> & {
-    /**
-     * 
-     */
+    /** @docid _ui_context_menu_PositioningEvent.position */
     readonly position: PositionConfig;
 };
 
 /**
- * The type of the selectionChanged event handler&apos;s argument.
+ * @docid _ui_context_menu_SelectionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,SelectionChangedInfo
  */
 export type SelectionChangedEvent<TKey = any> = EventInfo<dxContextMenu<TKey>> & SelectionChangedInfo<Item>;
 
 /**
- * The type of the showing event handler&apos;s argument.
+ * @docid _ui_context_menu_ShowingEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,EventInfo
  */
 export type ShowingEvent<TKey = any> = Cancelable & EventInfo<dxContextMenu<TKey>>;
 
 /**
- * The type of the shown event handler&apos;s argument.
+ * @docid _ui_context_menu_ShownEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ShownEvent<TKey = any> = EventInfo<dxContextMenu<TKey>>;
 
 /**
- * 
- * @deprecated 
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @public
+ * @docid
  */
 export interface dxContextMenuOptions<
     TKey = any,
 > extends dxMenuBaseOptions<dxContextMenu<TKey>, dxContextMenuItem, TKey> {
     /**
-     * Specifies whether to close the UI component if a user clicks outside it.
-     * @deprecated Use the hideOnOutsideClick option instead.
+     * @docid
+     * @deprecated dxContextMenuOptions.hideOnOutsideClick
+     * @default true
+     * @type_function_param1 event:event
+     * @public
      */
     closeOnOutsideClick?: boolean | ((event: DxEvent<MouseEvent | PointerEvent | TouchEvent>) => boolean);
     /**
-     * Binds the UI component to data.
+     * @docid
+     * @type string | Array<dxContextMenuItem> | Store | DataSource | DataSourceOptions | null
+     * @default null
+     * @public
      */
     dataSource?: DataSourceLike<Item, TKey> | null;
     /**
-     * Specifies whether to hide the UI component if a user clicks outside it.
+     * @docid
+     * @default true
+     * @type boolean | function
+     * @type_function_param1 event:event
+     * @public
      */
     hideOnOutsideClick?: boolean | ((event: DxEvent<MouseEvent | PointerEvent | TouchEvent>) => boolean);
     /**
-     * Holds an array of menu items.
+     * @docid
+     * @type Array<dxContextMenuItem>
+     * @public
      */
     items?: Array<Item>;
     /**
-     * A function that is executed after the ContextMenu is hidden.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/context_menu:HiddenEvent}
+     * @action
+     * @public
      */
     onHidden?: ((e: HiddenEvent<TKey>) => void);
     /**
-     * A function that is executed before the ContextMenu is hidden.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/context_menu:HidingEvent}
+     * @action
+     * @public
      */
     onHiding?: ((e: HidingEvent<TKey>) => void);
     /**
-     * A function that is executed before the ContextMenu is positioned.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/context_menu:PositioningEvent}
+     * @action
+     * @public
      */
     onPositioning?: ((e: PositioningEvent<TKey>) => void);
     /**
-     * A function that is executed before the ContextMenu is shown.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/context_menu:ShowingEvent}
+     * @action
+     * @public
      */
     onShowing?: ((e: ShowingEvent<TKey>) => void);
     /**
-     * A function that is executed after the ContextMenu is shown.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/context_menu:ShownEvent}
+     * @action
+     * @public
      */
     onShown?: ((e: ShownEvent<TKey>) => void);
     /**
-     * An object defining UI component positioning properties.
+     * @docid
+     * @default { my: 'top left', at: 'top left' }
+     * @ref
+     * @public
      */
     position?: PositionConfig;
     /**
-     * Specifies properties for displaying the UI component.
+     * @docid
+     * @default "dxcontextmenu"
+     * @public
      */
     showEvent?: {
       /**
-       * The delay in milliseconds after which the UI component is displayed.
+       * @docid
+       * @default undefined
        */
       delay?: number;
       /**
-       * Specifies the event names on which the UI component is shown.
+       * @docid
+       * @default undefined
        */
       name?: string;
     } | string;
     /**
-     * Specifies the direction at which submenus are displayed.
+     * @docid
+     * @default "auto"
+     * @public
      */
     submenuDirection?: ContextSubmenuDirection;
     /**
-     * The target element associated with the context menu.
+     * @docid
+     * @default undefined
+     * @public
      */
     target?: string | UserDefinedElement;
     /**
-     * A Boolean value specifying whether or not the UI component is visible.
+     * @docid
+     * @default false
+     * @fires dxContextMenuOptions.onShowing
+     * @fires dxContextMenuOptions.onHiding
+     * @public
      */
     visible?: boolean;
 }
 /**
- * The ContextMenu UI component displays a single- or multi-level context menu. An end user invokes this menu by a right click or a long press.
+ * @docid
+ * @inherits dxMenuBase
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxContextMenu<
     TKey = any,
 > extends dxMenuBase<dxContextMenuOptions<TKey>, dxContextMenuItem, TKey> {
     /**
-     * Hides the UI component.
+     * @docid
+     * @publicName hide()
+     * @return Promise<void>
+     * @public
      */
     hide(): DxPromise<void>;
     /**
-     * Shows the UI component.
+     * @docid
+     * @publicName show()
+     * @return Promise<void>
+     * @public
      */
     show(): DxPromise<void>;
     /**
-     * Shows or hides the UI component depending on the argument.
+     * @docid
+     * @publicName toggle(showing)
+     * @return Promise<void>
+     * @public
      */
     toggle(showing: boolean): DxPromise<void>;
 }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxContextMenu
+ */
 export type Item = dxContextMenuItem;
 
 /**
  * @deprecated Use Item instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
  */
 export interface dxContextMenuItem extends dxMenuBaseItem {
     /**
-     * Specifies nested menu items.
+     * @docid
+     * @public
+     * @type Array<dxContextMenuItem>
      */
     items?: Array<Item>;
 }
 
+/** @public */
 export type ExplicitTypes<TKey = any> = {
     Properties: Properties<TKey>;
     ContentReadyEvent: ContentReadyEvent<TKey>;
@@ -237,12 +343,10 @@ export type ExplicitTypes<TKey = any> = {
     ShownEvent: ShownEvent<TKey>;
 };
 
+/** @public */
 export type Properties<TKey = any> = dxContextMenuOptions<TKey>;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options<TKey = any> = Properties<TKey>;
 
 

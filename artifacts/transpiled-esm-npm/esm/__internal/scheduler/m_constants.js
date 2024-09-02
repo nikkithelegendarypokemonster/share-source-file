@@ -1,8 +1,8 @@
-export var LIST_ITEM_DATA_KEY = 'dxListItemData';
-export var LIST_ITEM_CLASS = 'dx-list-item';
-export var APPOINTMENT_SETTINGS_KEY = 'dxAppointmentSettings';
-export var HORIZONTAL_GROUP_ORIENTATION = 'horizontal';
-export var VIEWS = {
+export const LIST_ITEM_DATA_KEY = 'dxListItemData';
+export const LIST_ITEM_CLASS = 'dx-list-item';
+export const APPOINTMENT_SETTINGS_KEY = 'dxAppointmentSettings';
+export const HORIZONTAL_GROUP_ORIENTATION = 'horizontal';
+export const VIEWS = {
   DAY: 'day',
   WEEK: 'week',
   WORK_WEEK: 'workWeek',

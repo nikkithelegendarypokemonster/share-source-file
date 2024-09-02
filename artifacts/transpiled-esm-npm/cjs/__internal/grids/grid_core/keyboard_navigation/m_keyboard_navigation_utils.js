@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.isCellInHeaderRow = isCellInHeaderRow;
 exports.isDataRow = isDataRow;
 exports.isDetailRow = isDetailRow;
+exports.isEditForm = isEditForm;
 exports.isEditorCell = isEditorCell;
 exports.isElementDefined = isElementDefined;
 exports.isFixedColumnIndexOffsetRequired = isFixedColumnIndexOffsetRequired;
@@ -29,6 +30,9 @@ function isGroupFooterRow($row) {
 function isDetailRow($row) {
   return $row && $row.hasClass(_const2.MASTER_DETAIL_ROW_CLASS);
 }
+function isEditForm($row) {
+  return $row && $row.hasClass(_const2.MASTER_DETAIL_ROW_CLASS) && $row.hasClass(_const2.EDIT_FORM_CLASS);
+}
 function isDataRow($row) {
   return $row && $row.hasClass(_const2.DATA_ROW_CLASS);
 }
@@ -45,7 +49,7 @@ function isMobile() {
   return _devices.default.current().deviceType !== 'desktop';
 }
 function isCellInHeaderRow($cell) {
-  return !!$cell.parent(".".concat(_const2.HEADER_ROW_CLASS)).length;
+  return !!$cell.parent(`.${_const2.HEADER_ROW_CLASS}`).length;
 }
 function isFixedColumnIndexOffsetRequired(that, column) {
   const rtlEnabled = that.option('rtlEnabled');

@@ -1,22 +1,22 @@
 /**
 * DevExtreme (esm/viz/sankey/data_validator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import graphModule from './graph';
-var validator = {
-  validate: function validate(data, incidentOccurred) {
-    var result = null;
+const validator = {
+  validate: function (data, incidentOccurred) {
+    let result = null;
     if (this._hasCycle(data)) {
       result = 'E2006';
       incidentOccurred('E2006');
     }
     return result;
   },
-  _hasCycle: function _hasCycle(data) {
+  _hasCycle: function (data) {
     return graphModule.struct.hasCycle(data);
   }
 };

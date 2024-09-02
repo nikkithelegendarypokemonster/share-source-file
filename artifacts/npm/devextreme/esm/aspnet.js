@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/aspnet.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -16,7 +16,7 @@
   } else {
     DevExpress.aspnet = factory(window.jQuery, DevExpress.setTemplateEngine, DevExpress.templateRendered, DevExpress.data.Guid, DevExpress.validationEngine, DevExpress.utils.iterator, DevExpress.utils.dom.extractTemplateMarkup, DevExpress.utils.string.encodeHtml, DevExpress.utils.ajax);
   }
-})(function ($, _setTemplateEngine, templateRendered, Guid, validationEngine, iteratorUtils, extractTemplateMarkup, encodeHtml, ajax) {
+})(function ($, setTemplateEngine, templateRendered, Guid, validationEngine, iteratorUtils, extractTemplateMarkup, encodeHtml, ajax) {
   var templateCompiler = createTemplateCompiler();
   var pendingCreateComponentRoutines = [];
   function createTemplateCompiler() {
@@ -81,10 +81,10 @@
   }
   function createTemplateEngine() {
     return {
-      compile: function compile(element) {
+      compile: function (element) {
         return templateCompiler(element);
       },
-      render: function render(template, data) {
+      render: function (template, data) {
         if (template instanceof Function) {
           var html = template(data, encodeHtml);
           var dxMvcExtensionsObj = window['MVCx'];
@@ -153,12 +153,12 @@
   });
   return {
     createComponent: createComponent,
-    renderComponent: function renderComponent(name, options, id, validatorOptions) {
+    renderComponent: function (name, options, id, validatorOptions) {
       id = id || 'dx-' + new Guid();
       createComponent(name, options, id, validatorOptions);
       return '<div id="' + id + '"></div>';
     },
-    getEditorValue: function getEditorValue(inputName) {
+    getEditorValue: function (inputName) {
       var $widget = $('input[name=\'' + inputName + '\']').closest('.dx-widget');
       if ($widget.length) {
         var dxComponents = $widget.data('dxComponents'),
@@ -168,12 +168,12 @@
         }
       }
     },
-    setTemplateEngine: function setTemplateEngine() {
-      if (_setTemplateEngine) {
-        _setTemplateEngine(createTemplateEngine());
+    setTemplateEngine: function () {
+      if (setTemplateEngine) {
+        setTemplateEngine(createTemplateEngine());
       }
     },
-    createValidationSummaryItems: function createValidationSummaryItems(validationGroup, editorNames) {
+    createValidationSummaryItems: function (validationGroup, editorNames) {
       var summary = getValidationSummary(validationGroup),
         groupConfig,
         items;
@@ -185,7 +185,7 @@
         }
       }
     },
-    sendValidationRequest: function sendValidationRequest(propertyName, params, url, method, additionalFields) {
+    sendValidationRequest: function (propertyName, params, url, method, additionalFields) {
       var d = $.Deferred();
       var data = {};
       data[propertyName] = params.value;

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/utils/resize_callbacks.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,27 +11,27 @@ import domAdapter from '../dom_adapter';
 import Callbacks from './callbacks';
 import readyCallbacks from './ready_callbacks';
 import callOnce from './call_once';
-var resizeCallbacks = function () {
-  var prevSize;
-  var callbacks = Callbacks();
-  var originalCallbacksAdd = callbacks.add;
-  var originalCallbacksRemove = callbacks.remove;
+const resizeCallbacks = function () {
+  let prevSize;
+  const callbacks = Callbacks();
+  const originalCallbacksAdd = callbacks.add;
+  const originalCallbacksRemove = callbacks.remove;
   if (!hasWindow()) {
     return callbacks;
   }
-  var formatSize = function formatSize() {
-    var window = getWindow();
+  const formatSize = function () {
+    const window = getWindow();
     return {
       width: window.innerWidth,
       height: window.innerHeight
     };
   };
-  var handleResize = function handleResize() {
-    var now = formatSize();
+  const handleResize = function () {
+    const now = formatSize();
     if (now.width === prevSize.width && now.height === prevSize.height) {
       return;
     }
-    var changedDimension;
+    let changedDimension;
     if (now.width === prevSize.width) {
       changedDimension = 'height';
     }
@@ -41,12 +41,12 @@ var resizeCallbacks = function () {
     prevSize = now;
     callbacks.fire(changedDimension);
   };
-  var setPrevSize = callOnce(function () {
+  const setPrevSize = callOnce(function () {
     prevSize = formatSize();
   });
-  var removeListener;
+  let removeListener;
   callbacks.add = function () {
-    var result = originalCallbacksAdd.apply(callbacks, arguments);
+    const result = originalCallbacksAdd.apply(callbacks, arguments);
     setPrevSize();
     readyCallbacks.add(function () {
       if (!removeListener && callbacks.has()) {
@@ -56,7 +56,7 @@ var resizeCallbacks = function () {
     return result;
   };
   callbacks.remove = function () {
-    var result = originalCallbacksRemove.apply(callbacks, arguments);
+    const result = originalCallbacksRemove.apply(callbacks, arguments);
     if (!callbacks.has() && removeListener) {
       removeListener();
       removeListener = undefined;

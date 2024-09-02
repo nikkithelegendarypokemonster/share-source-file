@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/grid_core/virtual_columns/m_virtual_columns.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,8 +13,19 @@ import { isDefined } from '../../../../core/utils/type';
 import { hasWindow } from '../../../../core/utils/window';
 import gridCoreUtils from '../m_utils';
 import { createColumnsInfo } from './m_virtual_columns_core';
-var DEFAULT_COLUMN_WIDTH = 50;
-var rowsView = Base => class VirtualColumnsRowsViewExtender extends Base {
+const DEFAULT_COLUMN_WIDTH = 50;
+const baseView = Base => class BaseViewVirtualColumnsExtender extends Base {
+  _needToSetCellWidths() {
+    let result = super._needToSetCellWidths();
+    // @ts-expect-error
+    if (!result && this._columnsController.isVirtualMode()) {
+      const columns = this._columnsController.getColumns();
+      result = columns.some(column => column.width === 'auto');
+    }
+    return result;
+  }
+};
+const rowsView = Base => class VirtualColumnsRowsViewExtender extends baseView(Base) {
   _resizeCore() {
     // @ts-expect-error
     super._resizeCore.apply(this, arguments);
@@ -22,9 +33,9 @@ var rowsView = Base => class VirtualColumnsRowsViewExtender extends Base {
     this._columnsController.resize();
   }
   _handleScroll(e) {
-    var that = this;
-    var scrollable = this.getScrollable();
-    var {
+    const that = this;
+    const scrollable = this.getScrollable();
+    let {
       left
     } = e.scrollOffset;
     // @ts-expect-error
@@ -36,16 +47,16 @@ var rowsView = Base => class VirtualColumnsRowsViewExtender extends Base {
     that._columnsController.setScrollPosition(left);
   }
   _renderCore(e) {
-    var _a, _b;
-    if (e === null || e === void 0 ? void 0 : e.virtualColumnsScrolling) {
-      var $contentElement = this._findContentElement();
-      var fixedColumns = (_a = this._columnsController) === null || _a === void 0 ? void 0 : _a.getFixedColumns();
-      var useNativeScrolling = (_b = this._scrollable) === null || _b === void 0 ? void 0 : _b.option('useNative');
-      if (fixedColumns === null || fixedColumns === void 0 ? void 0 : fixedColumns.length) {
+    if (e !== null && e !== void 0 && e.virtualColumnsScrolling) {
+      var _this$_columnsControl, _this$_scrollable;
+      const $contentElement = this._findContentElement();
+      const fixedColumns = (_this$_columnsControl = this._columnsController) === null || _this$_columnsControl === void 0 ? void 0 : _this$_columnsControl.getFixedColumns();
+      const useNativeScrolling = (_this$_scrollable = this._scrollable) === null || _this$_scrollable === void 0 ? void 0 : _this$_scrollable.option('useNative');
+      if (fixedColumns !== null && fixedColumns !== void 0 && fixedColumns.length) {
         $contentElement.css({
           minHeight: useNativeScrolling ? getHeight($contentElement) : gridCoreUtils.getContentHeightLimit(browser)
         });
-        var resizeCompletedHandler = () => {
+        const resizeCompletedHandler = () => {
           this.resizeCompleted.remove(resizeCompletedHandler);
           $contentElement.css({
             minHeight: ''
@@ -58,10 +69,10 @@ var rowsView = Base => class VirtualColumnsRowsViewExtender extends Base {
     return super._renderCore.apply(this, arguments);
   }
 };
-var columnHeadersView = Base => class VirtualColumnsColumnHeaderViewExtender extends Base {
+const columnHeadersView = Base => class VirtualColumnsColumnHeaderViewExtender extends baseView(Base) {
   _renderCore() {
     // @ts-expect-error
-    var deferred = super._renderCore.apply(this, arguments);
+    const deferred = super._renderCore.apply(this, arguments);
     // @ts-expect-error
     if (this._columnsController.isVirtualMode()) {
       this._updateScrollLeftPosition();
@@ -69,18 +80,18 @@ var columnHeadersView = Base => class VirtualColumnsColumnHeaderViewExtender ext
     return deferred;
   }
 };
-var getWidths = function getWidths(columns) {
+const getWidths = function (columns) {
   return columns.map(column => column.visibleWidth || parseFloat(column.width) || DEFAULT_COLUMN_WIDTH);
 };
-var columns = Base => class VirtualColumnsControllerExtender extends Base {
+const columns = Base => class VirtualColumnsControllerExtender extends Base {
   init() {
-    var that = this;
+    const that = this;
     // @ts-expect-error
     super.init.apply(this, arguments);
     this._resizingController = this.getController('resizing');
     that._beginPageIndex = null;
     that._endPageIndex = null;
-    that._position = 0;
+    that._position ?? (that._position = 0);
     that._virtualVisibleColumns = {};
   }
   dispose() {
@@ -93,10 +104,10 @@ var columns = Base => class VirtualColumnsControllerExtender extends Base {
     this._virtualVisibleColumns = {};
   }
   getBeginPageIndex(position) {
-    var visibleColumns = this.getVisibleColumns(undefined, true);
-    var widths = getWidths(visibleColumns);
-    var currentPosition = 0;
-    for (var index = 0; index < widths.length; index++) {
+    const visibleColumns = this.getVisibleColumns(undefined, true);
+    const widths = getWidths(visibleColumns);
+    let currentPosition = 0;
+    for (let index = 0; index < widths.length; index++) {
       if (currentPosition >= position) {
         return Math.floor(index / this.getColumnPageSize());
       }
@@ -105,18 +116,18 @@ var columns = Base => class VirtualColumnsControllerExtender extends Base {
     return 0;
   }
   getTotalWidth() {
-    var width = this.option('width');
+    const width = this.option('width');
     if (typeof width === 'number') {
       return width;
     }
     return this._resizingController._lastWidth || getOuterWidth(this.component.$element());
   }
   getEndPageIndex(position) {
-    var visibleColumns = this.getVisibleColumns(undefined, true);
-    var widths = getWidths(visibleColumns);
-    var currentPosition = 0;
+    const visibleColumns = this.getVisibleColumns(undefined, true);
+    const widths = getWidths(visibleColumns);
+    let currentPosition = 0;
     position += this.getTotalWidth();
-    for (var index = 0; index < widths.length; index++) {
+    for (let index = 0; index < widths.length; index++) {
       if (currentPosition >= position) {
         return Math.ceil(index / this.getColumnPageSize());
       }
@@ -128,7 +139,7 @@ var columns = Base => class VirtualColumnsControllerExtender extends Base {
     return this.option('scrolling.columnPageSize');
   }
   _fireColumnsChanged() {
-    var date = new Date();
+    const date = new Date();
     this.columnsChanged.fire({
       optionNames: {
         all: true,
@@ -143,16 +154,16 @@ var columns = Base => class VirtualColumnsControllerExtender extends Base {
     this._renderTime = new Date() - date;
   }
   getScrollingTimeout() {
-    var renderingThreshold = this.option('scrolling.columnRenderingThreshold');
-    var renderAsync = this.option('scrolling.renderAsync');
-    var scrollingTimeout = 0;
+    const renderingThreshold = this.option('scrolling.columnRenderingThreshold');
+    const renderAsync = this.option('scrolling.renderAsync');
+    let scrollingTimeout = 0;
     if (!isDefined(renderAsync) && this._renderTime > renderingThreshold || renderAsync) {
       scrollingTimeout = this.option('scrolling.timeout');
     }
     return scrollingTimeout;
   }
   setScrollPosition(position) {
-    var scrollingTimeout = this.getScrollingTimeout();
+    const scrollingTimeout = this.getScrollingTimeout();
     if (scrollingTimeout > 0) {
       clearTimeout(this._changedTimeout);
       this._changedTimeout = setTimeout(() => {
@@ -169,11 +180,11 @@ var columns = Base => class VirtualColumnsControllerExtender extends Base {
     this._setScrollPositionCore(this._position);
   }
   _setScrollPositionCore(position) {
-    var that = this;
+    const that = this;
     if (that.isVirtualMode()) {
-      var beginPageIndex = that.getBeginPageIndex(position);
-      var endPageIndex = that.getEndPageIndex(position);
-      var needColumnsChanged = position < that._position ? that._beginPageIndex > beginPageIndex : that._endPageIndex < endPageIndex;
+      const beginPageIndex = that.getBeginPageIndex(position);
+      const endPageIndex = that.getEndPageIndex(position);
+      const needColumnsChanged = position < that._position ? that._beginPageIndex > beginPageIndex : that._endPageIndex < endPageIndex;
       that._position = position;
       if (needColumnsChanged) {
         that._beginPageIndex = beginPageIndex;
@@ -183,53 +194,53 @@ var columns = Base => class VirtualColumnsControllerExtender extends Base {
     }
   }
   getFixedColumns(rowIndex, isBase) {
-    var fixedColumns = super.getFixedColumns(rowIndex);
+    const fixedColumns = super.getFixedColumns(rowIndex);
     if (this.isVirtualMode() && !isBase && fixedColumns.length) {
-      var transparentColumnIndex = fixedColumns.map(c => c.command).indexOf('transparent');
+      const transparentColumnIndex = fixedColumns.map(c => c.command).indexOf('transparent');
       fixedColumns[transparentColumnIndex].colspan = this.getVisibleColumns().length - super.getFixedColumns().length + 1;
       return fixedColumns;
     }
     return fixedColumns;
   }
   _compileVisibleColumns(rowIndex, isBase) {
-    var _a;
+    var _this$_columns;
     if (isBase || !this.isVirtualMode() || !this._shouldReturnVisibleColumns()) {
       return super._compileVisibleColumns(rowIndex);
     }
-    if (((_a = this._columns) === null || _a === void 0 ? void 0 : _a.length) && !isDefined(this._beginPageIndex) && !isDefined(this._endPageIndex)) {
+    if ((_this$_columns = this._columns) !== null && _this$_columns !== void 0 && _this$_columns.length && !isDefined(this._beginPageIndex) && !isDefined(this._endPageIndex)) {
       this._beginPageIndex = this.getBeginPageIndex(this._position);
       this._endPageIndex = this.getEndPageIndex(this._position);
     }
-    var beginPageIndex = this._beginPageIndex;
-    var endPageIndex = this._endPageIndex;
-    var visibleColumnsHash = "".concat(rowIndex, "-").concat(beginPageIndex, "-").concat(endPageIndex);
+    const beginPageIndex = this._beginPageIndex;
+    const endPageIndex = this._endPageIndex;
+    const visibleColumnsHash = `${rowIndex}-${beginPageIndex}-${endPageIndex}`;
     if (this._virtualVisibleColumns[visibleColumnsHash]) {
       return this._virtualVisibleColumns[visibleColumnsHash];
     }
-    var visibleColumns = super._compileVisibleColumns();
-    var rowCount = this.getRowCount();
-    var pageSize = this.getColumnPageSize();
-    var startIndex = beginPageIndex * pageSize;
-    var endIndex = endPageIndex * pageSize;
-    var fixedColumns = this.getFixedColumns(undefined, true);
-    var transparentColumnIndex = fixedColumns.map(c => c.command).indexOf('transparent');
-    var beginFixedColumnCount = fixedColumns.length ? transparentColumnIndex : 0;
-    var beginFixedColumns = visibleColumns.slice(0, beginFixedColumnCount);
-    var beginColumns = visibleColumns.slice(beginFixedColumnCount, startIndex);
-    var beginWidth = getWidths(beginColumns).reduce((a, b) => a + b, 0);
+    let visibleColumns = super._compileVisibleColumns();
+    const rowCount = this.getRowCount();
+    const pageSize = this.getColumnPageSize();
+    let startIndex = beginPageIndex * pageSize;
+    let endIndex = endPageIndex * pageSize;
+    const fixedColumns = this.getFixedColumns(undefined, true);
+    const transparentColumnIndex = fixedColumns.map(c => c.command).indexOf('transparent');
+    const beginFixedColumnCount = fixedColumns.length ? transparentColumnIndex : 0;
+    let beginFixedColumns = visibleColumns.slice(0, beginFixedColumnCount);
+    const beginColumns = visibleColumns.slice(beginFixedColumnCount, startIndex);
+    const beginWidth = getWidths(beginColumns).reduce((a, b) => a + b, 0);
     if (!beginWidth) {
       startIndex = 0;
     }
-    var endFixedColumnCount = fixedColumns.length ? fixedColumns.length - transparentColumnIndex - 1 : 0;
-    var endFixedColumns = visibleColumns.slice(visibleColumns.length - endFixedColumnCount);
-    var endColumns = visibleColumns.slice(endIndex, visibleColumns.length - endFixedColumnCount);
-    var endWidth = getWidths(endColumns).reduce((a, b) => a + b, 0);
+    const endFixedColumnCount = fixedColumns.length ? fixedColumns.length - transparentColumnIndex - 1 : 0;
+    let endFixedColumns = visibleColumns.slice(visibleColumns.length - endFixedColumnCount);
+    const endColumns = visibleColumns.slice(endIndex, visibleColumns.length - endFixedColumnCount);
+    const endWidth = getWidths(endColumns).reduce((a, b) => a + b, 0);
     if (!endWidth) {
       endIndex = visibleColumns.length;
     }
     if (rowCount > 1 && typeof rowIndex === 'number') {
-      var columnsInfo = [];
-      for (var i = 0; i <= rowCount; i++) {
+      const columnsInfo = [];
+      for (let i = 0; i <= rowCount; i++) {
         columnsInfo.push(super._compileVisibleColumns(i));
       }
       beginFixedColumns = createColumnsInfo(columnsInfo, 0, beginFixedColumns.length)[rowIndex] || [];
@@ -241,6 +252,7 @@ var columns = Base => class VirtualColumnsControllerExtender extends Base {
     if (beginWidth) {
       visibleColumns.unshift({
         command: 'virtual',
+        type: 'virtual',
         width: beginWidth
       });
       visibleColumns = beginFixedColumns.concat(visibleColumns);
@@ -248,6 +260,7 @@ var columns = Base => class VirtualColumnsControllerExtender extends Base {
     if (endWidth) {
       visibleColumns.push({
         command: 'virtual',
+        type: 'virtual',
         width: endWidth
       });
       visibleColumns = visibleColumns.concat(endFixedColumns);
@@ -256,17 +269,17 @@ var columns = Base => class VirtualColumnsControllerExtender extends Base {
     return visibleColumns;
   }
   getColumnIndexOffset() {
-    var offset = 0;
+    let offset = 0;
     if (this._beginPageIndex > 0) {
-      var fixedColumns = this.getFixedColumns();
-      var transparentColumnIndex = fixedColumns.map(c => c.command).indexOf('transparent');
-      var leftFixedColumnCount = transparentColumnIndex >= 0 ? transparentColumnIndex : 0;
+      const fixedColumns = this.getFixedColumns();
+      const transparentColumnIndex = fixedColumns.map(c => c.command).indexOf('transparent');
+      const leftFixedColumnCount = transparentColumnIndex >= 0 ? transparentColumnIndex : 0;
       offset = this._beginPageIndex * this.getColumnPageSize() - leftFixedColumnCount - 1;
     }
     return offset > 0 ? offset : 0;
   }
 };
-export var virtualColumnsModule = {
+export const virtualColumnsModule = {
   defaultOptions() {
     return {
       scrolling: {

@@ -2,31 +2,31 @@ import $ from '../../../../core/renderer';
 import { extend } from '../../../../core/utils/extend';
 import { each } from '../../../../core/utils/iterator';
 import { createPath, foreachTree, formatValue } from '../m_widget_utils';
-var FORMAT_DICTIONARY = {
+const FORMAT_DICTIONARY = {
   number: 'numeric',
   date: 'datetime'
 };
-var UNBIND_KEY = 'dxPivotGridUnbinding';
+const UNBIND_KEY = 'dxPivotGridUnbinding';
 function getFormattedValue(path, fields) {
-  var value = [];
-  var lastFieldIndex = fields.length - 1;
+  const value = [];
+  const lastFieldIndex = fields.length - 1;
   each(path, (i, item) => {
     value.push(item.text || formatValue(item.value, fields[lastFieldIndex - i]));
   });
   return value.reverse();
 }
 function getExpandedLevel(node) {
-  var level = 0;
+  let level = 0;
   foreachTree(node, members => {
     level = Math.max(level, members.length - 1);
   });
   return level;
 }
 function processDataCell(processCellArgs, processCell) {
-  var {
+  let {
     chartDataItem
   } = processCellArgs;
-  var processedCell = processCell && processCell(processCellArgs);
+  let processedCell = processCell && processCell(processCellArgs);
   if (processedCell) {
     chartDataItem = extend({}, chartDataItem, processedCell.chartDataItem);
     processedCell = extend({}, processCellArgs, processedCell, {
@@ -37,36 +37,36 @@ function processDataCell(processCellArgs, processCell) {
   return processCellArgs;
 }
 function createChartDataSource(pivotGridDataSource, mapOptions, axisDictionary) {
-  var data = pivotGridDataSource.getData();
-  var dataSource = [];
-  var dataFields = pivotGridDataSource.getAreaFields('data');
-  var rowFields = pivotGridDataSource.getAreaFields('row');
-  var columnFields = pivotGridDataSource.getAreaFields('column');
-  var columnElements = [{
+  const data = pivotGridDataSource.getData();
+  const dataSource = [];
+  const dataFields = pivotGridDataSource.getAreaFields('data');
+  const rowFields = pivotGridDataSource.getAreaFields('row');
+  const columnFields = pivotGridDataSource.getAreaFields('column');
+  const columnElements = [{
     index: data.grandTotalColumnIndex,
     children: data.columns
   }];
-  var rowElements = [{
+  const rowElements = [{
     index: data.grandTotalRowIndex,
     children: data.rows
   }];
-  var rowLevel = getExpandedLevel(rowElements);
-  var columnLevel = getExpandedLevel(columnElements);
-  var measureIndex;
-  var dataField;
-  var rowMemberIndex;
-  var rowVisibility;
-  var rowPathFormatted;
-  var rowPath;
-  var columnMemberIndex;
-  var columnVisibility;
-  var columnPath;
-  var columnPathFormatted;
+  const rowLevel = getExpandedLevel(rowElements);
+  const columnLevel = getExpandedLevel(columnElements);
+  let measureIndex;
+  let dataField;
+  let rowMemberIndex;
+  let rowVisibility;
+  let rowPathFormatted;
+  let rowPath;
+  let columnMemberIndex;
+  let columnVisibility;
+  let columnPath;
+  let columnPathFormatted;
   function createDataItem() {
-    var dataCell = (data.values[rowMemberIndex] || [])[columnMemberIndex] || [];
-    var value = dataCell[measureIndex];
-    var axis;
-    var processCellArgs = {
+    const dataCell = (data.values[rowMemberIndex] || [])[columnMemberIndex] || [];
+    const value = dataCell[measureIndex];
+    let axis;
+    let processCellArgs = {
       rowPath,
       maxRowLevel: rowLevel,
       rowPathFormatted,
@@ -80,14 +80,14 @@ function createChartDataSource(pivotGridDataSource, mapOptions, axisDictionary) 
       dataValues: dataCell,
       visible: columnVisibility && rowVisibility
     };
-    var seriesName = (mapOptions.inverted ? columnPathFormatted : rowPathFormatted).join(' - ');
-    var argument = (mapOptions.inverted ? rowPathFormatted : columnPathFormatted).join('/');
+    let seriesName = (mapOptions.inverted ? columnPathFormatted : rowPathFormatted).join(' - ');
+    let argument = (mapOptions.inverted ? rowPathFormatted : columnPathFormatted).join('/');
     if (dataFields.length > 1) {
       if (mapOptions.putDataFieldsInto === 'args' || mapOptions.putDataFieldsInto === 'both') {
-        argument += " | ".concat(dataField.caption);
+        argument += ` | ${dataField.caption}`;
       }
       if (mapOptions.putDataFieldsInto !== 'args') {
-        seriesName += " | ".concat(dataField.caption);
+        seriesName += ` | ${dataField.caption}`;
         if (mapOptions.dataFieldsDisplayMode !== 'singleAxis') {
           axis = dataField.caption;
         }
@@ -146,11 +146,11 @@ function createChartDataSource(pivotGridDataSource, mapOptions, axisDictionary) 
   return dataSource;
 }
 function createValueAxisOptions(dataSource, options) {
-  var dataFields = dataSource.getAreaFields('data');
+  const dataFields = dataSource.getAreaFields('data');
   if (options.putDataFieldsInto !== 'args' && options.dataFieldsDisplayMode !== 'singleAxis' || dataFields.length === 1) {
-    var valueAxisSettings = [];
+    const valueAxisSettings = [];
     each(dataFields, (_, dataField) => {
-      var valueAxisOptions = {
+      const valueAxisOptions = {
         name: dataField.caption,
         title: dataField.caption,
         valueType: FORMAT_DICTIONARY[dataField.dataType] || dataField.dataType,
@@ -173,8 +173,8 @@ function createValueAxisOptions(dataSource, options) {
   return [{}];
 }
 function createPanesOptions(dataSource, options) {
-  var panes = [];
-  var dataFields = dataSource.getAreaFields('data');
+  const panes = [];
+  const dataFields = dataSource.getAreaFields('data');
   if (dataFields.length > 1 && options.dataFieldsDisplayMode === 'splitPanes' && options.putDataFieldsInto !== 'args') {
     each(dataFields, (_, dataField) => {
       panes.push({
@@ -188,17 +188,17 @@ function createPanesOptions(dataSource, options) {
   return panes;
 }
 function createChartOptions(dataSource, options) {
-  var {
+  const {
     customizeSeries
   } = options;
-  var {
+  const {
     customizeChart
   } = options;
-  var chartOptions = {
+  let chartOptions = {
     valueAxis: createValueAxisOptions(dataSource, options),
     panes: createPanesOptions(dataSource, options)
   };
-  var axisDictionary = {};
+  const axisDictionary = {};
   if (customizeChart) {
     chartOptions = extend(true, {}, chartOptions, customizeChart(chartOptions));
   }
@@ -206,7 +206,7 @@ function createChartOptions(dataSource, options) {
   chartOptions.seriesTemplate = {
     nameField: 'series',
     customizeSeries(seriesName) {
-      var seriesOptions = {};
+      let seriesOptions = {};
       if (options.dataFieldsDisplayMode === 'splitPanes') {
         seriesOptions.pane = axisDictionary[seriesName];
       } else if (options.dataFieldsDisplayMode !== 'singleAxis') {
@@ -227,20 +227,20 @@ function getChartInstance(chartElement) {
   if (chartElement.NAME) {
     return chartElement.NAME === 'dxChart' && chartElement;
   }
-  var element = $(chartElement);
+  const element = $(chartElement);
   return element.data('dxChart') && element.dxChart('instance');
 }
 function removeBinding(chart) {
-  var unbind = chart.$element().data(UNBIND_KEY);
+  const unbind = chart.$element().data(UNBIND_KEY);
   unbind && unbind();
 }
-var ChartIntegrationMixin = {
+const ChartIntegrationMixin = {
   bindChart(chart, integrationOptions) {
     integrationOptions = extend({}, integrationOptions);
-    var that = this;
-    var updateChart = function updateChart() {
+    const that = this;
+    const updateChart = function () {
       integrationOptions.grandTotalText = that.option('texts.grandTotal');
-      var chartOptions = createChartOptions(that.getDataSource(), integrationOptions);
+      const chartOptions = createChartOptions(that.getDataSource(), integrationOptions);
       chart.option(chartOptions);
     };
     chart = getChartInstance(chart);
@@ -250,7 +250,7 @@ var ChartIntegrationMixin = {
     removeBinding(chart);
     that.on('changed', updateChart);
     updateChart();
-    var disposeBinding = function disposeBinding() {
+    const disposeBinding = function () {
       chart.$element().removeData(UNBIND_KEY);
       that.off('changed', updateChart);
     };

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (renovation/ui/resizable/container.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -18,14 +18,7 @@ var _combine_classes = require("../../utils/combine_classes");
 var _visibility_change = require("../../../events/visibility_change");
 var _utils = require("../../../core/options/utils");
 const _excluded = ["children", "disabled", "handles", "height", "mainRef", "onResize", "onResizeEnd", "onResizeStart", "rtlEnabled", "width"];
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const getCssClasses = (disabled, rtlEnabled, isResizing) => (0, _combine_classes.combineClasses)({
   'dx-resizable': true,
@@ -66,53 +59,49 @@ const ResizableContainerProps = exports.ResizableContainerProps = {
   rtlEnabled: false,
   disabled: false
 };
-let ResizableContainer = exports.ResizableContainer = /*#__PURE__*/function (_InfernoComponent) {
-  _inheritsLoose(ResizableContainer, _InfernoComponent);
-  function ResizableContainer(props) {
-    var _this;
-    _this = _InfernoComponent.call(this, props) || this;
-    _this.startX = Number.NaN;
-    _this.startY = Number.NaN;
-    _this.mainContainerRef = (0, _inferno.createRef)();
-    _this.__getterCache = {};
-    _this.state = {
+class ResizableContainer extends _inferno2.InfernoComponent {
+  constructor(props) {
+    super(props);
+    this.startX = Number.NaN;
+    this.startY = Number.NaN;
+    this.mainContainerRef = (0, _inferno.createRef)();
+    this.__getterCache = {};
+    this.state = {
       isResizing: false
     };
-    _this.forwardRefInitEffect = _this.forwardRefInitEffect.bind(_assertThisInitialized(_this));
-    _this.onHandleResizeStart = _this.onHandleResizeStart.bind(_assertThisInitialized(_this));
-    _this.onHandleResize = _this.onHandleResize.bind(_assertThisInitialized(_this));
-    _this.onHandleResizeEnd = _this.onHandleResizeEnd.bind(_assertThisInitialized(_this));
-    return _this;
+    this.forwardRefInitEffect = this.forwardRefInitEffect.bind(this);
+    this.onHandleResizeStart = this.onHandleResizeStart.bind(this);
+    this.onHandleResize = this.onHandleResize.bind(this);
+    this.onHandleResizeEnd = this.onHandleResizeEnd.bind(this);
   }
-  var _proto = ResizableContainer.prototype;
-  _proto.createEffects = function createEffects() {
+  createEffects() {
     return [new _inferno2.InfernoEffect(this.forwardRefInitEffect, [])];
-  };
-  _proto.forwardRefInitEffect = function forwardRefInitEffect() {
+  }
+  forwardRefInitEffect() {
     if (this.props.mainRef) {
       this.props.mainRef.current = this.mainContainerRef.current;
     }
     return undefined;
-  };
-  _proto.onHandleResizeStart = function onHandleResizeStart(event, handle) {
+  }
+  onHandleResizeStart(event, handle) {
     var _this$props$onResizeS, _this$props;
     this.setState(__state_argument => ({
       isResizing: true
     }));
     this.startX = event.clientX;
     this.startY = event.clientY;
-    (_this$props$onResizeS = (_this$props = this.props).onResizeStart) === null || _this$props$onResizeS === void 0 ? void 0 : _this$props$onResizeS.call(_this$props, {
+    (_this$props$onResizeS = (_this$props = this.props).onResizeStart) === null || _this$props$onResizeS === void 0 || _this$props$onResizeS.call(_this$props, {
       event,
       handle
     });
     event.targetElements = [];
     return undefined;
-  };
-  _proto.onHandleResize = function onHandleResize(event, handle) {
+  }
+  onHandleResize(event, handle) {
     const {
       onResize
     } = this.props;
-    onResize === null || onResize === void 0 ? void 0 : onResize({
+    onResize === null || onResize === void 0 || onResize({
       event,
       handle,
       delta: {
@@ -122,27 +111,73 @@ let ResizableContainer = exports.ResizableContainer = /*#__PURE__*/function (_In
     });
     (0, _visibility_change.triggerResizeEvent)(this.mainContainerRef.current);
     return undefined;
-  };
-  _proto.onHandleResizeEnd = function onHandleResizeEnd(event, handle) {
+  }
+  onHandleResizeEnd(event, handle) {
     var _this$props$onResizeE, _this$props2;
     this.setState(__state_argument => ({
       isResizing: false
     }));
     this.startX = Number.NaN;
     this.startY = Number.NaN;
-    (_this$props$onResizeE = (_this$props2 = this.props).onResizeEnd) === null || _this$props$onResizeE === void 0 ? void 0 : _this$props$onResizeE.call(_this$props2, {
+    (_this$props$onResizeE = (_this$props2 = this.props).onResizeEnd) === null || _this$props$onResizeE === void 0 || _this$props$onResizeE.call(_this$props2, {
       event,
       handle
     });
     return undefined;
-  };
-  _proto.componentWillUpdate = function componentWillUpdate(nextProps, nextState, context) {
-    _InfernoComponent.prototype.componentWillUpdate.call(this);
+  }
+  get cssClasses() {
+    const {
+      disabled,
+      rtlEnabled
+    } = this.props;
+    return getCssClasses(!!disabled, !!rtlEnabled, this.state.isResizing);
+  }
+  get styles() {
+    const {
+      height,
+      width
+    } = this.props;
+    const style = this.restAttributes.style || {};
+    return _extends({}, style, {
+      height,
+      width
+    });
+  }
+  get handles() {
+    if (this.__getterCache['handles'] !== undefined) {
+      return this.__getterCache['handles'];
+    }
+    return this.__getterCache['handles'] = (() => {
+      let {
+        handles
+      } = this.props;
+      if (typeof handles === 'string') {
+        handles = [handles];
+      }
+      const result = handles.map(handle => handle);
+      if (result.includes('bottom')) {
+        result.includes('right') && result.push('corner-bottom-right');
+        result.includes('left') && result.push('corner-bottom-left');
+      }
+      if (result.includes('top')) {
+        result.includes('right') && result.push('corner-top-right');
+        result.includes('left') && result.push('corner-top-left');
+      }
+      return result;
+    })();
+  }
+  get restAttributes() {
+    const _this$props3 = this.props,
+      restProps = _objectWithoutPropertiesLoose(_this$props3, _excluded);
+    return restProps;
+  }
+  componentWillUpdate(nextProps, nextState, context) {
+    super.componentWillUpdate();
     if (this.props['handles'] !== nextProps['handles']) {
       this.__getterCache['handles'] = undefined;
     }
-  };
-  _proto.render = function render() {
+  }
+  render() {
     const props = this.props;
     return viewFunction({
       props: _extends({}, props),
@@ -156,67 +191,12 @@ let ResizableContainer = exports.ResizableContainer = /*#__PURE__*/function (_In
       handles: this.handles,
       restAttributes: this.restAttributes
     });
-  };
-  _createClass(ResizableContainer, [{
-    key: "cssClasses",
-    get: function () {
-      const {
-        disabled,
-        rtlEnabled
-      } = this.props;
-      return getCssClasses(!!disabled, !!rtlEnabled, this.state.isResizing);
-    }
-  }, {
-    key: "styles",
-    get: function () {
-      const {
-        height,
-        width
-      } = this.props;
-      const style = this.restAttributes.style || {};
-      return _extends({}, style, {
-        height,
-        width
-      });
-    }
-  }, {
-    key: "handles",
-    get: function () {
-      if (this.__getterCache['handles'] !== undefined) {
-        return this.__getterCache['handles'];
-      }
-      return this.__getterCache['handles'] = (() => {
-        let {
-          handles
-        } = this.props;
-        if (typeof handles === 'string') {
-          handles = [handles];
-        }
-        const result = handles.map(handle => handle);
-        if (result.includes('bottom')) {
-          result.includes('right') && result.push('corner-bottom-right');
-          result.includes('left') && result.push('corner-bottom-left');
-        }
-        if (result.includes('top')) {
-          result.includes('right') && result.push('corner-top-right');
-          result.includes('left') && result.push('corner-top-left');
-        }
-        return result;
-      })();
-    }
-  }, {
-    key: "restAttributes",
-    get: function () {
-      const _this$props3 = this.props,
-        restProps = _objectWithoutPropertiesLoose(_this$props3, _excluded);
-      return restProps;
-    }
-  }]);
-  return ResizableContainer;
-}(_inferno2.InfernoComponent);
-ResizableContainer.defaultProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(ResizableContainerProps), Object.getOwnPropertyDescriptors(_extends({}, (0, _utils.convertRulesToOptions)([])))));
+  }
+}
+exports.ResizableContainer = ResizableContainer;
+ResizableContainer.defaultProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(ResizableContainerProps), Object.getOwnPropertyDescriptors(_extends({}, (0, _utils.convertRulesToOptions)([])))));
 const __defaultOptionRules = [];
 function defaultOptions(rule) {
   __defaultOptionRules.push(rule);
-  ResizableContainer.defaultProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(ResizableContainer.defaultProps), Object.getOwnPropertyDescriptors((0, _utils.convertRulesToOptions)([])), Object.getOwnPropertyDescriptors((0, _utils.convertRulesToOptions)(__defaultOptionRules))));
+  ResizableContainer.defaultProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(ResizableContainer.defaultProps), Object.getOwnPropertyDescriptors((0, _utils.convertRulesToOptions)([])), Object.getOwnPropertyDescriptors((0, _utils.convertRulesToOptions)(__defaultOptionRules))));
 }

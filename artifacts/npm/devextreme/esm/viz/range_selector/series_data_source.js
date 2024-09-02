@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/range_selector/series_data_source.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,23 +15,23 @@ import { mergeMarginOptions, processSeriesTemplate } from '../core/utils';
 import { Range } from '../translators/range';
 import { validateData } from '../components/data_validator';
 import { ThemeManager as ChartThemeManager } from '../components/chart_theme_manager';
-var createThemeManager = function createThemeManager(chartOptions) {
+const createThemeManager = function (chartOptions) {
   return new ChartThemeManager({
     options: chartOptions,
     themeSection: 'rangeSelector.chart',
     fontFields: ['commonSeriesSettings.label.font']
   });
 };
-var processSeriesFamilies = function processSeriesFamilies(series, minBubbleSize, maxBubbleSize, barOptions, negativesAsZeroes) {
-  var families = [];
-  var types = [];
+const processSeriesFamilies = function (series, minBubbleSize, maxBubbleSize, barOptions, negativesAsZeroes) {
+  const families = [];
+  const types = [];
   each(series, function (i, item) {
     if (!types.includes(item.type)) {
       types.push(item.type);
     }
   });
   each(types, function (_, type) {
-    var family = new SeriesFamily({
+    const family = new SeriesFamily({
       type: type,
       minBubbleSize: minBubbleSize,
       maxBubbleSize: maxBubbleSize,
@@ -45,12 +45,12 @@ var processSeriesFamilies = function processSeriesFamilies(series, minBubbleSize
   });
   return families;
 };
-export var SeriesDataSource = function SeriesDataSource(options) {
-  var that = this;
-  var themeManager = that._themeManager = createThemeManager(options.chart);
+export const SeriesDataSource = function (options) {
+  const that = this;
+  const themeManager = that._themeManager = createThemeManager(options.chart);
   themeManager.setTheme(options.chart.theme);
-  var topIndent = themeManager.getOptions('topIndent');
-  var bottomIndent = themeManager.getOptions('bottomIndent');
+  const topIndent = themeManager.getOptions('topIndent');
+  const bottomIndent = themeManager.getOptions('bottomIndent');
   that._indent = {
     top: topIndent >= 0 && topIndent < 1 ? topIndent : 0,
     bottom: bottomIndent >= 0 && bottomIndent < 1 ? bottomIndent : 0
@@ -62,21 +62,21 @@ export var SeriesDataSource = function SeriesDataSource(options) {
 };
 SeriesDataSource.prototype = {
   constructor: SeriesDataSource,
-  _calculateSeries: function _calculateSeries(options) {
-    var that = this;
-    var series = [];
-    var particularSeriesOptions;
-    var seriesTheme;
-    var data = options.dataSource || [];
-    var parsedData;
-    var chartThemeManager = that._themeManager;
-    var seriesTemplate = chartThemeManager.getOptions('seriesTemplate');
-    var allSeriesOptions = seriesTemplate ? processSeriesTemplate(seriesTemplate, data) : options.chart.series;
-    var dataSourceField;
-    var valueAxis = that._valueAxis;
-    var i;
-    var newSeries;
-    var groupsData;
+  _calculateSeries: function (options) {
+    const that = this;
+    const series = [];
+    let particularSeriesOptions;
+    let seriesTheme;
+    const data = options.dataSource || [];
+    let parsedData;
+    const chartThemeManager = that._themeManager;
+    const seriesTemplate = chartThemeManager.getOptions('seriesTemplate');
+    let allSeriesOptions = seriesTemplate ? processSeriesTemplate(seriesTemplate, data) : options.chart.series;
+    let dataSourceField;
+    const valueAxis = that._valueAxis;
+    let i;
+    let newSeries;
+    let groupsData;
     if (options.dataSource && !allSeriesOptions) {
       dataSourceField = options.dataSourceField || 'arg';
       allSeriesOptions = {
@@ -133,12 +133,12 @@ SeriesDataSource.prototype = {
     if (this._series.length === 0) {
       return;
     }
-    var series = this._series;
-    var viewport = new Range();
-    var axis = series[0].getArgumentAxis();
-    var themeManager = this._themeManager;
-    var negativesAsZeroes = themeManager.getOptions('negativesAsZeroes');
-    var negativesAsZeros = themeManager.getOptions('negativesAsZeros'); // misspelling case
+    const series = this._series;
+    const viewport = new Range();
+    const axis = series[0].getArgumentAxis();
+    const themeManager = this._themeManager;
+    const negativesAsZeroes = themeManager.getOptions('negativesAsZeroes');
+    const negativesAsZeros = themeManager.getOptions('negativesAsZeros'); // misspelling case
 
     series.forEach(function (s) {
       viewport.addRange(s.getArgumentRange());
@@ -152,16 +152,16 @@ SeriesDataSource.prototype = {
       barGroupWidth: themeManager.getOptions('barGroupWidth')
     }, isDefined(negativesAsZeroes) ? negativesAsZeroes : negativesAsZeros);
   },
-  adjustSeriesDimensions: function adjustSeriesDimensions() {
+  adjustSeriesDimensions: function () {
     each(this._seriesFamilies, function (_, family) {
       family.adjustSeriesDimensions();
     });
   },
-  getBoundRange: function getBoundRange() {
-    var that = this;
-    var rangeData;
-    var valueAxis = that._valueAxis;
-    var valRange = new Range({
+  getBoundRange: function () {
+    const that = this;
+    let rangeData;
+    const valueAxis = that._valueAxis;
+    const valRange = new Range({
       min: valueAxis.min,
       minVisible: valueAxis.min,
       max: valueAxis.max,
@@ -169,11 +169,11 @@ SeriesDataSource.prototype = {
       axisType: valueAxis.type,
       base: valueAxis.logarithmBase
     });
-    var argRange = new Range({});
-    var rangeYSize;
-    var rangeVisibleSizeY;
-    var minIndent;
-    var maxIndent;
+    const argRange = new Range({});
+    let rangeYSize;
+    let rangeVisibleSizeY;
+    let minIndent;
+    let maxIndent;
     each(that._series, function (_, series) {
       rangeData = series.getRangeData();
       valRange.addRange(rangeData.val);
@@ -206,30 +206,30 @@ SeriesDataSource.prototype = {
       val: valRange
     };
   },
-  getMarginOptions: function getMarginOptions(canvas) {
-    var bubbleSize = Math.min(canvas.width, canvas.height) * this._themeManager.getOptions('maxBubbleSize');
+  getMarginOptions: function (canvas) {
+    const bubbleSize = Math.min(canvas.width, canvas.height) * this._themeManager.getOptions('maxBubbleSize');
     return this._series.reduce(function (marginOptions, series) {
-      var seriesOptions = series.getMarginOptions();
+      const seriesOptions = series.getMarginOptions();
       if (seriesOptions.processBubbleSize === true) {
         seriesOptions.size = bubbleSize;
       }
       return mergeMarginOptions(marginOptions, seriesOptions);
     }, {});
   },
-  getSeries: function getSeries() {
+  getSeries: function () {
     return this._series;
   },
-  isEmpty: function isEmpty() {
+  isEmpty: function () {
     return this.getSeries().length === 0;
   },
-  isShowChart: function isShowChart() {
+  isShowChart: function () {
     return !this._hideChart;
   },
-  getCalculatedValueType: function getCalculatedValueType() {
-    var series = this._series[0];
+  getCalculatedValueType: function () {
+    const series = this._series[0];
     return series === null || series === void 0 ? void 0 : series.argumentType;
   },
-  getThemeManager: function getThemeManager() {
+  getThemeManager: function () {
     return this._themeManager;
   }
 };

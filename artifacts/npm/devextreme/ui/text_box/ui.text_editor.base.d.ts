@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/text_box/ui.text_editor.base.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -25,162 +25,248 @@ import {
 } from '../../common';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
+ * @docid
+ * @type object
  */
 export interface dxTextEditorOptions<TComponent> extends EditorOptions<TComponent> {
     /**
-     * Allows you to add custom buttons to the input text field.
+     * @docid
+     * @default undefined
+     * @public
      */
     buttons?: Array<string | TextBoxPredefinedButton | TextEditorButton>;
     /**
-     * Specifies whether the UI component can be focused using keyboard navigation.
+     * @docid
+     * @default true
+     * @public
      */
     focusStateEnabled?: boolean;
     /**
-     * Specifies whether the UI component changes its state when a user pauses on it.
+     * @docid
+     * @default true
+     * @public
      */
     hoverStateEnabled?: boolean;
     /**
-     * Specifies the attributes to be passed on to the underlying HTML element.
+     * @docid
+     * @default {}
+     * @public
      */
     inputAttr?: any;
     /**
-     * Specifies a text string used to annotate the editor&apos;s value.
+     * @docid
+     * @default ''
+     * @public
      */
     label?: string;
     /**
-     * Specifies the label&apos;s display mode.
+     * @docid
+     * @default 'static'
+     * @default 'floating' &for(Material)
+     * @default 'outside' &for(Fluent)
+     * @public
      */
     labelMode?: LabelMode;
     /**
-     * The editor mask that specifies the custom format of the entered string.
+     * @docid
+     * @default ""
+     * @public
      */
     mask?: string;
     /**
-     * Specifies a mask placeholder. A single character is recommended.
+     * @docid
+     * @default "_"
+     * @public
      */
     maskChar?: string;
     /**
-     * A message displayed when the entered text does not match the specified pattern.
+     * @docid
+     * @default "Value is invalid"
+     * @public
      */
     maskInvalidMessage?: string;
     /**
-     * Specifies custom mask rules.
+     * @docid
+     * @default "{}"
+     * @public
      */
     maskRules?: any;
     /**
-     * The value to be assigned to the `name` attribute of the underlying HTML element.
+     * @docid
+     * @hidden false
+     * @public
      */
     name?: string;
     /**
-     * A function that is executed when the UI component loses focus after the text field&apos;s content was changed using the keyboard.
+     * @docid
+     * @default null
+     * @type_function_param1 e:NativeEventInfo
+     * @action
+     * @public
      */
     onChange?: ((e: NativeEventInfo<TComponent, Event>) => void);
     /**
-     * A function that is executed when the UI component&apos;s input has been copied.
+     * @docid
+     * @default null
+     * @type_function_param1 e:NativeEventInfo
+     * @action
+     * @public
      */
     onCopy?: ((e: NativeEventInfo<TComponent, ClipboardEvent>) => void);
     /**
-     * A function that is executed when the UI component&apos;s input has been cut.
+     * @docid
+     * @default null
+     * @type_function_param1 e:NativeEventInfo
+     * @action
+     * @public
      */
     onCut?: ((e: NativeEventInfo<TComponent, ClipboardEvent>) => void);
     /**
-     * A function that is executed when the Enter key has been pressed while the UI component is focused.
+     * @docid
+     * @default null
+     * @type_function_param1 e:NativeEventInfo
+     * @action
+     * @public
      */
     onEnterKey?: ((e: NativeEventInfo<TComponent, KeyboardEvent>) => void);
     /**
-     * A function that is executed when the UI component gets focus.
+     * @docid
+     * @default null
+     * @type_function_param1 e:NativeEventInfo
+     * @action
+     * @public
      */
     onFocusIn?: ((e: NativeEventInfo<TComponent, FocusEvent>) => void);
     /**
-     * A function that is executed when the UI component loses focus.
+     * @docid
+     * @default null
+     * @type_function_param1 e:NativeEventInfo
+     * @action
+     * @public
      */
     onFocusOut?: ((e: NativeEventInfo<TComponent, FocusEvent>) => void);
     /**
-     * A function that is executed each time the UI component&apos;s input is changed while the UI component is focused.
+     * @docid
+     * @default null
+     * @type_function_param1 e:NativeEventInfo
+     * @action
+     * @public
      */
     onInput?: ((e: NativeEventInfo<TComponent, UIEvent>) => void);
     /**
-     * A function that is executed when a user is pressing a key on the keyboard.
+     * @docid
+     * @type_function_param1 e:NativeEventInfo
+     * @default null
+     * @action
+     * @public
      */
     onKeyDown?: ((e: NativeEventInfo<TComponent, KeyboardEvent>) => void);
     /**
-     * A function that is executed when a user releases a key on the keyboard.
+     * @docid
+     * @default null
+     * @type_function_param1 e:NativeEventInfo
+     * @action
+     * @public
      */
     onKeyUp?: ((e: NativeEventInfo<TComponent, KeyboardEvent>) => void);
     /**
-     * A function that is executed when the UI component&apos;s input has been pasted.
+     * @docid
+     * @default null
+     * @type_function_param1 e:NativeEventInfo
+     * @action
+     * @public
      */
     onPaste?: ((e: NativeEventInfo<TComponent, ClipboardEvent>) => void);
     /**
-     * Specifies a text string displayed when the editor&apos;s value is empty.
+     * @docid
+     * @default ""
+     * @public
      */
     placeholder?: string;
     /**
-     * Specifies whether to display the Clear button in the UI component.
+     * @docid
+     * @default false
+     * @public
      */
     showClearButton?: boolean;
     /**
-     * Specifies when the UI component shows the mask. Applies only if useMaskedValue is true.
+     * @docid
+     * @default "always"
+     * @public
      */
     showMaskMode?: MaskMode;
     /**
-     * Specifies whether or not the UI component checks the inner text for spelling mistakes.
+     * @docid
+     * @default false
+     * @public
      */
     spellcheck?: boolean;
     /**
-     * Specifies how the UI component&apos;s text field is styled.
+     * @docid
+     * @default 'outlined'
+     * @default 'filled' &for(Material)
+     * @public
      */
     stylingMode?: EditorStyle;
     /**
-     * The read-only property that holds the text displayed by the UI component input element.
+     * @docid
+     * @readonly
+     * @public
      */
     text?: string;
     /**
-     * Specifies whether the value should contain mask characters or not.
+     * @docid
+     * @default false
+     * @public
      */
     useMaskedValue?: boolean;
     /**
-     * Specifies the editor&apos;s value.
+     * @docid
+     * @default ""
+     * @public
      */
     value?: any;
     /**
-     * Specifies the DOM events after which the UI component&apos;s value should be updated.
+     * @docid
+     * @default "change"
+     * @public
      */
     valueChangeEvent?: string;
 }
 /**
- * A base class for text editing UI components.
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid
+ * @inherits Editor
+ * @hidden
+ * @namespace DevExpress.ui
  */
 export default class dxTextEditor<TProperties = Properties> extends Editor<TProperties> {
     /**
-     * Removes focus from the input element.
+     * @docid
+     * @publicName blur()
+     * @public
      */
     blur(): void;
     /**
-     * Sets focus to the input element representing the UI component.
+     * @docid
+     * @publicName focus()
+     * @public
      */
     focus(): void;
     /**
-     * Gets an instance of a custom action button.
+     * @docid
+     * @publicName getButton(name)
+     * @public
      */
     getButton(name: string): dxButton | undefined;
 }
 
 /**
+ * @namespace DevExpress.ui
  * @deprecated Use TextEditorButton from 'devextreme/common' instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
  */
 export type dxTextEditorButton = TextEditorButton;
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 interface TextEditorInstance extends dxTextEditor<Properties> {}
 
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
 type Properties = dxTextEditorOptions<TextEditorInstance>;

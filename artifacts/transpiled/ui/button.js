@@ -15,34 +15,21 @@ var _function_template = require("../core/templates/function_template");
 var _icon = require("../core/utils/icon");
 var _element = require("../core/element");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 // STYLE button
 
 const ANONYMOUS_TEMPLATE_NAME = 'content';
-let Button = /*#__PURE__*/function (_Widget) {
-  _inheritsLoose(Button, _Widget);
-  function Button() {
-    var _this;
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-    _this = _Widget.call(this, ...args) || this;
-    _this._feedbackHideTimeout = 100;
-    return _this;
+class Button extends _ui.default {
+  constructor() {
+    super(...arguments);
+    this._feedbackHideTimeout = 100;
   }
-  var _proto = Button.prototype;
-  _proto._$content = function _$content() {
+  _$content() {
     return this.$element().find('.dx-button-content');
-  };
-  _proto._$submitInput = function _$submitInput() {
+  }
+  _$submitInput() {
     return this.$element().find('.dx-button-submit-input');
-  };
-  _proto._attachActiveEvents = function _attachActiveEvents(active, inactive) {
+  }
+  _attachActiveEvents(active, inactive) {
     const $el = this._eventBindingTarget();
     const namespace = 'inkRipple';
     const selector = this._activeStateUnit;
@@ -58,9 +45,9 @@ let Button = /*#__PURE__*/function (_Widget) {
       selector,
       namespace
     });
-  };
-  _proto._defaultOptionsRules = function _defaultOptionsRules() {
-    return _Widget.prototype._defaultOptionsRules.call(this).concat([{
+  }
+  _defaultOptionsRules() {
+    return super._defaultOptionsRules().concat([{
       device: () => _devices.default.real().deviceType === 'desktop' && !_devices.default.isSimulator(),
       options: {
         focusStateEnabled: true
@@ -71,22 +58,22 @@ let Button = /*#__PURE__*/function (_Widget) {
         useInkRipple: true
       }
     }]);
-  };
-  _proto._executeClickAction = function _executeClickAction(event) {
+  }
+  _executeClickAction(event) {
     this._clickAction({
       validationGroup: this._validationGroupConfig,
       event
     });
-  };
-  _proto._findGroup = function _findGroup() {
+  }
+  _findGroup() {
     const $element = this.$element();
     const model = this._modelByElement($element);
     const {
       validationGroup
     } = this.option();
     return validationGroup || _validation_engine.default.findGroup($element, model);
-  };
-  _proto._getContentData = function _getContentData() {
+  }
+  _getContentData() {
     const {
       icon,
       text,
@@ -97,9 +84,9 @@ let Button = /*#__PURE__*/function (_Widget) {
       icon: type === 'back' && !icon ? 'back' : icon,
       text
     }, _templateData);
-  };
-  _proto._getDefaultOptions = function _getDefaultOptions() {
-    return (0, _extend.extend)(_Widget.prototype._getDefaultOptions.call(this), {
+  }
+  _getDefaultOptions() {
+    return (0, _extend.extend)(super._getDefaultOptions(), {
       hoverStateEnabled: true,
       onClick: null,
       type: 'normal',
@@ -114,8 +101,8 @@ let Button = /*#__PURE__*/function (_Widget) {
       _templateData: {},
       stylingMode: 'contained'
     });
-  };
-  _proto._getSubmitAction = function _getSubmitAction() {
+  }
+  _getSubmitAction() {
     let needValidate = true;
     let validationStatus = 'valid';
     return this._createAction(_ref => {
@@ -148,22 +135,22 @@ let Button = /*#__PURE__*/function (_Widget) {
       validationStatus !== 'valid' && event.preventDefault();
       event.stopPropagation();
     });
-  };
-  _proto._initMarkup = function _initMarkup() {
+  }
+  _initMarkup() {
     this.$element().addClass('dx-button');
     this._renderType();
     this._renderStylingMode();
     this._renderInkRipple();
     this._renderClick();
     this._updateAriaLabel();
-    _Widget.prototype._initMarkup.call(this);
+    super._initMarkup();
     this._updateContent();
     this.setAria('role', 'button');
-  };
-  _proto._getAnonymousTemplateName = function _getAnonymousTemplateName() {
+  }
+  _getAnonymousTemplateName() {
     return ANONYMOUS_TEMPLATE_NAME;
-  };
-  _proto._initTemplates = function _initTemplates() {
+  }
+  _initTemplates() {
     this._templateManager.addDefaultTemplates({
       content: new _function_template.FunctionTemplate(_ref3 => {
         let {
@@ -189,9 +176,9 @@ let Button = /*#__PURE__*/function (_Widget) {
         }
       })
     });
-    _Widget.prototype._initTemplates.call(this);
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+    super._initTemplates();
+  }
+  _optionChanged(args) {
     const {
       name
     } = args;
@@ -224,10 +211,10 @@ let Button = /*#__PURE__*/function (_Widget) {
         this._invalidate();
         break;
       default:
-        _Widget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  _proto._renderClick = function _renderClick() {
+  }
+  _renderClick() {
     const $el = this.$element();
     _short.dxClick.off($el, {
       namespace: this.NAME
@@ -236,8 +223,8 @@ let Button = /*#__PURE__*/function (_Widget) {
       namespace: this.NAME
     });
     this._updateClick();
-  };
-  _proto._renderInkRipple = function _renderInkRipple() {
+  }
+  _renderInkRipple() {
     const {
       text,
       icon,
@@ -276,8 +263,8 @@ let Button = /*#__PURE__*/function (_Widget) {
         return changeWaveVisibility(event);
       });
     }
-  };
-  _proto._renderStylingMode = function _renderStylingMode() {
+  }
+  _renderStylingMode() {
     const $element = this.$element();
     let {
       stylingMode
@@ -285,9 +272,9 @@ let Button = /*#__PURE__*/function (_Widget) {
     if (['contained', 'text', 'outlined'].indexOf(stylingMode) === -1) {
       stylingMode = this._getDefaultOptions().stylingMode;
     }
-    $element.addClass("dx-button-mode-".concat(stylingMode));
-  };
-  _proto._renderSubmitInput = function _renderSubmitInput() {
+    $element.addClass(`dx-button-mode-${stylingMode}`);
+  }
+  _renderSubmitInput() {
     const {
       useSubmitBehavior
     } = this.option();
@@ -299,28 +286,28 @@ let Button = /*#__PURE__*/function (_Widget) {
         event
       }));
     }
-  };
-  _proto._renderType = function _renderType() {
+  }
+  _renderType() {
     const {
       type
     } = this.option();
     const $element = this.$element();
-    type && $element.addClass("dx-button-".concat(type));
-  };
-  _proto._submitInput = function _submitInput() {
+    type && $element.addClass(`dx-button-${type}`);
+  }
+  _submitInput() {
     return this._$submitInput().get(0);
-  };
-  _proto._supportedKeys = function _supportedKeys() {
+  }
+  _supportedKeys() {
     const click = e => {
       e.preventDefault();
       this._executeClickAction(e);
     };
-    return (0, _extend.extend)(_Widget.prototype._supportedKeys.call(this), {
+    return (0, _extend.extend)(super._supportedKeys(), {
       space: click,
       enter: click
     });
-  };
-  _proto._updateAriaLabel = function _updateAriaLabel() {
+  }
+  _updateAriaLabel() {
     const ariaTarget = this._getAriaTarget();
     let {
       icon,
@@ -333,8 +320,8 @@ let Button = /*#__PURE__*/function (_Widget) {
       text = icon || '';
     }
     ariaTarget.attr('aria-label', text || null);
-  };
-  _proto._updateClick = function _updateClick() {
+  }
+  _updateClick() {
     this._clickAction = this._createActionByOption('onClick', {
       excludeValidators: ['readOnly'],
       afterExecute: () => {
@@ -344,8 +331,8 @@ let Button = /*#__PURE__*/function (_Widget) {
         useSubmitBehavior && setTimeout(() => this._submitInput().click());
       }
     });
-  };
-  _proto._updateContent = function _updateContent() {
+  }
+  _updateContent() {
     const $element = this.$element();
     let $content = this._$content();
     const data = this._getContentData();
@@ -369,8 +356,8 @@ let Button = /*#__PURE__*/function (_Widget) {
       $content.replaceWith($template);
     }
     this._updateSubmitInput();
-  };
-  _proto._updateSubmitInput = function _updateSubmitInput() {
+  }
+  _updateSubmitInput() {
     const {
       useSubmitBehavior
     } = this.option();
@@ -380,29 +367,25 @@ let Button = /*#__PURE__*/function (_Widget) {
     } else if (useSubmitBehavior && !$submitInput.length) {
       this._renderSubmitInput();
     }
-  };
-  _proto._updateStylingMode = function _updateStylingMode() {
+  }
+  _updateStylingMode() {
     const $element = this.$element();
-    ['contained', 'text', 'outlined'].map(mode => "dx-button-mode-".concat(mode)).forEach(className => {
+    ['contained', 'text', 'outlined'].map(mode => `dx-button-mode-${mode}`).forEach(className => {
       $element.removeClass(className);
     });
     this._renderStylingMode();
-  };
-  _proto._updateType = function _updateType() {
+  }
+  _updateType() {
     const $element = this.$element();
-    ['back', 'danger', 'default', 'normal', 'success'].map(type => "dx-button-".concat(type)).forEach(className => {
+    ['back', 'danger', 'default', 'normal', 'success'].map(type => `dx-button-${type}`).forEach(className => {
       $element.removeClass(className);
     });
     this._renderType();
-  };
-  _createClass(Button, [{
-    key: "_validationGroupConfig",
-    get: function () {
-      return _validation_engine.default.getGroupConfig(this._findGroup());
-    }
-  }]);
-  return Button;
-}(_ui.default);
+  }
+  get _validationGroupConfig() {
+    return _validation_engine.default.getGroupConfig(this._findGroup());
+  }
+}
 (0, _component_registrator.default)('dxButton', Button);
 var _default = exports.default = Button;
 module.exports = exports.default;

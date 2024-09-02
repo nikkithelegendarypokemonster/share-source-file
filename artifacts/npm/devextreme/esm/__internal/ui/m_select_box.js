@@ -1,12 +1,12 @@
 /**
 * DevExtreme (esm/__internal/ui/m_select_box.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-import '../../ui/list/modules/selection';
+import '../ui/list/modules/m_selection';
 import registerComponent from '../../core/component_registrator';
 import domAdapter from '../../core/dom_adapter';
 import { getPublicElement } from '../../core/element';
@@ -21,17 +21,17 @@ import { isDefined, isPromise } from '../../core/utils/type';
 import { normalizeKeyName } from '../../events/utils/index';
 import messageLocalization from '../../localization/message';
 import DropDownList from '../../ui/drop_down_editor/ui.drop_down_list';
-var DISABLED_STATE_SELECTOR = '.dx-state-disabled';
-var SELECTBOX_CLASS = 'dx-selectbox';
-var SELECTBOX_POPUP_CLASS = 'dx-selectbox-popup';
-var SELECTBOX_CONTAINER_CLASS = 'dx-selectbox-container';
-var SELECTBOX_POPUP_WRAPPER_CLASS = 'dx-selectbox-popup-wrapper';
-var SelectBox = DropDownList.inherit({
+const DISABLED_STATE_SELECTOR = '.dx-state-disabled';
+const SELECTBOX_CLASS = 'dx-selectbox';
+const SELECTBOX_POPUP_CLASS = 'dx-selectbox-popup';
+const SELECTBOX_CONTAINER_CLASS = 'dx-selectbox-container';
+const SELECTBOX_POPUP_WRAPPER_CLASS = 'dx-selectbox-popup-wrapper';
+const SelectBox = DropDownList.inherit({
   _supportedKeys() {
-    var that = this;
-    var parent = this.callBase();
-    var clearSelectBox = function clearSelectBox(e) {
-      var isEditable = this._isEditable();
+    const that = this;
+    const parent = this.callBase();
+    const clearSelectBox = function (e) {
+      const isEditable = this._isEditable();
       if (!isEditable) {
         if (this.option('showClearButton')) {
           e.preventDefault();
@@ -43,7 +43,7 @@ var SelectBox = DropDownList.inherit({
       this._savedTextRemoveEvent = e;
       this._preventSubstitution = true;
     };
-    var searchIfNeeded = function searchIfNeeded() {
+    const searchIfNeeded = function () {
       if (that.option('searchEnabled') && that._valueSubstituted()) {
         that._searchHandler();
       }
@@ -75,9 +75,9 @@ var SelectBox = DropDownList.inherit({
         return undefined;
       },
       leftArrow() {
-        var _a;
+        var _parent$leftArrow;
         searchIfNeeded();
-        (_a = parent.leftArrow) === null || _a === void 0 ? void 0 : _a.apply(this, arguments);
+        (_parent$leftArrow = parent.leftArrow) === null || _parent$leftArrow === void 0 || _parent$leftArrow.apply(this, arguments);
       },
       rightArrow() {
         searchIfNeeded();
@@ -92,14 +92,14 @@ var SelectBox = DropDownList.inherit({
         parent.end && parent.end.apply(this, arguments);
       },
       escape() {
-        var result = parent.escape && parent.escape.apply(this, arguments);
+        const result = parent.escape && parent.escape.apply(this, arguments);
         this._cancelEditing();
-        return result !== null && result !== void 0 ? result : true;
+        return result ?? true;
       },
       enter(e) {
-        var isOpened = this.option('opened');
-        var inputText = this._input().val().trim();
-        var isCustomText = inputText && this._list && !this._list.option('focusedElement');
+        const isOpened = this.option('opened');
+        const inputText = this._input().val().trim();
+        const isCustomText = inputText && this._list && !this._list.option('focusedElement');
         if (!inputText && isDefined(this.option('value')) && this.option('allowClearing')) {
           this._saveValueChangeEvent(e);
           this.option({
@@ -122,9 +122,9 @@ var SelectBox = DropDownList.inherit({
         }
       },
       space(e) {
-        var isOpened = this.option('opened');
-        var isSearchEnabled = this.option('searchEnabled');
-        var acceptCustomValue = this.option('acceptCustomValue');
+        const isOpened = this.option('opened');
+        const isSearchEnabled = this.option('searchEnabled');
+        const acceptCustomValue = this.option('acceptCustomValue');
         if (!isOpened || isSearchEnabled || acceptCustomValue) {
           return;
         }
@@ -149,12 +149,6 @@ var SelectBox = DropDownList.inherit({
         }
       },
       showSelectionControls: false,
-      /**
-            * @name dxSelectBoxOptions.allowClearing
-            * @type boolean
-            * @default true
-            * @hidden
-            */
       allowClearing: true,
       tooltipEnabled: false,
       openOnFieldClick: true,
@@ -179,7 +173,7 @@ var SelectBox = DropDownList.inherit({
     this._popup.$overlayContent().attr('tabindex', -1);
   },
   _popupWrapperClass() {
-    return "".concat(this.callBase(), " ").concat(SELECTBOX_POPUP_WRAPPER_CLASS);
+    return `${this.callBase()} ${SELECTBOX_POPUP_WRAPPER_CLASS}`;
   },
   _setDeprecatedOptions() {
     this.callBase();
@@ -204,32 +198,31 @@ var SelectBox = DropDownList.inherit({
     }
   },
   _focusSelectedElement() {
-    var _a;
-    var searchValue = this._searchValue();
+    const searchValue = this._searchValue();
     if (!searchValue) {
       this._focusListElement(null);
       return;
     }
-    var {
+    const {
       items,
       selectedItem
     } = this.option();
-    var $listItems = this._list._itemElements();
-    var index = (_a = items === null || items === void 0 ? void 0 : items.indexOf(selectedItem)) !== null && _a !== void 0 ? _a : -1;
-    var focusedElement = index !== -1 && !this._isCustomItemSelected() ? $listItems.eq(index) : null;
+    const $listItems = this._list._itemElements();
+    const index = (items === null || items === void 0 ? void 0 : items.indexOf(selectedItem)) ?? -1;
+    const focusedElement = index !== -1 && !this._isCustomItemSelected() ? $listItems.eq(index) : null;
     this._focusListElement(focusedElement);
   },
   _renderFocusedElement() {
     if (!this._list) {
       return;
     }
-    var searchValue = this._searchValue();
+    const searchValue = this._searchValue();
     if (!searchValue || this.option('acceptCustomValue')) {
       this._focusListElement(null);
       return;
     }
-    var $listItems = this._list._itemElements();
-    var focusedElement = $listItems.not(DISABLED_STATE_SELECTOR).eq(0);
+    const $listItems = this._list._itemElements();
+    const focusedElement = $listItems.not(DISABLED_STATE_SELECTOR).eq(0);
     this._focusListElement(focusedElement);
   },
   _focusListElement(element) {
@@ -242,7 +235,7 @@ var SelectBox = DropDownList.inherit({
   },
   _listContentReadyHandler() {
     this.callBase();
-    var isPaginate = this._dataController.paginate();
+    const isPaginate = this._dataController.paginate();
     if (isPaginate && this._needPopupRepaint()) {
       return;
     }
@@ -251,8 +244,7 @@ var SelectBox = DropDownList.inherit({
   _renderValue() {
     this._renderInputValue();
     this._setSubmitValue();
-    // @ts-expect-error
-    return new Deferred().resolve();
+    return Deferred().resolve();
   },
   _renderInputValue() {
     return this.callBase().always(() => {
@@ -267,25 +259,22 @@ var SelectBox = DropDownList.inherit({
   },
   _renderInputValueImpl() {
     this._renderField();
-    // @ts-expect-error
-    return new Deferred().resolve();
+    return Deferred().resolve();
   },
   _setNextItem(step) {
-    var item = this._calcNextItem(step);
-    var value = this._valueGetter(item);
+    const item = this._calcNextItem(step);
+    const value = this._valueGetter(item);
     this._setValue(value);
   },
   _setNextValue(e) {
-    var dataSourceIsLoaded = this._dataController.isLoaded()
-    // @ts-expect-error
-    ? new Deferred().resolve() : this._dataController.load();
+    const dataSourceIsLoaded = this._dataController.isLoaded() ? Deferred().resolve() : this._dataController.load();
     dataSourceIsLoaded.done(() => {
-      var selectedIndex = this._getSelectedIndex();
-      var hasPages = this._dataController.pageSize();
-      var isLastPage = this._dataController.isLastPage();
-      var isLastItem = selectedIndex === this._items().length - 1;
+      const selectedIndex = this._getSelectedIndex();
+      const hasPages = this._dataController.pageSize();
+      const isLastPage = this._dataController.isLastPage();
+      const isLastItem = selectedIndex === this._items().length - 1;
       this._saveValueChangeEvent(e);
-      var step = normalizeKeyName(e) === 'downArrow' ? 1 : -1;
+      const step = normalizeKeyName(e) === 'downArrow' ? 1 : -1;
       if (hasPages && !isLastPage && isLastItem && step > 0) {
         if (!this._popup) {
           this._createPopup();
@@ -299,7 +288,7 @@ var SelectBox = DropDownList.inherit({
     });
   },
   _setSelectedItem(item) {
-    var isUnknownItem = !this._isCustomValueAllowed() && item === undefined;
+    const isUnknownItem = !this._isCustomValueAllowed() && item === undefined;
     this.callBase(isUnknownItem ? null : item);
     if (!isUnknownItem && (!this._isEditable() || this._isCustomItemSelected())) {
       this._setListOption('selectedItem', this.option('selectedItem'));
@@ -313,7 +302,7 @@ var SelectBox = DropDownList.inherit({
     return this.callBase(item);
   },
   _listConfig() {
-    var result = extend(this.callBase(), {
+    const result = extend(this.callBase(), {
       pageLoadMode: 'scrollBottom',
       onSelectionChanged: this._getSelectionChangeHandler(),
       selectedItem: this.option('selectedItem'),
@@ -331,15 +320,15 @@ var SelectBox = DropDownList.inherit({
     if (this._preventInputValueRender) {
       return;
     }
-    var list = e.component;
-    var focusedElement = $(list.option('focusedElement'));
-    var focusedItem = list._getItemData(focusedElement);
+    const list = e.component;
+    const focusedElement = $(list.option('focusedElement'));
+    const focusedItem = list._getItemData(focusedElement);
     this._updateField(focusedItem);
   },
   _updateField(item) {
-    var fieldTemplate = this._getTemplateByOption('fieldTemplate');
+    const fieldTemplate = this._getTemplateByOption('fieldTemplate');
     if (!(fieldTemplate && this.option('fieldTemplate'))) {
-      var text = this._displayGetter(item);
+      const text = this._displayGetter(item);
       this.option('text', text);
       this._renderDisplayText(text);
       return;
@@ -361,18 +350,18 @@ var SelectBox = DropDownList.inherit({
     return this.option('searchEnabled') && !this.option('acceptCustomValue') && this.option('searchMode') === 'startswith';
   },
   _getAriaAutocomplete() {
-    var {
+    const {
       disabled,
       readOnly,
       searchEnabled
     } = this.option();
-    var isInputEditable = !(readOnly || disabled);
-    var hasAutocomplete = searchEnabled && isInputEditable;
+    const isInputEditable = !(readOnly || disabled);
+    const hasAutocomplete = searchEnabled && isInputEditable;
     if (!hasAutocomplete) {
       return 'none';
     }
-    var isInlineAutocompleteEnabled = this._isInlineAutocompleteEnabled();
-    var autocompleteAria = isInlineAutocompleteEnabled ? 'both' : 'list';
+    const isInlineAutocompleteEnabled = this._isInlineAutocompleteEnabled();
+    const autocompleteAria = isInlineAutocompleteEnabled ? 'both' : 'list';
     return autocompleteAria;
   },
   _toggleOpenState(isVisible) {
@@ -385,10 +374,10 @@ var SelectBox = DropDownList.inherit({
     }
     if (this._wasSearch() && isVisible) {
       this._wasSearch(false);
-      var showDataImmediately = this.option('showDataBeforeSearch') || this._isMinSearchLengthExceeded();
+      const showDataImmediately = this.option('showDataBeforeSearch') || this._isMinSearchLengthExceeded();
       if (showDataImmediately && this._dataController.getDataSource()) {
         if (this._searchTimer) return;
-        var searchValue = this._getActualSearchValue();
+        const searchValue = this._getActualSearchValue();
         searchValue && this._wasSearch(true);
         this._filterDataSource(searchValue || null);
       } else {
@@ -411,13 +400,13 @@ var SelectBox = DropDownList.inherit({
     this._updateListDimensions();
   },
   _isValueEqualInputText() {
-    var initialSelectedItem = this.option('selectedItem');
+    const initialSelectedItem = this.option('selectedItem');
     if (initialSelectedItem === null) {
       return false;
     }
-    var value = this._displayGetter(initialSelectedItem);
-    var displayValue = value ? String(value) : '';
-    var inputText = this._searchValue();
+    const value = this._displayGetter(initialSelectedItem);
+    const displayValue = value ? String(value) : '';
+    const inputText = this._searchValue();
     return displayValue === inputText;
   },
   _popupHidingHandler() {
@@ -439,14 +428,14 @@ var SelectBox = DropDownList.inherit({
       return;
     }
     this._loadItemDeferred && this._loadItemDeferred.always(() => {
-      var {
+      const {
         acceptCustomValue,
         text,
         selectedItem: initialSelectedItem
       } = this.option();
       if (acceptCustomValue) {
         if (!saveEditingValue && !this._isValueChanging) {
-          this._updateField(initialSelectedItem !== null && initialSelectedItem !== void 0 ? initialSelectedItem : this._createCustomItem(text));
+          this._updateField(initialSelectedItem ?? this._createCustomItem(text));
           this._clearFilter();
         }
         return;
@@ -461,7 +450,7 @@ var SelectBox = DropDownList.inherit({
         return;
       }
       this._renderInputValue().always(selectedItem => {
-        var newSelectedItem = ensureDefined(selectedItem, initialSelectedItem);
+        const newSelectedItem = ensureDefined(selectedItem, initialSelectedItem);
         this._setSelectedItem(newSelectedItem);
         this._updateField(newSelectedItem);
         this._clearFilter();
@@ -469,7 +458,7 @@ var SelectBox = DropDownList.inherit({
     });
   },
   _valueChangeEventIncludesBlur() {
-    var valueChangeEvent = this.option(this._getValueChangeEventOptionName());
+    const valueChangeEvent = this.option(this._getValueChangeEventOptionName());
     return valueChangeEvent.includes('blur');
   },
   _isPreventedFocusOutEvent(e) {
@@ -477,7 +466,7 @@ var SelectBox = DropDownList.inherit({
   },
   _focusOutHandler(e) {
     if (!this._isPreventedFocusOutEvent(e)) {
-      var isOverlayTarget = this._isOverlayNestedTarget(e.relatedTarget);
+      const isOverlayTarget = this._isOverlayNestedTarget(e.relatedTarget);
       if (!isOverlayTarget) {
         this._restoreInputText();
         this._clearSearchTimer();
@@ -488,14 +477,14 @@ var SelectBox = DropDownList.inherit({
     this.callBase(e);
   },
   _cancelSearchIfNeed(e) {
-    var _a;
-    var {
+    const {
       searchEnabled
     } = this.option();
-    var isOverlayTarget = this._isOverlayNestedTarget(e === null || e === void 0 ? void 0 : e.relatedTarget);
-    var shouldCancelSearch = this._wasSearch() && searchEnabled && !isOverlayTarget;
+    const isOverlayTarget = this._isOverlayNestedTarget(e === null || e === void 0 ? void 0 : e.relatedTarget);
+    const shouldCancelSearch = this._wasSearch() && searchEnabled && !isOverlayTarget;
     if (shouldCancelSearch) {
-      var isPopupVisible = (_a = this._popup) === null || _a === void 0 ? void 0 : _a._hideAnimationProcessing;
+      var _this$_popup;
+      const isPopupVisible = (_this$_popup = this._popup) === null || _this$_popup === void 0 ? void 0 : _this$_popup._hideAnimationProcessing;
       this._clearSearchTimer();
       if (isPopupVisible) {
         this._shouldCancelSearch(true);
@@ -512,12 +501,12 @@ var SelectBox = DropDownList.inherit({
     this._shouldCancelSearchValue = value;
   },
   _isOverlayNestedTarget(target) {
-    return !!$(target).closest(".".concat(SELECTBOX_POPUP_WRAPPER_CLASS)).length;
+    return !!$(target).closest(`.${SELECTBOX_POPUP_WRAPPER_CLASS}`).length;
   },
   _clearTextValue() {
-    var selectedItem = this.option('selectedItem');
-    var selectedItemText = this._displayGetter(selectedItem);
-    var shouldRestoreValue = selectedItem && selectedItemText !== '';
+    const selectedItem = this.option('selectedItem');
+    const selectedItemText = this._displayGetter(selectedItem);
+    const shouldRestoreValue = selectedItem && selectedItemText !== '';
     if (shouldRestoreValue) {
       if (this._savedTextRemoveEvent) {
         this._saveValueChangeEvent(this._savedTextRemoveEvent);
@@ -530,7 +519,7 @@ var SelectBox = DropDownList.inherit({
     return this._needPassDataSourceToList() && this._wasSearch();
   },
   _isFocused() {
-    var activeElement = domAdapter.getActiveElement(this.element());
+    const activeElement = domAdapter.getActiveElement(this.element());
     return this.callBase() && $(activeElement).closest(this._input()).length > 0;
   },
   _getValueChangeEventOptionName() {
@@ -542,7 +531,7 @@ var SelectBox = DropDownList.inherit({
     }
   },
   _fieldRenderData() {
-    var $listFocused = this._list && this.option('opened') && $(this._list.option('focusedElement'));
+    const $listFocused = this._list && this.option('opened') && $(this._list.option('focusedElement'));
     if ($listFocused && $listFocused.length) {
       return this._list._getItemData($listFocused);
     }
@@ -555,7 +544,7 @@ var SelectBox = DropDownList.inherit({
     return !(this.option('showSelectionControls') && this.option('selectionMode') !== 'single');
   },
   _listItemClickHandler(e) {
-    var previousValue = this._getCurrentValue();
+    const previousValue = this._getCurrentValue();
     this._focusListElement($(e.itemElement));
     this._saveValueChangeEvent(e.event);
     this._completeSelection(this._valueGetter(e.itemData));
@@ -576,16 +565,15 @@ var SelectBox = DropDownList.inherit({
     this._setValue(value);
   },
   _loadItem(value, cache) {
-    var that = this;
-    // @ts-expect-error
-    var deferred = new Deferred();
+    const that = this;
+    const deferred = Deferred();
     this.callBase(value, cache).done(item => {
       deferred.resolve(item);
     }).fail(args => {
-      if (args === null || args === void 0 ? void 0 : args.shouldSkipCallback) {
+      if (args !== null && args !== void 0 && args.shouldSkipCallback) {
         return;
       }
-      var selectedItem = that.option('selectedItem');
+      const selectedItem = that.option('selectedItem');
       if (that.option('acceptCustomValue') && value === that._valueGetter(selectedItem)) {
         deferred.resolve(selectedItem);
       } else {
@@ -599,9 +587,9 @@ var SelectBox = DropDownList.inherit({
     return this._loadItemDeferred;
   },
   _isCustomItemSelected() {
-    var selectedItem = this.option('selectedItem');
-    var searchValue = this._searchValue();
-    var selectedItemText = this._displayGetter(selectedItem);
+    const selectedItem = this.option('selectedItem');
+    const searchValue = this._searchValue();
+    const selectedItemText = this._displayGetter(selectedItem);
     return !selectedItemText || searchValue !== selectedItemText.toString();
   },
   _valueChangeEventHandler(e) {
@@ -614,19 +602,19 @@ var SelectBox = DropDownList.inherit({
     this._customItemCreatingAction = this._createActionByOption('onCustomItemCreating');
   },
   _createCustomItem(text) {
-    var params = {
+    const params = {
       text
     };
-    var actionResult = this._customItemCreatingAction(params);
-    var item = ensureDefined(actionResult, params.customItem);
+    const actionResult = this._customItemCreatingAction(params);
+    const item = ensureDefined(actionResult, params.customItem);
     if (isDefined(actionResult)) {
       errors.log('W0015', 'onCustomItemCreating', 'customItem');
     }
     return item;
   },
   _customItemAddedHandler(e) {
-    var searchValue = this._searchValue();
-    var item = this._createCustomItem(searchValue);
+    const searchValue = this._searchValue();
+    const item = this._createCustomItem(searchValue);
     this._saveValueChangeEvent(e);
     if (item === undefined) {
       this._renderValue();
@@ -680,11 +668,11 @@ var SelectBox = DropDownList.inherit({
     }
   },
   _valueSubstituted() {
-    var input = this._input().get(0);
-    var currentSearchLength = this._searchValue().length;
-    var isAllSelected = input.selectionStart === 0 && input.selectionEnd === currentSearchLength;
-    var inputHasSelection = input.selectionStart !== input.selectionEnd;
-    var isLastSymbolSelected = currentSearchLength === input.selectionEnd;
+    const input = this._input().get(0);
+    const currentSearchLength = this._searchValue().length;
+    const isAllSelected = input.selectionStart === 0 && input.selectionEnd === currentSearchLength;
+    const inputHasSelection = input.selectionStart !== input.selectionEnd;
+    const isLastSymbolSelected = currentSearchLength === input.selectionEnd;
     return this._wasSearch() && inputHasSelection && !isAllSelected && isLastSymbolSelected && this._shouldSubstitutionBeRendered();
   },
   _shouldSubstitutionBeRendered() {
@@ -695,17 +683,17 @@ var SelectBox = DropDownList.inherit({
       delete this._preventSubstitution;
       return;
     }
-    var item = this._list && this._getPlainItems(this._list.option('items'))[0];
+    const item = this._list && this._getPlainItems(this._list.option('items'))[0];
     if (!item) {
       return;
     }
-    var $input = this._input();
-    var valueLength = $input.val().length;
+    const $input = this._input();
+    const valueLength = $input.val().length;
     if (valueLength === 0) {
       return;
     }
-    var inputElement = $input.get(0);
-    var displayValue = this._displayGetter(item).toString();
+    const inputElement = $input.get(0);
+    const displayValue = this._displayGetter(item).toString();
     inputElement.value = displayValue;
     this._caret({
       start: valueLength,

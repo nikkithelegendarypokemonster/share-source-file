@@ -3,7 +3,7 @@ import BaseComponent from '../component_wrapper/button';
 import { Button as ButtonComponent, defaultOptions } from './button';
 export default class Button extends BaseComponent {
   getProps() {
-    var props = super.getProps();
+    const props = super.getProps();
     props.onKeyDown = this._wrapKeyDownHandler(props.onKeyDown);
     return props;
   }

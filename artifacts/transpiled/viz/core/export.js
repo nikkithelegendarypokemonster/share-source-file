@@ -13,6 +13,8 @@ var _hover = require("../../events/hover");
 var _pointer = _interopRequireDefault(require("../../events/pointer"));
 var _console = require("../../core/utils/console");
 var _size = require("../../core/utils/size");
+var _renderer = require("./renderers/renderer");
+var _renderer2 = _interopRequireDefault(require("../../core/renderer"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const pointerActions = [_pointer.default.down, _pointer.default.move].join(' ');
 const BUTTON_SIZE = 35;
@@ -34,6 +36,26 @@ const A4WidthCm = '21cm';
 const EXPORT_DATA_KEY = 'export-element-type';
 const FORMAT_DATA_KEY = 'export-element-format';
 const GET_COLOR_REGEX = /data-backgroundcolor="([^"]*)"/;
+function getRendererWrapper(width, height, backgroundColor) {
+  const rendererContainer = (0, _renderer2.default)('<div>').get(0);
+  const renderer = new _renderer.Renderer({
+    container: rendererContainer
+  });
+  renderer.resize(width, height);
+  renderer.root.element.setAttribute('data-backgroundcolor', backgroundColor);
+  return {
+    createGroup() {
+      return renderer.g();
+    },
+    getRootContent() {
+      return renderer.root.element.cloneNode(true);
+    },
+    dispose() {
+      renderer.dispose();
+      rendererContainer.remove();
+    }
+  };
+}
 function getValidFormats() {
   const imageFormats = _exporter.image.testFormats(ALLOWED_IMAGE_FORMATS);
   return {
@@ -93,17 +115,17 @@ function setPrint(imageSrc, options) {
     ///#ENDDEBUG
 
     if (widthRatio < 1) {
-      window.document.body.style.transform = "scale(".concat(widthRatio, ")");
+      window.document.body.style.transform = `scale(${widthRatio})`;
       window.document.body.style['transform-origin'] = '0 0';
     }
     const removeFrame = () => {
-      var _window, _window$document, _window$document$body;
+      var _window;
       ///#DEBUG
       options.__test && options.__test.checkAssertions();
       ///#ENDDEBUG
       this.parentElement.removeChild(this);
       ///#DEBUG
-      options.__test && options.__test.deferred.resolve(origImageSrc, (_window = window) === null || _window === void 0 ? void 0 : (_window$document = _window.document) === null || _window$document === void 0 ? void 0 : (_window$document$body = _window$document.body) === null || _window$document$body === void 0 ? void 0 : _window$document$body.style);
+      options.__test && options.__test.deferred.resolve(origImageSrc, (_window = window) === null || _window === void 0 || (_window = _window.document) === null || _window === void 0 || (_window = _window.body) === null || _window === void 0 ? void 0 : _window.style);
       ///#ENDDEBUG
     };
     img.addEventListener('load', () => {
@@ -220,7 +242,7 @@ const exportFromMarkup = function (markup, options) {
   (0, _exporter.export)(markup, options, getCreatorFunc(options.format));
 };
 exports.exportFromMarkup = exportFromMarkup;
-const getMarkup = widgets => combineMarkups(widgets).markup;
+const getMarkup = widgets => combineMarkups(widgets).root.outerHTML;
 exports.getMarkup = getMarkup;
 const exportWidgets = function (widgets, options) {
   options = options || {};
@@ -231,7 +253,7 @@ const exportWidgets = function (widgets, options) {
   });
   options.width = markupInfo.width;
   options.height = markupInfo.height;
-  exportFromMarkup(markupInfo.markup, options);
+  exportFromMarkup(markupInfo.root, options);
 };
 exports.exportWidgets = exportWidgets;
 let combineMarkups = function (widgets) {
@@ -246,13 +268,14 @@ let combineMarkups = function (widgets) {
     const rowInfo = row.reduce((r, item, colIndex) => {
       const size = item.getSize();
       const backgroundColor = item.option('backgroundColor') || (0, _themes.getTheme)(item.option('theme')).backgroundColor;
+      const node = item.element().find('svg').get(0).cloneNode(true);
       backgroundColor && r.backgroundColors.indexOf(backgroundColor) === -1 && r.backgroundColors.push(backgroundColor);
       r.hOffset = r.width;
       r.width += size.width;
       r.height = Math.max(r.height, size.height);
       r.itemWidth = Math.max(r.itemWidth, size.width);
       r.items.push({
-        markup: item.svg(),
+        node,
         width: size.width,
         height: size.height,
         c: colIndex,
@@ -286,7 +309,30 @@ let combineMarkups = function (widgets) {
     totalWidth: 0,
     backgroundColors: []
   });
-  const backgroundColor = "data-backgroundcolor=\"".concat(exportItems.backgroundColors.length === 1 ? exportItems.backgroundColors[0] : '', "\" ");
+  const backgroundColor = `${exportItems.backgroundColors.length === 1 ? exportItems.backgroundColors[0] : ''}`;
+  const {
+    totalWidth,
+    totalHeight
+  } = exportItems;
+  const rootElement = wrapItemsToElement(totalWidth, totalHeight, backgroundColor, {
+    options,
+    exportItems,
+    compactView
+  });
+  return {
+    root: rootElement,
+    width: totalWidth,
+    height: totalHeight
+  };
+};
+exports.combineMarkups = combineMarkups;
+function wrapItemsToElement(width, height, backgroundColor, _ref) {
+  let {
+    exportItems,
+    options,
+    compactView
+  } = _ref;
+  const rendererWrapper = getRendererWrapper(width, height, backgroundColor);
   const getVOffset = item => {
     const align = options.verticalAlignment;
     const dy = exportItems.rowHeights[item.r] - item.height;
@@ -301,15 +347,19 @@ let combineMarkups = function (widgets) {
     const dx = colWidth - item.width;
     return item.c * colWidth + (align === 'right' ? dx : align === 'center' ? dx / 2 : 0);
   };
-  const totalHeight = exportItems.totalHeight;
-  const totalWidth = exportItems.totalWidth;
-  return {
-    markup: '<svg ' + backgroundColor + 'height="' + totalHeight + '" width="' + totalWidth + '" version="1.1" xmlns="http://www.w3.org/2000/svg">' + exportItems.items.map(item => "<g transform=\"translate(".concat(getHOffset(item), ",").concat(getVOffset(item), ")\">").concat(item.markup, "</g>")).join('') + '</svg>',
-    width: totalWidth,
-    height: totalHeight
-  };
-};
-exports.combineMarkups = combineMarkups;
+  exportItems.items.forEach(item => {
+    const container = rendererWrapper.createGroup();
+    container.attr({
+      translateX: getHOffset(item),
+      translateY: getVOffset(item)
+    });
+    container.element.appendChild(item.node);
+    container.append();
+  });
+  const result = rendererWrapper.getRootContent();
+  rendererWrapper.dispose();
+  return result;
+}
 let ExportMenu = function (params) {
   const renderer = this._renderer = params.renderer;
   this._incidentOccurred = params.incidentOccurred;
@@ -630,7 +680,7 @@ const plugin = exports.plugin = {
       options.format = 'PNG';
       options.useBase64 = true;
       options.fileSavingAction = eventArgs => {
-        print("data:image/png;base64,".concat(eventArgs.data), {
+        print(`data:image/png;base64,${eventArgs.data}`, {
           width: options.width,
           __test: options.__test
         });

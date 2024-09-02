@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/renderer_base.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -390,8 +390,7 @@ initRender.prototype.find = function (selector) {
   return result.add(nodes);
 };
 const isVisible = function (_, element) {
-  var _element$host;
-  element = (_element$host = element.host) !== null && _element$host !== void 0 ? _element$host : element;
+  element = element.host ?? element;
   if (!element.nodeType) return true;
   return !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
 };

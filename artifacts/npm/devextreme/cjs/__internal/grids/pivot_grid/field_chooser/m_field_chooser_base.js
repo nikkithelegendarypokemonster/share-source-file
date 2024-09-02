@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/pivot_grid/field_chooser/m_field_chooser_base.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,25 +33,17 @@ var _const = require("./const");
 var _dom = require("./dom");
 var _utils = require("./utils");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); } /* eslint-disable max-classes-per-file */
 const {
   Sortable
 } = _m_sortable.default;
 const DIV = '<div>';
-let HeaderFilterView = /*#__PURE__*/function (_HeaderFilterViewBase) {
-  _inheritsLoose(HeaderFilterView, _HeaderFilterViewBase);
-  function HeaderFilterView() {
-    return _HeaderFilterViewBase.apply(this, arguments) || this;
-  }
-  var _proto = HeaderFilterView.prototype;
-  _proto._getSearchExpr = function _getSearchExpr(options, headerFilterOptions) {
+class HeaderFilterView extends _m_header_filter_core.HeaderFilterView {
+  _getSearchExpr(options, headerFilterOptions) {
     options.useDefaultSearchExpr = true;
-    return _HeaderFilterViewBase.prototype._getSearchExpr.call(this, options, headerFilterOptions);
-  };
-  return HeaderFilterView;
-}(_m_header_filter_core.HeaderFilterView);
+    return super._getSearchExpr(options, headerFilterOptions);
+  }
+}
 const processItems = function (groupItems, field) {
   const filterValues = [];
   const isTree = !!field.groupName;
@@ -86,14 +78,9 @@ function getStringState(state) {
   return JSON.stringify([state.fields, state.columnExpandedPaths, state.rowExpandedPaths]);
 }
 const mixinWidget = (0, _m_header_filter_core.headerFilterMixin)((0, _m_sorting_mixin.default)((0, _m_column_state_mixin.default)(_ui.default)));
-let FieldChooserBase = exports.FieldChooserBase = /*#__PURE__*/function (_mixinWidget) {
-  _inheritsLoose(FieldChooserBase, _mixinWidget);
-  function FieldChooserBase() {
-    return _mixinWidget.apply(this, arguments) || this;
-  }
-  var _proto2 = FieldChooserBase.prototype;
-  _proto2._getDefaultOptions = function _getDefaultOptions() {
-    return _extends(_extends({}, _mixinWidget.prototype._getDefaultOptions.call(this)), {
+class FieldChooserBase extends mixinWidget {
+  _getDefaultOptions() {
+    return _extends({}, super._getDefaultOptions(), {
       allowFieldDragging: true,
       applyChangesMode: 'instantly',
       state: null,
@@ -117,21 +104,21 @@ let FieldChooserBase = exports.FieldChooserBase = /*#__PURE__*/function (_mixinW
       // NOTE: private option added in fix of the T1150523 ticket.
       remoteSort: false
     });
-  };
-  _proto2._init = function _init() {
-    _mixinWidget.prototype._init.call(this);
+  }
+  _init() {
+    super._init();
     this._headerFilterView = new HeaderFilterView(this);
     this._refreshDataSource();
     this.subscribeToEvents();
     _m_utils.default.logHeaderFilterDeprecatedWarningIfNeed(this);
-  };
-  _proto2._refreshDataSource = function _refreshDataSource() {
+  }
+  _refreshDataSource() {
     const dataSource = this.option('dataSource');
     if (dataSource && dataSource.fields && dataSource.load /* instanceof DX.ui.dxPivotGrid.DataSource */) {
       this._dataSource = dataSource;
     }
-  };
-  _proto2._optionChanged = function _optionChanged(args) {
+  }
+  _optionChanged(args) {
     switch (args.name) {
       case 'dataSource':
         this._refreshDataSource();
@@ -155,10 +142,10 @@ let FieldChooserBase = exports.FieldChooserBase = /*#__PURE__*/function (_mixinW
         this._invalidate();
         break;
       default:
-        _mixinWidget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  _proto2.renderField = function renderField(field, showColumnLines) {
+  }
+  renderField(field, showColumnLines) {
     const that = this;
     const $fieldContent = (0, _renderer.default)(DIV).addClass(_const.CLASSES.area.fieldContent).text(field.caption || field.dataField);
     const $fieldElement = (0, _renderer.default)(DIV).addClass(_const.CLASSES.area.field).addClass(_const.CLASSES.area.box).data('field', field).append($fieldContent);
@@ -194,19 +181,18 @@ let FieldChooserBase = exports.FieldChooserBase = /*#__PURE__*/function (_mixinW
     return $fieldElement;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto2._clean = function _clean(value) {};
-  _proto2._render = function _render() {
-    _mixinWidget.prototype._render.call(this);
+  _clean(value) {}
+  _render() {
+    super._render();
     this._headerFilterView.render(this.$element());
-  };
-  _proto2.renderSortable = function renderSortable() {
+  }
+  renderSortable() {
     const that = this;
     that._createComponent(that.$element(), Sortable, (0, _extend.extend)({
       allowDragging: that.option('allowFieldDragging'),
-      itemSelector: ".".concat(_const.CLASSES.area.field),
-      itemContainerSelector: ".".concat(_const.CLASSES.area.fieldContainer),
-      groupSelector: ".".concat(_const.CLASSES.area.fieldList),
+      itemSelector: `.${_const.CLASSES.area.field}`,
+      itemContainerSelector: `.${_const.CLASSES.area.fieldContainer}`,
+      groupSelector: `.${_const.CLASSES.area.fieldList}`,
       groupFilter() {
         const dataSource = that._dataSource;
         const $sortable = (0, _renderer.default)(this).closest('.dx-sortable-old');
@@ -262,8 +248,8 @@ let FieldChooserBase = exports.FieldChooserBase = /*#__PURE__*/function (_mixinW
         }
       }
     }, that._getSortableOptions()));
-  };
-  _proto2._processDemandState = function _processDemandState(func) {
+  }
+  _processDemandState(func) {
     const that = this;
     const isInstantlyMode = that.option('applyChangesMode') === 'instantly';
     const dataSource = that._dataSource;
@@ -278,8 +264,8 @@ let FieldChooserBase = exports.FieldChooserBase = /*#__PURE__*/function (_mixinW
       func(dataSource, isInstantlyMode);
       dataSource.state(currentState, true);
     }
-  };
-  _proto2._applyChanges = function _applyChanges(fields, props) {
+  }
+  _applyChanges(fields, props) {
     const that = this;
     that._processDemandState((dataSource, isInstantlyMode) => {
       fields.forEach(_ref => {
@@ -294,26 +280,26 @@ let FieldChooserBase = exports.FieldChooserBase = /*#__PURE__*/function (_mixinW
         that._changedHandler();
       }
     });
-  };
-  _proto2._applyLocalSortChanges = function _applyLocalSortChanges(fieldIdx, sortOrder) {
+  }
+  _applyLocalSortChanges(fieldIdx, sortOrder) {
     this._processDemandState(dataSource => {
       dataSource.field(fieldIdx, {
         sortOrder
       });
       dataSource.sortLocal();
     });
-  };
-  _proto2._adjustSortableOnChangedArgs = function _adjustSortableOnChangedArgs(e) {
+  }
+  _adjustSortableOnChangedArgs(e) {
     e.removeSourceElement = false;
     e.removeTargetElement = true;
     e.removeSourceClass = false;
-  };
-  _proto2._getSortableOptions = function _getSortableOptions() {
+  }
+  _getSortableOptions() {
     return {
       direction: 'auto'
     };
-  };
-  _proto2.subscribeToEvents = function subscribeToEvents(element) {
+  }
+  subscribeToEvents(element) {
     const that = this;
     const func = function (e) {
       const field = (0, _renderer.default)(e.currentTarget).data('field');
@@ -379,17 +365,17 @@ let FieldChooserBase = exports.FieldChooserBase = /*#__PURE__*/function (_mixinW
       }
     };
     if (element) {
-      _events_engine.default.on(element, _click.name, ".".concat(_const.CLASSES.area.field, ".").concat(_const.CLASSES.area.box), func);
+      _events_engine.default.on(element, _click.name, `.${_const.CLASSES.area.field}.${_const.CLASSES.area.box}`, func);
       return;
     }
-    _events_engine.default.on(that.$element(), _click.name, ".".concat(_const.CLASSES.area.field, ".").concat(_const.CLASSES.area.box), func);
-  };
-  _proto2._initTemplates = function _initTemplates() {};
-  _proto2.addWidgetPrefix = function addWidgetPrefix(className) {
-    return "dx-pivotgrid-".concat(className);
-  };
-  return FieldChooserBase;
-}(mixinWidget);
+    _events_engine.default.on(that.$element(), _click.name, `.${_const.CLASSES.area.field}.${_const.CLASSES.area.box}`, func);
+  }
+  _initTemplates() {}
+  addWidgetPrefix(className) {
+    return `dx-pivotgrid-${className}`;
+  }
+}
+exports.FieldChooserBase = FieldChooserBase;
 (0, _component_registrator.default)('dxPivotGridFieldChooserBase', FieldChooserBase);
 var _default = exports.default = {
   FieldChooserBase

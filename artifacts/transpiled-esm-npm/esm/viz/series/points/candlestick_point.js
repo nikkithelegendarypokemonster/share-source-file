@@ -1,27 +1,27 @@
 import { extend as _extend } from '../../../core/utils/extend';
 import symbolPoint from './symbol_point';
 import barPoint from './bar_point';
-var _math = Math;
-var _abs = _math.abs;
-var _min = _math.min;
-var _max = _math.max;
-var _round = _math.round;
-var DEFAULT_FINANCIAL_TRACKER_MARGIN = 2;
+const _math = Math;
+const _abs = _math.abs;
+const _min = _math.min;
+const _max = _math.max;
+const _round = _math.round;
+const DEFAULT_FINANCIAL_TRACKER_MARGIN = 2;
 export default _extend({}, barPoint, {
   _calculateVisibility: symbolPoint._calculateVisibility,
-  _getContinuousPoints: function _getContinuousPoints(openCoord, closeCoord) {
-    var that = this;
-    var x = that.x;
-    var createPoint = that._options.rotated ? function (x, y) {
+  _getContinuousPoints: function (openCoord, closeCoord) {
+    const that = this;
+    const x = that.x;
+    const createPoint = that._options.rotated ? function (x, y) {
       return [y, x];
     } : function (x, y) {
       return [x, y];
     };
-    var width = that.width;
-    var highCoord = that.highY;
-    var max = _abs(highCoord - openCoord) < _abs(highCoord - closeCoord) ? openCoord : closeCoord;
-    var min = max === closeCoord ? openCoord : closeCoord;
-    var points;
+    const width = that.width;
+    const highCoord = that.highY;
+    const max = _abs(highCoord - openCoord) < _abs(highCoord - closeCoord) ? openCoord : closeCoord;
+    const min = max === closeCoord ? openCoord : closeCoord;
+    let points;
     if (min === max) {
       points = [].concat(createPoint(x, that.highY)).concat(createPoint(x, that.lowY)).concat(createPoint(x, that.closeY)).concat(createPoint(x - width / 2, that.closeY)).concat(createPoint(x + width / 2, that.closeY)).concat(createPoint(x, that.closeY));
     } else {
@@ -29,21 +29,21 @@ export default _extend({}, barPoint, {
     }
     return points;
   },
-  _getCrockPoints: function _getCrockPoints(y) {
-    var that = this;
-    var x = that.x;
-    var createPoint = that._options.rotated ? function (x, y) {
+  _getCrockPoints: function (y) {
+    const that = this;
+    const x = that.x;
+    const createPoint = that._options.rotated ? function (x, y) {
       return [y, x];
     } : function (x, y) {
       return [x, y];
     };
     return [].concat(createPoint(x, that.highY)).concat(createPoint(x, that.lowY)).concat(createPoint(x, y)).concat(createPoint(x - that.width / 2, y)).concat(createPoint(x + that.width / 2, y)).concat(createPoint(x, y));
   },
-  _getPoints: function _getPoints() {
-    var that = this;
-    var points;
-    var closeCoord = that.closeY;
-    var openCoord = that.openY;
+  _getPoints: function () {
+    const that = this;
+    let points;
+    const closeCoord = that.closeY;
+    const openCoord = that.openY;
     if (closeCoord !== null && openCoord !== null) {
       points = that._getContinuousPoints(openCoord, closeCoord);
     } else {
@@ -55,21 +55,21 @@ export default _extend({}, barPoint, {
     }
     return points;
   },
-  getColor: function getColor() {
-    var that = this;
+  getColor: function () {
+    const that = this;
     return that._isReduction ? that._options.reduction.color : that._styles.normal.stroke || that.series.getColor();
   },
-  _drawMarkerInGroup: function _drawMarkerInGroup(group, attributes, renderer) {
-    var that = this;
+  _drawMarkerInGroup: function (group, attributes, renderer) {
+    const that = this;
     that.graphic = renderer.path(that._getPoints(), 'area').attr({
       'stroke-linecap': 'square'
     }).attr(attributes).data({
       'chart-data-point': that
     }).sharp().append(group);
   },
-  _fillStyle: function _fillStyle() {
-    var that = this;
-    var styles = that._options.styles;
+  _fillStyle: function () {
+    const that = this;
+    const styles = that._options.styles;
     if (that._isReduction && that._isPositive) {
       that._styles = styles.reductionPositive;
     } else if (that._isReduction) {
@@ -80,20 +80,20 @@ export default _extend({}, barPoint, {
       that._styles = styles;
     }
   },
-  _getMinTrackerWidth: function _getMinTrackerWidth() {
+  _getMinTrackerWidth: function () {
     return 2 + 2 * this._styles.normal['stroke-width'];
   },
-  correctCoordinates: function correctCoordinates(correctOptions) {
-    var minWidth = this._getMinTrackerWidth();
-    var maxWidth = 10;
-    var width = correctOptions.width;
+  correctCoordinates: function (correctOptions) {
+    const minWidth = this._getMinTrackerWidth();
+    const maxWidth = 10;
+    let width = correctOptions.width;
     width = width < minWidth ? minWidth : width > maxWidth ? maxWidth : width;
     this.width = width + width % 2;
     this.xCorrection = correctOptions.offset;
   },
-  _getMarkerGroup: function _getMarkerGroup(group) {
-    var that = this;
-    var markerGroup;
+  _getMarkerGroup: function (group) {
+    const that = this;
+    let markerGroup;
     if (that._isReduction && that._isPositive) {
       markerGroup = group.reductionPositiveMarkersGroup;
     } else if (that._isReduction) {
@@ -105,18 +105,18 @@ export default _extend({}, barPoint, {
     }
     return markerGroup;
   },
-  _drawMarker: function _drawMarker(renderer, group) {
+  _drawMarker: function (renderer, group) {
     this._drawMarkerInGroup(this._getMarkerGroup(group), this._getStyle(), renderer);
   },
-  _getSettingsForTracker: function _getSettingsForTracker() {
-    var that = this;
-    var highY = that.highY;
-    var lowY = that.lowY;
-    var rotated = that._options.rotated;
-    var x;
-    var y;
-    var width;
-    var height;
+  _getSettingsForTracker: function () {
+    const that = this;
+    let highY = that.highY;
+    let lowY = that.lowY;
+    const rotated = that._options.rotated;
+    let x;
+    let y;
+    let width;
+    let height;
     if (highY === lowY) {
       highY = rotated ? highY + DEFAULT_FINANCIAL_TRACKER_MARGIN : highY - DEFAULT_FINANCIAL_TRACKER_MARGIN;
       lowY = rotated ? lowY - DEFAULT_FINANCIAL_TRACKER_MARGIN : lowY + DEFAULT_FINANCIAL_TRACKER_MARGIN;
@@ -139,26 +139,26 @@ export default _extend({}, barPoint, {
       height: height
     };
   },
-  _getGraphicBBox: function _getGraphicBBox(location) {
-    var that = this;
-    var rotated = that._options.rotated;
-    var x = that.x;
-    var width = that.width;
-    var lowY = that.lowY;
-    var highY = that.highY;
+  _getGraphicBBox: function (location) {
+    const that = this;
+    const rotated = that._options.rotated;
+    const x = that.x;
+    const width = that.width;
+    let lowY = that.lowY;
+    let highY = that.highY;
     if (location) {
-      var valVisibleArea = that.series.getValueAxis().getVisibleArea();
+      const valVisibleArea = that.series.getValueAxis().getVisibleArea();
       highY = that._truncateCoord(highY, valVisibleArea);
       lowY = that._truncateCoord(lowY, valVisibleArea);
     }
-    var bBox = {
+    const bBox = {
       x: !rotated ? x - _round(width / 2) : lowY,
       y: !rotated ? highY : x - _round(width / 2),
       width: !rotated ? width : highY - lowY,
       height: !rotated ? lowY - highY : width
     };
     if (location) {
-      var isTop = location === 'top';
+      const isTop = location === 'top';
       if (!this._options.rotated) {
         bBox.y = isTop ? bBox.y : bBox.y + bBox.height;
         bBox.height = 0;
@@ -169,18 +169,18 @@ export default _extend({}, barPoint, {
     }
     return bBox;
   },
-  getTooltipParams: function getTooltipParams(location) {
-    var that = this;
+  getTooltipParams: function (location) {
+    const that = this;
     if (that.graphic) {
-      var minValue = _min(that.lowY, that.highY);
-      var maxValue = _max(that.lowY, that.highY);
-      var visibleArea = that._getVisibleArea();
-      var rotated = that._options.rotated;
-      var minVisible = rotated ? visibleArea.minX : visibleArea.minY;
-      var maxVisible = rotated ? visibleArea.maxX : visibleArea.maxY;
-      var min = _max(minVisible, minValue);
-      var max = _min(maxVisible, maxValue);
-      var centerCoord = that.getCenterCoord();
+      const minValue = _min(that.lowY, that.highY);
+      const maxValue = _max(that.lowY, that.highY);
+      const visibleArea = that._getVisibleArea();
+      const rotated = that._options.rotated;
+      const minVisible = rotated ? visibleArea.minX : visibleArea.minY;
+      const maxVisible = rotated ? visibleArea.maxX : visibleArea.maxY;
+      const min = _max(minVisible, minValue);
+      const max = _min(maxVisible, maxValue);
+      const centerCoord = that.getCenterCoord();
       if (location === 'edge') {
         centerCoord[rotated ? 'x' : 'y'] = rotated ? max : min;
       }
@@ -190,18 +190,18 @@ export default _extend({}, barPoint, {
   },
   getCenterCoord() {
     if (this.graphic) {
-      var that = this;
-      var x;
-      var y;
-      var minValue = _min(that.lowY, that.highY);
-      var maxValue = _max(that.lowY, that.highY);
-      var visibleArea = that._getVisibleArea();
-      var rotated = that._options.rotated;
-      var minVisible = rotated ? visibleArea.minX : visibleArea.minY;
-      var maxVisible = rotated ? visibleArea.maxX : visibleArea.maxY;
-      var min = _max(minVisible, minValue);
-      var max = _min(maxVisible, maxValue);
-      var center = min + (max - min) / 2;
+      const that = this;
+      let x;
+      let y;
+      const minValue = _min(that.lowY, that.highY);
+      const maxValue = _max(that.lowY, that.highY);
+      const visibleArea = that._getVisibleArea();
+      const rotated = that._options.rotated;
+      const minVisible = rotated ? visibleArea.minX : visibleArea.minY;
+      const maxVisible = rotated ? visibleArea.maxX : visibleArea.maxY;
+      const min = _max(minVisible, minValue);
+      const max = _min(maxVisible, maxValue);
+      const center = min + (max - min) / 2;
       if (rotated) {
         y = that.x;
         x = center;
@@ -215,33 +215,33 @@ export default _extend({}, barPoint, {
       };
     }
   },
-  hasValue: function hasValue() {
+  hasValue: function () {
     return this.highValue !== null && this.lowValue !== null;
   },
-  hasCoords: function hasCoords() {
+  hasCoords: function () {
     return this.x !== null && this.lowY !== null && this.highY !== null;
   },
-  _translate: function _translate() {
-    var that = this;
-    var rotated = that._options.rotated;
-    var valTranslator = that._getValTranslator();
-    var x = that._getArgTranslator().translate(that.argument);
+  _translate: function () {
+    const that = this;
+    const rotated = that._options.rotated;
+    const valTranslator = that._getValTranslator();
+    const x = that._getArgTranslator().translate(that.argument);
     that.vx = that.vy = that.x = x === null ? x : x + (that.xCorrection || 0);
     that.openY = that.openValue !== null ? valTranslator.translate(that.openValue) : null;
     that.highY = valTranslator.translate(that.highValue);
     that.lowY = valTranslator.translate(that.lowValue);
     that.closeY = that.closeValue !== null ? valTranslator.translate(that.closeValue) : null;
-    var centerValue = _min(that.lowY, that.highY) + _abs(that.lowY - that.highY) / 2;
+    const centerValue = _min(that.lowY, that.highY) + _abs(that.lowY - that.highY) / 2;
     that._calculateVisibility(!rotated ? that.x : centerValue, !rotated ? centerValue : that.x);
   },
-  getCrosshairData: function getCrosshairData(x, y) {
-    var that = this;
-    var rotated = that._options.rotated;
-    var origY = rotated ? x : y;
-    var yValue;
-    var argument = that.argument;
-    var coords;
-    var coord = 'low';
+  getCrosshairData: function (x, y) {
+    const that = this;
+    const rotated = that._options.rotated;
+    const origY = rotated ? x : y;
+    let yValue;
+    const argument = that.argument;
+    let coords;
+    let coord = 'low';
     if (_abs(that.lowY - origY) < _abs(that.closeY - origY)) {
       yValue = that.lowY;
     } else {
@@ -274,10 +274,10 @@ export default _extend({}, barPoint, {
     coords.axis = that.series.axis;
     return coords;
   },
-  _updateData: function _updateData(data) {
-    var that = this;
-    var label = that._label;
-    var reductionColor = this._options.reduction.color;
+  _updateData: function (data) {
+    const that = this;
+    const label = that._label;
+    const reductionColor = this._options.reduction.color;
     that.value = that.initialValue = data.reductionValue;
     that.originalValue = data.value;
     that.lowValue = that.originalLowValue = data.lowValue;
@@ -290,16 +290,16 @@ export default _extend({}, barPoint, {
       label.setColor(reductionColor);
     }
   },
-  _updateMarker: function _updateMarker(animationEnabled, style, group) {
-    var that = this;
-    var graphic = that.graphic;
+  _updateMarker: function (animationEnabled, style, group) {
+    const that = this;
+    const graphic = that.graphic;
     graphic.attr({
       points: that._getPoints()
     }).smartAttr(style).sharp();
     group && graphic.append(that._getMarkerGroup(group));
   },
-  _getLabelFormatObject: function _getLabelFormatObject() {
-    var that = this;
+  _getLabelFormatObject: function () {
+    const that = this;
     return {
       openValue: that.openValue,
       highValue: that.highValue,
@@ -317,14 +317,14 @@ export default _extend({}, barPoint, {
       point: that
     };
   },
-  _getFormatObject: function _getFormatObject(tooltip) {
-    var that = this;
-    var highValue = tooltip.formatValue(that.highValue);
-    var openValue = tooltip.formatValue(that.openValue);
-    var closeValue = tooltip.formatValue(that.closeValue);
-    var lowValue = tooltip.formatValue(that.lowValue);
-    var symbolMethods = symbolPoint;
-    var formatObject = symbolMethods._getFormatObject.call(that, tooltip);
+  _getFormatObject: function (tooltip) {
+    const that = this;
+    const highValue = tooltip.formatValue(that.highValue);
+    const openValue = tooltip.formatValue(that.openValue);
+    const closeValue = tooltip.formatValue(that.closeValue);
+    const lowValue = tooltip.formatValue(that.lowValue);
+    const symbolMethods = symbolPoint;
+    const formatObject = symbolMethods._getFormatObject.call(that, tooltip);
     return _extend({}, formatObject, {
       valueText: 'h: ' + highValue + (openValue !== '' ? ' o: ' + openValue : '') + (closeValue !== '' ? ' c: ' + closeValue : '') + ' l: ' + lowValue,
       highValueText: highValue,
@@ -333,10 +333,10 @@ export default _extend({}, barPoint, {
       lowValueText: lowValue
     });
   },
-  getMaxValue: function getMaxValue() {
+  getMaxValue: function () {
     return this.highValue;
   },
-  getMinValue: function getMinValue() {
+  getMinValue: function () {
     return this.lowValue;
   }
 });

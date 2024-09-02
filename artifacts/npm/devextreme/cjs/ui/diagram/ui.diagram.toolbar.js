@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/diagram/ui.diagram.toolbar.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -23,20 +23,13 @@ require("../select_box");
 require("../color_box");
 require("../check_box");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const ACTIVE_FORMAT_CLASS = 'dx-format-active';
 const DIAGRAM_TOOLBAR_CLASS = 'dx-diagram-toolbar';
 const DIAGRAM_TOOLBAR_SEPARATOR_CLASS = 'dx-diagram-toolbar-separator';
 const DIAGRAM_TOOLBAR_MENU_SEPARATOR_CLASS = 'dx-diagram-toolbar-menu-separator';
 const DIAGRAM_MOBILE_TOOLBAR_COLOR_BOX_OPENED_CLASS = 'dx-diagram-mobile-toolbar-color-box-opened';
-let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
-  _inheritsLoose(DiagramToolbar, _DiagramPanel);
-  function DiagramToolbar() {
-    return _DiagramPanel.apply(this, arguments) || this;
-  }
-  var _proto = DiagramToolbar.prototype;
-  _proto._init = function _init() {
+class DiagramToolbar extends _uiDiagram.default {
+  _init() {
     this._commands = [];
     this._itemHelpers = {};
     this._commandContextMenus = {};
@@ -46,10 +39,10 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
     this._createOnInternalCommand();
     this._createOnCustomCommand();
     this._createOnSubMenuVisibilityChangingAction();
-    _DiagramPanel.prototype._init.call(this);
-  };
-  _proto._initMarkup = function _initMarkup() {
-    _DiagramPanel.prototype._initMarkup.call(this);
+    super._init();
+  }
+  _initMarkup() {
+    super._initMarkup();
     const isServerSide = !(0, _window.hasWindow)();
     if (!this.option('skipAdjustSize') && !isServerSide) {
       (0, _size.setWidth)(this.$element(), '');
@@ -64,14 +57,14 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
       const $toolbarContent = this.$element().find('.dx-toolbar-before');
       (0, _size.setWidth)(this.$element(), (0, _size.getWidth)($toolbarContent));
     }
-  };
-  _proto._createMainElement = function _createMainElement() {
+  }
+  _createMainElement() {
     return (0, _renderer.default)('<div>').addClass(DIAGRAM_TOOLBAR_CLASS).appendTo(this._$element);
-  };
-  _proto._getCommands = function _getCommands() {
+  }
+  _getCommands() {
     return this.option('commands') || [];
-  };
-  _proto._renderToolbar = function _renderToolbar($toolbar) {
+  }
+  _renderToolbar($toolbar) {
     const beforeCommands = this._commands.filter(command => ['after', 'center'].indexOf(command.location) === -1);
     const centerCommands = this._commands.filter(command => command.location === 'center');
     const afterCommands = this._commands.filter(command => command.location === 'after');
@@ -79,14 +72,14 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
     this._toolbarInstance = this._createComponent($toolbar, _toolbar.default, {
       dataSource
     });
-  };
-  _proto._prepareToolbarItems = function _prepareToolbarItems(items, location, actionHandler) {
+  }
+  _prepareToolbarItems(items, location, actionHandler) {
     return items.map(item => (0, _extend.extend)(true, {
       location: location,
       locateInMenu: this.option('locateInMenu')
     }, this._createItem(item, location, actionHandler), this._createItemOptions(item), this._createItemActionOptions(item, actionHandler)));
-  };
-  _proto._createItem = function _createItem(item, location, actionHandler) {
+  }
+  _createItem(item, location, actionHandler) {
     if (item.getCommandValue || item.getEditorValue || item.getEditorDisplayValue) {
       this._valueConverters[item.command] = {
         getCommandValue: item.getCommandValue,
@@ -119,8 +112,8 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
         onContentReady: e => this._onItemContentReady(e.component, item, actionHandler)
       }
     };
-  };
-  _proto._createItemOptions = function _createItemOptions(_ref) {
+  }
+  _createItemOptions(_ref) {
     let {
       widget,
       command,
@@ -142,8 +135,8 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
         showText: showText || 'inMenu'
       };
     }
-  };
-  _proto._createSelectBoxItemOptions = function _createSelectBoxItemOptions(command, hint, items, valueExpr, displayExpr) {
+  }
+  _createSelectBoxItemOptions(command, hint, items, valueExpr, displayExpr) {
     let options = this._createTextEditorItemOptions(hint);
     options = (0, _extend.extend)(true, options, {
       options: {
@@ -166,14 +159,14 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
           },
           itemTemplate: (data, index, container) => {
             (0, _renderer.default)(container).attr('title', data.hint);
-            return "<i class=\"".concat(data.icon, "\"></i>");
+            return `<i class="${data.icon}"></i>`;
           }
         }
       });
     }
     return options;
-  };
-  _proto._createTextBoxItemOptions = function _createTextBoxItemOptions(command, hint) {
+  }
+  _createTextBoxItemOptions(command, hint) {
     let options = this._createTextEditorItemOptions(hint);
     options = (0, _extend.extend)(true, options, {
       options: {
@@ -198,8 +191,8 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
       }
     });
     return options;
-  };
-  _proto._createColorBoxItemOptions = function _createColorBoxItemOptions(command, hint, icon) {
+  }
+  _createColorBoxItemOptions(command, hint, icon) {
     let options = this._createTextEditorItemOptions(hint);
     if (icon) {
       options = (0, _extend.extend)(true, options, {
@@ -228,16 +221,16 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
       }
     });
     return options;
-  };
-  _proto._createTextEditorItemOptions = function _createTextEditorItemOptions(hint) {
+  }
+  _createTextEditorItemOptions(hint) {
     return {
       options: {
         stylingMode: this.option('editorStylingMode'),
         hint: hint
       }
     };
-  };
-  _proto._createItemActionOptions = function _createItemActionOptions(item, handler) {
+  }
+  _createItemActionOptions(item, handler) {
     switch (item.widget) {
       case 'dxSelectBox':
       case 'dxColorBox':
@@ -269,19 +262,19 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
           }
         };
     }
-  };
-  _proto._toggleContextMenu = function _toggleContextMenu(contextMenu) {
+  }
+  _toggleContextMenu(contextMenu) {
     this._contextMenuList.forEach(cm => {
       if (contextMenu !== cm) {
         cm.hide();
       }
     });
     contextMenu.toggle();
-  };
-  _proto._onItemInitialized = function _onItemInitialized(widget, item) {
+  }
+  _onItemInitialized(widget, item) {
     this._addItemHelper(item.command, new DiagramToolbarItemHelper(widget));
-  };
-  _proto._onItemContentReady = function _onItemContentReady(widget, item, actionHandler) {
+  }
+  _onItemContentReady(widget, item, actionHandler) {
     if ((widget.NAME === 'dxButton' || widget.NAME === 'dxTextBox') && item.items) {
       const isTouchMode = this._isTouchMode();
       const $menuContainer = (0, _renderer.default)('<div>').appendTo(this.$element());
@@ -342,29 +335,29 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
         }
       }
     }
-  };
-  _proto._isTouchMode = function _isTouchMode() {
+  }
+  _isTouchMode() {
     const {
       Browser
     } = (0, _diagram2.getDiagram)();
     return Browser.TouchUI;
-  };
-  _proto._onContextMenuInitialized = function _onContextMenuInitialized(widget, item, rootWidget) {
+  }
+  _onContextMenuInitialized(widget, item, rootWidget) {
     this._contextMenuList.push(widget);
     if (item.command) {
       this._commandContextMenus[item.command] = widget;
     }
     this._addContextMenuHelper(item, widget, [], rootWidget);
-  };
-  _proto._addItemHelper = function _addItemHelper(command, helper) {
+  }
+  _addItemHelper(command, helper) {
     if (command !== undefined) {
       if (this._itemHelpers[command]) {
         throw new Error('Toolbar cannot contain duplicated commands.');
       }
       this._itemHelpers[command] = helper;
     }
-  };
-  _proto._addContextMenuHelper = function _addContextMenuHelper(item, widget, indexPath, rootWidget) {
+  }
+  _addContextMenuHelper(item, widget, indexPath, rootWidget) {
     if (item.items) {
       item.items.forEach((subItem, index) => {
         const itemIndexPath = indexPath.concat(index);
@@ -372,12 +365,12 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
         this._addContextMenuHelper(subItem, widget, itemIndexPath, rootWidget);
       });
     }
-  };
-  _proto._onContextMenuDisposing = function _onContextMenuDisposing(widget, item) {
+  }
+  _onContextMenuDisposing(widget, item) {
     this._contextMenuList.splice(this._contextMenuList.indexOf(widget), 1);
     delete this._commandContextMenus[item.command];
-  };
-  _proto._executeCommand = function _executeCommand(command, name, value) {
+  }
+  _executeCommand(command, name, value) {
     if (this._updateLocked) return;
     if (typeof command === 'number') {
       const valueConverter = this._valueConverters[command];
@@ -395,28 +388,28 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
         name
       });
     }
-  };
-  _proto._createOnInternalCommand = function _createOnInternalCommand() {
+  }
+  _createOnInternalCommand() {
     this._onInternalCommandAction = this._createActionByOption('onInternalCommand');
-  };
-  _proto._createOnCustomCommand = function _createOnCustomCommand() {
+  }
+  _createOnCustomCommand() {
     this._onCustomCommandAction = this._createActionByOption('onCustomCommand');
-  };
-  _proto._setItemEnabled = function _setItemEnabled(command, enabled) {
+  }
+  _setItemEnabled(command, enabled) {
     if (command in this._itemHelpers) {
       const helper = this._itemHelpers[command];
       if (helper.canUpdate(this._showingSubMenu)) {
         helper.setEnabled(enabled);
       }
     }
-  };
-  _proto._setEnabled = function _setEnabled(enabled) {
+  }
+  _setEnabled(enabled) {
     this._toolbarInstance.option('disabled', !enabled);
     this._contextMenuList.forEach(contextMenu => {
       contextMenu.option('disabled', !enabled);
     });
-  };
-  _proto._setItemValue = function _setItemValue(command, value) {
+  }
+  _setItemValue(command, value) {
     try {
       this._updateLocked = true;
       if (command in this._itemHelpers) {
@@ -437,8 +430,8 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
     } finally {
       this._updateLocked = false;
     }
-  };
-  _proto._setItemSubItems = function _setItemSubItems(command, items) {
+  }
+  _setItemSubItems(command, items) {
     this._updateLocked = true;
     if (command in this._itemHelpers) {
       const helper = this._itemHelpers[command];
@@ -448,11 +441,11 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
       }
     }
     this._updateLocked = false;
-  };
-  _proto._createOnSubMenuVisibilityChangingAction = function _createOnSubMenuVisibilityChangingAction() {
+  }
+  _createOnSubMenuVisibilityChangingAction() {
     this._onSubMenuVisibilityChangingAction = this._createActionByOption('onSubMenuVisibilityChanging');
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _optionChanged(args) {
     switch (args.name) {
       case 'isMobileView':
         (0, _renderer.default)('body').removeClass(DIAGRAM_MOBILE_TOOLBAR_COLOR_BOX_OPENED_CLASS);
@@ -474,11 +467,11 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
       case 'export':
         break;
       default:
-        _DiagramPanel.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  _proto._getDefaultOptions = function _getDefaultOptions() {
-    return (0, _extend.extend)(_DiagramPanel.prototype._getDefaultOptions.call(this), {
+  }
+  _getDefaultOptions() {
+    return (0, _extend.extend)(super._getDefaultOptions(), {
       isMobileView: false,
       export: {
         fileName: 'Diagram'
@@ -489,50 +482,42 @@ let DiagramToolbar = /*#__PURE__*/function (_DiagramPanel) {
       editorStylingMode: 'filled',
       skipAdjustSize: false
     });
-  };
-  _proto.setCommandChecked = function setCommandChecked(command, checked) {
-    this._setItemValue(command, checked);
-  };
-  _proto.setCommandEnabled = function setCommandEnabled(command, enabled) {
-    this._setItemEnabled(command, enabled);
-  };
-  return DiagramToolbar;
-}(_uiDiagram.default);
-let DiagramToolbarBar = /*#__PURE__*/function (_DiagramBar) {
-  _inheritsLoose(DiagramToolbarBar, _DiagramBar);
-  function DiagramToolbarBar() {
-    return _DiagramBar.apply(this, arguments) || this;
   }
-  var _proto2 = DiagramToolbarBar.prototype;
-  _proto2.getCommandKeys = function getCommandKeys() {
+  setCommandChecked(command, checked) {
+    this._setItemValue(command, checked);
+  }
+  setCommandEnabled(command, enabled) {
+    this._setItemEnabled(command, enabled);
+  }
+}
+class DiagramToolbarBar extends _diagram.default {
+  getCommandKeys() {
     return this._getKeys(this._owner._commands);
-  };
-  _proto2.setItemValue = function setItemValue(key, value) {
+  }
+  setItemValue(key, value) {
     this._owner._setItemValue(key, value);
-  };
-  _proto2.setItemEnabled = function setItemEnabled(key, enabled) {
+  }
+  setItemEnabled(key, enabled) {
     this._owner._setItemEnabled(key, enabled);
-  };
-  _proto2.setEnabled = function setEnabled(enabled) {
+  }
+  setEnabled(enabled) {
     this._owner._setEnabled(enabled);
-  };
-  _proto2.setItemSubItems = function setItemSubItems(key, items) {
+  }
+  setItemSubItems(key, items) {
     this._owner._setItemSubItems(key, items);
-  };
-  return DiagramToolbarBar;
-}(_diagram.default);
-let DiagramToolbarItemHelper = /*#__PURE__*/function () {
-  function DiagramToolbarItemHelper(widget) {
+  }
+}
+class DiagramToolbarItemHelper {
+  constructor(widget) {
     this._widget = widget;
   }
-  var _proto3 = DiagramToolbarItemHelper.prototype;
-  _proto3.canUpdate = function canUpdate(showingSubMenu) {
+  canUpdate(showingSubMenu) {
     return showingSubMenu === undefined;
-  };
-  _proto3.setEnabled = function setEnabled(enabled) {
+  }
+  setEnabled(enabled) {
     this._widget.option('disabled', !enabled);
-  };
-  _proto3.setValue = function setValue(value, displayValue, contextMenu, rootCommandKey) {
+  }
+  setValue(value, displayValue, contextMenu, rootCommandKey) {
     if ('value' in this._widget.option()) {
       this._updateEditorValue(value, displayValue);
     } else if (value !== undefined) {
@@ -541,18 +526,18 @@ let DiagramToolbarItemHelper = /*#__PURE__*/function () {
     if (contextMenu) {
       this._updateContextMenuItemValue(contextMenu, '', rootCommandKey, value);
     }
-  };
-  _proto3.setItems = function setItems(items, contextMenu, rootCommandKey) {
+  }
+  setItems(items, contextMenu, rootCommandKey) {
     if (contextMenu) {
       this._updateContextMenuItems(contextMenu, '', rootCommandKey, items);
     } else {
       this._updateEditorItems(items);
     }
-  };
-  _proto3._updateContextMenuItems = function _updateContextMenuItems(contextMenu, itemOptionText, rootCommandKey, items) {
+  }
+  _updateContextMenuItems(contextMenu, itemOptionText, rootCommandKey, items) {
     _uiDiagram2.default.updateContextMenuItems(contextMenu, itemOptionText, rootCommandKey, items);
-  };
-  _proto3._updateEditorItems = function _updateEditorItems(items) {
+  }
+  _updateEditorItems(items) {
     if ('items' in this._widget.option()) {
       this._widget.option('items', items.map(item => {
         return {
@@ -561,61 +546,55 @@ let DiagramToolbarItemHelper = /*#__PURE__*/function () {
         };
       }));
     }
-  };
-  _proto3._updateEditorValue = function _updateEditorValue(value, displayValue) {
+  }
+  _updateEditorValue(value, displayValue) {
     this._widget.option('value', value);
     if (!this._widget.option('selectedItem') && displayValue) {
       this._widget.option('value', displayValue);
     }
-  };
-  _proto3._updateButtonValue = function _updateButtonValue(value) {
+  }
+  _updateButtonValue(value) {
     if (this._widget.option('iconChecked') && this._widget.option('iconUnchecked')) {
       this._widget.option('icon', value ? this._widget.option('iconChecked') : this._widget.option('iconUnchecked'));
     } else {
       this._widget.$element().toggleClass(ACTIVE_FORMAT_CLASS, value);
     }
-  };
-  _proto3._updateContextMenuItemValue = function _updateContextMenuItemValue(contextMenu, itemOptionText, rootCommandKey, value) {
-    _uiDiagram2.default.updateContextMenuItemValue(contextMenu, itemOptionText, rootCommandKey, value);
-  };
-  return DiagramToolbarItemHelper;
-}();
-let DiagramToolbarSubItemHelper = /*#__PURE__*/function (_DiagramToolbarItemHe) {
-  _inheritsLoose(DiagramToolbarSubItemHelper, _DiagramToolbarItemHe);
-  function DiagramToolbarSubItemHelper(widget, indexPath, rootCommandKey, rootWidget) {
-    var _this;
-    _this = _DiagramToolbarItemHe.call(this, widget) || this;
-    _this._indexPath = indexPath;
-    _this._rootCommandKey = rootCommandKey;
-    _this._rootWidget = rootWidget;
-    return _this;
   }
-  var _proto4 = DiagramToolbarSubItemHelper.prototype;
-  _proto4.canUpdate = function canUpdate(showingSubMenu) {
-    return _DiagramToolbarItemHe.prototype.canUpdate.call(this, showingSubMenu) || showingSubMenu === this._widget;
-  };
-  _proto4.setEnabled = function setEnabled(enabled) {
+  _updateContextMenuItemValue(contextMenu, itemOptionText, rootCommandKey, value) {
+    _uiDiagram2.default.updateContextMenuItemValue(contextMenu, itemOptionText, rootCommandKey, value);
+  }
+}
+class DiagramToolbarSubItemHelper extends DiagramToolbarItemHelper {
+  constructor(widget, indexPath, rootCommandKey, rootWidget) {
+    super(widget);
+    this._indexPath = indexPath;
+    this._rootCommandKey = rootCommandKey;
+    this._rootWidget = rootWidget;
+  }
+  canUpdate(showingSubMenu) {
+    return super.canUpdate(showingSubMenu) || showingSubMenu === this._widget;
+  }
+  setEnabled(enabled) {
     this._widget.option(this._getItemOptionText() + 'disabled', !enabled);
     const rootEnabled = this._hasEnabledCommandItems(this._widget.option('items'));
     this._rootWidget.option('disabled', !rootEnabled);
-  };
-  _proto4._hasEnabledCommandItems = function _hasEnabledCommandItems(items) {
+  }
+  _hasEnabledCommandItems(items) {
     if (items) {
       return items.some(item => item.command !== undefined && !item.disabled || this._hasEnabledCommandItems(item.items));
     }
     return false;
-  };
-  _proto4.setValue = function setValue(value) {
+  }
+  setValue(value) {
     this._updateContextMenuItemValue(this._widget, this._getItemOptionText(), this._rootCommandKey, value);
-  };
-  _proto4.setItems = function setItems(items) {
+  }
+  setItems(items) {
     this._updateContextMenuItems(this._widget, this._getItemOptionText(), this._rootCommandKey, items);
-  };
-  _proto4._getItemOptionText = function _getItemOptionText() {
+  }
+  _getItemOptionText() {
     return _uiDiagram2.default.getItemOptionText(this._widget, this._indexPath);
-  };
-  return DiagramToolbarSubItemHelper;
-}(DiagramToolbarItemHelper);
+  }
+}
 var _default = exports.default = DiagramToolbar;
 module.exports = exports.default;
 module.exports.default = exports.default;

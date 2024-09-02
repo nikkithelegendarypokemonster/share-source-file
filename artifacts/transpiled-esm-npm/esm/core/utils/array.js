@@ -3,45 +3,44 @@ import { orderEach } from './object';
 import config from '../config';
 function createOccurrenceMap(array) {
   return array.reduce((map, value) => {
-    var _map$get;
-    var count = ((_map$get = map.get(value)) !== null && _map$get !== void 0 ? _map$get : 0) + 1;
+    const count = (map.get(value) ?? 0) + 1;
     map.set(value, count);
     return map;
   }, new Map());
 }
-export var wrapToArray = function wrapToArray(item) {
+export const wrapToArray = function (item) {
   return Array.isArray(item) ? item : [item];
 };
-export var getUniqueValues = function getUniqueValues(values) {
+export const getUniqueValues = function (values) {
   return [...new Set(values)];
 };
-export var getIntersection = function getIntersection(firstArray, secondArray) {
-  var toRemoveMap = createOccurrenceMap(secondArray);
+export const getIntersection = function (firstArray, secondArray) {
+  const toRemoveMap = createOccurrenceMap(secondArray);
   return firstArray.filter(value => {
-    var occurrencesCount = toRemoveMap.get(value);
+    const occurrencesCount = toRemoveMap.get(value);
     occurrencesCount && toRemoveMap.set(value, occurrencesCount - 1);
     return occurrencesCount;
   });
 };
-export var removeDuplicates = function removeDuplicates() {
-  var from = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-  var toRemove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  var toRemoveMap = createOccurrenceMap(toRemove);
+export const removeDuplicates = function () {
+  let from = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  let toRemove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  const toRemoveMap = createOccurrenceMap(toRemove);
   return from.filter(value => {
-    var occurrencesCount = toRemoveMap.get(value);
+    const occurrencesCount = toRemoveMap.get(value);
     occurrencesCount && toRemoveMap.set(value, occurrencesCount - 1);
     return !occurrencesCount;
   });
 };
-export var normalizeIndexes = function normalizeIndexes(items, indexPropName, currentItem, needIndexCallback) {
-  var indexedItems = {};
-  var {
+export const normalizeIndexes = function (items, indexPropName, currentItem, needIndexCallback) {
+  const indexedItems = {};
+  const {
     useLegacyVisibleIndex
   } = config();
-  var currentIndex = 0;
-  var shouldUpdateIndex = item => !isDefined(item[indexPropName]) && (!needIndexCallback || needIndexCallback(item));
+  let currentIndex = 0;
+  const shouldUpdateIndex = item => !isDefined(item[indexPropName]) && (!needIndexCallback || needIndexCallback(item));
   items.forEach(item => {
-    var index = item[indexPropName];
+    const index = item[indexPropName];
     if (index >= 0) {
       indexedItems[index] = indexedItems[index] || [];
       if (item === currentItem) {
@@ -80,11 +79,10 @@ export var normalizeIndexes = function normalizeIndexes(items, indexPropName, cu
     });
   }
 };
-export var groupBy = (array, getGroupName) => {
+export const groupBy = (array, getGroupName) => {
   return array.reduce((groupedResult, item) => {
-    var _groupedResult$groupN;
-    var groupName = getGroupName(item);
-    groupedResult[groupName] = (_groupedResult$groupN = groupedResult[groupName]) !== null && _groupedResult$groupN !== void 0 ? _groupedResult$groupN : [];
+    const groupName = getGroupName(item);
+    groupedResult[groupName] = groupedResult[groupName] ?? [];
     groupedResult[groupName].push(item);
     return groupedResult;
   }, {});

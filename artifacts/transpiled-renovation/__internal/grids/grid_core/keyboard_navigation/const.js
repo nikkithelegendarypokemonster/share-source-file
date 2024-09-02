@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.WIDGET_CLASS = exports.VIRTUAL_ROW_CLASS = exports.ROW_CLASS = exports.ROWS_VIEW_CLASS = exports.REVERT_BUTTON_CLASS = exports.NON_FOCUSABLE_ELEMENTS_SELECTOR = exports.MASTER_DETAIL_ROW_CLASS = exports.MASTER_DETAIL_CELL_CLASS = exports.INTERACTIVE_ELEMENTS_SELECTOR = exports.HEADER_ROW_CLASS = exports.GROUP_ROW_CLASS = exports.GROUP_FOOTER_CLASS = exports.FUNCTIONAL_KEYS = exports.FREESPACE_ROW_CLASS = exports.FOCUS_TYPE_ROW = exports.FOCUS_TYPE_CELL = exports.FOCUS_STATE_CLASS = exports.FOCUSED_CLASS = exports.FAST_EDITING_DELETE_KEY = exports.EDIT_MODE_FORM = exports.EDIT_FORM_ITEM_CLASS = exports.EDIT_FORM_CLASS = exports.EDITOR_CELL_CLASS = exports.DROPDOWN_EDITOR_OVERLAY_CLASS = exports.DATEBOX_WIDGET_NAME = exports.DATA_ROW_CLASS = exports.COMMAND_SELECT_CLASS = exports.COMMAND_EXPAND_CLASS = exports.COMMAND_EDIT_CLASS = exports.COMMAND_CELL_SELECTOR = exports.COLUMN_HEADERS_VIEW = exports.CELL_FOCUS_DISABLED_CLASS = exports.ATTRIBUTES = exports.ADAPTIVE_COLUMN_NAME_CLASS = void 0;
+exports.WIDGET_CLASS = exports.VIRTUAL_ROW_CLASS = exports.ROW_CLASS = exports.ROWS_VIEW_CLASS = exports.ROWS_VIEW = exports.REVERT_BUTTON_CLASS = exports.NON_FOCUSABLE_ELEMENTS_SELECTOR = exports.MASTER_DETAIL_ROW_CLASS = exports.MASTER_DETAIL_CELL_CLASS = exports.INTERACTIVE_ELEMENTS_SELECTOR = exports.HEADER_ROW_CLASS = exports.GROUP_ROW_CLASS = exports.GROUP_FOOTER_CLASS = exports.FUNCTIONAL_KEYS = exports.FREESPACE_ROW_CLASS = exports.FOCUS_TYPE_ROW = exports.FOCUS_TYPE_CELL = exports.FOCUS_STATE_CLASS = exports.FOCUSED_CLASS = exports.FAST_EDITING_DELETE_KEY = exports.EDIT_MODE_FORM = exports.EDIT_FORM_ITEM_CLASS = exports.EDIT_FORM_CLASS = exports.EDITOR_CELL_CLASS = exports.DROPDOWN_EDITOR_OVERLAY_CLASS = exports.DATEBOX_WIDGET_NAME = exports.DATA_ROW_CLASS = exports.COMMAND_SELECT_CLASS = exports.COMMAND_EXPAND_CLASS = exports.COMMAND_EDIT_CLASS = exports.COMMAND_CELL_SELECTOR = exports.COLUMN_HEADERS_VIEW = exports.CELL_FOCUS_DISABLED_CLASS = exports.ATTRIBUTES = exports.ADAPTIVE_COLUMN_NAME_CLASS = void 0;
 const ATTRIBUTES = exports.ATTRIBUTES = {
   ariaColIndex: 'aria-colindex',
   dragCell: 'dx-drag-cell'
@@ -34,10 +34,19 @@ const WIDGET_CLASS = exports.WIDGET_CLASS = 'dx-widget';
 const REVERT_BUTTON_CLASS = exports.REVERT_BUTTON_CLASS = 'dx-revert-button';
 const FOCUSED_CLASS = exports.FOCUSED_CLASS = 'dx-focused';
 const FAST_EDITING_DELETE_KEY = exports.FAST_EDITING_DELETE_KEY = 'delete';
-const INTERACTIVE_ELEMENTS_SELECTOR = exports.INTERACTIVE_ELEMENTS_SELECTOR = "\n  input:not([type=\"hidden\"]):not([disabled]),\n  textarea:not([disabled]),\n  a:not([disabled]),\n  select:not([disabled]),\n  button:not([disabled]),\n  [tabindex]:not([disabled]),\n  .dx-checkbox:not([disabled],.dx-state-readonly)\n";
-const NON_FOCUSABLE_ELEMENTS_SELECTOR = exports.NON_FOCUSABLE_ELEMENTS_SELECTOR = "".concat(INTERACTIVE_ELEMENTS_SELECTOR, ", .dx-dropdowneditor-icon");
+const INTERACTIVE_ELEMENTS_SELECTOR = exports.INTERACTIVE_ELEMENTS_SELECTOR = `
+  input:not([type="hidden"]):not([disabled]),
+  textarea:not([disabled]),
+  a:not([disabled]),
+  select:not([disabled]),
+  button:not([disabled]),
+  [tabindex]:not([disabled]),
+  .dx-checkbox:not([disabled],.dx-state-readonly)
+`;
+const NON_FOCUSABLE_ELEMENTS_SELECTOR = exports.NON_FOCUSABLE_ELEMENTS_SELECTOR = `${INTERACTIVE_ELEMENTS_SELECTOR}, .dx-dropdowneditor-icon`;
 const EDIT_MODE_FORM = exports.EDIT_MODE_FORM = 'form';
 const FOCUS_TYPE_ROW = exports.FOCUS_TYPE_ROW = 'row';
 const FOCUS_TYPE_CELL = exports.FOCUS_TYPE_CELL = 'cell';
 const COLUMN_HEADERS_VIEW = exports.COLUMN_HEADERS_VIEW = 'columnHeadersView';
+const ROWS_VIEW = exports.ROWS_VIEW = 'rowsView';
 const FUNCTIONAL_KEYS = exports.FUNCTIONAL_KEYS = ['shift', 'control', 'alt'];

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/renovation/ui/scroll_view/scroll_view.j.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -36,7 +36,7 @@ export default class ScrollView extends ScrollViewWrapper {
   }
   scrollToElement(element, offset) {
     var _this$viewRef7;
-    var params = [this._patchElementParam(element), offset];
+    const params = [this._patchElementParam(element), offset];
     return (_this$viewRef7 = this.viewRef) === null || _this$viewRef7 === void 0 ? void 0 : _this$viewRef7.scrollToElement(...params.slice(0, arguments.length));
   }
   scrollHeight() {

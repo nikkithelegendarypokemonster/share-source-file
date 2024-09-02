@@ -661,7 +661,7 @@ const DataController = exports.DataController = _class.default.inherit(function 
       });
     },
     _processPagingForExpandedPaths(options, area, storeLoadOptions, reload) {
-      const expandedPaths = options["".concat(area, "ExpandedPaths")];
+      const expandedPaths = options[`${area}ExpandedPaths`];
       const expandedSkips = expandedPaths.map(() => 0);
       const expandedTakes = expandedPaths.map(() => reload ? options.pageSize : 0);
       const skips = [];
@@ -676,19 +676,19 @@ const DataController = exports.DataController = _class.default.inherit(function 
       this._savePagingForExpandedPaths(options, area, storeLoadOptions, skips[0], takes[0], expandedSkips, expandedTakes);
     },
     _savePagingForExpandedPaths(options, area, storeLoadOptions, skip, take, expandedSkips, expandedTakes) {
-      const expandedPaths = options["".concat(area, "ExpandedPaths")];
-      options["".concat(area, "ExpandedPaths")] = [];
-      options["".concat(area, "Skip")] = skip !== undefined ? skip : options["".concat(area, "Skip")];
-      options["".concat(area, "Take")] = take !== undefined ? take : options["".concat(area, "Take")];
+      const expandedPaths = options[`${area}ExpandedPaths`];
+      options[`${area}ExpandedPaths`] = [];
+      options[`${area}Skip`] = skip !== undefined ? skip : options[`${area}Skip`];
+      options[`${area}Take`] = take !== undefined ? take : options[`${area}Take`];
       for (let i = 0; i < expandedPaths.length; i += 1) {
         if (expandedTakes[i]) {
           const isOppositeArea = options.area && options.area !== area;
           storeLoadOptions.push((0, _extend.extend)({
             area,
-            headerName: "".concat(area, "s")
+            headerName: `${area}s`
           }, options, {
-            ["".concat(area, "Skip")]: expandedSkips[i],
-            ["".concat(area, "Take")]: expandedTakes[i],
+            [`${area}Skip`]: expandedSkips[i],
+            [`${area}Take`]: expandedTakes[i],
             [isOppositeArea ? 'oppositePath' : 'path']: expandedPaths[i]
           }));
         }
@@ -773,12 +773,12 @@ const DataController = exports.DataController = _class.default.inherit(function 
       this._columnsScrollController.setViewportPosition(left || 0);
     },
     subscribeToWindowScrollEvents($element) {
-      var _a;
-      (_a = this._rowsScrollController) === null || _a === void 0 ? void 0 : _a.subscribeToWindowScrollEvents($element);
+      var _this$_rowsScrollCont;
+      (_this$_rowsScrollCont = this._rowsScrollController) === null || _this$_rowsScrollCont === void 0 || _this$_rowsScrollCont.subscribeToWindowScrollEvents($element);
     },
     updateWindowScrollPosition(position) {
-      var _a;
-      (_a = this._rowsScrollController) === null || _a === void 0 ? void 0 : _a.scrollTo(position);
+      var _this$_rowsScrollCont2;
+      (_this$_rowsScrollCont2 = this._rowsScrollController) === null || _this$_rowsScrollCont2 === void 0 || _this$_rowsScrollCont2.scrollTo(position);
     },
     updateViewOptions(options) {
       (0, _extend.extend)(this._options, options);
@@ -925,6 +925,8 @@ const DataController = exports.DataController = _class.default.inherit(function 
       if (scrollController && !getAllData) {
         const startIndex = scrollController.beginPageIndex() * that.rowPageSize();
         const endIndex = scrollController.endPageIndex() * that.rowPageSize() + that.rowPageSize();
+        const summaryFields = that._dataSource.getSummaryFields();
+        const isRowDataFieldArea = this._options.dataFieldArea === 'row';
         const newRowsInfo = [];
         let maxDepth = 1;
         foreachRowInfo(rowsInfo, (rowInfo, visibleIndex, rowIndex, _, columnIndex) => {
@@ -943,7 +945,10 @@ const DataController = exports.DataController = _class.default.inherit(function 
               });
             }
             newRowsInfo[index].push(cell);
-            maxDepth = math.max(maxDepth, columnIndex + 1);
+            const isSummaryCell = summaryFields.some(field => field.caption === cell.text);
+            if (!isRowDataFieldArea || !isSummaryCell) {
+              maxDepth = math.max(maxDepth, columnIndex + 1);
+            }
           } else {
             return false;
           }

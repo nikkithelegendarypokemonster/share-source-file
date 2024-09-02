@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/file_manager/ui.file_manager.item_list.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -16,8 +16,8 @@ import { getImageContainer } from '../../core/utils/icon';
 import devices from '../../core/devices';
 import CustomStore from '../../data/custom_store';
 import Widget from '../widget/ui.widget';
-var FILE_MANAGER_FILES_VIEW_CLASS = 'dx-filemanager-files-view';
-var FILE_MANAGER_ITEM_LIST_ITEM_OPEN_EVENT_NAMESPACE = 'dxFileManager_open';
+const FILE_MANAGER_FILES_VIEW_CLASS = 'dx-filemanager-files-view';
+const FILE_MANAGER_ITEM_LIST_ITEM_OPEN_EVENT_NAMESPACE = 'dxFileManager_open';
 class FileManagerItemListBase extends Widget {
   _init() {
     this._initActions();
@@ -28,7 +28,7 @@ class FileManagerItemListBase extends Widget {
   _initMarkup() {
     this._needResetScrollPosition = false;
     this.$element().addClass(FILE_MANAGER_FILES_VIEW_CLASS);
-    var dblClickEventName = addNamespace(dblClickName, FILE_MANAGER_ITEM_LIST_ITEM_OPEN_EVENT_NAMESPACE);
+    const dblClickEventName = addNamespace(dblClickName, FILE_MANAGER_ITEM_LIST_ITEM_OPEN_EVENT_NAMESPACE);
     eventsEngine.on(this.$element(), dblClickEventName, this._getItemSelector(), this._onItemDblClick.bind(this));
     super._initMarkup();
   }
@@ -58,7 +58,7 @@ class FileManagerItemListBase extends Widget {
     });
   }
   _optionChanged(args) {
-    var name = args.name;
+    const name = args.name;
     switch (name) {
       case 'selectionMode':
       case 'contextMenu':
@@ -92,7 +92,7 @@ class FileManagerItemListBase extends Widget {
       if (this._itemCount === 0) {
         this._resetFocus();
       }
-      var parentDirectoryItem = this._findParentDirectoryItem(itemInfos);
+      const parentDirectoryItem = this._findParentDirectoryItem(itemInfos);
       this._hasParentDirectoryItem = !!parentDirectoryItem;
       this._parentDirectoryItemKey = parentDirectoryItem ? parentDirectoryItem.fileItem.key : null;
     }).always(() => {
@@ -100,8 +100,8 @@ class FileManagerItemListBase extends Widget {
     });
   }
   _getItemsInternal() {
-    var itemsGetter = this.option('getItems');
-    var itemsResult = itemsGetter ? itemsGetter() : [];
+    const itemsGetter = this.option('getItems');
+    const itemsResult = itemsGetter ? itemsGetter() : [];
     return when(itemsResult);
   }
   _raiseOnError(error) {
@@ -129,7 +129,7 @@ class FileManagerItemListBase extends Widget {
   _onDataLoaded() {
     var _this$_refreshDeferre;
     this._raiseItemListDataLoaded();
-    (_this$_refreshDeferre = this._refreshDeferred) === null || _this$_refreshDeferre === void 0 ? void 0 : _this$_refreshDeferre.resolve();
+    (_this$_refreshDeferre = this._refreshDeferred) === null || _this$_refreshDeferre === void 0 || _this$_refreshDeferre.resolve();
   }
   _onContentReady() {
     if (this._needResetScrollPosition) {
@@ -138,18 +138,18 @@ class FileManagerItemListBase extends Widget {
     }
   }
   _tryRaiseSelectionChanged(_ref) {
-    var {
+    let {
       selectedItemInfos,
       selectedItems,
       selectedItemKeys,
       currentSelectedItemKeys,
       currentDeselectedItemKeys
     } = _ref;
-    var parentDirectoryItem = this._findParentDirectoryItem(this.getSelectedItems());
+    const parentDirectoryItem = this._findParentDirectoryItem(this.getSelectedItems());
     if (parentDirectoryItem) {
       this._deselectItem(parentDirectoryItem);
     }
-    var raiseEvent = !this._hasParentDirectoryItem;
+    let raiseEvent = !this._hasParentDirectoryItem;
     raiseEvent = raiseEvent || this._hasValidKeys(currentSelectedItemKeys) || this._hasValidKeys(currentDeselectedItemKeys);
     if (raiseEvent) {
       selectedItemInfos = this._filterOutItemByPredicate(selectedItemInfos, item => item.fileItem.key === this._parentDirectoryItemKey);
@@ -188,17 +188,17 @@ class FileManagerItemListBase extends Widget {
   }
   _getScrollable() {}
   _getItemThumbnail(fileInfo) {
-    var itemThumbnailGetter = this.option('getItemThumbnail');
+    const itemThumbnailGetter = this.option('getItemThumbnail');
     return itemThumbnailGetter ? itemThumbnailGetter(fileInfo) : {
       thumbnail: ''
     };
   }
   _getItemThumbnailContainer(fileInfo) {
-    var {
+    const {
       thumbnail,
       cssClass
     } = this._getItemThumbnail(fileInfo);
-    var $itemThumbnail = getImageContainer(thumbnail).addClass(this._getItemThumbnailCssClass());
+    const $itemThumbnail = getImageContainer(thumbnail).addClass(this._getItemThumbnailCssClass());
     if (cssClass) {
       $itemThumbnail.addClass(cssClass);
     }
@@ -219,8 +219,8 @@ class FileManagerItemListBase extends Widget {
     return this.option('contextMenu');
   }
   _findParentDirectoryItem(itemInfos) {
-    for (var i = 0; i < itemInfos.length; i++) {
-      var itemInfo = itemInfos[i];
+    for (let i = 0; i < itemInfos.length; i++) {
+      const itemInfo = itemInfos[i];
       if (this._isParentDirectoryItem(itemInfo)) {
         return itemInfo;
       }
@@ -228,7 +228,7 @@ class FileManagerItemListBase extends Widget {
     return null;
   }
   _getFileItemsForContextMenu(fileItem) {
-    var result = this.getSelectedItems();
+    const result = this.getSelectedItems();
     if (this._isParentDirectoryItem(fileItem)) {
       result.push(fileItem);
     }
@@ -247,9 +247,9 @@ class FileManagerItemListBase extends Widget {
     return this._filterOutItemByPredicate(array, key => key === this._parentDirectoryItemKey, createNewArray);
   }
   _filterOutItemByPredicate(array, predicate, createNewArray) {
-    var result = array;
-    var index = -1;
-    for (var i = 0; i < array.length; i++) {
+    let result = array;
+    let index = -1;
+    for (let i = 0; i < array.length; i++) {
       if (predicate(array[i])) {
         index = i;
         break;

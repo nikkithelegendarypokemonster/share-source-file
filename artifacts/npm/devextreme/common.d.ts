@@ -1,7 +1,7 @@
 /**
 * DevExtreme (common.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -17,192 +17,338 @@ import type dxScrollable from './ui/scroll_view/ui.scrollable';
 import type dxSortable from './ui/sortable';
 import type { Properties as ButtonProperties } from './ui/button';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ApplyValueMode = 'instantly' | 'useButtons';
 
 /**
- * A custom validation rule that is checked asynchronously. Use async rules for server-side validation.
+ * @docid
+ * @public
+ * @namespace DevExpress.common
+ * @type object
  */
 export type AsyncRule = {
   /**
-   * If true, the validationCallback is not executed for null, undefined, false, and empty strings.
-   */
+  * @docid
+  * @default false
+  * @public
+  */
   ignoreEmptyValue?: boolean;
   /**
-   * Specifies the message that is shown if the rule is broken.
-   */
+  * @docid
+  * @default 'Value is invalid'
+  * @public
+  */
   message?: string;
   /**
-   * Indicates whether the rule should always be checked for the target value or only when the value changes.
-   */
+  * @docid
+  * @default true
+  * @public
+  */
   reevaluate?: boolean;
   /**
-   * Specifies the rule type. Set it to &apos;async&apos; to use the AsyncRule.
-   */
+  * @docid
+  * @type Enums.ValidationRuleType
+  * @public
+  */
   type: 'async';
   /**
-   * A function that validates the target value.
-   */
+  * @docid
+  * @type_function_return Promise<any>
+  * @type_function_param1 options:object
+  * @type_function_param1_field value:string|number
+  * @type_function_param1_field rule:object
+  * @type_function_param1_field validator:object
+  * @type_function_param1_field data:object
+  * @type_function_param1_field column:object
+  * @type_function_param1_field formItem:object
+  * @public
+  */
   validationCallback?: ((options: ValidationCallbackData) => PromiseLike<any>);
 };
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ButtonStyle = 'text' | 'outlined' | 'contained';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ButtonType = 'danger' | 'default' | 'normal' | 'success';
 
 /**
- * A validation rule that demands that a validated editor has a value that is equal to a specified expression.
+ * @docid
+ * @public
+ * @namespace DevExpress.common
+ * @type object
  */
 export type CompareRule = {
   /**
-   * Specifies the function whose return value is used for comparison with the validated value.
-   */
+  * @docid
+  * @type_function_return any
+  * @public
+  */
   comparisonTarget?: (() => any);
   /**
-   * Specifies the operator to be used for comparing the validated value with the target.
-   */
+  * @docid
+  * @default '=='
+  * @public
+  */
   comparisonType?: ComparisonOperator;
   /**
-   * If set to true, empty values are valid.
-   */
+  * @docid
+  * @default false
+  * @public
+  */
   ignoreEmptyValue?: boolean;
   /**
-   * Specifies the message that is shown if the rule is broken.
-   */
+  * @docid
+  * @default 'Values do not match'
+  * @public
+  */
   message?: string;
   /**
-   * Specifies the rule type. Set it to &apos;compare&apos; to use the CompareRule.
-   */
+  * @docid
+  * @type Enums.ValidationRuleType
+  * @public
+  */
   type: 'compare';
 };
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ComparisonOperator = '!=' | '!==' | '<' | '<=' | '==' | '===' | '>' | '>=';
 
 /**
- * A rule with custom validation logic.
+ * @docid
+ * @public
+ * @type object
+ * @namespace DevExpress.common
  */
 export type CustomRule = {
   /**
-   * If true, the validationCallback is not executed for null, undefined, false, and empty strings.
-   */
+  * @docid
+  * @default false
+  * @public
+  */
   ignoreEmptyValue?: boolean;
   /**
-   * Specifies the message that is shown if the rule is broken.
-   */
+  * @docid
+  * @default 'Value is invalid'
+  * @public
+  */
   message?: string;
   /**
-   * Indicates whether the rule should be always checked for the target value or only when the target value changes.
-   */
+  * @docid
+  * @default false
+  * @public
+  */
   reevaluate?: boolean;
   /**
-   * Specifies the rule type. Set it to &apos;custom&apos; to use the CustomRule.
-   */
+  * @docid
+  * @type Enums.ValidationRuleType
+  * @public
+  */
   type: 'custom';
   /**
-   * A function that validates the target value.
-   */
+  * @docid
+  * @type_function_param1 options:object
+  * @type_function_param1_field value:string|number
+  * @type_function_param1_field rule:object
+  * @type_function_param1_field validator:object
+  * @type_function_param1_field data:object
+  * @type_function_param1_field column:object
+  * @type_function_param1_field formItem:object
+  * @public
+  */
   validationCallback?: ((options: ValidationCallbackData) => boolean);
 };
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type DataStructure = 'plain' | 'tree';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type DataType = 'string' | 'number' | 'date' | 'boolean' | 'object' | 'datetime';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type Direction = 'bottom' | 'left' | 'right' | 'top';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type Draggable = OmitInternal<dxDraggable>;
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type DragDirection = 'both' | 'horizontal' | 'vertical';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type DragHighlight = 'push' | 'indicate';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type EditorStyle = 'outlined' | 'underlined' | 'filled';
 
 /**
- * A validation rule that requires that the validated field match the Email pattern.
+ * @docid
+ * @public
+ * @type object
+ * @namespace DevExpress.common
  */
 export type EmailRule = {
   /**
-   * If set to true, empty values are valid.
-   */
+  * @docid
+  * @default true
+  * @public
+  */
   ignoreEmptyValue?: boolean;
   /**
-   * Specifies the message that is shown if the rule is broken.
-   */
+  * @docid
+  * @default 'Email is invalid'
+  * @public
+  */
   message?: string;
   /**
-   * Specifies the rule type. Set it to &apos;email&apos; to use the EmailRule.
-   */
+  * @docid
+  * @type Enums.ValidationRuleType
+  * @public
+  */
   type: 'email';
 };
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ExportFormat = 'GIF' | 'JPEG' | 'PDF' | 'PNG' | 'SVG';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type FieldChooserLayout = 0 | 1 | 2;
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type FirstDayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type Format = 'billions' | 'currency' | 'day' | 'decimal' | 'exponential' | 'fixedPoint' | 'largeNumber' | 'longDate' | 'longTime' | 'millions' | 'millisecond' | 'month' | 'monthAndDay' | 'monthAndYear' | 'percent' | 'quarter' | 'quarterAndYear' | 'shortDate' | 'shortTime' | 'thousands' | 'trillions' | 'year' | 'dayOfWeek' | 'hour' | 'longDateLongTime' | 'minute' | 'second' | 'shortDateShortTime';
 
 /**
- * Specifies settings that affect all DevExtreme UI components.
+ * @docid
+ * @section commonObjectStructures
+ * @namespace DevExpress.common
+ * @public
+ * @type object
  */
 export type GlobalConfig = {
   /**
-   * A decimal separator. No longer applies.
-   * @deprecated 
+   * @docid
+   * @default "."
+   * @deprecated
+   * @public
    */
   decimalSeparator?: string;
   /**
-   * The default currency. Accepts a 3-letter ISO 4217 code.
+   * @docid
+   * @default "USD"
+   * @public
    */
   defaultCurrency?: string;
   /**
-   * Specifies whether to apply the accounting style to formatted numbers of the `currency` type.
+   * @docid
+   * @type boolean
+   * @default true
+   * @public
    */
   defaultUseCurrencyAccountingStyle?: boolean;
   /**
-   * Specifies how editors&apos; text fields are styled in your application.
+   * @docid
+   * @default undefined
+   * @public
    */
   editorStylingMode?: EditorStyle;
   /**
-   * Configures a Floating Action Button (FAB) that emits a stack of related actions (speed dial).
+   * @docid
+   * @public
    */
   floatingActionButtonConfig?: {
     /**
-     * Specifies the icon the FAB displays when the speed dial is opened.
+     * @docid
+     * @default "close"
      */
     closeIcon?: string;
     /**
-     * Specifies the direction in which to open the speed dial menu.
+     * @docid
+     * @default "auto"
      */
     direction?: FloatingActionButtonDirection;
     /**
-     * Specifies the icon the FAB displays when the speed dial is closed.
+     * @docid
+     * @default "add"
      */
     icon?: string;
     /**
-     * Specifies the text label displayed inside the FAB.
+     * @docid
+     * @default ""
      */
     label?: string;
     /**
-     * Limits the number of speed dial actions.
+     * @docid
+     * @default 5
      */
     maxSpeedDialActionCount?: number;
     /**
-     * Positions the FAB on the screen.
+     * @docid
+     * @default "{ at: 'right bottom', my: 'right bottom', offset: '-16 -16' }"
      */
     position?: PositionAlignment | PositionConfig | Function;
     /**
-     * If true, the background should be shaded when the speed dial menu is open.
+     * @docid
+     * @default false
      */
     shading?: boolean;
   };
   /**
-   * Specifies whether dates are parsed and serialized according to the ISO 8601 standard in all browsers.
+   * @docid
+   * @default true
+   * @public
    */
   forceIsoDateParsing?: boolean;
   /**
-   * Specifies whether to convert string values to lowercase in filter and search requests to OData services. Applies to the following operations: &apos;startswith&apos;, &apos;endswith&apos;, &apos;contains&apos;, and &apos;notcontains&apos;.
+   * @docid
+   * @default true
+   * @public
    */
   oDataFilterToLower?: boolean;
   /**
@@ -210,234 +356,450 @@ export type GlobalConfig = {
    */
   pointerEventStrategy?: 'mouse-and-touch' | 'mouse' | 'touch';
   /**
-   * Specifies whether the UI components support a right-to-left representation. Available for individual UI components as well.
+   * @deprecated Attention! This field is not documented and should only be specified in a limited number of use cases. For more information, please submit a ticket to our Support Center.
+   */
+  timezones?: unknown[];
+  /**
+   * @docid
+   * @default false
+   * @public
    */
   rtlEnabled?: boolean;
   /**
-   * The decimal separator that is used when submitting a value to the server.
+   * @docid
+   * @default "."
+   * @public
    */
   serverDecimalSeparator?: string;
   /**
-   * A group separator. No longer applies.
-   * @deprecated 
+   * @docid
+   * @default ","
+   * @deprecated
+   * @public
    */
   thousandsSeparator?: string;
   /**
-   * 
+   * @docid
+   * @default false
+   * @public
    */
   useLegacyStoreResult?: boolean;
   /**
-   * 
+   * @docid
+   * @default false
+   * @public
    */
   useLegacyVisibleIndex?: boolean;
   /**
-   * A license key.
+   * @docid
+   * @public
    */
   licenseKey?: string;
+  buyNowLink?: string;
 };
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type HorizontalAlignment = 'center' | 'left' | 'right';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type HorizontalEdge = 'left' | 'right';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type LabelMode = 'static' | 'floating' | 'hidden' | 'outside';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type MaskMode = 'always' | 'onFocus';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type Mode = 'auto'; // eslint-disable-line @typescript-eslint/no-type-alias
 
 /**
- * A validation rule that demands that the validated field has a numeric value.
+ * @docid
+ * @public
+ * @type object
+ * @namespace DevExpress.common
  */
 export type NumericRule = {
   /**
-   * If set to true, empty values are valid.
-   */
+  * @docid
+  * @default true
+  * @public
+  */
   ignoreEmptyValue?: boolean;
   /**
-   * Specifies the message that is shown if the rule is broken.
-   */
+  * @docid
+  * @default 'Value should be a number'
+  * @public
+  */
   message?: string;
   /**
-   * Specifies the rule type. Set it to &apos;numeric&apos; to use the NumericRule.
-   */
+  * @docid
+  * @type Enums.ValidationRuleType
+  * @public
+  */
   type: 'numeric';
 };
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type Orientation = 'horizontal' | 'vertical';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type PageLoadMode = 'nextButton' | 'scrollBottom';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type PageOrientation = 'portrait' | 'landscape';
 
 /**
- * A validation rule that requires that the validated field match a specified pattern.
+ * @docid
+ * @public
+ * @type object
+ * @namespace DevExpress.common
  */
 export type PatternRule = {
   /**
-   * If set to true, empty values are valid.
-   */
+  * @docid
+  * @default true
+  * @public
+  */
   ignoreEmptyValue?: boolean;
   /**
-   * Specifies the message that is shown if the rule is broken.
-   */
+  * @docid
+  * @default 'Value does not match pattern'
+  * @public
+  */
   message?: string;
   /**
-   * Specifies the regular expression that the validated value must match.
-   */
+  * @docid
+  * @public
+  */
   pattern?: RegExp | string;
   /**
-   * Specifies the rule type. Set it to &apos;pattern&apos; to use the PatternRule.
-   */
+  * @docid
+  * @type Enums.ValidationRuleType
+  * @public
+  */
   type: 'pattern';
 };
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type Position = 'bottom' | 'left' | 'right' | 'top';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type PositionAlignment = 'bottom' | 'center' | 'left' | 'left bottom' | 'left top' | 'right' | 'right bottom' | 'right top' | 'top';
 
 /**
- * A validation rule that demands the target value be within the specified value range (including the range&apos;s end points).
+ * @docid
+ * @public
+ * @type object
+ * @namespace DevExpress.common
  */
 export type RangeRule = {
   /**
-   * If set to true, empty values are valid.
-   */
+  * @docid
+  * @default true
+  * @public
+  */
   ignoreEmptyValue?: boolean;
   /**
-   * Specifies the maximum value allowed for the validated value.
-   */
+  * @docid
+  * @public
+  */
   max?: Date | number | string;
   /**
-   * Specifies the message that is shown if the rule is broken.
-   */
+  * @docid
+  * @default 'Value is out of range'
+  * @public
+  */
   message?: string;
   /**
-   * Specifies the minimum value allowed for the validated value.
-   */
+  * @docid
+  * @public
+  */
   min?: Date | number | string;
   /**
-   * Indicates whether the rule should be always checked for the target value or only when the target value changes.
-   */
+  * @docid
+  * @default false
+  * @public
+  */
   reevaluate?: boolean;
   /**
-   * Specifies the rule type. Set it to &apos;range&apos; to use the RangeRule.
-   */
+  * @docid
+  * @type Enums.ValidationRuleType
+  * @public
+  */
   type: 'range';
 };
 
 /**
- * A validation rule that demands that a validated field has a value.
+ * @docid
+ * @public
+ * @type object
+ * @namespace DevExpress.common
  */
 export type RequiredRule = {
   /**
-   * Specifies the message that is shown if the rule is broken.
-   */
+  * @docid
+  * @default 'Required'
+  * @public
+  */
   message?: string;
   /**
-   * Indicates whether to remove the Space characters from the validated value.
-   */
+  * @docid
+  * @default true
+  * @public
+  */
   trim?: boolean;
   /**
-   * Specifies the rule type. Set it to &apos;required&apos; to use the RequiredRule.
-   */
+  * @docid
+  * @type Enums.ValidationRuleType
+  * @public
+  */
   type: 'required';
 };
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type Scrollable = OmitInternal<dxScrollable>;
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ScrollbarMode = 'always' | 'never' | 'onHover' | 'onScroll';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ScrollDirection = 'both' | 'horizontal' | 'vertical';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ScrollMode = 'standard' | 'virtual';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type SearchMode = 'contains' | 'startswith' | 'equals';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type SelectAllMode = 'allPages' | 'page';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type SimplifiedSearchMode = 'contains' | 'startswith';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type SingleMultipleAllOrNone = 'single' | 'multiple' | 'all' | 'none';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type SingleMultipleOrNone = 'single' | 'multiple' | 'none';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type SingleOrMultiple = 'single' | 'multiple';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type SingleOrNone = 'single' | 'none';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type SliderValueChangeMode = 'onHandleMove' | 'onHandleRelease';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type Sortable = OmitInternal<dxSortable>;
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type SortOrder = 'asc' | 'desc';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type StoreType = 'array' | 'local' | 'odata';
 
 /**
- * A validation rule that demands the target value length be within the specified value range (including the range&apos;s end points).
+ * @docid
+ * @public
+ * @type object
+ * @namespace DevExpress.common
  */
 export type StringLengthRule = {
   /**
-   * If set to true, empty values are valid.
-   */
+  * @docid
+  * @default false
+  * @public
+  */
   ignoreEmptyValue?: boolean;
   /**
-   * Specifies the maximum length allowed for the validated value.
-   */
+  * @docid
+  * @public
+  */
   max?: number;
   /**
-   * Specifies the message that is shown if the rule is broken.
-   */
+  * @docid
+  * @default 'The length of the value is not correct'
+  * @public
+  */
   message?: string;
   /**
-   * Specifies the minimum length allowed for the validated value.
-   */
+  * @docid
+  * @public
+  */
   min?: number;
   /**
-   * Indicates whether or not to remove the Space characters from the validated value.
-   */
+  * @docid
+  * @default true
+  * @public
+  */
   trim?: boolean;
   /**
-   * Specifies the rule type. Set it to &apos;stringLength&apos; to use the StringLengthRule.
-   */
+  * @docid
+  * @type Enums.ValidationRuleType
+  * @public
+  */
   type: 'stringLength';
 };
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type SubmenuShowMode = 'onClick' | 'onHover';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type TabsIconPosition = 'top' | 'end' | 'bottom' | 'start';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type TabsStyle = 'primary' | 'secondary';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type TextBoxPredefinedButton = 'clear'; // eslint-disable-line @typescript-eslint/no-type-alias
 
 /**
- * 
+ * @public
+ * @docid
+ * @type object
+ * @namespace DevExpress.common
  */
 export type TextEditorButton = {
   /**
-   * Specifies whether to place the button before or after the input text field.
+   * @public
+   * @docid
+   * @default "after"
    */
   location?: TextEditorButtonLocation;
   /**
-   * Specifies the button&apos;s name.
+   * @public
+   * @docid
+   * @default undefined
    */
   name?: string;
   /**
-   * Configures the Button UI component used as the action button.
+   * @public
+   * @docid
+   * @type dxButtonOptions
+   * @default undefined
    */
   options?: ButtonProperties;
 };
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type TextEditorButtonLocation = 'after' | 'before';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ToolbarItemComponent = 'dxAutocomplete' | 'dxButton' | 'dxButtonGroup' | 'dxCheckBox' | 'dxDateBox' | 'dxDropDownButton' | 'dxMenu' | 'dxSelectBox' | 'dxSwitch' | 'dxTabs' | 'dxTextBox';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ToolbarItemLocation = 'after' | 'before' | 'center';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type TooltipShowMode = 'always' | 'onHover';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ValidationCallbackData = {
   value?: any;
   rule: any;
@@ -447,17 +809,39 @@ export type ValidationCallbackData = {
   formItem?: any;
 };
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ValidationMessageMode = 'always' | 'auto';
 
 /**
- * Specifies a validation rule.
+ * @docid
+ * @public
+ * @namespace DevExpress.common
  */
 export type ValidationRule = AsyncRule | CompareRule | CustomRule | EmailRule | NumericRule | PatternRule | RangeRule | RequiredRule | StringLengthRule;
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ValidationRuleType = 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type ValidationStatus = 'valid' | 'invalid' | 'pending';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type VerticalAlignment = 'bottom' | 'center' | 'top';
 
+/**
+ * @public
+ * @namespace DevExpress.common
+ */
 export type VerticalEdge = 'bottom' | 'top';

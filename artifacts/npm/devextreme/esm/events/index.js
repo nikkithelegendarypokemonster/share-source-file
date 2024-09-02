@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/events/index.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,11 +12,11 @@ import eventsEngine from './core/events_engine';
 * @name events
 */
 
-export var on = eventsEngine.on;
-export var one = eventsEngine.one;
-export var off = eventsEngine.off;
-export var trigger = eventsEngine.trigger;
-export var triggerHandler = eventsEngine.triggerHandler;
+export const on = eventsEngine.on;
+export const one = eventsEngine.one;
+export const off = eventsEngine.off;
+export const trigger = eventsEngine.trigger;
+export const triggerHandler = eventsEngine.triggerHandler;
 
 /**
 * @name events.Event
@@ -29,4 +29,4 @@ export var triggerHandler = eventsEngine.triggerHandler;
 * @hidden
 */
 
-export var Event = eventsEngine.Event;
+export const Event = eventsEngine.Event;

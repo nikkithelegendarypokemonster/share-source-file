@@ -1,7 +1,7 @@
 import { getDiagram } from './diagram.importer';
 class DiagramBar {
   constructor(owner) {
-    var {
+    const {
       EventDispatcher
     } = getDiagram();
     this.onChanged = new EventDispatcher(); // IBar.onChanged: EventDispatcher<IBarListener>
@@ -29,7 +29,7 @@ class DiagramBar {
     return true;
   }
   _getKeys(items) {
-    var keys = items.reduce((commands, item) => {
+    const keys = items.reduce((commands, item) => {
       if (item.command !== undefined) {
         commands.push(item.command);
       }

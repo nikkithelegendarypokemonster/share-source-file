@@ -14,8 +14,8 @@ var _m_core = _interopRequireDefault(require("../m_core"));
 var _m_utils = require("../m_utils");
 var _m_grouping_core = require("./m_grouping_core");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } // @ts-expect-error
+// @ts-expect-error
+
 function getContinuationGroupCount(groupOffset, pageSize, groupSize, groupIndex) {
   groupIndex = groupIndex || 0;
   if (pageSize > 1 && groupSize > 0) {
@@ -197,7 +197,7 @@ function loadExpandedGroups(that, options, expandedInfo, loadedGroupCount, group
   const currentGroup = groups[groupLevel + 1];
   const deferreds = [];
   (0, _iterator.each)(expandedInfo.paths, expandedItemIndex => {
-    var _a;
+    var _options$storeLoadOpt;
     const loadOptions = {
       requireTotalCount: false,
       requireGroupCount: true,
@@ -208,7 +208,7 @@ function loadExpandedGroups(that, options, expandedInfo, loadedGroupCount, group
         group: groups
       }),
       select: options.storeLoadOptions.select,
-      langParams: (_a = options.storeLoadOptions) === null || _a === void 0 ? void 0 : _a.langParams
+      langParams: (_options$storeLoadOpt = options.storeLoadOptions) === null || _options$storeLoadOpt === void 0 ? void 0 : _options$storeLoadOpt.langParams
     };
     if (expandedItemIndex === 0) {
       loadOptions.skip = expandedInfo.skip || 0;
@@ -292,16 +292,8 @@ const loadGroupTotalCount = function (dataSource, options) {
   }).fail(d.reject.bind(d));
   return d;
 };
-/**
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
-let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHelperCore) {
-  _inheritsLoose(GroupingHelper, _GroupingHelperCore);
-  function GroupingHelper() {
-    return _GroupingHelperCore.apply(this, arguments) || this;
-  }
-  var _proto = GroupingHelper.prototype;
-  _proto.updateTotalItemsCount = function updateTotalItemsCount(options) {
+class GroupingHelper extends _m_grouping_core.GroupingHelper {
+  updateTotalItemsCount(options) {
     let totalItemsCount = 0;
     const totalCount = options.extra && options.extra.totalCount || 0;
     const groupCount = options.extra && options.extra.groupCount || 0;
@@ -322,13 +314,13 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHe
         totalItemsCount += count;
       }
     });
-    _GroupingHelperCore.prototype.updateTotalItemsCount.call(this, totalItemsCount - totalCount + groupCount);
-  };
-  _proto._isGroupExpanded = function _isGroupExpanded(groupIndex) {
+    super.updateTotalItemsCount(totalItemsCount - totalCount + groupCount);
+  }
+  _isGroupExpanded(groupIndex) {
     const groups = this._dataSource.group();
     return isGroupExpanded(groups, groupIndex);
-  };
-  _proto._updatePagingOptions = function _updatePagingOptions(options, callback) {
+  }
+  _updatePagingOptions(options, callback) {
     const that = this;
     const isVirtualPaging = that._isVirtualPaging();
     const pageSize = that._dataSource.pageSize();
@@ -396,8 +388,8 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHe
     }
     options.skips = skips;
     options.takes = takes;
-  };
-  _proto.changeRowExpand = function changeRowExpand(path) {
+  }
+  changeRowExpand(path) {
     const that = this;
     const groupInfo = that.findGroupInfo(path);
     const dataSource = that._dataSource;
@@ -422,8 +414,8 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHe
     }
     // @ts-expect-error
     return new _deferred.Deferred().reject();
-  };
-  _proto.handleDataLoading = function handleDataLoading(options) {
+  }
+  handleDataLoading(options) {
     const that = this;
     const {
       storeLoadOptions
@@ -454,8 +446,8 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHe
       options.take = options.loadOptions.take;
       that._updatePagingOptions(options);
     }
-  };
-  _proto.handleDataLoadedCore = function handleDataLoadedCore(options, callBase) {
+  }
+  handleDataLoadedCore(options, callBase) {
     const that = this;
     const loadedGroupCount = _m_core.default.normalizeSortingInfo(options.storeLoadOptions.group || options.loadOptions.group).length;
     const groupCount = options.group ? options.group.length : 0;
@@ -499,8 +491,8 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHe
       }
     }
     loadGroupItems(that, options, loadedGroupCount, expandedInfo, 0, options.data);
-  };
-  _proto._processSkips = function _processSkips(items, skips, groupCount) {
+  }
+  _processSkips(items, skips, groupCount) {
     if (!groupCount) return;
     const firstItem = items[0];
     const skip = skips[0];
@@ -512,8 +504,8 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHe
         this._processSkips(firstItem.items, skips.slice(1), groupCount - 1);
       }
     }
-  };
-  _proto._processTakes = function _processTakes(items, skips, takes, groupCount, parents) {
+  }
+  _processTakes(items, skips, takes, groupCount, parents) {
     if (!groupCount || !items) return;
     parents = parents || [];
     const lastItem = items[items.length - 1];
@@ -535,18 +527,18 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHe
       parents.push(lastItem);
       this._processTakes(children, skips.slice(1), takes.slice(1), groupCount - 1, parents);
     }
-  };
-  _proto._processPaging = function _processPaging(options, groupCount) {
+  }
+  _processPaging(options, groupCount) {
     this._processSkips(options.data, options.skips, groupCount);
     this._processTakes(options.data, options.skips, options.takes, groupCount);
-  };
-  _proto.isLastLevelGroupItemsPagingLocal = function isLastLevelGroupItemsPagingLocal() {
+  }
+  isLastLevelGroupItemsPagingLocal() {
     return false;
-  };
-  _proto.sortLastLevelGroupItems = function sortLastLevelGroupItems(items) {
+  }
+  sortLastLevelGroupItems(items) {
     return items;
-  };
-  _proto.refresh = function refresh(options, operationTypes) {
+  }
+  refresh(options, operationTypes) {
     const that = this;
     const dataSource = that._dataSource;
     const {
@@ -568,7 +560,7 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHe
       }
     }
     // @ts-expect-error
-    _GroupingHelperCore.prototype.refresh.apply(this, arguments);
+    super.refresh.apply(this, arguments);
     if (group && options.remoteOperations.paging && operationTypes.reload) {
       return foreachExpandedGroups(that, groupInfo => {
         const groupCountQuery = loadGroupTotalCount(dataSource, {
@@ -600,7 +592,9 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function (_GroupingHe
         });
       }, true);
     }
-  };
-  return GroupingHelper;
-}(_m_grouping_core.GroupingHelper); /// #DEBUG
+  }
+}
+/// #DEBUG
+
 /// #ENDDEBUG
+exports.GroupingHelper = GroupingHelper;

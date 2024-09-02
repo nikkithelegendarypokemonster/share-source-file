@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/grid_core/views/m_grid_view.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -24,13 +24,14 @@ var _type = require("../../../../core/utils/type");
 var _window = require("../../../../core/utils/window");
 var _message = _interopRequireDefault(require("../../../../localization/message"));
 var accessibility = _interopRequireWildcard(require("../../../../ui/shared/accessibility"));
+var _a11y_status_container_component = require("../../../grids/grid_core/views/a11y_status_container_component");
 var _m_modules = _interopRequireDefault(require("../m_modules"));
 var _m_utils = _interopRequireDefault(require("../m_utils"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */
+/* eslint-disable max-classes-per-file */
+
 const BORDERS_CLASS = 'borders';
 const TABLE_FIXED_CLASS = 'table-fixed';
 const IMPORTANT_MARGIN_CLASS = 'important-margin';
@@ -38,6 +39,9 @@ const GRIDBASE_CONTAINER_CLASS = 'dx-gridbase-container';
 const GROUP_ROW_SELECTOR = 'tr.dx-group-row';
 const HIDDEN_COLUMNS_WIDTH = 'adaptiveHidden';
 const VIEW_NAMES = ['columnsSeparatorView', 'blockSeparatorView', 'trackerView', 'headerPanel', 'columnHeadersView', 'rowsView', 'footerView', 'columnChooserView', 'filterPanelView', 'pagerView', 'draggingHeaderView', 'contextMenuView', 'errorView', 'headerFilterView', 'filterBuilderView'];
+const E2E_ATTRIBUTES = {
+  a11yStatusContainer: 'e2e-a11y-general-status-container'
+};
 const isPercentWidth = function (width) {
   return (0, _type.isString)(width) && width.endsWith('%');
 };
@@ -56,13 +60,8 @@ const restoreFocus = function (focusedElement, selectionRange) {
   accessibility.hiddenFocus(focusedElement, true);
   _m_utils.default.setSelectionRange(focusedElement, selectionRange);
 };
-let ResizingController = exports.ResizingController = /*#__PURE__*/function (_modules$ViewControll) {
-  _inheritsLoose(ResizingController, _modules$ViewControll);
-  function ResizingController() {
-    return _modules$ViewControll.apply(this, arguments) || this;
-  }
-  var _proto = ResizingController.prototype;
-  _proto.init = function init() {
+class ResizingController extends _m_modules.default.ViewController {
+  init() {
     this._prevContentMinHeight = null;
     this._dataController = this.getController('data');
     this._columnsController = this.getController('columns');
@@ -71,8 +70,9 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
     this._editorFactoryController = this.getController('editorFactory');
     this._footerView = this.getView('footerView');
     this._rowsView = this.getView('rowsView');
-  };
-  _proto._initPostRenderHandlers = function _initPostRenderHandlers() {
+    this._gridView = this.getView('gridView');
+  }
+  _initPostRenderHandlers() {
     if (!this._refreshSizesHandler) {
       this._refreshSizesHandler = e => {
         // @ts-expect-error
@@ -96,9 +96,8 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
         this._dataController.changed.add(this._refreshSizesHandler);
       });
     }
-  };
-  _proto._refreshSizes = function _refreshSizes(e) {
-    var _a;
+  }
+  _refreshSizes(e) {
     // @ts-expect-error
     let resizeDeferred = new _deferred.Deferred().resolve(null);
     const changeType = e === null || e === void 0 ? void 0 : e.changeType;
@@ -109,7 +108,8 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
         resizeDeferred = this.resize();
       }
     } else if (changeType === 'update') {
-      if (((_a = e.changeTypes) === null || _a === void 0 ? void 0 : _a.length) === 0) {
+      var _e$changeTypes;
+      if (((_e$changeTypes = e.changeTypes) === null || _e$changeTypes === void 0 ? void 0 : _e$changeTypes.length) === 0) {
         return resizeDeferred;
       }
       if ((items.length > 1 || e.changeTypes[0] !== 'insert') && !(items.length === 0 && e.changeTypes[0] === 'remove') && !e.needUpdateDimensions) {
@@ -130,33 +130,52 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
   }
   /**
    * @extended: master_detail
-   */;
-  _proto.fireContentReadyAction = function fireContentReadyAction() {
+   */
+  fireContentReadyAction() {
     this.component._fireContentReadyAction();
-  };
-  _proto._getWidgetAriaLabel = function _getWidgetAriaLabel() {
+  }
+  _getWidgetAriaLabel() {
     return 'dxDataGrid-ariaDataGrid';
-  };
-  _proto._setAriaLabel = function _setAriaLabel() {
+  }
+  _setAriaLabel() {
+    var _this$_columnsControl;
+    const columnCount = ((_this$_columnsControl = this._columnsController) === null || _this$_columnsControl === void 0 || (_this$_columnsControl = _this$_columnsControl._columns) === null || _this$_columnsControl === void 0 ? void 0 : _this$_columnsControl.filter(_ref => {
+      let {
+        visible
+      } = _ref;
+      return !!visible;
+    }).length) ?? 0;
     const totalItemsCount = Math.max(0, this._dataController.totalItemsCount());
-    this.component.setAria('label', _message.default.format(this._getWidgetAriaLabel(),
-    // @ts-expect-error
-    totalItemsCount, this.component.columnCount()), this.component.$element().children(".".concat(GRIDBASE_CONTAINER_CLASS)));
-  };
-  _proto._getBestFitWidths = function _getBestFitWidths() {
-    var _a;
+    const widgetAriaLabel = this._getWidgetAriaLabel();
+    const widgetStatusText = _message.default
+    // @ts-expect-error Badly typed format method
+    .format(widgetAriaLabel, totalItemsCount, columnCount);
+    // @ts-expect-error Badly typed dxElementWrapper
+    const $ariaLabelElement = this.component.$element().children(`.${GRIDBASE_CONTAINER_CLASS}`);
+    // @ts-expect-error Treelist Variable
+    const expandableWidgetAriaLabel = _message.default.format(this._expandableWidgetAriaId);
+    const labelParts = [widgetStatusText];
+    if (expandableWidgetAriaLabel) {
+      labelParts.push(expandableWidgetAriaLabel);
+    }
+    this.component.setAria('label', labelParts.join('. '), $ariaLabelElement);
+    this._gridView.setWidgetA11yStatusText(widgetStatusText);
+  }
+  _getBestFitWidths() {
+    var _widths;
     const rowsView = this._rowsView;
     const columnHeadersView = this._columnHeadersView;
     let widths = rowsView.getColumnWidths();
-    if (!(widths === null || widths === void 0 ? void 0 : widths.length)) {
+    if (!((_widths = widths) !== null && _widths !== void 0 && _widths.length)) {
+      var _rowsView$getTableEle;
       const headersTableElement = columnHeadersView.getTableElement();
-      columnHeadersView.setTableElement((_a = rowsView.getTableElement()) === null || _a === void 0 ? void 0 : _a.children('.dx-header'));
+      columnHeadersView.setTableElement((_rowsView$getTableEle = rowsView.getTableElement()) === null || _rowsView$getTableEle === void 0 ? void 0 : _rowsView$getTableEle.children('.dx-header'));
       widths = columnHeadersView.getColumnWidths();
       columnHeadersView.setTableElement(headersTableElement);
     }
     return widths;
-  };
-  _proto._setVisibleWidths = function _setVisibleWidths(visibleColumns, widths) {
+  }
+  _setVisibleWidths(visibleColumns, widths) {
     const columnsController = this._columnsController;
     columnsController.beginUpdate();
     (0, _iterator.each)(visibleColumns, (index, column) => {
@@ -164,8 +183,8 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
       columnsController.columnOption(columnId, 'visibleWidth', widths[index]);
     });
     columnsController.endUpdate();
-  };
-  _proto._toggleBestFitModeForView = function _toggleBestFitModeForView(view, className, isBestFit) {
+  }
+  _toggleBestFitModeForView(view, className, isBestFit) {
     if (!view || !view.isVisible()) return;
     const $rowsTables = this._rowsView.getTableElements();
     const $viewTables = view.getTableElements();
@@ -177,7 +196,7 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
         if (isBestFit) {
           $tableBody = $viewTable.children('tbody').appendTo($rowsTable);
         } else {
-          $tableBody = $rowsTable.children(".".concat(className)).appendTo($viewTable);
+          $tableBody = $rowsTable.children(`.${className}`).appendTo($viewTable);
         }
         $tableBody.toggleClass(className, isBestFit);
         $tableBody.toggleClass(this.addWidgetPrefix('best-fit'), isBestFit);
@@ -186,8 +205,8 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
   }
   /**
    * @extended: adaptivity, master_detail
-   */;
-  _proto._toggleBestFitMode = function _toggleBestFitMode(isBestFit) {
+   */
+  _toggleBestFitMode(isBestFit) {
     const $rowsTable = this._rowsView.getTableElement();
     const $rowsFixedTable = this._rowsView.getTableElements().eq(1);
     if (!$rowsTable) return;
@@ -204,8 +223,8 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
       // @ts-expect-error
       $rowsTable.get(0).style.width = isBestFit ? 'auto' : '';
     }
-  };
-  _proto._toggleContentMinHeight = function _toggleContentMinHeight(value) {
+  }
+  _toggleContentMinHeight(value) {
     const scrollable = this._rowsView.getScrollable();
     const $contentElement = this._rowsView._findContentElement();
     if ((scrollable === null || scrollable === void 0 ? void 0 : scrollable.option('useNative')) === false) {
@@ -218,8 +237,8 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
         });
       }
     }
-  };
-  _proto._synchronizeColumns = function _synchronizeColumns() {
+  }
+  _synchronizeColumns() {
     const columnsController = this._columnsController;
     const visibleColumns = columnsController.getVisibleColumns();
     const columnAutoWidth = this.option('columnAutoWidth');
@@ -327,25 +346,25 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
   }
   /**
    * @extended: adaptivity
-   */;
-  _proto._needBestFit = function _needBestFit() {
+   */
+  _needBestFit() {
     return this.option('columnAutoWidth');
   }
   /**
    * @extended: adaptivity
-   */;
-  _proto._needStretch = function _needStretch() {
+   */
+  _needStretch() {
     return this._columnsController.getVisibleColumns().some(c => c.width === 'auto' && !c.command);
-  };
-  _proto._getAverageColumnsWidth = function _getAverageColumnsWidth(resultWidths) {
+  }
+  _getAverageColumnsWidth(resultWidths) {
     const freeWidth = calculateFreeWidth(this, resultWidths);
     const columnCountWithoutWidth = resultWidths.filter(width => width === undefined).length;
     return freeWidth / columnCountWithoutWidth;
   }
   /**
    * @extended: adaptivity
-   */;
-  _proto._correctColumnWidths = function _correctColumnWidths(resultWidths, visibleColumns) {
+   */
+  _correctColumnWidths(resultWidths, visibleColumns) {
     const that = this;
     let i;
     let hasPercentWidth = false;
@@ -405,8 +424,8 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
       }
     }
     return isColumnWidthsCorrected;
-  };
-  _proto._processStretch = function _processStretch(resultSizes, visibleColumns) {
+  }
+  _processStretch(resultSizes, visibleColumns) {
     const groupSize = this._rowsView.contentWidth();
     const tableSize = this._getTotalWidth(resultSizes, groupSize);
     const unusedIndexes = {
@@ -439,8 +458,8 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
         }
       }
     }
-  };
-  _proto._getRealColumnWidth = function _getRealColumnWidth(columnIndex, columnWidths, groupWidth) {
+  }
+  _getRealColumnWidth(columnIndex, columnWidths, groupWidth) {
     let ratio = 1;
     const width = columnWidths[columnIndex];
     if (!isPercentWidth(width)) {
@@ -466,8 +485,8 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
       ratio = percentTotalWidthInPixel > freeSpace ? freeSpace / percentTotalWidthInPixel : 1;
     }
     return parseFloat(width) * groupWidth * ratio / 100;
-  };
-  _proto._getTotalWidth = function _getTotalWidth(widths, groupWidth) {
+  }
+  _getTotalWidth(widths, groupWidth) {
     let result = 0;
     for (let i = 0; i < widths.length; i++) {
       const width = widths[i];
@@ -476,17 +495,17 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
       }
     }
     return Math.ceil(result);
-  };
-  _proto._getGroupElement = function _getGroupElement() {
+  }
+  _getGroupElement() {
     // @ts-expect-error
     return this.component.$element().children().get(0);
-  };
-  _proto.updateSize = function updateSize(rootElement) {
+  }
+  updateSize(rootElement) {
     const that = this;
     const $rootElement = (0, _renderer.default)(rootElement);
     const importantMarginClass = that.addWidgetPrefix(IMPORTANT_MARGIN_CLASS);
     if (that._hasHeight === undefined && $rootElement && $rootElement.is(':visible') && (0, _size.getWidth)($rootElement)) {
-      const $groupElement = $rootElement.children(".".concat(that.getWidgetContainerClass()));
+      const $groupElement = $rootElement.children(`.${that.getWidgetContainerClass()}`);
       if ($groupElement.length) {
         $groupElement.detach();
       }
@@ -499,20 +518,21 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
         $groupElement.appendTo($rootElement);
       }
     }
-  };
-  _proto.publicMethods = function publicMethods() {
+  }
+  publicMethods() {
     return ['resize', 'updateDimensions'];
-  };
-  _proto._waitAsyncTemplates = function _waitAsyncTemplates() {
-    var _a, _b, _c;
-    return (0, _deferred.when)((_a = this._columnHeadersView) === null || _a === void 0 ? void 0 : _a.waitAsyncTemplates(true), (_b = this._rowsView) === null || _b === void 0 ? void 0 : _b.waitAsyncTemplates(true), (_c = this._footerView) === null || _c === void 0 ? void 0 : _c.waitAsyncTemplates(true));
+  }
+  _waitAsyncTemplates() {
+    var _this$_columnHeadersV, _this$_rowsView, _this$_footerView;
+    return (0, _deferred.when)((_this$_columnHeadersV = this._columnHeadersView) === null || _this$_columnHeadersV === void 0 ? void 0 : _this$_columnHeadersV.waitAsyncTemplates(true), (_this$_rowsView = this._rowsView) === null || _this$_rowsView === void 0 ? void 0 : _this$_rowsView.waitAsyncTemplates(true), (_this$_footerView = this._footerView) === null || _this$_footerView === void 0 ? void 0 : _this$_footerView.waitAsyncTemplates(true));
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto.resize = function resize() {
+   */
+  resize() {
     if (this.component._requireResize) {
-      return;
+      // @ts-expect-error
+      return new _deferred.Deferred().resolve();
     }
     // @ts-expect-error
     const d = new _deferred.Deferred();
@@ -520,8 +540,8 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
       (0, _deferred.when)(this.updateDimensions()).done(d.resolve).fail(d.reject);
     }).fail(d.reject);
     return d.promise();
-  };
-  _proto.updateDimensions = function updateDimensions(checkSize) {
+  }
+  updateDimensions(checkSize) {
     const that = this;
     that._initPostRenderHandlers();
     // T335767
@@ -549,22 +569,22 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
       }).done(result.resolve).fail(result.reject);
     });
     return result.promise();
-  };
-  _proto._resetGroupElementHeight = function _resetGroupElementHeight() {
+  }
+  _resetGroupElementHeight() {
     const groupElement = this._getGroupElement();
     const scrollable = this._rowsView.getScrollable();
     if (groupElement && groupElement.style.height && (!scrollable || !scrollable.scrollTop())) {
       groupElement.style.height = '';
     }
-  };
-  _proto._checkSize = function _checkSize(checkSize) {
+  }
+  _checkSize(checkSize) {
     const $rootElement = this.component.$element();
     // @ts-expect-error
     const isWidgetVisible = $rootElement.is(':visible');
     const isGridSizeChanged = this._lastWidth !== (0, _size.getWidth)($rootElement) || this._lastHeight !== (0, _size.getHeight)($rootElement) || this._devicePixelRatio !== (0, _window.getWindow)().devicePixelRatio;
     return isWidgetVisible && (!checkSize || isGridSizeChanged);
-  };
-  _proto._setScrollerSpacingCore = function _setScrollerSpacingCore() {
+  }
+  _setScrollerSpacingCore() {
     const that = this;
     const vScrollbarWidth = that._rowsView.getScrollbarWidth();
     const hScrollbarWidth = that._rowsView.getScrollbarWidth(true);
@@ -573,8 +593,8 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
       that._footerView && that._footerView.setScrollerSpacing(vScrollbarWidth);
       that._rowsView.setScrollerSpacing(vScrollbarWidth, hScrollbarWidth);
     });
-  };
-  _proto._setScrollerSpacing = function _setScrollerSpacing() {
+  }
+  _setScrollerSpacing() {
     const scrollable = this._rowsView.getScrollable();
     // T722415, T758955
     const isNativeScrolling = this.option('scrolling.useNative') === true;
@@ -590,19 +610,18 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
   }
   /**
    * @extended: column_fixing
-   */;
-  _proto._setAriaOwns = function _setAriaOwns() {
-    var _a, _b, _c;
-    const headerTable = (_a = this._columnHeadersView) === null || _a === void 0 ? void 0 : _a.getTableElement();
-    const footerTable = (_b = this._footerView) === null || _b === void 0 ? void 0 : _b.getTableElement();
+   */
+  _setAriaOwns() {
+    var _this$_columnHeadersV2, _this$_footerView2, _this$_rowsView2;
+    const headerTable = (_this$_columnHeadersV2 = this._columnHeadersView) === null || _this$_columnHeadersV2 === void 0 ? void 0 : _this$_columnHeadersV2.getTableElement();
+    const footerTable = (_this$_footerView2 = this._footerView) === null || _this$_footerView2 === void 0 ? void 0 : _this$_footerView2.getTableElement();
     // @ts-expect-error
-    (_c = this._rowsView) === null || _c === void 0 ? void 0 : _c.setAriaOwns(headerTable === null || headerTable === void 0 ? void 0 : headerTable.attr('id'), footerTable === null || footerTable === void 0 ? void 0 : footerTable.attr('id'));
+    (_this$_rowsView2 = this._rowsView) === null || _this$_rowsView2 === void 0 || _this$_rowsView2.setAriaOwns(headerTable === null || headerTable === void 0 ? void 0 : headerTable.attr('id'), footerTable === null || footerTable === void 0 ? void 0 : footerTable.attr('id'));
   }
   /**
    * @extended: header_panel
-   */;
-  _proto._updateDimensionsCore = function _updateDimensionsCore() {
-    var _a;
+   */
+  _updateDimensionsCore() {
     const that = this;
     const dataController = that._dataController;
     const rowsView = that._rowsView;
@@ -610,7 +629,7 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
     const groupElement = this._getGroupElement();
     const rootElementHeight = (0, _size.getHeight)($rootElement);
     // @ts-expect-error
-    const height = (_a = that.option('height')) !== null && _a !== void 0 ? _a : $rootElement.get(0).style.height;
+    const height = that.option('height') ?? $rootElement.get(0).style.height;
     const isHeightSpecified = !!height && height !== 'auto';
     // @ts-expect-error
     // eslint-disable-next-line radix
@@ -644,13 +663,13 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
         this._editorFactoryController && this._editorFactoryController.resize();
       });
     });
-  };
-  _proto._updateLastSizes = function _updateLastSizes($rootElement) {
+  }
+  _updateLastSizes($rootElement) {
     this._lastWidth = (0, _size.getWidth)($rootElement);
     this._lastHeight = (0, _size.getHeight)($rootElement);
     this._devicePixelRatio = (0, _window.getWindow)().devicePixelRatio;
-  };
-  _proto.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     switch (args.name) {
       case 'width':
       case 'height':
@@ -661,18 +680,13 @@ let ResizingController = exports.ResizingController = /*#__PURE__*/function (_mo
         args.handled = true;
         return;
       default:
-        _modules$ViewControll.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  return ResizingController;
-}(_m_modules.default.ViewController);
-let SynchronizeScrollingController = exports.SynchronizeScrollingController = /*#__PURE__*/function (_modules$ViewControll2) {
-  _inheritsLoose(SynchronizeScrollingController, _modules$ViewControll2);
-  function SynchronizeScrollingController() {
-    return _modules$ViewControll2.apply(this, arguments) || this;
   }
-  var _proto2 = SynchronizeScrollingController.prototype;
-  _proto2._scrollChangedHandler = function _scrollChangedHandler(views, pos, viewName) {
+}
+exports.ResizingController = ResizingController;
+class SynchronizeScrollingController extends _m_modules.default.ViewController {
+  _scrollChangedHandler(views, pos, viewName) {
     for (let j = 0; j < views.length; j++) {
       if (views[j] && views[j].name !== viewName) {
         views[j].scrollTo({
@@ -681,8 +695,8 @@ let SynchronizeScrollingController = exports.SynchronizeScrollingController = /*
         });
       }
     }
-  };
-  _proto2.init = function init() {
+  }
+  init() {
     const views = [this.getView('columnHeadersView'), this.getView('footerView'), this.getView('rowsView')];
     for (let i = 0; i < views.length; i++) {
       const view = views[i];
@@ -690,42 +704,36 @@ let SynchronizeScrollingController = exports.SynchronizeScrollingController = /*
         view.scrollChanged.add(this._scrollChangedHandler.bind(this, views));
       }
     }
-  };
-  return SynchronizeScrollingController;
-}(_m_modules.default.ViewController);
-let GridView = exports.GridView = /*#__PURE__*/function (_modules$View) {
-  _inheritsLoose(GridView, _modules$View);
-  function GridView() {
-    return _modules$View.apply(this, arguments) || this;
   }
-  var _proto3 = GridView.prototype;
-  _proto3._endUpdateCore = function _endUpdateCore() {
+}
+exports.SynchronizeScrollingController = SynchronizeScrollingController;
+class GridView extends _m_modules.default.View {
+  init() {
+    this._resizingController = this.getController('resizing');
+    this._dataController = this.getController('data');
+  }
+  _endUpdateCore() {
     if (this.component._requireResize) {
       this.component._requireResize = false;
       this._resizingController.resize();
     }
-  };
-  _proto3.init = function init() {
-    const that = this;
-    that._resizingController = that.getController('resizing');
-    that._dataController = that.getController('data');
-  };
-  _proto3.getView = function getView(name) {
+  }
+  getView(name) {
     return this.component._views[name];
-  };
-  _proto3.element = function element() {
+  }
+  element() {
     return this._groupElement;
-  };
-  _proto3.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     const that = this;
     if ((0, _type.isDefined)(that._groupElement) && args.name === 'showBorders') {
       that._groupElement.toggleClass(that.addWidgetPrefix(BORDERS_CLASS), !!args.value);
       args.handled = true;
     } else {
-      _modules$View.prototype.optionChanged.call(this, args);
+      super.optionChanged(args);
     }
-  };
-  _proto3._renderViews = function _renderViews($groupElement) {
+  }
+  _renderViews($groupElement) {
     const that = this;
     (0, _iterator.each)(VIEW_NAMES, (index, viewName) => {
       // TODO getView
@@ -734,11 +742,11 @@ let GridView = exports.GridView = /*#__PURE__*/function (_modules$View) {
         view.render($groupElement);
       }
     });
-  };
-  _proto3._getTableRoleName = function _getTableRoleName() {
+  }
+  _getTableRoleName() {
     return 'group';
-  };
-  _proto3.render = function render($rootElement) {
+  }
+  render($rootElement) {
     const isFirstRender = !this._groupElement;
     const $groupElement = this._groupElement || (0, _renderer.default)('<div>').addClass(this.getWidgetContainerClass());
     $groupElement.addClass(GRIDBASE_CONTAINER_CLASS);
@@ -751,9 +759,14 @@ let GridView = exports.GridView = /*#__PURE__*/function (_modules$View) {
       (0, _window.hasWindow)() && this._resizingController.updateSize($rootElement);
       $groupElement.appendTo($rootElement);
     }
+    if (!this._a11yGeneralStatusElement) {
+      this._a11yGeneralStatusElement = (0, _a11y_status_container_component.A11yStatusContainerComponent)({});
+      this._a11yGeneralStatusElement.attr(E2E_ATTRIBUTES.a11yStatusContainer, 'true');
+      $groupElement.append(this._a11yGeneralStatusElement);
+    }
     this._renderViews($groupElement);
-  };
-  _proto3.update = function update() {
+  }
+  update() {
     const that = this;
     const $rootElement = that._rootElement;
     const $groupElement = that._groupElement;
@@ -763,9 +776,13 @@ let GridView = exports.GridView = /*#__PURE__*/function (_modules$View) {
         that._resizingController.fireContentReadyAction();
       }
     }
-  };
-  return GridView;
-}(_m_modules.default.View);
+  }
+  setWidgetA11yStatusText(statusText) {
+    var _this$_a11yGeneralSta;
+    (_this$_a11yGeneralSta = this._a11yGeneralStatusElement) === null || _this$_a11yGeneralSta === void 0 || _this$_a11yGeneralSta.text(statusText);
+  }
+}
+exports.GridView = GridView;
 const gridViewModule = exports.gridViewModule = {
   defaultOptions() {
     return {

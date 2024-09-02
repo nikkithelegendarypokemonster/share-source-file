@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/action.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,8 +14,8 @@ var _window = require("./utils/window");
 var _type = require("./utils/type");
 var _iterator = require("./utils/iterator");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-let Action = exports.default = /*#__PURE__*/function () {
-  function Action(action, config) {
+class Action {
+  constructor(action, config) {
     config = config || {};
     this._action = action;
     this._context = config.context || (0, _window.getWindow)();
@@ -30,8 +30,7 @@ let Action = exports.default = /*#__PURE__*/function () {
       }
     }
   }
-  var _proto = Action.prototype;
-  _proto.execute = function execute() {
+  execute() {
     const e = {
       action: this._action,
       args: Array.prototype.slice.call(arguments),
@@ -47,7 +46,7 @@ let Action = exports.default = /*#__PURE__*/function () {
     if (!this._validateAction(e)) {
       return;
     }
-    beforeExecute === null || beforeExecute === void 0 ? void 0 : beforeExecute.call(this._context, e);
+    beforeExecute === null || beforeExecute === void 0 || beforeExecute.call(this._context, e);
     if (e.cancel) {
       return;
     }
@@ -55,10 +54,10 @@ let Action = exports.default = /*#__PURE__*/function () {
     if (argsBag.cancel) {
       return;
     }
-    afterExecute === null || afterExecute === void 0 ? void 0 : afterExecute.call(this._context, e);
+    afterExecute === null || afterExecute === void 0 || afterExecute.call(this._context, e);
     return result;
-  };
-  _proto._validateAction = function _validateAction(e) {
+  }
+  _validateAction(e) {
     const excludeValidators = this._excludeValidators;
     const {
       executors
@@ -67,15 +66,15 @@ let Action = exports.default = /*#__PURE__*/function () {
       if (!excludeValidators[name]) {
         var _executor$validate;
         const executor = executors[name];
-        (_executor$validate = executor.validate) === null || _executor$validate === void 0 ? void 0 : _executor$validate.call(executor, e);
+        (_executor$validate = executor.validate) === null || _executor$validate === void 0 || _executor$validate.call(executor, e);
         if (e.cancel) {
           return false;
         }
       }
     }
     return true;
-  };
-  _proto._executeAction = function _executeAction(e) {
+  }
+  _executeAction(e) {
     let result;
     const {
       executors
@@ -83,31 +82,31 @@ let Action = exports.default = /*#__PURE__*/function () {
     for (const name in executors) {
       var _executor$execute;
       const executor = executors[name];
-      (_executor$execute = executor.execute) === null || _executor$execute === void 0 ? void 0 : _executor$execute.call(executor, e);
+      (_executor$execute = executor.execute) === null || _executor$execute === void 0 || _executor$execute.call(executor, e);
       if (e.handled) {
         result = e.result;
         break;
       }
     }
     return result;
-  };
-  Action.registerExecutor = function registerExecutor(name, executor) {
+  }
+  static registerExecutor(name, executor) {
     if ((0, _type.isPlainObject)(name)) {
       (0, _iterator.each)(name, Action.registerExecutor);
       return;
     }
     Action.executors[name] = executor;
-  };
-  Action.unregisterExecutor = function unregisterExecutor() {
+  }
+  static unregisterExecutor() {
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
     (0, _iterator.each)(args, function () {
       delete Action.executors[this];
     });
-  };
-  return Action;
-}();
+  }
+}
+exports.default = Action;
 Action.executors = {};
 const createValidatorByTargetElement = condition => e => {
   if (!e.args.length) {

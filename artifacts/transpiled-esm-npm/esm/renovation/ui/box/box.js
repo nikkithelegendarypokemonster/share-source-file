@@ -1,13 +1,13 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-var _excluded = ["align", "crossAlign", "direction"];
+const _excluded = ["align", "crossAlign", "direction"];
 import { createComponentVNode } from "inferno";
 import { InfernoWrapperComponent } from '@devextreme/runtime/inferno';
 import { normalizeStyles } from '@devextreme/runtime/inferno';
 import { Widget } from '../common/widget';
 import { BoxProps } from './box_props';
 import { combineClasses } from '../../utils/combine_classes';
-export var viewFunction = viewModel => createComponentVNode(2, Widget, {
+export const viewFunction = viewModel => createComponentVNode(2, Widget, {
   "classes": viewModel.cssClasses,
   "style": normalizeStyles(viewModel.cssStyles)
 });
@@ -26,11 +26,11 @@ export class Box extends InfernoWrapperComponent {
     });
   }
   get cssStyles() {
-    var DIRECTION_MAP = {
+    const DIRECTION_MAP = {
       row: 'row',
       col: 'column'
     };
-    var tryGetFromMap = (prop, map) => prop in map ? map[prop] : prop;
+    const tryGetFromMap = (prop, map) => prop in map ? map[prop] : prop;
     return {
       display: 'flex',
       flexDirection: DIRECTION_MAP[this.props.direction],
@@ -50,12 +50,12 @@ export class Box extends InfernoWrapperComponent {
     };
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       cssClasses: this.cssClasses,

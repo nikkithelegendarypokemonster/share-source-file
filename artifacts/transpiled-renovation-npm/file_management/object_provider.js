@@ -16,46 +16,40 @@ var _error = _interopRequireDefault(require("./error"));
 var _error_codes = _interopRequireDefault(require("./error_codes"));
 var _utils = require("./utils");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const window = (0, _window.getWindow)();
-let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
-  _inheritsLoose(ObjectFileSystemProvider, _FileSystemProviderBa);
-  function ObjectFileSystemProvider(options) {
-    var _this;
+class ObjectFileSystemProvider extends _provider_base.default {
+  constructor(options) {
     options = (0, _common.ensureDefined)(options, {});
-    _this = _FileSystemProviderBa.call(this, options) || this;
+    super(options);
     const initialArray = options.data;
     if (initialArray && !Array.isArray(initialArray)) {
       throw _errors.errors.Error('E4006');
     }
     const itemsExpr = options.itemsExpr || 'items';
-    _this._subFileItemsGetter = (0, _data.compileGetter)(itemsExpr);
-    _this._subFileItemsSetter = _this._getSetter(itemsExpr);
+    this._subFileItemsGetter = (0, _data.compileGetter)(itemsExpr);
+    this._subFileItemsSetter = this._getSetter(itemsExpr);
     const contentExpr = options.contentExpr || 'content';
-    _this._contentGetter = (0, _data.compileGetter)(contentExpr);
-    _this._contentSetter = _this._getSetter(contentExpr);
-    const nameExpr = _this._getNameExpr(options);
-    _this._nameSetter = _this._getSetter(nameExpr);
-    const isDirExpr = _this._getIsDirExpr(options);
-    _this._getIsDirSetter = _this._getSetter(isDirExpr);
-    const keyExpr = _this._getKeyExpr(options);
-    _this._keySetter = _this._getSetter(keyExpr);
-    const sizeExpr = _this._getSizeExpr(options);
-    _this._sizeSetter = _this._getSetter(sizeExpr);
-    const dateModifiedExpr = _this._getDateModifiedExpr(options);
-    _this._dateModifiedSetter = _this._getSetter(dateModifiedExpr);
-    _this._data = initialArray || [];
-    return _this;
+    this._contentGetter = (0, _data.compileGetter)(contentExpr);
+    this._contentSetter = this._getSetter(contentExpr);
+    const nameExpr = this._getNameExpr(options);
+    this._nameSetter = this._getSetter(nameExpr);
+    const isDirExpr = this._getIsDirExpr(options);
+    this._getIsDirSetter = this._getSetter(isDirExpr);
+    const keyExpr = this._getKeyExpr(options);
+    this._keySetter = this._getSetter(keyExpr);
+    const sizeExpr = this._getSizeExpr(options);
+    this._sizeSetter = this._getSetter(sizeExpr);
+    const dateModifiedExpr = this._getDateModifiedExpr(options);
+    this._dateModifiedSetter = this._getSetter(dateModifiedExpr);
+    this._data = initialArray || [];
   }
-  var _proto = ObjectFileSystemProvider.prototype;
-  _proto.getItems = function getItems(parentDir) {
+  getItems(parentDir) {
     return this._executeActionAsDeferred(() => this._getItems(parentDir), true);
-  };
-  _proto.renameItem = function renameItem(item, name) {
+  }
+  renameItem(item, name) {
     return this._executeActionAsDeferred(() => this._renameItemCore(item, name));
-  };
-  _proto._renameItemCore = function _renameItemCore(item, name) {
+  }
+  _renameItemCore(item, name) {
     if (!item) {
       return;
     }
@@ -63,17 +57,17 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
     this._nameSetter(dataItem, name);
     item.name = name;
     item.key = this._ensureDataObjectKey(dataItem);
-  };
-  _proto.createDirectory = function createDirectory(parentDir, name) {
+  }
+  createDirectory(parentDir, name) {
     return this._executeActionAsDeferred(() => {
       this._validateDirectoryExists(parentDir);
       this._createDataObject(parentDir, name, true);
     });
-  };
-  _proto.deleteItems = function deleteItems(items) {
+  }
+  deleteItems(items) {
     return items.map(item => this._executeActionAsDeferred(() => this._deleteItem(item)));
-  };
-  _proto.moveItems = function moveItems(items, destinationDir) {
+  }
+  moveItems(items, destinationDir) {
     const destinationDataItem = this._findDataObject(destinationDir);
     const array = this._getDirectoryDataItems(destinationDataItem);
     const deferreds = items.map(item => this._executeActionAsDeferred(() => {
@@ -83,8 +77,8 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
       array.push(dataItem);
     }));
     return deferreds;
-  };
-  _proto.copyItems = function copyItems(items, destinationDir) {
+  }
+  copyItems(items, destinationDir) {
     const destinationDataItem = this._findDataObject(destinationDir);
     const array = this._getDirectoryDataItems(destinationDataItem);
     const deferreds = items.map(item => this._executeActionAsDeferred(() => {
@@ -94,8 +88,8 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
       array.push(copiedItem);
     }));
     return deferreds;
-  };
-  _proto.uploadFileChunk = function uploadFileChunk(fileData, chunksInfo, destinationDirectory) {
+  }
+  uploadFileChunk(fileData, chunksInfo, destinationDirectory) {
     if (chunksInfo.chunkIndex > 0) {
       return chunksInfo.customData.deferred;
     }
@@ -113,15 +107,15 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
     };
     reader.onerror = error => deferred.reject(error);
     return deferred;
-  };
-  _proto.downloadItems = function downloadItems(items) {
+  }
+  downloadItems(items) {
     if (items.length === 1) {
       this._downloadSingleFile(items[0]);
     } else {
       this._downloadMultipleFiles(items);
     }
-  };
-  _proto._downloadSingleFile = function _downloadSingleFile(file) {
+  }
+  _downloadSingleFile(file) {
     const content = this._getFileContent(file);
     const byteString = window.atob(content);
     const arrayBuffer = new ArrayBuffer(byteString.length);
@@ -133,8 +127,8 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
       type: 'application/octet-stream'
     });
     _file_saver.fileSaver.saveAs(file.name, null, blob);
-  };
-  _proto._downloadMultipleFiles = function _downloadMultipleFiles(files) {
+  }
+  _downloadMultipleFiles(files) {
     const jsZip = getJSZip();
     const zip = new jsZip();
     files.forEach(file => zip.file(file.name, this._getFileContent(file), {
@@ -152,17 +146,17 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
       deferred.resolve(zip.generate(options));
     }
     deferred.done(blob => _file_saver.fileSaver.saveAs('files.zip', null, blob));
-  };
-  _proto._getFileContent = function _getFileContent(file) {
+  }
+  _getFileContent(file) {
     const dataItem = this._findDataObject(file);
     return this._contentGetter(dataItem) || '';
-  };
-  _proto._validateDirectoryExists = function _validateDirectoryExists(directoryInfo) {
+  }
+  _validateDirectoryExists(directoryInfo) {
     if (!this._isFileItemExists(directoryInfo) || this._isDirGetter(directoryInfo.fileItem)) {
       throw new _error.default(_error_codes.default.DirectoryNotFound, directoryInfo);
     }
-  };
-  _proto._checkAbilityToMoveOrCopyItem = function _checkAbilityToMoveOrCopyItem(item, destinationDir) {
+  }
+  _checkAbilityToMoveOrCopyItem(item, destinationDir) {
     const dataItem = this._findDataObject(item);
     const itemKey = this._getKeyFromDataObject(dataItem, item.parentPath);
     const pathInfo = destinationDir.getFullPathInfo();
@@ -174,8 +168,8 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
         throw new _error.default(_error_codes.default.Other, item);
       }
     });
-  };
-  _proto._createDataObject = function _createDataObject(parentDir, name, isDirectory) {
+  }
+  _createDataObject(parentDir, name, isDirectory) {
     const dataObj = {};
     this._nameSetter(dataObj, name);
     this._getIsDirSetter(dataObj, isDirectory);
@@ -184,8 +178,8 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
     const array = this._getDirectoryDataItems(parentDataItem);
     array.push(dataObj);
     return dataObj;
-  };
-  _proto._createCopy = function _createCopy(dataObj) {
+  }
+  _createCopy(dataObj) {
     const copyObj = {};
     this._nameSetter(copyObj, this._nameGetter(dataObj));
     this._getIsDirSetter(copyObj, this._isDirGetter(dataObj));
@@ -199,15 +193,15 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
       this._subFileItemsSetter(copyObj, itemsCopy);
     }
     return copyObj;
-  };
-  _proto._deleteItem = function _deleteItem(fileItem) {
+  }
+  _deleteItem(fileItem) {
     const dataItem = this._findDataObject(fileItem);
     const parentDirDataObj = this._findFileItemObj(fileItem.pathInfo);
     const array = this._getDirectoryDataItems(parentDirDataObj);
     const index = array.indexOf(dataItem);
     array.splice(index, 1);
-  };
-  _proto._getDirectoryDataItems = function _getDirectoryDataItems(directoryDataObj) {
+  }
+  _getDirectoryDataItems(directoryDataObj) {
     if (!directoryDataObj) {
       return this._data;
     }
@@ -217,8 +211,8 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
       this._subFileItemsSetter(directoryDataObj, dataItems);
     }
     return dataItems;
-  };
-  _proto._getItems = function _getItems(parentDir) {
+  }
+  _getItems(parentDir) {
     this._validateDirectoryExists(parentDir);
     const pathInfo = parentDir.getFullPathInfo();
     const parentDirKey = pathInfo && pathInfo.length > 0 ? pathInfo[pathInfo.length - 1].key : null;
@@ -229,8 +223,8 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
     }
     this._ensureKeysForDuplicateNameItems(dirFileObjects);
     return this._convertDataObjectsToFileItems(dirFileObjects, pathInfo);
-  };
-  _proto._ensureKeysForDuplicateNameItems = function _ensureKeysForDuplicateNameItems(dataObjects) {
+  }
+  _ensureKeysForDuplicateNameItems(dataObjects) {
     const names = {};
     dataObjects.forEach(obj => {
       const name = this._nameGetter(obj);
@@ -240,8 +234,8 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
         names[name] = true;
       }
     });
-  };
-  _proto._findDataObject = function _findDataObject(item) {
+  }
+  _findDataObject(item) {
     if (item.isRoot()) {
       return null;
     }
@@ -251,8 +245,8 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
       throw new _error.default(errorCode, item);
     }
     return result;
-  };
-  _proto._findFileItemObj = function _findFileItemObj(pathInfo) {
+  }
+  _findFileItemObj(pathInfo) {
     if (!Array.isArray(pathInfo)) {
       pathInfo = [];
     }
@@ -270,24 +264,24 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
       }
     }
     return fileItemObj;
-  };
-  _proto._getKeyFromDataObject = function _getKeyFromDataObject(dataObj, defaultKeyPrefix) {
+  }
+  _getKeyFromDataObject(dataObj, defaultKeyPrefix) {
     const key = this._keyGetter(dataObj);
     const relativeName = (0, _utils.pathCombine)(defaultKeyPrefix, this._nameGetter(dataObj));
     return this._getDataObjectKey(key, relativeName);
-  };
-  _proto._getDataObjectKey = function _getDataObjectKey(key, relativeName) {
+  }
+  _getDataObjectKey(key, relativeName) {
     return key ? key : relativeName;
-  };
-  _proto._ensureDataObjectKey = function _ensureDataObjectKey(dataObj) {
+  }
+  _ensureDataObjectKey(dataObj) {
     let key = this._keyGetter(dataObj);
     if (!key) {
       key = String(new _guid.default());
       this._keySetter(dataObj, key);
     }
     return key;
-  };
-  _proto._hasSubDirs = function _hasSubDirs(dataObj) {
+  }
+  _hasSubDirs(dataObj) {
     const subItems = (0, _common.ensureDefined)(this._subFileItemsGetter(dataObj), []);
     if (!Array.isArray(subItems)) {
       return true;
@@ -298,18 +292,17 @@ let ObjectFileSystemProvider = /*#__PURE__*/function (_FileSystemProviderBa) {
       }
     }
     return false;
-  };
-  _proto._getSetter = function _getSetter(expr) {
+  }
+  _getSetter(expr) {
     return (0, _type.isFunction)(expr) ? expr : (0, _data.compileSetter)(expr);
-  };
-  _proto._isFileItemExists = function _isFileItemExists(fileItem) {
+  }
+  _isFileItemExists(fileItem) {
     return fileItem.isDirectory && fileItem.isRoot() || !!this._findFileItemObj(fileItem.getFullPathInfo());
-  };
-  _proto._createFileReader = function _createFileReader() {
+  }
+  _createFileReader() {
     return new window.FileReader();
-  };
-  return ObjectFileSystemProvider;
-}(_provider_base.default);
+  }
+}
 function getJSZip() {
   if (!_jszip.default) {
     throw _ui.default.Error('E1041', 'JSZip');

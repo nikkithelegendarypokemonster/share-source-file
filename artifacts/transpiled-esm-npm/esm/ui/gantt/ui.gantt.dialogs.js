@@ -5,7 +5,7 @@ import '../radio_group';
 import dateLocalization from '../../localization/date';
 import messageLocalization from '../../localization/message';
 import '../list_light';
-import '../list/modules/deleting';
+import '../../__internal/ui/list/modules/m_deleting';
 export class GanttDialog {
   constructor(owner, $element) {
     this._popupInstance = owner._createComponent($element, Popup);
@@ -18,7 +18,7 @@ export class GanttDialog {
   }
   _apply() {
     if (this._dialogInfo.isValidated()) {
-      var result = this._dialogInfo.getResult();
+      const result = this._dialogInfo.getResult();
       this._callback(result);
       this.hide();
     }
@@ -29,7 +29,7 @@ export class GanttDialog {
     if (!this.infoMap[name]) {
       return;
     }
-    var isRefresh = this._popupInstance._isVisible() && this._dialogInfo && this._dialogInfo instanceof this.infoMap[name];
+    const isRefresh = this._popupInstance._isVisible() && this._dialogInfo && this._dialogInfo instanceof this.infoMap[name];
     this._dialogInfo = new this.infoMap[name](parameters, this._apply.bind(this), this.hide.bind(this), editingOptions);
     this._popupInstance.option({
       showTitle: !!this._dialogInfo.getTitle(),
@@ -118,12 +118,12 @@ class DialogInfoBase {
     };
   }
   getResult() {
-    var formData = this.getFormData();
+    const formData = this.getFormData();
     this._updateParameters(formData);
     return this._parameters;
   }
   getFormData() {
-    var formData = this._form && this._form.option('formData');
+    const formData = this._form && this._form.option('formData');
     return formData;
   }
   isValidated() {
@@ -135,8 +135,8 @@ class TaskEditDialogInfo extends DialogInfoBase {
     return messageLocalization.format('dxGantt-dialogTaskDetailsTitle');
   }
   _getFormItems() {
-    var readOnly = !this._editingOptions.enabled || !this._editingOptions.allowTaskUpdating;
-    var readOnlyRange = readOnly || !this._parameters.enableRangeEdit;
+    const readOnly = !this._editingOptions.enabled || !this._editingOptions.allowTaskUpdating;
+    const readOnlyRange = readOnly || !this._parameters.enableRangeEdit;
     return [{
       dataField: 'title',
       editorType: 'dxTextBox',
@@ -166,7 +166,7 @@ class TaskEditDialogInfo extends DialogInfoBase {
         type: 'custom',
         validationCallback: e => {
           if (this._parameters.isValidationRequired) {
-            var correctDateRange = this._parameters.getCorrectDateRange(this._parameters.id, e.value, this._parameters.end);
+            const correctDateRange = this._parameters.getCorrectDateRange(this._parameters.id, e.value, this._parameters.end);
             if (correctDateRange.start.getTime() !== e.value.getTime()) {
               e.rule.message = this._getValidationMessage(true, correctDateRange.start);
               return false;
@@ -194,7 +194,7 @@ class TaskEditDialogInfo extends DialogInfoBase {
         type: 'custom',
         validationCallback: e => {
           if (this._parameters.isValidationRequired) {
-            var correctDateRange = this._parameters.getCorrectDateRange(this._parameters.id, this._parameters.start, e.value);
+            const correctDateRange = this._parameters.getCorrectDateRange(this._parameters.id, this._parameters.start, e.value);
             if (correctDateRange.end.getTime() !== e.value.getTime()) {
               e.rule.message = this._getValidationMessage(false, correctDateRange.end);
               return false;
@@ -236,7 +236,7 @@ class TaskEditDialogInfo extends DialogInfoBase {
             text: '...',
             hint: messageLocalization.format('dxGantt-dialogEditResourceListHint'),
             onClick: () => {
-              var showTaskEditDialogCallback = () => {
+              const showTaskEditDialogCallback = () => {
                 this._parameters.showTaskEditDialogCommand.execute();
               };
               this._parameters.showResourcesDialogCommand.execute(showTaskEditDialogCallback);
@@ -262,8 +262,8 @@ class TaskEditDialogInfo extends DialogInfoBase {
     return this._parameters.hiddenFields.indexOf(field) > -1;
   }
   _getFormData() {
-    var data = {};
-    for (var field in this._parameters) {
+    const data = {};
+    for (const field in this._parameters) {
       data[field] = field === 'progress' ? this._parameters[field] / 100 : this._parameters[field];
     }
     return data;
@@ -277,7 +277,7 @@ class TaskEditDialogInfo extends DialogInfoBase {
   }
   isValidated() {
     var _this$_form;
-    var validationResult = (_this$_form = this._form) === null || _this$_form === void 0 ? void 0 : _this$_form.validate();
+    const validationResult = (_this$_form = this._form) === null || _this$_form === void 0 ? void 0 : _this$_form.validate();
     return validationResult === null || validationResult === void 0 ? void 0 : validationResult.isValid;
   }
 }
@@ -317,8 +317,8 @@ class ResourcesEditDialogInfo extends DialogInfoBase {
           this.textBox = e.component;
         },
         onInput: e => {
-          var addButton = e.component.getButton('addResource');
-          var resourceName = e.component.option('text');
+          const addButton = e.component.getButton('addResource');
+          const resourceName = e.component.option('text');
           addButton.option('disabled', resourceName.length === 0);
         },
         buttons: [{
@@ -328,7 +328,7 @@ class ResourcesEditDialogInfo extends DialogInfoBase {
             text: messageLocalization.format('dxGantt-dialogButtonAdd'),
             disabled: true,
             onClick: e => {
-              var newItem = this._parameters.resources.createItem();
+              const newItem = this._parameters.resources.createItem();
               newItem.text = this.textBox.option('text');
               this._parameters.resources.add(newItem);
               this.list.option('items', this._parameters.resources.items);
@@ -366,12 +366,12 @@ class ConfirmDialogInfo extends DialogInfoBase {
 }
 class ConstraintViolationDialogInfo extends DialogInfoBase {
   _getFormItems() {
-    var hasCriticalErrors = this._parameters.hasCriticalErrors;
-    var severalErrors = this._parameters.errorsCount > 1;
-    var items = [];
-    var deleteMessage = severalErrors ? 'dxGantt-dialogDeleteDependenciesMessage' : 'dxGantt-dialogDeleteDependencyMessage';
-    var moveMessage = severalErrors ? 'dxGantt-dialogMoveTaskAndKeepDependenciesMessage' : 'dxGantt-dialogMoveTaskAndKeepDependencyMessage';
-    var titleMessage;
+    const hasCriticalErrors = this._parameters.hasCriticalErrors;
+    const severalErrors = this._parameters.errorsCount > 1;
+    const items = [];
+    const deleteMessage = severalErrors ? 'dxGantt-dialogDeleteDependenciesMessage' : 'dxGantt-dialogDeleteDependencyMessage';
+    const moveMessage = severalErrors ? 'dxGantt-dialogMoveTaskAndKeepDependenciesMessage' : 'dxGantt-dialogMoveTaskAndKeepDependencyMessage';
+    let titleMessage;
     if (hasCriticalErrors) {
       titleMessage = severalErrors ? 'dxGantt-dialogConstraintCriticalViolationSeveralTasksMessage' : 'dxGantt-dialogConstraintCriticalViolationMessage';
     } else {

@@ -3,27 +3,14 @@
 exports.ScrollableProps = void 0;
 var _simulated_strategy_props = require("./simulated_strategy_props");
 var _get_default_option_value = require("../utils/get_default_option_value");
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-const ScrollableProps = exports.ScrollableProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(_simulated_strategy_props.ScrollableSimulatedProps), Object.getOwnPropertyDescriptors(Object.defineProperties({}, {
-  useNative: {
-    get: function () {
-      return (0, _get_default_option_value.getDefaultUseNative)();
-    },
-    configurable: true,
-    enumerable: true
+const ScrollableProps = exports.ScrollableProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(_simulated_strategy_props.ScrollableSimulatedProps), Object.getOwnPropertyDescriptors({
+  get useNative() {
+    return (0, _get_default_option_value.getDefaultUseNative)();
   },
-  useSimulatedScrollbar: {
-    get: function () {
-      return (0, _get_default_option_value.getDefaultUseSimulatedScrollbar)();
-    },
-    configurable: true,
-    enumerable: true
+  get useSimulatedScrollbar() {
+    return (0, _get_default_option_value.getDefaultUseSimulatedScrollbar)();
   },
-  refreshStrategy: {
-    get: function () {
-      return (0, _get_default_option_value.getDefaultNativeRefreshStrategy)();
-    },
-    configurable: true,
-    enumerable: true
+  get refreshStrategy() {
+    return (0, _get_default_option_value.getDefaultNativeRefreshStrategy)();
   }
-}))));
+})));

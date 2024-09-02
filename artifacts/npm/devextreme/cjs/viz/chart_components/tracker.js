@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/viz/chart_components/tracker.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -72,7 +72,7 @@ function eventCanceled(_ref, target, clickTarget) {
   const deprecatedCancel = event.cancel; // DEPRECATED_22_1
   const eventCanceled = cancel || deprecatedCancel;
   if (deprecatedCancel) {
-    _errors.default.log('W0003', "".concat(clickTarget, "Click handler argument"), 'event.cancel', '22.1', 'Use the \'cancel\' field instead');
+    _errors.default.log('W0003', `${clickTarget}Click handler argument`, 'event.cancel', '22.1', 'Use the \'cancel\' field instead');
   }
   return eventCanceled || !target.getOptions();
 }
@@ -492,7 +492,7 @@ exports.ChartTracker = ChartTracker;
   },
   _hideCrosshair: function () {
     var _this$_crosshair;
-    (_this$_crosshair = this._crosshair) === null || _this$_crosshair === void 0 ? void 0 : _this$_crosshair.hide();
+    (_this$_crosshair = this._crosshair) === null || _this$_crosshair === void 0 || _this$_crosshair.hide();
   },
   _moveCrosshair: function (point, x, y) {
     if (this._crosshair && point !== null && point !== void 0 && point.isVisible()) {

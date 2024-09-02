@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/scheduler/options_validator/core/options_validator_error_handler.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,16 +15,16 @@ export class OptionsValidatorErrorHandler {
     if (optionsValidatorResult === true) {
       return;
     }
-    var uniqErrorCodes = Object.keys(optionsValidatorResult).reduce((set, validatorName) => {
-      var errorCode = this.validatorNameToErrorCodeMap[validatorName];
+    const uniqErrorCodes = Object.keys(optionsValidatorResult).reduce((set, validatorName) => {
+      const errorCode = this.validatorNameToErrorCodeMap[validatorName];
       if (errorCode) {
         set.add(errorCode);
       }
       return set;
     }, new Set());
-    var errorCodeArray = [...uniqErrorCodes];
+    const errorCodeArray = [...uniqErrorCodes];
     errorCodeArray.forEach((errorCode, idx) => {
-      var isLastErrorCode = idx === errorCodeArray.length - 1;
+      const isLastErrorCode = idx === errorCodeArray.length - 1;
       // NOTE: For stopping code stack execution and not creating
       // the special error code for this case,
       // we log all errors and throw the last one.

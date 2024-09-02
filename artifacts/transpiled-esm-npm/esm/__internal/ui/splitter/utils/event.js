@@ -1,15 +1,15 @@
 import { camelize } from '../../../../core/utils/inflector';
 export function getActionNameByEventName(eventName) {
-  return "_".concat(camelize(eventName.replace('on', '')), "Action");
+  return `_${camelize(eventName.replace('on', ''))}Action`;
 }
-export var RESIZE_EVENT = {
+export const RESIZE_EVENT = {
   onResize: 'onResize',
   onResizeStart: 'onResizeStart',
   onResizeEnd: 'onResizeEnd'
 };
-export var COLLAPSE_EVENT = {
+export const COLLAPSE_EVENT = {
   onCollapsePrev: 'onCollapsePrev',
   onCollapseNext: 'onCollapseNext'
 };
-export var ITEM_COLLAPSED_EVENT = 'onItemCollapsed';
-export var ITEM_EXPANDED_EVENT = 'onItemExpanded';
+export const ITEM_COLLAPSED_EVENT = 'onItemCollapsed';
+export const ITEM_EXPANDED_EVENT = 'onItemExpanded';

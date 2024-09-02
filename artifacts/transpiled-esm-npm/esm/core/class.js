@@ -1,8 +1,8 @@
 import errors from './errors';
 import { isWindow } from './utils/type';
-var wrapOverridden = function wrapOverridden(baseProto, methodName, method) {
+const wrapOverridden = function (baseProto, methodName, method) {
   return function () {
-    var prevCallBase = this.callBase;
+    const prevCallBase = this.callBase;
     this.callBase = baseProto[methodName];
     try {
       return method.apply(this, arguments);
@@ -11,16 +11,16 @@ var wrapOverridden = function wrapOverridden(baseProto, methodName, method) {
     }
   };
 };
-var clonePrototype = function clonePrototype(obj) {
-  var func = function func() {};
+const clonePrototype = function (obj) {
+  const func = function () {};
   func.prototype = obj.prototype;
   return new func();
 };
-var redefine = function redefine(members) {
-  var that = this;
-  var overridden;
-  var memberName;
-  var member;
+const redefine = function (members) {
+  const that = this;
+  let overridden;
+  let memberName;
+  let member;
   if (!members) {
     return that;
   }
@@ -31,16 +31,16 @@ var redefine = function redefine(members) {
   }
   return that;
 };
-var include = function include() {
-  var classObj = this;
-  var argument;
-  var name;
-  var i;
+const include = function () {
+  const classObj = this;
+  let argument;
+  let name;
+  let i;
 
   // NOTE: For ES6 classes. They don't have _includedCtors/_includedPostCtors
   // properties and get them from the ancestor class.
-  var hasClassObjOwnProperty = Object.prototype.hasOwnProperty.bind(classObj);
-  var isES6Class = !hasClassObjOwnProperty('_includedCtors') && !hasClassObjOwnProperty('_includedPostCtors');
+  const hasClassObjOwnProperty = Object.prototype.hasOwnProperty.bind(classObj);
+  const isES6Class = !hasClassObjOwnProperty('_includedCtors') && !hasClassObjOwnProperty('_includedPostCtors');
   if (isES6Class) {
     classObj._includedCtors = classObj._includedCtors.slice(0);
     classObj._includedPostCtors = classObj._includedPostCtors.slice(0);
@@ -62,11 +62,11 @@ var include = function include() {
   }
   return classObj;
 };
-var subclassOf = function subclassOf(parentClass) {
-  var hasParentProperty = Object.prototype.hasOwnProperty.bind(this)('parent');
-  var isES6Class = !hasParentProperty && this.parent;
+const subclassOf = function (parentClass) {
+  const hasParentProperty = Object.prototype.hasOwnProperty.bind(this)('parent');
+  const isES6Class = !hasParentProperty && this.parent;
   if (isES6Class) {
-    var baseClass = Object.getPrototypeOf(this);
+    const baseClass = Object.getPrototypeOf(this);
     return baseClass === parentClass || baseClass.subclassOf(parentClass);
   } else {
     if (this.parent === parentClass) {
@@ -78,31 +78,20 @@ var subclassOf = function subclassOf(parentClass) {
     return this.parent.subclassOf(parentClass);
   }
 };
-var abstract = function abstract() {
+const abstract = function () {
   throw errors.Error('E0001');
 };
-var copyStatic = function () {
-  var hasOwn = Object.prototype.hasOwnProperty;
-  return function (source, destination) {
-    for (var key in source) {
-      if (!hasOwn.call(source, key)) {
-        return;
-      }
-      destination[key] = source[key];
-    }
-  };
-}();
-var classImpl = function classImpl() {};
+const classImpl = function () {};
 classImpl.inherit = function (members) {
-  var inheritor = function inheritor() {
+  const inheritor = function () {
     if (!this || isWindow(this) || typeof this.constructor !== 'function') {
       throw errors.Error('E0003');
     }
-    var instance = this;
-    var ctor = instance.ctor;
-    var includedCtors = instance.constructor._includedCtors;
-    var includedPostCtors = instance.constructor._includedPostCtors;
-    var i;
+    const instance = this;
+    const ctor = instance.ctor;
+    const includedCtors = instance.constructor._includedCtors;
+    const includedPostCtors = instance.constructor._includedPostCtors;
+    let i;
     for (i = 0; i < includedCtors.length; i++) {
       includedCtors[i].call(instance);
     }
@@ -114,7 +103,7 @@ classImpl.inherit = function (members) {
     }
   };
   inheritor.prototype = clonePrototype(this);
-  copyStatic(this, inheritor);
+  Object.setPrototypeOf(inheritor, this);
   inheritor.inherit = this.inherit;
   inheritor.abstract = abstract;
   inheritor.redefine = redefine;

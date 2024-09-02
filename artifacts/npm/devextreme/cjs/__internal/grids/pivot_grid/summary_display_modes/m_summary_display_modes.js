@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/pivot_grid/summary_display_modes/m_summary_display_modes.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22,7 +22,7 @@ var _extend = require("../../../../core/utils/extend");
 var _type = require("../../../../core/utils/type");
 var _m_widget_utils = _interopRequireWildcard(require("../m_widget_utils"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 const COLUMN = 'column';
 const ROW = 'row';
 const NULL = null;
@@ -87,21 +87,24 @@ const getPrevCellCrossGroup = function (cell, direction) {
   }
   return prevCell;
 };
-const createRunningTotalExpr = function (field) {
+const createRunningTotalExpr = field => {
   if (!field.runningTotal) {
     return undefined;
   }
   const direction = field.runningTotal === COLUMN ? ROW : COLUMN;
-  return function (e) {
+  return e => {
     const prevCell = field.allowCrossGroupCalculation ? getPrevCellCrossGroup(e, direction) : e.prev(direction, false);
-    let value = e.value(true);
-    const prevValue = prevCell && prevCell.value(true);
-    if ((0, _type.isDefined)(prevValue) && (0, _type.isDefined)(value)) {
-      value = prevValue + value;
-    } else if ((0, _type.isDefined)(prevValue)) {
-      value = prevValue;
+    const calculatedValue = e.value(true);
+    const originalValue = e.value(false);
+    const prevCalculatedValue = prevCell === null || prevCell === void 0 ? void 0 : prevCell.value(true);
+    switch (true) {
+      case (0, _type.isDefined)(calculatedValue) && (0, _type.isDefined)(originalValue) && (0, _type.isDefined)(prevCalculatedValue):
+        return prevCalculatedValue + calculatedValue;
+      case (0, _type.isDefined)(prevCalculatedValue):
+        return prevCalculatedValue;
+      default:
+        return calculatedValue;
     }
-    return value;
   };
 };
 function createCache() {
@@ -127,7 +130,7 @@ function getFieldPos(descriptions, field, cache) {
     const area = field.area || 'data';
     fieldParams = cache.positions[field.index] = cache.positions[field.index] || {
       area,
-      index: descriptions[area === 'data' ? 'values' : "".concat(area, "s")].indexOf(field)
+      index: descriptions[area === 'data' ? 'values' : `${area}s`].indexOf(field)
     };
   }
   return fieldParams;

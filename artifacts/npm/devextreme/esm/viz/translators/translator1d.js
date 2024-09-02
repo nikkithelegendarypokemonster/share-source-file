@@ -1,26 +1,26 @@
 /**
 * DevExtreme (esm/viz/translators/translator1d.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-var _Number = Number;
+const _Number = Number;
 export function Translator1D() {
   this.setDomain(arguments[0], arguments[1]).setCodomain(arguments[2], arguments[3]).setInverted(false);
 }
 Translator1D.prototype = {
   constructor: Translator1D,
-  setDomain: function setDomain(domain1, domain2) {
-    var that = this;
+  setDomain: function (domain1, domain2) {
+    const that = this;
     that._domain1 = _Number(domain1);
     that._domain2 = _Number(domain2);
     that._domainDelta = that._domain2 - that._domain1;
     return that;
   },
-  setCodomain: function setCodomain(codomain1, codomain2) {
-    var that = this;
+  setCodomain: function (codomain1, codomain2) {
+    const that = this;
     that._codomain1 = _Number(codomain1);
     that._codomain2 = _Number(codomain2);
     that._codomainDelta = that._codomain2 - that._codomain1;
@@ -29,38 +29,38 @@ Translator1D.prototype = {
   setInverted(state) {
     this.inverted = state;
   },
-  getDomain: function getDomain() {
+  getDomain: function () {
     return [this._domain1, this._domain2];
   },
-  getCodomain: function getCodomain() {
+  getCodomain: function () {
     return [this._codomain1, this._codomain2];
   },
-  getDomainStart: function getDomainStart() {
+  getDomainStart: function () {
     return this._domain1;
   },
-  getDomainEnd: function getDomainEnd() {
+  getDomainEnd: function () {
     return this._domain2;
   },
-  getCodomainStart: function getCodomainStart() {
+  getCodomainStart: function () {
     return this._codomain1;
   },
-  getCodomainEnd: function getCodomainEnd() {
+  getCodomainEnd: function () {
     return this._codomain2;
   },
-  getDomainRange: function getDomainRange() {
+  getDomainRange: function () {
     return this._domainDelta;
   },
-  getCodomainRange: function getCodomainRange() {
+  getCodomainRange: function () {
     return this._codomainDelta;
   },
-  translate: function translate(value) {
-    var ratio = (_Number(value) - this._domain1) / this._domainDelta;
+  translate: function (value) {
+    let ratio = (_Number(value) - this._domain1) / this._domainDelta;
     this.inverted && (ratio = 1 - ratio);
     return 0 <= ratio && ratio <= 1 ? this._codomain1 + ratio * this._codomainDelta : NaN;
   },
-  adjust: function adjust(value) {
-    var ratio = (_Number(value) - this._domain1) / this._domainDelta;
-    var result = NaN;
+  adjust: function (value) {
+    const ratio = (_Number(value) - this._domain1) / this._domainDelta;
+    let result = NaN;
     if (ratio < 0) {
       result = this._domain1;
     } else if (ratio > 1) {

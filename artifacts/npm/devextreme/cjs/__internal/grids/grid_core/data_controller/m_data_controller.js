@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/grid_core/data_controller/m_data_controller.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -26,8 +26,8 @@ var _m_modules = _interopRequireDefault(require("../m_modules"));
 var _m_utils = _interopRequireDefault(require("../m_utils"));
 var _m_data_helper_mixin = require("./m_data_helper_mixin");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable @typescript-eslint/method-signature-style */
+/* eslint-disable @typescript-eslint/method-signature-style */
+
 const changePaging = function (that, optionName, value) {
   const dataSource = that._dataSource;
   if (dataSource) {
@@ -39,7 +39,7 @@ const changePaging = function (that, optionName, value) {
         }
         dataSource[optionName](value);
         that._skipProcessingPagingChange = true;
-        that.option("paging.".concat(optionName), value);
+        that.option(`paging.${optionName}`, value);
         that._skipProcessingPagingChange = false;
         const pageIndex = dataSource.pageIndex();
         that._isPaging = optionName === 'pageIndex';
@@ -54,13 +54,8 @@ const changePaging = function (that, optionName, value) {
   }
   return 0;
 };
-let DataController = exports.DataController = /*#__PURE__*/function (_DataHelperMixin) {
-  _inheritsLoose(DataController, _DataHelperMixin);
-  function DataController() {
-    return _DataHelperMixin.apply(this, arguments) || this;
-  }
-  var _proto = DataController.prototype;
-  _proto.init = function init() {
+class DataController extends (0, _m_data_helper_mixin.DataHelperMixin)(_m_modules.default.Controller) {
+  init() {
     this._items = [];
     this._cachedProcessedItems = null;
     this._columnsController = this.getController('columns');
@@ -103,36 +98,36 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto._getPagingOptionValue = function _getPagingOptionValue(optionName) {
+   */
+  _getPagingOptionValue(optionName) {
     return this._dataSource[optionName]();
-  };
-  _proto.callbackNames = function callbackNames() {
+  }
+  callbackNames() {
     return ['changed', 'loadingChanged', 'dataErrorOccurred', 'pageChanged', 'dataSourceChanged', 'pushed'];
-  };
-  _proto.callbackFlags = function callbackFlags(name) {
+  }
+  callbackFlags(name) {
     if (name === 'dataErrorOccurred') {
       return {
         stopOnFalse: true
       };
     }
     return undefined;
-  };
-  _proto.publicMethods = function publicMethods() {
+  }
+  publicMethods() {
     return ['_disposeDataSource', 'beginCustomLoading', 'byKey', 'clearFilter', 'endCustomLoading', 'filter', 'getCombinedFilter', 'getDataByKeys', 'getDataSource', 'getKeyByRowIndex', 'getRowIndexByKey', 'getVisibleRows', 'keyOf', 'pageCount', 'pageIndex', 'pageSize', 'refresh', 'repaintRows', 'totalCount'];
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto.reset = function reset() {
+   */
+  reset() {
     this._columnsController.reset();
     this._items = [];
     this._refreshDataSource();
   }
   /**
    * @extended: editing
-   */;
-  _proto._handleDataSourceChange = function _handleDataSourceChange(args) {
+   */
+  _handleDataSourceChange(args) {
     if (args.value === args.previousValue || this.option('columns') && Array.isArray(args.value) && Array.isArray(args.previousValue)) {
       const isValueChanged = args.value !== args.previousValue;
       if (isValueChanged) {
@@ -152,11 +147,10 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
    * @extended: editing
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.needToRefreshOnDataSourceChange = function needToRefreshOnDataSourceChange(args) {
+  needToRefreshOnDataSourceChange(args) {
     return true;
-  };
-  _proto.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     const that = this;
     let dataSource;
     let changedPagingOptions;
@@ -207,23 +201,23 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
         }
         break;
       default:
-        _DataHelperMixin.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  _proto.isReady = function isReady() {
+  }
+  isReady() {
     return !this._isLoading;
-  };
-  _proto.getDataSource = function getDataSource() {
+  }
+  getDataSource() {
     return this._dataSource && this._dataSource._dataSource;
-  };
-  _proto.getCombinedFilter = function getCombinedFilter(returnDataField) {
+  }
+  getCombinedFilter(returnDataField) {
     return this.combinedFilter(undefined, returnDataField);
-  };
-  _proto.combinedFilter = function combinedFilter(filter, returnDataField) {
+  }
+  combinedFilter(filter, returnDataField) {
     if (!this._dataSource) {
       return filter;
     }
-    let combined = filter !== null && filter !== void 0 ? filter : this._dataSource.filter();
+    let combined = filter ?? this._dataSource.filter();
     const isColumnsTypesDefined = this._columnsController.isDataSourceApplied() || this._columnsController.isAllDataTypesDefined();
     if (isColumnsTypesDefined) {
       const additionalFilter = this._calculateAdditionalFilter();
@@ -232,8 +226,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
     const isRemoteFiltering = this._dataSource.remoteOperations().filtering || returnDataField;
     combined = this._columnsController.updateFilter(combined, isRemoteFiltering);
     return combined;
-  };
-  _proto.waitReady = function waitReady() {
+  }
+  waitReady() {
     if (this._updateLockCount) {
       // @ts-expect-error
       this._readyDeferred = new _deferred.Deferred();
@@ -244,8 +238,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   /**
    * @extended: selection
    * @protected
-   */;
-  _proto._endUpdateCore = function _endUpdateCore() {
+   */
+  _endUpdateCore() {
     const changes = this._changes;
     if (changes.length) {
       this._changes = [];
@@ -260,9 +254,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
     }
   }
   // Handlers
-  ;
-  _proto._handleCustomizeStoreLoadOptions = function _handleCustomizeStoreLoadOptions(e) {
-    var _a;
+  _handleCustomizeStoreLoadOptions(e) {
+    var _storeLoadOptions$fil;
     const columnsController = this._columnsController;
     const dataSource = this._dataSource;
     const {
@@ -272,7 +265,7 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
       return;
     }
     storeLoadOptions.filter = this.combinedFilter(storeLoadOptions.filter);
-    if (((_a = storeLoadOptions.filter) === null || _a === void 0 ? void 0 : _a.length) === 1 && storeLoadOptions.filter[0] === '!') {
+    if (((_storeLoadOptions$fil = storeLoadOptions.filter) === null || _storeLoadOptions$fil === void 0 ? void 0 : _storeLoadOptions$fil.length) === 1 && storeLoadOptions.filter[0] === '!') {
       e.data = [];
       e.extra = e.extra || {};
       e.extra.totalCount = 0;
@@ -289,8 +282,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
     dataSource.group(storeLoadOptions.group);
     storeLoadOptions.sort = columnsController.getSortDataSourceParameters(!dataSource.remoteOperations().sorting);
     e.group = columnsController.getGroupDataSourceParameters(!dataSource.remoteOperations().grouping);
-  };
-  _proto._handleColumnsChanged = function _handleColumnsChanged(e) {
+  }
+  _handleColumnsChanged(e) {
     const that = this;
     const {
       changeTypes
@@ -303,11 +296,11 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
     let filterApplied;
     // B255430
     const updateItemsHandler = function (change) {
-      var _a;
+      var _change$changeTypes;
       that._columnsController.columnsChanged.remove(updateItemsHandler);
       that.updateItems({
         repaintChangesOnly: false,
-        virtualColumnsScrolling: (_a = change === null || change === void 0 ? void 0 : change.changeTypes) === null || _a === void 0 ? void 0 : _a.virtualColumnsScrolling
+        virtualColumnsScrolling: change === null || change === void 0 || (_change$changeTypes = change.changeTypes) === null || _change$changeTypes === void 0 ? void 0 : _change$changeTypes.virtualColumnsScrolling
       });
     };
     if (changeTypes.sorting || changeTypes.grouping) {
@@ -343,8 +336,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   }
   /**
    * @extended: selection
-   */;
-  _proto._handleDataChanged = function _handleDataChanged(e) {
+   */
+  _handleDataChanged(e) {
     const that = this;
     const dataSource = that._dataSource;
     const columnsController = that._columnsController;
@@ -382,29 +375,28 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
       that._needApplyFilter = !that._columnsController.isDataSourceApplied();
       that._isAllDataTypesDefined = columnsController.isAllDataTypesDefined();
     }
-  };
-  _proto._handleLoadingChanged = function _handleLoadingChanged(isLoading) {
+  }
+  _handleLoadingChanged(isLoading) {
     this._isLoading = isLoading;
     this._fireLoadingChanged();
   }
   /**
    * @extended: state_storing
-   */;
-  _proto._handleLoadError = function _handleLoadError(e) {
+   */
+  _handleLoadError(e) {
     this.dataErrorOccurred.fire(e);
-  };
-  _proto._handleDataPushed = function _handleDataPushed(changes) {
+  }
+  _handleDataPushed(changes) {
     this.pushed.fire(changes);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.fireError = function fireError() {
+  fireError() {
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
     this.dataErrorOccurred.fire(_ui.default.Error.apply(_ui.default, args));
-  };
-  _proto._setPagingOptions = function _setPagingOptions(dataSource) {
+  }
+  _setPagingOptions(dataSource) {
     const pageIndex = this.option('paging.pageIndex');
     const pageSize = this.option('paging.pageSize');
     const pagingEnabled = this.option('paging.enabled');
@@ -437,8 +429,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
       };
     }
     return false;
-  };
-  _proto._getSpecificDataSourceOption = function _getSpecificDataSourceOption() {
+  }
+  _getSpecificDataSourceOption() {
     const dataSource = this.option('dataSource');
     if (Array.isArray(dataSource)) {
       return {
@@ -450,11 +442,11 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
       };
     }
     return dataSource;
-  };
-  _proto._initDataSource = function _initDataSource() {
+  }
+  _initDataSource() {
     const that = this;
     const oldDataSource = this._dataSource;
-    _DataHelperMixin.prototype._initDataSource.call(this);
+    super._initDataSource();
     const dataSource = that._dataSource;
     that._useSortingGroupingFromColumns = true;
     that._cachedProcessedItems = null;
@@ -468,8 +460,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   }
   /**
    * @extended: selection, virtual_scrolling
-   */;
-  _proto._loadDataSource = function _loadDataSource() {
+   */
+  _loadDataSource() {
     const that = this;
     const dataSource = that._dataSource;
     // @ts-expect-error
@@ -488,28 +480,28 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   }
   /**
    * @extended: DataGrid's grouping
-   */;
-  _proto._beforeProcessItems = function _beforeProcessItems(items) {
+   */
+  _beforeProcessItems(items) {
     return items.slice(0);
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto.getRowIndexDelta = function getRowIndexDelta() {
+   */
+  getRowIndexDelta() {
     return 0;
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto.getDataIndex = function getDataIndex(change) {
+   */
+  getDataIndex(change) {
     const visibleItems = this._items;
     const lastVisibleItem = change.changeType === 'append' && visibleItems.length > 0 ? visibleItems[visibleItems.length - 1] : null;
     return (0, _type.isDefined)(lastVisibleItem === null || lastVisibleItem === void 0 ? void 0 : lastVisibleItem.dataIndex) ? lastVisibleItem.dataIndex + 1 : 0;
   }
   /**
    * @extended: adaptivity, master_detail, virtual_scrolling
-   */;
-  _proto._processItems = function _processItems(items, change) {
+   */
+  _processItems(items, change) {
     const that = this;
     const rowIndexDelta = that.getRowIndexDelta();
     const {
@@ -534,16 +526,15 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   }
   /**
    * @extended: editing
-   */;
-  _proto._processItem = function _processItem(item, options) {
+   */
+  _processItem(item, options) {
     item = this._generateDataItem(item, options);
     item = this._processDataItem(item, options);
     item.dataIndex = options.dataIndex++;
     return item;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._generateDataItem = function _generateDataItem(data, options) {
+  _generateDataItem(data, options) {
     return {
       rowType: 'data',
       data,
@@ -552,12 +543,12 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   }
   /**
    * @extended: selection, editing, master_detail, TreeList's master_detail
-   */;
-  _proto._processDataItem = function _processDataItem(dataItem, options) {
+   */
+  _processDataItem(dataItem, options) {
     dataItem.values = this.generateDataValues(dataItem.data, options.visibleColumns);
     return dataItem;
-  };
-  _proto.generateDataValues = function generateDataValues(data, columns, isModified) {
+  }
+  generateDataValues(data, columns, isModified) {
     const values = [];
     let value;
     for (let i = 0; i < columns.length; i++) {
@@ -576,8 +567,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   }
   /**
    * @extende: virtual_scrolling, focus, selection
-   */;
-  _proto._applyChange = function _applyChange(change) {
+   */
+  _applyChange(change) {
     const that = this;
     if (change.changeType === 'update') {
       that._applyChangeUpdate(change);
@@ -586,11 +577,11 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
     } else if (change.changeType === 'refresh') {
       that._applyChangeFull(change);
     }
-  };
-  _proto._applyChangeFull = function _applyChangeFull(change) {
+  }
+  _applyChangeFull(change) {
     this._items = change.items.slice(0);
-  };
-  _proto._getRowIndices = function _getRowIndices(change) {
+  }
+  _getRowIndices(change) {
     const rowIndices = change.rowIndices.slice(0);
     const rowIndexDelta = this.getRowIndexDelta();
     rowIndices.sort((a, b) => a - b);
@@ -608,8 +599,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   }
   /**
    * @extended: editing
-   */;
-  _proto._applyChangeUpdate = function _applyChangeUpdate(change) {
+   */
+  _applyChangeUpdate(change) {
     const that = this;
     const {
       items
@@ -679,8 +670,7 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
    * @extended: editing, validating
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._isCellChanged = function _isCellChanged(oldRow, newRow, visibleRowIndex, columnIndex, isLiveUpdate) {
+  _isCellChanged(oldRow, newRow, visibleRowIndex, columnIndex, isLiveUpdate) {
     if (JSON.stringify(oldRow.values[columnIndex]) !== JSON.stringify(newRow.values[columnIndex])) {
       return true;
     }
@@ -694,8 +684,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   }
   /**
    * @extended: editing_row_based, editing, editing_form_based
-   */;
-  _proto._getChangedColumnIndices = function _getChangedColumnIndices(oldItem, newItem, visibleRowIndex, isLiveUpdate) {
+   */
+  _getChangedColumnIndices(oldItem, newItem, visibleRowIndex, isLiveUpdate) {
     let columnIndices;
     if (oldItem.rowType === newItem.rowType) {
       if (newItem.rowType !== 'group' && newItem.rowType !== 'groupFooter') {
@@ -712,17 +702,18 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
         const isRowStateEquals = newItem.isExpanded === oldItem.isExpanded && newItem.data.isContinuation === oldItem.data.isContinuation && newItem.data.isContinuationOnNextPage === oldItem.data.isContinuationOnNextPage;
         if (isRowStateEquals) {
           columnIndices = oldItem.cells.map((cell, index) => {
-            var _a;
-            return ((_a = cell.column) === null || _a === void 0 ? void 0 : _a.type) !== 'groupExpand' ? index : -1;
+            var _cell$column;
+            return ((_cell$column = cell.column) === null || _cell$column === void 0 ? void 0 : _cell$column.type) !== 'groupExpand' ? index : -1;
           }).filter(index => index >= 0);
         }
       }
     }
     return columnIndices;
-  };
-  _proto._partialUpdateRow = function _partialUpdateRow(oldItem, newItem, visibleRowIndex, isLiveUpdate) {
+  }
+  _partialUpdateRow(oldItem, newItem, visibleRowIndex, isLiveUpdate) {
+    var _changedColumnIndices;
     let changedColumnIndices = this._getChangedColumnIndices(oldItem, newItem, visibleRowIndex, isLiveUpdate);
-    if ((changedColumnIndices === null || changedColumnIndices === void 0 ? void 0 : changedColumnIndices.length) && this.option('dataRowTemplate')) {
+    if ((_changedColumnIndices = changedColumnIndices) !== null && _changedColumnIndices !== void 0 && _changedColumnIndices.length && this.option('dataRowTemplate')) {
       changedColumnIndices = undefined;
     }
     if (changedColumnIndices) {
@@ -741,9 +732,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
       oldItem.update && oldItem.update(newItem);
     }
     return changedColumnIndices;
-  };
-  _proto._isItemEquals = function _isItemEquals(item1, item2) {
-    var _a, _b, _c, _d;
+  }
+  _isItemEquals(item1, item2) {
     if (JSON.stringify(item1.values) !== JSON.stringify(item2.values)) {
       return false;
     }
@@ -752,9 +742,10 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
       return false;
     }
     if (item1.rowType === 'group' || item1.rowType === 'groupFooter') {
+      var _item1$data, _item2$data, _item1$data2, _item2$data2;
       const expandedMatch = item1.isExpanded === item2.isExpanded;
       const summaryCellsMatch = JSON.stringify(item1.summaryCells) === JSON.stringify(item2.summaryCells);
-      const continuationMatch = ((_a = item1.data) === null || _a === void 0 ? void 0 : _a.isContinuation) === ((_b = item2.data) === null || _b === void 0 ? void 0 : _b.isContinuation) && ((_c = item1.data) === null || _c === void 0 ? void 0 : _c.isContinuationOnNextPage) === ((_d = item2.data) === null || _d === void 0 ? void 0 : _d.isContinuationOnNextPage);
+      const continuationMatch = ((_item1$data = item1.data) === null || _item1$data === void 0 ? void 0 : _item1$data.isContinuation) === ((_item2$data = item2.data) === null || _item2$data === void 0 ? void 0 : _item2$data.isContinuation) && ((_item1$data2 = item1.data) === null || _item1$data2 === void 0 ? void 0 : _item1$data2.isContinuationOnNextPage) === ((_item2$data2 = item2.data) === null || _item2$data2 === void 0 ? void 0 : _item2$data2.isContinuationOnNextPage);
       if (!expandedMatch || !summaryCellsMatch || !continuationMatch) {
         return false;
       }
@@ -763,18 +754,17 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   }
   /**
    * @extended: editing
-   */;
-  _proto._applyChangesOnly = function _applyChangesOnly(change) {
-    var _a;
+   */
+  _applyChangesOnly(change) {
     const rowIndices = [];
     const columnIndices = [];
     const changeTypes = [];
     const items = [];
     const newIndexByKey = {};
-    const isLiveUpdate = (_a = change === null || change === void 0 ? void 0 : change.isLiveUpdate) !== null && _a !== void 0 ? _a : true;
+    const isLiveUpdate = (change === null || change === void 0 ? void 0 : change.isLiveUpdate) ?? true;
     function getRowKey(row) {
       if (row) {
-        return "".concat(row.rowType, ",").concat(JSON.stringify(row.key));
+        return `${row.rowType},${JSON.stringify(row.key)}`;
       }
       return undefined;
     }
@@ -863,20 +853,18 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
    * @extended: keyboard_navigation
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._correctRowIndices = function _correctRowIndices(rowIndex) {}
+  _correctRowIndices(rowIndex) {}
   /**
    * @extend: virtual_scrolling
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._afterProcessItems = function _afterProcessItems(items, change) {
+  _afterProcessItems(items, change) {
     return items;
   }
   /**
    * @extende: virtual_scrolling, editing
-   */;
-  _proto._updateItemsCore = function _updateItemsCore(change) {
+   */
+  _updateItemsCore(change) {
     let items;
     const dataSource = this._dataSource;
     const changeType = change.changeType || 'refresh';
@@ -897,10 +885,9 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
       this._applyChange(change);
       const rowIndexDelta = this.getRowIndexDelta();
       (0, _iterator.each)(this._items, (index, item) => {
-        var _a;
         item.rowIndex = index - rowIndexDelta;
         if (oldItems) {
-          item.cells = (_a = oldItems[index].cells) !== null && _a !== void 0 ? _a : [];
+          item.cells = oldItems[index].cells ?? [];
         }
         const newItem = items[index];
         if (newItem) {
@@ -911,8 +898,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
     } else {
       this._items = [];
     }
-  };
-  _proto._handleChanging = function _handleChanging(e) {
+  }
+  _handleChanging(e) {
     const that = this;
     const rows = that.getVisibleRows();
     const dataSource = that.dataSource();
@@ -930,13 +917,12 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
         }
       });
     }
-  };
-  _proto.updateItems = function updateItems(change, isDataChanged) {
-    var _a;
+  }
+  updateItems(change, isDataChanged) {
     change = change || {};
     const that = this;
     if (that._repaintChangesOnly !== undefined) {
-      change.repaintChangesOnly = (_a = change.repaintChangesOnly) !== null && _a !== void 0 ? _a : that._repaintChangesOnly;
+      change.repaintChangesOnly = change.repaintChangesOnly ?? that._repaintChangesOnly;
       change.needUpdateDimensions = change.needUpdateDimensions || that._needUpdateDimensions;
     } else if (change.changes) {
       change.repaintChangesOnly = that.option('repaintChangesOnly');
@@ -955,15 +941,15 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
     that._updateItemsCore(change);
     if (change.cancel) return;
     that._fireChanged(change);
-  };
-  _proto.loadingOperationTypes = function loadingOperationTypes() {
+  }
+  loadingOperationTypes() {
     const dataSource = this.dataSource();
     return dataSource && dataSource.loadingOperationTypes() || {};
   }
   /**
    * @extended: virtual_scrolling, focus
-   */;
-  _proto._fireChanged = function _fireChanged(change) {
+   */
+  _fireChanged(change) {
     if (this._currentOperationTypes) {
       change.operationTypes = this._currentOperationTypes;
       this._currentOperationTypes = null;
@@ -974,23 +960,23 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   }
   /**
    * @extended: state_storing
-   */;
-  _proto.isLoading = function isLoading() {
+   */
+  isLoading() {
     return this._isLoading || this._isCustomLoading;
-  };
-  _proto._fireLoadingChanged = function _fireLoadingChanged() {
+  }
+  _fireLoadingChanged() {
     this.loadingChanged.fire(this.isLoading(), this._loadingText);
   }
   /**
    * @extended: filter_row, filter_sync, header_filter, search
-   */;
-  _proto._calculateAdditionalFilter = function _calculateAdditionalFilter() {
+   */
+  _calculateAdditionalFilter() {
     return null;
   }
   /**
    * @extended: filter_sync, virtual_scrolling
-   */;
-  _proto._applyFilter = function _applyFilter() {
+   */
+  _applyFilter() {
     const dataSource = this._dataSource;
     if (dataSource) {
       dataSource.pageIndex(0);
@@ -1003,11 +989,11 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
     }
     // @ts-expect-error
     return new _deferred.Deferred().resolve();
-  };
-  _proto.resetFilterApplying = function resetFilterApplying() {
+  }
+  resetFilterApplying() {
     this._isFilterApplying = false;
-  };
-  _proto.filter = function filter(filterExpr) {
+  }
+  filter(filterExpr) {
     const dataSource = this._dataSource;
     const filter = dataSource && dataSource.filter();
     if (arguments.length === 0) {
@@ -1024,8 +1010,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   }
   /**
    * @extended: filter_sync
-   */;
-  _proto.clearFilter = function clearFilter(filterName) {
+   */
+  clearFilter(filterName) {
     const that = this;
     const columnsController = that._columnsController;
     const clearColumnOption = function (optionName) {
@@ -1062,34 +1048,34 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
       clearColumnOption('filterValues');
     }
     that.component.endUpdate();
-  };
-  _proto._fireDataSourceChanged = function _fireDataSourceChanged() {
+  }
+  _fireDataSourceChanged() {
     const that = this;
     const changedHandler = function () {
       that.changed.remove(changedHandler);
       that.dataSourceChanged.fire();
     };
     that.changed.add(changedHandler);
-  };
-  _proto._getDataSourceAdapter = function _getDataSourceAdapter() {}
+  }
+  _getDataSourceAdapter() {}
   /**
    * @extended: DataGrid's summary
-   */;
-  _proto._createDataSourceAdapterCore = function _createDataSourceAdapterCore(dataSource, remoteOperations) {
+   */
+  _createDataSourceAdapterCore(dataSource, remoteOperations) {
     const dataSourceAdapterProvider = this._getDataSourceAdapter();
     const dataSourceAdapter = dataSourceAdapterProvider.create(this.component);
     dataSourceAdapter.init(dataSource, remoteOperations);
     return dataSourceAdapter;
-  };
-  _proto.isLocalStore = function isLocalStore() {
+  }
+  isLocalStore() {
     let store = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.store();
     return store instanceof _array_store.default;
-  };
-  _proto.isCustomStore = function isCustomStore(store) {
+  }
+  isCustomStore(store) {
     store = store || this.store();
     return store instanceof _custom_store.default;
-  };
-  _proto._createDataSourceAdapter = function _createDataSourceAdapter(dataSource) {
+  }
+  _createDataSourceAdapter(dataSource) {
     let remoteOperations = this.option('remoteOperations');
     const store = dataSource.store();
     const enabledRemoteOperations = {
@@ -1114,8 +1100,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
       remoteOperations = enabledRemoteOperations;
     }
     return this._createDataSourceAdapterCore(dataSource, remoteOperations);
-  };
-  _proto.setDataSource = function setDataSource(dataSource) {
+  }
+  setDataSource(dataSource) {
     const that = this;
     const oldDataSource = that._dataSource;
     if (!dataSource && oldDataSource) {
@@ -1149,27 +1135,26 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
    * @extended: virtual_scrolling
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.items = function items(byLoaded) {
+  items(byLoaded) {
     return this._items;
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto.isEmpty = function isEmpty() {
+   */
+  isEmpty() {
     return !this.items().length;
-  };
-  _proto.pageCount = function pageCount() {
+  }
+  pageCount() {
     return this._dataSource ? this._dataSource.pageCount() : 1;
-  };
-  _proto.dataSource = function dataSource() {
+  }
+  dataSource() {
     return this._dataSource;
-  };
-  _proto.store = function store() {
+  }
+  store() {
     const dataSource = this._dataSource;
     return dataSource && dataSource.store();
-  };
-  _proto.loadAll = function loadAll(data) {
+  }
+  loadAll(data) {
     let skipFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     const that = this;
     // @ts-expect-error
@@ -1191,11 +1176,11 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
         };
         dataSource._handleDataLoaded(options);
         (0, _deferred.when)(options.data).done(data => {
-          var _a;
+          var _options$extra;
           data = that._beforeProcessItems(data);
           d.resolve(that._processItems(data, {
             changeType: 'loadingAll'
-          }), (_a = options.extra) === null || _a === void 0 ? void 0 : _a.summary);
+          }), (_options$extra = options.extra) === null || _options$extra === void 0 ? void 0 : _options$extra.summary);
         }).fail(d.reject);
       } else if (!dataSource.isLoading()) {
         const loadOptions = (0, _extend.extend)({}, dataSource.loadOptions(), {
@@ -1216,23 +1201,23 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
       d.resolve([]);
     }
     return d;
-  };
-  _proto.getKeyByRowIndex = function getKeyByRowIndex(rowIndex, byLoaded) {
+  }
+  getKeyByRowIndex(rowIndex, byLoaded) {
     const item = this.items(byLoaded)[rowIndex];
     if (item) {
       return item.key;
     }
-  };
-  _proto.getRowIndexByKey = function getRowIndexByKey(key, byLoaded) {
+  }
+  getRowIndexByKey(key, byLoaded) {
     return _m_utils.default.getIndexByKey(key, this.items(byLoaded));
-  };
-  _proto.keyOf = function keyOf(data) {
+  }
+  keyOf(data) {
     const store = this.store();
     if (store) {
       return store.keyOf(data);
     }
-  };
-  _proto.byKey = function byKey(key) {
+  }
+  byKey(key) {
     const store = this.store();
     const rowIndex = this.getRowIndexByKey(key);
     let result;
@@ -1242,8 +1227,8 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
       result = new _deferred.Deferred().resolve(this.items()[rowIndex].data);
     }
     return result || store.byKey(key);
-  };
-  _proto.key = function key() {
+  }
+  key() {
     const store = this.store();
     if (store) {
       return store.key();
@@ -1253,11 +1238,10 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
    * @extended: virtual_scrolling
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.getRowIndexOffset = function getRowIndexOffset(byLoadedRows) {
+  getRowIndexOffset(byLoadedRows) {
     return 0;
-  };
-  _proto.getDataByKeys = function getDataByKeys(rowKeys) {
+  }
+  getDataByKeys(rowKeys) {
     const that = this;
     // @ts-expect-error
     const result = new _deferred.Deferred();
@@ -1275,27 +1259,27 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto.pageIndex = function pageIndex(value) {
+   */
+  pageIndex(value) {
     return changePaging(this, 'pageIndex', value);
-  };
-  _proto.pageSize = function pageSize(value) {
+  }
+  pageSize(value) {
     return changePaging(this, 'pageSize', value);
-  };
-  _proto.beginCustomLoading = function beginCustomLoading(messageText) {
+  }
+  beginCustomLoading(messageText) {
     this._isCustomLoading = true;
     this._loadingText = messageText || '';
     this._fireLoadingChanged();
-  };
-  _proto.endCustomLoading = function endCustomLoading() {
+  }
+  endCustomLoading() {
     this._isCustomLoading = false;
     this._loadingText = undefined;
     this._fireLoadingChanged();
   }
   /**
    * @extended: virtual_scrolling, selection
-   */;
-  _proto.refresh = function refresh(options) {
+   */
+  refresh(options) {
     if (options === true) {
       options = {
         reload: true,
@@ -1333,24 +1317,24 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
       }
     });
     return d.promise();
-  };
-  _proto.getVisibleRows = function getVisibleRows() {
+  }
+  getVisibleRows() {
     return this.items();
-  };
-  _proto._disposeDataSource = function _disposeDataSource() {
+  }
+  _disposeDataSource() {
     if (this._dataSource && this._dataSource._eventsStrategy) {
       this._dataSource._eventsStrategy.off('loadingChanged', this.readyWatcher);
     }
     this.setDataSource(null);
-  };
-  _proto.dispose = function dispose() {
+  }
+  dispose() {
     this._disposeDataSource();
-    _DataHelperMixin.prototype.dispose.call(this);
+    super.dispose();
   }
   /**
    * @extended editing
-   */;
-  _proto.repaintRows = function repaintRows(rowIndexes, changesOnly) {
+   */
+  repaintRows(rowIndexes, changesOnly) {
     rowIndexes = Array.isArray(rowIndexes) ? rowIndexes : [rowIndexes];
     if (rowIndexes.length > 1 || (0, _type.isDefined)(rowIndexes[0])) {
       this.updateItems({
@@ -1359,78 +1343,80 @@ let DataController = exports.DataController = /*#__PURE__*/function (_DataHelper
         isFullUpdate: !changesOnly
       });
     }
-  };
-  _proto.skipProcessingPagingChange = function skipProcessingPagingChange(fullName) {
+  }
+  skipProcessingPagingChange(fullName) {
     return this._skipProcessingPagingChange && (fullName === 'paging.pageIndex' || fullName === 'paging.pageSize');
   }
   /**
    * @extended: TreeList's state_storing
-   */;
-  _proto.getUserState = function getUserState() {
+   */
+  getUserState() {
     return {
       searchText: this.option('searchPanel.text'),
       pageIndex: this.pageIndex(),
       pageSize: this.pageSize()
     };
-  };
-  _proto.getCachedStoreData = function getCachedStoreData() {
+  }
+  getCachedStoreData() {
     return this._dataSource && this._dataSource.getCachedStoreData();
   }
   /**
    * @extended: virtual_scrolling
-   */;
-  _proto.isLastPageLoaded = function isLastPageLoaded() {
+   */
+  isLastPageLoaded() {
     const pageIndex = this.pageIndex();
     const pageCount = this.pageCount();
     return pageIndex === pageCount - 1;
-  };
-  _proto.load = function load() {
-    var _a;
-    return (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.load();
+  }
+  load() {
+    var _this$_dataSource;
+    return (_this$_dataSource = this._dataSource) === null || _this$_dataSource === void 0 ? void 0 : _this$_dataSource.load();
   }
   /**
    * @extended: editing, virtual_scrolling
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.reload = function reload(_reload, changesOnly) {
-    var _a;
-    return (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.reload(_reload, changesOnly);
-  };
-  _proto.push = function push() {
-    var _a;
-    return (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.push(...arguments);
-  };
-  _proto.itemsCount = function itemsCount() {
-    var _a;
-    return this._dataSource ? (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.itemsCount() : 0;
-  };
-  _proto.totalItemsCount = function totalItemsCount() {
-    var _a;
-    return this._dataSource ? (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.totalItemsCount() : 0;
-  };
-  _proto.hasKnownLastPage = function hasKnownLastPage() {
-    var _a;
-    return this._dataSource ? (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.hasKnownLastPage() : true;
+  reload(reload, changesOnly) {
+    var _this$_dataSource2;
+    return (_this$_dataSource2 = this._dataSource) === null || _this$_dataSource2 === void 0 ? void 0 : _this$_dataSource2.reload(reload, changesOnly);
+  }
+  push() {
+    var _this$_dataSource3;
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+    return (_this$_dataSource3 = this._dataSource) === null || _this$_dataSource3 === void 0 ? void 0 : _this$_dataSource3.push(...args);
+  }
+  itemsCount() {
+    var _this$_dataSource4;
+    return this._dataSource ? (_this$_dataSource4 = this._dataSource) === null || _this$_dataSource4 === void 0 ? void 0 : _this$_dataSource4.itemsCount() : 0;
+  }
+  totalItemsCount() {
+    var _this$_dataSource5;
+    return this._dataSource ? (_this$_dataSource5 = this._dataSource) === null || _this$_dataSource5 === void 0 ? void 0 : _this$_dataSource5.totalItemsCount() : 0;
+  }
+  hasKnownLastPage() {
+    var _this$_dataSource6;
+    return this._dataSource ? (_this$_dataSource6 = this._dataSource) === null || _this$_dataSource6 === void 0 ? void 0 : _this$_dataSource6.hasKnownLastPage() : true;
   }
   /**
    * @extended: state_storing
-   */;
-  _proto.isLoaded = function isLoaded() {
-    var _a;
-    return this._dataSource ? (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.isLoaded() : true;
-  };
-  _proto.totalCount = function totalCount() {
-    var _a;
-    return this._dataSource ? (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.totalCount() : 0;
-  };
-  _proto.hasLoadOperation = function hasLoadOperation() {
-    var _a, _b;
-    const operationTypes = (_b = (_a = this._dataSource) === null || _a === void 0 ? void 0 : _a.operationTypes()) !== null && _b !== void 0 ? _b : {};
+   */
+  isLoaded() {
+    var _this$_dataSource7;
+    return this._dataSource ? (_this$_dataSource7 = this._dataSource) === null || _this$_dataSource7 === void 0 ? void 0 : _this$_dataSource7.isLoaded() : true;
+  }
+  totalCount() {
+    var _this$_dataSource8;
+    return this._dataSource ? (_this$_dataSource8 = this._dataSource) === null || _this$_dataSource8 === void 0 ? void 0 : _this$_dataSource8.totalCount() : 0;
+  }
+  hasLoadOperation() {
+    var _this$_dataSource9;
+    const operationTypes = ((_this$_dataSource9 = this._dataSource) === null || _this$_dataSource9 === void 0 ? void 0 : _this$_dataSource9.operationTypes()) ?? {};
     return Object.keys(operationTypes).some(type => operationTypes[type]);
-  };
-  return DataController;
-}((0, _m_data_helper_mixin.DataHelperMixin)(_m_modules.default.Controller));
+  }
+}
+exports.DataController = DataController;
 const dataControllerModule = exports.dataControllerModule = {
   defaultOptions() {
     return {

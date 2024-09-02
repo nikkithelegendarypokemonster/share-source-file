@@ -125,7 +125,7 @@ const LocalStore = exports.LocalStore = _class.default.inherit(function () {
     let hierarchyItem;
     if (dimension) {
       dimensionValue = dimension.selector(options.data);
-      pathHash = pathHash !== undefined ? pathHash + PATH_DELIMETER + dimensionValue : "".concat(dimensionValue);
+      pathHash = pathHash !== undefined ? pathHash + PATH_DELIMETER + dimensionValue : `${dimensionValue}`;
       hierarchyItem = addHierarchyItem(dimensionValue, children, pathHash, options.childrenHash);
       indexes.push(hierarchyItem.index);
       if (expandedPathsHash && expandedPathsHash[pathHash] || dimension.expanded) {
@@ -142,7 +142,7 @@ const LocalStore = exports.LocalStore = _class.default.inherit(function () {
     const expandedPaths = headerName === 'rows' ? loadOptions.rowExpandedPaths : loadOptions.columnExpandedPaths;
     const options = {
       data,
-      childrenHash: headers["".concat(headerName, "Hash")],
+      childrenHash: headers[`${headerName}Hash`],
       dimensions: loadOptions[headerName],
       expandedPathsHash: loadOptions.headerName !== headerName && expandedPaths && expandedPaths.hash
     };
@@ -171,7 +171,7 @@ const LocalStore = exports.LocalStore = _class.default.inherit(function () {
     if (expandedPaths) {
       const hash = expandedPaths.hash = {};
       expandedPaths.forEach(path => {
-        const pathValue = path.map(value => "".concat(value)).join(PATH_DELIMETER);
+        const pathValue = path.map(value => `${value}`).join(PATH_DELIMETER);
         hash[pathValue] = true;
       });
     }

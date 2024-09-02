@@ -1,9 +1,10 @@
 /**
 * DevExtreme (esm/core/version.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-export var version = '24.1.0';
+export const version = '24.2.0';
+export const fullVersion = '24.2.0';

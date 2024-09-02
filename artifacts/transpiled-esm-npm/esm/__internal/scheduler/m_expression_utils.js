@@ -1,5 +1,5 @@
 import { isDefined } from '../../core/utils/type';
-export var ExpressionUtils = {
+export const ExpressionUtils = {
   getField: (dataAccessors, field, obj) => {
     if (!isDefined(dataAccessors.getter[field])) {
       return;

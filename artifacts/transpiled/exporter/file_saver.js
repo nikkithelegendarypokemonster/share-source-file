@@ -36,7 +36,7 @@ const fileSaver = exports.fileSaver = {
   _revokeObjectURLTimeout: 30000,
   _getDataUri: function (format, data) {
     const mimeType = this._getMimeType(format);
-    return "data:".concat(mimeType, ";base64,").concat(data);
+    return `data:${mimeType};base64,${data}`;
   },
   _getMimeType: function (format) {
     return MIME_TYPES[format] || 'application/octet-stream';

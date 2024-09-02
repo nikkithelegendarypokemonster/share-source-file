@@ -3,9 +3,9 @@ import { hasWindow } from '../../../../core/utils/window';
 import { requestAnimationFrame, cancelAnimationFrame } from '../../../../animation/frame';
 export function subscribeToResize(element, handler) {
   if (hasWindow() && element) {
-    var resizeAnimationFrameID = -1;
+    let resizeAnimationFrameID = -1;
     resizeObserverSingleton.observe(element, _ref => {
-      var {
+      let {
         target
       } = _ref;
       resizeAnimationFrameID = requestAnimationFrame(() => {

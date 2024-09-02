@@ -1,9 +1,9 @@
 import { patchFontOptions } from '../core/utils';
 import { consts } from './common';
-var POINTER_SIZE = consts.pointerSize;
-var SLIDER_MARKER_UPDATE_DELAY = 75;
+const POINTER_SIZE = consts.pointerSize;
+const SLIDER_MARKER_UPDATE_DELAY = 75;
 function SliderMarker(renderer, root, isLeftPointer) {
-  var that = this;
+  const that = this;
   that._isLeftPointer = isLeftPointer;
   that._isOverlapped = false;
   that._group = renderer.g().attr({
@@ -24,14 +24,14 @@ function SliderMarker(renderer, root, isLeftPointer) {
 }
 SliderMarker.prototype = {
   constructor: SliderMarker,
-  _getRectSize: function _getRectSize(textSize) {
+  _getRectSize: function (textSize) {
     return {
       width: Math.round(2 * this._paddingLeftRight + textSize.width),
       height: Math.round(2 * this._paddingTopBottom + textSize.height)
     };
   },
-  _getTextSize: function _getTextSize() {
-    var textSize = this._label.getBBox();
+  _getTextSize: function () {
+    const textSize = this._label.getBBox();
     if (!this._textHeight && isFinite(textSize.height)) {
       this._textHeight = textSize.height;
     }
@@ -41,26 +41,26 @@ SliderMarker.prototype = {
       y: textSize.y
     };
   },
-  _getAreaPointsInfo: function _getAreaPointsInfo(textSize) {
-    var that = this;
-    var rectSize = that._getRectSize(textSize);
-    var rectWidth = rectSize.width;
-    var rectHeight = rectSize.height;
-    var rectLeftBorder = -rectWidth;
-    var rectRightBorder = 0;
-    var pointerRightPoint = POINTER_SIZE;
-    var pointerCenterPoint = 0;
-    var pointerLeftPoint = -POINTER_SIZE;
-    var position = that._position;
-    var isLeft = that._isLeftPointer;
-    var correctCloudBorders = function correctCloudBorders() {
+  _getAreaPointsInfo: function (textSize) {
+    const that = this;
+    const rectSize = that._getRectSize(textSize);
+    const rectWidth = rectSize.width;
+    const rectHeight = rectSize.height;
+    let rectLeftBorder = -rectWidth;
+    let rectRightBorder = 0;
+    let pointerRightPoint = POINTER_SIZE;
+    let pointerCenterPoint = 0;
+    let pointerLeftPoint = -POINTER_SIZE;
+    const position = that._position;
+    const isLeft = that._isLeftPointer;
+    const correctCloudBorders = function () {
       rectLeftBorder++;
       rectRightBorder++;
       pointerRightPoint++;
       pointerCenterPoint++;
       pointerLeftPoint++;
     };
-    var checkPointerBorders = function checkPointerBorders() {
+    const checkPointerBorders = function () {
       if (pointerRightPoint > rectRightBorder) {
         pointerRightPoint = rectRightBorder;
       } else {
@@ -70,7 +70,7 @@ SliderMarker.prototype = {
       }
       isLeft && correctCloudBorders();
     };
-    var borderPosition = position;
+    let borderPosition = position;
     if (isLeft) {
       if (position > that._range[1] - rectWidth) {
         rectRightBorder = -position + that._range[1];
@@ -99,15 +99,15 @@ SliderMarker.prototype = {
       points: [rectLeftBorder, 0, rectRightBorder, 0, rectRightBorder, rectHeight, pointerRightPoint, rectHeight, pointerCenterPoint, rectHeight + POINTER_SIZE, pointerLeftPoint, rectHeight, rectLeftBorder, rectHeight]
     };
   },
-  _update: function _update() {
-    var that = this;
-    var textSize;
+  _update: function () {
+    const that = this;
+    let textSize;
     clearTimeout(that._timeout);
     that._label.attr({
       text: that._text || ''
     });
-    var currentTextSize = that._getTextSize();
-    var rectSize = that._getRectSize(currentTextSize);
+    const currentTextSize = that._getTextSize();
+    const rectSize = that._getRectSize(currentTextSize);
     textSize = that._textSize || currentTextSize;
     textSize = that._textSize = currentTextSize.width > textSize.width || currentTextSize.height > textSize.height ? currentTextSize : textSize;
     that._timeout = setTimeout(function () {
@@ -119,9 +119,9 @@ SliderMarker.prototype = {
       that._group.attr({
         translateY: -(rectSize.height + POINTER_SIZE)
       });
-      var pointsData = that._getAreaPointsInfo(size);
-      var points = pointsData.points;
-      var offset = pointsData.offset;
+      const pointsData = that._getAreaPointsInfo(size);
+      const points = pointsData.points;
+      const offset = pointsData.offset;
       that._area.attr({
         points: points
       });
@@ -141,15 +141,15 @@ SliderMarker.prototype = {
     }
     updateSliderMarker(textSize);
   },
-  setText: function setText(value) {
+  setText: function (value) {
     this._text = value;
   },
-  setPosition: function setPosition(position) {
+  setPosition: function (position) {
     this._position = position;
     this._update();
   },
-  applyOptions: function applyOptions(options, screenRange) {
-    var that = this;
+  applyOptions: function (options, screenRange) {
+    const that = this;
     that._range = screenRange;
     that._paddingLeftRight = options.paddingLeftRight;
     that._paddingTopBottom = options.paddingTopBottom;
@@ -164,24 +164,24 @@ SliderMarker.prototype = {
     that._label.css(patchFontOptions(options.font));
     that._update();
   },
-  getTracker: function getTracker() {
+  getTracker: function () {
     return this._tracker;
   },
-  setValid: function setValid(isValid) {
+  setValid: function (isValid) {
     this._area.attr({
       fill: this._colors[Number(isValid)]
     });
   },
-  setColor: function setColor(color) {
+  setColor: function (color) {
     this._area.attr({
       fill: color
     });
   },
-  dispose: function dispose() {
+  dispose: function () {
     clearTimeout(this._timeout);
   },
-  setOverlapped: function setOverlapped(isOverlapped) {
-    var that = this;
+  setOverlapped: function (isOverlapped) {
+    const that = this;
     if (that._isOverlapped !== isOverlapped) {
       if (isOverlapped) {
         that._border.append(that._group);
@@ -191,7 +191,7 @@ SliderMarker.prototype = {
       that._isOverlapped = isOverlapped;
     }
   },
-  getBorderPosition: function getBorderPosition() {
+  getBorderPosition: function () {
     return this._borderPosition;
   }
 };

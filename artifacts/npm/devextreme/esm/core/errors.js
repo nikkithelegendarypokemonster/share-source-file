@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/core/errors.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -224,5 +224,9 @@ export default errorUtils({
   /**
    * @name ErrorsCore.W0022
    */
-  W0022: 'DevExtreme: Pre-release software. Not suitable for commercial use.\n\n' + 'Pre-release software may contain deficiencies and as such, should not be considered for use or integrated in any mission critical application.\n\n'
+  W0022: 'DevExtreme: Pre-release software. Not suitable for commercial use.\n\n' + 'Pre-release software may contain deficiencies and as such, should not be considered for use or integrated in any mission critical application.\n\n',
+  /**
+   * @name ErrorsCore.W0023
+   */
+  W0023: 'DevExtreme: the following \'devextreme\' package version does not match versions of other DevExpress products used in this application:\n\n' + '{0}\n\n' + 'Interoperability between different versions of the products listed herein cannot be guaranteed.\n\n'
 });

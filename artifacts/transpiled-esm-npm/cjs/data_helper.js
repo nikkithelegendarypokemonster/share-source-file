@@ -4,7 +4,7 @@ exports.default = void 0;
 var _data_source = require("./data/data_source/data_source");
 var _extend = require("./core/utils/extend");
 var _utils = require("./data/data_source/utils");
-var _data_controller = _interopRequireDefault(require("./ui/collection/data_controller"));
+var _m_data_controller = _interopRequireDefault(require("./__internal/ui/collection/m_data_controller"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const DATA_SOURCE_OPTIONS_METHOD = '_dataSourceOptions';
 const DATA_SOURCE_CHANGED_METHOD = '_dataSourceChangedHandler';
@@ -54,7 +54,7 @@ const DataHelperMixin = {
     if (dataController) {
       this._dataController = dataController;
     } else {
-      this._dataController = new _data_controller.default(dataSource);
+      this._dataController = new _m_data_controller.default(dataSource);
     }
   },
   _addDataSourceHandlers: function () {

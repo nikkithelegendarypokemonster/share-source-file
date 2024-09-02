@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/drawer.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -29,104 +29,153 @@ import Widget, {
     WidgetOptions,
 } from './widget/ui.widget';
 
+/** @public */
 export type OpenedStateMode = 'overlap' | 'shrink' | 'push';
+/** @public */
 export type PanelLocation = 'left' | 'right' | 'top' | 'bottom' | 'before' | 'after';
+/** @public */
 export type RevealMode = 'slide' | 'expand';
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_drawer_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxDrawer>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_drawer_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxDrawer>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_drawer_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxDrawer> & ChangedOptionInfo;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxDrawerOptions extends WidgetOptions<dxDrawer> {
     /**
-     * Specifies the duration of the drawer&apos;s opening and closing animation (in milliseconds). Applies only if animationEnabled is true.
+     * @docid
+     * @default 400
+     * @public
      */
     animationDuration?: number;
     /**
-     * Specifies whether to use an opening and closing animation.
+     * @docid
+     * @default true
+     * @public
      */
     animationEnabled?: boolean;
     /**
-     * Specifies whether to close the drawer if a user clicks or taps the view area.
+     * @docid
+     * @default false
+     * @type_function_param1 event:event
+     * @public
      */
     closeOnOutsideClick?: boolean | ((event: DxEvent<MouseEvent | PointerEvent | TouchEvent>) => boolean);
     /**
-     * Specifies the drawer&apos;s width or height (depending on the drawer&apos;s position) in the opened state.
+     * @docid
+     * @default null
+     * @public
      */
     maxSize?: number;
     /**
-     * Specifies the drawer&apos;s width or height (depending on the drawer&apos;s position) in the closed state.
+     * @docid
+     * @default null
+     * @public
      */
     minSize?: number;
     /**
-     * Specifies whether the drawer is opened.
+     * @docid
+     * @fires dxDrawerOptions.onOptionChanged
+     * @default false
+     * @public
      */
     opened?: boolean;
     /**
-     * Specifies how the drawer interacts with the view in the opened state.
+     * @docid
+     * @default "shrink"
+     * @public
      */
     openedStateMode?: OpenedStateMode;
     /**
-     * Specifies the drawer&apos;s position in relation to the view.
+     * @docid
+     * @default "left"
+     * @public
      */
     position?: PanelLocation;
     /**
-     * Specifies the drawer&apos;s reveal mode.
+     * @docid
+     * @default "slide"
+     * @public
      */
     revealMode?: RevealMode;
     /**
-     * Specifies whether to shade the view when the drawer is opened.
+     * @docid
+     * @default false
+     * @public
      */
     shading?: boolean;
     /**
-     * Specifies the drawer&apos;s content.
+     * @docid
+     * @default 'panel'
+     * @public
      */
     template?: template | ((Element: DxElement) => any);
 }
 /**
- * The Drawer is a dismissible or permanently visible panel used for navigation in responsive web application layouts.
+ * @docid
+ * @inherits Widget
+ * @hasTranscludedContent
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxDrawer extends Widget<dxDrawerOptions> {
     /**
-     * Gets the drawer&apos;s content.
+     * @docid
+     * @publicName content()
+     * @public
      */
     content(): DxElement;
     /**
-     * Closes the drawer.
+     * @docid
+     * @publicName hide()
+     * @return Promise<void>
+     * @public
      */
     hide(): DxPromise<void>;
     /**
-     * Opens the drawer.
+     * @docid
+     * @publicName show()
+     * @return Promise<void>
+     * @public
      */
     show(): DxPromise<void>;
     /**
-     * Opens or closes the drawer, reversing the current state.
+     * @docid
+     * @publicName toggle()
+     * @return Promise<void>
+     * @public
      */
     toggle(): DxPromise<void>;
 }
 
+/** @public */
 export type Properties = dxDrawerOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxDrawerOptions;
 
 

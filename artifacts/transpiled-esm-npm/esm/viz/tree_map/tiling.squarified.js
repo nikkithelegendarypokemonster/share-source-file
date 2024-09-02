@@ -1,4 +1,4 @@
-var _max = Math.max;
+const _max = Math.max;
 import _squarify from './tiling.squarified.base';
 import { addAlgorithm } from './tiling';
 function accumulate(total, current) {

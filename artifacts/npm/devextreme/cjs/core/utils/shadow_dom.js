@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/utils/shadow_dom.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -35,8 +35,8 @@ function processRules(targetStyleSheet, styleSheets, needApplyAllStyles) {
   }
 }
 function insertRule(targetStyleSheet, rule, needApplyAllStyles) {
-  var _rule$selectorText, _rule$cssRules, _rule$cssRules$, _rule$cssRules$$selec, _rule$name, _rule$style;
-  const isDxRule = needApplyAllStyles || ((_rule$selectorText = rule.selectorText) === null || _rule$selectorText === void 0 ? void 0 : _rule$selectorText.includes(DX_RULE_PREFIX)) || ((_rule$cssRules = rule.cssRules) === null || _rule$cssRules === void 0 ? void 0 : (_rule$cssRules$ = _rule$cssRules[0]) === null || _rule$cssRules$ === void 0 ? void 0 : (_rule$cssRules$$selec = _rule$cssRules$.selectorText) === null || _rule$cssRules$$selec === void 0 ? void 0 : _rule$cssRules$$selec.includes(DX_RULE_PREFIX)) || ((_rule$name = rule.name) === null || _rule$name === void 0 ? void 0 : _rule$name.startsWith(DX_RULE_PREFIX)) || ((_rule$style = rule.style) === null || _rule$style === void 0 ? void 0 : _rule$style.fontFamily) === 'DXIcons';
+  var _rule$selectorText, _rule$cssRules, _rule$name, _rule$style;
+  const isDxRule = needApplyAllStyles || ((_rule$selectorText = rule.selectorText) === null || _rule$selectorText === void 0 ? void 0 : _rule$selectorText.includes(DX_RULE_PREFIX)) || ((_rule$cssRules = rule.cssRules) === null || _rule$cssRules === void 0 || (_rule$cssRules = _rule$cssRules[0]) === null || _rule$cssRules === void 0 || (_rule$cssRules = _rule$cssRules.selectorText) === null || _rule$cssRules === void 0 ? void 0 : _rule$cssRules.includes(DX_RULE_PREFIX)) || ((_rule$name = rule.name) === null || _rule$name === void 0 ? void 0 : _rule$name.startsWith(DX_RULE_PREFIX)) || ((_rule$style = rule.style) === null || _rule$style === void 0 ? void 0 : _rule$style.fontFamily) === 'DXIcons';
   if (isDxRule) {
     targetStyleSheet.insertRule(rule.cssText, targetStyleSheet.cssRules.length);
   }
@@ -63,7 +63,7 @@ function isPositionInElementRectangle(element, x, y) {
 function createQueue() {
   let shiftIndex = 0;
   const items = [];
-  return Object.defineProperties({
+  return {
     push(item) {
       items.push(item);
       return this;
@@ -71,23 +71,14 @@ function createQueue() {
     shift() {
       shiftIndex++;
       return items[shiftIndex - 1];
-    }
-  }, {
-    length: {
-      get: function () {
-        return items.length - shiftIndex;
-      },
-      configurable: true,
-      enumerable: true
     },
-    items: {
-      get: function () {
-        return items;
-      },
-      configurable: true,
-      enumerable: true
+    get length() {
+      return items.length - shiftIndex;
+    },
+    get items() {
+      return items;
     }
-  });
+  };
 }
 function getShadowElementsFromPoint(x, y, root) {
   const elementQueue = createQueue().push(root);

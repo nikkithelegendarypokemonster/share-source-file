@@ -10,7 +10,7 @@ const generator = require('@devextreme-generator/inferno').default;
 const ts = require('typescript');
 const path = require('path');
 const fs = require('fs');
-const tsJest = require('ts-jest');
+const tsJest = require('ts-jest').default;
 const getCacheKey = require('./get_cache_key');
 const {
   BASE_GENERATOR_OPTIONS_WITH_JQUERY
@@ -21,7 +21,7 @@ const TS_CONFIG_PATH = 'build/gulp/generator/ts-configs/jest.tsconfig.json';
 const tsConfig = getTsConfig(TS_CONFIG_PATH);
 generator.options = BASE_GENERATOR_OPTIONS_WITH_JQUERY;
 module.exports = {
-  process(src, filename, config) {
+  process(src, filename, options) {
     if (filename.indexOf('test_components') !== -1 && path.extname(filename) === '.tsx') {
       const result = compileCode(generator, src, {
         path: filename,
@@ -36,14 +36,17 @@ module.exports = {
         }
         return jestTransformer.process(
         // eslint-disable-next-line spellcheck/spell-checker
-        ts.transpileModule( // Vitik: jest.tsconfig set jsxFactory to h. Add import for support it.
+        ts.transpileModule(
+        // Vitik: jest.tsconfig set jsxFactory to h. Add import for support it.
         // In propduction jsx transpaled by babel-plugin-inferno
-        "import { createElement as h } from \"inferno-create-element\";\n                        ".concat(result[0].code, "\n                ").concat(result[1].code.replace('export default', 'export ').replace(new RegExp("\\b".concat(componentName, "\\b"), 'g'), "".concat(componentName, "Class")).replace(new RegExp("import ".concat(componentName, "Component from\\s+\\S+")), "const ".concat(componentName, "Component = ").concat(componentName))), tsConfig).outputText, filename, config);
+        `import { createElement as h } from "inferno-create-element";
+                        ${result[0].code}
+                ${result[1].code.replace('export default', 'export ').replace(new RegExp(`\\b${componentName}\\b`, 'g'), `${componentName}Class`).replace(new RegExp(`import ${componentName}Component from\\s+\\S+`), `const ${componentName}Component = ${componentName}`)}`, tsConfig).outputText, filename, options);
       }
     }
-    return jestTransformer.process(src, filename, config);
+    return jestTransformer.process(src, filename, options);
   },
-  getCacheKey(fileData, filePath, configStr) {
-    return getCacheKey(fileData, filePath, configStr, THIS_FILE);
+  getCacheKey(fileData, filePath, transformOptions) {
+    return getCacheKey(fileData, filePath, transformOptions.configString, THIS_FILE);
   }
 };

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/gantt/ui.gantt.bars.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,8 +15,6 @@ var _context_menu = _interopRequireDefault(require("../context_menu"));
 var _message = _interopRequireDefault(require("../../localization/message"));
 var _extend = require("../../core/utils/extend");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const TOOLBAR_SEPARATOR_CLASS = 'dx-gantt-toolbar-separator';
 const COMMANDS = {
   createTask: 0,
@@ -36,20 +34,19 @@ const COMMANDS = {
   toggleResources: 14,
   toggleDependencies: 15
 };
-let Bar = /*#__PURE__*/function () {
-  function Bar(element, owner) {
+class Bar {
+  constructor(element, owner) {
     this._element = element;
     this._owner = owner;
     this._items = [];
     this._createControl();
   }
-  var _proto = Bar.prototype;
-  _proto.createItems = function createItems(items) {
+  createItems(items) {
     this._cache = null;
     this._items = this._createItemsCore(items);
     this._menu.option('items', this._items);
-  };
-  _proto._createItemsCore = function _createItemsCore(items) {
+  }
+  _createItemsCore(items) {
     return items.map(item => {
       let result;
       if (typeof item === 'string') {
@@ -62,8 +59,8 @@ let Bar = /*#__PURE__*/function () {
       }
       return result;
     });
-  };
-  _proto._createItemByText = function _createItemByText(text) {
+  }
+  _createItemByText(text) {
     switch (text.toLowerCase()) {
       case 'separator':
         return this._createSeparator();
@@ -104,18 +101,18 @@ let Bar = /*#__PURE__*/function () {
           }
         });
     }
-  };
-  _proto._getDefaultItemOptions = function _getDefaultItemOptions() {
+  }
+  _getDefaultItemOptions() {
     return {};
-  };
-  _proto._getItemsCache = function _getItemsCache() {
+  }
+  _getItemsCache() {
     if (!this._cache) {
       this._cache = {};
       this._fillCache(this._items);
     }
     return this._cache;
-  };
-  _proto._fillCache = function _fillCache(items) {
+  }
+  _fillCache(items) {
     items.forEach(item => {
       const key = item.commandId;
       if (key !== undefined) {
@@ -128,54 +125,47 @@ let Bar = /*#__PURE__*/function () {
         this._fillCache(item.items);
       }
     });
-  };
-  _proto._getIcon = function _getIcon(name) {
+  }
+  _getIcon(name) {
     return 'dx-gantt-i dx-gantt-i-' + name;
   }
 
   // IBar
-  ;
-  _proto.getCommandKeys = function getCommandKeys() {
+  getCommandKeys() {
     const itemsCache = this._getItemsCache();
     const result = [];
     for (const itemKey in itemsCache) {
       result.push(parseInt(itemKey));
     }
     return result;
-  };
-  _proto.setItemEnabled = function setItemEnabled(key, enabled) {
+  }
+  setItemEnabled(key, enabled) {
     const itemsCache = this._getItemsCache();
     itemsCache[key].forEach(item => {
       item.disabled = !enabled;
     });
-  };
-  _proto.setItemVisible = function setItemVisible(key, visible) {
+  }
+  setItemVisible(key, visible) {
     const itemsCache = this._getItemsCache();
     itemsCache[key].forEach(item => {
       item.visible = visible;
     });
-  };
-  _proto.setItemValue = function setItemValue(_key, _value) {};
-  _proto.setEnabled = function setEnabled(enabled) {
-    this._menu.option('disabled', !enabled);
-  };
-  _proto.updateItemsList = function updateItemsList() {};
-  _proto.isVisible = function isVisible() {
-    return true;
-  };
-  _proto.isContextMenu = function isContextMenu() {
-    return false;
-  };
-  _proto.completeUpdate = function completeUpdate() {};
-  return Bar;
-}();
-let GanttToolbar = exports.GanttToolbar = /*#__PURE__*/function (_Bar) {
-  _inheritsLoose(GanttToolbar, _Bar);
-  function GanttToolbar() {
-    return _Bar.apply(this, arguments) || this;
   }
-  var _proto2 = GanttToolbar.prototype;
-  _proto2._createControl = function _createControl() {
+  setItemValue(_key, _value) {}
+  setEnabled(enabled) {
+    this._menu.option('disabled', !enabled);
+  }
+  updateItemsList() {}
+  isVisible() {
+    return true;
+  }
+  isContextMenu() {
+    return false;
+  }
+  completeUpdate() {}
+}
+class GanttToolbar extends Bar {
+  _createControl() {
     this._menu = this._owner._createComponent(this._element, _toolbar.default, {
       onItemClick: e => {
         const commandId = e.itemData.commandId;
@@ -184,8 +174,8 @@ let GanttToolbar = exports.GanttToolbar = /*#__PURE__*/function (_Bar) {
         }
       }
     });
-  };
-  _proto2._executeCommand = function _executeCommand(commandId) {
+  }
+  _executeCommand(commandId) {
     switch (commandId) {
       case COMMANDS.toggleResources:
         this._owner.option('showResources', !this._owner.option('showResources'));
@@ -196,8 +186,8 @@ let GanttToolbar = exports.GanttToolbar = /*#__PURE__*/function (_Bar) {
       default:
         this._owner._executeCoreCommand(commandId);
     }
-  };
-  _proto2._createDefaultItem = function _createDefaultItem(commandId, hint, icon) {
+  }
+  _createDefaultItem(commandId, hint, icon) {
     return {
       commandId: commandId,
       disabled: true,
@@ -209,16 +199,16 @@ let GanttToolbar = exports.GanttToolbar = /*#__PURE__*/function (_Bar) {
         hint: hint
       }
     };
-  };
-  _proto2._createSeparator = function _createSeparator() {
+  }
+  _createSeparator() {
     return {
       location: 'before',
       template: (_data, _index, element) => {
         (0, _renderer.default)(element).addClass(TOOLBAR_SEPARATOR_CLASS);
       }
     };
-  };
-  _proto2._getDefaultItemOptions = function _getDefaultItemOptions() {
+  }
+  _getDefaultItemOptions() {
     return {
       location: 'before',
       widget: 'dxButton'
@@ -226,19 +216,13 @@ let GanttToolbar = exports.GanttToolbar = /*#__PURE__*/function (_Bar) {
   }
 
   // IBar
-  ;
-  _proto2.completeUpdate = function completeUpdate() {
+  completeUpdate() {
     this._menu.option('items', this._items);
-  };
-  return GanttToolbar;
-}(Bar);
-let GanttContextMenuBar = exports.GanttContextMenuBar = /*#__PURE__*/function (_Bar2) {
-  _inheritsLoose(GanttContextMenuBar, _Bar2);
-  function GanttContextMenuBar() {
-    return _Bar2.apply(this, arguments) || this;
   }
-  var _proto3 = GanttContextMenuBar.prototype;
-  _proto3._createControl = function _createControl() {
+}
+exports.GanttToolbar = GanttToolbar;
+class GanttContextMenuBar extends Bar {
+  _createControl() {
     this._menu = this._owner._createComponent(this._element, _context_menu.default, {
       showEvent: undefined,
       onItemClick: e => {
@@ -251,14 +235,14 @@ let GanttContextMenuBar = exports.GanttContextMenuBar = /*#__PURE__*/function (_
         }
       }
     });
-  };
-  _proto3.createItems = function createItems(items) {
+  }
+  createItems(items) {
     if (!items || items.length === 0) {
       items = this._getDefaultItems();
     }
-    _Bar2.prototype.createItems.call(this, items);
-  };
-  _proto3._getDefaultItems = function _getDefaultItems() {
+    super.createItems(items);
+  }
+  _getDefaultItems() {
     return [{
       text: _message.default.format('dxGantt-dialogButtonAdd'),
       commandId: COMMANDS.taskAddContextItem,
@@ -285,15 +269,15 @@ let GanttContextMenuBar = exports.GanttContextMenuBar = /*#__PURE__*/function (_
       commandId: COMMANDS.removeDependency,
       icon: this._getIcon('delete-dependency')
     }];
-  };
-  _proto3._createDefaultItem = function _createDefaultItem(commandId, text, icon) {
+  }
+  _createDefaultItem(commandId, text, icon) {
     return {
       commandId: commandId,
       text: text,
       icon: icon
     };
-  };
-  _proto3.show = function show(point, items) {
+  }
+  show(point, items) {
     this._menu.option('items', items || this._items);
     this._menu.option('position.offset', {
       x: point.x,
@@ -301,15 +285,14 @@ let GanttContextMenuBar = exports.GanttContextMenuBar = /*#__PURE__*/function (_
     });
     this._menu.option('position.collision', 'fit');
     this._menu.show();
-  };
-  _proto3.hide = function hide() {
+  }
+  hide() {
     this._menu.hide();
   }
 
   // IBar
-  ;
-  _proto3.isContextMenu = function isContextMenu() {
+  isContextMenu() {
     return true;
-  };
-  return GanttContextMenuBar;
-}(Bar);
+  }
+}
+exports.GanttContextMenuBar = GanttContextMenuBar;

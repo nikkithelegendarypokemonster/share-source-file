@@ -1,12 +1,12 @@
 /* eslint-disable import/no-commonjs */
-var DevExpress = require('./core');
-var errors = require('../../core/errors');
+const DevExpress = require('./core');
+const errors = require('../../core/errors');
 module.exports = DevExpress.data = DevExpress.data || {};
 Object.defineProperty(DevExpress.data, 'errorHandler', {
-  get: function get() {
+  get: function () {
     return require('../../data/errors').errorHandler;
   },
-  set: function set(value) {
+  set: function (value) {
     errors.log('W0003', 'DevExpress.data', 'errorHandler', '21.1', 'Use the \'setErrorHandler\' method instead');
     require('../../data/errors').setErrorHandler(value);
   }
@@ -14,10 +14,10 @@ Object.defineProperty(DevExpress.data, 'errorHandler', {
 
 // TODO: try remove (plugins failed without this)
 Object.defineProperty(DevExpress.data, '_errorHandler', {
-  get: function get() {
+  get: function () {
     return require('../../data/errors').handleError;
   },
-  set: function set(value) {
+  set: function (value) {
     errors.log('W0003', 'DevExpress.data', '_errorHandler', '21.1', 'Use the \'setErrorHandler\' method instead');
     require('../../data/errors').setErrorHandler(value);
   }
@@ -38,7 +38,7 @@ DevExpress.data.utils.compileSetter = require('../../core/utils/data').compileSe
 DevExpress.EndpointSelector = require('../../data/endpoint_selector');
 DevExpress.data.queryImpl = require('../../data/query_implementation').queryImpl;
 DevExpress.data.queryAdapters = require('../../data/query_adapters');
-var dataUtils = require('../../data/utils');
+const dataUtils = require('../../data/utils');
 DevExpress.data.utils.normalizeBinaryCriterion = dataUtils.normalizeBinaryCriterion;
 DevExpress.data.utils.normalizeSortingInfo = dataUtils.normalizeSortingInfo;
 DevExpress.data.utils.errorMessageFromXhr = dataUtils.errorMessageFromXhr;

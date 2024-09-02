@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/file_manager/ui.file_manager.command_manager.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -23,14 +23,13 @@ const defaultPermissions = exports.defaultPermissions = {
   upload: false,
   download: false
 };
-let FileManagerCommandManager = exports.FileManagerCommandManager = /*#__PURE__*/function () {
-  function FileManagerCommandManager(permissions) {
+class FileManagerCommandManager {
+  constructor(permissions) {
     this._actions = {};
     this._permissions = permissions || {};
     this._initCommands();
   }
-  var _proto = FileManagerCommandManager.prototype;
-  _proto._initCommands = function _initCommands() {
+  _initCommands() {
     this._commands = [{
       name: 'create',
       text: _message.default.format('dxFileManager-commandCreate'),
@@ -103,34 +102,34 @@ let FileManagerCommandManager = exports.FileManagerCommandManager = /*#__PURE__*
     this._commands.forEach(command => {
       this._commandMap[command.name] = command;
     });
-  };
-  _proto.registerActions = function registerActions(actions) {
+  }
+  registerActions(actions) {
     this._actions = (0, _extend.extend)(this._actions, actions);
-  };
-  _proto.executeCommand = function executeCommand(command, arg) {
+  }
+  executeCommand(command, arg) {
     const commandName = (0, _type.isString)(command) ? command : command.name;
     const action = this._actions[commandName];
     if (action) {
       return action(arg);
     }
-  };
-  _proto.updatePermissions = function updatePermissions(permissions) {
+  }
+  updatePermissions(permissions) {
     const resultPermissions = (0, _extend.extend)({}, defaultPermissions, permissions);
     this._permissions = resultPermissions;
     (0, _iterator.each)(this._permissions, permission => {
       this._commandMap[permission].enabled = this._permissions[permission];
     });
-  };
-  _proto.setCommandEnabled = function setCommandEnabled(commandName, enabled) {
+  }
+  setCommandEnabled(commandName, enabled) {
     const command = this.getCommandByName(commandName);
     if (command) {
       command.enabled = enabled;
     }
-  };
-  _proto.getCommandByName = function getCommandByName(name) {
+  }
+  getCommandByName(name) {
     return this._commandMap[name];
-  };
-  _proto.isCommandAvailable = function isCommandAvailable(commandName, itemInfos) {
+  }
+  isCommandAvailable(commandName, itemInfos) {
     const command = this.getCommandByName(commandName);
     if (!command || !command.enabled) {
       return false;
@@ -146,6 +145,6 @@ let FileManagerCommandManager = exports.FileManagerCommandManager = /*#__PURE__*
       return itemInfos.every(itemInfo => !itemInfo.fileItem.isDirectory);
     }
     return !command.isSingleFileItemCommand || itemsLength === 1;
-  };
-  return FileManagerCommandManager;
-}();
+  }
+}
+exports.FileManagerCommandManager = FileManagerCommandManager;

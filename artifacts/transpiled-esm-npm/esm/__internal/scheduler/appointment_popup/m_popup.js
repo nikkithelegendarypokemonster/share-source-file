@@ -6,14 +6,14 @@ import { Deferred, when } from '../../../core/utils/deferred';
 import { triggerResizeEvent } from '../../../events/visibility_change';
 import Popup from '../../../ui/popup/ui.popup';
 import { ExpressionUtils } from '../../scheduler/m_expression_utils';
-import { getMaxWidth, getPopupToolbarItems, isPopupFullScreenNeeded } from '../__migration/appointment_popup/index';
+import { getMaxWidth, getPopupToolbarItems, isPopupFullScreenNeeded } from '../../scheduler/r1/appointment_popup/index';
 import { createAppointmentAdapter } from '../m_appointment_adapter';
 import { hide as hideLoading, show as showLoading } from '../m_loading';
 import { getNormalizedResources } from '../resources/m_utils';
-var toMs = dateUtils.dateToMilliseconds;
-var APPOINTMENT_POPUP_CLASS = 'dx-scheduler-appointment-popup';
-var DAY_IN_MS = toMs('day');
-var POPUP_CONFIG = {
+const toMs = dateUtils.dateToMilliseconds;
+const APPOINTMENT_POPUP_CLASS = 'dx-scheduler-appointment-popup';
+const DAY_IN_MS = toMs('day');
+const POPUP_CONFIG = {
   height: 'auto',
   maxHeight: '100%',
   showCloseButton: false,
@@ -28,7 +28,7 @@ var POPUP_CONFIG = {
   }],
   _ignorePreventScrollEventsDeprecation: true
 };
-export var ACTION_TO_APPOINTMENT = {
+export const ACTION_TO_APPOINTMENT = {
   CREATE: 0,
   UPDATE: 1,
   EXCLUDE_FROM_SERIES: 2
@@ -55,7 +55,7 @@ export class AppointmentPopup {
     this.state.action = config.action;
     this.state.excludeInfo = config.excludeInfo;
     if (!this.popup) {
-      var popupConfig = this._createPopupConfig();
+      const popupConfig = this._createPopupConfig();
       this.popup = this._createPopup(popupConfig);
     }
     this.popup.option('toolbarItems', getPopupToolbarItems(config.isToolbarVisible, e => this._doneButtonClickHandler(e)));
@@ -65,15 +65,15 @@ export class AppointmentPopup {
     this.popup.hide();
   }
   dispose() {
-    var _a;
-    (_a = this.popup) === null || _a === void 0 ? void 0 : _a.$element().remove();
+    var _this$popup;
+    (_this$popup = this.popup) === null || _this$popup === void 0 || _this$popup.$element().remove();
   }
   _createPopup(options) {
-    var popupElement = $('<div>').addClass(APPOINTMENT_POPUP_CLASS).appendTo(this.scheduler.getElement());
+    const popupElement = $('<div>').addClass(APPOINTMENT_POPUP_CLASS).appendTo(this.scheduler.getElement());
     return this.scheduler.createComponent(popupElement, Popup, options);
   }
   _createPopupConfig() {
-    return _extends(_extends({}, POPUP_CONFIG), {
+    return _extends({}, POPUP_CONFIG, {
       onHiding: () => this.scheduler.focus(),
       contentTemplate: () => this._createPopupContent(),
       onShowing: e => this._onShowing(e),
@@ -84,7 +84,7 @@ export class AppointmentPopup {
   }
   _onShowing(e) {
     this._updateForm();
-    var arg = {
+    const arg = {
       form: this.form.dxForm,
       popup: this.popup,
       appointmentData: this.state.appointment.data,
@@ -104,21 +104,21 @@ export class AppointmentPopup {
     return this.form.dxForm.$element(); // TODO
   }
   _createFormData(rawAppointment) {
-    var appointment = this._createAppointmentAdapter(rawAppointment);
-    var dataAccessors = this.scheduler.getDataAccessors();
-    var resources = this.scheduler.getResources();
-    var normalizedResources = getNormalizedResources(rawAppointment, dataAccessors, resources);
-    return _extends(_extends(_extends({}, rawAppointment), normalizedResources), {
+    const appointment = this._createAppointmentAdapter(rawAppointment);
+    const dataAccessors = this.scheduler.getDataAccessors();
+    const resources = this.scheduler.getResources();
+    const normalizedResources = getNormalizedResources(rawAppointment, dataAccessors, resources);
+    return _extends({}, rawAppointment, normalizedResources, {
       repeat: !!appointment.recurrenceRule
     });
   }
   _createForm() {
-    var rawAppointment = this.state.appointment.data;
-    var formData = this._createFormData(rawAppointment);
+    const rawAppointment = this.state.appointment.data;
+    const formData = this._createFormData(rawAppointment);
     this.form.create(this.triggerResize.bind(this), this.changeSize.bind(this), formData); // TODO
   }
   _isReadOnly(rawAppointment) {
-    var appointment = this._createAppointmentAdapter(rawAppointment);
+    const appointment = this._createAppointmentAdapter(rawAppointment);
     if (rawAppointment && appointment.disabled) {
       return true;
     }
@@ -131,17 +131,17 @@ export class AppointmentPopup {
     return createAppointmentAdapter(rawAppointment, this.scheduler.getDataAccessors(), this.scheduler.getTimeZoneCalculator());
   }
   _updateForm() {
-    var {
+    const {
       data
     } = this.state.appointment;
-    var appointment = this._createAppointmentAdapter(this._createFormData(data));
+    const appointment = this._createAppointmentAdapter(this._createFormData(data));
     if (appointment.startDate) {
       appointment.startDate = appointment.calculateStartDate('toAppointment');
     }
     if (appointment.endDate) {
       appointment.endDate = appointment.calculateEndDate('toAppointment');
     }
-    var formData = appointment.clone().source();
+    const formData = appointment.clone().source();
     this.form.readOnly = this._isReadOnly(formData);
     this.form.updateFormData(formData);
   }
@@ -152,8 +152,8 @@ export class AppointmentPopup {
   }
   changeSize(isRecurrence) {
     if (this.popup) {
-      var isFullScreen = isPopupFullScreenNeeded();
-      var maxWidth = isFullScreen ? '100%' : getMaxWidth(isRecurrence);
+      const isFullScreen = isPopupFullScreenNeeded();
+      const maxWidth = isFullScreen ? '100%' : getMaxWidth(isRecurrence);
       this.popup.option('fullScreen', isFullScreen);
       this.popup.option('maxWidth', maxWidth);
     }
@@ -161,18 +161,18 @@ export class AppointmentPopup {
   updatePopupFullScreenMode() {
     if (this.form.dxForm && this.visible) {
       // TODO
-      var {
+      const {
         formData
       } = this.form;
-      var dataAccessors = this.scheduler.getDataAccessors();
-      var isRecurrence = ExpressionUtils.getField(dataAccessors, 'recurrenceRule', formData);
+      const dataAccessors = this.scheduler.getDataAccessors();
+      const isRecurrence = ExpressionUtils.getField(dataAccessors, 'recurrenceRule', formData);
       this.changeSize(isRecurrence);
     }
   }
   saveChangesAsync(isShowLoadPanel) {
     // @ts-expect-error
-    var deferred = new Deferred();
-    var validation = this.form.dxForm.validate();
+    const deferred = new Deferred();
+    const validation = this.form.dxForm.validate();
     isShowLoadPanel && this._showLoadPanel();
     when(validation && validation.complete || validation).done(validation => {
       if (validation && !validation.isValid) {
@@ -180,12 +180,19 @@ export class AppointmentPopup {
         deferred.resolve(false);
         return;
       }
-      var adapter = this._createAppointmentAdapter(this.form.formData);
-      var clonedAdapter = adapter.clone({
+      const {
+        repeat
+      } = this.form.formData;
+      const adapter = this._createAppointmentAdapter(this.form.formData);
+      const clonedAdapter = adapter.clone({
         pathTimeZone: 'fromAppointment'
       }); // TODO:
+      const shouldClearRecurrenceRule = !repeat && !!clonedAdapter.recurrenceRule;
       this._addMissingDSTTime(adapter, clonedAdapter);
-      var appointment = clonedAdapter.source();
+      if (shouldClearRecurrenceRule) {
+        clonedAdapter.recurrenceRule = '';
+      }
+      const appointment = clonedAdapter.source();
       delete appointment.repeat; // TODO
       switch (this.state.action) {
         case ACTION_TO_APPOINTMENT.CREATE:
@@ -214,23 +221,23 @@ export class AppointmentPopup {
   }
   saveEditDataAsync() {
     // @ts-expect-error
-    var deferred = new Deferred();
+    const deferred = new Deferred();
     if (this._tryLockSaveChanges()) {
       when(this.saveChangesAsync(true)).done(() => {
         if (this.state.lastEditData) {
           // TODO
-          var adapter = this._createAppointmentAdapter(this.state.lastEditData);
-          var {
+          const adapter = this._createAppointmentAdapter(this.state.lastEditData);
+          const {
             startDate,
             endDate,
             allDay
           } = adapter;
-          var startTime = startDate.getTime();
-          var endTime = endDate.getTime();
-          var inAllDayRow = allDay || endTime - startTime >= DAY_IN_MS;
-          var dataAccessors = this.scheduler.getDataAccessors();
-          var resourceList = this.scheduler.getResources();
-          var normalizedResources = getNormalizedResources(this.state.lastEditData, dataAccessors, resourceList);
+          const startTime = startDate.getTime();
+          const endTime = endDate.getTime();
+          const inAllDayRow = allDay || endTime - startTime >= DAY_IN_MS;
+          const dataAccessors = this.scheduler.getDataAccessors();
+          const resourceList = this.scheduler.getResources();
+          const normalizedResources = getNormalizedResources(this.state.lastEditData, dataAccessors, resourceList);
           this.scheduler.updateScrollPosition(startDate, normalizedResources, inAllDayRow);
           this.state.lastEditData = null;
         }
@@ -241,7 +248,7 @@ export class AppointmentPopup {
     return deferred.promise();
   }
   _showLoadPanel() {
-    var container = this.popup.$overlayContent();
+    const container = this.popup.$overlayContent();
     showLoading({
       container,
       position: {
@@ -261,17 +268,17 @@ export class AppointmentPopup {
   }
   // NOTE: Fix ticket T1102713
   _addMissingDSTTime(formAppointmentAdapter, clonedAppointmentAdapter) {
-    var timeZoneCalculator = this.scheduler.getTimeZoneCalculator();
+    const timeZoneCalculator = this.scheduler.getTimeZoneCalculator();
     clonedAppointmentAdapter.startDate = this._addMissingDSTShiftToDate(timeZoneCalculator, formAppointmentAdapter.startDate, clonedAppointmentAdapter.startDate);
     if (clonedAppointmentAdapter.endDate) {
       clonedAppointmentAdapter.endDate = this._addMissingDSTShiftToDate(timeZoneCalculator, formAppointmentAdapter.endDate, clonedAppointmentAdapter.endDate);
     }
   }
   _addMissingDSTShiftToDate(timeZoneCalculator, originFormDate, clonedDate) {
-    var _a, _b;
-    var originTimezoneShift = (_a = timeZoneCalculator.getOffsets(originFormDate)) === null || _a === void 0 ? void 0 : _a.common;
-    var clonedTimezoneShift = (_b = timeZoneCalculator.getOffsets(clonedDate)) === null || _b === void 0 ? void 0 : _b.common;
-    var shiftDifference = originTimezoneShift - clonedTimezoneShift;
+    var _timeZoneCalculator$g, _timeZoneCalculator$g2;
+    const originTimezoneShift = (_timeZoneCalculator$g = timeZoneCalculator.getOffsets(originFormDate)) === null || _timeZoneCalculator$g === void 0 ? void 0 : _timeZoneCalculator$g.common;
+    const clonedTimezoneShift = (_timeZoneCalculator$g2 = timeZoneCalculator.getOffsets(clonedDate)) === null || _timeZoneCalculator$g2 === void 0 ? void 0 : _timeZoneCalculator$g2.common;
+    const shiftDifference = originTimezoneShift - clonedTimezoneShift;
     return shiftDifference ? new Date(clonedDate.getTime() + shiftDifference * toMs('hour')) : clonedDate;
   }
 }

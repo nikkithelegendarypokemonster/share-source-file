@@ -1,13 +1,13 @@
-var WHITE = '#ffffff';
-var BLACK = '#000000';
-var SOME_GREY = '#2b2b2b';
-var RANGE_COLOR = '#b5b5b5';
-var GREY_GREEN = '#303030';
-var AREA_LAYER_COLOR = '#686868';
-var LINE_COLOR = '#c7c7c7';
-var TARGET_COLOR = '#8e8e8e';
-var POSITIVE_COLOR = '#b8b8b8';
-var BORDER_COLOR = '#494949';
+const WHITE = '#ffffff';
+const BLACK = '#000000';
+const SOME_GREY = '#2b2b2b';
+const RANGE_COLOR = '#b5b5b5';
+const GREY_GREEN = '#303030';
+const AREA_LAYER_COLOR = '#686868';
+const LINE_COLOR = '#c7c7c7';
+const TARGET_COLOR = '#8e8e8e';
+const POSITIVE_COLOR = '#b8b8b8';
+const BORDER_COLOR = '#494949';
 export default [{
   baseThemeName: 'generic.light',
   theme: {

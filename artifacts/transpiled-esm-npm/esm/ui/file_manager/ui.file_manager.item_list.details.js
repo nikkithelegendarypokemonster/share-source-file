@@ -3,19 +3,21 @@ import { extend } from '../../core/utils/extend';
 import { extendAttributes, getDisplayFileSize } from './ui.file_manager.common';
 import { isString, isFunction, isDefined } from '../../core/utils/type';
 import messageLocalization from '../../localization/message';
-import DataGrid from '../data_grid/ui.data_grid';
+
+// NOTE: Using the "public" export here for the theme-builder deps check
+import DataGrid from '../../ui/data_grid';
 import FileManagerItemListBase from './ui.file_manager.item_list';
 import FileManagerFileActionsButton from './ui.file_manager.file_actions_button';
 import { Deferred } from '../../core/utils/deferred';
 import { OPERATIONS } from './file_items_controller';
-var FILE_MANAGER_DETAILS_ITEM_LIST_CLASS = 'dx-filemanager-details';
-var FILE_MANAGER_DETAILS_ITEM_THUMBNAIL_CLASS = 'dx-filemanager-details-item-thumbnail';
-var FILE_MANAGER_DETAILS_ITEM_NAME_CLASS = 'dx-filemanager-details-item-name';
-var FILE_MANAGER_DETAILS_ITEM_NAME_WRAPPER_CLASS = 'dx-filemanager-details-item-name-wrapper';
-var FILE_MANAGER_DETAILS_ITEM_IS_DIRECTORY_CLASS = 'dx-filemanager-details-item-is-directory';
-var FILE_MANAGER_PARENT_DIRECTORY_ITEM = 'dx-filemanager-parent-directory-item';
-var DATA_GRID_DATA_ROW_CLASS = 'dx-data-row';
-var DEFAULT_COLUMN_CONFIGS = {
+const FILE_MANAGER_DETAILS_ITEM_LIST_CLASS = 'dx-filemanager-details';
+const FILE_MANAGER_DETAILS_ITEM_THUMBNAIL_CLASS = 'dx-filemanager-details-item-thumbnail';
+const FILE_MANAGER_DETAILS_ITEM_NAME_CLASS = 'dx-filemanager-details-item-name';
+const FILE_MANAGER_DETAILS_ITEM_NAME_WRAPPER_CLASS = 'dx-filemanager-details-item-name-wrapper';
+const FILE_MANAGER_DETAILS_ITEM_IS_DIRECTORY_CLASS = 'dx-filemanager-details-item-is-directory';
+const FILE_MANAGER_PARENT_DIRECTORY_ITEM = 'dx-filemanager-parent-directory-item';
+const DATA_GRID_DATA_ROW_CLASS = 'dx-data-row';
+const DEFAULT_COLUMN_CONFIGS = {
   thumbnail: {
     caption: '',
     calculateSortValue: 'isDirectory',
@@ -58,8 +60,8 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     super._initMarkup();
   }
   _createFilesView() {
-    var $filesView = $('<div>').appendTo(this.$element());
-    var selectionMode = this._isMultipleSelectionMode() ? 'multiple' : 'none';
+    const $filesView = $('<div>').appendTo(this.$element());
+    const selectionMode = this._isMultipleSelectionMode() ? 'multiple' : 'none';
     this._filesView = this._createComponent($filesView, DataGrid, {
       dataSource: this._createDataSource(),
       hoverStateEnabled: true,
@@ -95,10 +97,10 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     });
   }
   _createColumns() {
-    var columns = this.option('detailColumns');
+    let columns = this.option('detailColumns');
     columns = columns.slice(0);
     columns = columns.map(column => {
-      var extendedItem = column;
+      let extendedItem = column;
       if (isString(column)) {
         extendedItem = {
           dataField: column
@@ -106,7 +108,7 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
       }
       return this._getPreparedColumn(extendedItem);
     });
-    var customizeDetailColumns = this.option('customizeDetailColumns');
+    const customizeDetailColumns = this.option('customizeDetailColumns');
     if (isFunction(customizeDetailColumns)) {
       columns = customizeDetailColumns(columns);
     }
@@ -117,15 +119,15 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     return columns;
   }
   _getPreparedColumn(columnOptions) {
-    var result = {};
-    var resultCssClass = '';
+    const result = {};
+    let resultCssClass = '';
     if (this._isDefaultColumn(columnOptions.dataField)) {
-      var defaultConfig = extend(true, {}, DEFAULT_COLUMN_CONFIGS[columnOptions.dataField]);
+      const defaultConfig = extend(true, {}, DEFAULT_COLUMN_CONFIGS[columnOptions.dataField]);
       resultCssClass = defaultConfig.cssClass || '';
       switch (columnOptions.dataField) {
         case 'thumbnail':
           defaultConfig.cellTemplate = this._createThumbnailColumnCell.bind(this);
-          defaultConfig.calculateSortValue = "fileItem.".concat(defaultConfig.calculateSortValue);
+          defaultConfig.calculateSortValue = `fileItem.${defaultConfig.calculateSortValue}`;
           break;
         case 'name':
           defaultConfig.cellTemplate = this._createNameColumnCell.bind(this);
@@ -146,7 +148,7 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     }
     extendAttributes(result, columnOptions, ['alignment', 'caption', 'dataField', 'dataType', 'hidingPriority', 'sortIndex', 'sortOrder', 'visible', 'visibleIndex', 'width']);
     if (columnOptions.cssClass) {
-      resultCssClass = "".concat(resultCssClass, " ").concat(columnOptions.cssClass);
+      resultCssClass = `${resultCssClass} ${columnOptions.cssClass}`;
     }
     if (resultCssClass) {
       result.cssClass = resultCssClass;
@@ -154,7 +156,7 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     return result;
   }
   _updateColumnDataField(column) {
-    var dataItemSuffix = this._isDefaultColumn(column.dataField) ? '' : 'dataItem.';
+    const dataItemSuffix = this._isDefaultColumn(column.dataField) ? '' : 'dataItem.';
     column.dataField = 'fileItem.' + dataItemSuffix + column.dataField;
     return column;
   }
@@ -162,21 +164,21 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     return !!DEFAULT_COLUMN_CONFIGS[columnDataField];
   }
   _onFileItemActionButtonClick(_ref) {
-    var {
+    let {
       component,
       element,
       event
     } = _ref;
     event.stopPropagation();
-    var $row = component.$element().closest(this._getItemSelector());
-    var fileItemInfo = $row.data('item');
+    const $row = component.$element().closest(this._getItemSelector());
+    const fileItemInfo = $row.data('item');
     this._selectItem(fileItemInfo);
-    var target = {
+    const target = {
       itemData: fileItemInfo,
       itemElement: $row,
       isActionButton: true
     };
-    var items = this._getFileItemsForContextMenu(fileItemInfo);
+    const items = this._getFileItemsForContextMenu(fileItemInfo);
     this._showContextMenu(items, element, event, target);
     this._activeFileActionsButton = component;
     this._activeFileActionsButton.setActive(true);
@@ -190,23 +192,23 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     return FILE_MANAGER_DETAILS_ITEM_THUMBNAIL_CLASS;
   }
   _getItemSelector() {
-    return ".".concat(DATA_GRID_DATA_ROW_CLASS);
+    return `.${DATA_GRID_DATA_ROW_CLASS}`;
   }
   _onItemDblClick(e) {
-    var $row = $(e.currentTarget);
-    var fileItemInfo = $row.data('item');
+    const $row = $(e.currentTarget);
+    const fileItemInfo = $row.data('item');
     this._raiseSelectedItemOpened(fileItemInfo);
   }
   _isAllItemsSelected() {
-    var selectableItemsCount = this._hasParentDirectoryItem ? this._itemCount - 1 : this._itemCount;
-    var selectedRowKeys = this._filesView.option('selectedRowKeys');
+    const selectableItemsCount = this._hasParentDirectoryItem ? this._itemCount - 1 : this._itemCount;
+    const selectedRowKeys = this._filesView.option('selectedRowKeys');
     if (!selectedRowKeys.length) {
       return false;
     }
     return selectedRowKeys.length >= selectableItemsCount ? true : undefined;
   }
   _onEditorPreparing(_ref2) {
-    var {
+    let {
       component,
       command,
       row,
@@ -222,7 +224,7 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
       }
     } else if (parentType === 'headerRow') {
       editorOptions.onInitialized = _ref3 => {
-        var {
+        let {
           component
         } = _ref3;
         this._selectAllCheckBox = component;
@@ -232,7 +234,7 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     }
   }
   _onSelectAllCheckBoxValueChanged(_ref4) {
-    var {
+    let {
       event,
       previousValue,
       value
@@ -254,13 +256,13 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     event.preventDefault();
   }
   _onRowPrepared(_ref5) {
-    var {
+    let {
       rowType,
       rowElement,
       data
     } = _ref5;
     if (rowType === 'data') {
-      var $row = $(rowElement);
+      const $row = $(rowElement);
       $row.data('item', data);
       if (this._isParentDirectoryItem(data)) {
         $row.addClass(FILE_MANAGER_PARENT_DIRECTORY_ITEM);
@@ -271,14 +273,14 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     if (!this._isDesktop()) {
       return;
     }
-    var fileItems = null;
-    var item = {};
+    let fileItems = null;
+    let item = {};
     if (e.row && e.row.rowType === 'data') {
       item = e.row.data;
       this._selectItem(item);
       fileItems = this._getFileItemsForContextMenu(item);
     }
-    var eventArgs = extend({}, {
+    const eventArgs = extend({}, {
       targetElement: e.target === 'content' && isDefined(e.row) ? this._filesView.getRowElement(e.rowIndex) : undefined,
       itemData: item,
       options: this._contextMenu.option(),
@@ -290,7 +292,7 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     e.items = eventArgs.cancel ? [] : this._contextMenu.createContextMenuItems(fileItems, null, item);
   }
   _onFilesViewSelectionChanged(_ref6) {
-    var {
+    let {
       component,
       selectedRowsData,
       selectedRowKeys,
@@ -303,7 +305,7 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
       this._selectAllCheckBox.option('value', this._isAllItemsSelected());
       this._selectAllCheckBoxUpdating = false;
     }
-    var selectedItems = selectedRowsData.map(itemInfo => itemInfo.fileItem);
+    const selectedItems = selectedRowsData.map(itemInfo => itemInfo.fileItem);
     this._tryRaiseSelectionChanged({
       selectedItemInfos: selectedRowsData,
       selectedItems,
@@ -318,7 +320,7 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
       var _e$row;
       this._selectItemSingleSelection((_e$row = e.row) === null || _e$row === void 0 ? void 0 : _e$row.data);
     }
-    var fileSystemItem = ((_e$row2 = e.row) === null || _e$row2 === void 0 ? void 0 : _e$row2.data.fileItem) || null;
+    const fileSystemItem = ((_e$row2 = e.row) === null || _e$row2 === void 0 ? void 0 : _e$row2.data.fileItem) || null;
     this._onFocusedItemChanged({
       item: fileSystemItem,
       itemKey: fileSystemItem === null || fileSystemItem === void 0 ? void 0 : fileSystemItem.key,
@@ -326,7 +328,7 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     });
   }
   _onFilesViewOptionChanged(_ref7) {
-    var {
+    let {
       fullName
     } = _ref7;
     if (fullName.indexOf('sortOrder') > -1) {
@@ -343,9 +345,9 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     this._getItemThumbnailContainer(cellInfo.data).appendTo(container);
   }
   _createNameColumnCell(container, cellInfo) {
-    var $button = $('<div>');
-    var $name = $('<span>').text(cellInfo.data.fileItem.name).addClass(FILE_MANAGER_DETAILS_ITEM_NAME_CLASS);
-    var $wrapper = $('<div>').append($name, $button).addClass(FILE_MANAGER_DETAILS_ITEM_NAME_WRAPPER_CLASS);
+    const $button = $('<div>');
+    const $name = $('<span>').text(cellInfo.data.fileItem.name).addClass(FILE_MANAGER_DETAILS_ITEM_NAME_CLASS);
+    const $wrapper = $('<div>').append($name, $button).addClass(FILE_MANAGER_DETAILS_ITEM_NAME_WRAPPER_CLASS);
     $(container).append($wrapper);
     this._createComponent($button, FileManagerFileActionsButton, {
       onClick: e => this._onFileItemActionButtonClick(e)
@@ -355,7 +357,7 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     return rowData.fileItem.isDirectory ? '' : getDisplayFileSize(rowData.fileItem.size);
   }
   _selectItem(fileItemInfo) {
-    var selectItemFunc = this._isMultipleSelectionMode() ? this._selectItemMultipleSelection : this._selectItemSingleSelection;
+    const selectItemFunc = this._isMultipleSelectionMode() ? this._selectItemMultipleSelection : this._selectItemSingleSelection;
     selectItemFunc.call(this, fileItemInfo);
   }
   _deselectItem(item) {
@@ -363,14 +365,14 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
   }
   _selectItemSingleSelection(fileItemInfo) {
     if (!this._focusedItem || !fileItemInfo || this._focusedItem.fileItem.key !== fileItemInfo.fileItem.key) {
-      var oldFocusedItem = this._focusedItem;
+      const oldFocusedItem = this._focusedItem;
       this._focusedItem = fileItemInfo;
-      var deselectedKeys = [];
+      const deselectedKeys = [];
       if (oldFocusedItem) {
         deselectedKeys.push(oldFocusedItem.fileItem.key);
       }
-      var selectedItems = [];
-      var selectedKeys = [];
+      const selectedItems = [];
+      const selectedKeys = [];
       if (fileItemInfo && !this._isParentDirectoryItem(fileItemInfo)) {
         selectedItems.push(fileItemInfo.fileItem);
         selectedKeys.push(fileItemInfo.fileItem.key);
@@ -384,12 +386,12 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     }
   }
   _selectItemMultipleSelection(_ref8) {
-    var {
+    let {
       fileItem
     } = _ref8;
     if (!this._filesView.isRowSelected(fileItem.key)) {
-      var selectionController = this._filesView.getController('selection');
-      var preserve = selectionController.isSelectionWithCheckboxes();
+      const selectionController = this._filesView.getController('selection');
+      const preserve = selectionController.isSelectionWithCheckboxes();
       this._filesView.selectRows([fileItem.key], preserve);
     }
   }
@@ -398,7 +400,7 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
   }
   _setFocusedItemKey(itemKey) {
     var _this$_filesView;
-    (_this$_filesView = this._filesView) === null || _this$_filesView === void 0 ? void 0 : _this$_filesView.option('focusedRowKey', itemKey);
+    (_this$_filesView = this._filesView) === null || _this$_filesView === void 0 || _this$_filesView.option('focusedRowKey', itemKey);
   }
   clearSelection() {
     if (this._isMultipleSelectionMode()) {
@@ -408,7 +410,7 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
     }
   }
   refresh(options, operation) {
-    var actualOptions = {
+    const actualOptions = {
       dataSource: this._createDataSource()
     };
     if (options && Object.prototype.hasOwnProperty.call(options, 'focusedItemKey')) {
@@ -418,7 +420,7 @@ class FileManagerDetailsItemList extends FileManagerItemListBase {
         actualOptions.focusedRowIndex = -1;
       }
     }
-    var hasNoScrollTarget = !isDefined(actualOptions.focusedRowKey) && actualOptions.focusedRowIndex === -1;
+    const hasNoScrollTarget = !isDefined(actualOptions.focusedRowKey) && actualOptions.focusedRowIndex === -1;
     if (hasNoScrollTarget && operation === OPERATIONS.NAVIGATION) {
       actualOptions.paging = {
         pageIndex: 0

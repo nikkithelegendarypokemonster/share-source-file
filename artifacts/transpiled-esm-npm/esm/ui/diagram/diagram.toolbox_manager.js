@@ -1,5 +1,5 @@
 import messageLocalization from '../../localization/message';
-var DiagramToolboxManager = {
+const DiagramToolboxManager = {
   getDefaultGroups() {
     return this._groups || (this._groups = {
       general: {
@@ -24,8 +24,8 @@ var DiagramToolboxManager = {
       }
     });
   },
-  getGroups: function getGroups(groups) {
-    var defaultGroups = this.getDefaultGroups();
+  getGroups: function (groups) {
+    const defaultGroups = this.getDefaultGroups();
     if (groups) {
       return groups.map(function (g) {
         if (typeof g === 'string') {

@@ -1,14 +1,14 @@
 /**
 * DevExtreme (esm/__internal/grids/grid_core/header_filter/m_header_filter_core.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 /* eslint-disable max-classes-per-file */
-import '../../../../ui/list/modules/search';
-import '../../../../ui/list/modules/selection';
+import '../../../ui/list/modules/m_search';
+import '../../../ui/list/modules/m_selection';
 import $ from '../../../../core/renderer';
 import { extend } from '../../../../core/utils/extend';
 import { each } from '../../../../core/utils/iterator';
@@ -19,25 +19,25 @@ import Popup from '../../../../ui/popup/ui.popup';
 import TreeView from '../../../../ui/tree_view';
 import Modules from '../../../grids/grid_core/m_modules';
 import gridCoreUtils from '../m_utils';
-var HEADER_FILTER_CLASS = 'dx-header-filter';
-var HEADER_FILTER_MENU_CLASS = 'dx-header-filter-menu';
-var DEFAULT_SEARCH_EXPRESSION = 'text';
+const HEADER_FILTER_CLASS = 'dx-header-filter';
+const HEADER_FILTER_MENU_CLASS = 'dx-header-filter-menu';
+const DEFAULT_SEARCH_EXPRESSION = 'text';
 function resetChildrenItemSelection(items) {
   items = items || [];
-  for (var i = 0; i < items.length; i++) {
+  for (let i = 0; i < items.length; i++) {
     items[i].selected = false;
     resetChildrenItemSelection(items[i].items);
   }
 }
 function getSelectAllCheckBox(listComponent) {
-  var selector = listComponent.NAME === 'dxTreeView' ? '.dx-treeview-select-all-item' : '.dx-list-select-all-checkbox';
+  const selector = listComponent.NAME === 'dxTreeView' ? '.dx-treeview-select-all-item' : '.dx-list-select-all-checkbox';
   return listComponent.$element().find(selector).dxCheckBox('instance');
 }
 function updateListSelectAllState(e, filterValues) {
   if (e.component.option('searchValue')) {
     return;
   }
-  var selectAllCheckBox = getSelectAllCheckBox(e.component);
+  const selectAllCheckBox = getSelectAllCheckBox(e.component);
   if (selectAllCheckBox && filterValues && filterValues.length) {
     selectAllCheckBox.option('value', undefined);
   }
@@ -46,7 +46,7 @@ export function updateHeaderFilterItemSelectionState(item, filterValuesMatch, is
   if (filterValuesMatch ^ isExcludeFilter) {
     item.selected = true;
     if (isExcludeFilter && item.items) {
-      for (var j = 0; j < item.items.length; j++) {
+      for (let j = 0; j < item.items.length; j++) {
         if (!item.items[j].selected) {
           item.selected = undefined;
           break;
@@ -66,18 +66,18 @@ export class HeaderFilterView extends Modules.View {
     return this._listComponent;
   }
   applyHeaderFilter(options) {
-    var that = this;
-    var list = that.getListComponent();
-    var searchValue = list.option('searchValue');
-    var selectAllCheckBox = getSelectAllCheckBox(list);
-    var isAllSelected = !searchValue && !options.isFilterBuilder && (selectAllCheckBox === null || selectAllCheckBox === void 0 ? void 0 : selectAllCheckBox.option('value'));
-    var filterValues = [];
-    var fillSelectedItemKeys = function fillSelectedItemKeys(filterValues, items, isExclude) {
+    const that = this;
+    const list = that.getListComponent();
+    const searchValue = list.option('searchValue');
+    const selectAllCheckBox = getSelectAllCheckBox(list);
+    const isAllSelected = !searchValue && !options.isFilterBuilder && (selectAllCheckBox === null || selectAllCheckBox === void 0 ? void 0 : selectAllCheckBox.option('value'));
+    const filterValues = [];
+    const fillSelectedItemKeys = function (filterValues, items, isExclude) {
       each(items, (_, item) => {
         if (item.selected !== undefined && !!item.selected ^ isExclude) {
-          var node = list._getNode(item);
-          var hasChildren = list._hasChildren(node);
-          var hasChildrenWithSelection = hasChildren && item.items && item.items.some(item => item.selected);
+          const node = list._getNode(item);
+          const hasChildren = list._hasChildren(node);
+          const hasChildrenWithSelection = hasChildren && item.items && item.items.some(item => item.selected);
           if (!searchValue || !hasChildrenWithSelection) {
             filterValues.push(item.value);
             return;
@@ -111,23 +111,23 @@ export class HeaderFilterView extends Modules.View {
     that.hideHeaderFilterMenu();
   }
   showHeaderFilterMenu($columnElement, options) {
-    var that = this;
+    const that = this;
     if (options) {
       that._initializePopupContainer(options);
-      var popupContainer = that.getPopupContainer();
+      const popupContainer = that.getPopupContainer();
       that.hideHeaderFilterMenu();
       that.updatePopup($columnElement, options);
       popupContainer.show();
     }
   }
   hideHeaderFilterMenu() {
-    var headerFilterMenu = this.getPopupContainer();
+    const headerFilterMenu = this.getPopupContainer();
     headerFilterMenu && headerFilterMenu.hide();
   }
   updatePopup($element, options) {
-    var that = this;
-    var showColumnLines = this.option('showColumnLines');
-    var alignment = options.alignment === 'right' ^ !showColumnLines ? 'left' : 'right';
+    const that = this;
+    const showColumnLines = this.option('showColumnLines');
+    const alignment = options.alignment === 'right' ^ !showColumnLines ? 'left' : 'right';
     that._popupContainer.setAria({
       role: 'dialog',
       label: messageLocalization.format('dxDataGrid-headerFilterLabel')
@@ -135,22 +135,22 @@ export class HeaderFilterView extends Modules.View {
     if (that._popupContainer) {
       that._cleanPopupContent();
       that._popupContainer.option('position', {
-        my: "".concat(alignment, " top"),
-        at: "".concat(alignment, " bottom"),
+        my: `${alignment} top`,
+        at: `${alignment} bottom`,
         of: $element,
         collision: 'fit fit' // T1156848
       });
     }
   }
   _getSearchExpr(options, headerFilterOptions) {
-    var {
+    const {
       lookup
     } = options;
-    var {
+    const {
       useDefaultSearchExpr
     } = options;
-    var headerFilterDataSource = headerFilterOptions.dataSource;
-    var filterSearchExpr = headerFilterOptions.search.searchExpr;
+    const headerFilterDataSource = headerFilterOptions.dataSource;
+    const filterSearchExpr = headerFilterOptions.search.searchExpr;
     if (filterSearchExpr) {
       return filterSearchExpr;
     }
@@ -161,7 +161,7 @@ export class HeaderFilterView extends Modules.View {
       return lookup.displayExpr || 'this';
     }
     if (options.dataSource) {
-      var {
+      const {
         group
       } = options.dataSource;
       if (Array.isArray(group) && group.length > 0) {
@@ -177,14 +177,14 @@ export class HeaderFilterView extends Modules.View {
     this._popupContainer && this._popupContainer.$content().empty();
   }
   _initializePopupContainer(options) {
-    var that = this;
-    var $element = that.element();
-    var headerFilterOptions = this._normalizeHeaderFilterOptions(options);
-    var {
+    const that = this;
+    const $element = that.element();
+    const headerFilterOptions = this._normalizeHeaderFilterOptions(options);
+    const {
       height,
       width
     } = headerFilterOptions;
-    var dxPopupOptions = {
+    const dxPopupOptions = {
       width,
       height,
       visible: false,
@@ -230,7 +230,7 @@ export class HeaderFilterView extends Modules.View {
       },
       onHidden: options.onHidden,
       onInitialized(e) {
-        var {
+        const {
           component
         } = e;
         // T321243
@@ -244,10 +244,10 @@ export class HeaderFilterView extends Modules.View {
     }
   }
   _initializeListContainer(options, headerFilterOptions) {
-    var that = this;
-    var $content = that._popupContainer.$content();
-    var needShowSelectAllCheckbox = !options.isFilterBuilder && headerFilterOptions.allowSelectAll;
-    var widgetOptions = {
+    const that = this;
+    const $content = that._popupContainer.$content();
+    const needShowSelectAllCheckbox = !options.isFilterBuilder && headerFilterOptions.allowSelectAll;
+    const widgetOptions = {
       searchEnabled: headerFilterOptions.search.enabled,
       searchTimeout: headerFilterOptions.search.timeout,
       searchEditorOptions: headerFilterOptions.search.editorOptions,
@@ -257,7 +257,7 @@ export class HeaderFilterView extends Modules.View {
         that.renderCompleted.fire();
       },
       itemTemplate(data, _, element) {
-        var $element = $(element);
+        const $element = $(element);
         if (options.encodeHtml) {
           return $element.text(data.text);
         }
@@ -288,11 +288,11 @@ export class HeaderFilterView extends Modules.View {
         selectionMode: needShowSelectAllCheckbox ? 'all' : 'multiple',
         onOptionChanged,
         onSelectionChanged(e) {
-          var items = e.component.option('items');
-          var selectedItems = e.component.option('selectedItems');
+          const items = e.component.option('items');
+          const selectedItems = e.component.option('selectedItems');
           if (!e.component._selectedItemsUpdating && !e.component.option('searchValue') && !options.isFilterBuilder) {
-            var filterValues = options.filterValues || [];
-            var isExclude = options.filterType === 'exclude';
+            const filterValues = options.filterValues || [];
+            const isExclude = options.filterType === 'exclude';
             if (selectedItems.length === 0 && items.length && (filterValues.length <= 1 || isExclude && filterValues.length === items.length - 1)) {
               options.filterType = 'include';
               options.filterValues = [];
@@ -302,16 +302,16 @@ export class HeaderFilterView extends Modules.View {
             }
           }
           each(items, (index, item) => {
-            var selected = gridCoreUtils.getIndexByKey(item, selectedItems, null) >= 0;
-            var oldSelected = !!item.selected;
+            const selected = gridCoreUtils.getIndexByKey(item, selectedItems, null) >= 0;
+            const oldSelected = !!item.selected;
             if (oldSelected !== selected) {
               item.selected = selected;
               options.filterValues = options.filterValues || [];
-              var filterValueIndex = gridCoreUtils.getIndexByKey(item.value, options.filterValues, null);
+              const filterValueIndex = gridCoreUtils.getIndexByKey(item.value, options.filterValues, null);
               if (filterValueIndex >= 0) {
                 options.filterValues.splice(filterValueIndex, 1);
               }
-              var isExcludeFilterType = options.filterType === 'exclude';
+              const isExcludeFilterType = options.filterType === 'exclude';
               if (selected ^ isExcludeFilterType) {
                 options.filterValues.push(item.value);
               }
@@ -320,11 +320,11 @@ export class HeaderFilterView extends Modules.View {
           updateListSelectAllState(e, options.filterValues);
         },
         onContentReady(e) {
-          var {
+          const {
             component
           } = e;
-          var items = component.option('items');
-          var selectedItems = [];
+          const items = component.option('items');
+          const selectedItems = [];
           each(items, function () {
             if (this.selected) {
               selectedItems.push(this);
@@ -340,15 +340,15 @@ export class HeaderFilterView extends Modules.View {
   }
   _normalizeHeaderFilterOptions(options) {
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    var generalHeaderFilter = this.option('headerFilter') || {};
-    var specificHeaderFilter = options.headerFilter || {};
-    var generalDeprecated = {
+    const generalHeaderFilter = this.option('headerFilter') || {};
+    const specificHeaderFilter = options.headerFilter || {};
+    const generalDeprecated = {
       search: {
         enabled: generalHeaderFilter.allowSearch,
         timeout: generalHeaderFilter.searchTimeout
       }
     };
-    var specificDeprecated = {
+    const specificDeprecated = {
       search: {
         enabled: specificHeaderFilter.allowSearch,
         mode: specificHeaderFilter.searchMode,
@@ -361,14 +361,14 @@ export class HeaderFilterView extends Modules.View {
     this.element().addClass(HEADER_FILTER_MENU_CLASS);
   }
 }
-export var allowHeaderFiltering = function allowHeaderFiltering(column) {
+export const allowHeaderFiltering = function (column) {
   return isDefined(column.allowHeaderFiltering) ? column.allowHeaderFiltering : column.allowFiltering;
 };
 // TODO Fix types of this mixin
-export var headerFilterMixin = Base => class HeaderFilterMixin extends Base {
+export const headerFilterMixin = Base => class HeaderFilterMixin extends Base {
   optionChanged(args) {
     if (args.name === 'headerFilter') {
-      var requireReady = this.name === 'columnHeadersView';
+      const requireReady = this.name === 'columnHeadersView';
       this._invalidate(requireReady, requireReady);
       args.handled = true;
     } else {
@@ -376,21 +376,21 @@ export var headerFilterMixin = Base => class HeaderFilterMixin extends Base {
     }
   }
   _applyColumnState(options) {
-    var $headerFilterIndicator;
-    var {
+    let $headerFilterIndicator;
+    const {
       rootElement
     } = options;
-    var {
+    const {
       column
     } = options;
     if (options.name === 'headerFilter') {
-      rootElement.find(".".concat(HEADER_FILTER_CLASS)).remove();
+      rootElement.find(`.${HEADER_FILTER_CLASS}`).remove();
       if (allowHeaderFiltering(column)) {
         $headerFilterIndicator = super._applyColumnState(options).toggleClass('dx-header-filter-empty', this._isHeaderFilterEmpty(column));
         if (!this.option('useLegacyKeyboardNavigation')) {
           $headerFilterIndicator.attr('tabindex', this.option('tabindex') || 0);
         }
-        var indicatorLabel = messageLocalization.format('dxDataGrid-headerFilterIndicatorLabel', column.caption);
+        const indicatorLabel = messageLocalization.format('dxDataGrid-headerFilterIndicatorLabel', column.caption);
         $headerFilterIndicator.attr('aria-label', indicatorLabel);
         $headerFilterIndicator.attr('aria-haspopup', 'dialog');
         $headerFilterIndicator.attr('role', 'button');
@@ -409,10 +409,10 @@ export var headerFilterMixin = Base => class HeaderFilterMixin extends Base {
     return super._getIndicatorClassName(name);
   }
   _renderIndicator(options) {
-    var $container = options.container;
-    var $indicator = options.indicator;
+    const $container = options.container;
+    const $indicator = options.indicator;
     if (options.name === 'headerFilter') {
-      var rtlEnabled = this.option('rtlEnabled');
+      const rtlEnabled = this.option('rtlEnabled');
       if ($container.children().length && (!rtlEnabled && options.columnAlignment === 'right' || rtlEnabled && options.columnAlignment === 'left')) {
         $container.prepend($indicator);
         return;

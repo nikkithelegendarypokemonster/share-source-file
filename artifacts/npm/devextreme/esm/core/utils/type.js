@@ -1,82 +1,82 @@
 /**
 * DevExtreme (esm/core/utils/type.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-var types = {
+const types = {
   '[object Array]': 'array',
   '[object Date]': 'date',
   '[object Object]': 'object',
   '[object String]': 'string'
 };
-var type = function type(object) {
+const type = function (object) {
   if (object === null) {
     return 'null';
   }
-  var typeOfObject = Object.prototype.toString.call(object);
+  const typeOfObject = Object.prototype.toString.call(object);
   return typeof object === 'object' ? types[typeOfObject] || 'object' : typeof object;
 };
-var isBoolean = function isBoolean(object) {
+const isBoolean = function (object) {
   return typeof object === 'boolean';
 };
-var isExponential = function isExponential(value) {
+const isExponential = function (value) {
   return isNumeric(value) && value.toString().indexOf('e') !== -1;
 };
-var isDate = function isDate(object) {
+const isDate = function (object) {
   return type(object) === 'date';
 };
-var isDefined = function isDefined(object) {
+const isDefined = function (object) {
   return object !== null && object !== undefined;
 };
-var isFunction = function isFunction(object) {
+const isFunction = function (object) {
   return typeof object === 'function';
 };
-var isString = function isString(object) {
+const isString = function (object) {
   return typeof object === 'string';
 };
-var isNumeric = function isNumeric(object) {
+const isNumeric = function (object) {
   return typeof object === 'number' && isFinite(object) || !isNaN(object - parseFloat(object));
 };
-var isObject = function isObject(object) {
+const isObject = function (object) {
   return type(object) === 'object';
 };
-var isEmptyObject = function isEmptyObject(object) {
-  var property;
+const isEmptyObject = function (object) {
+  let property;
   for (property in object) {
     return false;
   }
   return true;
 };
-var isPlainObject = function isPlainObject(object) {
+const isPlainObject = function (object) {
   if (!object || type(object) !== 'object') {
     return false;
   }
-  var proto = Object.getPrototypeOf(object);
+  const proto = Object.getPrototypeOf(object);
   if (!proto) {
     return true;
   }
-  var ctor = Object.hasOwnProperty.call(proto, 'constructor') && proto.constructor;
+  const ctor = Object.hasOwnProperty.call(proto, 'constructor') && proto.constructor;
   return typeof ctor === 'function' && Object.toString.call(ctor) === Object.toString.call(Object);
 };
-var isPrimitive = function isPrimitive(value) {
+const isPrimitive = function (value) {
   return ['object', 'array', 'function'].indexOf(type(value)) === -1;
 };
-var isWindow = function isWindow(object) {
+const isWindow = function (object) {
   return object != null && object === object.window;
 };
-var isRenderer = function isRenderer(object) {
+const isRenderer = function (object) {
   return !!object && !!(object.jquery || object.dxRenderer);
 };
-var isPromise = function isPromise(object) {
+const isPromise = function (object) {
   return !!object && isFunction(object.then);
 };
-var isDeferred = function isDeferred(object) {
+const isDeferred = function (object) {
   return !!object && isFunction(object.done) && isFunction(object.fail);
 };
-var isEvent = function isEvent(object) {
+const isEvent = function (object) {
   return !!(object && object.preventDefault);
 };
 export { isBoolean, isExponential, isDate, isDefined, isFunction, isString, isNumeric, isObject, isEmptyObject, isPlainObject, isPrimitive, isWindow, isRenderer, isPromise, isDeferred, type, isEvent };

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/options_validator/options_validator_errors_handler.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,8 +15,6 @@ exports.SchedulerOptionsValidatorErrorsHandler = void 0;
 var _ui = _interopRequireDefault(require("../../../ui/widget/ui.errors"));
 var _index = require("./core/index");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const GLOBAL_ERROR_HANDLER = {
   logError: errorCode => {
     _ui.default.log(errorCode);
@@ -25,17 +23,16 @@ const GLOBAL_ERROR_HANDLER = {
     throw _ui.default.Error(errorCode);
   }
 };
-let SchedulerOptionsValidatorErrorsHandler = exports.SchedulerOptionsValidatorErrorsHandler = /*#__PURE__*/function (_OptionsValidatorErro) {
-  _inheritsLoose(SchedulerOptionsValidatorErrorsHandler, _OptionsValidatorErro);
-  function SchedulerOptionsValidatorErrorsHandler() {
-    return _OptionsValidatorErro.call(this, {
+class SchedulerOptionsValidatorErrorsHandler extends _index.OptionsValidatorErrorHandler {
+  constructor() {
+    super({
       startDayHour: 'E1058',
       endDayHour: 'E1058',
       startDayHourAndEndDayHour: 'E1058',
       offset: 'E1061',
       cellDuration: 'E1062',
       cellDurationAndVisibleInterval: 'E1062'
-    }, GLOBAL_ERROR_HANDLER) || this;
+    }, GLOBAL_ERROR_HANDLER);
   }
-  return SchedulerOptionsValidatorErrorsHandler;
-}(_index.OptionsValidatorErrorHandler);
+}
+exports.SchedulerOptionsValidatorErrorsHandler = SchedulerOptionsValidatorErrorsHandler;

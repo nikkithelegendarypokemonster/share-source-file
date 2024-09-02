@@ -13,55 +13,55 @@ import { findBestMatches } from './common';
 import { normalizeTemplateElement } from './dom';
 import { extend } from './extend';
 import { isFunction, isRenderer } from './type';
-export var findTemplates = (element, name) => {
-  var optionsAttributeName = 'data-options';
-  var templates = $(element).contents().filter("[".concat(optionsAttributeName, "*=\"").concat(name, "\"]"));
+export const findTemplates = (element, name) => {
+  const optionsAttributeName = 'data-options';
+  const templates = $(element).contents().filter(`[${optionsAttributeName}*="${name}"]`);
   return [].slice.call(templates).map(element => {
-    var optionsString = $(element).attr(optionsAttributeName) || '';
+    const optionsString = $(element).attr(optionsAttributeName) || '';
     return {
       element,
       options: config().optionsParser(optionsString)[name]
     };
   }).filter(template => !!template.options);
 };
-export var suitableTemplatesByName = rawTemplates => {
-  var templatesMap = groupBy(rawTemplates, template => template.options.name);
+export const suitableTemplatesByName = rawTemplates => {
+  const templatesMap = groupBy(rawTemplates, template => template.options.name);
   if (templatesMap['undefined']) {
     throw Errors.Error('E0023');
   }
-  var result = {};
+  const result = {};
   Object.keys(templatesMap).forEach(name => {
     var _findBestMatches$;
-    var suitableTemplate = (_findBestMatches$ = findBestMatches(devices.current(), templatesMap[name], template => template.options)[0]) === null || _findBestMatches$ === void 0 ? void 0 : _findBestMatches$.element;
+    const suitableTemplate = (_findBestMatches$ = findBestMatches(devices.current(), templatesMap[name], template => template.options)[0]) === null || _findBestMatches$ === void 0 ? void 0 : _findBestMatches$.element;
     if (suitableTemplate) {
       result[name] = suitableTemplate;
     }
   });
   return result;
 };
-export var addOneRenderedCall = template => {
-  var render = template.render.bind(template);
+export const addOneRenderedCall = template => {
+  const render = template.render.bind(template);
   return extend({}, template, {
     render(options) {
-      var templateResult = render(options);
+      const templateResult = render(options);
       options && options.onRendered && options.onRendered();
       return templateResult;
     }
   });
 };
-export var addPublicElementNormalization = template => {
-  var render = template.render.bind(template);
+export const addPublicElementNormalization = template => {
+  const render = template.render.bind(template);
   return extend({}, template, {
     render(options) {
-      var $container = $(options.container);
+      const $container = $(options.container);
       return render(_extends({}, options, {
         container: getPublicElement($container)
       }));
     }
   });
 };
-export var getNormalizedTemplateArgs = options => {
-  var args = [];
+export const getNormalizedTemplateArgs = options => {
+  const args = [];
   if ('model' in options) {
     args.push(options.model);
   }
@@ -71,15 +71,15 @@ export var getNormalizedTemplateArgs = options => {
   args.push(options.container);
   return args;
 };
-export var validateTemplateSource = templateSource => {
+export const validateTemplateSource = templateSource => {
   return typeof templateSource === 'string' ? normalizeTemplateElement(templateSource) : templateSource;
 };
-export var templateKey = templateSource => {
+export const templateKey = templateSource => {
   return isRenderer(templateSource) && templateSource[0] || templateSource;
 };
-export var defaultCreateElement = element => new Template(element);
-export var acquireIntegrationTemplate = (templateSource, templates, isAsyncTemplate, skipTemplates) => {
-  var integrationTemplate = null;
+export const defaultCreateElement = element => new Template(element);
+export const acquireIntegrationTemplate = (templateSource, templates, isAsyncTemplate, skipTemplates) => {
+  let integrationTemplate = null;
   if (!skipTemplates || skipTemplates.indexOf(templateSource) === -1) {
     integrationTemplate = templates[templateSource];
     if (integrationTemplate && !(integrationTemplate instanceof TemplateBase)) {
@@ -93,7 +93,7 @@ export var acquireIntegrationTemplate = (templateSource, templates, isAsyncTempl
   }
   return integrationTemplate;
 };
-export var acquireTemplate = (templateSource, createTemplate, templates, isAsyncTemplate, skipTemplates, defaultTemplates) => {
+export const acquireTemplate = (templateSource, createTemplate, templates, isAsyncTemplate, skipTemplates, defaultTemplates) => {
   if (templateSource == null) {
     return new EmptyTemplate();
   }

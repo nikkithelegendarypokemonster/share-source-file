@@ -2,39 +2,39 @@ import TreeMapBase from './tree_map.base';
 import { Tracker } from '../components/tracker';
 import { expand } from '../core/helpers';
 import { parseScalar as _parseScalar } from '../core/utils';
-var DATA_KEY_BASE = '__treemap_data_';
-var dataKeyModifier = 0;
-var proto = TreeMapBase.prototype;
+const DATA_KEY_BASE = '__treemap_data_';
+let dataKeyModifier = 0;
+const proto = TreeMapBase.prototype;
 import './api';
 import './hover';
 import './tooltip';
 proto._eventsMap.onClick = {
   name: 'click'
 };
-var getDataKey = function getDataKey() {
-  var dataKey = DATA_KEY_BASE + dataKeyModifier++;
+const getDataKey = function () {
+  const dataKey = DATA_KEY_BASE + dataKeyModifier++;
   return dataKey;
 };
 expand(proto, '_initCore', function () {
-  var that = this;
-  var dataKey = getDataKey();
-  var getProxy = function getProxy(index) {
+  const that = this;
+  const dataKey = getDataKey();
+  const getProxy = function (index) {
     return that._nodes[index].proxy;
   };
   that._tracker = new Tracker({
     widget: that,
     root: that._renderer.root,
-    getNode: function getNode(id) {
-      var proxy = getProxy(id);
-      var interactWithGroup = _parseScalar(that._getOption('interactWithGroup', true));
+    getNode: function (id) {
+      const proxy = getProxy(id);
+      const interactWithGroup = _parseScalar(that._getOption('interactWithGroup', true));
       return interactWithGroup && proxy.isLeaf() && proxy.getParent().isActive() ? proxy.getParent() : proxy;
     },
-    getData: function getData(e) {
-      var target = e.target;
+    getData: function (e) {
+      const target = e.target;
       return (target.tagName === 'tspan' ? target.parentNode : target)[dataKey];
     },
     getProxy: getProxy,
-    click: function click(e) {
+    click: function (e) {
       that._eventTrigger('click', e);
     }
   });

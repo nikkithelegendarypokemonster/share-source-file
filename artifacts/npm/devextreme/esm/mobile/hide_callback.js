@@ -1,34 +1,34 @@
 /**
 * DevExtreme (esm/mobile/hide_callback.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-export var hideCallback = function () {
-  var callbacks = [];
+export const hideCallback = function () {
+  let callbacks = [];
   return {
-    add: function add(callback) {
+    add: function (callback) {
       if (!callbacks.includes(callback)) {
         callbacks.push(callback);
       }
     },
-    remove: function remove(callback) {
-      var indexOfCallback = callbacks.indexOf(callback);
+    remove: function (callback) {
+      const indexOfCallback = callbacks.indexOf(callback);
       if (indexOfCallback !== -1) {
         callbacks.splice(indexOfCallback, 1);
       }
     },
-    fire: function fire() {
-      var callback = callbacks.pop();
-      var result = !!callback;
+    fire: function () {
+      const callback = callbacks.pop();
+      const result = !!callback;
       if (result) {
         callback();
       }
       return result;
     },
-    hasCallback: function hasCallback() {
+    hasCallback: function () {
       return callbacks.length > 0;
     }
   };

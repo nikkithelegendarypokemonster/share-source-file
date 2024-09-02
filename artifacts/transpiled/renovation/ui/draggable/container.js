@@ -8,14 +8,7 @@ var _events_engine = _interopRequireDefault(require("../../../events/core/events
 var _combine_classes = require("../../utils/combine_classes");
 const _excluded = ["children", "className", "data", "disabled", "onDragEnd", "onDragMove", "onDragStart"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const viewFunction = _ref => {
   let {
@@ -32,31 +25,27 @@ exports.viewFunction = viewFunction;
 const DraggableContainerProps = exports.DraggableContainerProps = {
   className: ''
 };
-let DraggableContainer = exports.DraggableContainer = /*#__PURE__*/function (_InfernoComponent) {
-  _inheritsLoose(DraggableContainer, _InfernoComponent);
-  function DraggableContainer(props) {
-    var _this;
-    _this = _InfernoComponent.call(this, props) || this;
-    _this.widgetRef = (0, _inferno.createRef)();
-    _this.state = {
+class DraggableContainer extends _inferno2.InfernoComponent {
+  constructor(props) {
+    super(props);
+    this.widgetRef = (0, _inferno.createRef)();
+    this.state = {
       isDragging: false
     };
-    _this.dragEffect = _this.dragEffect.bind(_assertThisInitialized(_this));
-    _this.dragStartHandler = _this.dragStartHandler.bind(_assertThisInitialized(_this));
-    _this.dragMoveHandler = _this.dragMoveHandler.bind(_assertThisInitialized(_this));
-    _this.dragEndHandler = _this.dragEndHandler.bind(_assertThisInitialized(_this));
-    _this.getEventArgs = _this.getEventArgs.bind(_assertThisInitialized(_this));
-    return _this;
+    this.dragEffect = this.dragEffect.bind(this);
+    this.dragStartHandler = this.dragStartHandler.bind(this);
+    this.dragMoveHandler = this.dragMoveHandler.bind(this);
+    this.dragEndHandler = this.dragEndHandler.bind(this);
+    this.getEventArgs = this.getEventArgs.bind(this);
   }
-  var _proto = DraggableContainer.prototype;
-  _proto.createEffects = function createEffects() {
+  createEffects() {
     return [new _inferno2.InfernoEffect(this.dragEffect, [this.props.disabled, this.props.data, this.props.onDragStart, this.props.onDragMove, this.props.onDragEnd])];
-  };
-  _proto.updateEffects = function updateEffects() {
+  }
+  updateEffects() {
     var _this$_effects$;
-    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([this.props.disabled, this.props.data, this.props.onDragStart, this.props.onDragMove, this.props.onDragEnd]);
-  };
-  _proto.dragEffect = function dragEffect() {
+    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 || _this$_effects$.update([this.props.disabled, this.props.data, this.props.onDragStart, this.props.onDragMove, this.props.onDragEnd]);
+  }
+  dragEffect() {
     if (this.props.disabled) {
       return undefined;
     }
@@ -68,8 +57,21 @@ let DraggableContainer = exports.DraggableContainer = /*#__PURE__*/function (_In
       _events_engine.default.off(this.widgetRef.current, _drag.move, this.dragMoveHandler);
       _events_engine.default.off(this.widgetRef.current, _drag.end, this.dragEndHandler);
     };
-  };
-  _proto.dragStartHandler = function dragStartHandler(event) {
+  }
+  get cssClasses() {
+    const {
+      className,
+      disabled
+    } = this.props;
+    const classesMap = {
+      [className]: !!className,
+      'dx-draggable': true,
+      'dx-draggable-dragging': this.state.isDragging,
+      'dx-state-disabled': !!disabled
+    };
+    return (0, _combine_classes.combineClasses)(classesMap);
+  }
+  dragStartHandler(event) {
     this.setState(__state_argument => ({
       isDragging: true
     }));
@@ -77,16 +79,16 @@ let DraggableContainer = exports.DraggableContainer = /*#__PURE__*/function (_In
     const {
       onDragStart
     } = this.props;
-    onDragStart === null || onDragStart === void 0 ? void 0 : onDragStart(dragStartArgs);
-  };
-  _proto.dragMoveHandler = function dragMoveHandler(event) {
+    onDragStart === null || onDragStart === void 0 || onDragStart(dragStartArgs);
+  }
+  dragMoveHandler(event) {
     const dragMoveArgs = this.getEventArgs(event);
     const {
       onDragMove
     } = this.props;
-    onDragMove === null || onDragMove === void 0 ? void 0 : onDragMove(dragMoveArgs);
-  };
-  _proto.dragEndHandler = function dragEndHandler(event) {
+    onDragMove === null || onDragMove === void 0 || onDragMove(dragMoveArgs);
+  }
+  dragEndHandler(event) {
     this.setState(__state_argument => ({
       isDragging: false
     }));
@@ -94,16 +96,21 @@ let DraggableContainer = exports.DraggableContainer = /*#__PURE__*/function (_In
     const {
       onDragEnd
     } = this.props;
-    onDragEnd === null || onDragEnd === void 0 ? void 0 : onDragEnd(dragEndArgs);
-  };
-  _proto.getEventArgs = function getEventArgs(e) {
+    onDragEnd === null || onDragEnd === void 0 || onDragEnd(dragEndArgs);
+  }
+  getEventArgs(e) {
     return {
       event: e,
       data: this.props.data,
       itemElement: this.widgetRef.current
     };
-  };
-  _proto.render = function render() {
+  }
+  get restAttributes() {
+    const _this$props = this.props,
+      restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
+    return restProps;
+  }
+  render() {
     const props = this.props;
     return viewFunction({
       props: _extends({}, props),
@@ -116,30 +123,7 @@ let DraggableContainer = exports.DraggableContainer = /*#__PURE__*/function (_In
       getEventArgs: this.getEventArgs,
       restAttributes: this.restAttributes
     });
-  };
-  _createClass(DraggableContainer, [{
-    key: "cssClasses",
-    get: function () {
-      const {
-        className,
-        disabled
-      } = this.props;
-      const classesMap = {
-        [className]: !!className,
-        'dx-draggable': true,
-        'dx-draggable-dragging': this.state.isDragging,
-        'dx-state-disabled': !!disabled
-      };
-      return (0, _combine_classes.combineClasses)(classesMap);
-    }
-  }, {
-    key: "restAttributes",
-    get: function () {
-      const _this$props = this.props,
-        restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
-      return restProps;
-    }
-  }]);
-  return DraggableContainer;
-}(_inferno2.InfernoComponent);
+  }
+}
+exports.DraggableContainer = DraggableContainer;
 DraggableContainer.defaultProps = DraggableContainerProps;

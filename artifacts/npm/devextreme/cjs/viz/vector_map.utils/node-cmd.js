@@ -1,14 +1,13 @@
 /**
 * DevExtreme (cjs/viz/vector_map.utils/node-cmd.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 "use strict";
 
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 /* eslint-disable no-console, no-undef, no-var, one-var, import/no-commonjs*/
 
 var path = require('path');
@@ -82,11 +81,11 @@ function processFileContentByDefault(content, name) {
   return name + ' = ' + content + ';';
 }
 function prepareSettings(source, options) {
-  options = _extends({}, options);
+  options = Object.assign({}, options);
   if (options.settings) {
-    options = _extends(importFile(options.settings) || {}, options);
+    options = Object.assign(importFile(options.settings) || {}, options);
   }
-  return _extends(options, {
+  return Object.assign(options, {
     input: source ? String(source) : null,
     output: options.output ? String(options.output) : null,
     precision: options.precision >= 0 ? Math.round(options.precision) : 4,

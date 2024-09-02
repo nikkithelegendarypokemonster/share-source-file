@@ -11,25 +11,25 @@ import { map } from '../../core/utils/iterator';
 import { isDefined, isObject } from '../../core/utils/type';
 import eventsEngine from '../../events/core/events_engine';
 import { normalizeKeyName } from '../../events/utils/index';
-import DropDownEditor from '../../ui/drop_down_editor/ui.drop_down_editor';
 import DataExpressionMixin from '../../ui/editor/ui.data_expression';
-import { getElementMaxHeightByWindow } from '../../ui/overlay/utils';
 import { tabbable } from '../../ui/widget/selectors';
-var {
+import DropDownEditor from '../ui/drop_down_editor/m_drop_down_editor';
+import { getElementMaxHeightByWindow } from '../ui/overlay/m_utils';
+const {
   getActiveElement
 } = domAdapter;
-var DROP_DOWN_BOX_CLASS = 'dx-dropdownbox';
-var ANONYMOUS_TEMPLATE_NAME = 'content';
-var realDevice = devices.real();
-var DropDownBox = DropDownEditor.inherit({
+const DROP_DOWN_BOX_CLASS = 'dx-dropdownbox';
+const ANONYMOUS_TEMPLATE_NAME = 'content';
+const realDevice = devices.real();
+const DropDownBox = DropDownEditor.inherit({
   _supportedKeys() {
     return extend({}, this.callBase(), {
       tab(e) {
         if (!this.option('opened')) {
           return;
         }
-        var $tabbableElements = this._getTabbableElements();
-        var $focusableElement = e.shiftKey ? $tabbableElements.last() : $tabbableElements.first();
+        const $tabbableElements = this._getTabbableElements();
+        const $focusableElement = e.shiftKey ? $tabbableElements.last() : $tabbableElements.first();
         // @ts-expect-error
         $focusableElement && eventsEngine.trigger($focusableElement, 'focus');
         e.preventDefault();
@@ -65,33 +65,31 @@ var DropDownBox = DropDownEditor.inherit({
     this.callBase();
   },
   _setSubmitValue() {
-    var value = this.option('value');
-    var submitValue = this._shouldUseDisplayValue(value) ? this._displayGetter(value) : value;
+    const value = this.option('value');
+    const submitValue = this._shouldUseDisplayValue(value) ? this._displayGetter(value) : value;
     this._getSubmitElement().val(submitValue);
   },
   _shouldUseDisplayValue(value) {
     return this.option('valueExpr') === 'this' && isObject(value);
   },
   _sortValuesByKeysOrder(orderedKeys, values) {
-    var sortedValues = values.sort((a, b) => orderedKeys.indexOf(a.itemKey) - orderedKeys.indexOf(b.itemKey));
+    const sortedValues = values.sort((a, b) => orderedKeys.indexOf(a.itemKey) - orderedKeys.indexOf(b.itemKey));
     return sortedValues.map(x => x.itemDisplayValue);
   },
   _renderInputValue() {
     this._rejectValueLoading();
-    var values = [];
+    const values = [];
     if (!this._dataSource) {
       this.callBase(values);
-      // @ts-expect-error
-      return new Deferred().resolve();
+      return Deferred().resolve();
     }
-    var currentValue = this._getCurrentValue();
-    var keys = currentValue !== null && currentValue !== void 0 ? currentValue : [];
+    const currentValue = this._getCurrentValue();
+    let keys = currentValue ?? [];
     keys = Array.isArray(keys) ? keys : [keys];
-    var itemLoadDeferreds = map(keys, key => {
-      // @ts-expect-error
-      var deferred = new Deferred();
+    const itemLoadDeferreds = map(keys, key => {
+      const deferred = Deferred();
       this._loadItem(key).always(item => {
-        var displayValue = this._displayGetter(item);
+        const displayValue = this._displayGetter(item);
         if (isDefined(displayValue)) {
           values.push({
             itemKey: key,
@@ -107,25 +105,24 @@ var DropDownBox = DropDownEditor.inherit({
       });
       return deferred;
     });
-    var callBase = this.callBase.bind(this);
+    const callBase = this.callBase.bind(this);
     return when.apply(this, itemLoadDeferreds).always(() => {
-      var orderedValues = this._sortValuesByKeysOrder(keys, values);
+      const orderedValues = this._sortValuesByKeysOrder(keys, values);
       this.option('displayValue', orderedValues);
       callBase(values.length && orderedValues);
     });
   },
   _loadItem(value) {
-    // @ts-expect-error
-    var deferred = new Deferred();
-    var that = this;
-    var selectedItem = grep(this.option('items') || [], item => this._isValueEquals(this._valueGetter(item), value))[0];
+    const deferred = Deferred();
+    const that = this;
+    const selectedItem = grep(this.option('items') || [], item => this._isValueEquals(this._valueGetter(item), value))[0];
     if (selectedItem !== undefined) {
       deferred.resolve(selectedItem);
     } else {
       this._loadValue(value).done(item => {
         deferred.resolve(item);
       }).fail(args => {
-        if (args === null || args === void 0 ? void 0 : args.shouldSkipCallback) {
+        if (args !== null && args !== void 0 && args.shouldSkipCallback) {
           return;
         }
         if (that.option('acceptCustomValue')) {
@@ -139,11 +136,11 @@ var DropDownBox = DropDownEditor.inherit({
   },
   _popupTabHandler(e) {
     if (normalizeKeyName(e) !== 'tab') return;
-    var $firstTabbable = this._getTabbableElements().first().get(0);
-    var $lastTabbable = this._getTabbableElements().last().get(0);
-    var $target = e.target;
-    var moveBackward = !!($target === $firstTabbable && e.shiftKey);
-    var moveForward = !!($target === $lastTabbable && !e.shiftKey);
+    const $firstTabbable = this._getTabbableElements().first().get(0);
+    const $lastTabbable = this._getTabbableElements().last().get(0);
+    const $target = e.target;
+    const moveBackward = !!($target === $firstTabbable && e.shiftKey);
+    const moveForward = !!($target === $lastTabbable && !e.shiftKey);
     if (moveBackward || moveForward) {
       this.close();
       // @ts-expect-error
@@ -157,12 +154,12 @@ var DropDownBox = DropDownEditor.inherit({
     if (this.option('contentTemplate') === ANONYMOUS_TEMPLATE_NAME) {
       return;
     }
-    var contentTemplate = this._getTemplateByOption('contentTemplate');
+    const contentTemplate = this._getTemplateByOption('contentTemplate');
     if (!(contentTemplate && this.option('contentTemplate'))) {
       return;
     }
-    var $popupContent = this._popup.$content();
-    var templateData = {
+    const $popupContent = this._popup.$content();
+    const templateData = {
       value: this._fieldRenderData(),
       component: this
     };
@@ -177,7 +174,7 @@ var DropDownBox = DropDownEditor.inherit({
     return realDevice.mac; // T845484
   },
   _isNestedElementActive() {
-    var activeElement = getActiveElement();
+    const activeElement = getActiveElement();
     return activeElement && this._popup.$content().get(0).contains(activeElement);
   },
   _shouldHideOnParentScroll() {
@@ -192,7 +189,7 @@ var DropDownBox = DropDownEditor.inherit({
     this._popupPosition = e.position;
   },
   _getDefaultPopupPosition(isRtlEnabled) {
-    var {
+    const {
       my,
       at
     } = this.callBase(isRtlEnabled);
@@ -206,7 +203,7 @@ var DropDownBox = DropDownEditor.inherit({
     };
   },
   _popupConfig() {
-    var {
+    const {
       focusStateEnabled
     } = this.option();
     return extend(this.callBase(), {
@@ -220,15 +217,15 @@ var DropDownBox = DropDownEditor.inherit({
       }),
       _ignoreFunctionValueDeprecation: true,
       maxHeight: function () {
-        var _a;
-        var popupLocation = (_a = this._popupPosition) === null || _a === void 0 ? void 0 : _a.v.location;
+        var _this$_popupPosition;
+        const popupLocation = (_this$_popupPosition = this._popupPosition) === null || _this$_popupPosition === void 0 ? void 0 : _this$_popupPosition.v.location;
         return getElementMaxHeightByWindow(this.$element(), popupLocation);
       }.bind(this)
     });
   },
   _popupShownHandler() {
     this.callBase();
-    var $firstElement = this._getTabbableElements().first();
+    const $firstElement = this._getTabbableElements().first();
     // @ts-expect-error
     eventsEngine.trigger($firstElement, 'focus');
   },

@@ -21,17 +21,17 @@ import eventsEngine from '../../../events/core/events_engine';
 import formatHelper from '../../../format_helper';
 import LoadPanel from '../../../ui/load_panel';
 import sharedFiltering from '../../../ui/shared/filtering';
-var DATAGRID_SELECTION_DISABLED_CLASS = 'dx-selection-disabled';
-var DATAGRID_GROUP_OPENED_CLASS = 'dx-datagrid-group-opened';
-var DATAGRID_GROUP_CLOSED_CLASS = 'dx-datagrid-group-closed';
-var DATAGRID_EXPAND_CLASS = 'dx-datagrid-expand';
-var NO_DATA_CLASS = 'nodata';
-var SCROLLING_MODE_INFINITE = 'infinite';
-var SCROLLING_MODE_VIRTUAL = 'virtual';
-var LEGACY_SCROLLING_MODE = 'scrolling.legacyMode';
-var SCROLLING_MODE_OPTION = 'scrolling.mode';
-var ROW_RENDERING_MODE_OPTION = 'scrolling.rowRenderingMode';
-var DATE_INTERVAL_SELECTORS = {
+const DATAGRID_SELECTION_DISABLED_CLASS = 'dx-selection-disabled';
+const DATAGRID_GROUP_OPENED_CLASS = 'dx-datagrid-group-opened';
+const DATAGRID_GROUP_CLOSED_CLASS = 'dx-datagrid-group-closed';
+const DATAGRID_EXPAND_CLASS = 'dx-datagrid-expand';
+const NO_DATA_CLASS = 'nodata';
+const SCROLLING_MODE_INFINITE = 'infinite';
+const SCROLLING_MODE_VIRTUAL = 'virtual';
+const LEGACY_SCROLLING_MODE = 'scrolling.legacyMode';
+const SCROLLING_MODE_OPTION = 'scrolling.mode';
+const ROW_RENDERING_MODE_OPTION = 'scrolling.rowRenderingMode';
+const DATE_INTERVAL_SELECTORS = {
   year(value) {
     return value && value.getFullYear();
   },
@@ -54,22 +54,22 @@ var DATE_INTERVAL_SELECTORS = {
     return value && value.getSeconds();
   }
 };
-var getIntervalSelector = function getIntervalSelector() {
-  var data = arguments[1];
-  var value = this.calculateCellValue(data);
+const getIntervalSelector = function () {
+  const data = arguments[1];
+  const value = this.calculateCellValue(data);
   if (!isDefined(value)) {
     return null;
   }
   if (isDateType(this.dataType)) {
-    var nameIntervalSelector = arguments[0];
+    const nameIntervalSelector = arguments[0];
     return DATE_INTERVAL_SELECTORS[nameIntervalSelector](value);
   }
   if (this.dataType === 'number') {
-    var groupInterval = arguments[0];
+    const groupInterval = arguments[0];
     return Math.floor(Number(value) / groupInterval) * groupInterval;
   }
 };
-var equalSelectors = function equalSelectors(selector1, selector2) {
+const equalSelectors = function (selector1, selector2) {
   if (isFunction(selector1) && isFunction(selector2)) {
     if (selector1.originalCallback && selector2.originalCallback) {
       return selector1.originalCallback === selector2.originalCallback && selector1.columnIndex === selector2.columnIndex;
@@ -80,13 +80,13 @@ var equalSelectors = function equalSelectors(selector1, selector2) {
 function isDateType(dataType) {
   return dataType === 'date' || dataType === 'datetime';
 }
-var setEmptyText = function setEmptyText($container) {
+const setEmptyText = function ($container) {
   $container.get(0).textContent = '\u00A0';
 };
-var normalizeSortingInfo = function normalizeSortingInfo(sort) {
+const normalizeSortingInfo = function (sort) {
   sort = sort || [];
-  var result = normalizeSortingInfoUtility(sort);
-  for (var i = 0; i < sort.length; i++) {
+  const result = normalizeSortingInfoUtility(sort);
+  for (let i = 0; i < sort.length; i++) {
     if (sort && sort[i] && sort[i].isExpanded !== undefined) {
       result[i].isExpanded = sort[i].isExpanded;
     }
@@ -96,9 +96,9 @@ var normalizeSortingInfo = function normalizeSortingInfo(sort) {
   }
   return result;
 };
-var formatValue = function formatValue(value, options) {
-  var valueText = formatHelper.format(value, options.format) || value && value.toString() || '';
-  var formatObject = {
+const formatValue = function (value, options) {
+  const valueText = formatHelper.format(value, options.format) || value && value.toString() || '';
+  const formatObject = {
     value,
     valueText: options.getDisplayFormat ? options.getDisplayFormat(valueText) : valueText,
     target: options.target || 'row',
@@ -106,8 +106,8 @@ var formatValue = function formatValue(value, options) {
   };
   return options.customizeText ? options.customizeText.call(options, formatObject) : formatObject.valueText;
 };
-var getSummaryText = function getSummaryText(summaryItem, summaryTexts) {
-  var displayFormat = summaryItem.displayFormat || summaryItem.columnCaption && summaryTexts["".concat(summaryItem.summaryType, "OtherColumn")] || summaryTexts[summaryItem.summaryType];
+const getSummaryText = function (summaryItem, summaryTexts) {
+  const displayFormat = summaryItem.displayFormat || summaryItem.columnCaption && summaryTexts[`${summaryItem.summaryType}OtherColumn`] || summaryTexts[summaryItem.summaryType];
   return formatValue(summaryItem.value, {
     format: summaryItem.valueFormat,
     getDisplayFormat(valueText) {
@@ -116,18 +116,18 @@ var getSummaryText = function getSummaryText(summaryItem, summaryTexts) {
     customizeText: summaryItem.customizeText
   });
 };
-var getWidgetInstance = function getWidgetInstance($element) {
-  var editorData = $element.data && $element.data();
-  var dxComponents = editorData && editorData.dxComponents;
-  var widgetName = dxComponents && dxComponents[0];
+const getWidgetInstance = function ($element) {
+  const editorData = $element.data && $element.data();
+  const dxComponents = editorData && editorData.dxComponents;
+  const widgetName = dxComponents && dxComponents[0];
   return widgetName && editorData[widgetName];
 };
-var equalFilterParameters = function equalFilterParameters(filter1, filter2) {
+const equalFilterParameters = function (filter1, filter2) {
   if (Array.isArray(filter1) && Array.isArray(filter2)) {
     if (filter1.length !== filter2.length) {
       return false;
     }
-    for (var i = 0; i < filter1.length; i++) {
+    for (let i = 0; i < filter1.length; i++) {
       if (!equalFilterParameters(filter1[i], filter2[i])) {
         return false;
       }
@@ -155,15 +155,15 @@ function normalizeGroupingLoadOptions(group) {
 }
 export default {
   renderNoDataText($element) {
-    var that = this;
+    const that = this;
     $element = $element || this.element();
     if (!$element) {
       return;
     }
-    var noDataClass = that.addWidgetPrefix(NO_DATA_CLASS);
-    var noDataElement = $element.find(".".concat(noDataClass)).last();
-    var isVisible = this._dataController.isEmpty();
-    var isLoading = this._dataController.isLoading();
+    const noDataClass = that.addWidgetPrefix(NO_DATA_CLASS);
+    let noDataElement = $element.find(`.${noDataClass}`).last();
+    const isVisible = this._dataController.isEmpty();
+    const isLoading = this._dataController.isLoading();
     if (!noDataElement.length) {
       noDataElement = $('<span>').addClass(noDataClass);
     }
@@ -177,8 +177,8 @@ export default {
     }
   },
   renderLoadPanel($element, $container, isLocalStore) {
-    var that = this;
-    var loadPanelOptions;
+    const that = this;
+    let loadPanelOptions;
     that._loadPanel && that._loadPanel.$element().remove();
     loadPanelOptions = that.option('loadPanel');
     if (loadPanelOptions && (loadPanelOptions.enabled === 'auto' ? !isLocalStore : loadPanelOptions.enabled)) {
@@ -194,7 +194,7 @@ export default {
   },
   calculateLoadPanelPosition($element) {
     // @ts-expect-error
-    var $window = $(getWindow());
+    const $window = $(getWindow());
     if (getHeight($element) > getHeight($window)) {
       return {
         of: $window,
@@ -207,11 +207,11 @@ export default {
     };
   },
   getIndexByKey(key, items, keyName) {
-    var index = -1;
+    let index = -1;
     if (key !== undefined && Array.isArray(items)) {
       keyName = arguments.length <= 2 ? 'key' : keyName;
-      for (var i = 0; i < items.length; i++) {
-        var item = isDefined(keyName) ? items[i][keyName] : items[i];
+      for (let i = 0; i < items.length; i++) {
+        const item = isDefined(keyName) ? items[i][keyName] : items[i];
         if (equalByValue(key, item)) {
           index = i;
           break;
@@ -221,14 +221,14 @@ export default {
     return index;
   },
   combineFilters(filters, operation) {
-    var _a;
-    var resultFilter = [];
+    let resultFilter = [];
     operation = operation || 'and';
-    for (var i = 0; i < filters.length; i++) {
+    for (let i = 0; i < filters.length; i++) {
+      var _filters$i;
       if (!filters[i]) {
         continue;
       }
-      if (((_a = filters[i]) === null || _a === void 0 ? void 0 : _a.length) === 1 && filters[i][0] === '!') {
+      if (((_filters$i = filters[i]) === null || _filters$i === void 0 ? void 0 : _filters$i.length) === 1 && filters[i][0] === '!') {
         if (operation === 'and') {
           return ['!'];
         }
@@ -251,8 +251,8 @@ export default {
     return undefined;
   },
   checkChanges(changes, changeNames) {
-    var changesWithChangeNamesCount = 0;
-    for (var i = 0; i < changeNames.length; i++) {
+    let changesWithChangeNamesCount = 0;
+    for (let i = 0; i < changeNames.length; i++) {
       if (changes[changeNames[i]]) {
         changesWithChangeNamesCount++;
       }
@@ -263,7 +263,7 @@ export default {
   proxyMethod(instance, methodName, defaultResult) {
     if (!instance[methodName]) {
       instance[methodName] = function () {
-        var dataSource = this._dataSource;
+        const dataSource = this._dataSource;
         return dataSource ? dataSource[methodName].apply(dataSource, arguments) : defaultResult;
       };
     }
@@ -292,9 +292,9 @@ export default {
     return value;
   },
   getGroupRowSummaryText(summaryItems, summaryTexts) {
-    var result = '(';
-    for (var i = 0; i < summaryItems.length; i++) {
-      var summaryItem = summaryItems[i];
+    let result = '(';
+    for (let i = 0; i < summaryItems.length; i++) {
+      const summaryItem = summaryItems[i];
       result += (i > 0 ? ', ' : '') + getSummaryText(summaryItem, summaryTexts);
     }
     // eslint-disable-next-line no-return-assign
@@ -314,9 +314,9 @@ export default {
     }
   },
   getHeaderFilterGroupParameters(column, remoteGrouping) {
-    var result = [];
-    var dataField = column.dataField || column.name;
-    var groupInterval = sharedFiltering.getGroupInterval(column);
+    let result = [];
+    const dataField = column.dataField || column.name;
+    const groupInterval = sharedFiltering.getGroupInterval(column);
     if (groupInterval) {
       each(groupInterval, (index, interval) => {
         result.push(remoteGrouping ? {
@@ -333,8 +333,8 @@ export default {
         isExpanded: false
       }];
     } else {
-      result = function result(data) {
-        var result = column.calculateCellValue(data);
+      result = function (data) {
+        let result = column.calculateCellValue(data);
         if (result === undefined || result === '') {
           result = null;
         }
@@ -356,7 +356,7 @@ export default {
       if (sortParameters1.length !== sortParameters2.length) {
         return false;
       }
-      for (var i = 0; i < sortParameters1.length; i++) {
+      for (let i = 0; i < sortParameters1.length; i++) {
         if (!equalSelectors(sortParameters1[i].selector, sortParameters2[i].selector) || sortParameters1[i].desc !== sortParameters2[i].desc || sortParameters1[i].groupInterval !== sortParameters2[i].groupInterval || !ignoreIsExpanded && Boolean(sortParameters1[i].isExpanded) !== Boolean(sortParameters2[i].isExpanded)) {
           return false;
         }
@@ -366,20 +366,20 @@ export default {
     return (!sortParameters1 || !sortParameters1.length) === (!sortParameters2 || !sortParameters2.length);
   },
   getPointsByColumns(items, pointCreated, isVertical, startColumnIndex) {
-    var cellsLength = items.length;
-    var notCreatePoint = false;
-    var item;
-    var offset;
-    var columnIndex = startColumnIndex || 0;
-    var result = [];
-    var rtlEnabled;
-    for (var i = 0; i <= cellsLength; i++) {
+    const cellsLength = items.length;
+    let notCreatePoint = false;
+    let item;
+    let offset;
+    let columnIndex = startColumnIndex || 0;
+    const result = [];
+    let rtlEnabled;
+    for (let i = 0; i <= cellsLength; i++) {
       if (i < cellsLength) {
         item = items.eq(i);
         offset = item.offset();
         rtlEnabled = item.css('direction') === 'rtl';
       }
-      var point = {
+      const point = {
         index: columnIndex,
         // @ts-expect-error
         x: offset ? offset.left + (!isVertical && rtlEnabled ^ i === cellsLength ? getBoundingRect(item[0]).width : 0) : 0,
@@ -387,7 +387,7 @@ export default {
         columnIndex
       };
       if (!isVertical && i > 0) {
-        var prevItemOffset = items.eq(i - 1).offset();
+        const prevItemOffset = items.eq(i - 1).offset();
         if (prevItemOffset.top < point.y) {
           point.y = prevItemOffset.top;
         }
@@ -406,9 +406,9 @@ export default {
     return {
       allowRenderToDetachedContainer: true,
       render(container, options) {
-        var $container = $(container);
+        const $container = $(container);
         if (isDefined(options.value) && !(options.data && options.data.isContinuation) && !options.row.isNewRow) {
-          var rowsView = options.component.getView('rowsView');
+          const rowsView = options.component.getView('rowsView');
           $container.addClass(DATAGRID_EXPAND_CLASS).addClass(DATAGRID_SELECTION_DISABLED_CLASS);
           $('<div>').addClass(options.value ? DATAGRID_GROUP_OPENED_CLASS : DATAGRID_GROUP_CLOSED_CLASS).appendTo($container);
           rowsView.setAria('label', options.value ? rowsView.localize('dxDataGrid-ariaCollapse') : rowsView.localize('dxDataGrid-ariaExpand'), $container);
@@ -439,13 +439,13 @@ export default {
     } catch (e) {/* empty */}
   },
   focusAndSelectElement(component, $element) {
-    var isFocused = $element.is(':focus');
+    const isFocused = $element.is(':focus');
     // @ts-expect-error
     eventsEngine.trigger($element, 'focus');
-    var isSelectTextOnEditingStart = component.option('editing.selectTextOnEditStart');
-    var element = $element.get(0);
+    const isSelectTextOnEditingStart = component.option('editing.selectTextOnEditStart');
+    const element = $element.get(0);
     if (!isFocused && isSelectTextOnEditingStart && $element.is('.dx-texteditor-input') && !$element.is('[readonly]')) {
-      var editor = getWidgetInstance($element.closest('.dx-texteditor'));
+      const editor = getWidgetInstance($element.closest('.dx-texteditor'));
       when(editor && editor._loadItemDeferred).done(() => {
         element.select();
       });
@@ -453,12 +453,12 @@ export default {
   },
   getWidgetInstance,
   getLastResizableColumnIndex(columns, resultWidths) {
-    var hasResizableColumns = columns.some(column => column && !column.command && !column.fixed && column.allowResizing !== false);
-    var lastColumnIndex;
+    const hasResizableColumns = columns.some(column => column && !column.command && !column.fixed && column.allowResizing !== false);
+    let lastColumnIndex;
     for (lastColumnIndex = columns.length - 1; columns[lastColumnIndex]; lastColumnIndex--) {
-      var column = columns[lastColumnIndex];
-      var width = resultWidths && resultWidths[lastColumnIndex];
-      var allowResizing = !hasResizableColumns || column.allowResizing !== false;
+      const column = columns[lastColumnIndex];
+      const width = resultWidths && resultWidths[lastColumnIndex];
+      const allowResizing = !hasResizableColumns || column.allowResizing !== false;
       if (!column.command && !column.fixed && width !== 'adaptiveHidden' && allowResizing) {
         break;
       }
@@ -467,15 +467,15 @@ export default {
   },
   isElementInCurrentGrid(controller, $element) {
     if ($element && $element.length) {
-      var $grid = $element.closest(".".concat(controller.getWidgetContainerClass())).parent();
+      const $grid = $element.closest(`.${controller.getWidgetContainerClass()}`).parent();
       return $grid.is(controller.component.$element());
     }
     return false;
   },
   isVirtualRowRendering(that) {
-    var rowRenderingMode = that.option(ROW_RENDERING_MODE_OPTION);
-    var isVirtualMode = that.option(SCROLLING_MODE_OPTION) === SCROLLING_MODE_VIRTUAL;
-    var isAppendMode = that.option(SCROLLING_MODE_OPTION) === SCROLLING_MODE_INFINITE;
+    const rowRenderingMode = that.option(ROW_RENDERING_MODE_OPTION);
+    const isVirtualMode = that.option(SCROLLING_MODE_OPTION) === SCROLLING_MODE_VIRTUAL;
+    const isAppendMode = that.option(SCROLLING_MODE_OPTION) === SCROLLING_MODE_INFINITE;
     if (that.option(LEGACY_SCROLLING_MODE) === false && (isVirtualMode || isAppendMode)) {
       return true;
     }
@@ -491,7 +491,7 @@ export default {
     return 15000000 / this.getPixelRatio(getWindow());
   },
   normalizeLookupDataSource(lookup) {
-    var lookupDataSourceOptions;
+    let lookupDataSourceOptions;
     if (lookup.items) {
       lookupDataSourceOptions = lookup.items;
     } else {
@@ -500,32 +500,32 @@ export default {
         lookupDataSourceOptions = lookupDataSourceOptions({});
       }
     }
+    // @ts-expect-error
     return normalizeDataSourceOptions(lookupDataSourceOptions);
   },
   getWrappedLookupDataSource(column, dataSource, filter) {
     if (!dataSource) {
       return [];
     }
-    var lookupDataSourceOptions = this.normalizeLookupDataSource(column.lookup);
+    const lookupDataSourceOptions = this.normalizeLookupDataSource(column.lookup);
     if (column.calculateCellValue !== column.defaultCalculateCellValue) {
       return lookupDataSourceOptions;
     }
-    var hasGroupPaging = dataSource.remoteOperations().groupPaging;
-    var hasLookupOptimization = column.displayField && isString(column.displayField);
-    var cachedUniqueRelevantItems;
-    var previousTake;
-    var previousSkip;
-    var sliceItems = (items, loadOptions) => {
-      var _a;
-      var start = (_a = loadOptions.skip) !== null && _a !== void 0 ? _a : 0;
-      var end = loadOptions.take ? start + loadOptions.take : items.length;
+    const hasGroupPaging = dataSource.remoteOperations().groupPaging;
+    const hasLookupOptimization = column.displayField && isString(column.displayField);
+    let cachedUniqueRelevantItems;
+    let previousTake;
+    let previousSkip;
+    const sliceItems = (items, loadOptions) => {
+      const start = loadOptions.skip ?? 0;
+      const end = loadOptions.take ? start + loadOptions.take : items.length;
       return items.slice(start, end);
     };
-    var loadUniqueRelevantItems = loadOptions => {
-      var group = normalizeGroupingLoadOptions(hasLookupOptimization ? [column.dataField, column.displayField] : column.dataField);
+    const loadUniqueRelevantItems = loadOptions => {
+      const group = normalizeGroupingLoadOptions(hasLookupOptimization ? [column.dataField, column.displayField] : column.dataField);
       // @ts-expect-error
-      var d = new Deferred();
-      var canUseCache = cachedUniqueRelevantItems && (!hasGroupPaging || loadOptions.skip === previousSkip && loadOptions.take === previousTake);
+      const d = new Deferred();
+      const canUseCache = cachedUniqueRelevantItems && (!hasGroupPaging || loadOptions.skip === previousSkip && loadOptions.take === previousTake);
       if (canUseCache) {
         d.resolve(sliceItems(cachedUniqueRelevantItems, loadOptions));
       } else {
@@ -543,20 +543,20 @@ export default {
       }
       return d;
     };
-    var lookupDataSource = _extends(_extends({}, lookupDataSourceOptions), {
+    const lookupDataSource = _extends({}, lookupDataSourceOptions, {
       __dataGridSourceFilter: filter,
       load: loadOptions => {
         // @ts-expect-error
-        var d = new Deferred();
+        const d = new Deferred();
         loadUniqueRelevantItems(loadOptions).done(items => {
           if (items.length === 0) {
             d.resolve([]);
             return;
           }
-          var filter = this.combineFilters(items.flatMap(data => data.key).map(key => [column.lookup.valueExpr, key]), 'or');
-          var newDataSource = new DataSource(_extends(_extends(_extends({}, lookupDataSourceOptions), loadOptions), {
+          const filter = this.combineFilters(items.flatMap(data => data.key).map(key => [column.lookup.valueExpr, key]), 'or');
+          const newDataSource = new DataSource(_extends({}, lookupDataSourceOptions, loadOptions, {
             filter: this.combineFilters([filter, loadOptions.filter], 'and'),
-            paginate: false
+            paginate: false // pagination is included to filter
           }));
           newDataSource
           // @ts-expect-error
@@ -566,7 +566,7 @@ export default {
       },
       key: column.lookup.valueExpr,
       byKey(key) {
-        var d = Deferred();
+        const d = Deferred();
         this.load({
           filter: [column.lookup.valueExpr, '=', key]
         }).done(arr => {
@@ -578,8 +578,8 @@ export default {
     return lookupDataSource;
   },
   logHeaderFilterDeprecatedWarningIfNeed(component) {
-    var since = '23.1';
-    var logWarning = component._logDeprecatedOptionWarning.bind(component);
+    const since = '23.1';
+    const logWarning = component._logDeprecatedOptionWarning.bind(component);
     if (isDefined(component.option('headerFilter.allowSearch'))) {
       logWarning('headerFilter.allowSearch', {
         since,
@@ -592,28 +592,28 @@ export default {
         alias: 'headerFilter.search.timeout'
       });
     }
-    var specificName = component.NAME === 'dxPivotGrid' ? 'dataSource.fields' : 'columns';
-    var columns = component.option(specificName);
+    const specificName = component.NAME === 'dxPivotGrid' ? 'dataSource.fields' : 'columns';
+    const columns = component.option(specificName);
     if (!Array.isArray(columns)) {
       return;
     }
-    var logSpecificDeprecatedWarningIfNeed = columns => {
+    const logSpecificDeprecatedWarningIfNeed = columns => {
       columns.forEach(column => {
-        var _a;
-        var headerFilter = column.headerFilter || {};
+        var _column$columns;
+        const headerFilter = column.headerFilter || {};
         if (isDefined(headerFilter.allowSearch)) {
-          logWarning("".concat(specificName, "[].headerFilter.allowSearch"), {
+          logWarning(`${specificName}[].headerFilter.allowSearch`, {
             since,
-            alias: "".concat(specificName, "[].headerFilter.search.enabled")
+            alias: `${specificName}[].headerFilter.search.enabled`
           });
         }
         if (isDefined(headerFilter.searchMode)) {
-          logWarning("".concat(specificName, "[].headerFilter.searchMode"), {
+          logWarning(`${specificName}[].headerFilter.searchMode`, {
             since,
-            alias: "".concat(specificName, "[].headerFilter.search.mode")
+            alias: `${specificName}[].headerFilter.search.mode`
           });
         }
-        if ((_a = column.columns) === null || _a === void 0 ? void 0 : _a.length) {
+        if ((_column$columns = column.columns) !== null && _column$columns !== void 0 && _column$columns.length) {
           logSpecificDeprecatedWarningIfNeed(column.columns);
         }
       });

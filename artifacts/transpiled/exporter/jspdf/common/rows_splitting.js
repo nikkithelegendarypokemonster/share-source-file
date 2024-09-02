@@ -11,7 +11,7 @@ const COORDINATE_EPSILON = 0.001;
 function convertToCellsArray(rows) {
   return [].concat.apply([], rows.map(rowInfo => {
     return rowInfo.cells.filter(cell => !(0, _type.isDefined)(cell.pdfCell.isMerged)).map(cellInfo => {
-      return _extends({}, cellInfo.pdfCell._rect, {
+      return Object.assign({}, cellInfo.pdfCell._rect, {
         sourceCellInfo: _extends({}, cellInfo.pdfCell, {
           gridCell: cellInfo.gridCell
         })
@@ -97,7 +97,7 @@ function splitByPages(doc, rowsInfo, options, onSeparateRectHorizontally, onSepa
     }
   }
   return verticallyPages.map(rects => {
-    return rects.map(rect => _extends({}, rect.sourceCellInfo, {
+    return rects.map(rect => Object.assign({}, rect.sourceCellInfo, {
       _rect: rect
     }));
   });

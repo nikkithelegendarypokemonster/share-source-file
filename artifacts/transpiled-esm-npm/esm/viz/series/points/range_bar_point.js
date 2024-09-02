@@ -2,20 +2,20 @@ import { noop } from '../../../core/utils/common';
 import { extend } from '../../../core/utils/extend';
 import barPoint from './bar_point';
 import rangeSymbolPointMethods from './range_symbol_point';
-var _extend = extend;
+const _extend = extend;
 export default _extend({}, barPoint, {
   deleteLabel: rangeSymbolPointMethods.deleteLabel,
   _getFormatObject: rangeSymbolPointMethods._getFormatObject,
-  clearVisibility: function clearVisibility() {
-    var graphic = this.graphic;
+  clearVisibility: function () {
+    const graphic = this.graphic;
     if (graphic && graphic.attr('visibility')) {
       graphic.attr({
         visibility: null
       });
     }
   },
-  setInvisibility: function setInvisibility() {
-    var graphic = this.graphic;
+  setInvisibility: function () {
+    const graphic = this.graphic;
     if (graphic && graphic.attr('visibility') !== 'hidden') {
       graphic.attr({
         visibility: 'hidden'
@@ -24,11 +24,11 @@ export default _extend({}, barPoint, {
     this._topLabel.draw(false);
     this._bottomLabel.draw(false);
   },
-  getTooltipParams: function getTooltipParams(location) {
-    var that = this;
-    var edgeLocation = location === 'edge';
-    var x;
-    var y;
+  getTooltipParams: function (location) {
+    const that = this;
+    const edgeLocation = location === 'edge';
+    let x;
+    let y;
     if (that._options.rotated) {
       x = edgeLocation ? that.x + that.width : that.x + that.width / 2;
       y = that.y + that.height / 2;
@@ -42,9 +42,9 @@ export default _extend({}, barPoint, {
       offset: 0
     };
   },
-  _translate: function _translate() {
-    var that = this;
-    var barMethods = barPoint;
+  _translate: function () {
+    const that = this;
+    const barMethods = barPoint;
     barMethods._translate.call(that);
     if (that._options.rotated) {
       that.width = that.width || 1;

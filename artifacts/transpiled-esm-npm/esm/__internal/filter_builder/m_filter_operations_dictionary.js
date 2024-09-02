@@ -1,5 +1,5 @@
 /* eslint-disable spellcheck/spell-checker */
-var OPERATION_ICONS = {
+const OPERATION_ICONS = {
   '=': 'equal',
   '<>': 'notequal',
   '<': 'less',
@@ -13,7 +13,7 @@ var OPERATION_ICONS = {
   isblank: 'isblank',
   isnotblank: 'isnotblank'
 };
-var OPERATION_NAME = {
+const OPERATION_NAME = {
   '=': 'equal',
   '<>': 'notEqual',
   '<': 'lessThan',

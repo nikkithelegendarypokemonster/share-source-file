@@ -19,8 +19,10 @@ var _tree_view = _interopRequireDefault(require("../../../../ui/tree_view"));
 var _m_modules = _interopRequireDefault(require("../m_modules"));
 var _m_columns_view = require("../views/m_columns_view");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */ // @ts-expect-error
+/* eslint-disable max-classes-per-file */
+
+// @ts-expect-error
+
 const COLUMN_CHOOSER_CLASS = 'column-chooser';
 const COLUMN_CHOOSER_BUTTON_CLASS = 'column-chooser-button';
 const NOTOUCH_ACTION_CLASS = 'notouch-action';
@@ -55,21 +57,16 @@ const processItems = function (that, chooserColumns) {
   }
   return items;
 };
-let ColumnChooserController = exports.ColumnChooserController = /*#__PURE__*/function (_modules$ViewControll) {
-  _inheritsLoose(ColumnChooserController, _modules$ViewControll);
-  function ColumnChooserController() {
-    return _modules$ViewControll.apply(this, arguments) || this;
-  }
-  var _proto = ColumnChooserController.prototype;
-  _proto.init = function init() {
-    _modules$ViewControll.prototype.init.call(this);
+class ColumnChooserController extends _m_modules.default.ViewController {
+  init() {
+    super.init();
     this._rowsView = this.getView('rowsView');
-  };
-  _proto.renderShowColumnChooserButton = function renderShowColumnChooserButton($element) {
+  }
+  renderShowColumnChooserButton($element) {
     const that = this;
     const columnChooserButtonClass = that.addWidgetPrefix(COLUMN_CHOOSER_BUTTON_CLASS);
     const columnChooserEnabled = that.option('columnChooser.enabled');
-    const $showColumnChooserButton = $element.find(".".concat(columnChooserButtonClass));
+    const $showColumnChooserButton = $element.find(`.${columnChooserButtonClass}`);
     let $columnChooserButton;
     if (columnChooserEnabled) {
       if (!$showColumnChooserButton.length) {
@@ -90,8 +87,8 @@ let ColumnChooserController = exports.ColumnChooserController = /*#__PURE__*/fun
     } else {
       $showColumnChooserButton.hide();
     }
-  };
-  _proto.getPosition = function getPosition() {
+  }
+  getPosition() {
     const position = this.option('columnChooser.position');
     return (0, _type.isDefined)(position) ? position : {
       my: 'right bottom',
@@ -101,34 +98,29 @@ let ColumnChooserController = exports.ColumnChooserController = /*#__PURE__*/fun
       offset: '-2 -2',
       boundaryOffset: '2 2'
     };
-  };
-  return ColumnChooserController;
-}(_m_modules.default.ViewController);
-let ColumnChooserView = exports.ColumnChooserView = /*#__PURE__*/function (_ColumnsView) {
-  _inheritsLoose(ColumnChooserView, _ColumnsView);
-  function ColumnChooserView() {
-    return _ColumnsView.apply(this, arguments) || this;
   }
-  var _proto2 = ColumnChooserView.prototype;
-  _proto2.optionChanged = function optionChanged(args) {
+}
+exports.ColumnChooserController = ColumnChooserController;
+class ColumnChooserView extends _m_columns_view.ColumnsView {
+  optionChanged(args) {
     switch (args.name) {
       case 'columnChooser':
         this._initializePopupContainer();
         this.render(null, 'full');
         break;
       default:
-        _ColumnsView.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  _proto2.publicMethods = function publicMethods() {
+  }
+  publicMethods() {
     return ['showColumnChooser', 'hideColumnChooser'];
-  };
-  _proto2._resizeCore = function _resizeCore() {};
-  _proto2._isWinDevice = function _isWinDevice() {
+  }
+  _resizeCore() {}
+  _isWinDevice() {
     // @ts-expect-error
     return !!_devices.default.real().win;
-  };
-  _proto2._initializePopupContainer = function _initializePopupContainer() {
+  }
+  _initializePopupContainer() {
     const that = this;
     const columnChooserClass = that.addWidgetPrefix(COLUMN_CHOOSER_CLASS);
     const $element = that.element().addClass(columnChooserClass);
@@ -183,8 +175,8 @@ let ColumnChooserView = exports.ColumnChooserView = /*#__PURE__*/function (_Colu
       this._popupContainer.option(dxPopupOptions);
     }
     this.setPopupAttributes();
-  };
-  _proto2.setPopupAttributes = function setPopupAttributes() {
+  }
+  setPopupAttributes() {
     const isSelectMode = this.isSelectMode();
     const isBandColumnsUsed = this._columnsController.isBandColumnsUsed();
     this._popupContainer.setAria({
@@ -196,8 +188,8 @@ let ColumnChooserView = exports.ColumnChooserView = /*#__PURE__*/function (_Colu
     if (isSelectMode && !isBandColumnsUsed) {
       this._popupContainer.$content().addClass(this.addWidgetPrefix(COLUMN_CHOOSER_PLAIN_CLASS));
     }
-  };
-  _proto2._renderCore = function _renderCore(change) {
+  }
+  _renderCore(change) {
     if (this._popupContainer) {
       const isDragMode = !this.isSelectMode();
       if (!this._columnChooserList || change === 'full') {
@@ -206,15 +198,15 @@ let ColumnChooserView = exports.ColumnChooserView = /*#__PURE__*/function (_Colu
         this._updateItems();
       }
     }
-  };
-  _proto2._renderTreeView = function _renderTreeView() {
-    var _a, _b, _c;
+  }
+  _renderTreeView() {
+    var _columnChooser$search, _columnChooser$search2, _columnChooser$search3;
     const that = this;
     const $container = this._popupContainer.$content();
     const columnChooser = this.option('columnChooser');
     const isSelectMode = this.isSelectMode();
-    const searchEnabled = (0, _type.isDefined)(columnChooser.allowSearch) ? columnChooser.allowSearch : (_a = columnChooser.search) === null || _a === void 0 ? void 0 : _a.enabled;
-    const searchTimeout = (0, _type.isDefined)(columnChooser.searchTimeout) ? columnChooser.searchTimeout : (_b = columnChooser.search) === null || _b === void 0 ? void 0 : _b.timeout;
+    const searchEnabled = (0, _type.isDefined)(columnChooser.allowSearch) ? columnChooser.allowSearch : (_columnChooser$search = columnChooser.search) === null || _columnChooser$search === void 0 ? void 0 : _columnChooser$search.enabled;
+    const searchTimeout = (0, _type.isDefined)(columnChooser.searchTimeout) ? columnChooser.searchTimeout : (_columnChooser$search2 = columnChooser.search) === null || _columnChooser$search2 === void 0 ? void 0 : _columnChooser$search2.timeout;
     const treeViewConfig = {
       dataStructure: 'plain',
       activeStateEnabled: true,
@@ -225,7 +217,7 @@ let ColumnChooserView = exports.ColumnChooserView = /*#__PURE__*/function (_Colu
       rootValue: null,
       searchEnabled,
       searchTimeout,
-      searchEditorOptions: (_c = columnChooser.search) === null || _c === void 0 ? void 0 : _c.editorOptions
+      searchEditorOptions: (_columnChooser$search3 = columnChooser.search) === null || _columnChooser$search3 === void 0 ? void 0 : _columnChooser$search3.editorOptions
     };
     if (this._isWinDevice()) {
       treeViewConfig.useNativeScrolling = false;
@@ -257,23 +249,21 @@ let ColumnChooserView = exports.ColumnChooserView = /*#__PURE__*/function (_Colu
         });
       });
     }
-  };
-  _proto2._prepareDragModeConfig = function _prepareDragModeConfig() {
+  }
+  _prepareDragModeConfig() {
     const columnChooserOptions = this.option('columnChooser');
     return {
       noDataText: columnChooserOptions.emptyPanelText,
       activeStateEnabled: false,
-      focusStateEnabled: false,
       hoverStateEnabled: false,
       itemTemplate(data, index, item) {
         (0, _renderer.default)(item).text(data.text).parent().addClass(data.cssClass).addClass(COLUMN_CHOOSER_ITEM_CLASS);
       }
     };
-  };
-  _proto2._prepareSelectModeConfig = function _prepareSelectModeConfig() {
-    var _a;
+  }
+  _prepareSelectModeConfig() {
     const that = this;
-    const selectionOptions = (_a = this.option('columnChooser.selection')) !== null && _a !== void 0 ? _a : {};
+    const selectionOptions = this.option('columnChooser.selection') ?? {};
     const getFlatNodes = nodes => {
       const addNodesToArray = (nodes, flatNodesArray) => nodes.reduce((result, node) => {
         result.push(node);
@@ -317,17 +307,17 @@ let ColumnChooserView = exports.ColumnChooserView = /*#__PURE__*/function (_Colu
       showCheckBoxesMode: selectionOptions.allowSelectAll ? 'selectAll' : 'normal',
       onSelectionChanged: selectionChangedHandler
     };
-  };
-  _proto2._updateItems = function _updateItems() {
+  }
+  _updateItems() {
     const isSelectMode = this.isSelectMode();
     const chooserColumns = this._columnsController.getChooserColumns(isSelectMode);
     const items = processItems(this, chooserColumns);
     this._columnChooserList.option('items', items);
-  };
-  _proto2._updateItemsSelection = function _updateItemsSelection(columnIndices) {
+  }
+  _updateItemsSelection(columnIndices) {
     const changedColumns = columnIndices === null || columnIndices === void 0 ? void 0 : columnIndices.map(columnIndex => this._columnsController.columnOption(columnIndex));
     this._columnChooserList.beginUpdate();
-    changedColumns === null || changedColumns === void 0 ? void 0 : changedColumns.forEach(_ref => {
+    changedColumns === null || changedColumns === void 0 || changedColumns.forEach(_ref => {
       let {
         visible,
         index
@@ -339,9 +329,9 @@ let ColumnChooserView = exports.ColumnChooserView = /*#__PURE__*/function (_Colu
       }
     });
     this._columnChooserList.endUpdate();
-  };
-  _proto2._columnOptionChanged = function _columnOptionChanged(e) {
-    _ColumnsView.prototype._columnOptionChanged.call(this, e);
+  }
+  _columnOptionChanged(e) {
+    super._columnOptionChanged(e);
     const isSelectMode = this.isSelectMode();
     if (isSelectMode && this._columnChooserList && !this._isUpdatingColumnVisibility) {
       const {
@@ -357,8 +347,8 @@ let ColumnChooserView = exports.ColumnChooserView = /*#__PURE__*/function (_Colu
         }
       }
     }
-  };
-  _proto2.getColumnElements = function getColumnElements() {
+  }
+  getColumnElements() {
     const result = [];
     const isSelectMode = this.isSelectMode();
     const chooserColumns = this._columnsController.getChooserColumns(isSelectMode);
@@ -366,29 +356,29 @@ let ColumnChooserView = exports.ColumnChooserView = /*#__PURE__*/function (_Colu
     const $nodes = $content && $content.find('.dx-treeview-node');
     if ($nodes) {
       chooserColumns.forEach(column => {
-        const $node = $nodes.filter("[data-item-id = '".concat(column.index, "']"));
-        const item = $node.length ? $node.children(".".concat(COLUMN_CHOOSER_ITEM_CLASS)).get(0) : null;
+        const $node = $nodes.filter(`[data-item-id = '${column.index}']`);
+        const item = $node.length ? $node.children(`.${COLUMN_CHOOSER_ITEM_CLASS}`).get(0) : null;
         result.push(item);
       });
     }
     return (0, _renderer.default)(result);
-  };
-  _proto2.getName = function getName() {
+  }
+  getName() {
     return 'columnChooser';
-  };
-  _proto2.getColumns = function getColumns() {
+  }
+  getColumns() {
     return this._columnsController.getChooserColumns();
-  };
-  _proto2.allowDragging = function allowDragging(column) {
+  }
+  allowDragging(column) {
     const isParentColumnVisible = this._columnsController.isParentColumnVisible(column.index);
     const isColumnHidden = !column.visible && column.allowHiding;
     return this.isColumnChooserVisible() && isParentColumnVisible && isColumnHidden;
-  };
-  _proto2.allowColumnHeaderDragging = function allowColumnHeaderDragging(column) {
+  }
+  allowColumnHeaderDragging(column) {
     const isDragMode = !this.isSelectMode();
     return isDragMode && this.isColumnChooserVisible() && column.allowHiding;
-  };
-  _proto2.getBoundingRect = function getBoundingRect() {
+  }
+  getBoundingRect() {
     const that = this;
     const container = that._popupContainer && that._popupContainer.$overlayContent();
     if (container && container.is(':visible')) {
@@ -401,8 +391,8 @@ let ColumnChooserView = exports.ColumnChooserView = /*#__PURE__*/function (_Colu
       };
     }
     return null;
-  };
-  _proto2.showColumnChooser = function showColumnChooser() {
+  }
+  showColumnChooser() {
     /// #DEBUG
     this._isPopupContainerShown = true;
     /// #ENDDEBUG
@@ -414,40 +404,35 @@ let ColumnChooserView = exports.ColumnChooserView = /*#__PURE__*/function (_Colu
     if (this._isWinDevice()) {
       (0, _renderer.default)('body').addClass(this.addWidgetPrefix(NOTOUCH_ACTION_CLASS));
     }
-  };
-  _proto2.hideColumnChooser = function hideColumnChooser() {
+  }
+  hideColumnChooser() {
     if (this._popupContainer) {
       this._popupContainer.hide();
       /// #DEBUG
       this._isPopupContainerShown = false;
       /// #ENDDEBUG
     }
-  };
-  _proto2.isColumnChooserVisible = function isColumnChooserVisible() {
+  }
+  isColumnChooserVisible() {
     const popupContainer = this._popupContainer;
     return popupContainer && popupContainer.option('visible');
-  };
-  _proto2.isSelectMode = function isSelectMode() {
+  }
+  isSelectMode() {
     return this.option('columnChooser.mode') === 'select';
-  };
-  _proto2.hasHiddenColumns = function hasHiddenColumns() {
+  }
+  hasHiddenColumns() {
     const isEnabled = this.option('columnChooser.enabled');
     const hiddenColumns = this.getColumns().filter(column => !column.visible);
     return isEnabled && hiddenColumns.length;
-  };
-  return ColumnChooserView;
-}(_m_columns_view.ColumnsView);
-const headerPanel = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(ColumnChooserHeaderPanelExtender, _Base);
-  function ColumnChooserHeaderPanelExtender() {
-    return _Base.apply(this, arguments) || this;
   }
-  var _proto3 = ColumnChooserHeaderPanelExtender.prototype;
-  _proto3._getToolbarItems = function _getToolbarItems() {
-    const items = _Base.prototype._getToolbarItems.call(this);
+}
+exports.ColumnChooserView = ColumnChooserView;
+const headerPanel = Base => class ColumnChooserHeaderPanelExtender extends Base {
+  _getToolbarItems() {
+    const items = super._getToolbarItems();
     return this._appendColumnChooserItem(items);
-  };
-  _proto3._appendColumnChooserItem = function _appendColumnChooserItem(items) {
+  }
+  _appendColumnChooserItem(items) {
     const that = this;
     const columnChooserEnabled = that.option('columnChooser.enabled');
     if (columnChooserEnabled) {
@@ -480,50 +465,37 @@ const headerPanel = Base => /*#__PURE__*/function (_Base) {
       items.push(toolbarItem);
     }
     return items;
-  };
-  _proto3.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     switch (args.name) {
       case 'columnChooser':
         this._invalidate();
         args.handled = true;
         break;
       default:
-        _Base.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  _proto3.isVisible = function isVisible() {
+  }
+  isVisible() {
     const that = this;
     const columnChooserEnabled = that.option('columnChooser.enabled');
-    return _Base.prototype.isVisible.call(this) || columnChooserEnabled;
-  };
-  return ColumnChooserHeaderPanelExtender;
-}(Base);
-const columns = Base => /*#__PURE__*/function (_Base2) {
-  _inheritsLoose(ColumnsChooserColumnsControllerExtender, _Base2);
-  function ColumnsChooserColumnsControllerExtender() {
-    return _Base2.apply(this, arguments) || this;
+    return super.isVisible() || columnChooserEnabled;
   }
-  var _proto4 = ColumnsChooserColumnsControllerExtender.prototype;
-  _proto4.allowMoveColumn = function allowMoveColumn(fromVisibleIndex, toVisibleIndex, sourceLocation, targetLocation) {
+};
+const columns = Base => class ColumnsChooserColumnsControllerExtender extends Base {
+  allowMoveColumn(fromVisibleIndex, toVisibleIndex, sourceLocation, targetLocation) {
     const isSelectMode = this.option('columnChooser.mode') === 'select';
     const isMoveColumnDisallowed = isSelectMode && targetLocation === 'columnChooser';
-    return isMoveColumnDisallowed ? false : _Base2.prototype.allowMoveColumn.call(this, fromVisibleIndex, toVisibleIndex, sourceLocation, targetLocation);
-  };
-  return ColumnsChooserColumnsControllerExtender;
-}(Base);
-const columnHeadersView = Base => /*#__PURE__*/function (_Base3) {
-  _inheritsLoose(ColumnChooserColumnHeadersExtender, _Base3);
-  function ColumnChooserColumnHeadersExtender() {
-    return _Base3.apply(this, arguments) || this;
+    return isMoveColumnDisallowed ? false : super.allowMoveColumn(fromVisibleIndex, toVisibleIndex, sourceLocation, targetLocation);
   }
-  var _proto5 = ColumnChooserColumnHeadersExtender.prototype;
-  _proto5.allowDragging = function allowDragging(column) {
+};
+const columnHeadersView = Base => class ColumnChooserColumnHeadersExtender extends Base {
+  allowDragging(column) {
     const isDragMode = !this._columnChooserView.isSelectMode();
     const isColumnChooserVisible = this._columnChooserView.isColumnChooserVisible();
-    return isDragMode && isColumnChooserVisible && column.allowHiding || _Base3.prototype.allowDragging.call(this, column);
-  };
-  return ColumnChooserColumnHeadersExtender;
-}(Base);
+    return isDragMode && isColumnChooserVisible && column.allowHiding || super.allowDragging(column);
+  }
+};
 const columnChooserModule = exports.columnChooserModule = {
   defaultOptions() {
     return {

@@ -15,7 +15,7 @@ var _default = exports.default = {
     const minValue = this.from(visibleArea.min + minBarSize);
     const canvasOptions = this._canvasOptions;
     const startValue = this.fromValue(this.from(visibleArea.min));
-    const endValue = this.fromValue(minValue !== null && minValue !== void 0 ? minValue : this.from(visibleArea.max));
+    const endValue = this.fromValue(minValue ?? this.from(visibleArea.max));
     const value = Math.abs(startValue - endValue);
     return Math.pow(canvasOptions.base, value);
   },

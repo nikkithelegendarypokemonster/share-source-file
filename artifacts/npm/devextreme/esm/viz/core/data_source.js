@@ -1,34 +1,34 @@
 /**
 * DevExtreme (esm/viz/core/data_source.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { noop } from '../../core/utils/common';
 import DataHelperMixin from '../../data_helper';
-var postCtor = DataHelperMixin.postCtor;
-var name;
-var members = {
-  _dataSourceLoadErrorHandler: function _dataSourceLoadErrorHandler() {
+const postCtor = DataHelperMixin.postCtor;
+let name;
+const members = {
+  _dataSourceLoadErrorHandler: function () {
     this._dataSourceChangedHandler();
   },
-  _dataSourceOptions: function _dataSourceOptions() {
+  _dataSourceOptions: function () {
     return {
       paginate: false
     };
   },
-  _updateDataSource: function _updateDataSource() {
+  _updateDataSource: function () {
     this._refreshDataSource();
     if (!this.option('dataSource')) {
       this._dataSourceChangedHandler();
     }
   },
-  _dataIsLoaded: function _dataIsLoaded() {
+  _dataIsLoaded: function () {
     return !this._dataSource || this._dataSource.isLoaded();
   },
-  _dataSourceItems: function _dataSourceItems() {
+  _dataSourceItems: function () {
     return this._dataSource && this._dataSource.items();
   }
 };
@@ -38,9 +38,9 @@ for (name in DataHelperMixin) {
   }
   members[name] = DataHelperMixin[name];
 }
-export var plugin = {
+export const plugin = {
   name: 'data_source',
-  init: function init() {
+  init: function () {
     postCtor.call(this);
   },
   dispose: noop,

@@ -294,7 +294,7 @@ const patchFontOptions = function (options) {
       key = 'fill';
       if ('opacity' in options) {
         const color = new _color.default(value);
-        value = "rgba(".concat(color.r, ",").concat(color.g, ",").concat(color.b, ",").concat(options.opacity, ")");
+        value = `rgba(${color.r},${color.g},${color.b},${options.opacity})`;
       }
     } else {
       key = 'font-' + key;
@@ -640,7 +640,7 @@ function pointInCanvas(canvas, x, y) {
   return x >= canvas.left && x <= canvas.right && y >= canvas.top && y <= canvas.bottom;
 }
 const getNextDefsSvgId = () => {
-  return "DevExpress_".concat(numDefsSvgElements++);
+  return `DevExpress_${numDefsSvgElements++}`;
 };
 exports.getNextDefsSvgId = getNextDefsSvgId;
 function extractColor(color, isBase) {

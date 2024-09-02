@@ -3,10 +3,10 @@ import jQuery from 'jquery';
 import { setStrategy } from '../../core/utils/deferred';
 import { compare as compareVersion } from '../../core/utils/version';
 import useJQueryFn from './use_jquery';
-var useJQuery = useJQueryFn();
+const useJQuery = useJQueryFn();
 if (useJQuery) {
-  var Deferred = jQuery.Deferred;
-  var strategy = {
+  const Deferred = jQuery.Deferred;
+  const strategy = {
     Deferred: Deferred
   };
   strategy.when = compareVersion(jQuery.fn.jquery, [3]) < 0 ? jQuery.when : function (singleArg) {

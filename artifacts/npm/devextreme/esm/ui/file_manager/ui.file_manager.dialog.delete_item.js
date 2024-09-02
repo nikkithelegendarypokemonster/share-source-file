@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/file_manager/ui.file_manager.dialog.delete_item.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,16 +11,16 @@ import { extend } from '../../core/utils/extend';
 import messageLocalization from '../../localization/message';
 import ScrollView from '../scroll_view';
 import FileManagerDialogBase from './ui.file_manager.dialog';
-var FILE_MANAGER_DIALOG_DELETE_ITEM = 'dx-filemanager-dialog-delete-item';
-var FILE_MANAGER_DIALOG_DELETE_ITEM_POPUP = 'dx-filemanager-dialog-delete-item-popup'; // TODO ensure needed
+const FILE_MANAGER_DIALOG_DELETE_ITEM = 'dx-filemanager-dialog-delete-item';
+const FILE_MANAGER_DIALOG_DELETE_ITEM_POPUP = 'dx-filemanager-dialog-delete-item-popup'; // TODO ensure needed
 
 class FileManagerDeleteItemDialog extends FileManagerDialogBase {
   show(_ref) {
-    var {
+    let {
       itemName,
       itemCount
     } = _ref;
-    var text = itemCount === 1 ? messageLocalization.format('dxFileManager-dialogDeleteItemSingleItemConfirmation', itemName) : messageLocalization.format('dxFileManager-dialogDeleteItemMultipleItemsConfirmation', itemCount);
+    const text = itemCount === 1 ? messageLocalization.format('dxFileManager-dialogDeleteItemSingleItemConfirmation', itemName) : messageLocalization.format('dxFileManager-dialogDeleteItemMultipleItemsConfirmation', itemCount);
     if (this._$text) {
       this._$text.text(text);
     } else {

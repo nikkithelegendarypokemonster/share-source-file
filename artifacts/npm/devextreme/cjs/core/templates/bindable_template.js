@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/templates/bindable_template.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,8 +15,6 @@ var _events_engine = _interopRequireDefault(require("../../events/core/events_en
 var _remove = require("../../events/remove");
 var _type = require("../utils/type");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const watchChanges = function () {
   const globalWatch = (data, watchMethod, callback) => watchMethod(() => data, callback);
   const fieldsWatch = function (data, watchMethod, fields, fieldsMap, callback) {
@@ -57,19 +55,15 @@ const watchChanges = function () {
     };
   };
 }();
-let BindableTemplate = exports.BindableTemplate = /*#__PURE__*/function (_TemplateBase) {
-  _inheritsLoose(BindableTemplate, _TemplateBase);
-  function BindableTemplate(render, fields, watchMethod, fieldsMap) {
-    var _this;
-    _this = _TemplateBase.call(this) || this;
-    _this._render = render;
-    _this._fields = fields;
-    _this._fieldsMap = fieldsMap || {};
-    _this._watchMethod = watchMethod;
-    return _this;
+class BindableTemplate extends _template_base.TemplateBase {
+  constructor(render, fields, watchMethod, fieldsMap) {
+    super();
+    this._render = render;
+    this._fields = fields;
+    this._fieldsMap = fieldsMap || {};
+    this._watchMethod = watchMethod;
   }
-  var _proto = BindableTemplate.prototype;
-  _proto._renderCore = function _renderCore(options) {
+  _renderCore(options) {
     const $container = (0, _renderer.default)(options.container);
     const dispose = watchChanges(options.model, this._watchMethod, this._fields, this._fieldsMap, data => {
       $container.empty();
@@ -77,6 +71,6 @@ let BindableTemplate = exports.BindableTemplate = /*#__PURE__*/function (_Templa
     });
     _events_engine.default.on($container, _remove.removeEvent, dispose);
     return $container.contents();
-  };
-  return BindableTemplate;
-}(_template_base.TemplateBase);
+  }
+}
+exports.BindableTemplate = BindableTemplate;

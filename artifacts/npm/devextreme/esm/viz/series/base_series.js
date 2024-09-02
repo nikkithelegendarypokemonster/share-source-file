@@ -1,12 +1,12 @@
 /**
 * DevExtreme (esm/viz/series/base_series.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-var seriesNS = {};
+const seriesNS = {};
 import { isFunction, isDefined as _isDefined, isEmptyObject as _isEmptyObject } from '../../core/utils/type';
 import { extend as _extend } from '../../core/utils/extend';
 import { each as _each } from '../../core/utils/iterator';
@@ -14,7 +14,7 @@ import { Point } from './points/base_point';
 import { normalizeEnum as _normalizeEnum } from '../core/utils';
 import { noop as _noop } from '../../core/utils/common';
 import consts from '../components/consts';
-var states = consts.states;
+const states = consts.states;
 import rangeCalculator from './helpers/range_data_calculator';
 import * as scatterSeries from './scatter_series';
 import * as lineSeries from './line_series';
@@ -25,30 +25,30 @@ import { chart as bubbleSeriesChart } from './bubble_series';
 import * as pieSeries from './pie_series';
 import * as financialSeries from './financial_series';
 import * as stackedSeries from './stacked_series';
-var DISCRETE = 'discrete';
-var SELECTED_STATE = states.selectedMark;
-var HOVER_STATE = states.hoverMark;
-var HOVER = states.hover;
-var NORMAL = states.normal;
-var SELECTION = states.selection;
-var APPLY_SELECTED = states.applySelected;
-var APPLY_HOVER = states.applyHover;
-var RESET_ITEM = states.resetItem;
-var NONE_MODE = 'none';
-var INCLUDE_POINTS = 'includepoints';
-var NEAREST_POINT = 'nearestpoint';
-var SERIES_SELECTION_CHANGED = 'seriesSelectionChanged';
-var POINT_SELECTION_CHANGED = 'pointSelectionChanged';
-var SERIES_HOVER_CHANGED = 'seriesHoverChanged';
-var POINT_HOVER_CHANGED = 'pointHoverChanged';
-var ALL_SERIES_POINTS = 'allseriespoints';
-var ALL_ARGUMENT_POINTS = 'allargumentpoints';
-var POINT_HOVER = 'pointHover';
-var CLEAR_POINT_HOVER = 'clearPointHover';
-var SERIES_SELECT = 'seriesSelect';
-var POINT_SELECT = 'pointSelect';
-var POINT_DESELECT = 'pointDeselect';
-var getEmptyBusinessRange = function getEmptyBusinessRange() {
+const DISCRETE = 'discrete';
+const SELECTED_STATE = states.selectedMark;
+const HOVER_STATE = states.hoverMark;
+const HOVER = states.hover;
+const NORMAL = states.normal;
+const SELECTION = states.selection;
+const APPLY_SELECTED = states.applySelected;
+const APPLY_HOVER = states.applyHover;
+const RESET_ITEM = states.resetItem;
+const NONE_MODE = 'none';
+const INCLUDE_POINTS = 'includepoints';
+const NEAREST_POINT = 'nearestpoint';
+const SERIES_SELECTION_CHANGED = 'seriesSelectionChanged';
+const POINT_SELECTION_CHANGED = 'pointSelectionChanged';
+const SERIES_HOVER_CHANGED = 'seriesHoverChanged';
+const POINT_HOVER_CHANGED = 'pointHoverChanged';
+const ALL_SERIES_POINTS = 'allseriespoints';
+const ALL_ARGUMENT_POINTS = 'allargumentpoints';
+const POINT_HOVER = 'pointHover';
+const CLEAR_POINT_HOVER = 'clearPointHover';
+const SERIES_SELECT = 'seriesSelect';
+const POINT_SELECT = 'pointSelect';
+const POINT_DESELECT = 'pointDeselect';
+const getEmptyBusinessRange = function () {
   return {
     arg: {},
     val: {}
@@ -72,17 +72,17 @@ function includePointsMode(mode) {
   return mode === INCLUDE_POINTS || mode === ALL_SERIES_POINTS;
 }
 function getLabelOptions(labelOptions, defaultColor) {
-  var opt = labelOptions || {};
-  var labelFont = _extend({}, opt.font) || {};
-  var labelBorder = opt.border || {};
-  var labelConnector = opt.connector || {};
-  var backgroundAttr = {
+  const opt = labelOptions || {};
+  const labelFont = _extend({}, opt.font) || {};
+  const labelBorder = opt.border || {};
+  const labelConnector = opt.connector || {};
+  const backgroundAttr = {
     fill: opt.backgroundColor || defaultColor,
     'stroke-width': labelBorder.visible ? labelBorder.width || 0 : 0,
     stroke: labelBorder.visible && labelBorder.width ? labelBorder.color : 'none',
     dashStyle: labelBorder.dashStyle
   };
-  var connectorAttr = {
+  const connectorAttr = {
     stroke: labelConnector.visible && labelConnector.width ? labelConnector.color || defaultColor : 'none',
     'stroke-width': labelConnector.visible ? labelConnector.width || 0 : 0
   };
@@ -128,19 +128,19 @@ function releasePointSelectedState(point, legendCallback) {
   point.applyView(legendCallback);
 }
 function mergePointOptionsCore(base, extra) {
-  var options = _extend({}, base, extra);
+  const options = _extend({}, base, extra);
   options.border = _extend({}, base && base.border, extra && extra.border);
   return options;
 }
 function mergePointOptions(base, extra) {
-  var options = mergePointOptionsCore(base, extra);
+  const options = mergePointOptionsCore(base, extra);
   options.image = _extend(true, {}, base.image, extra.image);
   options.selectionStyle = mergePointOptionsCore(base.selectionStyle, extra.selectionStyle);
   options.hoverStyle = mergePointOptionsCore(base.hoverStyle, extra.hoverStyle);
   return options;
 }
 export function Series(settings, options) {
-  var that = this;
+  const that = this;
   that.fullState = 0;
   that._extGroups = settings;
   that._renderer = settings.renderer;
@@ -166,15 +166,15 @@ function getValueChecker(axisType, axis) {
 Series.prototype = {
   constructor: Series,
   _createLegendState: _noop,
-  getLegendStyles: function getLegendStyles() {
+  getLegendStyles: function () {
     return this._styles.legendStyles;
   },
-  _createStyles: function _createStyles(options) {
-    var that = this;
-    var mainSeriesColor = options.mainSeriesColor;
-    var colorId = this._getColorId(options);
-    var hoverStyle = options.hoverStyle || {};
-    var selectionStyle = options.selectionStyle || {};
+  _createStyles: function (options) {
+    const that = this;
+    const mainSeriesColor = options.mainSeriesColor;
+    const colorId = this._getColorId(options);
+    const hoverStyle = options.hoverStyle || {};
+    const selectionStyle = options.selectionStyle || {};
     if (colorId) {
       that._turnOffHatching(hoverStyle, selectionStyle);
     }
@@ -191,41 +191,41 @@ Series.prototype = {
     };
   },
   setClippingParams(baseId, wideId, forceClipping) {
-    var clipLabels = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+    let clipLabels = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
     this._paneClipRectID = baseId;
     this._widePaneClipRectID = wideId;
     this._forceClipping = forceClipping;
     this._clipLabels = clipLabels;
   },
-  applyClip: function applyClip() {
+  applyClip: function () {
     this._group.attr({
       'clip-path': this._paneClipRectID
     });
   },
-  resetClip: function resetClip() {
+  resetClip: function () {
     this._group.attr({
       'clip-path': null
     });
   },
-  getTagField: function getTagField() {
+  getTagField: function () {
     return this._options.tagField || 'tag';
   },
   getValueFields: _noop,
   getSizeField: _noop,
   getArgumentField: _noop,
-  getPoints: function getPoints() {
+  getPoints: function () {
     return this._points;
   },
-  getPointsInViewPort: function getPointsInViewPort() {
+  getPointsInViewPort: function () {
     return rangeCalculator.getPointsInViewPort(this);
   },
-  _createPoint: function _createPoint(data, index, oldPoint) {
+  _createPoint: function (data, index, oldPoint) {
     data.index = index;
-    var that = this;
-    var pointsByArgument = that.pointsByArgument;
-    var options = that._getCreatingPointOptions(data);
-    var arg = data.argument.valueOf();
-    var point = oldPoint;
+    const that = this;
+    const pointsByArgument = that.pointsByArgument;
+    const options = that._getCreatingPointOptions(data);
+    const arg = data.argument.valueOf();
+    let point = oldPoint;
     if (point) {
       point.update(data, options);
     } else {
@@ -234,7 +234,7 @@ Series.prototype = {
         point.setView(SELECTION);
       }
     }
-    var pointByArgument = pointsByArgument[arg];
+    const pointByArgument = pointsByArgument[arg];
     if (pointByArgument) {
       pointByArgument.push(point);
     } else {
@@ -245,27 +245,27 @@ Series.prototype = {
     }
     return point;
   },
-  getRangeData: function getRangeData() {
+  getRangeData: function () {
     return this._visible ? this._getRangeData() : getEmptyBusinessRange();
   },
-  getArgumentRange: function getArgumentRange() {
+  getArgumentRange: function () {
     return this._visible ? rangeCalculator.getArgumentRange(this) : getEmptyBusinessRange();
   },
-  getViewport: function getViewport() {
+  getViewport: function () {
     return rangeCalculator.getViewport(this);
   },
-  _deleteGroup: function _deleteGroup(groupName) {
-    var group = this[groupName];
+  _deleteGroup: function (groupName) {
+    const group = this[groupName];
     if (group) {
       group.dispose();
       this[groupName] = null;
     }
   },
   updateOptions(newOptions, settings) {
-    var that = this;
-    var widgetType = newOptions.widgetType;
-    var oldType = that.type;
-    var newType = newOptions.type;
+    const that = this;
+    const widgetType = newOptions.widgetType;
+    const oldType = that.type;
+    const newType = newOptions.type;
     that.type = newType && _normalizeEnum(newType.toString());
     if (!that._checkType(widgetType) || that._checkPolarBarType(widgetType, newOptions)) {
       that.dispose();
@@ -303,13 +303,13 @@ Series.prototype = {
   _defineDrawingState() {
     this._firstDrawing = true;
   },
-  _disposePoints: function _disposePoints(points) {
+  _disposePoints: function (points) {
     _each(points || [], function (_, p) {
       p.dispose();
     });
   },
-  updateDataType: function updateDataType(settings) {
-    var that = this;
+  updateDataType: function (settings) {
+    const that = this;
     that.argumentType = settings.argumentType;
     that.valueType = settings.valueType;
     that.argumentAxisType = settings.argumentAxisType;
@@ -319,35 +319,35 @@ Series.prototype = {
     this._valueChecker = getValueChecker(settings.valueAxisType, that.getValueAxis());
     return that;
   },
-  _argumentChecker: function _argumentChecker() {
+  _argumentChecker: function () {
     return true;
   },
-  _valueChecker: function _valueChecker() {
+  _valueChecker: function () {
     return true;
   },
-  getOptions: function getOptions() {
+  getOptions: function () {
     return this._options;
   },
-  _getOldPoint: function _getOldPoint(data, oldPointsByArgument, index) {
-    var arg = data.argument && data.argument.valueOf();
-    var point = (oldPointsByArgument[arg] || [])[0];
+  _getOldPoint: function (data, oldPointsByArgument, index) {
+    const arg = data.argument && data.argument.valueOf();
+    const point = (oldPointsByArgument[arg] || [])[0];
     if (point) {
       oldPointsByArgument[arg].splice(0, 1);
     }
     return point;
   },
-  updateData: function updateData(data) {
-    var that = this;
-    var options = that._options;
-    var nameField = options.nameField;
+  updateData: function (data) {
+    const that = this;
+    const options = that._options;
+    const nameField = options.nameField;
     data = data || [];
     if (data.length) {
       that._canRenderCompleteHandle = true;
     }
-    var dataSelector = this._getPointDataSelector();
-    var itemsWithoutArgument = 0;
+    const dataSelector = this._getPointDataSelector();
+    let itemsWithoutArgument = 0;
     that._data = data.reduce((data, dataItem, index) => {
-      var pointDataItem = dataSelector(dataItem);
+      const pointDataItem = dataSelector(dataItem);
       if (_isDefined(pointDataItem.argument)) {
         if (!nameField || dataItem[nameField] === options.nameFieldValue) {
           pointDataItem.index = index;
@@ -364,16 +364,16 @@ Series.prototype = {
     that._endUpdateData();
   },
   _getData() {
-    var data = this._data || [];
+    let data = this._data || [];
     if (this.useAggregation()) {
-      var argumentRange = this.argumentAxisType !== DISCRETE ? this.getArgumentRange() : {};
-      var aggregationInfo = this.getArgumentAxis().getAggregationInfo(this._useAllAggregatedPoints, argumentRange);
+      const argumentRange = this.argumentAxisType !== DISCRETE ? this.getArgumentRange() : {};
+      const aggregationInfo = this.getArgumentAxis().getAggregationInfo(this._useAllAggregatedPoints, argumentRange);
       data = this._resample(aggregationInfo, data);
     }
     return data;
   },
-  useAggregation: function useAggregation() {
-    var aggregation = this.getOptions().aggregation;
+  useAggregation: function () {
+    const aggregation = this.getOptions().aggregation;
     return aggregation && aggregation.enabled;
   },
   autoHidePointMarkersEnabled: _noop,
@@ -382,26 +382,26 @@ Series.prototype = {
     this._normalizeUsingAllAggregatedPoints(useAllAggregatedPoints);
     this._createPoints();
   },
-  _normalizeUsingAllAggregatedPoints: function _normalizeUsingAllAggregatedPoints(useAllAggregatedPoints) {
+  _normalizeUsingAllAggregatedPoints: function (useAllAggregatedPoints) {
     this._useAllAggregatedPoints = this.useAggregation() && (this.argumentAxisType === DISCRETE || (this._data || []).length > 1 && !!useAllAggregatedPoints);
   },
-  _createPoints: function _createPoints() {
-    var that = this;
-    var oldPointsByArgument = that.pointsByArgument || {};
-    var data = that._getData();
+  _createPoints: function () {
+    const that = this;
+    const oldPointsByArgument = that.pointsByArgument || {};
+    const data = that._getData();
     that.pointsByArgument = {};
     that._calculateErrorBars(data);
-    var skippedFields = {};
-    var points = data.reduce((points, pointDataItem) => {
+    const skippedFields = {};
+    const points = data.reduce((points, pointDataItem) => {
       if (that._checkData(pointDataItem, skippedFields)) {
-        var pointIndex = points.length;
-        var oldPoint = that._getOldPoint(pointDataItem, oldPointsByArgument, pointIndex);
-        var point = that._createPoint(pointDataItem, pointIndex, oldPoint);
+        const pointIndex = points.length;
+        const oldPoint = that._getOldPoint(pointDataItem, oldPointsByArgument, pointIndex);
+        const point = that._createPoint(pointDataItem, pointIndex, oldPoint);
         points.push(point);
       }
       return points;
     }, []);
-    for (var field in skippedFields) {
+    for (const field in skippedFields) {
       if (skippedFields[field] === data.length) {
         that._incidentOccurred('W2002', [that.name, field]);
       }
@@ -409,9 +409,9 @@ Series.prototype = {
     Object.keys(oldPointsByArgument).forEach(key => that._disposePoints(oldPointsByArgument[key]));
     that._points = points;
   },
-  _removeOldSegments: function _removeOldSegments() {
-    var that = this;
-    var startIndex = that._segments.length;
+  _removeOldSegments: function () {
+    const that = this;
+    const startIndex = that._segments.length;
     _each(that._graphics.splice(startIndex, that._graphics.length) || [], function (_, elem) {
       that._removeElement(elem);
     });
@@ -422,10 +422,10 @@ Series.prototype = {
     }
   },
   _prepareSegmentsPosition() {
-    var points = this._points || [];
-    var isCloseSegment = points[0] && points[0].hasValue() && this._options.closed;
-    var segments = points.reduce(function (segments, p) {
-      var segment = segments.at(-1);
+    const points = this._points || [];
+    const isCloseSegment = points[0] && points[0].hasValue() && this._options.closed;
+    const segments = points.reduce(function (segments, p) {
+      const segment = segments.at(-1);
       if (!p.translated) {
         p.setDefaultCoords();
       }
@@ -439,18 +439,18 @@ Series.prototype = {
     this._drawSegments(segments, isCloseSegment, false);
   },
   _drawElements(animationEnabled, firstDrawing) {
-    var that = this;
-    var points = that._points || [];
-    var isCloseSegment = points[0] && points[0].hasValue() && that._options.closed;
-    var groupForPoint = {
+    const that = this;
+    const points = that._points || [];
+    const isCloseSegment = points[0] && points[0].hasValue() && that._options.closed;
+    const groupForPoint = {
       markers: that._markersGroup,
       errorBars: that._errorBarGroup
     };
     that._drawnPoints = [];
     that._graphics = that._graphics || [];
     that._segments = [];
-    var segments = points.reduce(function (segments, p) {
-      var segment = segments.at(-1);
+    const segments = points.reduce(function (segments, p) {
+      const segment = segments.at(-1);
       if (p.hasValue() && p.hasCoords()) {
         that._drawPoint({
           point: p,
@@ -474,14 +474,14 @@ Series.prototype = {
   _drawSegments(segments, closeSegment, animationEnabled) {
     segments.forEach((segment, index) => {
       if (segment.length) {
-        var lastSegment = closeSegment && index === segments.length - 1;
+        const lastSegment = closeSegment && index === segments.length - 1;
         this._drawSegment(segment, animationEnabled, index, lastSegment);
       }
     });
   },
   draw(animationEnabled, hideLayoutLabels, legendCallback) {
-    var that = this;
-    var firstDrawing = that._firstDrawing;
+    const that = this;
+    const firstDrawing = that._firstDrawing;
     that._legendCallback = legendCallback || that._legendCallback;
     if (!that._visible) {
       that._group.remove();
@@ -506,8 +506,7 @@ Series.prototype = {
     that._resetApplyingAnimation = false;
   },
   _translatePoints() {
-    var _this$_points;
-    var points = (_this$_points = this._points) !== null && _this$_points !== void 0 ? _this$_points : [];
+    const points = this._points ?? [];
     points.forEach(p => {
       p.translate();
     });
@@ -517,8 +516,8 @@ Series.prototype = {
     this._translatePoints();
     this._isAllPointsTranslated = true;
   },
-  _setLabelGroupSettings: function _setLabelGroupSettings(animationEnabled) {
-    var settings = {
+  _setLabelGroupSettings: function (animationEnabled) {
+    const settings = {
       'class': 'dxc-labels',
       'pointer-events': 'none'
     };
@@ -527,15 +526,15 @@ Series.prototype = {
     animationEnabled && (settings.opacity = 0.001);
     this._labelsGroup.attr(settings).append(this._extGroups.labelsGroup);
   },
-  _checkType: function _checkType(widgetType) {
+  _checkType: function (widgetType) {
     return !!seriesNS.mixins[widgetType][this.type];
   },
-  _checkPolarBarType: function _checkPolarBarType(widgetType, options) {
+  _checkPolarBarType: function (widgetType, options) {
     return widgetType === 'polar' && options.spiderWidget && this.type.indexOf('bar') !== -1;
   },
-  _resetType: function _resetType(seriesType, widgetType) {
-    var methodName;
-    var methods;
+  _resetType: function (seriesType, widgetType) {
+    let methodName;
+    let methods;
     if (seriesType) {
       methods = seriesNS.mixins[widgetType][seriesType];
       for (methodName in methods) {
@@ -543,34 +542,34 @@ Series.prototype = {
       }
     }
   },
-  _setType: function _setType(seriesType, widgetType) {
-    var methodName;
-    var methods = seriesNS.mixins[widgetType][seriesType];
+  _setType: function (seriesType, widgetType) {
+    let methodName;
+    const methods = seriesNS.mixins[widgetType][seriesType];
     for (methodName in methods) {
       this[methodName] = methods[methodName];
     }
   },
-  _setPointsView: function _setPointsView(view, target) {
+  _setPointsView: function (view, target) {
     this.getPoints().forEach(function (point) {
       if (target !== point) {
         point.setView(view);
       }
     });
   },
-  _resetPointsView: function _resetPointsView(view, target) {
+  _resetPointsView: function (view, target) {
     this.getPoints().forEach(function (point) {
       if (target !== point) {
         point.resetView(view);
       }
     });
   },
-  _resetNearestPoint: function _resetNearestPoint() {
-    var that = this;
+  _resetNearestPoint: function () {
+    const that = this;
     that._nearestPoint && that._nearestPoint.series !== null && that._nearestPoint.resetView(HOVER);
     that._nearestPoint = null;
   },
-  _setSelectedState: function _setSelectedState(mode) {
-    var that = this;
+  _setSelectedState: function (mode) {
+    const that = this;
     that.lastSelectionMode = _normalizeEnum(mode || that._options.selectionMode);
     that.fullState = that.fullState | SELECTED_STATE;
     that._resetNearestPoint();
@@ -579,36 +578,36 @@ Series.prototype = {
       that._resetPointsView(HOVER);
     }
   },
-  _releaseSelectedState: function _releaseSelectedState() {
-    var that = this;
+  _releaseSelectedState: function () {
+    const that = this;
     that.fullState = that.fullState & ~SELECTED_STATE;
     that._changeStyle(that.lastSelectionMode, SELECTION);
     if (that.lastSelectionMode !== NONE_MODE && that.isHovered() && includePointsMode(that.lastHoverMode)) {
       that._setPointsView(HOVER);
     }
   },
-  isFullStackedSeries: function isFullStackedSeries() {
+  isFullStackedSeries: function () {
     return this.type.indexOf('fullstacked') === 0;
   },
-  isStackedSeries: function isStackedSeries() {
+  isStackedSeries: function () {
     return this.type.indexOf('stacked') === 0;
   },
-  resetApplyingAnimation: function resetApplyingAnimation(isFirstDrawing) {
+  resetApplyingAnimation: function (isFirstDrawing) {
     this._resetApplyingAnimation = true;
     if (isFirstDrawing) {
       this._firstDrawing = true;
     }
   },
-  isFinancialSeries: function isFinancialSeries() {
+  isFinancialSeries: function () {
     return this.type === 'stock' || this.type === 'candlestick';
   },
-  _canChangeView: function _canChangeView() {
+  _canChangeView: function () {
     return !this.isSelected() && _normalizeEnum(this._options.hoverMode) !== NONE_MODE;
   },
-  _changeStyle: function _changeStyle(mode, resetView, skipPoints) {
-    var that = this;
-    var state = that.fullState;
-    var styles = [NORMAL, HOVER, SELECTION, SELECTION];
+  _changeStyle: function (mode, resetView, skipPoints) {
+    const that = this;
+    let state = that.fullState;
+    const styles = [NORMAL, HOVER, SELECTION, SELECTION];
     if (that.lastHoverMode === 'none') {
       state &= ~HOVER_STATE;
     }
@@ -625,10 +624,10 @@ Series.prototype = {
     that._legendCallback([RESET_ITEM, APPLY_HOVER, APPLY_SELECTED, APPLY_SELECTED][state]);
     that._applyStyle(that._styles[styles[state]]);
   },
-  updateHover: function updateHover(x, y) {
-    var that = this;
-    var currentNearestPoint = that._nearestPoint;
-    var point = that.isHovered() && that.lastHoverMode === NEAREST_POINT && that.getNeighborPoint(x, y);
+  updateHover: function (x, y) {
+    const that = this;
+    const currentNearestPoint = that._nearestPoint;
+    const point = that.isHovered() && that.lastHoverMode === NEAREST_POINT && that.getNeighborPoint(x, y);
     if (point !== currentNearestPoint && !(that.isSelected() && that.lastSelectionMode !== NONE_MODE)) {
       that._resetNearestPoint();
       if (point) {
@@ -637,26 +636,26 @@ Series.prototype = {
       }
     }
   },
-  _getMainAxisName: function _getMainAxisName() {
+  _getMainAxisName: function () {
     return this._options.rotated ? 'X' : 'Y';
   },
-  areLabelsVisible: function areLabelsVisible() {
+  areLabelsVisible: function () {
     return !_isDefined(this._options.maxLabelCount) || this._points.length <= this._options.maxLabelCount;
   },
-  getLabelVisibility: function getLabelVisibility() {
+  getLabelVisibility: function () {
     return this.areLabelsVisible() && this._options.label && this._options.label.visible;
   },
-  customizePoint: function customizePoint(point, pointData) {
-    var that = this;
-    var options = that._options;
-    var customizePoint = options.customizePoint;
-    var customizeObject;
-    var pointOptions;
-    var customLabelOptions;
-    var customOptions;
-    var customizeLabel = options.customizeLabel;
-    var useLabelCustomOptions;
-    var usePointCustomOptions;
+  customizePoint: function (point, pointData) {
+    const that = this;
+    const options = that._options;
+    const customizePoint = options.customizePoint;
+    let customizeObject;
+    let pointOptions;
+    let customLabelOptions;
+    let customOptions;
+    const customizeLabel = options.customizeLabel;
+    let useLabelCustomOptions;
+    let usePointCustomOptions;
     if (customizeLabel && customizeLabel.call) {
       customizeObject = _extend({
         seriesName: that.name
@@ -681,18 +680,18 @@ Series.prototype = {
       point.updateOptions(pointOptions);
     }
   },
-  show: function show() {
+  show: function () {
     if (!this._visible) {
       this._changeVisibility(true);
     }
   },
-  hide: function hide() {
+  hide: function () {
     if (this._visible) {
       this._changeVisibility(false);
     }
   },
-  _changeVisibility: function _changeVisibility(visibility) {
-    var that = this;
+  _changeVisibility: function (visibility) {
+    const that = this;
     that._visible = that._options.visible = visibility;
     that._updatePointsVisibility();
     that.hidePointTooltip();
@@ -701,7 +700,7 @@ Series.prototype = {
   // TODO. Problem related to 'point' option for bar-like series. Revisit this code once options parsing is changed
   // see T243839, T231939
   _updatePointsVisibility: _noop,
-  hideLabels: function hideLabels() {
+  hideLabels: function () {
     _each(this._points, function (_, point) {
       point._label.draw(false);
     });
@@ -714,11 +713,11 @@ Series.prototype = {
       selectionStyle.hatching.direction = 'none';
     }
   },
-  _parsePointOptions: function _parsePointOptions(pointOptions, labelOptions, data, point) {
-    var that = this;
-    var options = that._options;
-    var styles = that._createPointStyles(pointOptions, data, point);
-    var parsedOptions = _extend({}, pointOptions, {
+  _parsePointOptions: function (pointOptions, labelOptions, data, point) {
+    const that = this;
+    const options = that._options;
+    const styles = that._createPointStyles(pointOptions, data, point);
+    const parsedOptions = _extend({}, pointOptions, {
       type: options.type,
       rotated: options.rotated,
       styles: styles,
@@ -731,24 +730,24 @@ Series.prototype = {
     }
     return parsedOptions;
   },
-  _preparePointOptions: function _preparePointOptions(customOptions) {
-    var pointOptions = this._getOptionsForPoint();
+  _preparePointOptions: function (customOptions) {
+    const pointOptions = this._getOptionsForPoint();
     return customOptions ? mergePointOptions(pointOptions, customOptions) : pointOptions;
   },
-  _getMarkerGroupOptions: function _getMarkerGroupOptions() {
+  _getMarkerGroupOptions: function () {
     return _extend(false, {}, this._getOptionsForPoint(), {
       hoverStyle: {},
       selectionStyle: {}
     });
   },
-  _getAggregationMethod: function _getAggregationMethod(isDiscrete, aggregateByCategory) {
-    var options = this.getOptions().aggregation;
-    var method = _normalizeEnum(options.method);
-    var customAggregator = method === 'custom' && options.calculate;
-    var aggregator;
+  _getAggregationMethod: function (isDiscrete, aggregateByCategory) {
+    const options = this.getOptions().aggregation;
+    const method = _normalizeEnum(options.method);
+    const customAggregator = method === 'custom' && options.calculate;
+    let aggregator;
     if (isDiscrete && !aggregateByCategory) {
       aggregator = _ref => {
-        var {
+        let {
           data
         } = _ref;
         return data[0];
@@ -759,22 +758,22 @@ Series.prototype = {
     return customAggregator || aggregator;
   },
   _resample(_ref2, data) {
-    var {
+    let {
       interval,
       ticks,
       aggregateByCategory
     } = _ref2;
-    var that = this;
-    var isDiscrete = that.argumentAxisType === DISCRETE || that.valueAxisType === DISCRETE;
-    var dataIndex = 0;
-    var dataSelector = this._getPointDataSelector();
-    var options = that.getOptions();
-    var addAggregatedData = (target, data, aggregationInfo) => {
+    const that = this;
+    const isDiscrete = that.argumentAxisType === DISCRETE || that.valueAxisType === DISCRETE;
+    let dataIndex = 0;
+    const dataSelector = this._getPointDataSelector();
+    const options = that.getOptions();
+    const addAggregatedData = (target, data, aggregationInfo) => {
       if (!data) {
         return;
       }
-      var processData = d => {
-        var pointData = d && dataSelector(d, options);
+      const processData = d => {
+        const pointData = d && dataSelector(d, options);
         if (pointData && that._checkData(pointData)) {
           pointData.aggregationInfo = aggregationInfo;
           target.push(pointData);
@@ -786,11 +785,11 @@ Series.prototype = {
         processData(data);
       }
     };
-    var aggregationMethod = this._getAggregationMethod(isDiscrete, aggregateByCategory);
+    const aggregationMethod = this._getAggregationMethod(isDiscrete, aggregateByCategory);
     if (isDiscrete) {
       if (aggregateByCategory) {
-        var categories = this.getArgumentAxis().getTranslator().getBusinessRange().categories;
-        var groups = categories.reduce((g, category) => {
+        const categories = this.getArgumentAxis().getTranslator().getBusinessRange().categories;
+        const groups = categories.reduce((g, category) => {
           g[category.valueOf()] = [];
           return g;
         }, {});
@@ -810,8 +809,8 @@ Series.prototype = {
         return data.reduce((result, dataItem, index, data) => {
           result[1].push(dataItem);
           if (index === data.length - 1 || (index + 1) % interval === 0) {
-            var dataInInterval = result[1];
-            var aggregationInfo = {
+            const dataInInterval = result[1];
+            const aggregationInfo = {
               aggregationInterval: interval,
               data: dataInInterval.map(getData)
             };
@@ -822,9 +821,9 @@ Series.prototype = {
         }, [[], []])[0];
       }
     }
-    var aggregatedData = [];
+    const aggregatedData = [];
     if (ticks.length === 1) {
-      var aggregationInfo = {
+      const aggregationInfo = {
         intervalStart: ticks[0],
         intervalEnd: ticks[0],
         aggregationInterval: null,
@@ -832,54 +831,54 @@ Series.prototype = {
       };
       addAggregatedData(aggregatedData, aggregationMethod(aggregationInfo, that), aggregationInfo);
     } else {
-      for (var i = 1; i < ticks.length; i++) {
-        var intervalEnd = ticks[i];
-        var intervalStart = ticks[i - 1];
-        var dataInInterval = [];
+      for (let i = 1; i < ticks.length; i++) {
+        const intervalEnd = ticks[i];
+        const intervalStart = ticks[i - 1];
+        const dataInInterval = [];
         while (data[dataIndex] && data[dataIndex].argument < intervalEnd) {
           if (data[dataIndex].argument >= intervalStart) {
             dataInInterval.push(data[dataIndex]);
           }
           dataIndex++;
         }
-        var _aggregationInfo = {
+        const aggregationInfo = {
           intervalStart,
           intervalEnd,
           aggregationInterval: interval,
           data: dataInInterval.map(getData)
         };
-        addAggregatedData(aggregatedData, aggregationMethod(_aggregationInfo, that), _aggregationInfo);
+        addAggregatedData(aggregatedData, aggregationMethod(aggregationInfo, that), aggregationInfo);
       }
     }
     that._endUpdateData();
     return aggregatedData;
   },
-  canRenderCompleteHandle: function canRenderCompleteHandle() {
-    var result = this._canRenderCompleteHandle;
+  canRenderCompleteHandle: function () {
+    const result = this._canRenderCompleteHandle;
     delete this._canRenderCompleteHandle;
     return !!result;
   },
-  isHovered: function isHovered() {
+  isHovered: function () {
     return !!(this.fullState & 1);
   },
-  isSelected: function isSelected() {
+  isSelected: function () {
     return !!(this.fullState & 2);
   },
-  isVisible: function isVisible() {
+  isVisible: function () {
     return this._visible;
   },
-  getAllPoints: function getAllPoints() {
+  getAllPoints: function () {
     this._createAllAggregatedPoints();
     return (this._points || []).slice();
   },
-  getPointByPos: function getPointByPos(pos) {
+  getPointByPos: function (pos) {
     this._createAllAggregatedPoints();
     return (this._points || [])[pos];
   },
-  getVisiblePoints: function getVisiblePoints() {
+  getVisiblePoints: function () {
     return (this._drawnPoints || []).slice();
   },
-  selectPoint: function selectPoint(point) {
+  selectPoint: function (point) {
     if (!point.isSelected()) {
       setPointSelectedState(point, this._legendCallback);
       this._eventPipe({
@@ -891,7 +890,7 @@ Series.prototype = {
       });
     }
   },
-  deselectPoint: function deselectPoint(point) {
+  deselectPoint: function (point) {
     if (point.isSelected()) {
       releasePointSelectedState(point, this._legendCallback);
       this._eventPipe({
@@ -903,9 +902,9 @@ Series.prototype = {
       });
     }
   },
-  hover: function hover(mode) {
-    var that = this;
-    var eventTrigger = that._eventTrigger;
+  hover: function (mode) {
+    const that = this;
+    const eventTrigger = that._eventTrigger;
     if (that.isHovered()) {
       return;
     }
@@ -916,9 +915,9 @@ Series.prototype = {
       target: that
     });
   },
-  clearHover: function clearHover() {
-    var that = this;
-    var eventTrigger = that._eventTrigger;
+  clearHover: function () {
+    const that = this;
+    const eventTrigger = that._eventTrigger;
     if (!that.isHovered()) {
       return;
     }
@@ -929,8 +928,8 @@ Series.prototype = {
       target: that
     });
   },
-  hoverPoint: function hoverPoint(point) {
-    var that = this;
+  hoverPoint: function (point) {
+    const that = this;
     if (!point.isHovered()) {
       point.clearHover();
       setPointHoverState(point, that._legendCallback);
@@ -944,8 +943,8 @@ Series.prototype = {
       });
     }
   },
-  clearPointHover: function clearPointHover() {
-    var that = this;
+  clearPointHover: function () {
+    const that = this;
     that.getPoints().some(function (currentPoint) {
       if (currentPoint.isHovered()) {
         releasePointHoverState(currentPoint, that._legendCallback);
@@ -962,14 +961,14 @@ Series.prototype = {
       return false;
     });
   },
-  showPointTooltip: function showPointTooltip(point) {
+  showPointTooltip: function (point) {
     triggerEvent(this._extGroups.seriesGroup, 'showpointtooltip', point);
   },
-  hidePointTooltip: function hidePointTooltip(point) {
+  hidePointTooltip: function (point) {
     triggerEvent(this._extGroups.seriesGroup, 'hidepointtooltip', point);
   },
-  select: function select() {
-    var that = this;
+  select: function () {
+    const that = this;
     if (!that.isSelected()) {
       that._setSelectedState(that._options.selectionMode);
       that._eventPipe({
@@ -983,7 +982,7 @@ Series.prototype = {
     }
   },
   clearSelection: function clearSelection() {
-    var that = this;
+    const that = this;
     if (that.isSelected()) {
       that._releaseSelectedState();
       that._eventTrigger(SERIES_SELECTION_CHANGED, {
@@ -991,33 +990,33 @@ Series.prototype = {
       });
     }
   },
-  getPointsByArg: function getPointsByArg(arg, skipPointsCreation) {
-    var that = this;
-    var argValue = arg.valueOf();
-    var points = that.pointsByArgument[argValue];
+  getPointsByArg: function (arg, skipPointsCreation) {
+    const that = this;
+    const argValue = arg.valueOf();
+    let points = that.pointsByArgument[argValue];
     if (!points && !skipPointsCreation && that._createAllAggregatedPoints()) {
       points = that.pointsByArgument[argValue];
     }
     return points || [];
   },
-  _createAllAggregatedPoints: function _createAllAggregatedPoints() {
+  _createAllAggregatedPoints: function () {
     if (this.useAggregation() && !this._useAllAggregatedPoints) {
       this.createPoints(true);
       return true;
     }
     return false;
   },
-  getPointsByKeys: function getPointsByKeys(arg) {
+  getPointsByKeys: function (arg) {
     return this.getPointsByArg(arg);
   },
-  notify: function notify(data) {
-    var that = this;
-    var action = data.action;
-    var seriesModes = that._seriesModes;
-    var target = data.target;
-    var targetOptions = target.getOptions();
-    var pointHoverMode = _normalizeEnum(targetOptions.hoverMode);
-    var selectionModeOfPoint = _normalizeEnum(targetOptions.selectionMode);
+  notify: function (data) {
+    const that = this;
+    const action = data.action;
+    const seriesModes = that._seriesModes;
+    const target = data.target;
+    const targetOptions = target.getOptions();
+    const pointHoverMode = _normalizeEnum(targetOptions.hoverMode);
+    const selectionModeOfPoint = _normalizeEnum(targetOptions.selectionMode);
     if (action === POINT_HOVER) {
       that._hoverPointHandler(target, pointHoverMode, data.notifyLegend);
     } else if (action === CLEAR_POINT_HOVER) {
@@ -1039,8 +1038,8 @@ Series.prototype = {
       that._deselectPointHandler(target, selectionModeOfPoint);
     }
   },
-  _selectPointHandler: function _selectPointHandler(target, mode) {
-    var that = this;
+  _selectPointHandler: function (target, mode) {
+    const that = this;
     if (mode === ALL_SERIES_POINTS) {
       target.series === that && that._setPointsView(SELECTION, target);
     } else if (mode === ALL_ARGUMENT_POINTS) {
@@ -1049,7 +1048,7 @@ Series.prototype = {
       });
     }
   },
-  _deselectPointHandler: function _deselectPointHandler(target, mode) {
+  _deselectPointHandler: function (target, mode) {
     if (mode === ALL_SERIES_POINTS) {
       target.series === this && this._resetPointsView(SELECTION, target);
     } else if (mode === ALL_ARGUMENT_POINTS) {
@@ -1058,8 +1057,8 @@ Series.prototype = {
       });
     }
   },
-  _hoverPointHandler: function _hoverPointHandler(target, mode, notifyLegend) {
-    var that = this;
+  _hoverPointHandler: function (target, mode, notifyLegend) {
+    const that = this;
     if (target.series !== that && mode === ALL_ARGUMENT_POINTS) {
       that.getPointsByKeys(target.argument, target.argumentIndex).forEach(function (currentPoint) {
         currentPoint.setView(HOVER);
@@ -1069,8 +1068,8 @@ Series.prototype = {
       that._setPointsView(HOVER, target);
     }
   },
-  _clearPointHoverHandler: function _clearPointHoverHandler(target, mode, notifyLegend) {
-    var that = this;
+  _clearPointHoverHandler: function (target, mode, notifyLegend) {
+    const that = this;
     if (mode === ALL_ARGUMENT_POINTS) {
       target.series !== that && that.getPointsByKeys(target.argument, target.argumentIndex).forEach(function (currentPoint) {
         currentPoint.resetView(HOVER);
@@ -1080,21 +1079,21 @@ Series.prototype = {
       that._resetPointsView(HOVER, target);
     }
   },
-  _deletePoints: function _deletePoints() {
-    var that = this;
+  _deletePoints: function () {
+    const that = this;
     that._disposePoints(that._points);
     that._points = that._drawnPoints = null;
   },
-  _deleteTrackers: function _deleteTrackers() {
-    var that = this;
+  _deleteTrackers: function () {
+    const that = this;
     _each(that._trackers || [], function (_, tracker) {
       tracker.remove();
     });
     that._trackersGroup && that._trackersGroup.dispose();
     that._trackers = that._trackersGroup = null;
   },
-  dispose: function dispose() {
-    var that = this;
+  dispose: function () {
+    const that = this;
     that._deletePoints();
     that._group.dispose();
     that._labelsGroup && that._labelsGroup.dispose();
@@ -1107,31 +1106,31 @@ Series.prototype = {
   getNeighborPoint: _noop,
   areErrorBarsVisible: _noop,
   _getColorId: _noop,
-  getMarginOptions: function getMarginOptions() {
+  getMarginOptions: function () {
     return this._patchMarginOptions({
       percentStick: this.isFullStackedSeries()
     });
   },
-  getColor: function getColor() {
+  getColor: function () {
     return this.getLegendStyles().normal.fill;
   },
-  getOpacity: function getOpacity() {
+  getOpacity: function () {
     return this._options.opacity;
   },
-  getStackName: function getStackName() {
+  getStackName: function () {
     return this._stackName;
   },
-  getBarOverlapGroup: function getBarOverlapGroup() {
+  getBarOverlapGroup: function () {
     return this._options.barOverlapGroup;
   },
-  getPointByCoord: function getPointByCoord(x, y) {
-    var point = this.getNeighborPoint(x, y);
+  getPointByCoord: function (x, y) {
+    const point = this.getNeighborPoint(x, y);
     return point !== null && point !== void 0 && point.coordsIn(x, y) ? point : null;
   },
-  getValueAxis: function getValueAxis() {
+  getValueAxis: function () {
     return this._valueAxis;
   },
-  getArgumentAxis: function getArgumentAxis() {
+  getArgumentAxis: function () {
     return this._argumentAxis;
   },
   getMarkersGroup() {
@@ -1148,7 +1147,7 @@ Series.prototype = {
     }
   },
   removeGraphicElements() {
-    var that = this;
+    const that = this;
     if (that._elementsGroup) {
       that._elementsGroup.dispose();
       that._elementsGroup = null;
@@ -1165,4 +1164,4 @@ Series.prototype = {
     }
   }
 };
-export var mixins = seriesNS.mixins;
+export const mixins = seriesNS.mixins;

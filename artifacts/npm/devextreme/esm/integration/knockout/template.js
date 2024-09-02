@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/integration/knockout/template.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,14 +14,14 @@ import { isDefined } from '../../core/utils/type';
 import { TemplateBase } from '../../core/templates/template_base';
 import { normalizeTemplateElement } from '../../core/utils/dom';
 import { getClosestNodeWithContext } from './utils';
-var getParentContext = function getParentContext(data) {
-  var parentNode = domAdapter.createElement('div');
+const getParentContext = function (data) {
+  const parentNode = domAdapter.createElement('div');
   ko.applyBindingsToNode(parentNode, null, data);
-  var parentContext = ko.contextFor(parentNode);
+  const parentContext = ko.contextFor(parentNode);
   ko.cleanNode(parentNode);
   return parentContext;
 };
-export var KoTemplate = class extends TemplateBase {
+export const KoTemplate = class extends TemplateBase {
   constructor(element) {
     super();
     this._element = element;
@@ -29,13 +29,13 @@ export var KoTemplate = class extends TemplateBase {
     this._registerKoTemplate();
   }
   _registerKoTemplate() {
-    var template = this._template.get(0);
+    const template = this._template.get(0);
     new ko.templateSources.anonymousTemplate(template)['nodes'](template);
   }
   _prepareDataForContainer(data, container) {
     if (container && container.length) {
-      var node = getClosestNodeWithContext(container.get(0));
-      var containerContext = ko.contextFor(node);
+      const node = getClosestNodeWithContext(container.get(0));
+      const containerContext = ko.contextFor(node);
       data = data !== undefined ? data : ko.dataFor(node) || {};
       if (containerContext) {
         return data === containerContext.$data ? containerContext : containerContext.createChildContext(data);
@@ -46,14 +46,14 @@ export var KoTemplate = class extends TemplateBase {
     return getParentContext(data).createChildContext(data);
   }
   _renderCore(options) {
-    var model = this._prepareDataForContainer(options.model, $(options.container));
+    const model = this._prepareDataForContainer(options.model, $(options.container));
     if (isDefined(options.index)) {
       model.$index = options.index;
     }
-    var $placeholder = $('<div>').appendTo(options.container);
-    var $result;
+    const $placeholder = $('<div>').appendTo(options.container);
+    let $result;
     ko.renderTemplate(this._template.get(0), model, {
-      afterRender: function afterRender(nodes) {
+      afterRender: function (nodes) {
         $result = $(nodes);
       }
     }, $placeholder.get(0), 'replaceNode');

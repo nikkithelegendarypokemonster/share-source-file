@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/defer_rendering.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -21,77 +21,113 @@ import Widget, {
 } from './widget/ui.widget';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_defer_rendering_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxDeferRendering>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_defer_rendering_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxDeferRendering>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_defer_rendering_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxDeferRendering>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_defer_rendering_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxDeferRendering> & ChangedOptionInfo;
 
 /**
- * The type of the rendered event handler&apos;s argument.
+ * @docid _ui_defer_rendering_RenderedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type RenderedEvent = EventInfo<dxDeferRendering>;
 
 /**
- * The type of the shown event handler&apos;s argument.
+ * @docid _ui_defer_rendering_ShownEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ShownEvent = EventInfo<dxDeferRendering>;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxDeferRenderingOptions extends WidgetOptions<dxDeferRendering> {
     /**
-     * Specifies the animation to be used to show the rendered content.
+     * @docid
+     * @default undefined
+     * @public
      */
     animation?: AnimationConfig;
     /**
-     * A function that is executed when the content is rendered but not yet displayed.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/defer_rendering:RenderedEvent}
+     * @action
+     * @public
      */
     onRendered?: ((e: RenderedEvent) => void);
     /**
-     * A function that is executed when the content is displayed and animation is completed.
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/defer_rendering:ShownEvent}
+     * @action
+     * @public
      */
     onShown?: ((e: ShownEvent) => void);
     /**
-     * Specifies when the UI component content is rendered.
+     * @docid
+     * @type DxPromise|bool
+     * @default undefined
+     * @public
      */
     renderWhen?: PromiseLike<void> | boolean;
     /**
-     * Indicates if a load indicator should be shown until the UI component&apos;s content is rendered.
+     * @docid
+     * @default false
+     * @public
      */
     showLoadIndicator?: boolean;
     /**
-     * Specifies a jQuery selector of items that should be rendered using a staggered animation.
+     * @docid
+     * @default undefined
+     * @public
      */
     staggerItemSelector?: string;
 }
 /**
- * The DeferRendering is a UI component that waits for its content to be ready before rendering it. While the content is getting ready, the DeferRendering displays a loading indicator.
+ * @docid
+ * @inherits Widget
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxDeferRendering extends Widget<dxDeferRenderingOptions> { }
 
+/** @public */
 export type Properties = dxDeferRenderingOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxDeferRenderingOptions;
 
 

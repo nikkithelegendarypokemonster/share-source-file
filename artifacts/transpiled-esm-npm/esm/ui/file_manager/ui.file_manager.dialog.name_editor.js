@@ -2,8 +2,8 @@ import $ from '../../core/renderer';
 import { extend } from '../../core/utils/extend';
 import TextBox from '../text_box';
 import FileManagerDialogBase from './ui.file_manager.dialog';
-var FILE_MANAGER_DIALOG_NAME_EDITOR = 'dx-filemanager-dialog-name-editor';
-var FILE_MANAGER_DIALOG_NAME_EDITOR_POPUP = 'dx-filemanager-dialog-name-editor-popup';
+const FILE_MANAGER_DIALOG_NAME_EDITOR = 'dx-filemanager-dialog-name-editor';
+const FILE_MANAGER_DIALOG_NAME_EDITOR_POPUP = 'dx-filemanager-dialog-name-editor-popup';
 class FileManagerNameEditorDialog extends FileManagerDialogBase {
   show(name) {
     name = name || '';
@@ -18,7 +18,7 @@ class FileManagerNameEditorDialog extends FileManagerDialogBase {
     if (!this._nameTextBox) {
       return;
     }
-    var $textBoxInput = this._nameTextBox._input();
+    const $textBoxInput = this._nameTextBox._input();
     $textBoxInput.length && $textBoxInput[0].select();
     this._nameTextBox.focus();
   }
@@ -40,13 +40,13 @@ class FileManagerNameEditorDialog extends FileManagerDialogBase {
     this._$contentElement.append(this._nameTextBox.$element());
   }
   _checkCompositionEnded(_ref) {
-    var {
+    let {
       event
     } = _ref;
     this._hasCompositionJustEnded = event.which !== 229;
   }
   _getDialogResult() {
-    var nameValue = this._nameTextBox.option('value');
+    const nameValue = this._nameTextBox.option('value');
     return nameValue ? {
       name: nameValue
     } : null;

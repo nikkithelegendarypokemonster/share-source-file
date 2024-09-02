@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/range_slider.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -24,90 +24,117 @@ import {
 import dxTrackBar from './track_bar';
 
 /**
- * The type of the contentReady event handler&apos;s argument.
+ * @docid _ui_range_slider_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent = EventInfo<dxRangeSlider>;
 
 /**
- * The type of the disposing event handler&apos;s argument.
+ * @docid _ui_range_slider_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent = EventInfo<dxRangeSlider>;
 
 /**
- * The type of the initialized event handler&apos;s argument.
+ * @docid _ui_range_slider_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent = InitializedEventInfo<dxRangeSlider>;
 
 /**
- * The type of the optionChanged event handler&apos;s argument.
+ * @docid _ui_range_slider_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent = EventInfo<dxRangeSlider> & ChangedOptionInfo;
 
 /**
- * The type of the valueChanged event handler&apos;s argument.
+ * @docid _ui_range_slider_ValueChangedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ValueChangedInfo
  */
 export type ValueChangedEvent = NativeEventInfo<dxRangeSlider, KeyboardEvent | MouseEvent | PointerEvent | TouchEvent | UIEvent | Event> & ValueChangedInfo & {
-    /**
-     * 
-     */
+    /** @docid _ui_range_slider_ValueChangedEvent.start */
     readonly start?: number;
-    /**
-     * 
-     */
+    /** @docid _ui_range_slider_ValueChangedEvent.end */
     readonly end?: number;
-    /**
-     * 
-     */
+    /** @docid _ui_range_slider_ValueChangedEvent.value */
     readonly value?: Array<number>;
 };
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @docid
  */
 export interface dxRangeSliderOptions extends dxSliderBaseOptions<dxRangeSlider> {
     /**
-     * The right edge of the interval currently selected using the range slider.
+     * @docid
+     * @default 60
+     * @public
      */
     end?: number;
     /**
-     * The value to be assigned to the name attribute of the underlying `` element.
+     * @docid
+     * @default ""
+     * @public
      */
     endName?: string;
     /**
-     * A function that is executed after the UI component&apos;s value is changed.
+     * @docid
+     * @type_function_param1 e:{ui/range_slider:ValueChangedEvent}
+     * @action
+     * @default null
+     * @public
      */
     onValueChanged?: ((e: ValueChangedEvent) => void);
     /**
-     * The left edge of the interval currently selected using the range slider.
+     * @docid
+     * @default 40
+     * @public
      */
     start?: number;
     /**
-     * The value to be assigned to the name attribute of the underlying `` element.
+     * @docid
+     * @default ""
+     * @public
      */
     startName?: string;
     /**
-     * Specifies the UI component&apos;s value.
+     * @docid
+     * @default [40, 60]
+     * @public
      */
     value?: Array<number>;
 }
 /**
- * The RangeSlider is a UI component that allows an end user to choose a range of numeric values.
+ * @docid
+ * @isEditor
+ * @inherits dxSliderBase
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxRangeSlider extends dxTrackBar<dxRangeSliderOptions> {
     /**
-     * Resets the value property to the value passed as an argument.
+     * @docid
+     * @publicName reset(value)
+     * @public
      */
     reset(value?: Array<number>): void;
  }
 
+/** @public */
 export type Properties = dxRangeSliderOptions;
 
-/**
- * @deprecated use Properties instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
- */
+/** @deprecated use Properties instead */
 export type Options = dxRangeSliderOptions;
 
 

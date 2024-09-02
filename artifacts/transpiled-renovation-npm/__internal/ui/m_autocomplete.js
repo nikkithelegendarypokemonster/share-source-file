@@ -90,7 +90,7 @@ const Autocomplete = _ui.default.inherit({
     this._updateListDimensions();
   },
   _popupWrapperClass() {
-    return "".concat(this.callBase(), " ").concat(AUTOCOMPLETE_POPUP_WRAPPER_CLASS);
+    return `${this.callBase()} ${AUTOCOMPLETE_POPUP_WRAPPER_CLASS}`;
   },
   _listConfig() {
     return (0, _extend.extend)(this.callBase(), {
@@ -120,8 +120,7 @@ const Autocomplete = _ui.default.inherit({
   },
   _loadItem(value, cache) {
     const selectedItem = this._getItemFromPlain(value, cache);
-    // @ts-expect-error
-    return new _deferred.Deferred().resolve(selectedItem).promise();
+    return (0, _deferred.Deferred)().resolve(selectedItem).promise();
   },
   _dataSourceOptions() {
     return {

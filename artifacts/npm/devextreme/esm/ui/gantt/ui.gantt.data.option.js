@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/gantt/ui.gantt.data.option.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -74,11 +74,11 @@ class DataOption extends Component {
   }
   _showLoadPanel() {
     var _this$_getLoadPanel;
-    (_this$_getLoadPanel = this._getLoadPanel()) === null || _this$_getLoadPanel === void 0 ? void 0 : _this$_getLoadPanel.show();
+    (_this$_getLoadPanel = this._getLoadPanel()) === null || _this$_getLoadPanel === void 0 || _this$_getLoadPanel.show();
   }
   _hideLoadPanel() {
     var _this$_getLoadPanel2;
-    (_this$_getLoadPanel2 = this._getLoadPanel()) === null || _this$_getLoadPanel2 === void 0 ? void 0 : _this$_getLoadPanel2.hide();
+    (_this$_getLoadPanel2 = this._getLoadPanel()) === null || _this$_getLoadPanel2 === void 0 || _this$_getLoadPanel2.hide();
   }
   _getStore() {
     return this._dataSource.store();

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/diagram/ui.diagram.dialog_manager.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,9 +11,9 @@ import { getDiagram } from './diagram.importer';
 import messageLocalization from '../../localization/message';
 import FileUploader from '../file_uploader';
 import { getWindow } from '../../core/utils/window';
-var DiagramDialogManager = {
-  getConfigurations: function getConfigurations() {
-    var {
+const DiagramDialogManager = {
+  getConfigurations: function () {
+    const {
       DiagramCommand
     } = getDiagram();
     return this.dialogList || (this.dialogList = [{
@@ -26,15 +26,15 @@ var DiagramDialogManager = {
       onGetContent: this.getChangeImageDialogContent
     }]);
   },
-  getChangeImageDialogContent: function getChangeImageDialogContent(args) {
-    var $uploader = $('<div>');
+  getChangeImageDialogContent: function (args) {
+    const $uploader = $('<div>');
     args.component._createComponent($uploader, FileUploader, {
       selectButtonText: messageLocalization.format('dxDiagram-dialogEditShapeImageSelectButton'),
       accept: 'image/*',
       uploadMode: 'useForm',
-      onValueChanged: function onValueChanged(e) {
-        var window = getWindow();
-        var reader = new window.FileReader();
+      onValueChanged: function (e) {
+        const window = getWindow();
+        const reader = new window.FileReader();
         reader.onload = function (e) {
           args.component._commandParameter = e.target.result;
         };
@@ -44,7 +44,7 @@ var DiagramDialogManager = {
     return $uploader;
   },
   getDialogParameters(command) {
-    var commandIndex = this.getConfigurations().map(c => c.command).indexOf(command);
+    const commandIndex = this.getConfigurations().map(c => c.command).indexOf(command);
     if (commandIndex >= 0) {
       return this.getConfigurations()[commandIndex];
     } else {

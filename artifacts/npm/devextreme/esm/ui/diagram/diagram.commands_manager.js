@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/diagram/diagram.commands_manager.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,11 +12,11 @@ import { isFunction } from '../../core/utils/type';
 import { getWindow } from '../../core/utils/window';
 import { extend } from '../../core/utils/extend';
 import messageLocalization from '../../localization/message';
-var SEPARATOR = 'separator';
-var SEPARATOR_COMMAND = {
+const SEPARATOR = 'separator';
+const SEPARATOR_COMMAND = {
   widget: SEPARATOR
 };
-var CSS_CLASSES = {
+const CSS_CLASSES = {
   SMALL_EDITOR_ITEM: 'dx-diagram-sm-edit-item',
   MEDIUM_EDITOR_ITEM: 'dx-diagram-md-edit-item',
   LARGE_EDITOR_ITEM: 'dx-diagram-lg-edit-item',
@@ -24,11 +24,11 @@ var CSS_CLASSES = {
   COLOR_EDITOR_ITEM: 'dx-diagram-color-edit-item',
   LARGE_ICON_ITEM: 'dx-diagram-lg-icon-item'
 };
-var DiagramCommandsManager = {
+const DiagramCommandsManager = {
   SHOW_TOOLBOX_COMMAND_NAME: 'toolbox',
   SHOW_PROPERTIES_PANEL_COMMAND_NAME: 'propertiesPanel',
-  getAllCommands: function getAllCommands() {
-    var {
+  getAllCommands: function () {
+    const {
       DiagramCommand
     } = getDiagram();
     return this._allCommands || (this._allCommands = {
@@ -524,12 +524,12 @@ var DiagramCommandsManager = {
       }
     });
   },
-  getMainToolbarCommands: function getMainToolbarCommands(commands, excludeCommands) {
-    var allCommands = this.getAllCommands();
-    var mainToolbarCommands = commands ? this._getPreparedCommands(allCommands, commands) : this._getDefaultMainToolbarCommands(allCommands);
+  getMainToolbarCommands: function (commands, excludeCommands) {
+    const allCommands = this.getAllCommands();
+    const mainToolbarCommands = commands ? this._getPreparedCommands(allCommands, commands) : this._getDefaultMainToolbarCommands(allCommands);
     return this._prepareToolbarCommands(mainToolbarCommands, excludeCommands);
   },
-  _getDefaultMainToolbarCommands: function _getDefaultMainToolbarCommands(allCommands) {
+  _getDefaultMainToolbarCommands: function (allCommands) {
     return this._defaultMainToolbarCommands || (this._defaultMainToolbarCommands = [allCommands['undo'], allCommands['redo'], allCommands['separator'], allCommands['fontName'], allCommands['fontSize'], allCommands['bold'], allCommands['italic'], allCommands['underline'], allCommands['separator'], allCommands['lineWidth'], allCommands['lineStyle'], allCommands['separator'], allCommands['fontColor'], allCommands['lineColor'], allCommands['fillColor'], allCommands['separator'], allCommands['textAlignLeft'], allCommands['textAlignCenter'], allCommands['textAlignRight'], allCommands['separator'], allCommands['connectorLineType'], allCommands['connectorLineStart'], allCommands['connectorLineEnd'], allCommands['separator'], {
       text: messageLocalization.format('dxDiagram-uiLayout'),
       showText: 'always',
@@ -542,20 +542,20 @@ var DiagramCommandsManager = {
       }]
     }]);
   },
-  getHistoryToolbarCommands: function getHistoryToolbarCommands(commands, excludeCommands) {
-    var allCommands = this.getAllCommands();
-    var historyToolbarCommands = commands ? this._getPreparedCommands(allCommands, commands) : this._getDefaultHistoryToolbarCommands(allCommands);
+  getHistoryToolbarCommands: function (commands, excludeCommands) {
+    const allCommands = this.getAllCommands();
+    const historyToolbarCommands = commands ? this._getPreparedCommands(allCommands, commands) : this._getDefaultHistoryToolbarCommands(allCommands);
     return this._prepareToolbarCommands(historyToolbarCommands, excludeCommands);
   },
-  _getDefaultHistoryToolbarCommands: function _getDefaultHistoryToolbarCommands(allCommands) {
+  _getDefaultHistoryToolbarCommands: function (allCommands) {
     return this._defaultHistoryToolbarCommands || (this._defaultHistoryToolbarCommands = [allCommands['undo'], allCommands['redo'], allCommands['separator'], allCommands['toolbox']]);
   },
-  getViewToolbarCommands: function getViewToolbarCommands(commands, excludeCommands) {
-    var allCommands = this.getAllCommands();
-    var viewToolbarCommands = commands ? this._getPreparedCommands(allCommands, commands) : this._getDefaultViewToolbarCommands(allCommands);
+  getViewToolbarCommands: function (commands, excludeCommands) {
+    const allCommands = this.getAllCommands();
+    const viewToolbarCommands = commands ? this._getPreparedCommands(allCommands, commands) : this._getDefaultViewToolbarCommands(allCommands);
     return this._prepareToolbarCommands(viewToolbarCommands, excludeCommands);
   },
-  _getDefaultViewToolbarCommands: function _getDefaultViewToolbarCommands(allCommands) {
+  _getDefaultViewToolbarCommands: function (allCommands) {
     return this._defaultViewToolbarCommands || (this._defaultViewToolbarCommands = [allCommands['zoomLevel'], allCommands['separator'], allCommands['fullScreen'], allCommands['separator'], {
       widget: 'dxButton',
       icon: 'export',
@@ -569,15 +569,15 @@ var DiagramCommandsManager = {
       items: [allCommands['units'], allCommands['separator'], allCommands['showGrid'], allCommands['snapToGrid'], allCommands['gridSize'], allCommands['separator'], allCommands['simpleView'], allCommands['toolbox']]
     }]);
   },
-  getPropertiesToolbarCommands: function getPropertiesToolbarCommands(commands, excludeCommands) {
-    var allCommands = this.getAllCommands();
-    var propertiesCommands = commands ? this._getPreparedCommands(allCommands, commands) : this._getDefaultPropertiesToolbarCommands(allCommands);
+  getPropertiesToolbarCommands: function (commands, excludeCommands) {
+    const allCommands = this.getAllCommands();
+    const propertiesCommands = commands ? this._getPreparedCommands(allCommands, commands) : this._getDefaultPropertiesToolbarCommands(allCommands);
     return this._prepareToolbarCommands(propertiesCommands, excludeCommands);
   },
-  _getDefaultPropertiesToolbarCommands: function _getDefaultPropertiesToolbarCommands(allCommands) {
+  _getDefaultPropertiesToolbarCommands: function (allCommands) {
     return this._defaultPropertiesToolbarCommands || (this._defaultPropertiesToolbarCommands = [allCommands['propertiesPanel']]);
   },
-  _getDefaultPropertyPanelCommandGroups: function _getDefaultPropertyPanelCommandGroups() {
+  _getDefaultPropertyPanelCommandGroups: function () {
     return this._defaultPropertyPanelCommandGroups || (this._defaultPropertyPanelCommandGroups = [{
       title: messageLocalization.format('dxDiagram-uiStyle'),
       groups: [{
@@ -607,20 +607,20 @@ var DiagramCommandsManager = {
       }]
     }]);
   },
-  _preparePropertyPanelGroups: function _preparePropertyPanelGroups(groups) {
-    var allCommands = this.getAllCommands();
-    var result = [];
+  _preparePropertyPanelGroups: function (groups) {
+    const allCommands = this.getAllCommands();
+    const result = [];
     groups.forEach(g => {
-      var commands = g.commands;
+      let commands = g.commands;
       if (commands) {
         commands = this._getPreparedCommands(allCommands, commands);
         commands = this._prepareToolbarCommands(commands);
       }
-      var subGroups;
+      let subGroups;
       if (g.groups) {
         subGroups = [];
         g.groups.forEach(sg => {
-          var subCommands = sg.commands;
+          let subCommands = sg.commands;
           if (subCommands) {
             subCommands = this._getPreparedCommands(allCommands, subCommands);
             subCommands = this._prepareToolbarCommands(subCommands);
@@ -639,22 +639,22 @@ var DiagramCommandsManager = {
     });
     return result;
   },
-  getPropertyPanelCommandTabs: function getPropertyPanelCommandTabs(commandGroups) {
+  getPropertyPanelCommandTabs: function (commandGroups) {
     commandGroups = commandGroups || this._getDefaultPropertyPanelCommandGroups();
     return this._preparePropertyPanelGroups(commandGroups);
   },
-  getContextMenuCommands: function getContextMenuCommands(commands) {
-    var allCommands = this.getAllCommands();
-    var contextMenuCommands = commands ? this._getPreparedCommands(allCommands, commands) : this._getDefaultContextMenuCommands(allCommands);
+  getContextMenuCommands: function (commands) {
+    const allCommands = this.getAllCommands();
+    const contextMenuCommands = commands ? this._getPreparedCommands(allCommands, commands) : this._getDefaultContextMenuCommands(allCommands);
     return this._prepareContextMenuCommands(contextMenuCommands);
   },
-  _getDefaultContextMenuCommands: function _getDefaultContextMenuCommands(allCommands) {
+  _getDefaultContextMenuCommands: function (allCommands) {
     return this._defaultContextMenuCommands || (this._defaultContextMenuCommands = [allCommands['cut'], allCommands['copy'], allCommands['paste'], allCommands['delete'], allCommands['separator'], allCommands['selectAll'], allCommands['separator'], allCommands['bringToFront'], allCommands['sendToBack'], allCommands['separator'], allCommands['lock'], allCommands['unlock'], allCommands['separator'], allCommands['insertShapeImage'], allCommands['editShapeImage'], allCommands['deleteShapeImage']]);
   },
   _getPreparedCommands(allCommands, commands) {
     return commands.map(c => {
       if (c.widget && c.widget === SEPARATOR) {
-        var command = {
+        const command = {
           command: c,
           location: c.location
         };
@@ -662,8 +662,8 @@ var DiagramCommandsManager = {
       } else if (allCommands[c]) {
         return allCommands[c];
       } else if (c.text || c.icon || c.name) {
-        var internalCommand = c.name && allCommands[c.name];
-        var _command = {
+        const internalCommand = c.name && allCommands[c.name];
+        const command = {
           command: internalCommand && internalCommand.command,
           name: c.name,
           location: c.location,
@@ -681,22 +681,22 @@ var DiagramCommandsManager = {
           iconUnchecked: internalCommand && internalCommand.iconUnchecked
         };
         if (Array.isArray(c.items)) {
-          _command.items = this._getPreparedCommands(allCommands, c.items);
+          command.items = this._getPreparedCommands(allCommands, c.items);
         } else {
-          _command.items = internalCommand && internalCommand.items;
+          command.items = internalCommand && internalCommand.items;
         }
-        return _command;
+        return command;
       }
     }).filter(c => c);
   },
   _prepareContextMenuCommands(commands, excludeCommands, rootCommand) {
-    var beginGroup = false;
+    let beginGroup = false;
     return commands.map(c => {
       if (!this._isValidCommand(c, excludeCommands)) return;
       if (c.widget && c.widget === SEPARATOR) {
         beginGroup = true;
       } else {
-        var command = this._cloneCommand(c, excludeCommands);
+        const command = this._cloneCommand(c, excludeCommands);
         command.icon = command.menuIcon;
         command.beginGroup = beginGroup;
         command.rootCommand = !command.command ? rootCommand && rootCommand.command : undefined;
@@ -718,7 +718,7 @@ var DiagramCommandsManager = {
     });
   },
   _cloneCommand(c, excludeCommands) {
-    var command = extend({}, c);
+    const command = extend({}, c);
     if (Array.isArray(c.items)) {
       command.items = this._prepareContextMenuCommands(c.items, excludeCommands, command);
     }
@@ -729,17 +729,17 @@ var DiagramCommandsManager = {
     return excludeCommands.indexOf(c.command) === -1;
   },
   _exportTo(widget, dataURI, format, mimeString) {
-    var window = getWindow();
+    const window = getWindow();
     if (window && window.atob && isFunction(window.Blob)) {
-      var blob = this._getBlobByDataURI(window, dataURI, mimeString);
-      var options = widget.option('export');
+      const blob = this._getBlobByDataURI(window, dataURI, mimeString);
+      const options = widget.option('export');
       fileSaver.saveAs(options.fileName || 'foo', format, blob);
     }
   },
   _getBlobByDataURI(window, dataURI, mimeString) {
-    var byteString = window.atob(dataURI.split(',')[1]);
-    var ia = new Uint8Array(byteString.length);
-    for (var i = 0; i < byteString.length; i++) {
+    const byteString = window.atob(dataURI.split(',')[1]);
+    const ia = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++) {
       ia[i] = byteString.charCodeAt(i);
     }
     return new window.Blob([ia.buffer], {

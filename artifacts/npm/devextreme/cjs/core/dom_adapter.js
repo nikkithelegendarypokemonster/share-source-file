@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/core/dom_adapter.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -122,8 +122,8 @@ const nativeDOMAdapterStrategy = {
     return activeElementHolder.activeElement;
   },
   getRootNode(element) {
-    var _element$getRootNode, _element$getRootNode2;
-    return (_element$getRootNode = element === null || element === void 0 ? void 0 : (_element$getRootNode2 = element.getRootNode) === null || _element$getRootNode2 === void 0 ? void 0 : _element$getRootNode2.call(element)) !== null && _element$getRootNode !== void 0 ? _element$getRootNode : this._document;
+    var _element$getRootNode;
+    return (element === null || element === void 0 || (_element$getRootNode = element.getRootNode) === null || _element$getRootNode === void 0 ? void 0 : _element$getRootNode.call(element)) ?? this._document;
   },
   getBody() {
     return this._document.body;

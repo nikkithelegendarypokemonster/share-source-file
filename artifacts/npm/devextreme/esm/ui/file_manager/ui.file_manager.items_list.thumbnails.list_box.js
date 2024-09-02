@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/file_manager/ui.file_manager.items_list.thumbnails.list_box.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -17,15 +17,15 @@ import eventsEngine from '../../events/core/events_engine';
 import { BindableTemplate } from '../../core/templates/bindable_template';
 import ScrollView from '../scroll_view';
 import CollectionWidget from '../collection/ui.collection_widget.edit';
-import Selection from '../selection/selection';
-var FILE_MANAGER_THUMBNAILS_VIEW_PORT_CLASS = 'dx-filemanager-thumbnails-view-port';
-var FILE_MANAGER_THUMBNAILS_ITEM_LIST_CONTAINER_CLASS = 'dx-filemanager-thumbnails-container';
-var FILE_MANAGER_THUMBNAILS_ITEM_CLASS = 'dx-filemanager-thumbnails-item';
-var FILE_MANAGER_THUMBNAILS_ITEM_NAME_CLASS = 'dx-filemanager-thumbnails-item-name';
-var FILE_MANAGER_THUMBNAILS_ITEM_SPACER_CLASS = 'dx-filemanager-thumbnails-item-spacer';
-var FILE_MANAGER_THUMBNAILS_ITEM_DATA_KEY = 'dxFileManagerItemData';
-var FILE_MANAGER_THUMBNAILS_LIST_BOX_NAMESPACE = 'dxFileManagerThumbnailsListBox';
-var FILE_MANAGER_THUMBNAILS_LIST_BOX_HOLD_EVENT_NAME = addNamespace(holdEvent.name, FILE_MANAGER_THUMBNAILS_LIST_BOX_NAMESPACE);
+import Selection from '../../__internal/ui/selection/m_selection';
+const FILE_MANAGER_THUMBNAILS_VIEW_PORT_CLASS = 'dx-filemanager-thumbnails-view-port';
+const FILE_MANAGER_THUMBNAILS_ITEM_LIST_CONTAINER_CLASS = 'dx-filemanager-thumbnails-container';
+const FILE_MANAGER_THUMBNAILS_ITEM_CLASS = 'dx-filemanager-thumbnails-item';
+const FILE_MANAGER_THUMBNAILS_ITEM_NAME_CLASS = 'dx-filemanager-thumbnails-item-name';
+const FILE_MANAGER_THUMBNAILS_ITEM_SPACER_CLASS = 'dx-filemanager-thumbnails-item-spacer';
+const FILE_MANAGER_THUMBNAILS_ITEM_DATA_KEY = 'dxFileManagerItemData';
+const FILE_MANAGER_THUMBNAILS_LIST_BOX_NAMESPACE = 'dxFileManagerThumbnailsListBox';
+const FILE_MANAGER_THUMBNAILS_LIST_BOX_HOLD_EVENT_NAME = addNamespace(holdEvent.name, FILE_MANAGER_THUMBNAILS_LIST_BOX_NAMESPACE);
 class FileManagerThumbnailListBox extends CollectionWidget {
   _initMarkup() {
     this._initActions();
@@ -51,7 +51,7 @@ class FileManagerThumbnailListBox extends CollectionWidget {
     this._getTooltipText = this.option('getTooltipText');
     this._templateManager.addDefaultTemplates({
       item: new BindableTemplate(function ($container, data, itemModel) {
-        var $itemElement = this._getDefaultItemTemplate(itemModel, $container);
+        const $itemElement = this._getDefaultItemTemplate(itemModel, $container);
         $container.append($itemElement);
       }.bind(this), ['fileItem'], this.option('integrationOptions.watchMethod'))
     });
@@ -131,16 +131,16 @@ class FileManagerThumbnailListBox extends CollectionWidget {
     this._layoutUtils.reset();
   }
   _processArrowKeys(offset, horizontal, eventArgs) {
-    var item = this._getFocusedItem();
+    const item = this._getFocusedItem();
     if (item) {
       if (!horizontal) {
-        var layout = this._layoutUtils.getLayoutModel();
+        const layout = this._layoutUtils.getLayoutModel();
         if (!layout) {
           return;
         }
         offset *= layout.itemPerRowCount;
       }
-      var newItemIndex = this._getIndexByItem(item) + offset;
+      const newItemIndex = this._getIndexByItem(item) + offset;
       this._focusItemByIndex(newItemIndex, true, eventArgs);
     }
   }
@@ -148,20 +148,20 @@ class FileManagerThumbnailListBox extends CollectionWidget {
     this._focusItemByIndex(index, scrollToItem, eventArgs);
   }
   _processPageChange(pageUp, eventArgs) {
-    var item = this._getFocusedItem();
+    const item = this._getFocusedItem();
     if (!item) {
       return;
     }
-    var layout = this._layoutUtils.getLayoutModel();
+    const layout = this._layoutUtils.getLayoutModel();
     if (!layout) {
       return;
     }
-    var itemLayout = this._layoutUtils.createItemLayoutModel(this._getIndexByItem(item));
-    var rowOffset = pageUp ? layout.rowPerPageRate : -layout.rowPerPageRate;
-    var newRowRate = itemLayout.itemRowIndex - rowOffset;
-    var roundFunc = pageUp ? Math.ceil : Math.floor;
-    var newRowIndex = roundFunc(newRowRate);
-    var newItemIndex = newRowIndex * layout.itemPerRowCount + itemLayout.itemColumnIndex;
+    const itemLayout = this._layoutUtils.createItemLayoutModel(this._getIndexByItem(item));
+    const rowOffset = pageUp ? layout.rowPerPageRate : -layout.rowPerPageRate;
+    const newRowRate = itemLayout.itemRowIndex - rowOffset;
+    const roundFunc = pageUp ? Math.ceil : Math.floor;
+    const newRowIndex = roundFunc(newRowRate);
+    let newItemIndex = newRowIndex * layout.itemPerRowCount + itemLayout.itemColumnIndex;
     if (newItemIndex < 0) {
       newItemIndex = 0;
     } else if (newItemIndex >= this._getItemsLength()) {
@@ -170,15 +170,15 @@ class FileManagerThumbnailListBox extends CollectionWidget {
     this._focusItemByIndex(newItemIndex, true, eventArgs);
   }
   _processLongTap(e) {
-    var $targetItem = this._closestItemElement($(e.target));
-    var itemIndex = this._getIndexByItemElement($targetItem);
+    const $targetItem = this._closestItemElement($(e.target));
+    const itemIndex = this._getIndexByItemElement($targetItem);
     this._selection.changeItemSelection(itemIndex, {
       control: true
     });
   }
   _attachEventHandlers() {
     if (this.option('selectionMode') === 'multiple') {
-      eventsEngine.on(this._itemContainer(), FILE_MANAGER_THUMBNAILS_LIST_BOX_HOLD_EVENT_NAME, ".".concat(this._itemContentClass()), e => {
+      eventsEngine.on(this._itemContainer(), FILE_MANAGER_THUMBNAILS_LIST_BOX_HOLD_EVENT_NAME, `.${this._itemContentClass()}`, e => {
         this._processLongTap(e);
         e.stopPropagation();
       });
@@ -204,13 +204,13 @@ class FileManagerThumbnailListBox extends CollectionWidget {
   }
   _getDefaultItemTemplate(fileItemInfo, $itemElement) {
     $itemElement.attr('title', this._getTooltipText(fileItemInfo));
-    var $itemThumbnail = this._itemThumbnailTemplate(fileItemInfo);
-    var $itemSpacer = $('<div>').addClass(FILE_MANAGER_THUMBNAILS_ITEM_SPACER_CLASS);
-    var $itemName = $('<div>').addClass(FILE_MANAGER_THUMBNAILS_ITEM_NAME_CLASS).text(fileItemInfo.fileItem.name);
+    const $itemThumbnail = this._itemThumbnailTemplate(fileItemInfo);
+    const $itemSpacer = $('<div>').addClass(FILE_MANAGER_THUMBNAILS_ITEM_SPACER_CLASS);
+    const $itemName = $('<div>').addClass(FILE_MANAGER_THUMBNAILS_ITEM_NAME_CLASS).text(fileItemInfo.fileItem.name);
     $itemElement.append($itemThumbnail, $itemSpacer, $itemName);
   }
   _itemSelectHandler(e) {
-    var options = {};
+    let options = {};
     if (this.option('selectionMode') === 'multiple') {
       if (!this._isPreserveSelectionMode) {
         this._isPreserveSelectionMode = isCommandKeyPressed(e) || e.shiftKey;
@@ -220,12 +220,12 @@ class FileManagerThumbnailListBox extends CollectionWidget {
         shift: e.shiftKey
       };
     }
-    var index = this._getIndexByItemElement(e.currentTarget);
+    const index = this._getIndexByItemElement(e.currentTarget);
     this._selection.changeItemSelection(index, options);
   }
   _initSelectionModule() {
     super._initSelectionModule();
-    var options = extend(this._selection.options, {
+    const options = extend(this._selection.options, {
       selectedKeys: this.option('selectedItemKeys'),
       onSelectionChanged: args => {
         this.option('selectedItems', this._getItemsByKeys(args.selectedItemKeys, args.selectedItems));
@@ -235,22 +235,22 @@ class FileManagerThumbnailListBox extends CollectionWidget {
     this._selection = new Selection(options);
   }
   _updateSelectedItems(args) {
-    var addedItemKeys = args.addedItemKeys;
-    var removedItemKeys = args.removedItemKeys;
+    const addedItemKeys = args.addedItemKeys;
+    const removedItemKeys = args.removedItemKeys;
     if (this._rendered && (addedItemKeys.length || removedItemKeys.length)) {
-      var selectionChangePromise = this._selectionChangePromise;
+      const selectionChangePromise = this._selectionChangePromise;
       if (!this._rendering) {
-        var addedSelection = [];
-        var normalizedIndex;
-        var removedSelection = [];
+        const addedSelection = [];
+        let normalizedIndex;
+        const removedSelection = [];
         this._editStrategy.beginCache();
-        for (var i = 0; i < removedItemKeys.length; i++) {
+        for (let i = 0; i < removedItemKeys.length; i++) {
           normalizedIndex = this._getIndexByKey(removedItemKeys[i]);
           removedSelection.push(normalizedIndex);
           this._removeSelection(normalizedIndex);
         }
-        for (var _i = 0; _i < addedItemKeys.length; _i++) {
-          normalizedIndex = this._getIndexByKey(addedItemKeys[_i]);
+        for (let i = 0; i < addedItemKeys.length; i++) {
+          normalizedIndex = this._getIndexByKey(addedItemKeys[i]);
           addedSelection.push(normalizedIndex);
           this._addSelection(normalizedIndex);
         }
@@ -266,14 +266,14 @@ class FileManagerThumbnailListBox extends CollectionWidget {
     })(args);
   }
   _updateSelection(addedSelection, removedSelection) {
-    var selectedItemsCount = this.getSelectedItems().length;
+    const selectedItemsCount = this.getSelectedItems().length;
     if (selectedItemsCount === 0) {
       this._isPreserveSelectionMode = false;
     }
   }
   _normalizeSelectedItems() {
-    var newKeys = this._getKeysByItems(this.option('selectedItems'));
-    var oldKeys = this._selection.getSelectedItemKeys();
+    const newKeys = this._getKeysByItems(this.option('selectedItems'));
+    const oldKeys = this._selection.getSelectedItemKeys();
     if (!this._compareKeys(oldKeys, newKeys)) {
       this._selection.setSelection(newKeys);
     }
@@ -303,7 +303,7 @@ class FileManagerThumbnailListBox extends CollectionWidget {
   }
   _focusItemByIndex(index, scrollToItem, eventArgs) {
     if (index >= 0 && index < this._getItemsLength()) {
-      var item = this._getItemByIndex(index);
+      const item = this._getItemByIndex(index);
       this._focusItem(item, scrollToItem, eventArgs);
     }
   }
@@ -311,14 +311,14 @@ class FileManagerThumbnailListBox extends CollectionWidget {
     if (!this._syncFocusedItemKeyDeferred) {
       this._syncFocusedItemKeyDeferred = new Deferred();
     }
-    var deferred = this._syncFocusedItemKeyDeferred;
+    const deferred = this._syncFocusedItemKeyDeferred;
     if (this._dataSource && this._dataSource.isLoading()) {
       return deferred.promise();
     }
-    var focusedItemKey = this.option('focusedItemKey');
+    const focusedItemKey = this.option('focusedItemKey');
     if (isDefined(focusedItemKey)) {
-      var items = this.option('items');
-      var focusedItem = items.find(item => this.keyOf(item) === focusedItemKey);
+      const items = this.option('items');
+      const focusedItem = items.find(item => this.keyOf(item) === focusedItemKey);
       if (focusedItem) {
         this._focusItem(focusedItem, true);
         deferred.resolve();
@@ -333,9 +333,9 @@ class FileManagerThumbnailListBox extends CollectionWidget {
     return deferred.promise();
   }
   _onFocusedItemChanged() {
-    var focusedItem = this._getFocusedItem();
-    var newFocusedItemKey = this.keyOf(focusedItem);
-    var oldFocusedItemKey = this.option('focusedItemKey');
+    const focusedItem = this._getFocusedItem();
+    const newFocusedItemKey = this.keyOf(focusedItem);
+    const oldFocusedItemKey = this.option('focusedItemKey');
     if (newFocusedItemKey !== oldFocusedItemKey) {
       this._lockFocusedItemProcessing = true;
       this.option('focusedItemKey', newFocusedItemKey);
@@ -344,7 +344,7 @@ class FileManagerThumbnailListBox extends CollectionWidget {
     }
   }
   _raiseFocusedItemChanged(focusedItem) {
-    var args = {
+    const args = {
       item: focusedItem,
       itemElement: this.option('focusedElement')
     };
@@ -354,8 +354,8 @@ class FileManagerThumbnailListBox extends CollectionWidget {
     if (this.isItemSelected(item) === select) {
       return;
     }
-    var itemElement = this.getItemElementByItem(item);
-    var index = this._getIndexByItemElement(itemElement);
+    const itemElement = this.getItemElementByItem(item);
+    const index = this._getIndexByItemElement(itemElement);
     this._selection.changeItemSelection(index, {
       control: this._isPreserveSelectionMode
     });
@@ -400,7 +400,7 @@ class FileManagerThumbnailListBox extends CollectionWidget {
         }
         if (isDefined(args.value)) {
           this._syncFocusedItemKey().done(() => {
-            var focusedItem = this._getFocusedItem();
+            const focusedItem = this._getFocusedItem();
             this._raiseFocusedItemChanged(focusedItem);
           });
         } else {
@@ -441,17 +441,17 @@ class ListBoxLayoutUtils {
     if (!this._$item) {
       return null;
     }
-    var itemWidth = getOuterWidth(this._$item, true);
+    const itemWidth = getOuterWidth(this._$item, true);
     if (itemWidth === 0) {
       return null;
     }
-    var itemHeight = getOuterHeight(this._$item, true);
-    var viewPortWidth = getInnerWidth(this._$itemContainer);
-    var viewPortHeight = getInnerHeight(this._$viewPort);
-    var viewPortScrollTop = this._scrollView.scrollTop();
-    var viewPortScrollBottom = viewPortScrollTop + viewPortHeight;
-    var itemPerRowCount = Math.floor(viewPortWidth / itemWidth);
-    var rowPerPageRate = viewPortHeight / itemHeight;
+    const itemHeight = getOuterHeight(this._$item, true);
+    const viewPortWidth = getInnerWidth(this._$itemContainer);
+    const viewPortHeight = getInnerHeight(this._$viewPort);
+    const viewPortScrollTop = this._scrollView.scrollTop();
+    const viewPortScrollBottom = viewPortScrollTop + viewPortHeight;
+    const itemPerRowCount = Math.floor(viewPortWidth / itemWidth);
+    const rowPerPageRate = viewPortHeight / itemHeight;
     return {
       itemWidth: itemWidth,
       itemHeight: itemHeight,
@@ -464,14 +464,14 @@ class ListBoxLayoutUtils {
     };
   }
   createItemLayoutModel(index) {
-    var layout = this.getLayoutModel();
+    const layout = this.getLayoutModel();
     if (!layout) {
       return null;
     }
-    var itemRowIndex = Math.floor(index / layout.itemPerRowCount);
-    var itemColumnIndex = index % layout.itemPerRowCount;
-    var itemTop = itemRowIndex * layout.itemHeight;
-    var itemBottom = itemTop + layout.itemHeight;
+    const itemRowIndex = Math.floor(index / layout.itemPerRowCount);
+    const itemColumnIndex = index % layout.itemPerRowCount;
+    const itemTop = itemRowIndex * layout.itemHeight;
+    const itemBottom = itemTop + layout.itemHeight;
     return {
       itemRowIndex: itemRowIndex,
       itemColumnIndex: itemColumnIndex,
@@ -480,14 +480,14 @@ class ListBoxLayoutUtils {
     };
   }
   scrollToItem(index) {
-    var layout = this.getLayoutModel();
+    const layout = this.getLayoutModel();
     if (!layout) {
       return;
     }
-    var itemRowIndex = Math.floor(index / layout.itemPerRowCount);
-    var itemTop = itemRowIndex * layout.itemHeight;
-    var itemBottom = itemTop + layout.itemHeight;
-    var newScrollTop = layout.viewPortScrollTop;
+    const itemRowIndex = Math.floor(index / layout.itemPerRowCount);
+    const itemTop = itemRowIndex * layout.itemHeight;
+    const itemBottom = itemTop + layout.itemHeight;
+    let newScrollTop = layout.viewPortScrollTop;
     if (itemTop < layout.viewPortScrollTop) {
       newScrollTop = itemTop;
     } else if (itemBottom > layout.viewPortScrollBottom) {

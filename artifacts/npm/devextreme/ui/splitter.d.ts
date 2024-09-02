@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/splitter.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,13 +33,11 @@ import {
 } from '../common';
 
 /**
- * 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @docid _ui_splitter_ResizeInfo
+ * @hidden
  */
 export interface ResizeInfo {
-    /**
-     * 
-     */
+    /** @docid _ui_splitter_ResizeInfo.handleElement */
     readonly handleElement?: DxElement;
 }
 
@@ -50,167 +48,258 @@ export {
 };
 
 /**
- * 
+ * @docid _ui_splitter_ContentReadyEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type ContentReadyEvent<TItem extends ItemLike<TKey> = any, TKey = any> = EventInfo<dxSplitter<TItem, TKey>>;
 
 /**
- * 
+ * @docid _ui_splitter_DisposingEvent
+ * @public
+ * @type object
+ * @inherits EventInfo
  */
 export type DisposingEvent<TItem extends ItemLike<TKey> = any, TKey = any> = EventInfo<dxSplitter<TItem, TKey>>;
 
 /**
- * 
+ * @docid _ui_splitter_InitializedEvent
+ * @public
+ * @type object
+ * @inherits InitializedEventInfo
  */
 export type InitializedEvent<TItem extends ItemLike<TKey> = any, TKey = any> = InitializedEventInfo<dxSplitter<TItem, TKey>>;
 
 /**
- * 
+ * @docid _ui_splitter_ItemClickEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemClickEvent<TItem extends ItemLike<TKey> = any, TKey = any> = NativeEventInfo<dxSplitter<TItem, TKey>, MouseEvent | PointerEvent> & ItemInfo<TItem>;
 
 /**
- * 
+ * @docid _ui_splitter_ItemContextMenuEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemContextMenuEvent<TItem extends ItemLike<TKey> = any, TKey = any> = NativeEventInfo<dxSplitter<TItem, TKey>, MouseEvent | PointerEvent | TouchEvent> & ItemInfo<TItem>;
 
 /**
- * 
+ * @docid _ui_splitter_ItemRenderedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ItemInfo
  */
 export type ItemRenderedEvent<TItem extends ItemLike<TKey> = any, TKey = any> = EventInfo<dxSplitter<TItem, TKey>> & ItemInfo<TItem>;
 
 /**
- * 
+ * @docid _ui_splitter_OptionChangedEvent
+ * @public
+ * @type object
+ * @inherits EventInfo,ChangedOptionInfo
  */
 export type OptionChangedEvent<TItem extends ItemLike<TKey> = any, TKey = any> = EventInfo<dxSplitter<TItem, TKey>> & ChangedOptionInfo;
 
 /**
- * 
+ * @docid _ui_splitter_ResizeEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,NativeEventInfo,_ui_splitter_ResizeInfo
  */
-export type ResizeEvent<TItem extends ItemLike<TKey> = any, TKey = any> = Cancelable & NativeEventInfo<dxSplitter<TKey>, KeyboardEvent | PointerEvent | MouseEvent | TouchEvent> & ResizeInfo;
+export type ResizeEvent<TKey = any> = Cancelable & NativeEventInfo<dxSplitter<TKey>, KeyboardEvent | PointerEvent | MouseEvent | TouchEvent> & ResizeInfo;
 
 /**
- * 
+ * @docid _ui_splitter_ResizeStartEvent
+ * @public
+ * @type object
+ * @inherits Cancelable,NativeEventInfo,_ui_splitter_ResizeInfo
  */
-export type ResizeStartEvent<TItem extends ItemLike<TKey> = any, TKey = any> = Cancelable & NativeEventInfo<dxSplitter<TKey>, KeyboardEvent | PointerEvent | MouseEvent | TouchEvent> & ResizeInfo;
+export type ResizeStartEvent<TKey = any> = Cancelable & NativeEventInfo<dxSplitter<TKey>, KeyboardEvent | PointerEvent | MouseEvent | TouchEvent> & ResizeInfo;
 
 /**
- * 
+ * @docid _ui_splitter_ResizeEndEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,_ui_splitter_ResizeInfo
  */
-export type ResizeEndEvent<TItem extends ItemLike<TKey> = any, TKey = any> = Cancelable & NativeEventInfo<dxSplitter<TKey>, KeyboardEvent | PointerEvent | MouseEvent | TouchEvent> & ResizeInfo;
+export type ResizeEndEvent<TKey = any> = NativeEventInfo<dxSplitter<TKey>, KeyboardEvent | PointerEvent | MouseEvent | TouchEvent> & ResizeInfo;
 
 /**
- * 
+ * @docid _ui_splitter_ItemCollapsedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemCollapsedEvent<TItem extends ItemLike<TKey> = any, TKey = any> = NativeEventInfo<dxSplitter<TKey>, KeyboardEvent | PointerEvent | MouseEvent | TouchEvent> & ItemInfo<TKey>;
 
 /**
- * 
+ * @docid _ui_splitter_ItemExpandedEvent
+ * @public
+ * @type object
+ * @inherits NativeEventInfo,ItemInfo
  */
 export type ItemExpandedEvent<TItem extends ItemLike<TKey> = any, TKey = any> = NativeEventInfo<dxSplitter<TKey>, KeyboardEvent | PointerEvent | MouseEvent | TouchEvent> & ItemInfo<TKey>;
 
 /**
- * 
- * @deprecated 
+ * @deprecated use Properties instead
+ * @namespace DevExpress.ui
+ * @public
+ * @docid
  */
 export interface dxSplitterOptions<
     TItem extends ItemLike<TKey> = any,
     TKey = any,
 > extends CollectionWidgetOptions<dxSplitter<TItem, TKey>, TItem, TKey> {
     /**
-     * 
+     * @docid
+     * @type string | Array<dxSplitterItem> | Store | DataSource | DataSourceOptions | null
+     * @default null
+     * @public
      */
     dataSource?: DataSourceLike<TItem, TKey> | null;
     /**
-     * 
+     * @docid
+     * @default 'horizontal'
+     * @public
      */
     orientation?: Orientation;
     /**
-     * 
+     * @docid
+     * @type Array<dxSplitterItem>
+     * @fires dxSplitterOptions.onOptionChanged
+     * @public
      */
     items?: Array<TItem>;
     /**
-     * 
-     */
-    repaintChangesOnly?: boolean;
-    /**
-     * 
+     * @docid
+     * @default true
+     * @public
      */
     allowKeyboardNavigation?: boolean;
     /**
-     * 
+     * @docid
+     * @default 8
+     * @public
      */
-    separatorSize?: number | string;
+    separatorSize?: number;
     /**
-     * 
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/splitter:ResizeEvent}
+     * @action
+     * @public
      */
     onResize?: ((e: ResizeEvent) => void);
     /**
-     * 
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/splitter:ResizeEndEvent}
+     * @action
+     * @public
      */
     onResizeEnd?: ((e: ResizeEndEvent) => void);
     /**
-     * 
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/splitter:ResizeStartEvent}
+     * @action
+     * @public
      */
     onResizeStart?: ((e: ResizeStartEvent) => void);
     /**
-     * 
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/splitter:ItemExpandedEvent}
+     * @action
+     * @public
      */
     onItemExpanded?: ((e: ItemExpandedEvent) => void);
     /**
-     * 
+     * @docid
+     * @default null
+     * @type_function_param1 e:{ui/splitter:ItemCollapsedEvent}
+     * @action
+     * @public
      */
     onItemCollapsed?: ((e: ItemCollapsedEvent) => void);
 }
 /**
- * 
+ * @docid
+ * @inherits CollectionWidget
+ * @namespace DevExpress.ui
+ * @public
  */
 export default class dxSplitter<
     TItem extends ItemLike<TKey> = any,
     TKey = any,
 > extends CollectionWidget<Properties<TItem, TKey>, TItem, TKey> { }
 
+/**
+ * @public
+ * @namespace DevExpress.ui.dxSplitter
+ */
 export type Item<TKey = any> = dxSplitterItem<TKey>;
 
 /**
  * @deprecated Use Item instead
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @namespace DevExpress.ui
  */
 export interface dxSplitterItem<TKey = any> extends CollectionWidgetItem {
     /**
-     * 
+     * @docid
+     * @default undefined
+     * @public
+     * @type dxSplitterOptions
      */
     splitter?: Properties<any, TKey>;
     /**
-     * 
+     * @docid
+     * @default undefined
+     * @public
      */
     size?: number | string;
     /**
-     * 
+     * @docid
+     * @default undefined
+     * @public
      */
     maxSize?: number | string;
     /**
-     * 
+     * @docid
+     * @default undefined
+     * @public
      */
     minSize?: number | string;
     /**
-     * 
+     * @docid
+     * @default undefined
+     * @public
      */
     collapsedSize?: number | string;
     /**
-     * 
+     * @docid
+     * @default false
+     * @public
      */
     collapsed?: boolean;
     /**
-     * 
+     * @docid
+     * @default false
+     * @public
      */
     collapsible?: boolean;
     /**
-     * 
+     * @docid
+     * @default true
+     * @public
      */
     resizable?: boolean;
 }
 
+/** @public */
 export type ExplicitTypes<
     TItem extends ItemLike<TKey>,
     TKey,
@@ -225,6 +314,7 @@ export type ExplicitTypes<
     OptionChangedEvent: OptionChangedEvent<TItem, TKey>;
 };
 
+/** @public */
 export type Properties<
     TItem extends ItemLike<TKey> = any,
     TKey = any,

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/grid_core/selection/m_selection.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -25,13 +25,13 @@ var _events_engine = _interopRequireDefault(require("../../../../events/core/eve
 var _hold = _interopRequireDefault(require("../../../../events/hold"));
 var _index = require("../../../../events/utils/index");
 var _message = _interopRequireDefault(require("../../../../localization/message"));
-var _selection = _interopRequireDefault(require("../../../../ui/selection/selection"));
 var _ui = _interopRequireDefault(require("../../../../ui/widget/ui.errors"));
+var _m_selection = _interopRequireDefault(require("../../../ui/selection/m_selection"));
 var _m_modules = _interopRequireDefault(require("../m_modules"));
 var _m_utils = _interopRequireDefault(require("../m_utils"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); } /* eslint-disable max-classes-per-file */
+/* eslint-disable max-classes-per-file */
+
 const EDITOR_CELL_CLASS = 'dx-editor-cell';
 const ROW_CLASS = 'dx-row';
 const ROW_SELECTION_CLASS = 'dx-selection';
@@ -47,7 +47,7 @@ const processLongTap = function (that, dxEvent) {
   const rowsView = that.getView('rowsView');
   // TODO getController
   const selectionController = that.getController('selection');
-  const $row = (0, _renderer.default)(dxEvent.target).closest(".".concat(DATA_ROW_CLASS));
+  const $row = (0, _renderer.default)(dxEvent.target).closest(`.${DATA_ROW_CLASS}`);
   const rowIndex = rowsView.getRowIndex($row);
   if (rowIndex < 0) return;
   if (that.option(SHOW_CHECKBOXES_MODE) === 'onLongTap') {
@@ -110,20 +110,14 @@ const selectionHeaderTemplate = (container, options) => {
   columnHeadersView._renderSelectAllCheckBox($cellElement, column);
   columnHeadersView._attachSelectAllCheckBoxClickEvent($cellElement);
 };
-let SelectionController = exports.SelectionController = /*#__PURE__*/function (_modules$Controller) {
-  _inheritsLoose(SelectionController, _modules$Controller);
-  function SelectionController() {
-    return _modules$Controller.apply(this, arguments) || this;
-  }
-  var _proto = SelectionController.prototype;
-  _proto.init = function init() {
-    var _a;
+class SelectionController extends _m_modules.default.Controller {
+  init() {
     // @ts-expect-error
     const {
       deferred,
       selectAllMode,
       mode
-    } = (_a = this.option('selection')) !== null && _a !== void 0 ? _a : {};
+    } = this.option('selection') ?? {};
     if (this.option('scrolling.mode') === 'infinite' && !deferred && mode === 'multiple' && selectAllMode === 'allPages') {
       _ui.default.log('W1018');
     }
@@ -141,12 +135,12 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
       this._dataPushedHandler = this._handleDataPushed.bind(this);
       this._dataController.pushed.add(this._dataPushedHandler);
     }
-  };
-  _proto._handleDataPushed = function _handleDataPushed(changes) {
+  }
+  _handleDataPushed(changes) {
     this._deselectRemovedOnPush(changes);
     this._updateSelectedOnPush(changes);
-  };
-  _proto._deselectRemovedOnPush = function _deselectRemovedOnPush(changes) {
+  }
+  _deselectRemovedOnPush(changes) {
     const isDeferredSelection = this.option('selection.deferred');
     let removedKeys = changes.filter(change => change.type === 'remove').map(change => change.key);
     if (isDeferredSelection) {
@@ -154,8 +148,8 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
       removedKeys = removedKeys.filter(key => selectedKeys.find(selectedKey => (0, _common.equalByValue)(selectedKey, key)));
     }
     removedKeys.length && this.deselectRows(removedKeys);
-  };
-  _proto._updateSelectedOnPush = function _updateSelectedOnPush(changes) {
+  }
+  _updateSelectedOnPush(changes) {
     const isDeferredSelection = this.option('selection.deferred');
     if (isDeferredSelection) {
       return;
@@ -170,12 +164,11 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
   }
   /**
    * @extended: TreeList's selection
-   */;
-  _proto._getSelectionConfig = function _getSelectionConfig() {
-    var _a;
+   */
+  _getSelectionConfig() {
     const dataController = this._dataController;
     const columnsController = this._columnsController;
-    const selectionOptions = (_a = this.option('selection')) !== null && _a !== void 0 ? _a : {};
+    const selectionOptions = this.option('selection') ?? {};
     const {
       deferred
     } = selectionOptions;
@@ -192,6 +185,7 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
       selectionFilter: this.option('selectionFilter'),
       ignoreDisabledItems: true,
       isVirtualPaging: virtualPaging,
+      sensitivity: this.option('selection.sensitivity'),
       allowLoadByRange() {
         const hasGroupColumns = columnsController.getGroupColumns().length > 0;
         return virtualPaging && !legacyScrollingMode && !hasGroupColumns && allowSelectAll && !deferred;
@@ -203,13 +197,13 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
         return dataController === null || dataController === void 0 ? void 0 : dataController.keyOf(item);
       },
       dataFields() {
-        var _a;
-        return (_a = dataController.dataSource()) === null || _a === void 0 ? void 0 : _a.select();
+        var _dataController$dataS;
+        return (_dataController$dataS = dataController.dataSource()) === null || _dataController$dataS === void 0 ? void 0 : _dataController$dataS.select();
       },
       load(options) {
-        var _a;
+        var _dataController$dataS2;
         // @ts-expect-error
-        return ((_a = dataController.dataSource()) === null || _a === void 0 ? void 0 : _a.load(options)) || new _deferred.Deferred().resolve([]);
+        return ((_dataController$dataS2 = dataController.dataSource()) === null || _dataController$dataS2 === void 0 ? void 0 : _dataController$dataS2.load(options)) || new _deferred.Deferred().resolve([]);
       },
       // eslint-disable-next-line
       plainItems(cached) {
@@ -229,11 +223,11 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
       },
       totalCount: () => dataController.totalCount(),
       getLoadOptions(loadItemIndex, focusedItemIndex, shiftItemIndex) {
-        var _a, _b;
+        var _dataController$dataS3;
         const {
           sort,
           filter
-        } = (_b = (_a = dataController.dataSource()) === null || _a === void 0 ? void 0 : _a.lastLoadOptions()) !== null && _b !== void 0 ? _b : {};
+        } = ((_dataController$dataS3 = dataController.dataSource()) === null || _dataController$dataS3 === void 0 ? void 0 : _dataController$dataS3.lastLoadOptions()) ?? {};
         let minIndex = Math.min(loadItemIndex, focusedItemIndex);
         let maxIndex = Math.max(loadItemIndex, focusedItemIndex);
         if ((0, _type.isDefined)(shiftItemIndex)) {
@@ -250,8 +244,8 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
       },
       onSelectionChanged: this._updateSelectedItems.bind(this)
     };
-  };
-  _proto._updateSelectColumn = function _updateSelectColumn() {
+  }
+  _updateSelectColumn() {
     const columnsController = this._columnsController;
     const isSelectColumnVisible = this.isSelectColumnVisible();
     columnsController.addCommandColumn({
@@ -267,15 +261,15 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
       headerCellTemplate: selectionHeaderTemplate
     });
     columnsController.columnOption('command:select', 'visible', isSelectColumnVisible);
-  };
-  _proto._createSelection = function _createSelection() {
+  }
+  _createSelection() {
     const options = this._getSelectionConfig();
-    return new _selection.default(options);
+    return new _m_selection.default(options);
   }
   /**
    * @extended: state_storing, TreeList's selection
-   */;
-  _proto._fireSelectionChanged = function _fireSelectionChanged(options) {
+   */
+  _fireSelectionChanged(options) {
     const argument = this.option('selection.deferred') ? {
       selectionFilter: this.option('selectionFilter')
     } : {
@@ -285,8 +279,8 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
     if (options) {
       this.executeAction('onSelectionChanged', options);
     }
-  };
-  _proto._updateCheckboxesState = function _updateCheckboxesState(options) {
+  }
+  _updateCheckboxesState(options) {
     const {
       isDeferredMode
     } = options;
@@ -309,8 +303,8 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
   }
   /**
    * @extended: TreeList's selection
-   */;
-  _proto._updateSelectedItems = function _updateSelectedItems(args) {
+   */
+  _updateSelectedItems(args) {
     const that = this;
     let selectionChangedOptions;
     const isDeferredMode = that.option('selection.deferred');
@@ -352,8 +346,8 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
       };
     }
     that._fireSelectionChanged(selectionChangedOptions);
-  };
-  _proto.getChangedItemIndexes = function getChangedItemIndexes(items) {
+  }
+  getChangedItemIndexes(items) {
     const that = this;
     const itemIndexes = [];
     const isDeferredSelection = this.option('selection.deferred');
@@ -367,18 +361,23 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
       }
     }
     return itemIndexes;
-  };
-  _proto.callbackNames = function callbackNames() {
+  }
+  callbackNames() {
     return ['selectionChanged'];
-  };
-  _proto.optionChanged = function optionChanged(args) {
-    _modules$Controller.prototype.optionChanged.call(this, args);
+  }
+  optionChanged(args) {
+    var _this$_selection;
+    super.optionChanged(args);
+    const selectionOptionsExists = !!((_this$_selection = this._selection) !== null && _this$_selection !== void 0 && _this$_selection.options);
     // eslint-disable-next-line default-case
     switch (args.name) {
       case 'selection':
         {
           const oldSelectionMode = this._selectionMode;
           this.init();
+          if (selectionOptionsExists && args.fullName === 'selection.sensitivity') {
+            this._selection.options.sensitivity = args.value;
+          }
           if (args.fullName !== 'selection.showCheckBoxesMode') {
             const selectionMode = this._selectionMode;
             let selectedRowKeys = this.option('selectedRowKeys');
@@ -413,26 +412,26 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
           break;
         }
     }
-  };
-  _proto.publicMethods = function publicMethods() {
+  }
+  publicMethods() {
     return ['selectRows', 'deselectRows', 'selectRowsByIndexes', 'getSelectedRowKeys', 'getSelectedRowsData', 'clearSelection', 'selectAll', 'deselectAll', 'startSelectionWithCheckboxes', 'stopSelectionWithCheckboxes', 'isRowSelected'];
-  };
-  _proto.isRowSelected = function isRowSelected(arg) {
+  }
+  isRowSelected(arg) {
     return this._selection.isItemSelected(arg);
-  };
-  _proto.isSelectColumnVisible = function isSelectColumnVisible() {
+  }
+  isSelectColumnVisible() {
     return this.option(SELECTION_MODE) === 'multiple' && (this.option(SHOW_CHECKBOXES_MODE) === 'always' || this.option(SHOW_CHECKBOXES_MODE) === 'onClick' || this._isSelectionWithCheckboxes);
-  };
-  _proto._isOnePageSelectAll = function _isOnePageSelectAll() {
+  }
+  _isOnePageSelectAll() {
     return this.option('selection.selectAllMode') === 'page';
-  };
-  _proto.isSelectAll = function isSelectAll() {
+  }
+  isSelectAll() {
     return this._selection.getSelectAllState(this._isOnePageSelectAll());
   }
   /**
    * @extended: TreeList's selection
-   */;
-  _proto.selectAll = function selectAll() {
+   */
+  selectAll() {
     if (this.option(SHOW_CHECKBOXES_MODE) === 'onClick') {
       this.startSelectionWithCheckboxes();
     }
@@ -440,40 +439,38 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
   }
   /**
    * @extended: TreeList's selection
-   */;
-  _proto.deselectAll = function deselectAll() {
+   */
+  deselectAll() {
     return this._selection.deselectAll(this._isOnePageSelectAll());
-  };
-  _proto.clearSelection = function clearSelection() {
+  }
+  clearSelection() {
     return this.selectedItemKeys([]);
-  };
-  _proto.refresh = function refresh() {
-    var _a;
-    const selectedRowKeys = (_a = this.option('selectedRowKeys')) !== null && _a !== void 0 ? _a : [];
+  }
+  refresh() {
+    const selectedRowKeys = this.option('selectedRowKeys') ?? [];
     if (!this.option('selection.deferred') && selectedRowKeys.length) {
       return this.selectedItemKeys(selectedRowKeys);
     }
     // @ts-expect-error
     return new _deferred.Deferred().resolve().promise();
-  };
-  _proto.selectedItemKeys = function selectedItemKeys(value, preserve, isDeselect, isSelectAll) {
+  }
+  selectedItemKeys(value, preserve, isDeselect, isSelectAll) {
     return this._selection.selectedItemKeys(value, preserve, isDeselect, isSelectAll);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.getSelectedRowKeys = function getSelectedRowKeys(mode) {
+  getSelectedRowKeys(mode) {
     return this._selection.getSelectedItemKeys();
   }
   /**
    * @extended: TreeList's selection
-   */;
-  _proto.selectRows = function selectRows(keys, preserve) {
+   */
+  selectRows(keys, preserve) {
     return this.selectedItemKeys(keys, preserve);
-  };
-  _proto.deselectRows = function deselectRows(keys) {
+  }
+  deselectRows(keys) {
     return this.selectedItemKeys(keys, true, true);
-  };
-  _proto.selectRowsByIndexes = function selectRowsByIndexes(indexes) {
+  }
+  selectRowsByIndexes(indexes) {
     const items = this._dataController.items();
     const keys = [];
     if (!Array.isArray(indexes)) {
@@ -491,22 +488,21 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
    * @extended: TreeList's selection
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto.getSelectedRowsData = function getSelectedRowsData(mode) {
+  getSelectedRowsData(mode) {
     return this._selection.getSelectedItems();
-  };
-  _proto.loadSelectedItemsWithFilter = function loadSelectedItemsWithFilter() {
+  }
+  loadSelectedItemsWithFilter() {
     return this._selection.loadSelectedItemsWithFilter();
-  };
-  _proto.changeItemSelection = function changeItemSelection(visibleItemIndex, keys, setFocusOnly) {
+  }
+  changeItemSelection(visibleItemIndex, keys, setFocusOnly) {
     keys = keys || {};
     if (this.isSelectionWithCheckboxes()) {
       keys.control = true;
     }
     const loadedItemIndex = visibleItemIndex + this._dataController.getRowIndexOffset() - this._dataController.getRowIndexOffset(true);
     return this._selection.changeItemSelection(loadedItemIndex, keys, setFocusOnly);
-  };
-  _proto.focusedItemIndex = function focusedItemIndex(itemIndex) {
+  }
+  focusedItemIndex(itemIndex) {
     const that = this;
     if ((0, _type.isDefined)(itemIndex)) {
       that._selection._focusedItemIndex = itemIndex;
@@ -514,11 +510,11 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
       return that._selection._focusedItemIndex;
     }
     return undefined;
-  };
-  _proto.isSelectionWithCheckboxes = function isSelectionWithCheckboxes() {
+  }
+  isSelectionWithCheckboxes() {
     return this.option(SELECTION_MODE) === 'multiple' && (this.option(SHOW_CHECKBOXES_MODE) === 'always' || this._isSelectionWithCheckboxes);
-  };
-  _proto.startSelectionWithCheckboxes = function startSelectionWithCheckboxes() {
+  }
+  startSelectionWithCheckboxes() {
     const that = this;
     if (that.option(SELECTION_MODE) === 'multiple' && !that.isSelectionWithCheckboxes()) {
       that._isSelectionWithCheckboxes = true;
@@ -526,8 +522,8 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
       return true;
     }
     return false;
-  };
-  _proto.stopSelectionWithCheckboxes = function stopSelectionWithCheckboxes() {
+  }
+  stopSelectionWithCheckboxes() {
     const that = this;
     if (that._isSelectionWithCheckboxes) {
       that._isSelectionWithCheckboxes = false;
@@ -535,35 +531,30 @@ let SelectionController = exports.SelectionController = /*#__PURE__*/function (_
       return true;
     }
     return false;
-  };
-  return SelectionController;
-}(_m_modules.default.Controller);
-const dataSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base) {
-  _inheritsLoose(DataControllerSelectionExtender, _Base);
-  function DataControllerSelectionExtender() {
-    return _Base.apply(this, arguments) || this;
   }
-  var _proto2 = DataControllerSelectionExtender.prototype;
-  _proto2.init = function init() {
+}
+exports.SelectionController = SelectionController;
+const dataSelectionExtenderMixin = Base => class DataControllerSelectionExtender extends Base {
+  init() {
     const isDeferredMode = this.option('selection.deferred');
-    _Base.prototype.init.apply(this, arguments);
+    super.init.apply(this, arguments);
     if (isDeferredMode) {
       this._selectionController._updateCheckboxesState({
         isDeferredMode: true,
         selectionFilter: this.option('selectionFilter')
       });
     }
-  };
-  _proto2._loadDataSource = function _loadDataSource() {
+  }
+  _loadDataSource() {
     const that = this;
-    return _Base.prototype._loadDataSource.call(this).always(() => {
+    return super._loadDataSource().always(() => {
       that._selectionController.refresh();
     });
-  };
-  _proto2._processDataItem = function _processDataItem(item, options) {
+  }
+  _processDataItem(item, options) {
     const hasSelectColumn = this._selectionController.isSelectColumnVisible();
     const isDeferredSelection = options.isDeferredSelection = options.isDeferredSelection === undefined ? this.option('selection.deferred') : options.isDeferredSelection;
-    const dataItem = _Base.prototype._processDataItem.apply(this, arguments);
+    const dataItem = super._processDataItem.apply(this, arguments);
     dataItem.isSelected = this._selectionController.isRowSelected(isDeferredSelection ? dataItem.data : dataItem.key);
     if (hasSelectColumn && dataItem.values) {
       for (let i = 0; i < options.visibleColumns.length; i++) {
@@ -574,12 +565,12 @@ const dataSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base) {
       }
     }
     return dataItem;
-  };
-  _proto2.refresh = function refresh(options) {
+  }
+  refresh(options) {
     const that = this;
     // @ts-expect-error
     const d = new _deferred.Deferred();
-    _Base.prototype.refresh.apply(this, arguments).done(() => {
+    super.refresh.apply(this, arguments).done(() => {
       if (!options || options.selection) {
         that._selectionController.refresh().done(d.resolve).fail(d.reject);
       } else {
@@ -589,15 +580,14 @@ const dataSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base) {
     return d.promise();
   }
   // eslint-disable-next-line
-  ;
-  _proto2._handleDataChanged = function _handleDataChanged(e) {
+  _handleDataChanged(e) {
     const hasLoadOperation = this.hasLoadOperation();
-    _Base.prototype._handleDataChanged.apply(this, arguments);
+    super._handleDataChanged.apply(this, arguments);
     if (hasLoadOperation && !this._repaintChangesOnly) {
       this._selectionController.focusedItemIndex(-1);
     }
-  };
-  _proto2._applyChange = function _applyChange(change) {
+  }
+  _applyChange(change) {
     if (change && change.changeType === 'updateSelection') {
       change.items.forEach((item, index) => {
         const currentItem = this._items[index];
@@ -608,9 +598,9 @@ const dataSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base) {
       });
       return;
     }
-    return _Base.prototype._applyChange.apply(this, arguments);
-  };
-  _proto2._endUpdateCore = function _endUpdateCore() {
+    return super._applyChange.apply(this, arguments);
+  }
+  _endUpdateCore() {
     const changes = this._changes;
     const isUpdateSelection = changes.length > 1 && changes.every(change => change.changeType === 'updateSelection');
     if (isUpdateSelection) {
@@ -620,38 +610,26 @@ const dataSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base) {
         itemIndexes
       }];
     }
-    _Base.prototype._endUpdateCore.apply(this, arguments);
-  };
-  return DataControllerSelectionExtender;
-}(Base);
-exports.dataSelectionExtenderMixin = dataSelectionExtenderMixin;
-const contextMenu = Base => /*#__PURE__*/function (_Base2) {
-  _inheritsLoose(ContextMenuControllerSelectionExtender, _Base2);
-  function ContextMenuControllerSelectionExtender() {
-    return _Base2.apply(this, arguments) || this;
+    super._endUpdateCore.apply(this, arguments);
   }
-  var _proto3 = ContextMenuControllerSelectionExtender.prototype;
-  _proto3._contextMenuPrepared = function _contextMenuPrepared(options) {
+};
+exports.dataSelectionExtenderMixin = dataSelectionExtenderMixin;
+const contextMenu = Base => class ContextMenuControllerSelectionExtender extends Base {
+  _contextMenuPrepared(options) {
     const dxEvent = options.event;
     if (dxEvent.originalEvent && dxEvent.originalEvent.type !== 'dxhold' || options.items && options.items.length > 0) return;
     processLongTap(this, dxEvent);
-  };
-  return ContextMenuControllerSelectionExtender;
-}(Base);
-const columnHeadersSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base3) {
-  _inheritsLoose(ColumnHeadersSelectionExtender, _Base3);
-  function ColumnHeadersSelectionExtender() {
-    return _Base3.apply(this, arguments) || this;
   }
-  var _proto4 = ColumnHeadersSelectionExtender.prototype;
-  _proto4.init = function init() {
-    _Base3.prototype.init.call(this);
+};
+const columnHeadersSelectionExtenderMixin = Base => class ColumnHeadersSelectionExtender extends Base {
+  init() {
+    super.init();
     this._selectionController.selectionChanged.add(this._updateSelectAllValue.bind(this));
-  };
-  _proto4._updateSelectAllValue = function _updateSelectAllValue() {
+  }
+  _updateSelectAllValue() {
     const that = this;
     const $element = that.element();
-    const $editor = $element && $element.find(".".concat(SELECT_CHECKBOX_CLASS));
+    const $editor = $element && $element.find(`.${SELECT_CHECKBOX_CLASS}`);
     if ($element && $editor.length && that.option('selection.mode') === 'multiple') {
       const selectAllValue = that._selectionController.isSelectAll();
       const hasSelection = selectAllValue !== false;
@@ -661,16 +639,16 @@ const columnHeadersSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base
         value: selectAllValue
       });
     }
-  };
-  _proto4._handleDataChanged = function _handleDataChanged(e) {
-    _Base3.prototype._handleDataChanged.call(this, e);
+  }
+  _handleDataChanged(e) {
+    super._handleDataChanged(e);
     if (!e || e.changeType === 'refresh' || e.repaintChangesOnly && e.changeType === 'update') {
       this.waitAsyncTemplates().done(() => {
         this._updateSelectAllValue();
       });
     }
-  };
-  _proto4._renderSelectAllCheckBox = function _renderSelectAllCheckBox($container, column) {
+  }
+  _renderSelectAllCheckBox($container, column) {
     const that = this;
     const isEmptyData = that._dataController.isEmpty();
     const groupElement = (0, _renderer.default)('<div>').appendTo($container).addClass(SELECT_CHECKBOX_CLASS);
@@ -700,29 +678,23 @@ const columnHeadersSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base
       }
     }));
     return groupElement;
-  };
-  _proto4._attachSelectAllCheckBoxClickEvent = function _attachSelectAllCheckBoxClickEvent($element) {
+  }
+  _attachSelectAllCheckBoxClickEvent($element) {
     _events_engine.default.on($element, _click.name, this.createAction(e => {
       const {
         event
       } = e;
-      if (!(0, _renderer.default)(event.target).closest(".".concat(SELECT_CHECKBOX_CLASS)).length) {
+      if (!(0, _renderer.default)(event.target).closest(`.${SELECT_CHECKBOX_CLASS}`).length) {
         // @ts-expect-error
-        _events_engine.default.trigger((0, _renderer.default)(event.currentTarget).children(".".concat(SELECT_CHECKBOX_CLASS)), _click.name);
+        _events_engine.default.trigger((0, _renderer.default)(event.currentTarget).children(`.${SELECT_CHECKBOX_CLASS}`), _click.name);
       }
       event.preventDefault();
     }));
-  };
-  return ColumnHeadersSelectionExtender;
-}(Base);
-exports.columnHeadersSelectionExtenderMixin = columnHeadersSelectionExtenderMixin;
-const rowsViewSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base4) {
-  _inheritsLoose(RowsViewSelectionExtender, _Base4);
-  function RowsViewSelectionExtender() {
-    return _Base4.apply(this, arguments) || this;
   }
-  var _proto5 = RowsViewSelectionExtender.prototype;
-  _proto5.renderSelectCheckBoxContainer = function renderSelectCheckBoxContainer($container, options) {
+};
+exports.columnHeadersSelectionExtenderMixin = columnHeadersSelectionExtenderMixin;
+const rowsViewSelectionExtenderMixin = Base => class RowsViewSelectionExtender extends Base {
+  renderSelectCheckBoxContainer($container, options) {
     if (options.rowType === 'data' && !options.row.isNewRow) {
       $container.addClass(EDITOR_CELL_CLASS);
       this._attachCheckBoxClickEvent($container);
@@ -730,8 +702,8 @@ const rowsViewSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base4) {
     } else {
       _m_utils.default.setEmptyText($container);
     }
-  };
-  _proto5._renderSelectCheckBox = function _renderSelectCheckBox(container, options) {
+  }
+  _renderSelectCheckBox(container, options) {
     const groupElement = (0, _renderer.default)('<div>').addClass(SELECT_CHECKBOX_CLASS).appendTo(container);
     this.setAria('label', _message.default.format('dxDataGrid-ariaSelectRow'), groupElement);
     this._editorFactoryController.createEditor(groupElement, (0, _extend.extend)({}, options.column, {
@@ -740,8 +712,8 @@ const rowsViewSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base4) {
       lookup: null,
       value: options.value,
       setValue(value, e) {
-        var _a;
-        if (((_a = e === null || e === void 0 ? void 0 : e.event) === null || _a === void 0 ? void 0 : _a.type) === 'keydown') {
+        var _e$event;
+        if ((e === null || e === void 0 || (_e$event = e.event) === null || _e$event === void 0 ? void 0 : _e$event.type) === 'keydown') {
           // @ts-expect-error
           _events_engine.default.trigger(e.element, _click.name, e);
         }
@@ -749,19 +721,19 @@ const rowsViewSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base4) {
       row: options.row
     }));
     return groupElement;
-  };
-  _proto5._attachCheckBoxClickEvent = function _attachCheckBoxClickEvent($element) {
+  }
+  _attachCheckBoxClickEvent($element) {
     _events_engine.default.on($element, _click.name, this.createAction(function (e) {
       const {
         event
       } = e;
-      const rowIndex = this.getRowIndex((0, _renderer.default)(event.currentTarget).closest(".".concat(ROW_CLASS)));
+      const rowIndex = this.getRowIndex((0, _renderer.default)(event.currentTarget).closest(`.${ROW_CLASS}`));
       if (rowIndex >= 0) {
         this._selectionController.startSelectionWithCheckboxes();
         this._selectionController.changeItemSelection(rowIndex, {
           shift: event.shiftKey
         });
-        if ((0, _renderer.default)(event.target).closest(".".concat(SELECT_CHECKBOX_CLASS)).length) {
+        if ((0, _renderer.default)(event.target).closest(`.${SELECT_CHECKBOX_CLASS}`).length) {
           this._dataController.updateItems({
             changeType: 'updateSelection',
             itemIndexes: [rowIndex]
@@ -769,8 +741,8 @@ const rowsViewSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base4) {
         }
       }
     }));
-  };
-  _proto5._update = function _update(change) {
+  }
+  _update(change) {
     const that = this;
     const tableElements = that.getTableElements();
     if (change.changeType === 'updateSelection') {
@@ -785,7 +757,7 @@ const rowsViewSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base4) {
                 const {
                   isSelected
                 } = change.items[index];
-                $row.toggleClass(ROW_SELECTION_CLASS, isSelected === undefined ? false : isSelected).find(".".concat(SELECT_CHECKBOX_CLASS)).dxCheckBox('option', 'value', isSelected);
+                $row.toggleClass(ROW_SELECTION_CLASS, isSelected === undefined ? false : isSelected).find(`.${SELECT_CHECKBOX_CLASS}`).dxCheckBox('option', 'value', isSelected);
                 that.setAria('selected', isSelected, $row);
               }
             }
@@ -794,17 +766,17 @@ const rowsViewSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base4) {
         that._updateCheckboxesClass();
       }
     } else {
-      _Base4.prototype._update.call(this, change);
+      super._update(change);
     }
-  };
-  _proto5._createTable = function _createTable() {
+  }
+  _createTable() {
     const that = this;
     const selectionMode = that.option('selection.mode');
-    const $table = _Base4.prototype._createTable.apply(that, arguments);
+    const $table = super._createTable.apply(that, arguments);
     if (selectionMode !== 'none') {
       if (that.option(SHOW_CHECKBOXES_MODE) === 'onLongTap' || !_support.touch) {
         // TODO Not working timeout by hold when it is larger than other timeouts by hold
-        _events_engine.default.on($table, (0, _index.addNamespace)(_hold.default.name, 'dxDataGridRowsView'), ".".concat(DATA_ROW_CLASS), that.createAction(e => {
+        _events_engine.default.on($table, (0, _index.addNamespace)(_hold.default.name, 'dxDataGridRowsView'), `.${DATA_ROW_CLASS}`, that.createAction(e => {
           processLongTap(that.component, e.event);
           e.event.stopPropagation();
         }));
@@ -819,9 +791,9 @@ const rowsViewSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base4) {
       }));
     }
     return $table;
-  };
-  _proto5._createRow = function _createRow(row) {
-    const $row = _Base4.prototype._createRow.apply(this, arguments);
+  }
+  _createRow(row) {
+    const $row = super._createRow.apply(this, arguments);
     if (row) {
       const {
         isSelected
@@ -835,14 +807,14 @@ const rowsViewSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base4) {
       }
     }
     return $row;
-  };
-  _proto5._rowClickForTreeList = function _rowClickForTreeList(e) {
-    _Base4.prototype._rowClick.call(this, e);
-  };
-  _proto5._rowClick = function _rowClick(e) {
+  }
+  _rowClickForTreeList(e) {
+    super._rowClick(e);
+  }
+  _rowClick(e) {
     const that = this;
     const dxEvent = e.event;
-    const isSelectionDisabled = (0, _renderer.default)(dxEvent.target).closest(".".concat(SELECTION_DISABLED_CLASS)).length;
+    const isSelectionDisabled = (0, _renderer.default)(dxEvent.target).closest(`.${SELECTION_DISABLED_CLASS}`).length;
     if (!that.isClickableElement((0, _renderer.default)(dxEvent.target))) {
       if (!isSelectionDisabled && (that.option(SELECTION_MODE) !== 'multiple' || that.option(SHOW_CHECKBOXES_MODE) !== 'always')) {
         if (that._selectionController.changeItemSelection(e.rowIndex, {
@@ -853,27 +825,26 @@ const rowsViewSelectionExtenderMixin = Base => /*#__PURE__*/function (_Base4) {
           e.handled = true;
         }
       }
-      _Base4.prototype._rowClick.call(this, e);
+      super._rowClick(e);
     }
-  };
-  _proto5.isClickableElement = function isClickableElement($target) {
-    const isCommandSelect = $target.closest(".".concat(COMMAND_SELECT_CLASS)).length;
+  }
+  isClickableElement($target) {
+    const isCommandSelect = $target.closest(`.${COMMAND_SELECT_CLASS}`).length;
     return !!isCommandSelect;
-  };
-  _proto5._renderCore = function _renderCore(change) {
-    const deferred = _Base4.prototype._renderCore.call(this, change);
+  }
+  _renderCore(change) {
+    const deferred = super._renderCore(change);
     this._updateCheckboxesClass();
     return deferred;
-  };
-  _proto5._updateCheckboxesClass = function _updateCheckboxesClass() {
+  }
+  _updateCheckboxesClass() {
     const tableElements = this.getTableElements();
     const isCheckBoxesHidden = this._selectionController.isSelectColumnVisible() && !this._selectionController.isSelectionWithCheckboxes();
     (0, _iterator.each)(tableElements, (_, tableElement) => {
       (0, _renderer.default)(tableElement).toggleClass(CHECKBOXES_HIDDEN_CLASS, isCheckBoxesHidden);
     });
-  };
-  return RowsViewSelectionExtender;
-}(Base);
+  }
+};
 exports.rowsViewSelectionExtenderMixin = rowsViewSelectionExtenderMixin;
 const selectionModule = exports.selectionModule = {
   defaultOptions() {

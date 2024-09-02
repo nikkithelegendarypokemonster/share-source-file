@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/file_manager/ui.file_manager.dialog_manager.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -16,23 +16,23 @@ class FileManagerDialogManager {
   constructor($element, options) {
     this._$element = $element;
     this._options = options;
-    var baseDialogOptions = {
+    const baseDialogOptions = {
       onClosed: this._options['onDialogClosed'],
       rtlEnabled: this._options['rtlEnabled']
     };
-    var $chooseFolderDialog = $('<div>').appendTo(this._$element);
+    const $chooseFolderDialog = $('<div>').appendTo(this._$element);
     this._chooseDirectoryDialog = new FileManagerFolderChooserDialog($chooseFolderDialog, extend(baseDialogOptions, this._options['chooseDirectoryDialog']));
-    var $renameDialog = $('<div>').appendTo(this._$element);
+    const $renameDialog = $('<div>').appendTo(this._$element);
     this._renameItemDialog = new FileManagerNameEditorDialog($renameDialog, extend(baseDialogOptions, {
       title: messageLocalization.format('dxFileManager-dialogRenameItemTitle'),
       buttonText: messageLocalization.format('dxFileManager-dialogRenameItemButtonText')
     }));
-    var $createDialog = $('<div>').appendTo(this._$element);
+    const $createDialog = $('<div>').appendTo(this._$element);
     this._createItemDialog = new FileManagerNameEditorDialog($createDialog, extend(baseDialogOptions, {
       title: messageLocalization.format('dxFileManager-dialogCreateDirectoryTitle'),
       buttonText: messageLocalization.format('dxFileManager-dialogCreateDirectoryButtonText')
     }));
-    var $deleteItemDialog = $('<div>').appendTo(this._$element);
+    const $deleteItemDialog = $('<div>').appendTo(this._$element);
     this._deleteItemDialog = new FileManagerDeleteItemDialog($deleteItemDialog, baseDialogOptions);
   }
   getCopyDialog(targetItemInfos) {

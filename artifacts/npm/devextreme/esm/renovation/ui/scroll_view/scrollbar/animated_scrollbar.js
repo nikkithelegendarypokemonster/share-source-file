@@ -1,14 +1,14 @@
 /**
 * DevExtreme (esm/renovation/ui/scroll_view/scrollbar/animated_scrollbar.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-var _excluded = ["bottomPocketSize", "bounceEnabled", "containerHasSizes", "containerSize", "contentPaddingBottom", "contentSize", "direction", "forceGeneratePockets", "inertiaEnabled", "maxOffset", "minOffset", "onBounce", "onEnd", "onLock", "onPullDown", "onReachBottom", "onScroll", "onUnlock", "pulledDown", "reachBottomEnabled", "rtlEnabled", "scrollByThumb", "scrollLocation", "scrollLocationChange", "showScrollbar", "visible"];
+const _excluded = ["bottomPocketSize", "bounceEnabled", "containerHasSizes", "containerSize", "contentPaddingBottom", "contentSize", "direction", "forceGeneratePockets", "inertiaEnabled", "maxOffset", "minOffset", "onBounce", "onEnd", "onLock", "onPullDown", "onReachBottom", "onScroll", "onUnlock", "pulledDown", "reachBottomEnabled", "rtlEnabled", "scrollByThumb", "scrollLocation", "scrollLocationChange", "showScrollbar", "visible"];
 import { createComponentVNode } from "inferno";
 import { InfernoEffect, InfernoComponent } from '@devextreme/runtime/inferno';
 import { Scrollbar } from './scrollbar';
@@ -19,17 +19,17 @@ import { clampIntoRange } from '../utils/clamp_into_range';
 import { AnimatedScrollbarProps } from '../common/animated_scrollbar_props';
 import { isDxMouseWheelEvent } from '../../../../events/utils/index';
 import { DIRECTION_HORIZONTAL } from '../common/consts';
-import { ConfigContext } from '../../../common/config_context';
-export var OUT_BOUNDS_ACCELERATION = 0.5;
-export var ACCELERATION = 0.92;
-export var MIN_VELOCITY_LIMIT = 1;
-export var BOUNCE_MIN_VELOCITY_LIMIT = MIN_VELOCITY_LIMIT / 5;
-var FRAME_DURATION = 17;
-var BOUNCE_DURATION = 400;
-var BOUNCE_FRAMES = BOUNCE_DURATION / FRAME_DURATION;
-export var BOUNCE_ACCELERATION_SUM = (1 - ACCELERATION ** BOUNCE_FRAMES) / (1 - ACCELERATION);
-export var viewFunction = viewModel => {
-  var {
+import { ConfigContext } from '../../../../__internal/core/r1/config_context';
+export const OUT_BOUNDS_ACCELERATION = 0.5;
+export const ACCELERATION = 0.92;
+export const MIN_VELOCITY_LIMIT = 1;
+export const BOUNCE_MIN_VELOCITY_LIMIT = MIN_VELOCITY_LIMIT / 5;
+const FRAME_DURATION = 17;
+const BOUNCE_DURATION = 400;
+const BOUNCE_FRAMES = BOUNCE_DURATION / FRAME_DURATION;
+export const BOUNCE_ACCELERATION_SUM = (1 - ACCELERATION ** BOUNCE_FRAMES) / (1 - ACCELERATION);
+export const viewFunction = viewModel => {
+  const {
     newScrollLocation,
     props: {
       bounceEnabled,
@@ -59,7 +59,7 @@ export var viewFunction = viewModel => {
     "containerHasSizes": containerHasSizes
   }, null, scrollbarRef);
 };
-var AnimatedScrollbarPropsType = {
+const AnimatedScrollbarPropsType = {
   get pulledDown() {
     return AnimatedScrollbarProps.pulledDown;
   },
@@ -114,6 +114,12 @@ var AnimatedScrollbarPropsType = {
 };
 import { createRef as infernoCreateRef } from 'inferno';
 export class AnimatedScrollbar extends InfernoComponent {
+  get config() {
+    if (this.context[ConfigContext.id]) {
+      return this.context[ConfigContext.id];
+    }
+    return ConfigContext.defaultValue;
+  }
   constructor(props) {
     super(props);
     this.scrollbarRef = infernoCreateRef();
@@ -164,24 +170,18 @@ export class AnimatedScrollbar extends InfernoComponent {
     this.cancel = this.cancel.bind(this);
     this.calcThumbScrolling = this.calcThumbScrolling.bind(this);
   }
-  get config() {
-    if (this.context[ConfigContext.id]) {
-      return this.context[ConfigContext.id];
-    }
-    return ConfigContext.defaultValue;
-  }
   createEffects() {
     return [new InfernoEffect(this.disposeAnimationFrame, []), new InfernoEffect(this.risePullDown, [this.props.forceGeneratePockets, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.pulledDown, this.props.onPullDown]), new InfernoEffect(this.riseEnd, [this.props.scrollLocation, this.props.maxOffset, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.forceGeneratePockets, this.props.pulledDown, this.props.reachBottomEnabled, this.state.wasRelease, this.props.onEnd, this.props.direction]), new InfernoEffect(this.riseReachBottom, [this.props.forceGeneratePockets, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.onReachBottom]), new InfernoEffect(this.startAnimator, [this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.forceGeneratePockets, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.bounceEnabled, this.props.onBounce, this.props.inertiaEnabled]), new InfernoEffect(this.updateScrollLocationInRTL, [this.props.containerHasSizes, this.props.direction, this.props.rtlEnabled, this.props.maxOffset, this.props.scrollLocation, this.props.scrollLocationChange, this.props.onScroll]), new InfernoEffect(this.performAnimation, [this.state.pendingInertiaAnimator, this.state.canceled, this.state.pendingBounceAnimator, this.props.bounceEnabled, this.props.minOffset, this.props.scrollLocation, this.props.forceGeneratePockets, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.scrollLocationChange, this.props.direction, this.props.onScroll]), new InfernoEffect(this.updateLockedState, [this.state.pendingBounceAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.onLock, this.props.onUnlock])];
   }
   updateEffects() {
     var _this$_effects$, _this$_effects$2, _this$_effects$3, _this$_effects$4, _this$_effects$5, _this$_effects$6, _this$_effects$7;
-    (_this$_effects$ = this._effects[1]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([this.props.forceGeneratePockets, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.pulledDown, this.props.onPullDown]);
-    (_this$_effects$2 = this._effects[2]) === null || _this$_effects$2 === void 0 ? void 0 : _this$_effects$2.update([this.props.scrollLocation, this.props.maxOffset, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.forceGeneratePockets, this.props.pulledDown, this.props.reachBottomEnabled, this.state.wasRelease, this.props.onEnd, this.props.direction]);
-    (_this$_effects$3 = this._effects[3]) === null || _this$_effects$3 === void 0 ? void 0 : _this$_effects$3.update([this.props.forceGeneratePockets, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.onReachBottom]);
-    (_this$_effects$4 = this._effects[4]) === null || _this$_effects$4 === void 0 ? void 0 : _this$_effects$4.update([this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.forceGeneratePockets, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.bounceEnabled, this.props.onBounce, this.props.inertiaEnabled]);
-    (_this$_effects$5 = this._effects[5]) === null || _this$_effects$5 === void 0 ? void 0 : _this$_effects$5.update([this.props.containerHasSizes, this.props.direction, this.props.rtlEnabled, this.props.maxOffset, this.props.scrollLocation, this.props.scrollLocationChange, this.props.onScroll]);
-    (_this$_effects$6 = this._effects[6]) === null || _this$_effects$6 === void 0 ? void 0 : _this$_effects$6.update([this.state.pendingInertiaAnimator, this.state.canceled, this.state.pendingBounceAnimator, this.props.bounceEnabled, this.props.minOffset, this.props.scrollLocation, this.props.forceGeneratePockets, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.scrollLocationChange, this.props.direction, this.props.onScroll]);
-    (_this$_effects$7 = this._effects[7]) === null || _this$_effects$7 === void 0 ? void 0 : _this$_effects$7.update([this.state.pendingBounceAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.onLock, this.props.onUnlock]);
+    (_this$_effects$ = this._effects[1]) === null || _this$_effects$ === void 0 || _this$_effects$.update([this.props.forceGeneratePockets, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.pulledDown, this.props.onPullDown]);
+    (_this$_effects$2 = this._effects[2]) === null || _this$_effects$2 === void 0 || _this$_effects$2.update([this.props.scrollLocation, this.props.maxOffset, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.forceGeneratePockets, this.props.pulledDown, this.props.reachBottomEnabled, this.state.wasRelease, this.props.onEnd, this.props.direction]);
+    (_this$_effects$3 = this._effects[3]) === null || _this$_effects$3 === void 0 || _this$_effects$3.update([this.props.forceGeneratePockets, this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.onReachBottom]);
+    (_this$_effects$4 = this._effects[4]) === null || _this$_effects$4 === void 0 || _this$_effects$4.update([this.state.needRiseEnd, this.state.pendingBounceAnimator, this.state.pendingInertiaAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.scrollLocation, this.props.forceGeneratePockets, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.minOffset, this.props.bounceEnabled, this.props.onBounce, this.props.inertiaEnabled]);
+    (_this$_effects$5 = this._effects[5]) === null || _this$_effects$5 === void 0 || _this$_effects$5.update([this.props.containerHasSizes, this.props.direction, this.props.rtlEnabled, this.props.maxOffset, this.props.scrollLocation, this.props.scrollLocationChange, this.props.onScroll]);
+    (_this$_effects$6 = this._effects[6]) === null || _this$_effects$6 === void 0 || _this$_effects$6.update([this.state.pendingInertiaAnimator, this.state.canceled, this.state.pendingBounceAnimator, this.props.bounceEnabled, this.props.minOffset, this.props.scrollLocation, this.props.forceGeneratePockets, this.props.reachBottomEnabled, this.state.forceAnimationToBottomBound, this.props.maxOffset, this.props.bottomPocketSize, this.props.contentPaddingBottom, this.props.scrollLocationChange, this.props.direction, this.props.onScroll]);
+    (_this$_effects$7 = this._effects[7]) === null || _this$_effects$7 === void 0 || _this$_effects$7.update([this.state.pendingBounceAnimator, this.state.pendingRefreshing, this.state.pendingLoading, this.props.onLock, this.props.onUnlock]);
   }
   disposeAnimationFrame() {
     return () => {
@@ -195,11 +195,11 @@ export class AnimatedScrollbar extends InfernoComponent {
       this.setState(__state_argument => ({
         pendingRefreshing: true
       }));
-      (_this$props$onPullDow = (_this$props = this.props).onPullDown) === null || _this$props$onPullDow === void 0 ? void 0 : _this$props$onPullDow.call(_this$props);
+      (_this$props$onPullDow = (_this$props = this.props).onPullDown) === null || _this$props$onPullDow === void 0 || _this$props$onPullDow.call(_this$props);
     }
   }
   riseEnd() {
-    var isInsideBounds = inRange(this.props.scrollLocation, this.props.maxOffset, 0);
+    const isInsideBounds = inRange(this.props.scrollLocation, this.props.maxOffset, 0);
     if (isInsideBounds && this.isReadyToStart && this.finished && !this.pendingRelease) {
       var _this$props$onEnd, _this$props2;
       this.setState(__state_argument => ({
@@ -211,7 +211,7 @@ export class AnimatedScrollbar extends InfernoComponent {
       this.setState(__state_argument => ({
         forceAnimationToBottomBound: false
       }));
-      (_this$props$onEnd = (_this$props2 = this.props).onEnd) === null || _this$props$onEnd === void 0 ? void 0 : _this$props$onEnd.call(_this$props2, this.props.direction);
+      (_this$props$onEnd = (_this$props2 = this.props).onEnd) === null || _this$props$onEnd === void 0 || _this$props$onEnd.call(_this$props2, this.props.direction);
     }
   }
   riseReachBottom() {
@@ -221,7 +221,7 @@ export class AnimatedScrollbar extends InfernoComponent {
       this.setState(__state_argument => ({
         pendingLoading: true
       }));
-      (_this$props$onReachBo = (_this$props3 = this.props).onReachBottom) === null || _this$props$onReachBo === void 0 ? void 0 : _this$props$onReachBo.call(_this$props3);
+      (_this$props$onReachBo = (_this$props3 = this.props).onReachBottom) === null || _this$props$onReachBo === void 0 || _this$props$onReachBo.call(_this$props3);
     }
   }
   startAnimator() {
@@ -231,9 +231,9 @@ export class AnimatedScrollbar extends InfernoComponent {
       }));
       if (!this.inRange && this.props.bounceEnabled && !this.state.pendingBounceAnimator) {
         var _this$props$onBounce, _this$props4;
-        var distanceToBound = clampIntoRange(this.props.scrollLocation, this.props.minOffset, this.maxOffset) - this.props.scrollLocation;
+        const distanceToBound = clampIntoRange(this.props.scrollLocation, this.props.minOffset, this.maxOffset) - this.props.scrollLocation;
         this.velocity = distanceToBound / BOUNCE_ACCELERATION_SUM;
-        (_this$props$onBounce = (_this$props4 = this.props).onBounce) === null || _this$props$onBounce === void 0 ? void 0 : _this$props$onBounce.call(_this$props4);
+        (_this$props$onBounce = (_this$props4 = this.props).onBounce) === null || _this$props$onBounce === void 0 || _this$props$onBounce.call(_this$props4);
         this.setState(__state_argument => ({
           pendingBounceAnimator: true
         }));
@@ -286,10 +286,10 @@ export class AnimatedScrollbar extends InfernoComponent {
   updateLockedState() {
     if (this.state.pendingBounceAnimator || this.state.pendingRefreshing || this.state.pendingLoading) {
       var _this$props$onLock, _this$props5;
-      (_this$props$onLock = (_this$props5 = this.props).onLock) === null || _this$props$onLock === void 0 ? void 0 : _this$props$onLock.call(_this$props5);
+      (_this$props$onLock = (_this$props5 = this.props).onLock) === null || _this$props$onLock === void 0 || _this$props$onLock.call(_this$props5);
     } else {
       var _this$props$onUnlock, _this$props6;
-      (_this$props$onUnlock = (_this$props6 = this.props).onUnlock) === null || _this$props$onUnlock === void 0 ? void 0 : _this$props$onUnlock.call(_this$props6);
+      (_this$props$onUnlock = (_this$props6 = this.props).onUnlock) === null || _this$props$onUnlock === void 0 || _this$props$onUnlock.call(_this$props6);
     }
   }
   get isReadyToStart() {
@@ -309,7 +309,7 @@ export class AnimatedScrollbar extends InfernoComponent {
   scrollToNextStep() {
     cancelAnimationFrame(this.stepAnimationFrame);
     this.stepAnimationFrame = requestAnimationFrame(() => {
-      var prevVelocity = this.velocity;
+      const prevVelocity = this.velocity;
       this.velocity *= this.acceleration;
       this.moveTo(this.props.scrollLocation + prevVelocity);
     });
@@ -323,21 +323,21 @@ export class AnimatedScrollbar extends InfernoComponent {
     this.setState(__state_argument => ({
       newScrollLocation: value
     }));
-    var scrollDelta = Math.abs(this.prevScrollLocation - value);
+    const scrollDelta = Math.abs(this.prevScrollLocation - value);
     this.prevScrollLocation = value;
-    (_this$props$scrollLoc = (_this$props7 = this.props).scrollLocationChange) === null || _this$props$scrollLoc === void 0 ? void 0 : _this$props$scrollLoc.call(_this$props7, {
+    (_this$props$scrollLoc = (_this$props7 = this.props).scrollLocationChange) === null || _this$props$scrollLoc === void 0 || _this$props$scrollLoc.call(_this$props7, {
       fullScrollProp: this.fullScrollProp,
       location: -value
     });
     if (scrollDelta > 0) {
       var _this$props$onScroll, _this$props8;
-      (_this$props$onScroll = (_this$props8 = this.props).onScroll) === null || _this$props$onScroll === void 0 ? void 0 : _this$props$onScroll.call(_this$props8);
+      (_this$props$onScroll = (_this$props8 = this.props).onScroll) === null || _this$props$onScroll === void 0 || _this$props$onScroll.call(_this$props8);
     }
   }
   moveToMouseLocation(event, offset) {
-    var mouseLocation = event["page".concat(this.axis.toUpperCase())] - offset;
-    var containerToContentRatio = this.props.containerSize / this.props.contentSize;
-    var delta = mouseLocation / containerToContentRatio - this.props.containerSize / 2;
+    const mouseLocation = event[`page${this.axis.toUpperCase()}`] - offset;
+    const containerToContentRatio = this.props.containerSize / this.props.contentSize;
+    const delta = mouseLocation / containerToContentRatio - this.props.containerSize / 2;
     this.moveTo(Math.round(-delta));
   }
   resetThumbScrolling() {
@@ -361,7 +361,7 @@ export class AnimatedScrollbar extends InfernoComponent {
     cancelAnimationFrame(this.stepAnimationFrame);
   }
   calcThumbScrolling(event, currentCrossThumbScrolling, isScrollbarClicked) {
-    var {
+    const {
       target
     } = event.originalEvent;
     this.thumbScrolling = isScrollbarClicked || this.props.scrollByThumb && this.isThumb(target);
@@ -410,7 +410,7 @@ export class AnimatedScrollbar extends InfernoComponent {
     return this.isHorizontal ? 'scrollLeft' : 'scrollTop';
   }
   get restAttributes() {
-    var _this$props9 = this.props,
+    const _this$props9 = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props9, _excluded);
     return restProps;
   }
@@ -431,10 +431,10 @@ export class AnimatedScrollbar extends InfernoComponent {
     this.refreshing = false;
     this.loading = false;
     if (!isDxMouseWheelEvent(event.originalEvent)) {
-      var {
+      const {
         target
       } = event.originalEvent;
-      var scrollbarClicked = this.props.scrollByThumb && this.isScrollbar(target);
+      const scrollbarClicked = this.props.scrollByThumb && this.isScrollbar(target);
       this.calcThumbScrolling(event, crossThumbScrolling, scrollbarClicked);
       if (scrollbarClicked) {
         this.moveToMouseLocation(event, offset);
@@ -448,15 +448,15 @@ export class AnimatedScrollbar extends InfernoComponent {
     if (this.crossThumbScrolling) {
       return;
     }
-    var resultDelta = delta;
+    let resultDelta = delta;
     if (this.thumbScrolling) {
       resultDelta = -Math.round(delta / (this.props.containerSize / this.props.contentSize));
     }
-    var isOutBounds = !inRange(this.props.scrollLocation, this.maxOffset, this.props.minOffset);
+    const isOutBounds = !inRange(this.props.scrollLocation, this.maxOffset, this.props.minOffset);
     if (isOutBounds) {
       resultDelta *= OUT_BOUNDS_ACCELERATION;
     }
-    var scrollValue = this.props.scrollLocation + resultDelta;
+    const scrollValue = this.props.scrollLocation + resultDelta;
     this.moveTo(this.props.bounceEnabled && !isDxMouseWheel ? scrollValue : clampIntoRange(scrollValue, this.props.minOffset, this.maxOffset));
   }
   endHandler(receivedVelocity, needRiseEnd) {
@@ -503,7 +503,7 @@ export class AnimatedScrollbar extends InfernoComponent {
     }));
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       canceled: this.state.canceled,

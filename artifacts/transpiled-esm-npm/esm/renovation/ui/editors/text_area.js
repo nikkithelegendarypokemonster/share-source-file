@@ -1,6 +1,6 @@
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["accessKey", "activeStateEnabled", "autoResizeEnabled", "className", "defaultValue", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "inputAttr", "isDirty", "isValid", "label", "labelMode", "maxLength", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "spellCheck", "stylingMode", "tabIndex", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "valueChangeEvent", "visible", "width"];
+const _excluded = ["accessKey", "activeStateEnabled", "autoResizeEnabled", "className", "defaultValue", "disabled", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "inputAttr", "isDirty", "isValid", "label", "labelMode", "maxLength", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "spellCheck", "stylingMode", "tabIndex", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "valueChangeEvent", "visible", "width"];
 import { createComponentVNode, normalizeProps } from "inferno";
 import { BaseInfernoComponent } from '@devextreme/runtime/inferno';
 import LegacyTextArea from '../../../ui/text_area';
@@ -9,8 +9,8 @@ import { EditorProps } from './common/editor';
 import { EditorStateProps } from './common/editor_state_props';
 import { EditorLabelProps } from './common/editor_label_props';
 import { TextEditorProps } from './common/text_editor_props';
-export var viewFunction = _ref => {
-  var {
+export const viewFunction = _ref => {
+  let {
     componentProps,
     restAttributes
   } = _ref;
@@ -20,11 +20,11 @@ export var viewFunction = _ref => {
     "templateNames": []
   }, restAttributes)));
 };
-export var TextAreaProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(EditorProps), Object.getOwnPropertyDescriptors({
+export const TextAreaProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(EditorProps), Object.getOwnPropertyDescriptors({
   autoResizeEnabled: false,
   isReactComponentWrapper: true
 })));
-export var TextAreaPropsType = {
+export const TextAreaPropsType = {
   get autoResizeEnabled() {
     return TextAreaProps.autoResizeEnabled;
   },
@@ -112,14 +112,14 @@ export class TextArea extends BaseInfernoComponent {
     });
   }
   get restAttributes() {
-    var _this$props$value = _extends({}, this.props, {
+    const _this$props$value = _extends({}, this.props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value
       }),
       restProps = _objectWithoutPropertiesLoose(_this$props$value, _excluded);
     return restProps;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value

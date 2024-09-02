@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/m_draggable.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -34,7 +34,7 @@ var _events_engine = _interopRequireDefault(require("../events/core/events_engin
 var _drag = require("../events/drag");
 var _pointer = _interopRequireDefault(require("../events/pointer"));
 var _index = require("../events/utils/index");
-var _animator = _interopRequireDefault(require("../ui/scroll_view/animator"));
+var _m_animator = _interopRequireDefault(require("./ui/scroll_view/m_animator"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); } // @ts-expect-error
 // @ts-expect-error
@@ -61,8 +61,8 @@ const getMousePosition = event => ({
 const GESTURE_COVER_CLASS = 'dx-gesture-cover';
 const OVERLAY_WRAPPER_CLASS = 'dx-overlay-wrapper';
 const OVERLAY_CONTENT_CLASS = 'dx-overlay-content';
-let ScrollHelper = /*#__PURE__*/function () {
-  function ScrollHelper(orientation, component) {
+class ScrollHelper {
+  constructor(orientation, component) {
     this._$scrollableAtPointer = null;
     this._preventScroll = true;
     this._component = component;
@@ -88,8 +88,7 @@ let ScrollHelper = /*#__PURE__*/function () {
       };
     }
   }
-  var _proto = ScrollHelper.prototype;
-  _proto.updateScrollable = function updateScrollable(elements, mousePosition) {
+  updateScrollable(elements, mousePosition) {
     let isScrollableFound = false;
     elements.some(element => {
       const $element = (0, _renderer.default)(element);
@@ -105,14 +104,14 @@ let ScrollHelper = /*#__PURE__*/function () {
       this._$scrollableAtPointer = null;
       this._scrollSpeed = 0;
     }
-  };
-  _proto.isScrolling = function isScrolling() {
+  }
+  isScrolling() {
     return !!this._scrollSpeed;
-  };
-  _proto.isScrollable = function isScrollable($element) {
+  }
+  isScrollable($element) {
     return ($element.css(this._overFlowAttr) === 'auto' || $element.hasClass('dx-scrollable-container')) && $element.prop(this._scrollSizeProp) > Math.ceil(this._sizeAttr === 'width' ? (0, _size.getWidth)($element) : (0, _size.getHeight)($element));
-  };
-  _proto._trySetScrollable = function _trySetScrollable(element, mousePosition) {
+  }
+  _trySetScrollable(element, mousePosition) {
     const that = this;
     const $element = (0, _renderer.default)(element);
     let distanceToBorders;
@@ -136,8 +135,8 @@ let ScrollHelper = /*#__PURE__*/function () {
       }
     }
     return isScrollable;
-  };
-  _proto._calculateDistanceToBorders = function _calculateDistanceToBorders($area, mousePosition) {
+  }
+  _calculateDistanceToBorders($area, mousePosition) {
     const area = $area.get(0);
     let areaBoundingRect;
     if (area) {
@@ -150,14 +149,14 @@ let ScrollHelper = /*#__PURE__*/function () {
       };
     }
     return {};
-  };
-  _proto._calculateScrollSpeed = function _calculateScrollSpeed(distance) {
+  }
+  _calculateScrollSpeed(distance) {
     const component = this._component;
     const sensitivity = component.option('scrollSensitivity');
     const maxSpeed = component.option('scrollSpeed');
     return Math.ceil(((sensitivity - distance) / sensitivity) ** 2 * maxSpeed);
-  };
-  _proto.scrollByStep = function scrollByStep() {
+  }
+  scrollByStep() {
     const that = this;
     if (that._$scrollableAtPointer && that._scrollSpeed) {
       if (that._$scrollableAtPointer.hasClass('dx-scrollable-container')) {
@@ -178,13 +177,13 @@ let ScrollHelper = /*#__PURE__*/function () {
         that._component._dragMoveHandler(dragMoveArgs);
       }
     }
-  };
-  _proto.reset = function reset() {
+  }
+  reset() {
     this._$scrollableAtPointer = null;
     this._scrollSpeed = 0;
     this._preventScroll = true;
-  };
-  _proto.isOutsideScrollable = function isOutsideScrollable($scrollable, event) {
+  }
+  isOutsideScrollable($scrollable, event) {
     if (!$scrollable) {
       return false;
     }
@@ -194,10 +193,9 @@ let ScrollHelper = /*#__PURE__*/function () {
     const mousePosition = getMousePosition(event);
     const location = this._sizeAttr === 'width' ? mousePosition.x : mousePosition.y;
     return location < start || location > start + size;
-  };
-  return ScrollHelper;
-}();
-const ScrollAnimator = _animator.default.inherit({
+  }
+}
+const ScrollAnimator = _m_animator.default.inherit({
   ctor(strategy) {
     this.callBase();
     this._strategy = strategy;
@@ -336,7 +334,7 @@ const Draggable = _dom_component.default.inherit({
   },
   _addWidgetPrefix(className) {
     const componentName = this.NAME;
-    return (0, _inflector.dasherize)(componentName) + (className ? "-".concat(className) : '');
+    return (0, _inflector.dasherize)(componentName) + (className ? `-${className}` : '');
   },
   _getItemsSelector() {
     return this.option('filter') || '';
@@ -426,10 +424,8 @@ const Draggable = _dom_component.default.inherit({
     this._$sourceElement = null;
   },
   _detachEventHandlers() {
-    // @ts-expect-error
-    _events_engine.default.off(this._$content(), ".".concat(DRAGGABLE));
-    // @ts-expect-error
-    _events_engine.default.off(this._getArea(), ".".concat(DRAGGABLE));
+    _events_engine.default.off(this._$content(), `.${DRAGGABLE}`);
+    _events_engine.default.off(this._getArea(), `.${DRAGGABLE}`);
   },
   _move(position, $element) {
     (0, _translator.move)($element || this._$dragElement, position);
@@ -518,7 +514,7 @@ const Draggable = _dom_component.default.inherit({
       dragElement: $dragElement.get(0),
       initialOffset: isFixedPosition && initialOffset
     }));
-    this._getAction('onDraggableElementShown')(_extends(_extends({}, dragStartArgs), {
+    this._getAction('onDraggableElementShown')(_extends({}, dragStartArgs, {
       dragElement: $dragElement
     }));
     const $area = this._getArea();
@@ -557,7 +553,7 @@ const Draggable = _dom_component.default.inherit({
     $sourceElement && $sourceElement.toggleClass(this._addWidgetPrefix('source'), value);
   },
   _setGestureCoverCursor($element) {
-    (0, _renderer.default)(".".concat(GESTURE_COVER_CLASS)).css('cursor', $element.css('cursor'));
+    (0, _renderer.default)(`.${GESTURE_COVER_CLASS}`).css('cursor', $element.css('cursor'));
   },
   _getBoundOffset() {
     let boundOffset = this.option('boundOffset');
@@ -581,7 +577,7 @@ const Draggable = _dom_component.default.inherit({
     return (0, _renderer.default)(container);
   },
   _getDraggableElementOffset(initialOffsetX, initialOffsetY) {
-    var _a, _b, _c, _d;
+    var _this$_startPosition, _this$_startPosition2;
     const initScrollTop = this._initScrollTop;
     const initScrollLeft = this._initScrollLeft;
     const scrollTop = this._getScrollableScrollTop();
@@ -589,8 +585,8 @@ const Draggable = _dom_component.default.inherit({
     const elementPosition = (0, _renderer.default)(this.element()).css('position');
     const isFixedPosition = elementPosition === 'fixed';
     const result = {
-      left: ((_b = (_a = this._startPosition) === null || _a === void 0 ? void 0 : _a.left) !== null && _b !== void 0 ? _b : 0) + initialOffsetX,
-      top: ((_d = (_c = this._startPosition) === null || _c === void 0 ? void 0 : _c.top) !== null && _d !== void 0 ? _d : 0) + initialOffsetY
+      left: (((_this$_startPosition = this._startPosition) === null || _this$_startPosition === void 0 ? void 0 : _this$_startPosition.left) ?? 0) + initialOffsetX,
+      top: (((_this$_startPosition2 = this._startPosition) === null || _this$_startPosition2 === void 0 ? void 0 : _this$_startPosition2.top) ?? 0) + initialOffsetY
     };
     if (isFixedPosition || this._hasClonedDraggable()) {
       return result;
@@ -642,12 +638,12 @@ const Draggable = _dom_component.default.inherit({
     return $scrollable;
   },
   _getScrollableScrollTop() {
-    var _a, _b;
-    return (_b = (_a = this._getScrollable((0, _renderer.default)(this.element()))) === null || _a === void 0 ? void 0 : _a.scrollTop()) !== null && _b !== void 0 ? _b : 0;
+    var _this$_getScrollable;
+    return ((_this$_getScrollable = this._getScrollable((0, _renderer.default)(this.element()))) === null || _this$_getScrollable === void 0 ? void 0 : _this$_getScrollable.scrollTop()) ?? 0;
   },
   _getScrollableScrollLeft() {
-    var _a, _b;
-    return (_b = (_a = this._getScrollable((0, _renderer.default)(this.element()))) === null || _a === void 0 ? void 0 : _a.scrollLeft()) !== null && _b !== void 0 ? _b : 0;
+    var _this$_getScrollable2;
+    return ((_this$_getScrollable2 = this._getScrollable((0, _renderer.default)(this.element()))) === null || _this$_getScrollable2 === void 0 ? void 0 : _this$_getScrollable2.scrollLeft()) ?? 0;
   },
   _defaultActionArgs() {
     const args = this.callBase.apply(this, arguments);
@@ -762,6 +758,7 @@ const Draggable = _dom_component.default.inherit({
     }
   },
   _keydownEscapeHandler(e) {
+    var _sourceDraggable;
     const $sourceElement = this._getSourceElement();
     if (!$sourceElement) {
       return;
@@ -772,7 +769,7 @@ const Draggable = _dom_component.default.inherit({
       return;
     }
     this.dragInProgress = false;
-    sourceDraggable === null || sourceDraggable === void 0 ? void 0 : sourceDraggable._toggleDraggingClass(false);
+    (_sourceDraggable = sourceDraggable) === null || _sourceDraggable === void 0 || _sourceDraggable._toggleDraggingClass(false);
     this._detachEventHandlers();
     this._revertItemToInitialPosition();
     const targetDraggable = this._getTargetDraggable();
@@ -780,7 +777,7 @@ const Draggable = _dom_component.default.inherit({
     this._attachEventHandlers();
   },
   _getAction(name) {
-    return this["_".concat(name, "Action")] || this._createActionByOption(name);
+    return this[`_${name}Action`] || this._createActionByOption(name);
   },
   _getAnonymousTemplateName() {
     return ANONYMOUS_TEMPLATE_NAME;
@@ -817,7 +814,7 @@ const Draggable = _dom_component.default.inherit({
       case 'onDragLeave':
       case 'onDragCancel':
       case 'onDraggableElementShown':
-        this["_".concat(name, "Action")] = this._createActionByOption(name);
+        this[`_${name}Action`] = this._createActionByOption(name);
         break;
       case 'dragTemplate':
       case 'contentTemplate':

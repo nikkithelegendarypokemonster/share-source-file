@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/grid_core/sorting/m_sorting.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,13 +14,13 @@ import eventsEngine from '../../../../events/core/events_engine';
 import { addNamespace, isCommandKeyPressed } from '../../../../events/utils/index';
 import messageLocalization from '../../../../localization/message';
 import sortingMixin from './m_sorting_mixin';
-var COLUMN_HEADERS_VIEW_NAMESPACE = 'dxDataGridColumnHeadersView';
+const COLUMN_HEADERS_VIEW_NAMESPACE = 'dxDataGridColumnHeadersView';
 // TODO improve types of this mixin
 //  Now all members - protected by default (it may be wrong)
 // TODO getController
-var columnHeadersView = Base => class ColumnHeadersViewSortingExtender extends sortingMixin(Base) {
+const columnHeadersView = Base => class ColumnHeadersViewSortingExtender extends sortingMixin(Base) {
   optionChanged(args) {
-    var that = this;
+    const that = this;
     switch (args.name) {
       case 'sorting':
         that._invalidate();
@@ -31,7 +31,7 @@ var columnHeadersView = Base => class ColumnHeadersViewSortingExtender extends s
     }
   }
   _createRow(row) {
-    var $row = super._createRow(row);
+    const $row = super._createRow(row);
     if (row.rowType === 'header') {
       eventsEngine.on($row, addNamespace(clickEventName, COLUMN_HEADERS_VIEW_NAMESPACE), 'td', this.createAction(e => {
         this._processHeaderAction(e.event, $row);
@@ -43,11 +43,11 @@ var columnHeadersView = Base => class ColumnHeadersViewSortingExtender extends s
     if ($(event.currentTarget).parent().get(0) !== $row.get(0)) {
       return;
     }
-    var that = this;
-    var keyName = null;
-    var $cellElementFromEvent = $(event.currentTarget);
-    var rowIndex = $cellElementFromEvent.parent().index();
-    var columnIndex = -1;
+    const that = this;
+    let keyName = null;
+    const $cellElementFromEvent = $(event.currentTarget);
+    const rowIndex = $cellElementFromEvent.parent().index();
+    let columnIndex = -1;
     // eslint-disable-next-line array-callback-return
     [].slice.call(that.getCellElements(rowIndex)).some(($cellElement, index) => {
       if ($cellElement === $cellElementFromEvent.get(0)) {
@@ -56,11 +56,11 @@ var columnHeadersView = Base => class ColumnHeadersViewSortingExtender extends s
       }
       return undefined;
     });
-    var visibleColumns = that._columnsController.getVisibleColumns(rowIndex);
-    var column = visibleColumns[columnIndex];
-    var editingController = that.getController('editing');
-    var editingMode = that.option('editing.mode');
-    var isCellEditing = editingController && editingController.isEditing() && (editingMode === 'batch' || editingMode === 'cell');
+    const visibleColumns = that._columnsController.getVisibleColumns(rowIndex);
+    const column = visibleColumns[columnIndex];
+    const editingController = that.getController('editing');
+    const editingMode = that.option('editing.mode');
+    const isCellEditing = editingController && editingController.isEditing() && (editingMode === 'batch' || editingMode === 'cell');
     if (isCellEditing || !that._isSortableElement($(event.target))) {
       return;
     }
@@ -76,8 +76,8 @@ var columnHeadersView = Base => class ColumnHeadersViewSortingExtender extends s
     }
   }
   _renderCellContent($cell, options) {
-    var that = this;
-    var {
+    const that = this;
+    const {
       column
     } = options;
     if (!column.command && options.rowType === 'header') {
@@ -91,7 +91,7 @@ var columnHeadersView = Base => class ColumnHeadersViewSortingExtender extends s
     super._renderCellContent.apply(this, arguments);
   }
   _columnOptionChanged(e) {
-    var {
+    const {
       changeTypes
     } = e;
     if (changeTypes.length === 1 && changeTypes.sorting) {
@@ -101,9 +101,9 @@ var columnHeadersView = Base => class ColumnHeadersViewSortingExtender extends s
     super._columnOptionChanged(e);
   }
 };
-var headerPanel = Base => class HeaderPanelSortingExtender extends sortingMixin(Base) {
+const headerPanel = Base => class HeaderPanelSortingExtender extends sortingMixin(Base) {
   optionChanged(args) {
-    var that = this;
+    const that = this;
     switch (args.name) {
       case 'sorting':
         that._invalidate();
@@ -114,8 +114,8 @@ var headerPanel = Base => class HeaderPanelSortingExtender extends sortingMixin(
     }
   }
   _createGroupPanelItem($rootElement, groupColumn) {
-    var that = this;
-    var $item = super._createGroupPanelItem(...arguments);
+    const that = this;
+    const $item = super._createGroupPanelItem(...arguments);
     eventsEngine.on($item, addNamespace(clickEventName, 'dxDataGridHeaderPanel'), that.createAction(() => {
       that._processGroupItemAction(groupColumn.index);
     }));
@@ -136,7 +136,7 @@ var headerPanel = Base => class HeaderPanelSortingExtender extends sortingMixin(
     setTimeout(() => this.getController('columns').changeSortOrder(groupColumnIndex));
   }
 };
-export var sortingModule = {
+export const sortingModule = {
   defaultOptions() {
     return {
       sorting: {

@@ -1,14 +1,14 @@
 import { each } from '../../core/utils/iterator';
-var _round = Math.round;
-var _min = Math.min;
-var _max = Math.max;
-var _each = each;
-var horizontalAlignmentMap = {
+const _round = Math.round;
+const _min = Math.min;
+const _max = Math.max;
+const _each = each;
+const horizontalAlignmentMap = {
   'left': 0,
   'center': 1,
   'right': 2
 };
-var verticalAlignmentMap = {
+const verticalAlignmentMap = {
   'top': 0,
   'bottom': 1
 };
@@ -16,16 +16,16 @@ function getCellIndex(options) {
   return verticalAlignmentMap[options.verticalAlignment] * 3 + horizontalAlignmentMap[options.horizontalAlignment];
 }
 function createCells(canvas, items) {
-  var hStep = (canvas.right - canvas.left) / 3;
-  var vStep = (canvas.bottom - canvas.top) / 2;
-  var h1 = canvas.left;
-  var h2 = _round(h1 + hStep);
-  var h3 = _round(h1 + hStep + hStep);
-  var h4 = canvas.right;
-  var v1 = canvas.top;
-  var v2 = _round(v1 + vStep);
-  var v3 = canvas.bottom;
-  var cells = [{
+  const hStep = (canvas.right - canvas.left) / 3;
+  const vStep = (canvas.bottom - canvas.top) / 2;
+  const h1 = canvas.left;
+  const h2 = _round(h1 + hStep);
+  const h3 = _round(h1 + hStep + hStep);
+  const h4 = canvas.right;
+  const v1 = canvas.top;
+  const v2 = _round(v1 + vStep);
+  const v3 = canvas.bottom;
+  const cells = [{
     rect: [h1, v1, h2, v2]
   }, {
     rect: [h2, v1, h3, v2],
@@ -45,9 +45,9 @@ function createCells(canvas, items) {
     horInversion: true,
     verInversion: true
   }];
-  var itemsList = [[], [], [], [], [], []];
+  const itemsList = [[], [], [], [], [], []];
   _each(items, function (_, item) {
-    var options = item.getLayoutOptions();
+    const options = item.getLayoutOptions();
     if (options) {
       itemsList[getCellIndex(options)].push({
         item: item,
@@ -72,8 +72,8 @@ function createCells(canvas, items) {
 }
 function adjustCellSizes(cells) {
   _each([0, 1, 2, 3, 4, 5], function (_, index) {
-    var cell = cells[index];
-    var otherCell = cells[(index + 3) % 6];
+    const cell = cells[index];
+    const otherCell = cells[(index + 3) % 6];
     if (cell.items) {
       if (!otherCell.items) {
         cell.rect[1] = _min(cell.rect[1], otherCell.rect[3]);
@@ -82,11 +82,11 @@ function adjustCellSizes(cells) {
     }
   });
   _each([1, 4], function (_, index) {
-    var cell = cells[index];
-    var otherCell1 = cells[index - 1];
-    var otherCell2 = cells[index + 1];
-    var size1;
-    var size2;
+    const cell = cells[index];
+    const otherCell1 = cells[index - 1];
+    const otherCell2 = cells[index + 1];
+    let size1;
+    let size2;
     if (cell.items) {
       if (!otherCell1.items && !otherCell2.items) {
         size1 = cell.rect[0] - otherCell1.rect[2];
@@ -120,7 +120,7 @@ function adjustCellSizes(cells) {
   });
 }
 function adjustCellsAndApplyLayout(cells, forceMode) {
-  var hasHiddenItems = false;
+  let hasHiddenItems = false;
   adjustCellSizes(cells);
   _each(cells, function (_, cell) {
     if (cell.items) {
@@ -130,18 +130,18 @@ function adjustCellsAndApplyLayout(cells, forceMode) {
   return hasHiddenItems;
 }
 function applyCellLayout(cell, forceMode) {
-  var cellRect = cell.rect;
-  var cellWidth = cellRect[2] - cellRect[0];
-  var cellHeight = cellRect[3] - cellRect[1];
-  var xOffset = 0;
-  var yOffset = 0;
-  var currentHeight = 0;
-  var totalL = cellRect[2];
-  var totalT = cellRect[3];
-  var totalR = cellRect[0];
-  var totalB = cellRect[1];
-  var moves = [];
-  var hasHiddenItems = false;
+  const cellRect = cell.rect;
+  const cellWidth = cellRect[2] - cellRect[0];
+  const cellHeight = cellRect[3] - cellRect[1];
+  let xOffset = 0;
+  let yOffset = 0;
+  let currentHeight = 0;
+  let totalL = cellRect[2];
+  let totalT = cellRect[3];
+  let totalR = cellRect[0];
+  let totalB = cellRect[1];
+  const moves = [];
+  let hasHiddenItems = false;
   _each(cell.items, function (_, item) {
     if (item.width > cellWidth || item.height > cellHeight) {
       moves.push(null);
@@ -158,8 +158,8 @@ function applyCellLayout(cell, forceMode) {
       return forceMode || false;
     }
     currentHeight = _max(currentHeight, item.height);
-    var dx = cell.horInversion ? cellRect[2] - item.width - xOffset : cellRect[0] + xOffset;
-    var dy = cell.verInversion ? cellRect[3] - item.height - yOffset : cellRect[1] + yOffset;
+    const dx = cell.horInversion ? cellRect[2] - item.width - xOffset : cellRect[0] + xOffset;
+    const dy = cell.verInversion ? cellRect[3] - item.height - yOffset : cellRect[1] + yOffset;
     xOffset += item.width;
     totalL = _min(totalL, dx);
     totalT = _min(totalT, dy);
@@ -175,7 +175,7 @@ function applyCellLayout(cell, forceMode) {
       xOffset = _round((cellRect[2] - cellRect[0] - totalR + totalL) / 2);
     }
     _each(cell.items, function (i, item) {
-      var move = moves[i];
+      const move = moves[i];
       if (move) {
         item.item.locate(move[0] + xOffset, move[1]);
       } else {
@@ -188,13 +188,13 @@ function applyCellLayout(cell, forceMode) {
   return hasHiddenItems;
 }
 function applyLayout(canvas, items) {
-  var cells = createCells(canvas, items);
+  const cells = createCells(canvas, items);
   if (adjustCellsAndApplyLayout(cells)) {
     adjustCellsAndApplyLayout(cells, true);
   }
 }
 export function LayoutControl(widget) {
-  var that = this;
+  const that = this;
   that._items = [];
   that._suspended = 0;
   that._widget = widget;
@@ -204,33 +204,33 @@ export function LayoutControl(widget) {
 }
 LayoutControl.prototype = {
   constructor: LayoutControl,
-  dispose: function dispose() {
+  dispose: function () {
     this._items = this._updateLayout = null;
   },
-  setSize: function setSize(canvas) {
+  setSize: function (canvas) {
     this._canvas = canvas;
     this._update();
   },
-  suspend: function suspend() {
+  suspend: function () {
     ++this._suspended;
   },
-  resume: function resume() {
+  resume: function () {
     if (--this._suspended === 0) {
       this._update();
     }
   },
   // It should return callback (update trigger) instead of injecting the argument
-  addItem: function addItem(item) {
+  addItem: function (item) {
     this._items.push(item);
     item.updateLayout = this._updateLayout;
   },
-  removeItem: function removeItem(item) {
-    var index = this._items.indexOf(item);
+  removeItem: function (item) {
+    const index = this._items.indexOf(item);
     this._items.splice(index, 1);
     item.updateLayout = null;
   },
-  _update: function _update() {
-    var canvas;
+  _update: function () {
+    let canvas;
     if (this._suspended === 0) {
       canvas = this._canvas;
       _each(this._items, function (_, item) {

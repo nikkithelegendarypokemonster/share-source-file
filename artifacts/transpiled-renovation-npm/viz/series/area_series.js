@@ -79,7 +79,6 @@ const baseAreaMethods = {
     });
   },
   _parseStyle: function (options, defaultColor, defaultBorderColor) {
-    var _options$highlight;
     const borderOptions = options.border || {};
     const borderStyle = chartLineSeries._parseLineOptions(borderOptions, defaultBorderColor);
     borderStyle.stroke = borderOptions.visible && borderStyle['stroke-width'] ? borderStyle.stroke : 'none';
@@ -91,7 +90,7 @@ const baseAreaMethods = {
         fill: (0, _utils.extractColor)(options.color) || defaultColor,
         hatching: options.hatching,
         opacity: options.opacity,
-        filter: (_options$highlight = options.highlight) !== null && _options$highlight !== void 0 ? _options$highlight : null
+        filter: options.highlight ?? null
       }
     };
   },

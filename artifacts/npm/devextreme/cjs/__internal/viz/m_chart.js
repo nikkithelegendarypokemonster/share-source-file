@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/viz/m_chart.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -81,7 +81,7 @@ function hideGridsOnNonFirstValueAxisForPane(axesForPane) {
       const gridOpt = axis.getOptions().grid;
       if (axisShown) {
         changeVisibilityAxisGrids(axis, false, false);
-      } else if (gridOpt === null || gridOpt === void 0 ? void 0 : gridOpt.visible) {
+      } else if (gridOpt !== null && gridOpt !== void 0 && gridOpt.visible) {
         if (axis.getTranslator().getBusinessRange().isEmpty()) {
           changeVisibilityAxisGrids(axis, false, false);
           hiddenStubAxis.push(axis);
@@ -158,7 +158,7 @@ function getAxisMargins(axis) {
 }
 function getHorizontalAxesMargins(axes, getMarginsFunc) {
   return axes.reduce((margins, axis) => {
-    var _a;
+    var _axis$getOrthogonalAx;
     const axisMargins = getMarginsFunc(axis);
     const paneMargins = margins.panes[axis.pane] = margins.panes[axis.pane] || {};
     const spacing = axis.getMultipleAxesSpacing();
@@ -170,7 +170,7 @@ function getHorizontalAxesMargins(axes, getMarginsFunc) {
     margins.bottom = pickMax('bottom', paneMargins, margins);
     margins.left = pickMax('left', paneMargins, margins);
     margins.right = pickMax('right', paneMargins, margins);
-    const orthogonalAxis = (_a = axis.getOrthogonalAxis) === null || _a === void 0 ? void 0 : _a.call(axis);
+    const orthogonalAxis = (_axis$getOrthogonalAx = axis.getOrthogonalAxis) === null || _axis$getOrthogonalAx === void 0 ? void 0 : _axis$getOrthogonalAx.call(axis);
     const shouldResetPositionMargin = (orthogonalAxis === null || orthogonalAxis === void 0 ? void 0 : orthogonalAxis.customPositionIsAvailable()) && (!axis.customPositionIsBoundaryOrthogonalAxis() || !orthogonalAxis.customPositionEqualsToPredefined());
     if (shouldResetPositionMargin) {
       margins[orthogonalAxis.getResolvedBoundaryPosition()] = 0;
@@ -211,7 +211,7 @@ function shrinkCanvases(isRotated, canvases, sizes, verticalMargins, horizontalM
   function getMaxMargin(side, margins1, margins2, pane) {
     return pickMaxValue(getMargin(side, margins1, pane), getMargin(side, margins2, pane));
   }
-  const getOriginalField = field => "original".concat(field[0].toUpperCase()).concat(field.slice(1));
+  const getOriginalField = field => `original${field[0].toUpperCase()}${field.slice(1)}`;
   function shrink(canvases, paneNames, sizeField, startMargin, endMargin, oppositeMargins) {
     paneNames = paneNames.sort((p1, p2) => canvases[p2][startMargin] - canvases[p1][startMargin]);
     paneNames.forEach(pane => {
@@ -579,7 +579,7 @@ const dxChart = _m_advanced_chart.AdvancedChart.inherit({
       axis = this._createAxis(false, this._populateAxesOptions('valueAxis', axisOptions, {
         pane: paneName,
         name: axisName,
-        optionPath: isArray(valueAxisOptions) ? "valueAxis[".concat(axisOptions.priority, "]") : 'valueAxis',
+        optionPath: isArray(valueAxisOptions) ? `valueAxis[${axisOptions.priority}]` : 'valueAxis',
         crosshairMargin: rotated ? crosshairMargins.y : crosshairMargins.x
       }, rotated));
       axis.applyVisualRangeSetter(this._getVisualRangeSetter());
@@ -659,15 +659,15 @@ const dxChart = _m_advanced_chart.AdvancedChart.inherit({
     return panesBorderOptions;
   },
   _createScrollBar() {
-    var _a;
     const scrollBarOptions = this._themeManager.getOptions('scrollBar') || {};
     const scrollBarGroup = this._scrollBarGroup;
     if (scrollBarOptions.visible) {
       scrollBarOptions.rotated = this._isRotated();
       this._scrollBar = (this._scrollBar || new _scroll_bar.ScrollBar(this._renderer, scrollBarGroup)).update(scrollBarOptions);
     } else {
+      var _this$_scrollBar;
       scrollBarGroup.linkRemove();
-      (_a = this._scrollBar) === null || _a === void 0 ? void 0 : _a.dispose();
+      (_this$_scrollBar = this._scrollBar) === null || _this$_scrollBar === void 0 || _this$_scrollBar.dispose();
       this._scrollBar = null;
     }
   },
@@ -707,7 +707,7 @@ const dxChart = _m_advanced_chart.AdvancedChart.inherit({
   },
   _isZooming() {
     const argumentAxis = this.getArgumentAxis();
-    if (!(argumentAxis === null || argumentAxis === void 0 ? void 0 : argumentAxis.getTranslator())) {
+    if (!(argumentAxis !== null && argumentAxis !== void 0 && argumentAxis.getTranslator())) {
       return false;
     }
     const businessRange = argumentAxis.getTranslator().getBusinessRange();
@@ -950,8 +950,8 @@ const dxChart = _m_advanced_chart.AdvancedChart.inherit({
       axis.setInitRange();
     });
     verticalAxes.forEach((axis, i) => {
-      var _a;
-      if ((_a = axis.hasWrap) === null || _a === void 0 ? void 0 : _a.call(axis)) {
+      var _axis$hasWrap;
+      if ((_axis$hasWrap = axis.hasWrap) !== null && _axis$hasWrap !== void 0 && _axis$hasWrap.call(axis)) {
         const title = axis.getTitle();
         const newTitleWidth = title ? title.bBox.width : 0;
         const offset = newTitleWidth - oldTitlesWidth[i];
@@ -1025,7 +1025,7 @@ const dxChart = _m_advanced_chart.AdvancedChart.inherit({
         const customSize = this.option('size');
         const container = this._$element[0];
         const containerHasStyledHeight = !!parseInt(container.style.height, 10) || this._containerInitialHeight !== 0;
-        if (!rotated && !(customSize === null || customSize === void 0 ? void 0 : customSize.height) && !containerHasStyledHeight) {
+        if (!rotated && !(customSize !== null && customSize !== void 0 && customSize.height) && !containerHasStyledHeight) {
           this._forceResize(realSize.width, realSize.height + needVerticalSpace);
           needSpace = false;
         }
@@ -1075,11 +1075,11 @@ const dxChart = _m_advanced_chart.AdvancedChart.inherit({
     }
   },
   _isArgumentAxisBeforeScrollBar() {
-    var _a;
     const argumentAxis = this.getArgumentAxis();
     if (this._scrollBar) {
+      var _argumentAxis$getOpti;
       const argAxisPosition = argumentAxis.getResolvedBoundaryPosition();
-      const argAxisLabelPosition = (_a = argumentAxis.getOptions().label) === null || _a === void 0 ? void 0 : _a.position;
+      const argAxisLabelPosition = (_argumentAxis$getOpti = argumentAxis.getOptions().label) === null || _argumentAxis$getOpti === void 0 ? void 0 : _argumentAxis$getOpti.position;
       const scrollBarPosition = this._scrollBar.getOptions().position;
       return argumentAxis.hasNonBoundaryPosition() || scrollBarPosition === argAxisPosition && argAxisLabelPosition !== scrollBarPosition;
     }
@@ -1109,7 +1109,7 @@ const dxChart = _m_advanced_chart.AdvancedChart.inherit({
       panes: this._getPanesParameters(),
       axes
     };
-    if (!(options === null || options === void 0 ? void 0 : options.enabled)) {
+    if (!(options !== null && options !== void 0 && options.enabled)) {
       return;
     }
     if (this._crosshair) {
@@ -1267,15 +1267,15 @@ const dxChart = _m_advanced_chart.AdvancedChart.inherit({
     }
   },
   _getPaneBorderVisibility(paneIndex) {
-    var _a;
+    var _pane$border;
     const commonPaneBorderVisible = this._themeManager.getOptions('commonPaneSettings').border.visible;
     const pane = this.panes[paneIndex];
-    const paneVisibility = (_a = pane === null || pane === void 0 ? void 0 : pane.border) === null || _a === void 0 ? void 0 : _a.visible;
+    const paneVisibility = pane === null || pane === void 0 || (_pane$border = pane.border) === null || _pane$border === void 0 ? void 0 : _pane$border.visible;
     return paneVisibility === undefined ? commonPaneBorderVisible : paneVisibility;
   },
   _getCanvasForPane(paneName) {
-    var _a;
-    return (_a = this.panes.find(pane => pane.name === paneName)) === null || _a === void 0 ? void 0 : _a.canvas;
+    var _this$panes$find;
+    return (_this$panes$find = this.panes.find(pane => pane.name === paneName)) === null || _this$panes$find === void 0 ? void 0 : _this$panes$find.canvas;
   },
   _getTrackerSettings() {
     return (0, _extend2.extend)(this.callBase(), {
@@ -1401,7 +1401,7 @@ const dxChart = _m_advanced_chart.AdvancedChart.inherit({
     const valueAxis = this._options.silent('valueAxis');
     if ((0, _type.type)(valueAxis) === 'array') {
       for (let i = 0; i < valueAxis.length; i += 1) {
-        const optionPath = "valueAxis[".concat(i, "].visualRange");
+        const optionPath = `valueAxis[${i}].visualRange`;
         this._optionsByReference[optionPath] = true;
       }
     }

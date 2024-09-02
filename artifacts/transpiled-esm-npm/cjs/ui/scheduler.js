@@ -1,10 +1,10 @@
 "use strict";
 
 exports.default = void 0;
-var _ui = _interopRequireDefault(require("./scheduler/ui.scheduler"));
+var _m_scheduler = _interopRequireDefault(require("../__internal/scheduler/m_scheduler"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 // STYLE scheduler
-var _default = exports.default = _ui.default;
+var _default = exports.default = _m_scheduler.default;
 /**
  * @name dxSchedulerOptions.activeStateEnabled
  * @hidden

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/collection/ui.collection_widget.async.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,45 +9,8 @@
 "use strict";
 
 exports.default = void 0;
-var _uiCollection_widget = _interopRequireDefault(require("./ui.collection_widget.edit"));
-var _deferred = require("../../core/utils/deferred");
-var _common = require("../../core/utils/common");
+var _m_collection_widget = _interopRequireDefault(require("../../__internal/ui/collection/m_collection_widget.async"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-const AsyncCollectionWidget = _uiCollection_widget.default.inherit({
-  _initMarkup() {
-    this._deferredItems = [];
-    this.callBase();
-  },
-  _renderItemContent(args) {
-    const renderContentDeferred = new _deferred.Deferred();
-    const itemDeferred = new _deferred.Deferred();
-    const that = this;
-    this._deferredItems[args.index] = itemDeferred;
-    const $itemContent = this.callBase.call(that, args);
-    itemDeferred.done(() => {
-      renderContentDeferred.resolve($itemContent);
-    });
-    return renderContentDeferred.promise();
-  },
-  _onItemTemplateRendered: function (itemTemplate, renderArgs) {
-    return () => {
-      this._deferredItems[renderArgs.index].resolve();
-    };
-  },
-  _postProcessRenderItems: _common.noop,
-  _renderItemsAsync() {
-    const d = new _deferred.Deferred();
-    _deferred.when.apply(this, this._deferredItems).done(() => {
-      this._postProcessRenderItems();
-      d.resolve();
-    });
-    return d.promise();
-  },
-  _clean() {
-    this.callBase();
-    this._deferredItems = [];
-  }
-});
-var _default = exports.default = AsyncCollectionWidget;
+var _default = exports.default = _m_collection_widget.default;
 module.exports = exports.default;
 module.exports.default = exports.default;

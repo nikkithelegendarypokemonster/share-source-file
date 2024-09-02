@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/localization/ldml/date.formatter.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,107 +12,107 @@ function leftPad(text, length) {
   }
   return text;
 }
-var FORMAT_TYPES = {
+const FORMAT_TYPES = {
   '3': 'abbreviated',
   '4': 'wide',
   '5': 'narrow'
 };
-var LDML_FORMATTERS = {
-  y: function y(date, count, useUtc) {
-    var year = date[useUtc ? 'getUTCFullYear' : 'getFullYear']();
+const LDML_FORMATTERS = {
+  y: function (date, count, useUtc) {
+    let year = date[useUtc ? 'getUTCFullYear' : 'getFullYear']();
     if (count === 2) {
       year = year % 100;
     }
     return leftPad(year.toString(), count);
   },
-  M: function M(date, count, useUtc, dateParts) {
-    var month = date[useUtc ? 'getUTCMonth' : 'getMonth']();
-    var formatType = FORMAT_TYPES[count];
+  M: function (date, count, useUtc, dateParts) {
+    const month = date[useUtc ? 'getUTCMonth' : 'getMonth']();
+    const formatType = FORMAT_TYPES[count];
     if (formatType) {
       return dateParts.getMonthNames(formatType, 'format')[month];
     }
     return leftPad((month + 1).toString(), Math.min(count, 2));
   },
-  L: function L(date, count, useUtc, dateParts) {
-    var month = date[useUtc ? 'getUTCMonth' : 'getMonth']();
-    var formatType = FORMAT_TYPES[count];
+  L: function (date, count, useUtc, dateParts) {
+    const month = date[useUtc ? 'getUTCMonth' : 'getMonth']();
+    const formatType = FORMAT_TYPES[count];
     if (formatType) {
       return dateParts.getMonthNames(formatType, 'standalone')[month];
     }
     return leftPad((month + 1).toString(), Math.min(count, 2));
   },
-  Q: function Q(date, count, useUtc, dateParts) {
-    var month = date[useUtc ? 'getUTCMonth' : 'getMonth']();
-    var quarter = Math.floor(month / 3);
-    var formatType = FORMAT_TYPES[count];
+  Q: function (date, count, useUtc, dateParts) {
+    const month = date[useUtc ? 'getUTCMonth' : 'getMonth']();
+    const quarter = Math.floor(month / 3);
+    const formatType = FORMAT_TYPES[count];
     if (formatType) {
       return dateParts.getQuarterNames(formatType)[quarter];
     }
     return leftPad((quarter + 1).toString(), Math.min(count, 2));
   },
-  E: function E(date, count, useUtc, dateParts) {
-    var day = date[useUtc ? 'getUTCDay' : 'getDay']();
-    var formatType = FORMAT_TYPES[count < 3 ? 3 : count];
+  E: function (date, count, useUtc, dateParts) {
+    const day = date[useUtc ? 'getUTCDay' : 'getDay']();
+    const formatType = FORMAT_TYPES[count < 3 ? 3 : count];
     return dateParts.getDayNames(formatType)[day];
   },
-  a: function a(date, count, useUtc, dateParts) {
-    var hours = date[useUtc ? 'getUTCHours' : 'getHours']();
-    var period = hours < 12 ? 0 : 1;
-    var formatType = FORMAT_TYPES[count];
+  a: function (date, count, useUtc, dateParts) {
+    const hours = date[useUtc ? 'getUTCHours' : 'getHours']();
+    const period = hours < 12 ? 0 : 1;
+    const formatType = FORMAT_TYPES[count];
     return dateParts.getPeriodNames(formatType)[period];
   },
-  d: function d(date, count, useUtc) {
+  d: function (date, count, useUtc) {
     return leftPad(date[useUtc ? 'getUTCDate' : 'getDate']().toString(), Math.min(count, 2));
   },
-  H: function H(date, count, useUtc) {
+  H: function (date, count, useUtc) {
     return leftPad(date[useUtc ? 'getUTCHours' : 'getHours']().toString(), Math.min(count, 2));
   },
-  h: function h(date, count, useUtc) {
-    var hours = date[useUtc ? 'getUTCHours' : 'getHours']();
+  h: function (date, count, useUtc) {
+    const hours = date[useUtc ? 'getUTCHours' : 'getHours']();
     return leftPad((hours % 12 || 12).toString(), Math.min(count, 2));
   },
-  m: function m(date, count, useUtc) {
+  m: function (date, count, useUtc) {
     return leftPad(date[useUtc ? 'getUTCMinutes' : 'getMinutes']().toString(), Math.min(count, 2));
   },
-  s: function s(date, count, useUtc) {
+  s: function (date, count, useUtc) {
     return leftPad(date[useUtc ? 'getUTCSeconds' : 'getSeconds']().toString(), Math.min(count, 2));
   },
-  S: function S(date, count, useUtc) {
+  S: function (date, count, useUtc) {
     return leftPad(date[useUtc ? 'getUTCMilliseconds' : 'getMilliseconds']().toString(), 3).substr(0, count);
   },
-  x: function x(date, count, useUtc) {
-    var timezoneOffset = useUtc ? 0 : date.getTimezoneOffset();
-    var signPart = timezoneOffset > 0 ? '-' : '+';
-    var timezoneOffsetAbs = Math.abs(timezoneOffset);
-    var hours = Math.floor(timezoneOffsetAbs / 60);
-    var minutes = timezoneOffsetAbs % 60;
-    var hoursPart = leftPad(hours.toString(), 2);
-    var minutesPart = leftPad(minutes.toString(), 2);
+  x: function (date, count, useUtc) {
+    const timezoneOffset = useUtc ? 0 : date.getTimezoneOffset();
+    const signPart = timezoneOffset > 0 ? '-' : '+';
+    const timezoneOffsetAbs = Math.abs(timezoneOffset);
+    const hours = Math.floor(timezoneOffsetAbs / 60);
+    const minutes = timezoneOffsetAbs % 60;
+    const hoursPart = leftPad(hours.toString(), 2);
+    const minutesPart = leftPad(minutes.toString(), 2);
     return signPart + hoursPart + (count >= 3 ? ':' : '') + (count > 1 || minutes ? minutesPart : '');
   },
-  X: function X(date, count, useUtc) {
+  X: function (date, count, useUtc) {
     if (useUtc || !date.getTimezoneOffset()) {
       return 'Z';
     }
     return LDML_FORMATTERS.x(date, count, useUtc);
   },
-  Z: function Z(date, count, useUtc) {
+  Z: function (date, count, useUtc) {
     return LDML_FORMATTERS.X(date, count >= 5 ? 3 : 2, useUtc);
   }
 };
-export var getFormatter = function getFormatter(format, dateParts) {
+export const getFormatter = function (format, dateParts) {
   return function (date) {
-    var charIndex;
-    var formatter;
-    var char;
-    var charCount = 0;
-    var separator = '\'';
-    var isEscaping = false;
-    var isCurrentCharEqualsNext;
-    var result = '';
+    let charIndex;
+    let formatter;
+    let char;
+    let charCount = 0;
+    const separator = '\'';
+    let isEscaping = false;
+    let isCurrentCharEqualsNext;
+    let result = '';
     if (!date) return null;
     if (!format) return date;
-    var useUtc = format[format.length - 1] === 'Z' || format.slice(-3) === '\'Z\'';
+    const useUtc = format[format.length - 1] === 'Z' || format.slice(-3) === '\'Z\'';
     for (charIndex = 0; charIndex < format.length; charIndex++) {
       char = format[charIndex];
       formatter = LDML_FORMATTERS[char];

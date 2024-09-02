@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/file_manager/ui.file_manager.dialog.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -12,16 +12,15 @@ import { isDefined } from '../../core/utils/type';
 import messageLocalization from '../../localization/message';
 import Widget from '../widget/ui.widget';
 import Popup from '../popup/ui.popup';
-var FILE_MANAGER_DIALOG_CONTENT = 'dx-filemanager-dialog';
-var FILE_MANAGER_DIALOG_POPUP = 'dx-filemanager-dialog-popup';
+const FILE_MANAGER_DIALOG_CONTENT = 'dx-filemanager-dialog';
+const FILE_MANAGER_DIALOG_POPUP = 'dx-filemanager-dialog-popup';
 class FileManagerDialogBase extends Widget {
   _initMarkup() {
-    var _options$popupCssClas;
     super._initMarkup();
     this._createOnClosedAction();
-    var options = this._getDialogOptions();
-    var $popup = $('<div>').appendTo(this.$element());
-    var popupOptions = {
+    const options = this._getDialogOptions();
+    const $popup = $('<div>').appendTo(this.$element());
+    const popupOptions = {
       showTitle: true,
       title: options.title,
       visible: false,
@@ -45,14 +44,14 @@ class FileManagerDialogBase extends Widget {
         }
       }],
       onInitialized: _ref => {
-        var {
+        let {
           component
         } = _ref;
         component.registerKeyHandler('enter', this._applyDialogChanges.bind(this));
       },
       onHiding: this._onPopupHiding.bind(this),
       onShown: this._onPopupShown.bind(this),
-      _wrapperClassExternal: "".concat(FILE_MANAGER_DIALOG_POPUP, " ").concat((_options$popupCssClas = options.popupCssClass) !== null && _options$popupCssClas !== void 0 ? _options$popupCssClas : '')
+      _wrapperClassExternal: `${FILE_MANAGER_DIALOG_POPUP} ${options.popupCssClass ?? ''}`
     };
     if (isDefined(options.height)) {
       popupOptions.height = options.height;
@@ -76,7 +75,7 @@ class FileManagerDialogBase extends Widget {
   }
   _createContentTemplate(element) {
     this._$contentElement = $('<div>').appendTo(element).addClass(FILE_MANAGER_DIALOG_CONTENT);
-    var cssClass = this._getDialogOptions().contentCssClass;
+    const cssClass = this._getDialogOptions().contentCssClass;
     if (cssClass) {
       this._$contentElement.addClass(cssClass);
     }
@@ -85,7 +84,7 @@ class FileManagerDialogBase extends Widget {
     return null;
   }
   _applyDialogChanges() {
-    var result = this._getDialogResult();
+    const result = this._getDialogResult();
     if (result) {
       this._dialogResult = result;
       this._closeDialog();
@@ -115,7 +114,7 @@ class FileManagerDialogBase extends Widget {
     });
   }
   _optionChanged(args) {
-    var name = args.name;
+    const name = args.name;
     switch (name) {
       case 'onClosed':
         this._createOnPathChangedAction();

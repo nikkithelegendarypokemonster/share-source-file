@@ -12,30 +12,30 @@ import FileSystemProviderBase from './provider_base';
 import FileSystemError from './error';
 import ErrorCode from './error_codes';
 import { pathCombine } from './utils';
-var window = getWindow();
+const window = getWindow();
 class ObjectFileSystemProvider extends FileSystemProviderBase {
   constructor(options) {
     options = ensureDefined(options, {});
     super(options);
-    var initialArray = options.data;
+    const initialArray = options.data;
     if (initialArray && !Array.isArray(initialArray)) {
       throw errors.Error('E4006');
     }
-    var itemsExpr = options.itemsExpr || 'items';
+    const itemsExpr = options.itemsExpr || 'items';
     this._subFileItemsGetter = compileGetter(itemsExpr);
     this._subFileItemsSetter = this._getSetter(itemsExpr);
-    var contentExpr = options.contentExpr || 'content';
+    const contentExpr = options.contentExpr || 'content';
     this._contentGetter = compileGetter(contentExpr);
     this._contentSetter = this._getSetter(contentExpr);
-    var nameExpr = this._getNameExpr(options);
+    const nameExpr = this._getNameExpr(options);
     this._nameSetter = this._getSetter(nameExpr);
-    var isDirExpr = this._getIsDirExpr(options);
+    const isDirExpr = this._getIsDirExpr(options);
     this._getIsDirSetter = this._getSetter(isDirExpr);
-    var keyExpr = this._getKeyExpr(options);
+    const keyExpr = this._getKeyExpr(options);
     this._keySetter = this._getSetter(keyExpr);
-    var sizeExpr = this._getSizeExpr(options);
+    const sizeExpr = this._getSizeExpr(options);
     this._sizeSetter = this._getSetter(sizeExpr);
-    var dateModifiedExpr = this._getDateModifiedExpr(options);
+    const dateModifiedExpr = this._getDateModifiedExpr(options);
     this._dateModifiedSetter = this._getSetter(dateModifiedExpr);
     this._data = initialArray || [];
   }
@@ -49,7 +49,7 @@ class ObjectFileSystemProvider extends FileSystemProviderBase {
     if (!item) {
       return;
     }
-    var dataItem = this._findDataObject(item);
+    const dataItem = this._findDataObject(item);
     this._nameSetter(dataItem, name);
     item.name = name;
     item.key = this._ensureDataObjectKey(dataItem);
@@ -64,23 +64,23 @@ class ObjectFileSystemProvider extends FileSystemProviderBase {
     return items.map(item => this._executeActionAsDeferred(() => this._deleteItem(item)));
   }
   moveItems(items, destinationDir) {
-    var destinationDataItem = this._findDataObject(destinationDir);
-    var array = this._getDirectoryDataItems(destinationDataItem);
-    var deferreds = items.map(item => this._executeActionAsDeferred(() => {
+    const destinationDataItem = this._findDataObject(destinationDir);
+    const array = this._getDirectoryDataItems(destinationDataItem);
+    const deferreds = items.map(item => this._executeActionAsDeferred(() => {
       this._checkAbilityToMoveOrCopyItem(item, destinationDir);
-      var dataItem = this._findDataObject(item);
+      const dataItem = this._findDataObject(item);
       this._deleteItem(item);
       array.push(dataItem);
     }));
     return deferreds;
   }
   copyItems(items, destinationDir) {
-    var destinationDataItem = this._findDataObject(destinationDir);
-    var array = this._getDirectoryDataItems(destinationDataItem);
-    var deferreds = items.map(item => this._executeActionAsDeferred(() => {
+    const destinationDataItem = this._findDataObject(destinationDir);
+    const array = this._getDirectoryDataItems(destinationDataItem);
+    const deferreds = items.map(item => this._executeActionAsDeferred(() => {
       this._checkAbilityToMoveOrCopyItem(item, destinationDir);
-      var dataItem = this._findDataObject(item);
-      var copiedItem = this._createCopy(dataItem);
+      const dataItem = this._findDataObject(item);
+      const copiedItem = this._createCopy(dataItem);
       array.push(copiedItem);
     }));
     return deferreds;
@@ -90,12 +90,12 @@ class ObjectFileSystemProvider extends FileSystemProviderBase {
       return chunksInfo.customData.deferred;
     }
     this._validateDirectoryExists(destinationDirectory);
-    var deferred = chunksInfo.customData.deferred = new Deferred();
-    var reader = this._createFileReader();
+    const deferred = chunksInfo.customData.deferred = new Deferred();
+    const reader = this._createFileReader();
     reader.readAsDataURL(fileData);
     reader.onload = () => {
-      var content = reader.result.split(',')[1];
-      var dataObj = this._createDataObject(destinationDirectory, fileData.name, false);
+      const content = reader.result.split(',')[1];
+      const dataObj = this._createDataObject(destinationDirectory, fileData.name, false);
       this._sizeSetter(dataObj, fileData.size);
       this._dateModifiedSetter(dataObj, fileData.lastModifiedDate);
       this._contentSetter(dataObj, content);
@@ -112,30 +112,30 @@ class ObjectFileSystemProvider extends FileSystemProviderBase {
     }
   }
   _downloadSingleFile(file) {
-    var content = this._getFileContent(file);
-    var byteString = window.atob(content);
-    var arrayBuffer = new ArrayBuffer(byteString.length);
-    var array = new Uint8Array(arrayBuffer);
-    for (var i = 0; i < byteString.length; i++) {
+    const content = this._getFileContent(file);
+    const byteString = window.atob(content);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
       array[i] = byteString.charCodeAt(i);
     }
-    var blob = new window.Blob([arrayBuffer], {
+    const blob = new window.Blob([arrayBuffer], {
       type: 'application/octet-stream'
     });
     fileSaver.saveAs(file.name, null, blob);
   }
   _downloadMultipleFiles(files) {
-    var jsZip = getJSZip();
-    var zip = new jsZip();
+    const jsZip = getJSZip();
+    const zip = new jsZip();
     files.forEach(file => zip.file(file.name, this._getFileContent(file), {
       base64: true
     }));
-    var options = {
+    const options = {
       type: 'blob',
       compression: 'DEFLATE',
       mimeType: 'application/zip'
     };
-    var deferred = new Deferred();
+    const deferred = new Deferred();
     if (zip.generateAsync) {
       zip.generateAsync(options).then(deferred.resolve);
     } else {
@@ -144,7 +144,7 @@ class ObjectFileSystemProvider extends FileSystemProviderBase {
     deferred.done(blob => fileSaver.saveAs('files.zip', null, blob));
   }
   _getFileContent(file) {
-    var dataItem = this._findDataObject(file);
+    const dataItem = this._findDataObject(file);
     return this._contentGetter(dataItem) || '';
   }
   _validateDirectoryExists(directoryInfo) {
@@ -153,37 +153,37 @@ class ObjectFileSystemProvider extends FileSystemProviderBase {
     }
   }
   _checkAbilityToMoveOrCopyItem(item, destinationDir) {
-    var dataItem = this._findDataObject(item);
-    var itemKey = this._getKeyFromDataObject(dataItem, item.parentPath);
-    var pathInfo = destinationDir.getFullPathInfo();
-    var currentPath = '';
+    const dataItem = this._findDataObject(item);
+    const itemKey = this._getKeyFromDataObject(dataItem, item.parentPath);
+    const pathInfo = destinationDir.getFullPathInfo();
+    let currentPath = '';
     pathInfo.forEach(info => {
       currentPath = pathCombine(currentPath, info.name);
-      var pathKey = this._getDataObjectKey(info.key, currentPath);
+      const pathKey = this._getDataObjectKey(info.key, currentPath);
       if (pathKey === itemKey) {
         throw new FileSystemError(ErrorCode.Other, item);
       }
     });
   }
   _createDataObject(parentDir, name, isDirectory) {
-    var dataObj = {};
+    const dataObj = {};
     this._nameSetter(dataObj, name);
     this._getIsDirSetter(dataObj, isDirectory);
     this._keySetter(dataObj, String(new Guid()));
-    var parentDataItem = this._findDataObject(parentDir);
-    var array = this._getDirectoryDataItems(parentDataItem);
+    const parentDataItem = this._findDataObject(parentDir);
+    const array = this._getDirectoryDataItems(parentDataItem);
     array.push(dataObj);
     return dataObj;
   }
   _createCopy(dataObj) {
-    var copyObj = {};
+    const copyObj = {};
     this._nameSetter(copyObj, this._nameGetter(dataObj));
     this._getIsDirSetter(copyObj, this._isDirGetter(dataObj));
-    var items = this._subFileItemsGetter(dataObj);
+    const items = this._subFileItemsGetter(dataObj);
     if (Array.isArray(items)) {
-      var itemsCopy = [];
+      const itemsCopy = [];
       items.forEach(childItem => {
-        var childCopy = this._createCopy(childItem);
+        const childCopy = this._createCopy(childItem);
         itemsCopy.push(childCopy);
       });
       this._subFileItemsSetter(copyObj, itemsCopy);
@@ -191,17 +191,17 @@ class ObjectFileSystemProvider extends FileSystemProviderBase {
     return copyObj;
   }
   _deleteItem(fileItem) {
-    var dataItem = this._findDataObject(fileItem);
-    var parentDirDataObj = this._findFileItemObj(fileItem.pathInfo);
-    var array = this._getDirectoryDataItems(parentDirDataObj);
-    var index = array.indexOf(dataItem);
+    const dataItem = this._findDataObject(fileItem);
+    const parentDirDataObj = this._findFileItemObj(fileItem.pathInfo);
+    const array = this._getDirectoryDataItems(parentDirDataObj);
+    const index = array.indexOf(dataItem);
     array.splice(index, 1);
   }
   _getDirectoryDataItems(directoryDataObj) {
     if (!directoryDataObj) {
       return this._data;
     }
-    var dataItems = this._subFileItemsGetter(directoryDataObj);
+    let dataItems = this._subFileItemsGetter(directoryDataObj);
     if (!Array.isArray(dataItems)) {
       dataItems = [];
       this._subFileItemsSetter(directoryDataObj, dataItems);
@@ -210,20 +210,20 @@ class ObjectFileSystemProvider extends FileSystemProviderBase {
   }
   _getItems(parentDir) {
     this._validateDirectoryExists(parentDir);
-    var pathInfo = parentDir.getFullPathInfo();
-    var parentDirKey = pathInfo && pathInfo.length > 0 ? pathInfo[pathInfo.length - 1].key : null;
-    var dirFileObjects = this._data;
+    const pathInfo = parentDir.getFullPathInfo();
+    const parentDirKey = pathInfo && pathInfo.length > 0 ? pathInfo[pathInfo.length - 1].key : null;
+    let dirFileObjects = this._data;
     if (parentDirKey) {
-      var directoryEntry = this._findFileItemObj(pathInfo);
+      const directoryEntry = this._findFileItemObj(pathInfo);
       dirFileObjects = directoryEntry && this._subFileItemsGetter(directoryEntry) || [];
     }
     this._ensureKeysForDuplicateNameItems(dirFileObjects);
     return this._convertDataObjectsToFileItems(dirFileObjects, pathInfo);
   }
   _ensureKeysForDuplicateNameItems(dataObjects) {
-    var names = {};
+    const names = {};
     dataObjects.forEach(obj => {
-      var name = this._nameGetter(obj);
+      const name = this._nameGetter(obj);
       if (names[name]) {
         this._ensureDataObjectKey(obj);
       } else {
@@ -235,46 +235,42 @@ class ObjectFileSystemProvider extends FileSystemProviderBase {
     if (item.isRoot()) {
       return null;
     }
-    var result = this._findFileItemObj(item.getFullPathInfo());
+    const result = this._findFileItemObj(item.getFullPathInfo());
     if (!result) {
-      var errorCode = item.isDirectory ? ErrorCode.DirectoryNotFound : ErrorCode.FileNotFound;
+      const errorCode = item.isDirectory ? ErrorCode.DirectoryNotFound : ErrorCode.FileNotFound;
       throw new FileSystemError(errorCode, item);
     }
     return result;
   }
   _findFileItemObj(pathInfo) {
-    var _this = this;
     if (!Array.isArray(pathInfo)) {
       pathInfo = [];
     }
-    var currentPath = '';
-    var fileItemObj = null;
-    var fileItemObjects = this._data;
-    var _loop = function _loop(i) {
+    let currentPath = '';
+    let fileItemObj = null;
+    let fileItemObjects = this._data;
+    for (let i = 0; i < pathInfo.length && (i === 0 || fileItemObj); i++) {
       fileItemObj = fileItemObjects.find(item => {
-        var hasCorrectFileItemType = _this._isDirGetter(item) || i === pathInfo.length - 1;
-        return _this._getKeyFromDataObject(item, currentPath) === pathInfo[i].key && _this._nameGetter(item) === pathInfo[i].name && hasCorrectFileItemType;
+        const hasCorrectFileItemType = this._isDirGetter(item) || i === pathInfo.length - 1;
+        return this._getKeyFromDataObject(item, currentPath) === pathInfo[i].key && this._nameGetter(item) === pathInfo[i].name && hasCorrectFileItemType;
       });
       if (fileItemObj) {
-        currentPath = pathCombine(currentPath, _this._nameGetter(fileItemObj));
-        fileItemObjects = _this._subFileItemsGetter(fileItemObj);
+        currentPath = pathCombine(currentPath, this._nameGetter(fileItemObj));
+        fileItemObjects = this._subFileItemsGetter(fileItemObj);
       }
-    };
-    for (var i = 0; i < pathInfo.length && (i === 0 || fileItemObj); i++) {
-      _loop(i);
     }
     return fileItemObj;
   }
   _getKeyFromDataObject(dataObj, defaultKeyPrefix) {
-    var key = this._keyGetter(dataObj);
-    var relativeName = pathCombine(defaultKeyPrefix, this._nameGetter(dataObj));
+    const key = this._keyGetter(dataObj);
+    const relativeName = pathCombine(defaultKeyPrefix, this._nameGetter(dataObj));
     return this._getDataObjectKey(key, relativeName);
   }
   _getDataObjectKey(key, relativeName) {
     return key ? key : relativeName;
   }
   _ensureDataObjectKey(dataObj) {
-    var key = this._keyGetter(dataObj);
+    let key = this._keyGetter(dataObj);
     if (!key) {
       key = String(new Guid());
       this._keySetter(dataObj, key);
@@ -282,11 +278,11 @@ class ObjectFileSystemProvider extends FileSystemProviderBase {
     return key;
   }
   _hasSubDirs(dataObj) {
-    var subItems = ensureDefined(this._subFileItemsGetter(dataObj), []);
+    const subItems = ensureDefined(this._subFileItemsGetter(dataObj), []);
     if (!Array.isArray(subItems)) {
       return true;
     }
-    for (var i = 0; i < subItems.length; i++) {
+    for (let i = 0; i < subItems.length; i++) {
       if (this._isDirGetter(subItems[i]) === true) {
         return true;
       }

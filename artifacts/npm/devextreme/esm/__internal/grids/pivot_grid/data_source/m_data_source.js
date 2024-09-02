@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/pivot_grid/data_source/m_data_source.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -24,25 +24,25 @@ import { RemoteStore } from '../remote_store/m_remote_store';
 import summaryUtils from '../summary_display_modes/m_summary_display_modes';
 import xmlaStore from '../xmla_store/m_xmla_store';
 import { sort } from './m_data_source_utils';
-var DESCRIPTION_NAME_BY_AREA = {
+const DESCRIPTION_NAME_BY_AREA = {
   row: 'rows',
   column: 'columns',
   data: 'values',
   filter: 'filters'
 };
-var STATE_PROPERTIES = ['area', 'areaIndex', 'sortOrder', 'filterType', 'filterValues', 'sortBy', 'sortBySummaryField', 'sortBySummaryPath', 'expanded', 'summaryType', 'summaryDisplayMode'];
-var CALCULATED_PROPERTIES = ['format', 'selector', 'customizeText', 'caption'];
-var ALL_CALCULATED_PROPERTIES = CALCULATED_PROPERTIES.concat(['allowSorting', 'allowSortingBySummary', 'allowFiltering', 'allowExpandAll']);
+const STATE_PROPERTIES = ['area', 'areaIndex', 'sortOrder', 'filterType', 'filterValues', 'sortBy', 'sortBySummaryField', 'sortBySummaryPath', 'expanded', 'summaryType', 'summaryDisplayMode'];
+const CALCULATED_PROPERTIES = ['format', 'selector', 'customizeText', 'caption'];
+const ALL_CALCULATED_PROPERTIES = CALCULATED_PROPERTIES.concat(['allowSorting', 'allowSortingBySummary', 'allowFiltering', 'allowExpandAll']);
 function createCaption(field) {
-  var caption = field.dataField || field.groupName || '';
-  var summaryType = (field.summaryType || '').toLowerCase();
+  let caption = field.dataField || field.groupName || '';
+  let summaryType = (field.summaryType || '').toLowerCase();
   if (isString(field.groupInterval)) {
-    caption += "_".concat(field.groupInterval);
+    caption += `_${field.groupInterval}`;
   }
   if (summaryType && summaryType !== 'custom') {
     summaryType = summaryType.replace(/^./, summaryType[0].toUpperCase());
     if (caption.length) {
-      summaryType = " (".concat(summaryType, ")");
+      summaryType = ` (${summaryType})`;
     }
   } else {
     summaryType = '';
@@ -50,7 +50,7 @@ function createCaption(field) {
   return titleize(caption) + summaryType;
 }
 function resetFieldState(field, properties) {
-  var initialProperties = field._initProperties || {};
+  const initialProperties = field._initProperties || {};
   each(properties, (_, prop) => {
     if (Object.prototype.hasOwnProperty.call(initialProperties, prop)) {
       field[prop] = initialProperties[prop];
@@ -72,17 +72,17 @@ function isRunningTotalUsed(dataFields) {
 function isDataExists(data) {
   return data.rows.length || data.columns.length || data.values.length;
 }
-var PivotGridDataSource = Class.inherit(function () {
-  var findHeaderItem = function findHeaderItem(headerItems, path) {
+const PivotGridDataSource = Class.inherit(function () {
+  const findHeaderItem = function (headerItems, path) {
     if (headerItems._cacheByPath) {
       return headerItems._cacheByPath[path.join('.')] || null;
     }
     return undefined;
   };
-  var getHeaderItemsLastIndex = function getHeaderItemsLastIndex(headerItems, grandTotalIndex) {
-    var i;
-    var lastIndex = -1;
-    var headerItem;
+  const getHeaderItemsLastIndex = function (headerItems, grandTotalIndex) {
+    let i;
+    let lastIndex = -1;
+    let headerItem;
     if (headerItems) {
       for (i = 0; i < headerItems.length; i += 1) {
         headerItem = headerItems[i];
@@ -102,17 +102,17 @@ var PivotGridDataSource = Class.inherit(function () {
     }
     return lastIndex;
   };
-  var updateHeaderItemChildren = function updateHeaderItemChildren(headerItems, headerItem, children, grandTotalIndex) {
-    var applyingHeaderItemsCount = getHeaderItemsLastIndex(children) + 1;
-    var emptyIndex = getHeaderItemsLastIndex(headerItems, grandTotalIndex) + 1;
-    var index;
-    var applyingItemIndexesToCurrent = [];
-    var needIndexUpdate = false;
+  const updateHeaderItemChildren = function (headerItems, headerItem, children, grandTotalIndex) {
+    const applyingHeaderItemsCount = getHeaderItemsLastIndex(children) + 1;
+    let emptyIndex = getHeaderItemsLastIndex(headerItems, grandTotalIndex) + 1;
+    let index;
+    const applyingItemIndexesToCurrent = [];
+    let needIndexUpdate = false;
     // @ts-expect-error
-    var d = new Deferred();
+    const d = new Deferred();
     if (headerItem.children && headerItem.children.length === children.length) {
-      for (var i = 0; i < children.length; i += 1) {
-        var child = children[i];
+      for (let i = 0; i < children.length; i += 1) {
+        const child = children[i];
         if (child.index !== undefined) {
           if (headerItem.children[i].index === undefined) {
             // eslint-disable-next-line no-plusplus
@@ -140,25 +140,25 @@ var PivotGridDataSource = Class.inherit(function () {
     });
     return d;
   };
-  var updateHeaderItems = function updateHeaderItems(headerItems, newHeaderItems, grandTotalIndex) {
+  const updateHeaderItems = function (headerItems, newHeaderItems, grandTotalIndex) {
     // @ts-expect-errors
-    var d = new Deferred();
-    var emptyIndex = grandTotalIndex >= 0 && getHeaderItemsLastIndex(headerItems, grandTotalIndex) + 1;
-    var applyingItemIndexesToCurrent = [];
+    const d = new Deferred();
+    let emptyIndex = grandTotalIndex >= 0 && getHeaderItemsLastIndex(headerItems, grandTotalIndex) + 1;
+    const applyingItemIndexesToCurrent = [];
     // reset cache
     when(foreachTreeAsync(headerItems, items => {
       delete items[0].collapsedChildren;
     })).done(() => {
       when(foreachTreeAsync(newHeaderItems, (newItems, index) => {
-        var newItem = newItems[0];
+        const newItem = newItems[0];
         if (newItem.index >= 0) {
-          var headerItem = findHeaderItem(headerItems, createPath(newItems));
+          let headerItem = findHeaderItem(headerItems, createPath(newItems));
           if (headerItem && headerItem.index >= 0) {
             applyingItemIndexesToCurrent[newItem.index] = headerItem.index;
           } else if (emptyIndex) {
-            var path = createPath(newItems.slice(1));
+            const path = createPath(newItems.slice(1));
             headerItem = findHeaderItem(headerItems, path);
-            var parentItems = path.length ? headerItem && headerItem.children : headerItems;
+            const parentItems = path.length ? headerItem && headerItem.children : headerItems;
             if (parentItems) {
               parentItems[index] = newItem;
               // eslint-disable-next-line no-plusplus
@@ -172,14 +172,14 @@ var PivotGridDataSource = Class.inherit(function () {
     });
     return d;
   };
-  var updateDataSourceCells = function updateDataSourceCells(dataSource, newDataSourceCells, newRowItemIndexesToCurrent, newColumnItemIndexesToCurrent) {
-    var newRowIndex;
-    var newColumnIndex;
-    var newRowCells;
-    var newCell;
-    var rowIndex;
-    var columnIndex;
-    var dataSourceCells = dataSource.values;
+  const updateDataSourceCells = function (dataSource, newDataSourceCells, newRowItemIndexesToCurrent, newColumnItemIndexesToCurrent) {
+    let newRowIndex;
+    let newColumnIndex;
+    let newRowCells;
+    let newCell;
+    let rowIndex;
+    let columnIndex;
+    const dataSourceCells = dataSource.values;
     if (newDataSourceCells) {
       for (newRowIndex = 0; newRowIndex < newDataSourceCells.length; newRowIndex += 1) {
         newRowCells = newDataSourceCells[newRowIndex];
@@ -207,7 +207,8 @@ var PivotGridDataSource = Class.inherit(function () {
     }
   };
   function createLocalOrRemoteStore(dataSourceOptions, notifyProgress) {
-    var StoreConstructor = dataSourceOptions.remoteOperations || dataSourceOptions.paginate ? RemoteStore : LocalStore;
+    const StoreConstructor = dataSourceOptions.remoteOperations || dataSourceOptions.paginate ? RemoteStore : LocalStore;
+    // @ts-expect-error
     return new StoreConstructor(extend(normalizeDataSourceOptions(dataSourceOptions), {
       onChanged: null,
       onLoadingChanged: null,
@@ -215,8 +216,8 @@ var PivotGridDataSource = Class.inherit(function () {
     }));
   }
   function createStore(dataSourceOptions, notifyProgress) {
-    var store;
-    var storeOptions;
+    let store;
+    let storeOptions;
     if (isPlainObject(dataSourceOptions) && dataSourceOptions.load) {
       store = createLocalOrRemoteStore(dataSourceOptions, notifyProgress);
     } else {
@@ -238,7 +239,7 @@ var PivotGridDataSource = Class.inherit(function () {
     return store;
   }
   function equalFields(fields, prevFields, count) {
-    for (var i = 0; i < count; i += 1) {
+    for (let i = 0; i < count; i += 1) {
       if (!fields[i] || !prevFields[i] || fields[i].index !== prevFields[i].index) {
         return false;
       }
@@ -246,12 +247,12 @@ var PivotGridDataSource = Class.inherit(function () {
     return true;
   }
   function getExpandedPaths(dataSource, loadOptions, dimensionName, prevLoadOptions) {
-    var result = [];
-    var fields = loadOptions && loadOptions[dimensionName] || [];
-    var prevFields = prevLoadOptions && prevLoadOptions[dimensionName] || [];
+    const result = [];
+    const fields = loadOptions && loadOptions[dimensionName] || [];
+    const prevFields = prevLoadOptions && prevLoadOptions[dimensionName] || [];
     foreachTree(dataSource[dimensionName], items => {
-      var item = items[0];
-      var path = createPath(items);
+      const item = items[0];
+      const path = createPath(items);
       if (item.children && fields[path.length - 1] && !fields[path.length - 1].expanded) {
         if (path.length < fields.length && (!prevLoadOptions || equalFields(fields, prevFields, path.length))) {
           result.push(path.slice());
@@ -279,7 +280,7 @@ var PivotGridDataSource = Class.inherit(function () {
     return field;
   }
   function getFieldsState(fields, properties) {
-    var result = [];
+    const result = [];
     each(fields, (_, field) => {
       result.push(setFieldProperties({
         dataField: field.dataField,
@@ -292,10 +293,10 @@ var PivotGridDataSource = Class.inherit(function () {
     if (field.name) {
       return field.name;
     }
-    return "".concat(field.dataField);
+    return `${field.dataField}`;
   }
   function getFieldsById(fields, id) {
-    var result = [];
+    const result = [];
     each(fields || [], (_, field) => {
       if (getFieldStateId(field) === id) {
         result.push(field);
@@ -313,8 +314,8 @@ var PivotGridDataSource = Class.inherit(function () {
   }
   function setFieldsState(stateFields, fields) {
     stateFields = stateFields || [];
-    var fieldsById = {};
-    var id;
+    const fieldsById = {};
+    let id;
     each(fields, (_, field) => {
       id = getFieldStateId(field);
       if (!fieldsById[id]) {
@@ -346,27 +347,27 @@ var PivotGridDataSource = Class.inherit(function () {
     fields.sort((field1, field2) => field1.areaIndex - field2.areaIndex || field1.groupIndex - field2.groupIndex);
   }
   function isAreaField(field, area) {
-    var canAddFieldInArea = area === 'data' || field.visible !== false;
+    const canAddFieldInArea = area === 'data' || field.visible !== false;
     return field.area === area && !isDefined(field.groupIndex) && canAddFieldInArea;
   }
   function getFieldId(field, retrieveFieldsOptionValue) {
-    var groupName = field.groupName || '';
+    const groupName = field.groupName || '';
     return (field.dataField || groupName) + (field.groupInterval ? groupName + field.groupInterval : 'NOGROUP') + (retrieveFieldsOptionValue ? '' : groupName);
   }
   function mergeFields(fields, storeFields, retrieveFieldsOptionValue) {
-    var result = [];
-    var fieldsDictionary = {};
-    var removedFields = {};
-    var mergedGroups = [];
-    var dataTypes = getFieldsDataType(fields);
+    let result = [];
+    const fieldsDictionary = {};
+    const removedFields = {};
+    const mergedGroups = [];
+    const dataTypes = getFieldsDataType(fields);
     if (storeFields) {
       each(storeFields, (_, field) => {
         fieldsDictionary[getFieldId(field, retrieveFieldsOptionValue)] = field;
       });
       each(fields, (_, field) => {
-        var fieldKey = getFieldId(field, retrieveFieldsOptionValue);
-        var storeField = fieldsDictionary[fieldKey] || removedFields[fieldKey];
-        var mergedField;
+        const fieldKey = getFieldId(field, retrieveFieldsOptionValue);
+        const storeField = fieldsDictionary[fieldKey] || removedFields[fieldKey];
+        let mergedField;
         if (storeField) {
           if (storeField._initProperties) {
             resetFieldState(storeField, ALL_CALCULATED_PROPERTIES);
@@ -400,17 +401,17 @@ var PivotGridDataSource = Class.inherit(function () {
   function assignGroupIndexes(fields) {
     fields.forEach(field => {
       if (field.groupName && field.groupInterval && field.groupIndex === undefined) {
-        var maxGroupIndex = fields.filter(f => f.groupName === field.groupName && isNumeric(f.groupIndex)).map(f => f.groupIndex).reduce((prev, current) => Math.max(prev, current), -1);
+        const maxGroupIndex = fields.filter(f => f.groupName === field.groupName && isNumeric(f.groupIndex)).map(f => f.groupIndex).reduce((prev, current) => Math.max(prev, current), -1);
         field.groupIndex = maxGroupIndex + 1;
       }
     });
   }
   function getFields(that) {
     // @ts-expect-error
-    var result = new Deferred();
-    var store = that._store;
-    var storeFields = store && store.getFields(that._fields);
-    var mergedFields;
+    const result = new Deferred();
+    const store = that._store;
+    const storeFields = store && store.getFields(that._fields);
+    let mergedFields;
     when(storeFields).done(storeFields => {
       that._storeFields = storeFields;
       mergedFields = mergeFields(that._fields, storeFields, that._retrieveFields);
@@ -420,7 +421,7 @@ var PivotGridDataSource = Class.inherit(function () {
   }
   function formatHeaderItems(data, loadOptions, headerName) {
     return foreachTreeAsync(data[headerName], items => {
-      var item = items[0];
+      const item = items[0];
       item.text = item.text || formatValue(item.value, loadOptions[headerName][createPath(items).length - 1]);
     });
   }
@@ -429,10 +430,10 @@ var PivotGridDataSource = Class.inherit(function () {
   }
   function updateCache(headerItems) {
     // @ts-expect-error
-    var d = new Deferred();
-    var cacheByPath = {};
+    const d = new Deferred();
+    const cacheByPath = {};
     when(foreachTreeAsync(headerItems, items => {
-      var path = createPath(items).join('.');
+      const path = createPath(items).join('.');
       // eslint-disable-next-line prefer-destructuring
       cacheByPath[path] = items[0];
     })).done(d.resolve);
@@ -440,7 +441,7 @@ var PivotGridDataSource = Class.inherit(function () {
     return d;
   }
   function getAreaFields(fields, area) {
-    var areaFields = [];
+    const areaFields = [];
     each(fields, function () {
       if (isAreaField(this, area)) {
         areaFields.push(this);
@@ -452,8 +453,8 @@ var PivotGridDataSource = Class.inherit(function () {
     ctor(options) {
       options = options || {};
       this._eventsStrategy = new EventsStrategy(this);
-      var that = this;
-      var store = createStore(options, progress => {
+      const that = this;
+      const store = createStore(options, progress => {
         that._eventsStrategy.fireEvent('progressChanged', [progress]);
       });
       that._store = store;
@@ -467,7 +468,7 @@ var PivotGridDataSource = Class.inherit(function () {
       that._loadingCount = 0;
       that._isFieldsModified = false;
       each(['changed', 'loadError', 'loadingChanged', 'progressChanged', 'fieldsPrepared', 'expandValueChanging'], (_, eventName) => {
-        var optionName = "on".concat(eventName[0].toUpperCase()).concat(eventName.slice(1));
+        const optionName = `on${eventName[0].toUpperCase()}${eventName.slice(1)}`;
         if (Object.prototype.hasOwnProperty.call(options, optionName)) {
           this.on(eventName, options[optionName]);
         }
@@ -484,8 +485,8 @@ var PivotGridDataSource = Class.inherit(function () {
       return this._data;
     },
     getAreaFields(area, collectGroups) {
-      var areaFields = [];
-      var descriptions;
+      let areaFields = [];
+      let descriptions;
       if (collectGroups || area === 'data') {
         areaFields = getAreaFields(this._fields, area);
         sortFieldsByAreaIndex(areaFields);
@@ -495,8 +496,11 @@ var PivotGridDataSource = Class.inherit(function () {
       }
       return areaFields;
     },
+    getSummaryFields() {
+      return this.getAreaFields('data').filter(field => isDefined(field.summaryType));
+    },
     fields(fields) {
-      var that = this;
+      const that = this;
       if (fields) {
         that._fields = mergeFields(fields, that._storeFields, that._retrieveFields);
         that._fieldsPrepared(that._fields);
@@ -504,17 +508,17 @@ var PivotGridDataSource = Class.inherit(function () {
       return that._fields;
     },
     field(id, options) {
-      var that = this;
-      var fields = that._fields;
-      var field = fields && fields[isNumeric(id) ? id : findField(fields, id)];
-      var levels;
+      const that = this;
+      const fields = that._fields;
+      const field = fields && fields[isNumeric(id) ? id : findField(fields, id)];
+      let levels;
       if (field && options) {
         each(options, (optionName, optionValue) => {
-          var isInitialization = !STATE_PROPERTIES.includes(optionName);
+          const isInitialization = !STATE_PROPERTIES.includes(optionName);
           setFieldProperty(field, optionName, optionValue, isInitialization);
           if (optionName === 'sortOrder') {
             levels = field.levels || [];
-            for (var i = 0; i < levels.length; i += 1) {
+            for (let i = 0; i < levels.length; i += 1) {
               levels[i][optionName] = optionValue;
             }
           }
@@ -527,20 +531,20 @@ var PivotGridDataSource = Class.inherit(function () {
       return field;
     },
     getFieldValues(index, applyFilters, options) {
-      var that = this;
-      var field = this._fields && this._fields[index];
-      var store = this.store();
-      var loadFields = [];
-      var loadOptions = {
+      const that = this;
+      const field = this._fields && this._fields[index];
+      const store = this.store();
+      const loadFields = [];
+      const loadOptions = {
         columns: loadFields,
         rows: [],
         values: this.getAreaFields('data'),
         filters: applyFilters ? this._fields.filter(f => f !== field && f.area && f.filterValues && f.filterValues.length) : [],
         skipValues: true
       };
-      var searchValue;
+      let searchValue;
       // @ts-expect-error
-      var d = new Deferred();
+      const d = new Deferred();
       if (options) {
         searchValue = options.searchValue;
         loadOptions.columnSkip = options.skip;
@@ -580,14 +584,14 @@ var PivotGridDataSource = Class.inherit(function () {
       });
     },
     filter() {
-      var store = this._store;
+      const store = this._store;
       return store.filter.apply(store, arguments);
     },
     // eslint-disable-next-line object-shorthand
-    load: function load(options) {
-      var that = this;
+    load: function (options) {
+      const that = this;
       // @ts-expect-error
-      var d = new Deferred();
+      const d = new Deferred();
       options = options || {};
       that.beginLoading();
       d.fail(e => {
@@ -617,9 +621,9 @@ var PivotGridDataSource = Class.inherit(function () {
       return this._store.createDrillDownDataSource(this._descriptions, params);
     },
     _createDescriptions(currentField) {
-      var that = this;
-      var fields = that.fields();
-      var descriptions = {
+      const that = this;
+      const fields = that.fields();
+      const descriptions = {
         rows: [],
         columns: [],
         values: [],
@@ -629,9 +633,9 @@ var PivotGridDataSource = Class.inherit(function () {
         normalizeIndexes(getAreaFields(fields, areaName), 'areaIndex', currentField);
       });
       each(fields || [], (_, field) => {
-        var descriptionName = DESCRIPTION_NAME_BY_AREA[field.area];
-        var dimension = descriptions[descriptionName];
-        var {
+        const descriptionName = DESCRIPTION_NAME_BY_AREA[field.area];
+        const dimension = descriptions[descriptionName];
+        const {
           groupName
         } = field;
         if (groupName && !isNumeric(field.groupIndex)) {
@@ -652,26 +656,26 @@ var PivotGridDataSource = Class.inherit(function () {
       each(descriptions, (_, fields) => {
         sortFieldsByAreaIndex(fields);
       });
-      var indices = {};
+      const indices = {};
       each(descriptions.values, (_, field) => {
-        var expression = field.calculateSummaryValue;
+        const expression = field.calculateSummaryValue;
         if (isFunction(expression)) {
-          var summaryCell = summaryUtils.createMockSummaryCell(descriptions, fields, indices);
+          const summaryCell = summaryUtils.createMockSummaryCell(descriptions, fields, indices);
           expression(summaryCell);
         }
       });
       return descriptions;
     },
     _fieldsPrepared(fields) {
-      var that = this;
+      const that = this;
       that._fields = fields;
       each(fields, (index, field) => {
         field.index = index;
         updateCalculatedFieldProperties(field, ALL_CALCULATED_PROPERTIES);
       });
-      var currentFieldState = getFieldsState(fields, ['caption']);
+      const currentFieldState = getFieldsState(fields, ['caption']);
       that._eventsStrategy.fireEvent('fieldsPrepared', [fields]);
-      for (var i = 0; i < fields.length; i += 1) {
+      for (let i = 0; i < fields.length; i += 1) {
         if (fields[i].caption !== currentFieldState[i].caption) {
           setFieldProperty(fields[i], 'caption', fields[i].caption, true);
         }
@@ -682,7 +686,7 @@ var PivotGridDataSource = Class.inherit(function () {
       return this._loadingCount > 0;
     },
     state(state, skipLoading) {
-      var that = this;
+      const that = this;
       if (arguments.length) {
         state = extend({
           rowExpandedPaths: [],
@@ -717,38 +721,38 @@ var PivotGridDataSource = Class.inherit(function () {
       this._changeLoadingCount(-1);
     },
     _changeLoadingCount(increment) {
-      var oldLoading = this.isLoading();
+      const oldLoading = this.isLoading();
       this._loadingCount += increment;
-      var newLoading = this.isLoading();
+      const newLoading = this.isLoading();
       // - @ts-expect-error
       if (oldLoading ^ newLoading) {
         this._eventsStrategy.fireEvent('loadingChanged', [newLoading]);
       }
     },
     _hasPagingValues(options, area, oppositeIndex) {
-      var takeField = "".concat(area, "Take");
-      var skipField = "".concat(area, "Skip");
-      var {
+      const takeField = `${area}Take`;
+      const skipField = `${area}Skip`;
+      const {
         values
       } = this._data;
-      var items = this._data["".concat(area, "s")];
-      var oppositeArea = area === 'row' ? 'column' : 'row';
-      var indices = [];
+      let items = this._data[`${area}s`];
+      const oppositeArea = area === 'row' ? 'column' : 'row';
+      const indices = [];
       if (options.path && options.area === area) {
-        var headerItem = findHeaderItem(items, options.path);
+        const headerItem = findHeaderItem(items, options.path);
         items = headerItem && headerItem.children;
         if (!items) {
           return false;
         }
       }
       if (options.oppositePath && options.area === oppositeArea) {
-        var _headerItem = findHeaderItem(items, options.oppositePath);
-        items = _headerItem && _headerItem.children;
+        const headerItem = findHeaderItem(items, options.oppositePath);
+        items = headerItem && headerItem.children;
         if (!items) {
           return false;
         }
       }
-      for (var i = options[skipField]; i < options[skipField] + options[takeField]; i += 1) {
+      for (let i = options[skipField]; i < options[skipField] + options[takeField]; i += 1) {
         if (items[i]) {
           indices.push(items[i].index);
         }
@@ -764,19 +768,19 @@ var PivotGridDataSource = Class.inherit(function () {
       });
     },
     _processPagingCacheByArea(options, pageSize, area) {
-      var takeField = "".concat(area, "Take");
-      var skipField = "".concat(area, "Skip");
-      var items = this._data["".concat(area, "s")];
-      var oppositeArea = area === 'row' ? 'column' : 'row';
-      var item;
+      const takeField = `${area}Take`;
+      const skipField = `${area}Skip`;
+      let items = this._data[`${area}s`];
+      const oppositeArea = area === 'row' ? 'column' : 'row';
+      let item;
       if (options[takeField]) {
         if (options.path && options.area === area) {
-          var headerItem = findHeaderItem(items, options.path);
+          const headerItem = findHeaderItem(items, options.path);
           items = headerItem && headerItem.children || [];
         }
         if (options.oppositePath && options.area === oppositeArea) {
-          var _headerItem2 = findHeaderItem(items, options.oppositePath);
-          items = _headerItem2 && _headerItem2.children || [];
+          const headerItem = findHeaderItem(items, options.oppositePath);
+          items = headerItem && headerItem.children || [];
         }
         do {
           item = items[options[skipField]];
@@ -792,28 +796,28 @@ var PivotGridDataSource = Class.inherit(function () {
           }
         } while (item && item.index !== undefined && options[takeField]);
         if (options[takeField]) {
-          var start = Math.floor(options[skipField] / pageSize) * pageSize;
-          var end = Math.ceil((options[skipField] + options[takeField]) / pageSize) * pageSize;
+          const start = Math.floor(options[skipField] / pageSize) * pageSize;
+          const end = Math.ceil((options[skipField] + options[takeField]) / pageSize) * pageSize;
           options[skipField] = start;
           options[takeField] = end - start;
         }
       }
     },
     _processPagingCache(storeLoadOptions) {
-      var pageSize = this._pageSize;
+      const pageSize = this._pageSize;
       if (pageSize < 0) return;
-      for (var i = 0; i < storeLoadOptions.length; i += 1) {
+      for (let i = 0; i < storeLoadOptions.length; i += 1) {
         this._processPagingCacheByArea(storeLoadOptions[i], pageSize, 'row');
         this._processPagingCacheByArea(storeLoadOptions[i], pageSize, 'column');
       }
     },
     _loadCore(options, deferred) {
-      var that = this;
-      var store = this._store;
-      var descriptions = this._descriptions;
-      var reload = options.reload || this.paginate() && that._isFieldsModified;
-      var paginate = this.paginate();
-      var headerName = DESCRIPTION_NAME_BY_AREA[options.area];
+      const that = this;
+      const store = this._store;
+      const descriptions = this._descriptions;
+      const reload = options.reload || this.paginate() && that._isFieldsModified;
+      const paginate = this.paginate();
+      const headerName = DESCRIPTION_NAME_BY_AREA[options.area];
       options = options || {};
       if (store) {
         extend(options, descriptions);
@@ -829,7 +833,7 @@ var PivotGridDataSource = Class.inherit(function () {
         deferred.always(() => {
           that.endLoading();
         });
-        var storeLoadOptions = [options];
+        let storeLoadOptions = [options];
         that._eventsStrategy.fireEvent('customizeStoreLoadOptions', [storeLoadOptions, reload]);
         if (!reload) {
           that._processPagingCache(storeLoadOptions);
@@ -839,20 +843,20 @@ var PivotGridDataSource = Class.inherit(function () {
           that._update(deferred);
           return;
         }
-        var results = storeLoadOptions.map(options => store.load(options));
+        const results = storeLoadOptions.map(options => store.load(options));
         when.apply(null, results).done(function () {
-          var results = arguments;
-          for (var i = 0; i < results.length; i += 1) {
-            var _options = storeLoadOptions[i];
-            var data = results[i];
-            var isLast = i === results.length - 1;
-            if (_options.path) {
-              that.applyPartialDataSource(_options.area, _options.path, data, isLast ? deferred : false, _options.oppositePath);
+          const results = arguments;
+          for (let i = 0; i < results.length; i += 1) {
+            const options = storeLoadOptions[i];
+            const data = results[i];
+            const isLast = i === results.length - 1;
+            if (options.path) {
+              that.applyPartialDataSource(options.area, options.path, data, isLast ? deferred : false, options.oppositePath);
             } else if (paginate && !reload && isDataExists(that._data)) {
               that.mergePartialDataSource(data, isLast ? deferred : false);
             } else {
               extend(that._data, data);
-              that._lastLoadOptions = _options;
+              that._lastLoadOptions = options;
               that._update(isLast ? deferred : false);
             }
           }
@@ -862,7 +866,7 @@ var PivotGridDataSource = Class.inherit(function () {
       }
     },
     _sort(descriptions, data, getAscOrder) {
-      var store = this._store;
+      const store = this._store;
       if (store && !this._paginate) {
         sort(descriptions, data, getAscOrder);
       }
@@ -875,16 +879,16 @@ var PivotGridDataSource = Class.inherit(function () {
       return this._paginate && this._store && this._store.supportPaging();
     },
     isEmpty() {
-      var dataFields = this.getAreaFields('data').filter(f => f.visible !== false);
-      var data = this.getData();
+      const dataFields = this.getAreaFields('data').filter(f => f.visible !== false);
+      const data = this.getData();
       return !dataFields.length || !data.values.length;
     },
     _update(deferred) {
-      var that = this;
-      var descriptions = that._descriptions;
-      var loadedData = that._data;
-      var dataFields = descriptions.values;
-      var expressionsUsed = areExpressionsUsed(dataFields);
+      const that = this;
+      const descriptions = that._descriptions;
+      const loadedData = that._data;
+      const dataFields = descriptions.values;
+      const expressionsUsed = areExpressionsUsed(dataFields);
       when(formatHeaders(descriptions, loadedData), updateCache(loadedData.rows), updateCache(loadedData.columns)).done(() => {
         if (expressionsUsed) {
           that._sort(descriptions, loadedData, expressionsUsed);
@@ -911,10 +915,10 @@ var PivotGridDataSource = Class.inherit(function () {
       return this._store;
     },
     collapseHeaderItem(area, path) {
-      var that = this;
-      var headerItems = area === 'column' ? that._data.columns : that._data.rows;
-      var headerItem = findHeaderItem(headerItems, path);
-      var field = that.getAreaFields(area)[path.length - 1];
+      const that = this;
+      const headerItems = area === 'column' ? that._data.columns : that._data.rows;
+      const headerItem = findHeaderItem(headerItems, path);
+      const field = that.getAreaFields(area)[path.length - 1];
       if (headerItem && headerItem.children) {
         that._eventsStrategy.fireEvent('expandValueChanging', [{
           area,
@@ -935,9 +939,9 @@ var PivotGridDataSource = Class.inherit(function () {
       return false;
     },
     collapseAll(id) {
-      var dataChanged = false;
-      var field = this.field(id) || {};
-      var areaOffsets = [this.getAreaFields(field.area).indexOf(field)];
+      let dataChanged = false;
+      const field = this.field(id) || {};
+      let areaOffsets = [this.getAreaFields(field.area).indexOf(field)];
       field.expanded = false;
       if (field && field.levels) {
         areaOffsets = [];
@@ -946,9 +950,9 @@ var PivotGridDataSource = Class.inherit(function () {
           f.expanded = false;
         });
       }
-      foreachTree(this._data["".concat(field.area, "s")], items => {
-        var item = items[0];
-        var path = createPath(items);
+      foreachTree(this._data[`${field.area}s`], items => {
+        const item = items[0];
+        const path = createPath(items);
         if (item && item.children && areaOffsets.includes(path.length - 1)) {
           item.collapsedChildren = item.children;
           delete item.children;
@@ -958,7 +962,7 @@ var PivotGridDataSource = Class.inherit(function () {
       dataChanged && this._update();
     },
     expandAll(id) {
-      var field = this.field(id);
+      const field = this.field(id);
       if (field && field.area) {
         field.expanded = true;
         if (field && field.levels) {
@@ -970,12 +974,12 @@ var PivotGridDataSource = Class.inherit(function () {
       }
     },
     expandHeaderItem(area, path) {
-      var that = this;
-      var headerItems = area === 'column' ? that._data.columns : that._data.rows;
-      var headerItem = findHeaderItem(headerItems, path);
+      const that = this;
+      const headerItems = area === 'column' ? that._data.columns : that._data.rows;
+      const headerItem = findHeaderItem(headerItems, path);
       if (headerItem && !headerItem.children) {
-        var hasCache = !!headerItem.collapsedChildren;
-        var options = {
+        const hasCache = !!headerItem.collapsedChildren;
+        const options = {
           area,
           path,
           expanded: true,
@@ -994,10 +998,10 @@ var PivotGridDataSource = Class.inherit(function () {
       return false;
     },
     mergePartialDataSource(dataSource, deferred) {
-      var that = this;
-      var loadedData = that._data;
-      var newRowItemIndexesToCurrent;
-      var newColumnItemIndexesToCurrent;
+      const that = this;
+      const loadedData = that._data;
+      let newRowItemIndexesToCurrent;
+      let newColumnItemIndexesToCurrent;
       if (dataSource && dataSource.values) {
         dataSource.rows = dataSource.rows || [];
         dataSource.columns = dataSource.columns || [];
@@ -1012,14 +1016,14 @@ var PivotGridDataSource = Class.inherit(function () {
       }
     },
     applyPartialDataSource(area, path, dataSource, deferred, oppositePath) {
-      var that = this;
-      var loadedData = that._data;
-      var headerItems = area === 'column' ? loadedData.columns : loadedData.rows;
-      var headerItem;
-      var oppositeHeaderItems = area === 'column' ? loadedData.rows : loadedData.columns;
-      var oppositeHeaderItem;
-      var newRowItemIndexesToCurrent;
-      var newColumnItemIndexesToCurrent;
+      const that = this;
+      const loadedData = that._data;
+      const headerItems = area === 'column' ? loadedData.columns : loadedData.rows;
+      let headerItem;
+      const oppositeHeaderItems = area === 'column' ? loadedData.rows : loadedData.columns;
+      let oppositeHeaderItem;
+      let newRowItemIndexesToCurrent;
+      let newColumnItemIndexesToCurrent;
       if (dataSource && dataSource.values) {
         dataSource.rows = dataSource.rows || [];
         dataSource.columns = dataSource.columns || [];
@@ -1059,8 +1063,8 @@ var PivotGridDataSource = Class.inherit(function () {
       return this;
     },
     dispose() {
-      var that = this;
-      var delayedLoadTask = that._delayedLoadTask;
+      const that = this;
+      const delayedLoadTask = that._delayedLoadTask;
       this._eventsStrategy.dispose();
       if (delayedLoadTask) {
         delayedLoadTask.abort();

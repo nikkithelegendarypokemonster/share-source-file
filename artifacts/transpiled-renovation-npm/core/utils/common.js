@@ -146,12 +146,11 @@ const match = function (value, targetValue) {
   return false;
 };
 const splitPair = function (raw) {
-  var _raw$x, _raw$y;
   switch ((0, _type.type)(raw)) {
     case 'string':
       return raw.split(/\s+/, 2);
     case 'object':
-      return [(_raw$x = raw.x) !== null && _raw$x !== void 0 ? _raw$x : raw.h, (_raw$y = raw.y) !== null && _raw$y !== void 0 ? _raw$y : raw.v];
+      return [raw.x ?? raw.h, raw.y ?? raw.v];
     case 'number':
       return [raw];
     case 'array':

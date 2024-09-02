@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/gantt/ui.gantt.dialogs.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -16,12 +16,10 @@ require("../radio_group");
 var _date = _interopRequireDefault(require("../../localization/date"));
 var _message = _interopRequireDefault(require("../../localization/message"));
 require("../list_light");
-require("../list/modules/deleting");
+require("../../__internal/ui/list/modules/m_deleting");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-let GanttDialog = exports.GanttDialog = /*#__PURE__*/function () {
-  function GanttDialog(owner, $element) {
+class GanttDialog {
+  constructor(owner, $element) {
     this._popupInstance = owner._createComponent($element, _ui.default);
     this.infoMap = {
       TaskEdit: TaskEditDialogInfo,
@@ -30,15 +28,14 @@ let GanttDialog = exports.GanttDialog = /*#__PURE__*/function () {
       ConstraintViolation: ConstraintViolationDialogInfo
     };
   }
-  var _proto = GanttDialog.prototype;
-  _proto._apply = function _apply() {
+  _apply() {
     if (this._dialogInfo.isValidated()) {
       const result = this._dialogInfo.getResult();
       this._callback(result);
       this.hide();
     }
-  };
-  _proto.show = function show(name, parameters, callback, afterClosing, editingOptions) {
+  }
+  show(name, parameters, callback, afterClosing, editingOptions) {
     this._callback = callback;
     this._afterClosing = afterClosing;
     if (!this.infoMap[name]) {
@@ -60,46 +57,45 @@ let GanttDialog = exports.GanttDialog = /*#__PURE__*/function () {
     if (!isRefresh) {
       this._popupInstance.show();
     }
-  };
-  _proto.hide = function hide() {
+  }
+  hide() {
     this._popupInstance.hide();
     if (this._afterClosing) {
       this._afterClosing();
     }
-  };
-  return GanttDialog;
-}();
-let DialogInfoBase = /*#__PURE__*/function () {
-  function DialogInfoBase(parameters, applyAction, hideAction, editingOptions) {
+  }
+}
+exports.GanttDialog = GanttDialog;
+class DialogInfoBase {
+  constructor(parameters, applyAction, hideAction, editingOptions) {
     this._parameters = parameters;
     this._applyAction = applyAction;
     this._hideAction = hideAction;
     this._editingOptions = editingOptions;
   }
-  var _proto2 = DialogInfoBase.prototype;
-  _proto2._getFormItems = function _getFormItems() {
+  _getFormItems() {
     return {};
-  };
-  _proto2._getFormCssClass = function _getFormCssClass() {
+  }
+  _getFormCssClass() {
     return '';
-  };
-  _proto2._getFormData = function _getFormData() {
+  }
+  _getFormData() {
     return this._parameters;
-  };
-  _proto2._updateParameters = function _updateParameters() {};
-  _proto2._getOkToolbarItem = function _getOkToolbarItem() {
+  }
+  _updateParameters() {}
+  _getOkToolbarItem() {
     return this._getToolbarItem('OK', this._applyAction);
-  };
-  _proto2._getCancelToolbarItem = function _getCancelToolbarItem() {
+  }
+  _getCancelToolbarItem() {
     return this._getToolbarItem('Cancel', this._hideAction);
-  };
-  _proto2._getYesToolbarItem = function _getYesToolbarItem() {
+  }
+  _getYesToolbarItem() {
     return this._getToolbarItem('Yes', this._applyAction);
-  };
-  _proto2._getNoToolbarItem = function _getNoToolbarItem() {
+  }
+  _getNoToolbarItem() {
     return this._getToolbarItem('No', this._hideAction);
-  };
-  _proto2._getToolbarItem = function _getToolbarItem(localizationText, action) {
+  }
+  _getToolbarItem(localizationText, action) {
     return {
       widget: 'dxButton',
       toolbar: 'bottom',
@@ -108,20 +104,20 @@ let DialogInfoBase = /*#__PURE__*/function () {
         onClick: action
       }
     };
-  };
-  _proto2.getTitle = function getTitle() {
+  }
+  getTitle() {
     return '';
-  };
-  _proto2.getToolbarItems = function getToolbarItems() {
+  }
+  getToolbarItems() {
     return this._editingOptions.enabled ? [this._getOkToolbarItem(), this._getCancelToolbarItem()] : [this._getCancelToolbarItem()];
-  };
-  _proto2.getMaxWidth = function getMaxWidth() {
+  }
+  getMaxWidth() {
     return 400;
-  };
-  _proto2.getHeight = function getHeight() {
+  }
+  getHeight() {
     return 'auto';
-  };
-  _proto2.getContentTemplate = function getContentTemplate() {
+  }
+  getContentTemplate() {
     return content => {
       this._form = new _form.default(content, {
         formData: this._getFormData(),
@@ -133,31 +129,25 @@ let DialogInfoBase = /*#__PURE__*/function () {
       });
       return content;
     };
-  };
-  _proto2.getResult = function getResult() {
+  }
+  getResult() {
     const formData = this.getFormData();
     this._updateParameters(formData);
     return this._parameters;
-  };
-  _proto2.getFormData = function getFormData() {
+  }
+  getFormData() {
     const formData = this._form && this._form.option('formData');
     return formData;
-  };
-  _proto2.isValidated = function isValidated() {
-    return true;
-  };
-  return DialogInfoBase;
-}();
-let TaskEditDialogInfo = /*#__PURE__*/function (_DialogInfoBase) {
-  _inheritsLoose(TaskEditDialogInfo, _DialogInfoBase);
-  function TaskEditDialogInfo() {
-    return _DialogInfoBase.apply(this, arguments) || this;
   }
-  var _proto3 = TaskEditDialogInfo.prototype;
-  _proto3.getTitle = function getTitle() {
+  isValidated() {
+    return true;
+  }
+}
+class TaskEditDialogInfo extends DialogInfoBase {
+  getTitle() {
     return _message.default.format('dxGantt-dialogTaskDetailsTitle');
-  };
-  _proto3._getFormItems = function _getFormItems() {
+  }
+  _getFormItems() {
     const readOnly = !this._editingOptions.enabled || !this._editingOptions.allowTaskUpdating;
     const readOnlyRange = readOnly || !this._parameters.enableRangeEdit;
     return [{
@@ -268,53 +258,47 @@ let TaskEditDialogInfo = /*#__PURE__*/function (_DialogInfoBase) {
         }]
       }
     }];
-  };
-  _proto3._getValidationMessage = function _getValidationMessage(isStartDependencies, correctDate) {
+  }
+  _getValidationMessage(isStartDependencies, correctDate) {
     if (isStartDependencies) {
       return _message.default.format('dxGantt-dialogStartDateValidation', this._getFormattedDateText(correctDate));
     }
     return _message.default.format('dxGantt-dialogEndDateValidation', this._getFormattedDateText(correctDate));
-  };
-  _proto3._getFormattedDateText = function _getFormattedDateText(date) {
+  }
+  _getFormattedDateText(date) {
     return date ? _date.default.format(date, 'shortDateShortTime') : '';
-  };
-  _proto3._isReadOnlyField = function _isReadOnlyField(field) {
+  }
+  _isReadOnlyField(field) {
     return this._parameters.readOnlyFields.indexOf(field) > -1;
-  };
-  _proto3._isHiddenField = function _isHiddenField(field) {
+  }
+  _isHiddenField(field) {
     return this._parameters.hiddenFields.indexOf(field) > -1;
-  };
-  _proto3._getFormData = function _getFormData() {
+  }
+  _getFormData() {
     const data = {};
     for (const field in this._parameters) {
       data[field] = field === 'progress' ? this._parameters[field] / 100 : this._parameters[field];
     }
     return data;
-  };
-  _proto3._updateParameters = function _updateParameters(formData) {
+  }
+  _updateParameters(formData) {
     this._parameters.title = formData.title;
     this._parameters.start = formData.start;
     this._parameters.end = formData.end;
     this._parameters.progress = formData.progress * 100;
     this._parameters.assigned = formData.assigned;
-  };
-  _proto3.isValidated = function isValidated() {
+  }
+  isValidated() {
     var _this$_form;
     const validationResult = (_this$_form = this._form) === null || _this$_form === void 0 ? void 0 : _this$_form.validate();
     return validationResult === null || validationResult === void 0 ? void 0 : validationResult.isValid;
-  };
-  return TaskEditDialogInfo;
-}(DialogInfoBase);
-let ResourcesEditDialogInfo = /*#__PURE__*/function (_DialogInfoBase2) {
-  _inheritsLoose(ResourcesEditDialogInfo, _DialogInfoBase2);
-  function ResourcesEditDialogInfo() {
-    return _DialogInfoBase2.apply(this, arguments) || this;
   }
-  var _proto4 = ResourcesEditDialogInfo.prototype;
-  _proto4.getTitle = function getTitle() {
+}
+class ResourcesEditDialogInfo extends DialogInfoBase {
+  getTitle() {
     return _message.default.format('dxGantt-dialogResourceManagerTitle');
-  };
-  _proto4._getFormItems = function _getFormItems() {
+  }
+  _getFormItems() {
     return [{
       label: {
         visible: false
@@ -369,21 +353,15 @@ let ResourcesEditDialogInfo = /*#__PURE__*/function (_DialogInfoBase2) {
         }]
       }
     }];
-  };
-  return ResourcesEditDialogInfo;
-}(DialogInfoBase);
-let ConfirmDialogInfo = /*#__PURE__*/function (_DialogInfoBase3) {
-  _inheritsLoose(ConfirmDialogInfo, _DialogInfoBase3);
-  function ConfirmDialogInfo() {
-    return _DialogInfoBase3.apply(this, arguments) || this;
   }
-  var _proto5 = ConfirmDialogInfo.prototype;
-  _proto5.getContentTemplate = function getContentTemplate() {
+}
+class ConfirmDialogInfo extends DialogInfoBase {
+  getContentTemplate() {
     return content => {
       return this._getConfirmMessage();
     };
-  };
-  _proto5._getConfirmMessage = function _getConfirmMessage() {
+  }
+  _getConfirmMessage() {
     switch (this._parameters.type) {
       case 0:
         return _message.default.format('dxGantt-dialogTaskDeleteConfirmation');
@@ -394,19 +372,13 @@ let ConfirmDialogInfo = /*#__PURE__*/function (_DialogInfoBase3) {
       default:
         return '';
     }
-  };
-  _proto5.getToolbarItems = function getToolbarItems() {
-    return [this._getYesToolbarItem(), this._getNoToolbarItem()];
-  };
-  return ConfirmDialogInfo;
-}(DialogInfoBase);
-let ConstraintViolationDialogInfo = /*#__PURE__*/function (_DialogInfoBase4) {
-  _inheritsLoose(ConstraintViolationDialogInfo, _DialogInfoBase4);
-  function ConstraintViolationDialogInfo() {
-    return _DialogInfoBase4.apply(this, arguments) || this;
   }
-  var _proto6 = ConstraintViolationDialogInfo.prototype;
-  _proto6._getFormItems = function _getFormItems() {
+  getToolbarItems() {
+    return [this._getYesToolbarItem(), this._getNoToolbarItem()];
+  }
+}
+class ConstraintViolationDialogInfo extends DialogInfoBase {
+  _getFormItems() {
     const hasCriticalErrors = this._parameters.hasCriticalErrors;
     const severalErrors = this._parameters.errorsCount > 1;
     const items = [];
@@ -447,12 +419,11 @@ let ConstraintViolationDialogInfo = /*#__PURE__*/function (_DialogInfoBase4) {
         value: 0
       }
     }];
-  };
-  _proto6._getFormCssClass = function _getFormCssClass() {
+  }
+  _getFormCssClass() {
     return 'dx-cv-dialog';
-  };
-  _proto6._updateParameters = function _updateParameters(formData) {
+  }
+  _updateParameters(formData) {
     this._parameters.option = formData.option;
-  };
-  return ConstraintViolationDialogInfo;
-}(DialogInfoBase);
+  }
+}

@@ -15,8 +15,6 @@ var _message = _interopRequireDefault(require("../../../../localization/message"
 var _m_accessibility = require("../m_accessibility");
 var _m_columns_view = require("../views/m_columns_view");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const CELL_CONTENT_CLASS = 'text-content';
 const HEADERS_CLASS = 'headers';
 const NOWRAP_CLASS = 'nowrap';
@@ -49,28 +47,23 @@ function addCssClassesToCellContent(that, $cell, column, $cellContent) {
   const $visibleIndicatorElements = that._getIndicatorElements($cell);
   const indicatorCount = $indicatorElements && $indicatorElements.length;
   const columnAlignment = that._getColumnAlignment(column.alignment);
-  const sortIndicatorClassName = ".".concat(that._getIndicatorClassName('sort'));
-  const sortIndexIndicatorClassName = ".".concat(that._getIndicatorClassName('sortIndex'));
+  const sortIndicatorClassName = `.${that._getIndicatorClassName('sort')}`;
+  const sortIndexIndicatorClassName = `.${that._getIndicatorClassName('sortIndex')}`;
   const $sortIndicator = $visibleIndicatorElements.filter(sortIndicatorClassName);
   const $sortIndexIndicator = $visibleIndicatorElements.children().filter(sortIndexIndicatorClassName);
-  $cellContent = $cellContent || $cell.children(".".concat(that.addWidgetPrefix(CELL_CONTENT_CLASS)));
-  $cellContent.toggleClass(TEXT_CONTENT_ALIGNMENT_CLASS_PREFIX + columnAlignment, indicatorCount > 0).toggleClass(TEXT_CONTENT_ALIGNMENT_CLASS_PREFIX + (columnAlignment === 'left' ? 'right' : 'left'), indicatorCount > 0 && column.alignment === 'center').toggleClass(SORT_INDICATOR_CLASS, !!$sortIndicator.length).toggleClass(SORT_INDEX_INDICATOR_CLASS, !!$sortIndexIndicator.length).toggleClass(HEADER_FILTER_INDICATOR_CLASS, !!$visibleIndicatorElements.filter(".".concat(that._getIndicatorClassName('headerFilter'))).length);
+  $cellContent = $cellContent || $cell.children(`.${that.addWidgetPrefix(CELL_CONTENT_CLASS)}`);
+  $cellContent.toggleClass(TEXT_CONTENT_ALIGNMENT_CLASS_PREFIX + columnAlignment, indicatorCount > 0).toggleClass(TEXT_CONTENT_ALIGNMENT_CLASS_PREFIX + (columnAlignment === 'left' ? 'right' : 'left'), indicatorCount > 0 && column.alignment === 'center').toggleClass(SORT_INDICATOR_CLASS, !!$sortIndicator.length).toggleClass(SORT_INDEX_INDICATOR_CLASS, !!$sortIndexIndicator.length).toggleClass(HEADER_FILTER_INDICATOR_CLASS, !!$visibleIndicatorElements.filter(`.${that._getIndicatorClassName('headerFilter')}`).length);
 }
-let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_ColumnsView) {
-  _inheritsLoose(ColumnHeadersView, _ColumnsView);
-  function ColumnHeadersView() {
-    return _ColumnsView.apply(this, arguments) || this;
-  }
-  var _proto = ColumnHeadersView.prototype;
-  _proto.init = function init() {
-    _ColumnsView.prototype.init.call(this);
+class ColumnHeadersView extends _m_columns_view.ColumnsView {
+  init() {
+    super.init();
     this._headerPanelView = this.getView('headerPanel');
     this._headerFilterController = this.getController('headerFilter');
     this._dataController = this.getController('data');
-  };
-  _proto._createTable = function _createTable() {
+  }
+  _createTable() {
     // @ts-expect-error
-    const $table = _ColumnsView.prototype._createTable.apply(this, arguments);
+    const $table = super._createTable.apply(this, arguments);
     _events_engine.default.on($table, 'mousedown selectstart', this.createAction(e => {
       const {
         event
@@ -80,11 +73,11 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
       }
     }));
     return $table;
-  };
-  _proto._isLegacyKeyboardNavigation = function _isLegacyKeyboardNavigation() {
+  }
+  _isLegacyKeyboardNavigation() {
     return this.option('useLegacyKeyboardNavigation');
-  };
-  _proto._getDefaultTemplate = function _getDefaultTemplate(column) {
+  }
+  _getDefaultTemplate(column) {
     const that = this;
     return function ($container, options) {
       const {
@@ -100,8 +93,8 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
         $container.html('&nbsp;');
       }
     };
-  };
-  _proto._renderEmptyMessage = function _renderEmptyMessage($container, options) {
+  }
+  _renderEmptyMessage($container, options) {
     const textEmpty = this._getEmptyHeaderText();
     if (!textEmpty) {
       $container.html('&nbsp;');
@@ -123,8 +116,8 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
     } else {
       $cellContent.text(textEmpty);
     }
-  };
-  _proto._getEmptyHeaderText = function _getEmptyHeaderText() {
+  }
+  _getEmptyHeaderText() {
     const hasHiddenColumns = !!this._columnChooserView.hasHiddenColumns();
     const hasGroupedColumns = !!this._headerPanelView.hasGroupedColumns();
     switch (true) {
@@ -137,20 +130,20 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
       default:
         return '';
     }
-  };
-  _proto._getHeaderTemplate = function _getHeaderTemplate(column) {
+  }
+  _getHeaderTemplate(column) {
     return column.headerCellTemplate || {
       allowRenderToDetachedContainer: true,
       render: this._getDefaultTemplate(column)
     };
-  };
-  _proto._processTemplate = function _processTemplate(template, options) {
+  }
+  _processTemplate(template, options) {
     const that = this;
     let resultTemplate;
     const {
       column
     } = options;
-    const renderingTemplate = _ColumnsView.prototype._processTemplate.call(this, template);
+    const renderingTemplate = super._processTemplate(template);
     if (options.rowType === 'header' && renderingTemplate && column.headerCellTemplate && !column.command) {
       resultTemplate = {
         render(options) {
@@ -167,16 +160,16 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
   }
   /**
    * @extended: filter_row, selection
-   */;
-  _proto._handleDataChanged = function _handleDataChanged(e) {
+   */
+  _handleDataChanged(e) {
     if (e.changeType !== 'refresh') return;
     if (this._isGroupingChanged || this._requireReady) {
       this._isGroupingChanged = false;
       this.render();
     }
-  };
-  _proto._renderCell = function _renderCell($row, options) {
-    const $cell = _ColumnsView.prototype._renderCell.call(this, $row, options);
+  }
+  _renderCell($row, options) {
+    const $cell = super._renderCell($row, options);
     if (options.row.rowType === 'header') {
       $cell.addClass(CELL_FOCUS_DISABLED_CLASS);
       if (!this._isLegacyKeyboardNavigation()) {
@@ -186,25 +179,25 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
       }
     }
     return $cell;
-  };
-  _proto._setCellAriaAttributes = function _setCellAriaAttributes($cell, cellOptions) {
-    _ColumnsView.prototype._setCellAriaAttributes.call(this, $cell, cellOptions);
+  }
+  _setCellAriaAttributes($cell, cellOptions, options) {
+    super._setCellAriaAttributes($cell, cellOptions, options);
     if (cellOptions.rowType === 'header') {
       if (!cellOptions.column.type) {
         this.setAria('role', 'columnheader', $cell);
       }
       if (cellOptions.column && !cellOptions.column.command && !cellOptions.column.isBand) {
         $cell.attr('id', cellOptions.column.headerId);
-        this.setAria('label', "".concat(_message.default.format('dxDataGrid-ariaColumn'), " ").concat(cellOptions.column.caption), $cell);
+        this.setAria('label', `${_message.default.format('dxDataGrid-ariaColumn')} ${cellOptions.column.caption}`, $cell);
       }
     }
   }
   /**
    * @extended: filter_row
-   */;
-  _proto._createRow = function _createRow(row) {
+   */
+  _createRow(row) {
     // @ts-expect-error
-    const $row = _ColumnsView.prototype._createRow.apply(this, arguments);
+    const $row = super._createRow.apply(this, arguments);
     $row.toggleClass(COLUMN_LINES_CLASS, this.option('showColumnLines'));
     if (row.rowType === 'header') {
       $row.addClass(HEADER_ROW_CLASS);
@@ -215,9 +208,8 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
     return $row;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._processHeaderAction = function _processHeaderAction(event, $row) {};
-  _proto._handleActionKeyDown = function _handleActionKeyDown(args) {
+  _processHeaderAction(event, $row) {}
+  _handleActionKeyDown(args) {
     const {
       event
     } = args;
@@ -238,8 +230,8 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
   }
   /**
    * @extended: filter_row, virtual_column
-   */;
-  _proto._renderCore = function _renderCore() {
+   */
+  _renderCore() {
     const that = this;
     const $container = that.element();
     const change = {};
@@ -255,35 +247,35 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
       $container.addClass(MULTI_ROW_HEADER_CLASS);
     }
     // @ts-expect-error
-    _ColumnsView.prototype._renderCore.apply(that, arguments);
+    super._renderCore.apply(that, arguments);
     return deferred;
-  };
-  _proto._renderRows = function _renderRows() {
+  }
+  _renderRows() {
     const that = this;
     if (that._dataController.isLoaded() || that._hasRowElements) {
       // @ts-expect-error
-      _ColumnsView.prototype._renderRows.apply(that, arguments);
+      super._renderRows.apply(that, arguments);
       that._hasRowElements = true;
     }
-  };
-  _proto._renderRow = function _renderRow($table, options) {
+  }
+  _renderRow($table, options) {
     const rowIndex = this.getRowCount() === 1 ? null : options.row.rowIndex;
     options.columns = this.getColumns(rowIndex);
-    _ColumnsView.prototype._renderRow.call(this, $table, options);
-  };
-  _proto._createCell = function _createCell(options) {
+    super._renderRow($table, options);
+  }
+  _createCell(options) {
     const {
       column
     } = options;
     // @ts-expect-error
-    const $cellElement = _ColumnsView.prototype._createCell.apply(this, arguments);
+    const $cellElement = super._createCell.apply(this, arguments);
     column.rowspan > 1 && options.rowType === 'header' && $cellElement.attr('rowSpan', column.rowspan);
     return $cellElement;
   }
   /**
    * @extended: filter_row
-   */;
-  _proto._getRows = function _getRows() {
+   */
+  _getRows() {
     const result = [];
     const rowCount = this.getRowCount();
     if (this.option('showColumnHeaders')) {
@@ -295,16 +287,16 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
       }
     }
     return result;
-  };
-  _proto._getCellTemplate = function _getCellTemplate(options) {
+  }
+  _getCellTemplate(options) {
     if (options.rowType === 'header') {
       return this._getHeaderTemplate(options.column);
     }
   }
   /**
    * @extended: filter_row, header_filter
-   */;
-  _proto._columnOptionChanged = function _columnOptionChanged(e) {
+   */
+  _columnOptionChanged(e) {
     const {
       changeTypes
     } = e;
@@ -317,65 +309,63 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
       }
       return;
     }
-    _ColumnsView.prototype._columnOptionChanged.call(this, e);
+    super._columnOptionChanged(e);
     if (optionNames.width || optionNames.visible) {
       this.resizeCompleted.fire();
     }
   }
   /**
    * @extended: filter_row
-   */;
-  _proto._isElementVisible = function _isElementVisible(elementOptions) {
+   */
+  _isElementVisible(elementOptions) {
     return elementOptions && elementOptions.visible;
-  };
-  _proto._alignCaptionByCenter = function _alignCaptionByCenter($cell) {
+  }
+  _alignCaptionByCenter($cell) {
     let $indicatorsContainer = this._getIndicatorContainer($cell, true);
     if ($indicatorsContainer && $indicatorsContainer.length) {
-      $indicatorsContainer.filter(".".concat(VISIBILITY_HIDDEN_CLASS)).remove();
+      $indicatorsContainer.filter(`.${VISIBILITY_HIDDEN_CLASS}`).remove();
       $indicatorsContainer = this._getIndicatorContainer($cell);
-      $indicatorsContainer.clone().addClass(VISIBILITY_HIDDEN_CLASS).css('float', '').insertBefore($cell.children(".".concat(this.addWidgetPrefix(CELL_CONTENT_CLASS))));
+      $indicatorsContainer.clone().addClass(VISIBILITY_HIDDEN_CLASS).css('float', '').insertBefore($cell.children(`.${this.addWidgetPrefix(CELL_CONTENT_CLASS)}`));
     }
-  };
-  _proto._updateCell = function _updateCell($cell, options) {
+  }
+  _updateCell($cell, options) {
     if (options.rowType === 'header' && options.column.alignment === 'center') {
       this._alignCaptionByCenter($cell);
     }
     // @ts-expect-error
-    _ColumnsView.prototype._updateCell.apply(this, arguments);
+    super._updateCell.apply(this, arguments);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ;
-  _proto._updateIndicator = function _updateIndicator($cell, column, indicatorName) {
+  _updateIndicator($cell, column, indicatorName) {
     // @ts-expect-error
-    const $indicatorElement = _ColumnsView.prototype._updateIndicator.apply(this, arguments);
+    const $indicatorElement = super._updateIndicator.apply(this, arguments);
     if (column.alignment === 'center') {
       this._alignCaptionByCenter($cell);
     }
     addCssClassesToCellContent(this, $cell, column);
     return $indicatorElement;
-  };
-  _proto._getIndicatorContainer = function _getIndicatorContainer($cell, returnAll) {
-    const $indicatorsContainer = _ColumnsView.prototype._getIndicatorContainer.call(this, $cell);
-    return returnAll ? $indicatorsContainer : $indicatorsContainer.filter(":not(.".concat(VISIBILITY_HIDDEN_CLASS, ")"));
+  }
+  _getIndicatorContainer($cell, returnAll) {
+    const $indicatorsContainer = super._getIndicatorContainer($cell);
+    return returnAll ? $indicatorsContainer : $indicatorsContainer.filter(`:not(.${VISIBILITY_HIDDEN_CLASS})`);
   }
   /**
    * @extended: tree_list/selection
    */
   // eslint-disable-next-line
-  ;
-  _proto._isSortableElement = function _isSortableElement($target) {
+  _isSortableElement($target) {
     return true;
-  };
-  _proto.getHeadersRowHeight = function getHeadersRowHeight() {
+  }
+  getHeadersRowHeight() {
     const $tableElement = this.getTableElement();
-    const $headerRows = $tableElement && $tableElement.find(".".concat(HEADER_ROW_CLASS));
+    const $headerRows = $tableElement && $tableElement.find(`.${HEADER_ROW_CLASS}`);
     return $headerRows && $headerRows.toArray().reduce((sum, headerRow) => sum + (0, _size.getHeight)(headerRow), 0) || 0;
-  };
-  _proto.getHeaderElement = function getHeaderElement(index) {
+  }
+  getHeaderElement(index) {
     const columnElements = this.getColumnElements();
     return columnElements && columnElements.eq(index);
-  };
-  _proto.getColumnElements = function getColumnElements(index, bandColumnIndex) {
+  }
+  getColumnElements(index, bandColumnIndex) {
     const that = this;
     let $cellElement;
     const columnsController = that._columnsController;
@@ -397,8 +387,8 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
       }
     }
     return undefined;
-  };
-  _proto.getColumnIndexByElement = function getColumnIndexByElement($cell) {
+  }
+  getColumnIndexByElement($cell) {
     const cellIndex = this.getCellIndex($cell);
     const $row = $cell.closest('.dx-row');
     const {
@@ -406,33 +396,32 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
     } = $row[0];
     const column = this.getColumns(rowIndex)[cellIndex];
     return column ? column.index : -1;
-  };
-  _proto.getVisibleColumnIndex = function getVisibleColumnIndex(columnIndex, rowIndex) {
+  }
+  getVisibleColumnIndex(columnIndex, rowIndex) {
     const column = this.getColumns()[columnIndex];
     return column ? this._columnsController.getVisibleIndex(column.index, rowIndex) : -1;
   }
   /**
    * @extended: column_fixing
-   */;
-  _proto.getColumnWidths = function getColumnWidths() {
+   */
+  getColumnWidths() {
     const $columnElements = this.getColumnElements();
     if ($columnElements && $columnElements.length) {
       return this._getWidths($columnElements);
     }
     // @ts-expect-error
-    return _ColumnsView.prototype.getColumnWidths.apply(this, arguments);
+    return super.getColumnWidths.apply(this, arguments);
   }
   /**
    * @extended: column_chooser
-   */;
-  _proto.allowDragging = function allowDragging(column) {
-    var _a;
+   */
+  allowDragging(column) {
     const rowIndex = column && this._columnsController.getRowIndex(column.index);
     const columns = this.getColumns(rowIndex);
-    const isReorderingEnabled = (_a = this.option('allowColumnReordering')) !== null && _a !== void 0 ? _a : this._columnsController.isColumnOptionUsed('allowReordering');
+    const isReorderingEnabled = this.option('allowColumnReordering') ?? this._columnsController.isColumnOptionUsed('allowReordering');
     return isReorderingEnabled && column.allowReordering && columns.length > 1;
-  };
-  _proto.getBoundingRect = function getBoundingRect() {
+  }
+  getBoundingRect() {
     const that = this;
     const $columnElements = that.getColumnElements();
     if ($columnElements && $columnElements.length) {
@@ -442,21 +431,21 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
       };
     }
     return null;
-  };
-  _proto.getName = function getName() {
+  }
+  getName() {
     return 'headers';
-  };
-  _proto.getColumnCount = function getColumnCount() {
+  }
+  getColumnCount() {
     const $columnElements = this.getColumnElements();
     return $columnElements ? $columnElements.length : 0;
   }
   /**
    * @extended: filter_row
-   */;
-  _proto.isVisible = function isVisible() {
+   */
+  isVisible() {
     return this.option('showColumnHeaders');
-  };
-  _proto.optionChanged = function optionChanged(args) {
+  }
+  optionChanged(args) {
     const that = this;
     switch (args.name) {
       case 'showColumnHeaders':
@@ -466,16 +455,16 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
         args.handled = true;
         break;
       default:
-        _ColumnsView.prototype.optionChanged.call(this, args);
+        super.optionChanged(args);
     }
-  };
-  _proto.getHeight = function getHeight() {
+  }
+  getHeight() {
     return this.getElementHeight();
   }
   /**
    * @extended: column_fixing
-   */;
-  _proto.getContextMenuItems = function getContextMenuItems(options) {
+   */
+  getContextMenuItems(options) {
     const that = this;
     const {
       column
@@ -510,11 +499,11 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
       }
     }
     return undefined;
-  };
-  _proto.getRowCount = function getRowCount() {
+  }
+  getRowCount() {
     return this._columnsController && this._columnsController.getRowCount();
-  };
-  _proto.setRowsOpacity = function setRowsOpacity(columnIndex, value, rowIndex) {
+  }
+  setRowsOpacity(columnIndex, value, rowIndex) {
     let i;
     let columnElements;
     const rowCount = this.getRowCount();
@@ -541,9 +530,9 @@ let ColumnHeadersView = exports.ColumnHeadersView = /*#__PURE__*/function (_Colu
         }
       }
     }
-  };
-  return ColumnHeadersView;
-}(_m_columns_view.ColumnsView);
+  }
+}
+exports.ColumnHeadersView = ColumnHeadersView;
 const columnHeadersModule = exports.columnHeadersModule = {
   defaultOptions() {
     return {

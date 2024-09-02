@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/grid_core/m_modules.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -17,16 +17,16 @@ import { hasWindow } from '../../../core/utils/window';
 import messageLocalization from '../../../localization/message';
 import errors from '../../../ui/widget/ui.errors';
 import { updateViewsBorders } from './views/utils/update_views_borders';
-var WIDGET_WITH_LEGACY_CONTAINER_NAME = 'dxDataGrid';
+const WIDGET_WITH_LEGACY_CONTAINER_NAME = 'dxDataGrid';
 export class ModuleItem {
   constructor(component) {
-    var that = this;
+    const that = this;
     that._updateLockCount = 0;
     that.component = component;
     that._actions = {};
     that._actionConfigs = {};
     each(this.callbackNames() || [], function (index, name) {
-      var flags = that.callbackFlags(name) || {};
+      const flags = that.callbackFlags(name) || {};
       flags.unique = true;
       flags.syncStrategy = true;
       // @ts-expect-error
@@ -55,10 +55,10 @@ export class ModuleItem {
     }
   }
   option(name) {
-    var {
+    const {
       component
     } = this;
-    var optionCache = component._optionCache;
+    const optionCache = component._optionCache;
     if (arguments.length === 1 && optionCache) {
       if (!(name in optionCache)) {
         optionCache[name] = component.option(name);
@@ -69,17 +69,17 @@ export class ModuleItem {
     return component.option.apply(component, arguments);
   }
   _silentOption(name, value) {
-    var {
+    const {
       component
     } = this;
-    var optionCache = component._optionCache;
+    const optionCache = component._optionCache;
     if (optionCache) {
       optionCache[name] = value;
     }
     return component._setOptionWithoutOptionChange(name, value);
   }
   localize(name) {
-    var optionCache = this.component._optionCache;
+    const optionCache = this.component._optionCache;
     if (optionCache) {
       if (!(name in optionCache)) {
         optionCache[name] = messageLocalization.format(name);
@@ -107,8 +107,8 @@ export class ModuleItem {
     return this._actions[actionName];
   }
   setAria(name, value, $target) {
-    var target = $target.get(0);
-    var prefix = name !== 'role' && name !== 'id' ? 'aria-' : '';
+    const target = $target.get(0);
+    const prefix = name !== 'role' && name !== 'id' ? 'aria-' : '';
     if (target.setAttribute) {
       target.setAttribute(prefix + name, value);
     } else {
@@ -123,7 +123,7 @@ export class ModuleItem {
   }
   createAction(actionName, config) {
     if (isFunction(actionName)) {
-      var action = this.component._createAction(actionName.bind(this), config);
+      const action = this.component._createAction(actionName.bind(this), config);
       return function (e) {
         action({
           event: e
@@ -135,25 +135,25 @@ export class ModuleItem {
     return undefined;
   }
   executeAction(actionName, options) {
-    var action = this._actions[actionName];
+    const action = this._actions[actionName];
     return action && action(options);
   }
   dispose() {
-    var that = this;
+    const that = this;
     each(that.callbackNames() || [], function () {
       that[this].empty();
     });
   }
   addWidgetPrefix(className) {
-    var componentName = this.component.NAME;
-    return "dx-".concat(componentName.slice(2).toLowerCase()).concat(className ? "-".concat(className) : '');
+    const componentName = this.component.NAME;
+    return `dx-${componentName.slice(2).toLowerCase()}${className ? `-${className}` : ''}`;
   }
   getWidgetContainerClass() {
-    var containerName = this.component.NAME === WIDGET_WITH_LEGACY_CONTAINER_NAME ? null : 'container';
+    const containerName = this.component.NAME === WIDGET_WITH_LEGACY_CONTAINER_NAME ? null : 'container';
     return this.addWidgetPrefix(containerName);
   }
   elementIsInsideGrid($element) {
-    var $gridElement = $element.closest(".".concat(this.getWidgetContainerClass())).parent();
+    const $gridElement = $element.closest(`.${this.getWidgetContainerClass()}`).parent();
     return $gridElement.is(this.component.$element());
   }
 }
@@ -201,11 +201,11 @@ export class View extends ModuleItem {
     return this._$element;
   }
   getElementHeight() {
-    var $element = this.element();
+    const $element = this.element();
     if (!$element) return 0;
-    var marginTop = parseFloat($element.css('marginTop')) || 0;
-    var marginBottom = parseFloat($element.css('marginBottom')) || 0;
-    var {
+    const marginTop = parseFloat($element.css('marginTop')) || 0;
+    const marginBottom = parseFloat($element.css('marginBottom')) || 0;
+    const {
       offsetHeight
     } = $element.get(0);
     return offsetHeight + marginTop + marginBottom;
@@ -228,8 +228,8 @@ export class View extends ModuleItem {
     };
   }
   render($parent, options) {
-    var $element = this._$element;
-    var isVisible = this.isVisible();
+    let $element = this._$element;
+    const isVisible = this.isVisible();
     if (!$element && !$parent) return;
     this._requireReady = false;
     if (!$element) {
@@ -242,7 +242,7 @@ export class View extends ModuleItem {
     }
     if (isVisible) {
       this.component._optionCache = {};
-      var deferred = this._renderCore(options);
+      const deferred = this._renderCore(options);
       this.component._optionCache = undefined;
       if (deferred) {
         deferred.done(() => {
@@ -265,18 +265,18 @@ export class View extends ModuleItem {
     });
   }
 }
-var MODULES_ORDER_MAX_INDEX = 1000000;
+const MODULES_ORDER_MAX_INDEX = 1000000;
 function getExtendedTypes(types) {
-  var moduleExtenders = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var extendTypes = {};
+  let moduleExtenders = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  const extendTypes = {};
   Object.entries(moduleExtenders).forEach(_ref => {
-    var [name, extender] = _ref;
-    var currentType = types[name];
+    let [name, extender] = _ref;
+    const currentType = types[name];
     if (currentType) {
       if (isFunction(extender)) {
         extendTypes[name] = extender(currentType);
       } else {
-        var classType = currentType;
+        const classType = currentType;
         extendTypes[name] = classType.inherit(extender);
       }
     }
@@ -284,7 +284,7 @@ function getExtendedTypes(types) {
   return extendTypes;
 }
 function registerPublicMethods(componentInstance, name, moduleItem) {
-  var publicMethods = moduleItem.publicMethods();
+  const publicMethods = moduleItem.publicMethods();
   if (publicMethods) {
     each(publicMethods, (_, methodName) => {
       if (moduleItem[methodName]) {
@@ -302,17 +302,17 @@ function registerPublicMethods(componentInstance, name, moduleItem) {
   }
 }
 export function processModules(componentInstance, componentClass) {
-  var {
+  const {
     modules
   } = componentClass;
-  var {
+  const {
     modulesOrder
   } = componentClass;
   function createModuleItems(moduleTypes) {
-    var moduleItems = {};
+    const moduleItems = {};
     each(moduleTypes, (name, moduleType) => {
       // eslint-disable-next-line new-cap
-      var moduleItem = new moduleType(componentInstance);
+      const moduleItem = new moduleType(componentInstance);
       moduleItem.name = name;
       registerPublicMethods(componentInstance, name, moduleItem);
       moduleItems[name] = moduleItem;
@@ -321,8 +321,8 @@ export function processModules(componentInstance, componentClass) {
   }
   if (modulesOrder) {
     modules.sort((module1, module2) => {
-      var orderIndex1 = modulesOrder.indexOf(module1.name);
-      var orderIndex2 = modulesOrder.indexOf(module2.name);
+      let orderIndex1 = modulesOrder.indexOf(module1.name);
+      let orderIndex2 = modulesOrder.indexOf(module2.name);
       if (orderIndex1 < 0) {
         orderIndex1 = MODULES_ORDER_MAX_INDEX;
       }
@@ -332,16 +332,16 @@ export function processModules(componentInstance, componentClass) {
       return orderIndex1 - orderIndex2;
     });
   }
-  var rootControllerTypes = {};
-  var rootViewTypes = {};
+  const rootControllerTypes = {};
+  const rootViewTypes = {};
   modules.forEach(_ref2 => {
-    var {
+    let {
       name: moduleName,
       controllers = {},
       views = {}
     } = _ref2;
     Object.entries(controllers).forEach(_ref3 => {
-      var [name, type] = _ref3;
+      let [name, type] = _ref3;
       if (rootControllerTypes[name]) {
         throw errors.Error('E1001', moduleName, name);
       } else if (!((type === null || type === void 0 ? void 0 : type.prototype) instanceof Controller)) {
@@ -350,7 +350,7 @@ export function processModules(componentInstance, componentClass) {
       rootControllerTypes[name] = type;
     });
     Object.entries(views).forEach(_ref4 => {
-      var [name, type] = _ref4;
+      let [name, type] = _ref4;
       if (rootViewTypes[name]) {
         throw errors.Error('E1003', moduleName, name);
       } else if (!((type === null || type === void 0 ? void 0 : type.prototype) instanceof View)) {
@@ -359,30 +359,30 @@ export function processModules(componentInstance, componentClass) {
       rootViewTypes[name] = type;
     });
   });
-  var moduleExtenders = modules.filter(_ref5 => {
-    var {
+  const moduleExtenders = modules.filter(_ref5 => {
+    let {
       extenders
     } = _ref5;
     return !!extenders;
   });
-  var controllerTypes = moduleExtenders.reduce((types, _ref6) => {
-    var {
+  const controllerTypes = moduleExtenders.reduce((types, _ref6) => {
+    let {
       extenders
     } = _ref6;
-    return _extends(_extends({}, types), getExtendedTypes(types, extenders === null || extenders === void 0 ? void 0 : extenders.controllers));
+    return _extends({}, types, getExtendedTypes(types, extenders === null || extenders === void 0 ? void 0 : extenders.controllers));
   }, rootControllerTypes);
-  var viewTypes = moduleExtenders.reduce((types, _ref7) => {
-    var {
+  const viewTypes = moduleExtenders.reduce((types, _ref7) => {
+    let {
       extenders
     } = _ref7;
-    return _extends(_extends({}, types), getExtendedTypes(types, extenders === null || extenders === void 0 ? void 0 : extenders.views));
+    return _extends({}, types, getExtendedTypes(types, extenders === null || extenders === void 0 ? void 0 : extenders.views));
   }, rootViewTypes);
   // eslint-disable-next-line no-param-reassign
   componentInstance._controllers = createModuleItems(controllerTypes);
   // eslint-disable-next-line no-param-reassign
   componentInstance._views = createModuleItems(viewTypes);
 }
-var callModuleItemsMethod = function callModuleItemsMethod(that, methodName, args) {
+const callModuleItemsMethod = function (that, methodName, args) {
   args = args || [];
   if (that._controllers) {
     each(that._controllers, function () {
@@ -401,10 +401,10 @@ export default {
   ViewController,
   Controller,
   registerModule(name, module) {
-    var {
+    const {
       modules
     } = this;
-    for (var i = 0; i < modules.length; i++) {
+    for (let i = 0; i < modules.length; i++) {
       if (modules[i].name === name) {
         return;
       }

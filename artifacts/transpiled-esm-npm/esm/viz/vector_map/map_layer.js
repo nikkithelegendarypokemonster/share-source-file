@@ -5,38 +5,38 @@ import DataHelperMixin from '../../data_helper';
 import { isFunction as _isFunction, isDefined as _isDefined } from '../../core/utils/type';
 import { Deferred, when } from '../../core/utils/deferred';
 import { parseScalar as _parseScalar, patchFontOptions as _patchFontOptions, normalizeEnum as _normalizeEnum } from '../core/utils';
-var _noop = noop;
-var _extend = extend;
-var _each = each;
-var _concat = Array.prototype.concat;
-var TYPE_AREA = 'area';
-var TYPE_LINE = 'line';
-var TYPE_MARKER = 'marker';
-var STATE_DEFAULT = 0;
-var STATE_HOVERED = 1;
-var STATE_SELECTED = 2;
-var STATE_TO_INDEX = [0, 1, 2, 2];
-var TOLERANCE = 1;
-var SELECTIONS = {
+const _noop = noop;
+const _extend = extend;
+const _each = each;
+const _concat = Array.prototype.concat;
+const TYPE_AREA = 'area';
+const TYPE_LINE = 'line';
+const TYPE_MARKER = 'marker';
+const STATE_DEFAULT = 0;
+const STATE_HOVERED = 1;
+const STATE_SELECTED = 2;
+const STATE_TO_INDEX = [0, 1, 2, 2];
+const TOLERANCE = 1;
+const SELECTIONS = {
   'none': null,
   'single': -1,
   'multiple': NaN
 };
-var _isArray = Array.isArray;
-var _Number = Number;
-var _String = String;
-var _abs = Math.abs;
-var _round = Math.round;
-var _min = Math.min;
-var _max = Math.max;
-var _sqrt = Math.sqrt;
+const _isArray = Array.isArray;
+const _Number = Number;
+const _String = String;
+const _abs = Math.abs;
+const _round = Math.round;
+const _min = Math.min;
+const _max = Math.max;
+const _sqrt = Math.sqrt;
 export function getMaxBound(arr) {
   return arr.reduce((a, c) => {
     return c ? [_min(a[0], c[0]), _min(a[1], c[1]), _max(a[2], c[2]), _max(a[3], c[3])] : a;
   }, arr[0]);
 }
 function getSelection(selectionMode) {
-  var selection = _normalizeEnum(selectionMode);
+  let selection = _normalizeEnum(selectionMode);
   selection = selection in SELECTIONS ? SELECTIONS[selection] : SELECTIONS.single;
   if (selection !== null) {
     selection = {
@@ -58,21 +58,21 @@ function ArraySource(raw) {
 }
 ArraySource.prototype = {
   constructor: ArraySource,
-  count: function count() {
+  count: function () {
     return this.raw.length;
   },
-  item: function item(index) {
+  item: function (index) {
     return this.raw[index];
   },
-  geometry: function geometry(item) {
+  geometry: function (item) {
     return {
       coordinates: item.coordinates
     };
   },
-  attributes: function attributes(item) {
+  attributes: function (item) {
     return item.attributes;
   },
-  getBBox: function getBBox(index) {
+  getBBox: function (index) {
     return arguments.length === 0 ? undefined : this.raw[index]['bbox'];
   }
 };
@@ -81,19 +81,19 @@ function GeoJsonSource(raw) {
 }
 GeoJsonSource.prototype = {
   constructor: GeoJsonSource,
-  count: function count() {
+  count: function () {
     return this.raw.features.length;
   },
-  item: function item(index) {
+  item: function (index) {
     return this.raw.features[index];
   },
-  geometry: function geometry(item) {
+  geometry: function (item) {
     return item.geometry;
   },
-  attributes: function attributes(item) {
+  attributes: function (item) {
     return item.properties;
   },
-  getBBox: function getBBox(index) {
+  getBBox: function (index) {
     return arguments.length === 0 ? this.raw['bbox'] : this.raw.features[index]['bbox'];
   }
 };
@@ -104,7 +104,7 @@ function isGeoJsonObject(obj) {
 // The problem is that when remote source returns an object (not an array) the data.DataSource internally wraps it into array (of one element)
 // So specific `if` clause is required to recognize GeoJson object in the returned `items`
 function unwrapFromDataSource(source) {
-  var sourceType;
+  let sourceType;
   if (source) {
     if (isGeoJsonObject(source)) {
       sourceType = GeoJsonSource;
@@ -146,7 +146,7 @@ function setLineLabelVisibility(label) {
 function getDataValue(proxy, dataField) {
   return proxy.attribute(dataField);
 }
-var TYPE_TO_TYPE_MAP = {
+const TYPE_TO_TYPE_MAP = {
   Point: TYPE_MARKER,
   MultiPoint: TYPE_LINE,
   LineString: TYPE_LINE,
@@ -158,8 +158,8 @@ function pick(a, b) {
   return a !== undefined ? a : b;
 }
 function guessTypeByData(sample) {
-  var type = TYPE_TO_TYPE_MAP[sample.type];
-  var coordinates = sample.coordinates;
+  let type = TYPE_TO_TYPE_MAP[sample.type];
+  const coordinates = sample.coordinates;
   if (!type) {
     if (typeof coordinates[0] === 'number') {
       type = TYPE_MARKER;
@@ -171,23 +171,23 @@ function guessTypeByData(sample) {
   }
   return type;
 }
-var emptyStrategy = {
+const emptyStrategy = {
   setup: _noop,
   reset: _noop,
   arrange: _noop,
   updateGrouping: _noop,
   getDefaultColor: _noop
 };
-var strategiesByType = {};
-var strategiesByGeometry = {};
-var strategiesByElementType = {};
-var groupByColor;
-var groupBySize;
-var selectStrategy = function selectStrategy(options, data) {
-  var type = _normalizeEnum(options.type);
-  var elementType = _normalizeEnum(options.elementType);
-  var sample;
-  var strategy = _extend({}, emptyStrategy);
+const strategiesByType = {};
+const strategiesByGeometry = {};
+const strategiesByElementType = {};
+let groupByColor;
+let groupBySize;
+let selectStrategy = function (options, data) {
+  let type = _normalizeEnum(options.type);
+  let elementType = _normalizeEnum(options.elementType);
+  let sample;
+  const strategy = _extend({}, emptyStrategy);
   if (data.count() > 0) {
     sample = data.geometry(data.item(0));
     type = strategiesByType[type] ? type : guessTypeByData(sample);
@@ -212,19 +212,19 @@ strategiesByType[TYPE_AREA] = {
   projectLabel: projectAreaLabel,
   transform: transformPointList,
   transformLabel: transformAreaLabel,
-  draw: function draw(context, figure, data) {
+  draw: function (context, figure, data) {
     figure.root = context.renderer.path([], 'area').data(context.dataKey, data);
   },
   refresh: _noop,
-  getLabelOffset: function getLabelOffset(label) {
+  getLabelOffset: function (label) {
     setAreaLabelVisibility(label);
     return [0, 0];
   },
-  getStyles: function getStyles(settings) {
-    var color = settings.color || null;
-    var borderColor = settings.borderColor || null;
-    var borderWidth = pick(settings.borderWidth, null);
-    var opacity = pick(settings.opacity, null);
+  getStyles: function (settings) {
+    const color = settings.color || null;
+    const borderColor = settings.borderColor || null;
+    const borderWidth = pick(settings.borderWidth, null);
+    const opacity = pick(settings.opacity, null);
     return {
       root: [{
         'class': 'dxm-area',
@@ -247,11 +247,11 @@ strategiesByType[TYPE_AREA] = {
       }]
     };
   },
-  setState: function setState(figure, styles, state) {
+  setState: function (figure, styles, state) {
     applyElementState(figure, styles, state, 'root');
   },
   hasLabelsGroup: true,
-  updateGrouping: function updateGrouping(context) {
+  updateGrouping: function (context) {
     groupByColor(context);
   },
   getDefaultColor: _noop
@@ -260,18 +260,18 @@ strategiesByType[TYPE_LINE] = {
   projectLabel: projectLineLabel,
   transform: transformPointList,
   transformLabel: transformLineLabel,
-  draw: function draw(context, figure, data) {
+  draw: function (context, figure, data) {
     figure.root = context.renderer.path([], 'line').data(context.dataKey, data);
   },
   refresh: _noop,
-  getLabelOffset: function getLabelOffset(label) {
+  getLabelOffset: function (label) {
     setLineLabelVisibility(label);
     return [0, 0];
   },
-  getStyles: function getStyles(settings) {
-    var color = settings.color || settings.borderColor || null;
-    var width = pick(settings.borderWidth, null);
-    var opacity = pick(settings.opacity, null);
+  getStyles: function (settings) {
+    const color = settings.color || settings.borderColor || null;
+    const width = pick(settings.borderWidth, null);
+    const opacity = pick(settings.opacity, null);
     return {
       root: [{
         'class': 'dxm-line',
@@ -291,11 +291,11 @@ strategiesByType[TYPE_LINE] = {
       }]
     };
   },
-  setState: function setState(figure, styles, state) {
+  setState: function (figure, styles, state) {
     applyElementState(figure, styles, state, 'root');
   },
   hasLabelsGroup: true,
-  updateGrouping: function updateGrouping(context) {
+  updateGrouping: function (context) {
     groupByColor(context);
   },
   getDefaultColor: _noop
@@ -303,17 +303,17 @@ strategiesByType[TYPE_LINE] = {
 strategiesByType[TYPE_MARKER] = {
   project: projectPoint,
   transform: transformPoint,
-  draw: function draw(context, figure, data) {
+  draw: function (context, figure, data) {
     figure.root = context.renderer.g();
     this._draw(context, figure, data);
   },
   refresh: _noop,
   hasLabelsGroup: false,
-  getLabelOffset: function getLabelOffset(label, settings) {
+  getLabelOffset: function (label, settings) {
     return [_round((label.size[0] + _max(settings.size || 0, 0)) / 2) + 2, 0];
   },
-  getStyles: function getStyles(settings) {
-    var styles = {
+  getStyles: function (settings) {
+    const styles = {
       root: [{
         'class': 'dxm-marker'
       }, {
@@ -325,15 +325,15 @@ strategiesByType[TYPE_MARKER] = {
     this._getStyles(styles, settings);
     return styles;
   },
-  setState: function setState(figure, styles, state) {
+  setState: function (figure, styles, state) {
     applyElementState(figure, styles, state, 'root');
     this._setState(figure, styles, state);
   },
-  updateGrouping: function updateGrouping(context) {
+  updateGrouping: function (context) {
     groupByColor(context);
     groupBySize(context);
   },
-  getDefaultColor: function getDefaultColor(ctx, palette) {
+  getDefaultColor: function (ctx, palette) {
     return ctx.params.themeManager.getAccentColor(palette);
   }
 };
@@ -345,7 +345,7 @@ strategiesByGeometry[TYPE_AREA] = function (sample) {
   };
 };
 strategiesByGeometry[TYPE_LINE] = function (sample) {
-  var coordinates = sample.coordinates;
+  const coordinates = sample.coordinates;
   return {
     project: coordinates[0] && coordinates[0][0] && typeof coordinates[0][0][0] === 'number' ? projectPolygon : projectLineString
   };
@@ -353,34 +353,34 @@ strategiesByGeometry[TYPE_LINE] = function (sample) {
 strategiesByElementType[TYPE_MARKER] = {
   _default: 'dot',
   dot: {
-    setup: function setup(context) {
+    setup: function (context) {
       context.filter = context.renderer.shadowFilter('-40%', '-40%', '180%', '200%', 0, 1, 1, '#000000', 0.2);
     },
-    reset: function reset(context) {
+    reset: function (context) {
       context.filter.dispose();
       context.filter = null;
     },
-    _draw: function _draw(ctx, figure, data) {
+    _draw: function (ctx, figure, data) {
       figure.back = ctx.renderer.circle().sharp().data(ctx.dataKey, data).append(figure.root);
       figure.dot = ctx.renderer.circle().sharp().data(ctx.dataKey, data).append(figure.root);
     },
-    refresh: function refresh(ctx, figure, data, proxy, settings) {
+    refresh: function (ctx, figure, data, proxy, settings) {
       figure.dot.attr({
         filter: settings.shadow ? ctx.filter.id : null
       });
     },
-    _getStyles: function _getStyles(styles, style) {
-      var size = style.size > 0 ? _Number(style.size) : 0;
-      var hoveredSize = size;
-      var selectedSize = size + (style.selectedStep > 0 ? _Number(style.selectedStep) : 0);
-      var hoveredBackSize = hoveredSize + (style.backStep > 0 ? _Number(style.backStep) : 0);
-      var selectedBackSize = selectedSize + (style.backStep > 0 ? _Number(style.backStep) : 0);
-      var color = style.color || null;
-      var borderColor = style.borderColor || null;
-      var borderWidth = pick(style.borderWidth, null);
-      var opacity = pick(style.opacity, null);
-      var backColor = style.backColor || null;
-      var backOpacity = pick(style.backOpacity, null);
+    _getStyles: function (styles, style) {
+      const size = style.size > 0 ? _Number(style.size) : 0;
+      const hoveredSize = size;
+      const selectedSize = size + (style.selectedStep > 0 ? _Number(style.selectedStep) : 0);
+      const hoveredBackSize = hoveredSize + (style.backStep > 0 ? _Number(style.backStep) : 0);
+      const selectedBackSize = selectedSize + (style.backStep > 0 ? _Number(style.backStep) : 0);
+      const color = style.color || null;
+      const borderColor = style.borderColor || null;
+      const borderWidth = pick(style.borderWidth, null);
+      const opacity = pick(style.opacity, null);
+      const backColor = style.backColor || null;
+      const backOpacity = pick(style.backOpacity, null);
       styles.dot = [{
         r: size / 2,
         stroke: borderColor,
@@ -420,25 +420,25 @@ strategiesByElementType[TYPE_MARKER] = {
         opacity: backOpacity
       }];
     },
-    _setState: function _setState(figure, styles, state) {
+    _setState: function (figure, styles, state) {
       applyElementState(figure, styles, state, 'dot');
       applyElementState(figure, styles, state, 'back');
     }
   },
   bubble: {
-    _draw: function _draw(ctx, figure, data) {
+    _draw: function (ctx, figure, data) {
       figure.bubble = ctx.renderer.circle().sharp().data(ctx.dataKey, data).append(figure.root);
     },
-    refresh: function refresh(ctx, figure, data, proxy, settings) {
+    refresh: function (ctx, figure, data, proxy, settings) {
       figure.bubble.attr({
         r: settings.size / 2
       });
     },
-    _getStyles: function _getStyles(styles, style) {
-      var color = style.color || null;
-      var borderColor = style.borderColor || null;
-      var borderWidth = pick(style.borderWidth, null);
-      var opacity = pick(style.opacity, null);
+    _getStyles: function (styles, style) {
+      const color = style.color || null;
+      const borderColor = style.borderColor || null;
+      const borderWidth = pick(style.borderWidth, null);
+      const opacity = pick(style.opacity, null);
       styles.bubble = [{
         stroke: borderColor,
         'stroke-width': borderWidth,
@@ -456,33 +456,33 @@ strategiesByElementType[TYPE_MARKER] = {
         opacity: pick(style.selectedOpacity, opacity)
       }];
     },
-    _setState: function _setState(figure, styles, state) {
+    _setState: function (figure, styles, state) {
       applyElementState(figure, styles, state, 'bubble');
     },
-    arrange: function arrange(context, handles) {
-      var values = [];
-      var i;
-      var ii = values.length = handles.length;
-      var settings = context.settings;
-      var dataField = settings.dataField;
-      var minSize = settings.minSize > 0 ? _Number(settings.minSize) : 0;
-      var maxSize = settings.maxSize > minSize ? _Number(settings.maxSize) : minSize;
+    arrange: function (context, handles) {
+      const values = [];
+      let i;
+      const ii = values.length = handles.length;
+      const settings = context.settings;
+      const dataField = settings.dataField;
+      const minSize = settings.minSize > 0 ? _Number(settings.minSize) : 0;
+      const maxSize = settings.maxSize > minSize ? _Number(settings.maxSize) : minSize;
       if (settings.sizeGroups) {
         return;
       }
       for (i = 0; i < ii; ++i) {
         values[i] = _max(getDataValue(handles[i].proxy, dataField) || 0, 0);
       }
-      var minValue = _min.apply(null, values);
-      var maxValue = _max.apply(null, values);
-      var deltaValue = maxValue - minValue || 1;
-      var deltaSize = maxSize - minSize;
+      const minValue = _min.apply(null, values);
+      const maxValue = _max.apply(null, values);
+      const deltaValue = maxValue - minValue || 1;
+      const deltaSize = maxSize - minSize;
       for (i = 0; i < ii; ++i) {
         handles[i]._settings.size = minSize + deltaSize * (values[i] - minValue) / deltaValue;
       }
     },
-    updateGrouping: function updateGrouping(context) {
-      var dataField = context.settings.dataField;
+    updateGrouping: function (context) {
+      const dataField = context.settings.dataField;
       strategiesByType[TYPE_MARKER].updateGrouping(context);
       groupBySize(context, function (proxy) {
         return getDataValue(proxy, dataField);
@@ -490,21 +490,21 @@ strategiesByElementType[TYPE_MARKER] = {
     }
   },
   pie: {
-    _draw: function _draw(ctx, figure, data) {
+    _draw: function (ctx, figure, data) {
       figure.pie = ctx.renderer.g().append(figure.root);
       figure.border = ctx.renderer.circle().sharp().data(ctx.dataKey, data).append(figure.root);
     },
-    refresh: function refresh(ctx, figure, data, proxy, settings) {
-      var values = getDataValue(proxy, ctx.settings.dataField) || [];
-      var colors = settings._colors;
-      var sum = 0;
-      var pie = figure.pie;
-      var renderer = ctx.renderer;
-      var dataKey = ctx.dataKey;
-      var r = (settings.size > 0 ? _Number(settings.size) : 0) / 2;
-      var start = 90;
-      var end = start;
-      var zeroSum = false;
+    refresh: function (ctx, figure, data, proxy, settings) {
+      const values = getDataValue(proxy, ctx.settings.dataField) || [];
+      const colors = settings._colors;
+      let sum = 0;
+      const pie = figure.pie;
+      const renderer = ctx.renderer;
+      const dataKey = ctx.dataKey;
+      const r = (settings.size > 0 ? _Number(settings.size) : 0) / 2;
+      let start = 90;
+      let end = start;
+      let zeroSum = false;
       sum = values.reduce(function (total, item) {
         return total + (item || 0);
       }, 0);
@@ -524,10 +524,10 @@ strategiesByElementType[TYPE_MARKER] = {
         r: r
       });
     },
-    _getStyles: function _getStyles(styles, style) {
-      var opacity = pick(style.opacity, null);
-      var borderColor = style.borderColor || null;
-      var borderWidth = pick(style.borderWidth, null);
+    _getStyles: function (styles, style) {
+      const opacity = pick(style.opacity, null);
+      const borderColor = style.borderColor || null;
+      const borderWidth = pick(style.borderWidth, null);
       styles.pie = [{
         opacity: opacity
       }, {
@@ -546,17 +546,17 @@ strategiesByElementType[TYPE_MARKER] = {
         'stroke-width': pick(style.selectedBorderWidth, borderWidth)
       }];
     },
-    _setState: function _setState(figure, styles, state) {
+    _setState: function (figure, styles, state) {
       applyElementState(figure, styles, state, 'pie');
       applyElementState(figure, styles, state, 'border');
     },
-    arrange: function arrange(context, handles) {
-      var i;
-      var ii = handles.length;
-      var dataField = context.settings.dataField;
-      var values;
-      var count = 0;
-      var palette;
+    arrange: function (context, handles) {
+      let i;
+      const ii = handles.length;
+      const dataField = context.settings.dataField;
+      let values;
+      let count = 0;
+      let palette;
       for (i = 0; i < ii; ++i) {
         values = getDataValue(handles[i].proxy, dataField);
         if (values && values.length > count) {
@@ -584,22 +584,22 @@ strategiesByElementType[TYPE_MARKER] = {
     }
   },
   image: {
-    _draw: function _draw(ctx, figure, data) {
+    _draw: function (ctx, figure, data) {
       figure.image = ctx.renderer.image(null, null, null, null, null, 'center').attr({
         'pointer-events': 'visible'
       }) // T567545
       .data(ctx.dataKey, data).append(figure.root);
     },
-    refresh: function refresh(ctx, figure, data, proxy) {
+    refresh: function (ctx, figure, data, proxy) {
       figure.image.attr({
         href: getDataValue(proxy, ctx.settings.dataField)
       });
     },
-    _getStyles: function _getStyles(styles, style) {
-      var size = style.size > 0 ? _Number(style.size) : 0;
-      var hoveredSize = size + (style.hoveredStep > 0 ? _Number(style.hoveredStep) : 0);
-      var selectedSize = size + (style.selectedStep > 0 ? _Number(style.selectedStep) : 0);
-      var opacity = pick(style.opacity, null);
+    _getStyles: function (styles, style) {
+      const size = style.size > 0 ? _Number(style.size) : 0;
+      const hoveredSize = size + (style.hoveredStep > 0 ? _Number(style.hoveredStep) : 0);
+      const selectedSize = size + (style.selectedStep > 0 ? _Number(style.selectedStep) : 0);
+      const opacity = pick(style.opacity, null);
       styles.image = [{
         x: -size / 2,
         y: -size / 2,
@@ -620,7 +620,7 @@ strategiesByElementType[TYPE_MARKER] = {
         opacity: pick(style.selectedOpacity, opacity)
       }];
     },
-    _setState: function _setState(figure, styles, state) {
+    _setState: function (figure, styles, state) {
       applyElementState(figure, styles, state, 'image');
     }
   }
@@ -629,9 +629,9 @@ function projectPoint(projection, coordinates) {
   return projection.project(coordinates);
 }
 function projectPointList(projection, coordinates) {
-  var output = [];
-  var i;
-  var ii = output.length = coordinates.length;
+  const output = [];
+  let i;
+  const ii = output.length = coordinates.length;
   for (i = 0; i < ii; ++i) {
     output[i] = projection.project(coordinates[i]);
   }
@@ -641,36 +641,36 @@ function projectLineString(projection, coordinates) {
   return [projectPointList(projection, coordinates)];
 }
 function projectPolygon(projection, coordinates) {
-  var output = [];
-  var i;
-  var ii = output.length = coordinates.length;
+  const output = [];
+  let i;
+  const ii = output.length = coordinates.length;
   for (i = 0; i < ii; ++i) {
     output[i] = projectPointList(projection, coordinates[i]);
   }
   return output;
 }
 function projectMultiPolygon(projection, coordinates) {
-  var output = [];
-  var i;
-  var ii = output.length = coordinates.length;
+  const output = [];
+  let i;
+  const ii = output.length = coordinates.length;
   for (i = 0; i < ii; ++i) {
     output[i] = projectPolygon(projection, coordinates[i]);
   }
   return _concat.apply([], output);
 }
 function transformPoint(content, projection, coordinates) {
-  var data = projection.transform(coordinates);
+  const data = projection.transform(coordinates);
   content.root.attr({
     translateX: data[0],
     translateY: data[1]
   });
 }
 function transformList(projection, coordinates) {
-  var output = [];
-  var i;
-  var ii = coordinates.length;
-  var item;
-  var k = 0;
+  const output = [];
+  let i;
+  const ii = coordinates.length;
+  let item;
+  let k = 0;
   output.length = 2 * ii;
   for (i = 0; i < ii; ++i) {
     item = projection.transform(coordinates[i]);
@@ -680,9 +680,9 @@ function transformList(projection, coordinates) {
   return output;
 }
 function transformPointList(content, projection, coordinates) {
-  var output = [];
-  var i;
-  var ii = output.length = coordinates.length;
+  const output = [];
+  let i;
+  const ii = output.length = coordinates.length;
   for (i = 0; i < ii; ++i) {
     output[i] = transformList(projection, coordinates[i]);
   }
@@ -691,7 +691,7 @@ function transformPointList(content, projection, coordinates) {
   });
 }
 function transformAreaLabel(label, projection, coordinates) {
-  var data = projection.transform(coordinates[0]);
+  const data = projection.transform(coordinates[0]);
   label.spaceSize = projection.getSquareSize(coordinates[1]);
   label.text.attr({
     translateX: data[0],
@@ -700,7 +700,7 @@ function transformAreaLabel(label, projection, coordinates) {
   setAreaLabelVisibility(label);
 }
 function transformLineLabel(label, projection, coordinates) {
-  var data = projection.transform(coordinates[0]);
+  const data = projection.transform(coordinates[0]);
   label.spaceSize = projection.getSquareSize(coordinates[1]);
   label.text.attr({
     translateX: data[0],
@@ -709,7 +709,7 @@ function transformLineLabel(label, projection, coordinates) {
   setLineLabelVisibility(label);
 }
 function getItemSettings(context, proxy, settings) {
-  var result = combineSettings(context.settings, settings);
+  const result = combineSettings(context.settings, settings);
   applyGrouping(context.grouping, proxy, result);
   if (settings.color === undefined && settings.paletteIndex >= 0) {
     result.color = result._colors[settings.paletteIndex];
@@ -718,17 +718,17 @@ function getItemSettings(context, proxy, settings) {
 }
 function applyGrouping(grouping, proxy, settings) {
   _each(grouping, function (name, data) {
-    var index = findGroupingIndex(data.callback(proxy, data.field), data.partition);
+    const index = findGroupingIndex(data.callback(proxy, data.field), data.partition);
     if (index >= 0) {
       settings[name] = data.values[index];
     }
   });
 }
 function findGroupingIndex(value, partition) {
-  var start = 0;
-  var end = partition.length - 1;
-  var index = -1;
-  var middle;
+  let start = 0;
+  let end = partition.length - 1;
+  let index = -1;
+  let middle;
   if (partition[start] <= value && value <= partition[end]) {
     if (value === partition[end]) {
       index = end - 1;
@@ -756,21 +756,21 @@ function raiseChanged(context, handle, state, name) {
 // This is required because `$.extend` cannot be used - because of the `options.data` which is commonly a very large array
 // TODO: Try to use our simple `extend` instead of `$.extend`
 function combineSettings(common, partial) {
-  var obj = _extend({}, common, partial);
+  const obj = _extend({}, common, partial);
   obj.label = _extend({}, common.label, obj.label);
   obj.label.font = _extend({}, common.label.font, obj.label.font);
   return obj;
 }
 function processCommonSettings(context, options) {
-  var themeManager = context.params.themeManager;
-  var strategy = context.str;
-  var settings = combineSettings(_extend({
+  const themeManager = context.params.themeManager;
+  const strategy = context.str;
+  const settings = combineSettings(_extend({
     label: {},
     color: strategy.getDefaultColor(context, options.palette)
   }, themeManager.theme('layer:' + strategy.fullType)), options);
-  var colors;
-  var i;
-  var palette;
+  let colors;
+  let i;
+  let palette;
   if (settings.paletteSize > 0) {
     palette = themeManager.createDiscretePalette(settings.palette, settings.paletteSize);
     for (i = 0, colors = []; i < settings.paletteSize; ++i) {
@@ -783,8 +783,8 @@ function processCommonSettings(context, options) {
 function valueCallback(proxy, dataField) {
   return proxy.attribute(dataField);
 }
-var performGrouping = function performGrouping(context, partition, settingField, dataField, valuesCallback) {
-  var values;
+let performGrouping = function (context, partition, settingField, dataField, valuesCallback) {
+  let values;
   if (dataField && partition && partition.length > 1) {
     values = valuesCallback(partition.length - 1);
     context.grouping[settingField] = {
@@ -801,31 +801,31 @@ var performGrouping = function performGrouping(context, partition, settingField,
   }
 };
 function dropGrouping(context) {
-  var name = context.name;
-  var dataExchanger = context.params.dataExchanger;
+  const name = context.name;
+  const dataExchanger = context.params.dataExchanger;
   _each(context.grouping, function (field) {
     dataExchanger.set(name, field, null);
   });
   context.grouping = {};
 }
-groupByColor = function groupByColor(context) {
+groupByColor = function (context) {
   performGrouping(context, context.settings.colorGroups, 'color', context.settings.colorGroupingField, function (count) {
-    var _palette = context.params.themeManager.createDiscretePalette(context.settings.palette, count);
-    var i;
-    var list = [];
+    const _palette = context.params.themeManager.createDiscretePalette(context.settings.palette, count);
+    let i;
+    const list = [];
     for (i = 0; i < count; ++i) {
       list.push(_palette.getColor(i));
     }
     return list;
   });
 };
-groupBySize = function groupBySize(context, valueCallback) {
-  var settings = context.settings;
+groupBySize = function (context, valueCallback) {
+  const settings = context.settings;
   performGrouping(context, settings.sizeGroups, 'size', valueCallback || settings.sizeGroupingField, function (count) {
-    var minSize = settings.minSize > 0 ? _Number(settings.minSize) : 0;
-    var maxSize = settings.maxSize >= minSize ? _Number(settings.maxSize) : 0;
-    var i = 0;
-    var sizes = [];
+    const minSize = settings.minSize > 0 ? _Number(settings.minSize) : 0;
+    const maxSize = settings.maxSize >= minSize ? _Number(settings.maxSize) : 0;
+    let i = 0;
+    const sizes = [];
     if (count > 1) {
       for (i = 0; i < count; ++i) {
         sizes.push((minSize * (count - i - 1) + maxSize * i) / (count - 1));
@@ -848,17 +848,17 @@ function hasFlag(flags, flag) {
   return !!(flags & flag);
 }
 function createLayerProxy(layer, name, index) {
-  var proxy = {
+  const proxy = {
     index: index,
     name: name,
-    getElements: function getElements() {
+    getElements: function () {
       return layer.getProxies();
     },
-    clearSelection: function clearSelection(_noEvent) {
+    clearSelection: function (_noEvent) {
       layer.clearSelection(_noEvent);
       return proxy;
     },
-    getDataSource: function getDataSource() {
+    getDataSource: function () {
       return layer.getDataSource();
     },
     getBounds() {
@@ -867,9 +867,9 @@ function createLayerProxy(layer, name, index) {
   };
   return proxy;
 }
-var MapLayerElement;
-var MapLayer = function MapLayer(params, container, name, index) {
-  var that = this;
+let MapLayerElement;
+let MapLayer = function (params, container, name, index) {
+  const that = this;
   that._params = params;
   that._onProjection();
   that.proxy = createLayerProxy(that, name, index);
@@ -902,19 +902,19 @@ MapLayer.prototype = _extend({
   getDataReadyCallback() {
     return this._dataSourceLoaded;
   },
-  _onProjection: function _onProjection() {
-    var that = this;
+  _onProjection: function () {
+    const that = this;
     that._removeHandlers = that._params.projection.on({
-      'engine': function engine() {
+      'engine': function () {
         that._project();
       },
-      'screen': function screen() {
+      'screen': function () {
         that._transform();
       },
-      'center': function center() {
+      'center': function () {
         that._transformCore();
       },
-      'zoom': function zoom() {
+      'zoom': function () {
         that._transform();
       }
     });
@@ -922,35 +922,35 @@ MapLayer.prototype = _extend({
   getData() {
     return this._data;
   },
-  _dataSourceLoadErrorHandler: function _dataSourceLoadErrorHandler() {
+  _dataSourceLoadErrorHandler: function () {
     this._dataSourceChangedHandler();
   },
-  _dataSourceChangedHandler: function _dataSourceChangedHandler() {
-    var that = this;
+  _dataSourceChangedHandler: function () {
+    const that = this;
     that._data = unwrapFromDataSource(that._dataSource && that._dataSource.items());
     that._update(true);
   },
-  _dataSourceOptions: function _dataSourceOptions() {
+  _dataSourceOptions: function () {
     return {
       paginate: false
     };
   },
-  _getSpecificDataSourceOption: function _getSpecificDataSourceOption() {
+  _getSpecificDataSourceOption: function () {
     return this._specificDataSourceOption;
   },
-  _normalizeDataSource: function _normalizeDataSource(dataSource) {
-    var store = dataSource.store();
+  _normalizeDataSource: function (dataSource) {
+    const store = dataSource.store();
     if (store._loadMode === 'raw') {
       store._loadMode = undefined;
     }
     return dataSource;
   },
-  _offProjection: function _offProjection() {
+  _offProjection: function () {
     this._removeHandlers();
     this._removeHandlers = null;
   },
-  dispose: function dispose() {
-    var that = this;
+  dispose: function () {
+    const that = this;
     that._disposeDataSource();
     that._destroyHandles();
     dropGrouping(that._context);
@@ -961,8 +961,8 @@ MapLayer.prototype = _extend({
     that._params = that._container = that._context = that.proxy = null;
     return that;
   },
-  setOptions: function setOptions(options) {
-    var that = this;
+  setOptions: function (options) {
+    const that = this;
     options = that._options = options || {};
     that._dataSourceLoaded = new Deferred();
     if ('dataSource' in options && options.dataSource !== that._options_dataSource) {
@@ -976,9 +976,9 @@ MapLayer.prototype = _extend({
     }
     that._transformCore();
   },
-  _update: function _update(isContextChanged) {
-    var that = this;
-    var context = that._context;
+  _update: function (isContextChanged) {
+    const that = this;
+    const context = that._context;
     if (isContextChanged) {
       context.str.reset(context);
       context.root.clear();
@@ -1037,15 +1037,15 @@ MapLayer.prototype = _extend({
   },
   getBounds() {
     return getMaxBound(this._handles.map(_ref => {
-      var {
+      let {
         proxy
       } = _ref;
       return proxy.coordinates().map(coords => {
         if (!_isArray(coords)) {
           return;
         }
-        var coordsToBoundsSearch = _isArray(coords[0][0]) ? coords.reduce((ac, val) => ac.concat(val), []) : coords;
-        var initValue = coordsToBoundsSearch[0];
+        const coordsToBoundsSearch = _isArray(coords[0][0]) ? coords.reduce((ac, val) => ac.concat(val), []) : coords;
+        const initValue = coordsToBoundsSearch[0];
         return coordsToBoundsSearch.reduce((min, c) => {
           return [_min(min[0], c[0]), _min(min[1], c[1]), _max(min[2], c[0]), _max(min[3], c[1])];
         }, [initValue[0], initValue[1], initValue[0], initValue[1]]);
@@ -1059,17 +1059,17 @@ MapLayer.prototype = _extend({
     }
     this._handles = [];
   },
-  _createHandles: function _createHandles() {
-    var that = this;
-    var handles = that._handles = [];
-    var data = that._data;
-    var i;
-    var ii = handles.length = data.count();
-    var context = that._context;
-    var geometry = data.geometry;
-    var attributes = data.attributes;
-    var handle;
-    var dataItem;
+  _createHandles: function () {
+    const that = this;
+    const handles = that._handles = [];
+    const data = that._data;
+    let i;
+    const ii = handles.length = data.count();
+    const context = that._context;
+    const geometry = data.geometry;
+    const attributes = data.attributes;
+    let handle;
+    let dataItem;
     for (i = 0; i < ii; ++i) {
       dataItem = data.item(i);
       handles[i] = new MapLayerElement(context, i, geometry(dataItem), attributes(dataItem));
@@ -1088,10 +1088,10 @@ MapLayer.prototype = _extend({
       });
     }
   },
-  _updateHandles: function _updateHandles() {
-    var handles = this._handles;
-    var i;
-    var ii = handles.length;
+  _updateHandles: function () {
+    const handles = this._handles;
+    let i;
+    const ii = handles.length;
     for (i = 0; i < ii; ++i) {
       handles[i].refresh();
     }
@@ -1104,23 +1104,23 @@ MapLayer.prototype = _extend({
       }
     }
   },
-  _transformCore: function _transformCore() {
-    var transform = this._params.projection.getTransform();
+  _transformCore: function () {
+    const transform = this._params.projection.getTransform();
     this._context.root.attr(transform);
     this._context.labelRoot && this._context.labelRoot.attr(transform);
   },
-  _project: function _project() {
-    var handles = this._handles;
-    var i;
-    var ii = handles.length;
+  _project: function () {
+    const handles = this._handles;
+    let i;
+    const ii = handles.length;
     for (i = 0; i < ii; ++i) {
       handles[i].project();
     }
   },
-  _transform: function _transform() {
-    var handles = this._handles;
-    var i;
-    var ii = handles.length;
+  _transform: function () {
+    const handles = this._handles;
+    let i;
+    const ii = handles.length;
     this._transformCore();
     for (i = 0; i < ii; ++i) {
       handles[i].transform();
@@ -1129,23 +1129,23 @@ MapLayer.prototype = _extend({
   getProxies() {
     return this._handles.map(p => p.proxy);
   },
-  getProxy: function getProxy(index) {
+  getProxy: function (index) {
     return this._handles[index].proxy;
   },
-  raiseClick: function raiseClick(i, dxEvent) {
+  raiseClick: function (i, dxEvent) {
     this._params.eventTrigger('click', {
       target: this._handles[i].proxy,
       event: dxEvent
     });
   },
-  hoverItem: function hoverItem(i, state) {
+  hoverItem: function (i, state) {
     this._handles[i].setHovered(state);
   },
-  selectItem: function selectItem(i, state, _noEvent) {
+  selectItem: function (i, state, _noEvent) {
     this._handles[i].setSelected(state, _noEvent);
   },
-  clearSelection: function clearSelection() {
-    var selection = this._context.selection;
+  clearSelection: function () {
+    const selection = this._context.selection;
     if (selection) {
       _each(selection.state, function (_, handle) {
         handle && handle.setSelected(false);
@@ -1155,11 +1155,11 @@ MapLayer.prototype = _extend({
   }
 }, DataHelperMixin);
 function createProxy(handle, coords, attrs) {
-  var proxy = {
-    coordinates: function coordinates() {
+  const proxy = {
+    coordinates: function () {
       return coords;
     },
-    attribute: function attribute(name, value) {
+    attribute: function (name, value) {
       if (arguments.length > 1) {
         attrs[name] = value;
         return proxy;
@@ -1167,7 +1167,7 @@ function createProxy(handle, coords, attrs) {
         return arguments.length > 0 ? attrs[name] : attrs;
       }
     },
-    selected: function selected(state, _noEvent) {
+    selected: function (state, _noEvent) {
       if (arguments.length > 0) {
         handle.setSelected(state, _noEvent);
         return proxy;
@@ -1175,16 +1175,16 @@ function createProxy(handle, coords, attrs) {
         return handle.isSelected();
       }
     },
-    applySettings: function applySettings(settings) {
+    applySettings: function (settings) {
       handle.update(settings);
       return proxy;
     }
   };
   return proxy;
 }
-MapLayerElement = function MapLayerElement(context, index, geometry, attributes) {
-  var that = this;
-  var proxy = that.proxy = createProxy(that, geometry.coordinates, _extend({}, attributes));
+MapLayerElement = function (context, index, geometry, attributes) {
+  const that = this;
+  const proxy = that.proxy = createProxy(that, geometry.coordinates, _extend({}, attributes));
   that._ctx = context;
   that._index = index;
   that._fig = that._label = null;
@@ -1204,52 +1204,52 @@ MapLayerElement = function MapLayerElement(context, index, geometry, attributes)
 };
 MapLayerElement.prototype = {
   constructor: MapLayerElement,
-  dispose: function dispose() {
-    var that = this;
+  dispose: function () {
+    const that = this;
     that._ctx = that.proxy = that._settings = that._fig = that._label = that.data = null;
     return that;
   },
-  project: function project() {
-    var context = this._ctx;
+  project: function () {
+    const context = this._ctx;
     this._projection = context.str.project(context.projection, this._coordinates);
     if (context.hasSeparateLabel && this._label) {
       this._projectLabel();
     }
   },
-  _projectLabel: function _projectLabel() {
+  _projectLabel: function () {
     this._labelProjection = this._ctx.str.projectLabel(this._projection);
   },
-  draw: function draw() {
-    var that = this;
-    var context = this._ctx;
+  draw: function () {
+    const that = this;
+    const context = this._ctx;
     context.str.draw(context, that._fig = {}, that._data);
     that._fig.root.append(context.root);
   },
-  transform: function transform() {
-    var that = this;
-    var context = that._ctx;
+  transform: function () {
+    const that = this;
+    const context = that._ctx;
     context.str.transform(that._fig, context.projection, that._projection);
     if (context.hasSeparateLabel && that._label) {
       that._transformLabel();
     }
   },
-  _transformLabel: function _transformLabel() {
+  _transformLabel: function () {
     this._ctx.str.transformLabel(this._label, this._ctx.projection, this._labelProjection);
   },
-  refresh: function refresh() {
-    var that = this;
-    var strategy = that._ctx.str;
-    var settings = getItemSettings(that._ctx, that.proxy, that._settings);
+  refresh: function () {
+    const that = this;
+    const strategy = that._ctx.str;
+    const settings = getItemSettings(that._ctx, that.proxy, that._settings);
     that._styles = strategy.getStyles(settings);
     strategy.refresh(that._ctx, that._fig, that._data, that.proxy, settings);
     that._refreshLabel(settings);
     that._setState();
   },
-  _refreshLabel: function _refreshLabel(settings) {
-    var that = this;
-    var context = that._ctx;
-    var labelSettings = settings.label;
-    var label = that._label;
+  _refreshLabel: function (settings) {
+    const that = this;
+    const context = that._ctx;
+    const labelSettings = settings.label;
+    let label = that._label;
     if (context.settings.label.enabled) {
       if (!label) {
         label = that._label = {
@@ -1286,17 +1286,17 @@ MapLayerElement.prototype = {
       }
     }
   },
-  measureLabel: function measureLabel() {
-    var label = this._label;
-    var bBox;
+  measureLabel: function () {
+    const label = this._label;
+    let bBox;
     if (label.value) {
       bBox = label.text.getBBox();
       label.size = [bBox.width, bBox.height, -bBox.y - bBox.height / 2];
     }
   },
-  adjustLabel: function adjustLabel() {
-    var label = this._label;
-    var offset;
+  adjustLabel: function () {
+    const label = this._label;
+    let offset;
     if (label.value) {
       offset = this._ctx.str.getLabelOffset(label, label.settings);
       label.settings = null;
@@ -1306,8 +1306,8 @@ MapLayerElement.prototype = {
       });
     }
   },
-  update: function update(settings) {
-    var that = this;
+  update: function (settings) {
+    const that = this;
     that._settings = combineSettings(that._settings, settings);
     // This check is required because the method can be called during the customization stage when DOM content neither is created nor should be changed
     if (that._fig) {
@@ -1318,17 +1318,17 @@ MapLayerElement.prototype = {
       }
     }
   },
-  _setState: function _setState() {
+  _setState: function () {
     this._ctx.str.setState(this._fig, this._styles, STATE_TO_INDEX[this._state]);
   },
-  _setForeground: function _setForeground() {
-    var root = this._fig.root;
+  _setForeground: function () {
+    const root = this._fig.root;
     this._state ? root.toForeground() : root.toBackground();
   },
-  setHovered: function setHovered(state) {
-    var that = this;
-    var currentState = hasFlag(that._state, STATE_HOVERED);
-    var newState = !!state;
+  setHovered: function (state) {
+    const that = this;
+    const currentState = hasFlag(that._state, STATE_HOVERED);
+    const newState = !!state;
     if (that._ctx.hover && currentState !== newState) {
       that._state = setFlag(that._state, STATE_HOVERED, newState);
       that._setState();
@@ -1337,12 +1337,12 @@ MapLayerElement.prototype = {
     }
     return that;
   },
-  setSelected: function setSelected(state, _noEvent) {
-    var that = this;
-    var currentState = hasFlag(that._state, STATE_SELECTED);
-    var newState = !!state;
-    var selection = that._ctx.selection;
-    var tmp;
+  setSelected: function (state, _noEvent) {
+    const that = this;
+    const currentState = hasFlag(that._state, STATE_SELECTED);
+    const newState = !!state;
+    const selection = that._ctx.selection;
+    let tmp;
     if (selection && currentState !== newState) {
       that._state = setFlag(that._state, STATE_SELECTED, newState);
       tmp = selection.state[selection.single];
@@ -1361,31 +1361,31 @@ MapLayerElement.prototype = {
       }
     }
   },
-  isSelected: function isSelected() {
+  isSelected: function () {
     return hasFlag(this._state, STATE_SELECTED);
   },
-  resetSelected: function resetSelected() {
+  resetSelected: function () {
     this._state = setFlag(this._state, STATE_SELECTED, false);
   },
-  restoreSelected: function restoreSelected() {
+  restoreSelected: function () {
     this._fig.root.toForeground();
   }
 };
 
 // http://en.wikipedia.org/wiki/Centroid
 function calculatePolygonCentroid(coordinates) {
-  var i;
-  var length = coordinates.length;
-  var v1;
-  var v2 = coordinates[length - 1];
-  var cross;
-  var cx = 0;
-  var cy = 0;
-  var area = 0;
-  var minX = Infinity;
-  var maxX = -Infinity;
-  var minY = Infinity;
-  var maxY = -Infinity;
+  let i;
+  const length = coordinates.length;
+  let v1;
+  let v2 = coordinates[length - 1];
+  let cross;
+  let cx = 0;
+  let cy = 0;
+  let area = 0;
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
   for (i = 0; i < length; ++i) {
     v1 = v2;
     v2 = coordinates[i];
@@ -1405,16 +1405,16 @@ function calculatePolygonCentroid(coordinates) {
   };
 }
 function calculateLineStringData(coordinates) {
-  var i;
-  var ii = coordinates.length;
-  var v1;
-  var v2 = coordinates[0] || [];
-  var totalLength = 0;
-  var items = [0];
-  var min0 = v2[0];
-  var max0 = v2[0];
-  var min1 = v2[1];
-  var max1 = v2[1];
+  let i;
+  const ii = coordinates.length;
+  let v1;
+  let v2 = coordinates[0] || [];
+  let totalLength = 0;
+  const items = [0];
+  let min0 = v2[0];
+  let max0 = v2[0];
+  let min1 = v2[1];
+  let max1 = v2[1];
   for (i = 1; i < ii; ++i) {
     v1 = v2;
     v2 = coordinates[i];
@@ -1428,7 +1428,7 @@ function calculateLineStringData(coordinates) {
   i = findGroupingIndex(totalLength / 2, items);
   v1 = coordinates[i];
   v2 = coordinates[i + 1];
-  var t = (totalLength / 2 - items[i]) / (items[i + 1] - items[i]);
+  const t = (totalLength / 2 - items[i]) / (items[i + 1] - items[i]);
   return ii ? [[v1[0] * (1 - t) + v2[0] * t, v1[1] * (1 - t) + v2[1] * t], [max0 - min0, max1 - min1], totalLength] : [];
 }
 
@@ -1436,11 +1436,11 @@ function calculateLineStringData(coordinates) {
 // There are redundant iterations in the following cycle - interior holes of a polygon should not be taken into account
 // So there is only centroid to be calculated for each "Polygon"
 function projectAreaLabel(coordinates) {
-  var i;
-  var ii = coordinates.length;
-  var centroid;
-  var resultCentroid;
-  var maxArea = 0;
+  let i;
+  const ii = coordinates.length;
+  let centroid;
+  let resultCentroid;
+  let maxArea = 0;
   for (i = 0; i < ii; ++i) {
     centroid = calculatePolygonCentroid(coordinates[i]);
     if (centroid.area > maxArea) {
@@ -1452,11 +1452,11 @@ function projectAreaLabel(coordinates) {
   return resultCentroid ? [resultCentroid.center, [_sqrt(resultCentroid.area), _sqrt(resultCentroid.area)]] : [[], []];
 }
 function projectLineLabel(coordinates) {
-  var i;
-  var ii = coordinates.length;
-  var maxLength = 0;
-  var data;
-  var resultData;
+  let i;
+  const ii = coordinates.length;
+  let maxLength = 0;
+  let data;
+  let resultData;
   for (i = 0; i < ii; ++i) {
     data = calculateLineStringData(coordinates[i]);
     if (data[2] > maxLength) {
@@ -1467,8 +1467,8 @@ function projectLineLabel(coordinates) {
   return resultData || [[], []];
 }
 export function MapLayerCollection(params) {
-  var that = this;
-  var renderer = params.renderer;
+  const that = this;
+  const renderer = params.renderer;
   that._params = params;
   that._layers = [];
   // TODO: Use Set instance instead of plain object
@@ -1489,20 +1489,20 @@ export function MapLayerCollection(params) {
 }
 MapLayerCollection.prototype = {
   constructor: MapLayerCollection,
-  dispose: function dispose() {
-    var that = this;
+  dispose: function () {
+    const that = this;
     that._clip.dispose();
     that._layers.forEach(l => l.dispose());
     that._offTracker();
     that._params = that._offTracker = that._layers = that._layerByName = that._clip = that._background = that._container = null;
   },
-  _subscribeToTracker: function _subscribeToTracker(tracker, renderer, eventTrigger) {
-    var that = this;
+  _subscribeToTracker: function (tracker, renderer, eventTrigger) {
+    const that = this;
     that._offTracker = tracker.on({
-      'click': function click(arg) {
+      'click': function (arg) {
         // TODO: Adjust `x` and `y` inside the Tracker
-        var offset = renderer.getRootOffset();
-        var layer = that.byName(arg.data.name);
+        const offset = renderer.getRootOffset();
+        const layer = that.byName(arg.data.name);
         arg.$event.x = arg.x - offset.left;
         arg.$event.y = arg.y - offset.top;
         // TODO: Remove the "raiseClick" method
@@ -1514,14 +1514,14 @@ MapLayerCollection.prototype = {
           });
         }
       },
-      'hover-on': function hoverOn(arg) {
-        var layer = that.byName(arg.data.name);
+      'hover-on': function (arg) {
+        const layer = that.byName(arg.data.name);
         if (layer) {
           layer.hoverItem(arg.data.index, true);
         }
       },
-      'hover-off': function hoverOff(arg) {
-        var layer = that.byName(arg.data.name);
+      'hover-off': function (arg) {
+        const layer = that.byName(arg.data.name);
         if (layer) {
           layer.hoverItem(arg.data.index, false);
         }
@@ -1529,22 +1529,22 @@ MapLayerCollection.prototype = {
     });
   },
   setOptions(options) {
-    var that = this;
-    var optionList = options ? _isArray(options) ? options : [options] : [];
-    var layers = that._layers;
-    var readyCallbacks = [];
-    var needToCreateLayers = optionList.length !== layers.length || layers.some((l, i) => {
-      var name = getName(optionList, i);
+    const that = this;
+    const optionList = options ? _isArray(options) ? options : [options] : [];
+    let layers = that._layers;
+    let readyCallbacks = [];
+    const needToCreateLayers = optionList.length !== layers.length || layers.some((l, i) => {
+      const name = getName(optionList, i);
       return _isDefined(name) && name !== l.proxy.name;
     });
     if (needToCreateLayers) {
       that._params.tracker.reset();
       that._layers.forEach(l => l.dispose());
-      var layerByName = that._layerByName = {};
+      const layerByName = that._layerByName = {};
       that._layers = layers = [];
-      for (var i = 0, ii = optionList.length; i < ii; ++i) {
-        var name = getName(optionList, i) || 'map-layer-' + i;
-        var layer = layers[i] = new MapLayer(that._params, that._container, name, i);
+      for (let i = 0, ii = optionList.length; i < ii; ++i) {
+        const name = getName(optionList, i) || 'map-layer-' + i;
+        const layer = layers[i] = new MapLayer(that._params, that._container, name, i);
         layerByName[name] = layer;
       }
     }
@@ -1556,9 +1556,9 @@ MapLayerCollection.prototype = {
     });
     readyCallbacks.length && when.apply(undefined, readyCallbacks).done(that._dataReady);
   },
-  _updateClip: function _updateClip() {
-    var rect = this._rect;
-    var bw = this._borderWidth;
+  _updateClip: function () {
+    const rect = this._rect;
+    const bw = this._borderWidth;
     this._clip.attr({
       x: rect[0] + bw,
       y: rect[1] + bw,
@@ -1566,7 +1566,7 @@ MapLayerCollection.prototype = {
       height: _max(rect[3] - bw * 2, 0)
     });
   },
-  setBackgroundOptions: function setBackgroundOptions(options) {
+  setBackgroundOptions: function (options) {
     this._background.attr({
       stroke: options.borderColor,
       'stroke-width': options.borderWidth,
@@ -1575,7 +1575,7 @@ MapLayerCollection.prototype = {
     this._borderWidth = _max(options.borderWidth, 0);
     this._updateClip();
   },
-  setRect: function setRect(rect) {
+  setRect: function (rect) {
     this._rect = rect;
     this._background.attr({
       x: rect[0],
@@ -1585,13 +1585,13 @@ MapLayerCollection.prototype = {
     });
     this._updateClip();
   },
-  byIndex: function byIndex(index) {
+  byIndex: function (index) {
     return this._layers[index];
   },
-  byName: function byName(name) {
+  byName: function (name) {
     return this._layerByName[name];
   },
-  items: function items() {
+  items: function () {
     return this._layers;
   }
 };

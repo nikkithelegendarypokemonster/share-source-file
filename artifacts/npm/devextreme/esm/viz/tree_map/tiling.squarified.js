@@ -1,12 +1,12 @@
 /**
 * DevExtreme (esm/viz/tree_map/tiling.squarified.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-var _max = Math.max;
+const _max = Math.max;
 import _squarify from './tiling.squarified.base';
 import { addAlgorithm } from './tiling';
 function accumulate(total, current) {

@@ -1,8 +1,8 @@
 import dateUtils from '../../../../core/utils/date';
-import { monthUtils, setOptionHour, timelineMonthUtils } from '../../../scheduler/__migration/utils/index';
+import { monthUtils, setOptionHour, timelineMonthUtils } from '../../../scheduler/r1/utils/index';
 import timezoneUtils from '../../m_utils_time_zone';
 import { ViewDataGenerator } from './m_view_data_generator';
-var toMs = dateUtils.dateToMilliseconds;
+const toMs = dateUtils.dateToMilliseconds;
 export class ViewDataGeneratorTimelineMonth extends ViewDataGenerator {
   _calculateCellIndex(rowIndex, columnIndex, rowCount, columnCount) {
     return monthUtils.calculateCellIndex(rowIndex, columnIndex, rowCount, columnCount);
@@ -17,12 +17,12 @@ export class ViewDataGeneratorTimelineMonth extends ViewDataGenerator {
     return timelineMonthUtils.calculateStartViewDate(options.currentDate, options.startDayHour, options.startDate, options.intervalCount);
   }
   getCellCount(options) {
-    var {
+    const {
       intervalCount
     } = options;
-    var currentDate = new Date(options.currentDate);
-    var cellCount = 0;
-    for (var i = 1; i <= intervalCount; i++) {
+    const currentDate = new Date(options.currentDate);
+    let cellCount = 0;
+    for (let i = 1; i <= intervalCount; i++) {
       cellCount += new Date(currentDate.getFullYear(), currentDate.getMonth() + i, 0).getDate();
     }
     return cellCount;
@@ -31,11 +31,11 @@ export class ViewDataGeneratorTimelineMonth extends ViewDataGenerator {
     this.hiddenInterval = 0;
   }
   getCellEndDate(cellStartDate, options) {
-    var {
+    const {
       startDayHour,
       endDayHour
     } = options;
-    var durationMs = (endDayHour - startDayHour) * toMs('hour');
+    const durationMs = (endDayHour - startDayHour) * toMs('hour');
     return timezoneUtils.addOffsetsWithoutDST(cellStartDate, durationMs);
   }
 }

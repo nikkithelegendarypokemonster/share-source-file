@@ -7,8 +7,8 @@ import Button from '../../../../ui/button';
 import Popup from '../../../../ui/popup/ui.popup';
 import { AreaItem } from '../area_item/m_area_item';
 import { capitalizeFirstLetter } from '../m_widget_utils';
-var DIV = '<div>';
-var AREA_DRAG_CLASS = 'dx-pivotgrid-drag-action';
+const DIV = '<div>';
+const AREA_DRAG_CLASS = 'dx-pivotgrid-drag-action';
 function renderGroupConnector(field, nextField, prevField, $container) {
   if (prevField && prevField.groupName && prevField.groupName === field.groupName) {
     $(DIV).addClass('dx-group-connector').addClass('dx-group-connector-prev').appendTo($container);
@@ -17,7 +17,7 @@ function renderGroupConnector(field, nextField, prevField, $container) {
     $(DIV).addClass('dx-group-connector').addClass('dx-group-connector-next').appendTo($container);
   }
 }
-var FieldsArea = AreaItem.inherit({
+const FieldsArea = AreaItem.inherit({
   ctor(component, area) {
     this.callBase(component);
     this._area = area;
@@ -29,17 +29,17 @@ var FieldsArea = AreaItem.inherit({
     return $(DIV).addClass('dx-pivotgrid-fields-area').addClass('dx-area-fields').addClass(AREA_DRAG_CLASS).attr('group', this._area);
   },
   isVisible() {
-    return !!this.option('fieldPanel.visible') && this.option("fieldPanel.show".concat(capitalizeFirstLetter(this._area), "Fields"));
+    return !!this.option('fieldPanel.visible') && this.option(`fieldPanel.show${capitalizeFirstLetter(this._area)}Fields`);
   },
   _renderButton(element) {
-    var that = this;
-    var container = $('<td>').appendTo($('<tr>').appendTo(element));
-    var button = that.component._createComponent($(DIV).appendTo(container), Button, {
+    const that = this;
+    const container = $('<td>').appendTo($('<tr>').appendTo(element));
+    const button = that.component._createComponent($(DIV).appendTo(container), Button, {
       text: 'Fields',
       icon: 'menu',
       width: 'auto',
       onClick() {
-        var popup = that.tableElement().find('.dx-fields-area-popup').dxPopup('instance');
+        const popup = that.tableElement().find('.dx-fields-area-popup').dxPopup('instance');
         if (!popup.option('visible')) {
           popup.show();
         }
@@ -73,10 +73,10 @@ var FieldsArea = AreaItem.inherit({
     };
   },
   _renderPopup(tableElement, row) {
-    var that = this;
-    var button = tableElement.find('.dx-button');
-    var popupOptions = that._getPopupOptions(row, button);
-    var FieldChooserBase = that.component.$element().dxPivotGridFieldChooserBase('instance');
+    const that = this;
+    const button = tableElement.find('.dx-button');
+    const popupOptions = that._getPopupOptions(row, button);
+    const FieldChooserBase = that.component.$element().dxPivotGridFieldChooserBase('instance');
     if (that._rowPopup) {
       that._rowPopup.$element().remove();
     }
@@ -91,13 +91,13 @@ var FieldsArea = AreaItem.inherit({
     return false;
   },
   _renderTableContent(tableElement, data) {
-    var that = this;
-    var groupElement = this.groupElement();
-    var isVisible = this.isVisible();
-    var fieldChooserBase = that.component.$element().dxPivotGridFieldChooserBase('instance');
-    var head = $('<thead>').addClass('dx-pivotgrid-fields-area-head').appendTo(tableElement);
-    var area = that._area;
-    var row = $('<tr>');
+    const that = this;
+    const groupElement = this.groupElement();
+    const isVisible = this.isVisible();
+    const fieldChooserBase = that.component.$element().dxPivotGridFieldChooserBase('instance');
+    const head = $('<thead>').addClass('dx-pivotgrid-fields-area-head').appendTo(tableElement);
+    const area = that._area;
+    const row = $('<tr>');
     groupElement.toggleClass('dx-hidden', !isVisible);
     tableElement.addClass('dx-area-field-container');
     if (!isVisible) {
@@ -105,8 +105,8 @@ var FieldsArea = AreaItem.inherit({
     }
     each(data, (index, field) => {
       if (field.area === area && field.visible !== false) {
-        var td = $('<td>').append(fieldChooserBase.renderField(field, field.area === 'row'));
-        var indicators = td.find('.dx-column-indicators');
+        const td = $('<td>').append(fieldChooserBase.renderField(field, field.area === 'row'));
+        const indicators = td.find('.dx-column-indicators');
         if (indicators.length && that._shouldCreateButton()) {
           indicators.insertAfter(indicators.next());
         }
@@ -115,7 +115,7 @@ var FieldsArea = AreaItem.inherit({
       }
     });
     if (!row.children().length) {
-      $('<td>').append($(DIV).addClass('dx-empty-area-text').text(this.option("fieldPanel.texts.".concat(area, "FieldArea")))).appendTo(row);
+      $('<td>').append($(DIV).addClass('dx-empty-area-text').text(this.option(`fieldPanel.texts.${area}FieldArea`))).appendTo(row);
     }
     if (that._shouldCreateButton()) {
       that._renderButton(head);

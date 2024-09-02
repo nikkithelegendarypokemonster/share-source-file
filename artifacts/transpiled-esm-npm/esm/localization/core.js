@@ -1,10 +1,10 @@
 import dependencyInjector from '../core/utils/dependency_injector';
 import parentLocales from './cldr-data/parent_locales';
 import getParentLocale from './parentLocale';
-var DEFAULT_LOCALE = 'en';
+const DEFAULT_LOCALE = 'en';
 export default dependencyInjector({
   locale: (() => {
-    var currentLocale = DEFAULT_LOCALE;
+    let currentLocale = DEFAULT_LOCALE;
     return locale => {
       if (!locale) {
         return currentLocale;
@@ -12,10 +12,10 @@ export default dependencyInjector({
       currentLocale = locale;
     };
   })(),
-  getValueByClosestLocale: function getValueByClosestLocale(getter) {
-    var locale = this.locale();
-    var value = getter(locale);
-    var isRootLocale;
+  getValueByClosestLocale: function (getter) {
+    let locale = this.locale();
+    let value = getter(locale);
+    let isRootLocale;
     while (!value && !isRootLocale) {
       locale = getParentLocale(parentLocales, locale);
       if (locale) {

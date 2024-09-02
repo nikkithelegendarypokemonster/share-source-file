@@ -3,12 +3,12 @@ import $ from '../../core/renderer';
 import { each } from './iterator';
 import { isDefined, isRenderer, isWindow, isString } from './type';
 import { getWindow } from './window';
-var window = getWindow();
-var getRootNodeHost = element => {
+const window = getWindow();
+const getRootNodeHost = element => {
   if (!element.getRootNode) {
     return undefined;
   }
-  var host = element.getRootNode().host;
+  const host = element.getRootNode().host;
 
   // NOTE: getRootNode().host can return a string if element is detached "a" element
   if (isString(host)) {
@@ -16,15 +16,15 @@ var getRootNodeHost = element => {
   }
   return host;
 };
-export var resetActiveElement = () => {
-  var activeElement = domAdapter.getActiveElement();
+export const resetActiveElement = () => {
+  const activeElement = domAdapter.getActiveElement();
   if (activeElement && activeElement !== domAdapter.getBody()) {
     var _activeElement$blur;
-    (_activeElement$blur = activeElement.blur) === null || _activeElement$blur === void 0 ? void 0 : _activeElement$blur.call(activeElement);
+    (_activeElement$blur = activeElement.blur) === null || _activeElement$blur === void 0 || _activeElement$blur.call(activeElement);
   }
 };
-export var clearSelection = () => {
-  var selection = window.getSelection();
+export const clearSelection = () => {
+  const selection = window.getSelection();
   if (!selection) return;
   if (selection.type === 'Caret') return;
   if (selection.empty) {
@@ -36,25 +36,25 @@ export var clearSelection = () => {
     } catch (e) {}
   }
 };
-export var closestCommonParent = (startTarget, endTarget) => {
-  var $startTarget = $(startTarget);
-  var $endTarget = $(endTarget);
+export const closestCommonParent = (startTarget, endTarget) => {
+  const $startTarget = $(startTarget);
+  const $endTarget = $(endTarget);
   if ($startTarget[0] === $endTarget[0]) {
     return $startTarget[0];
   }
-  var $startParents = $startTarget.parents();
-  var $endParents = $endTarget.parents();
-  var startingParent = Math.min($startParents.length, $endParents.length);
-  for (var i = -startingParent; i < 0; i++) {
+  const $startParents = $startTarget.parents();
+  const $endParents = $endTarget.parents();
+  const startingParent = Math.min($startParents.length, $endParents.length);
+  for (let i = -startingParent; i < 0; i++) {
     if ($startParents.get(i) === $endParents.get(i)) {
       return $startParents.get(i);
     }
   }
 };
-export var extractTemplateMarkup = element => {
+export const extractTemplateMarkup = element => {
   element = $(element);
-  var templateTag = element.length && element.filter(function isNotExecutableScript() {
-    var $node = $(this);
+  const templateTag = element.length && element.filter(function isNotExecutableScript() {
+    const $node = $(this);
     return $node.is('script[type]') && $node.attr('type').indexOf('script') < 0;
   });
   if (templateTag.length) {
@@ -64,8 +64,8 @@ export var extractTemplateMarkup = element => {
     return element.html();
   }
 };
-export var normalizeTemplateElement = element => {
-  var $element = isDefined(element) && (element.nodeType || isRenderer(element)) ? $(element) : $('<div>').html(element).contents();
+export const normalizeTemplateElement = element => {
+  let $element = isDefined(element) && (element.nodeType || isRenderer(element)) ? $(element) : $('<div>').html(element).contents();
   if ($element.length === 1) {
     if ($element.is('script')) {
       $element = normalizeTemplateElement($element.html().trim());
@@ -75,14 +75,14 @@ export var normalizeTemplateElement = element => {
   }
   return $element;
 };
-export var clipboardText = (event, text) => {
-  var clipboard = event.originalEvent && event.originalEvent.clipboardData || window.clipboardData;
+export const clipboardText = (event, text) => {
+  const clipboard = event.originalEvent && event.originalEvent.clipboardData || window.clipboardData;
   if (!text) {
     return clipboard && clipboard.getData('Text');
   }
   clipboard && clipboard.setData('Text', text);
 };
-export var contains = (container, element) => {
+export const contains = (container, element) => {
   if (!element) {
     return false;
   }
@@ -91,9 +91,9 @@ export var contains = (container, element) => {
   }
   return container.contains(element) || contains(container, getRootNodeHost(element));
 };
-export var createTextElementHiddenCopy = (element, text, options) => {
-  var elementStyles = window.getComputedStyle($(element).get(0));
-  var includePaddings = options && options.includePaddings;
+export const createTextElementHiddenCopy = (element, text, options) => {
+  const elementStyles = window.getComputedStyle($(element).get(0));
+  const includePaddings = options && options.includePaddings;
   return $('<div>').text(text).css({
     'fontStyle': elementStyles.fontStyle,
     'fontVariant': elementStyles.fontVariant,
@@ -112,13 +112,13 @@ export var createTextElementHiddenCopy = (element, text, options) => {
     'float': 'left'
   });
 };
-export var insertBefore = (element, newElement) => {
+export const insertBefore = (element, newElement) => {
   if (newElement) {
     domAdapter.insertElement(element.parentNode, newElement, element);
   }
   return element;
 };
-export var replaceWith = (element, newElement) => {
+export const replaceWith = (element, newElement) => {
   if (!(newElement && newElement[0])) return;
   if (newElement.is(element)) return element;
   each(newElement, (_, currentElement) => {
@@ -127,8 +127,8 @@ export var replaceWith = (element, newElement) => {
   element.remove();
   return newElement;
 };
-export var isElementInDom = $element => {
-  var element = $element === null || $element === void 0 ? void 0 : $element.get(0);
-  var shadowHost = element === null || element === void 0 ? void 0 : element.getRootNode().host;
+export const isElementInDom = $element => {
+  const element = $element === null || $element === void 0 ? void 0 : $element.get(0);
+  const shadowHost = element === null || element === void 0 ? void 0 : element.getRootNode().host;
   return !!$(shadowHost || element).closest(getWindow().document).length;
 };

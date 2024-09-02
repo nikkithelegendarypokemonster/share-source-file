@@ -1,4 +1,4 @@
-export var ScrollbarProps = {
+export const ScrollbarProps = {
   direction: 'vertical',
   containerSize: 0,
   contentSize: 0,

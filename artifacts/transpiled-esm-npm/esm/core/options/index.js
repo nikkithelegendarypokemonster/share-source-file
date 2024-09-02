@@ -24,14 +24,14 @@ export class Options {
   }
   get _initial() {
     if (!this._initialOptions) {
-      var rulesOptions = this._getByRules(this.silent('defaultOptionsRules'));
+      const rulesOptions = this._getByRules(this.silent('defaultOptionsRules'));
       this._initialOptions = this._default;
       this._optionManager._setByReference(this._initialOptions, rulesOptions);
     }
     return this._initialOptions;
   }
   _initDeprecatedNames() {
-    for (var optionName in this._deprecated) {
+    for (const optionName in this._deprecated) {
       this._deprecatedNames.push(optionName);
     }
   }
@@ -40,14 +40,14 @@ export class Options {
     return convertRulesToOptions(rules);
   }
   _notifyDeprecated(option) {
-    var info = this._deprecated[option];
+    const info = this._deprecated[option];
     if (info) {
       this._deprecatedCallback(option, info);
     }
   }
   _setRelevantNames(options, name, value, silent) {
     if (name) {
-      var normalizedName = this._normalizeName(name, silent);
+      const normalizedName = this._normalizeName(name, silent);
       if (normalizedName && normalizedName !== name) {
         this._setField(options, normalizedName, value);
         this._clearField(options, name);
@@ -55,10 +55,10 @@ export class Options {
     }
   }
   _setField(options, fullName, value) {
-    var fieldName = '';
-    var fieldObject = null;
+    let fieldName = '';
+    let fieldObject = null;
     do {
-      fieldName = fieldName ? ".".concat(fieldName) : '';
+      fieldName = fieldName ? `.${fieldName}` : '';
       fieldName = getFieldName(fullName) + fieldName;
       fullName = getParentName(fullName);
       fieldObject = fullName ? this._optionManager.get(options, fullName, false) : options;
@@ -67,17 +67,17 @@ export class Options {
   }
   _clearField(options, name) {
     delete options[name];
-    var previousFieldName = getParentName(name);
-    var fieldObject = previousFieldName ? this._optionManager.get(options, previousFieldName, false) : options;
+    const previousFieldName = getParentName(name);
+    const fieldObject = previousFieldName ? this._optionManager.get(options, previousFieldName, false) : options;
     if (fieldObject) {
       delete fieldObject[getFieldName(name)];
     }
   }
   _normalizeName(name, silent) {
     if (this._deprecatedNames.length && name) {
-      for (var i = 0; i < this._deprecatedNames.length; i++) {
+      for (let i = 0; i < this._deprecatedNames.length; i++) {
         if (this._deprecatedNames[i] === name) {
-          var deprecate = this._deprecated[name];
+          const deprecate = this._deprecated[name];
           if (deprecate) {
             !silent && this._notifyDeprecated(name);
             return deprecate.alias || name;
@@ -91,7 +91,7 @@ export class Options {
     this._rules = rules.concat(this._rules);
   }
   applyRules(rules) {
-    var options = this._getByRules(rules);
+    const options = this._getByRules(rules);
     this.silent(options);
   }
   dispose() {
@@ -116,16 +116,16 @@ export class Options {
     this._endChangeCallback = callBack;
   }
   isInitial(name) {
-    var value = this.silent(name);
-    var initialValue = this.initial(name);
-    var areFunctions = isFunction(value) && isFunction(initialValue);
+    const value = this.silent(name);
+    const initialValue = this.initial(name);
+    const areFunctions = isFunction(value) && isFunction(initialValue);
     return areFunctions ? value.toString() === initialValue.toString() : equalByValue(value, initialValue);
   }
   initial(name) {
     return getNestedOptionValue(this._initial, name);
   }
   option(options, value) {
-    var isGetter = arguments.length < 2 && type(options) !== 'object';
+    const isGetter = arguments.length < 2 && type(options) !== 'object';
     if (isGetter) {
       return this._optionManager.get(undefined, this._normalizeName(options));
     } else {
@@ -138,7 +138,7 @@ export class Options {
     }
   }
   silent(options, value) {
-    var isGetter = arguments.length < 2 && type(options) !== 'object';
+    const isGetter = arguments.length < 2 && type(options) !== 'object';
     if (isGetter) {
       return this._optionManager.get(undefined, options, undefined, true);
     } else {
@@ -147,9 +147,9 @@ export class Options {
   }
   reset(name) {
     if (name) {
-      var fullPath = getPathParts(name);
-      var value = fullPath.reduce((value, field) => value ? value[field] : this.initial(field), null);
-      var defaultValue = isObject(value) ? _extends({}, value) : value;
+      const fullPath = getPathParts(name);
+      const value = fullPath.reduce((value, field) => value ? value[field] : this.initial(field), null);
+      const defaultValue = isObject(value) ? _extends({}, value) : value;
       this._optionManager.set(name, defaultValue, false);
     }
   }
@@ -160,7 +160,7 @@ export class Options {
     return Object.prototype.hasOwnProperty.call(this._deprecated, name);
   }
   cache(name, options) {
-    var isGetter = arguments.length < 2;
+    const isGetter = arguments.length < 2;
     if (isGetter) {
       return this._cachedOptions[name];
     } else {

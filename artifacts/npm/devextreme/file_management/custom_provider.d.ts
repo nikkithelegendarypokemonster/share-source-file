@@ -1,7 +1,7 @@
 /**
 * DevExtreme (file_management/custom_provider.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,72 +13,97 @@ import FileSystemProviderBase, {
 import FileSystemItem from './file_system_item';
 import UploadInfo from './upload_info';
 
+/** @public */
 export type Options = CustomFileSystemProviderOptions;
 
 /**
- * 
- * @deprecated 
- * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+ * @deprecated Use Options instead
+ * @namespace DevExpress.fileManagement
+ * @docid
  */
 export interface CustomFileSystemProviderOptions extends FileSystemProviderBaseOptions<CustomFileSystemProvider> {
     /**
-     * A function that cancels the file upload.
+     * @docid
+     * @type_function_return Promise<any>|any
+     * @public
      */
     abortFileUpload?: ((file: File, uploadInfo: UploadInfo, destinationDirectory: FileSystemItem) => PromiseLike<any> | any);
 
     /**
-     * A function that copies files or directories.
+     * @docid
+     * @type_function_return Promise<any>|any
+     * @public
      */
     copyItem?: ((item: FileSystemItem, destinationDirectory: FileSystemItem) => PromiseLike<any> | any);
 
     /**
-     * A function that creates a directory.
+     * @docid
+     * @type_function_return Promise<any>|any
+     * @public
      */
     createDirectory?: ((parentDirectory: FileSystemItem, name: string) => PromiseLike<any> | any);
 
     /**
-     * A function that deletes a file or directory.
+     * @docid
+     * @type_function_return Promise<any>|any
+     * @public
      */
     deleteItem?: ((item: FileSystemItem) => PromiseLike<any> | any);
 
     /**
-     * A function that downloads files.
+     * @docid
+     * @public
      */
     downloadItems?: ((items: Array<FileSystemItem>) => void);
 
     /**
-     * A function that gets file system items.
+     * @docid
+     * @type_function_return Promise<Array<object>>|Array<object>
+     * @public
      */
     getItems?: ((parentDirectory: FileSystemItem) => PromiseLike<Array<any>> | Array<any>);
 
     /**
-     * A function that get items content.
+     * @docid
+     * @type_function_return Promise<object>|object
+     * @public
      */
     getItemsContent?: ((items: Array<FileSystemItem>) => PromiseLike<any> | any);
 
     /**
-     * A function or the name of a data source field that provides information on whether a file or directory contains sub directories.
+     * @docid
+     * @public
      */
     hasSubDirectoriesExpr?: string | Function;
 
     /**
-     * A function that moves files and directories.
+     * @docid
+     * @type_function_return Promise<any>|any
+     * @public
      */
     moveItem?: ((item: FileSystemItem, destinationDirectory: FileSystemItem) => PromiseLike<any> | any);
 
     /**
-     * A function that renames files and directories.
+     * @docid
+     * @type_function_return Promise<any>|any
+     * @public
      */
     renameItem?: ((item: FileSystemItem, newName: string) => PromiseLike<any> | any);
 
     /**
-     * A function that uploads a file in chunks.
+     * @docid
+     * @type_function_return Promise<any>|any
+     * @public
      */
     uploadFileChunk?: ((file: File, uploadInfo: UploadInfo, destinationDirectory: FileSystemItem) => PromiseLike<any> | any);
 }
 
 /**
- * A custom file system provider allows you to implement custom APIs to access and use file systems.
+ * @docid
+ * @inherits FileSystemProviderBase
+ * @namespace DevExpress.fileManagement
+ * @public
+ * @options CustomFileSystemProviderOptions
  */
 export default class CustomFileSystemProvider extends FileSystemProviderBase {
     constructor(options?: Options);

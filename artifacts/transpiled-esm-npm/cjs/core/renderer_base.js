@@ -382,8 +382,7 @@ initRender.prototype.find = function (selector) {
   return result.add(nodes);
 };
 const isVisible = function (_, element) {
-  var _element$host;
-  element = (_element$host = element.host) !== null && _element$host !== void 0 ? _element$host : element;
+  element = element.host ?? element;
   if (!element.nodeType) return true;
   return !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
 };

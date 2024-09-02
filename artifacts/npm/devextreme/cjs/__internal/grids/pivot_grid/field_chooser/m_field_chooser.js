@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/pivot_grid/field_chooser/m_field_chooser.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -28,8 +28,6 @@ var _const = require("./const");
 var _m_field_chooser_base = require("./m_field_chooser_base");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const DIV = '<div>';
 const hasWindow = (0, _window.hasWindow)();
 function getDimensionFields(item, fields) {
@@ -80,16 +78,11 @@ function compareItems(a, b) {
   return result;
 }
 function getScrollable(container) {
-  return container.find(".".concat(_const.CLASSES.scrollable.self)).dxScrollable('instance');
+  return container.find(`.${_const.CLASSES.scrollable.self}`).dxScrollable('instance');
 }
-let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBase) {
-  _inheritsLoose(FieldChooser, _FieldChooserBase);
-  function FieldChooser() {
-    return _FieldChooserBase.apply(this, arguments) || this;
-  }
-  var _proto = FieldChooser.prototype;
-  _proto._getDefaultOptions = function _getDefaultOptions() {
-    return _extends(_extends({}, _FieldChooserBase.prototype._getDefaultOptions.call(this)), {
+class FieldChooser extends _m_field_chooser_base.FieldChooserBase {
+  _getDefaultOptions() {
+    return _extends({}, super._getDefaultOptions(), {
       height: 400,
       layout: 0,
       dataSource: null,
@@ -105,8 +98,8 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
         allFields: _message.default.format('dxPivotGrid-allFields')
       }
     });
-  };
-  _proto._refreshDataSource = function _refreshDataSource() {
+  }
+  _refreshDataSource() {
     const that = this;
     that._expandedPaths = [];
     that._changedHandler = that._changedHandler || function () {
@@ -119,42 +112,42 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
       that._skipStateChange = false;
     };
     that._disposeDataSource();
-    _FieldChooserBase.prototype._refreshDataSource.call(this);
+    super._refreshDataSource();
     that._dataSource && that._dataSource.on('changed', that._changedHandler);
-  };
-  _proto._disposeDataSource = function _disposeDataSource() {
+  }
+  _disposeDataSource() {
     const that = this;
     const dataSource = that._dataSource;
     if (dataSource) {
       dataSource.off('changed', that._changedHandler);
       that._dataSource = undefined;
     }
-  };
-  _proto._dispose = function _dispose() {
+  }
+  _dispose() {
     this._disposeDataSource();
-    _FieldChooserBase.prototype._dispose.apply(this, arguments);
-  };
-  _proto._init = function _init() {
-    _FieldChooserBase.prototype._init.call(this);
+    super._dispose.apply(this, arguments);
+  }
+  _init() {
+    super._init();
     this._refreshDataSource();
     this._dataChangedHandlers = [];
     this._initActions();
-  };
-  _proto._initActions = function _initActions() {
+  }
+  _initActions() {
     this._actions = {
       onContextMenuPreparing: this._createActionByOption('onContextMenuPreparing')
     };
-  };
-  _proto._trigger = function _trigger(eventName, eventArg) {
+  }
+  _trigger(eventName, eventArg) {
     this._actions[eventName](eventArg);
-  };
-  _proto._setOptionsByReference = function _setOptionsByReference() {
-    _FieldChooserBase.prototype._setOptionsByReference.call(this);
+  }
+  _setOptionsByReference() {
+    super._setOptionsByReference();
     (0, _extend.extend)(this._optionsByReference, {
       dataSource: true
     });
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _optionChanged(args) {
     const that = this;
     switch (args.name) {
       case 'dataSource':
@@ -172,14 +165,14 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
         that._actions[args.name] = that._createActionByOption(args.name);
         break;
       default:
-        _FieldChooserBase.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  _proto._clean = function _clean(skipStateSetting) {
+  }
+  _clean(skipStateSetting) {
     !skipStateSetting && this._dataSource && this.option('state', this._dataSource.state());
-    this.$element().children(".".concat(_const.CLASSES.fieldChooser.container)).remove();
-  };
-  _proto._renderLayout0 = function _renderLayout0($container) {
+    this.$element().children(`.${_const.CLASSES.fieldChooser.container}`).remove();
+  }
+  _renderLayout0($container) {
     const that = this;
     $container.addClass(_const.CLASSES.layout.zero);
     const $row1 = (0, _renderer.default)(DIV).addClass(_const.CLASSES.row).appendTo($container);
@@ -193,8 +186,8 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
     that._renderArea($col2, 'column');
     that._renderArea($col3, 'filter');
     that._renderArea($col4, 'data');
-  };
-  _proto._renderLayout1 = function _renderLayout1($container) {
+  }
+  _renderLayout1($container) {
     const that = this;
     const $col1 = (0, _renderer.default)(DIV).addClass(_const.CLASSES.col).appendTo($container);
     const $col2 = (0, _renderer.default)(DIV).addClass(_const.CLASSES.col).appendTo($container);
@@ -203,8 +196,8 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
     that._renderArea($col2, 'row');
     that._renderArea($col2, 'column');
     that._renderArea($col2, 'data');
-  };
-  _proto._renderLayout2 = function _renderLayout2($container) {
+  }
+  _renderLayout2($container) {
     const that = this;
     $container.addClass(_const.CLASSES.layout.second);
     const $row1 = (0, _renderer.default)(DIV).addClass(_const.CLASSES.row).appendTo($container);
@@ -216,13 +209,13 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
     that._renderArea($col1, 'row');
     that._renderArea($col2, 'column');
     that._renderArea($col2, 'data');
-  };
-  _proto._initMarkup = function _initMarkup() {
+  }
+  _initMarkup() {
     const that = this;
     const $element = this.$element();
     const $container = (0, _renderer.default)(DIV).addClass(_const.CLASSES.fieldChooser.container).appendTo($element);
     const layout = that.option('layout');
-    _FieldChooserBase.prototype._initMarkup.call(this);
+    super._initMarkup();
     $element.addClass(_const.CLASSES.fieldChooser.self).addClass(_const.CLASSES.pivotGrid.fieldsContainer);
     that._dataChangedHandlers = [];
     const dataSource = this._dataSource;
@@ -236,21 +229,21 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
       that._renderLayout2($container);
     }
     currentState && dataSource.state(currentState, true);
-  };
-  _proto._renderContentImpl = function _renderContentImpl() {
-    _FieldChooserBase.prototype._renderContentImpl.call(this);
+  }
+  _renderContentImpl() {
+    super._renderContentImpl();
     this.renderSortable();
     this._renderContextMenu();
     this.updateDimensions();
-  };
-  _proto._fireContentReadyAction = function _fireContentReadyAction() {
+  }
+  _fireContentReadyAction() {
     if (!this._dataSource || !this._dataSource.isLoading()) {
-      _FieldChooserBase.prototype._fireContentReadyAction.call(this);
+      super._fireContentReadyAction();
     }
-  };
-  _proto._getContextMenuArgs = function _getContextMenuArgs(dxEvent) {
-    const targetFieldElement = (0, _renderer.default)(dxEvent.target).closest(".".concat(_const.CLASSES.area.field));
-    const targetGroupElement = (0, _renderer.default)(dxEvent.target).closest(".".concat(_const.CLASSES.area.fieldList));
+  }
+  _getContextMenuArgs(dxEvent) {
+    const targetFieldElement = (0, _renderer.default)(dxEvent.target).closest(`.${_const.CLASSES.area.field}`);
+    const targetGroupElement = (0, _renderer.default)(dxEvent.target).closest(`.${_const.CLASSES.area.fieldList}`);
     let field;
     let area;
     if (targetFieldElement.length) {
@@ -268,8 +261,8 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
       area,
       items: []
     };
-  };
-  _proto._renderContextMenu = function _renderContextMenu() {
+  }
+  _renderContextMenu() {
     const that = this;
     const $container = that.$element();
     if (that._contextMenu) {
@@ -297,8 +290,8 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
       },
       cssClass: _const.CLASSES.fieldChooser.contextMenu
     });
-  };
-  _proto._createTreeItems = function _createTreeItems(fields, groupFieldNames, path) {
+  }
+  _createTreeItems(fields, groupFieldNames, path) {
     const that = this;
     let isMeasure;
     let resultItems = [];
@@ -336,7 +329,7 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
         isMeasure = isMeasure && field.isMeasure === true;
       });
       (0, _iterator.each)(fieldsByGroup, (groupName, fields) => {
-        const currentPath = path ? "".concat(path, ".").concat(groupName) : groupName;
+        const currentPath = path ? `${path}.${groupName}` : groupName;
         const items = that._createTreeItems(fields, groupFieldNames.slice(1), currentPath);
         if (groupName) {
           groupedItems.push({
@@ -355,8 +348,8 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
       resultItems.isMeasure = isMeasure;
     }
     return resultItems;
-  };
-  _proto._createFieldsDataSource = function _createFieldsDataSource(dataSource) {
+  }
+  _createFieldsDataSource(dataSource) {
     let fields = dataSource && dataSource.fields() || [];
     fields = fields.filter(field => field.visible !== false && !(0, _type.isDefined)(field.groupIndex));
     const treeItems = this._createTreeItems(fields, ['dimension', 'displayFolder']);
@@ -364,8 +357,8 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
       items.sort(compareItems);
     }, 0, 'items');
     return treeItems;
-  };
-  _proto._renderFieldsTreeView = function _renderFieldsTreeView(container) {
+  }
+  _renderFieldsTreeView(container) {
     const that = this;
     const dataSource = that._dataSource;
     const treeView = that._createComponent(container, _tree_view.default, {
@@ -376,10 +369,10 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
       searchTimeout: that.option('searchTimeout'),
       useNativeScrolling: false,
       itemTemplate(itemData, itemIndex, itemElement) {
-        var _a;
         const $item = (0, _renderer.default)('<div>').toggleClass(_const.CLASSES.area.field, !itemData.items).attr(_const.ATTRIBUTES.treeViewItem, true).data('field', itemData.field).appendTo(itemElement);
         if (itemData.icon) {
-          (_a = (0, _icon.getImageContainer)(itemData.icon)) === null || _a === void 0 ? void 0 : _a.appendTo($item);
+          var _getImageContainer;
+          (_getImageContainer = (0, _icon.getImageContainer)(itemData.icon)) === null || _getImageContainer === void 0 || _getImageContainer.appendTo($item);
         }
         (0, _renderer.default)('<span>').text(itemData.text).appendTo($item);
       },
@@ -450,8 +443,8 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
       }
     };
     that._dataChangedHandlers.push(dataChanged);
-  };
-  _proto._renderAreaFields = function _renderAreaFields($container, area) {
+  }
+  _renderAreaFields($container, area) {
     const that = this;
     const dataSource = that._dataSource;
     const fields = dataSource ? (0, _extend.extend)(true, [], dataSource.getAreaFields(area, true)) : [];
@@ -461,15 +454,15 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
         that.renderField(field, true).appendTo($container);
       }
     });
-  };
-  _proto._renderArea = function _renderArea(container, area) {
+  }
+  _renderArea(container, area) {
     const that = this;
     const $areaContainer = (0, _renderer.default)(DIV).addClass(_const.CLASSES.area.self).appendTo(container);
     const $fieldsHeaderContainer = (0, _renderer.default)(DIV).addClass(_const.CLASSES.area.fieldListHeader).appendTo($areaContainer);
-    const caption = that.option("texts.".concat(area, "Fields"));
+    const caption = that.option(`texts.${area}Fields`);
     let $fieldsContent;
     let render;
-    (0, _renderer.default)('<span>').addClass(_const.CLASSES.area.icon).addClass("dx-icon-".concat(_const.ICONS[area])).appendTo($fieldsHeaderContainer);
+    (0, _renderer.default)('<span>').addClass(_const.CLASSES.area.icon).addClass(`dx-icon-${_const.ICONS[area]}`).appendTo($fieldsHeaderContainer);
     (0, _renderer.default)('<span>').html('&nbsp;').appendTo($fieldsHeaderContainer);
     (0, _renderer.default)('<span>').addClass(_const.CLASSES.area.caption).text(caption).appendTo($fieldsHeaderContainer);
     const $fieldsContainer = (0, _renderer.default)(DIV).addClass(_const.CLASSES.area.fieldList).addClass(_const.CLASSES.pivotGrid.dragAction).appendTo($areaContainer);
@@ -489,49 +482,49 @@ let FieldChooser = exports.FieldChooser = /*#__PURE__*/function (_FieldChooserBa
       $fieldsContainer.addClass(_const.CLASSES.treeView.borderVisible);
       that._renderFieldsTreeView($fieldsContainer);
     }
-  };
-  _proto._getSortableOptions = function _getSortableOptions() {
+  }
+  _getSortableOptions() {
     // TODO
     return {
       direction: ''
     };
-  };
-  _proto._adjustSortableOnChangedArgs = function _adjustSortableOnChangedArgs() {};
-  _proto.resetTreeView = function resetTreeView() {
-    const treeView = this.$element().find(".".concat(_const.CLASSES.treeView.self)).dxTreeView('instance');
+  }
+  _adjustSortableOnChangedArgs() {}
+  resetTreeView() {
+    const treeView = this.$element().find(`.${_const.CLASSES.treeView.self}`).dxTreeView('instance');
     if (treeView) {
       treeView.option('searchValue', '');
       treeView.collapseAll();
     }
-  };
-  _proto.applyChanges = function applyChanges() {
+  }
+  applyChanges() {
     const state = this.option('state');
     if ((0, _type.isDefined)(state)) {
       this._dataSource.state(state);
     }
-  };
-  _proto.cancelChanges = function cancelChanges() {
+  }
+  cancelChanges() {
     const dataSource = this._dataSource;
     if (!dataSource.isLoading()) {
       this.option('state', dataSource.state());
       return true;
     }
     return false;
-  };
-  _proto.getDataSource = function getDataSource() {
+  }
+  getDataSource() {
     return this._dataSource;
-  };
-  _proto.updateDimensions = function updateDimensions() {
-    const $scrollableElements = this.$element().find(".".concat(_const.CLASSES.area.self, " .").concat(_const.CLASSES.scrollable.self));
+  }
+  updateDimensions() {
+    const $scrollableElements = this.$element().find(`.${_const.CLASSES.area.self} .${_const.CLASSES.scrollable.self}`);
     $scrollableElements.dxScrollable('update');
-  };
-  _proto._visibilityChanged = function _visibilityChanged(visible) {
+  }
+  _visibilityChanged(visible) {
     if (visible && hasWindow) {
       this.updateDimensions();
     }
-  };
-  return FieldChooser;
-}(_m_field_chooser_base.FieldChooserBase);
+  }
+}
+exports.FieldChooser = FieldChooser;
 (0, _component_registrator.default)('dxPivotGridFieldChooser', FieldChooser);
 var _default = exports.default = {
   FieldChooser

@@ -10,14 +10,6 @@ class PromiseItem {
   }
 }
 export class AgendaResourceProcessor {
-  constructor() {
-    var resourceDeclarations = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    this._resourceDeclarations = resourceDeclarations;
-    this.isLoaded = false;
-    this.isLoading = false;
-    this.resourceMap = new Map();
-    this.appointmentPromiseQueue = [];
-  }
   get resourceDeclarations() {
     return this._resourceDeclarations;
   }
@@ -28,15 +20,23 @@ export class AgendaResourceProcessor {
     this.resourceMap.clear();
     this.appointmentPromiseQueue = [];
   }
+  constructor() {
+    let resourceDeclarations = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    this._resourceDeclarations = resourceDeclarations;
+    this.isLoaded = false;
+    this.isLoading = false;
+    this.resourceMap = new Map();
+    this.appointmentPromiseQueue = [];
+  }
   _pushAllResources() {
     this.appointmentPromiseQueue.forEach(_ref => {
-      var {
+      let {
         promise,
         rawAppointment
       } = _ref;
-      var result = [];
+      const result = [];
       this.resourceMap.forEach((resource, fieldName) => {
-        var item = {
+        const item = {
           label: resource.label,
           values: []
         };
@@ -52,7 +52,7 @@ export class AgendaResourceProcessor {
     this.appointmentPromiseQueue = [];
   }
   _onPullResource(fieldName, valueName, displayName, label, items) {
-    var map = new Map();
+    const map = new Map();
     items.forEach(item => map.set(item[valueName], item[displayName]));
     this.resourceMap.set(fieldName, {
       label,
@@ -62,7 +62,7 @@ export class AgendaResourceProcessor {
   _hasResourceDeclarations(resources) {
     if (resources.length === 0) {
       this.appointmentPromiseQueue.forEach(_ref2 => {
-        var {
+        let {
           promise
         } = _ref2;
         return promise.resolve([]);
@@ -75,12 +75,12 @@ export class AgendaResourceProcessor {
   _tryPullResources(resources, resultAsync) {
     if (!this.isLoading) {
       this.isLoading = true;
-      var promises = [];
+      const promises = [];
       resources.forEach(resource => {
         // @ts-expect-error
-        var promise = new Deferred().done(items => this._onPullResource(getFieldExpr(resource), getValueExpr(resource), getDisplayExpr(resource), resource.label, items));
+        const promise = new Deferred().done(items => this._onPullResource(getFieldExpr(resource), getValueExpr(resource), getDisplayExpr(resource), resource.label, items));
         promises.push(promise);
-        var dataSource = getWrappedDataSource(resource.dataSource);
+        const dataSource = getWrappedDataSource(resource.dataSource);
         if (dataSource.isLoaded()) {
           promise.resolve(dataSource.items());
         } else {
@@ -95,12 +95,12 @@ export class AgendaResourceProcessor {
     }
   }
   initializeState() {
-    var resourceDeclarations = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    let resourceDeclarations = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     this.resourceDeclarations = resourceDeclarations;
   }
   createListAsync(rawAppointment) {
     // @ts-expect-error
-    var resultAsync = new Deferred();
+    const resultAsync = new Deferred();
     this.appointmentPromiseQueue.push(new PromiseItem(rawAppointment, resultAsync));
     if (this._hasResourceDeclarations(this.resourceDeclarations)) {
       if (this.isLoaded) {

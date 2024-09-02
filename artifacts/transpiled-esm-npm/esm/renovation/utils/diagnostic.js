@@ -1,14 +1,14 @@
 import { getWindow } from '../../core/utils/window';
-export var DiagnosticUtils = {
+export const DiagnosticUtils = {
   resolveMap: () => {
-    var diagnosticWindow = getWindow();
+    const diagnosticWindow = getWindow();
     if (!diagnosticWindow.dxDiagnostic) {
       diagnosticWindow.dxDiagnostic = {};
     }
     return diagnosticWindow.dxDiagnostic;
   },
   getDiagnostic: key => {
-    var diagnosticMap = DiagnosticUtils.resolveMap();
+    const diagnosticMap = DiagnosticUtils.resolveMap();
     if (!diagnosticMap[key]) {
       diagnosticMap[key] = {
         renderCount: 0
@@ -17,7 +17,7 @@ export var DiagnosticUtils = {
     return diagnosticMap[key];
   },
   incrementRenderCount: key => {
-    var diagnostic = DiagnosticUtils.getDiagnostic(key);
+    const diagnostic = DiagnosticUtils.getDiagnostic(key);
     diagnostic.renderCount += 1;
   }
 };

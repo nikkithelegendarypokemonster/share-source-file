@@ -1,4 +1,4 @@
-var Callback = function Callback(options) {
+const Callback = function (options) {
   this._options = options || {};
   this._list = [];
   this._queue = [];
@@ -7,12 +7,12 @@ var Callback = function Callback(options) {
   this._firingIndexes = [];
 };
 Callback.prototype._fireCore = function (context, args) {
-  var firingIndexes = this._firingIndexes;
-  var list = this._list;
-  var stopOnFalse = this._options.stopOnFalse;
-  var step = firingIndexes.length;
+  const firingIndexes = this._firingIndexes;
+  const list = this._list;
+  const stopOnFalse = this._options.stopOnFalse;
+  const step = firingIndexes.length;
   for (firingIndexes[step] = 0; firingIndexes[step] < list.length; firingIndexes[step]++) {
-    var result = list[firingIndexes[step]].apply(context, args);
+    const result = list[firingIndexes[step]].apply(context, args);
     if (result === false && stopOnFalse) {
       break;
     }
@@ -26,13 +26,13 @@ Callback.prototype.add = function (fn) {
   return this;
 };
 Callback.prototype.remove = function (fn) {
-  var list = this._list;
-  var firingIndexes = this._firingIndexes;
-  var index = list.indexOf(fn);
+  const list = this._list;
+  const firingIndexes = this._firingIndexes;
+  const index = list.indexOf(fn);
   if (index > -1) {
     list.splice(index, 1);
     if (this._firing && firingIndexes.length) {
-      for (var step = 0; step < firingIndexes.length; step++) {
+      for (let step = 0; step < firingIndexes.length; step++) {
         if (index <= firingIndexes[step]) {
           firingIndexes[step]--;
         }
@@ -42,7 +42,7 @@ Callback.prototype.remove = function (fn) {
   return this;
 };
 Callback.prototype.has = function (fn) {
-  var list = this._list;
+  const list = this._list;
   return fn ? list.indexOf(fn) > -1 : !!list.length;
 };
 Callback.prototype.empty = function (fn) {
@@ -50,7 +50,7 @@ Callback.prototype.empty = function (fn) {
   return this;
 };
 Callback.prototype.fireWith = function (context, args) {
-  var queue = this._queue;
+  const queue = this._queue;
   args = args || [];
   args = args.slice ? args.slice() : args;
   if (this._options.syncStrategy) {
@@ -63,7 +63,7 @@ Callback.prototype.fireWith = function (context, args) {
     }
     this._firing = true;
     while (queue.length) {
-      var memory = queue.shift();
+      const memory = queue.shift();
       this._fireCore(memory[0], memory[1]);
     }
   }
@@ -77,7 +77,7 @@ Callback.prototype.fire = function () {
 Callback.prototype.fired = function () {
   return this._fired;
 };
-var Callbacks = function Callbacks(options) {
+const Callbacks = function (options) {
   return new Callback(options);
 };
 export default Callbacks;

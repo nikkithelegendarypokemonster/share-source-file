@@ -1,7 +1,7 @@
 import registerComponent from '../../../core/component_registrator';
 import { VIEWS } from '../m_constants';
 import SchedulerWorkSpaceVertical from './m_work_space_vertical';
-var DAY_CLASS = 'dx-scheduler-work-space-day';
+const DAY_CLASS = 'dx-scheduler-work-space-day';
 class SchedulerWorkSpaceDay extends SchedulerWorkSpaceVertical {
   get type() {
     return VIEWS.DAY;

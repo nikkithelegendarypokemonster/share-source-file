@@ -16,67 +16,21 @@ require("./module_not_extended/header_panel");
 var _component_registrator = _interopRequireDefault(require("../../../core/component_registrator"));
 var _renderer = _interopRequireDefault(require("../../../core/renderer"));
 var _browser = _interopRequireDefault(require("../../../core/utils/browser"));
-var _common = require("../../../core/utils/common");
 var _console = require("../../../core/utils/console");
 var _extend = require("../../../core/utils/extend");
-var _iterator = require("../../../core/utils/iterator");
 var _type = require("../../../core/utils/type");
 var _themes = require("../../../ui/themes");
-var _ui = _interopRequireDefault(require("../../../ui/widget/ui.widget"));
 var _m_utils = _interopRequireDefault(require("../../grids/grid_core/m_utils"));
+var _m_widget_base = _interopRequireDefault(require("../../grids/grid_core/m_widget_base"));
 var _m_core = _interopRequireDefault(require("./m_core"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-const DATAGRID_ROW_SELECTOR = '.dx-row';
 const DATAGRID_DEPRECATED_TEMPLATE_WARNING = 'Specifying grid templates with the jQuery selector name is now deprecated. Use the DOM Node or the jQuery object that references this selector instead.';
 _m_core.default.registerModulesOrder(['stateStoring', 'columns', 'selection', 'editorFactory', 'columnChooser', 'grouping', 'editing', 'editingRowBased', 'editingFormBased', 'editingCellBased', 'masterDetail', 'validating', 'adaptivity', 'data', 'virtualScrolling', 'columnHeaders', 'filterRow', 'headerPanel', 'headerFilter', 'sorting', 'search', 'rows', 'pager', 'columnsResizingReordering', 'contextMenu', 'keyboardNavigation', 'errorHandling', 'summary', 'columnFixing', 'export', 'gridView']);
-let DataGrid = /*#__PURE__*/function (_Widget) {
-  _inheritsLoose(DataGrid, _Widget);
-  function DataGrid() {
-    var _this;
-    _this = _Widget.apply(this, arguments) || this;
-    _this._activeStateUnit = DATAGRID_ROW_SELECTOR;
-    return _this;
-  }
-  var _proto = DataGrid.prototype;
-  _proto._getDefaultOptions = function _getDefaultOptions() {
-    // @ts-expect-error
-    const result = _Widget.prototype._getDefaultOptions.call(this);
-    (0, _iterator.each)(_m_core.default.modules, function () {
-      if ((0, _type.isFunction)(this.defaultOptions)) {
-        (0, _extend.extend)(true, result, this.defaultOptions());
-      }
-    });
-    return result;
-  };
-  _proto._setDeprecatedOptions = function _setDeprecatedOptions() {
-    // @ts-expect-error
-    _Widget.prototype._setDeprecatedOptions.call(this);
-    // @ts-expect-error
-    (0, _extend.extend)(this._deprecatedOptions, {
-      useKeyboard: {
-        since: '19.2',
-        alias: 'keyboardNavigation.enabled'
-      },
-      rowTemplate: {
-        since: '21.2',
-        message: 'Use the "dataRowTemplate" option instead'
-      },
-      'columnChooser.allowSearch': {
-        since: '23.1',
-        message: 'Use the "columnChooser.search.enabled" option instead'
-      },
-      'columnChooser.searchTimeout': {
-        since: '23.1',
-        message: 'Use the "columnChooser.search.timeout" option instead'
-      }
-    });
-  };
-  _proto._defaultOptionsRules = function _defaultOptionsRules() {
+class DataGrid extends _m_widget_base.default {
+  _defaultOptionsRules() {
     // @ts-expect-error
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return _Widget.prototype._defaultOptionsRules.call(this).concat([{
+    return super._defaultOptionsRules().concat([{
       device: {
         platform: 'ios'
       },
@@ -132,90 +86,53 @@ let DataGrid = /*#__PURE__*/function (_Widget) {
         }
       }
     }]);
-  };
-  _proto._init = function _init() {
+  }
+  _init() {
     const that = this;
-    // @ts-expect-error
-    _Widget.prototype._init.call(this);
+    super._init();
     _m_utils.default.logHeaderFilterDeprecatedWarningIfNeed(that);
     // @ts-expect-error
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     _m_core.default.processModules(that, _m_core.default);
     _m_core.default.callModuleItemsMethod(that, 'init');
-  };
-  _proto._clean = function _clean() {};
-  _proto._optionChanged = function _optionChanged(args) {
-    const that = this;
-    _m_core.default.callModuleItemsMethod(that, 'optionChanged', [args]);
-    if (!args.handled) {
-      // @ts-expect-error
-      _Widget.prototype._optionChanged.call(this, args);
-    }
-  };
-  _proto._dimensionChanged = function _dimensionChanged() {
+  }
+  _initMarkup() {
     // @ts-expect-error
-    this.updateDimensions(true);
-  };
-  _proto._visibilityChanged = function _visibilityChanged(visible) {
-    if (visible) {
-      // @ts-expect-error
-      this.updateDimensions();
-    }
-  };
-  _proto._initMarkup = function _initMarkup() {
-    // @ts-expect-error
-    _Widget.prototype._initMarkup.apply(this, arguments);
+    super._initMarkup.apply(this, arguments);
     this.getView('gridView').render(this.$element());
-  };
-  _proto._renderContentImpl = function _renderContentImpl() {
-    this.getView('gridView').update();
-  };
-  _proto._renderContent = function _renderContent() {
-    const that = this;
-    (0, _common.deferRender)(() => {
-      that._renderContentImpl();
+  }
+  _setDeprecatedOptions() {
+    super._setDeprecatedOptions();
+    // @ts-expect-error
+    (0, _extend.extend)(this._deprecatedOptions, {
+      useKeyboard: {
+        since: '19.2',
+        alias: 'keyboardNavigation.enabled'
+      },
+      rowTemplate: {
+        since: '21.2',
+        message: 'Use the "dataRowTemplate" option instead'
+      }
     });
-  };
-  _proto._getTemplate = function _getTemplate(templateName) {
+  }
+  static registerModule(name, module) {
+    _m_core.default.registerModule(name, module);
+  }
+  getGridCoreHelper() {
+    return _m_core.default;
+  }
+  _getTemplate(templateName) {
     let template = templateName;
     if ((0, _type.isString)(template) && template.startsWith('#')) {
       template = (0, _renderer.default)(templateName);
       _console.logger.warn(DATAGRID_DEPRECATED_TEMPLATE_WARNING);
     }
-    return _Widget.prototype._getTemplate.call(this, template);
-  };
-  _proto._dispose = function _dispose() {
-    const that = this;
-    // @ts-expect-error
-    _Widget.prototype._dispose.call(this);
-    _m_core.default.callModuleItemsMethod(that, 'dispose');
-  };
-  _proto.isReady = function isReady() {
-    return this.getController('data').isReady();
-  };
-  _proto.beginUpdate = function beginUpdate() {
-    const that = this;
-    _Widget.prototype.beginUpdate.call(this);
-    _m_core.default.callModuleItemsMethod(that, 'beginUpdate');
-  };
-  _proto.endUpdate = function endUpdate() {
-    const that = this;
-    _m_core.default.callModuleItemsMethod(that, 'endUpdate');
-    _Widget.prototype.endUpdate.call(this);
-  };
-  _proto.getController = function getController(name) {
-    return this._controllers[name];
-  };
-  _proto.getView = function getView(name) {
-    return this._views[name];
-  };
-  _proto.focus = function focus(element) {
+    return super._getTemplate(template);
+  }
+  focus(element) {
     this.getController('keyboardNavigation').focus(element);
-  };
-  DataGrid.registerModule = function registerModule(name, module) {
-    _m_core.default.registerModule(name, module);
-  };
-  return DataGrid;
-}(_ui.default); // @ts-expect-error
+  }
+}
+// @ts-expect-error
 (0, _component_registrator.default)('dxDataGrid', DataGrid);
 var _default = exports.default = DataGrid;

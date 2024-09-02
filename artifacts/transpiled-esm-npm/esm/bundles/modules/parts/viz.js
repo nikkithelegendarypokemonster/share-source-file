@@ -1,5 +1,5 @@
 /* eslint-disable import/no-commonjs */
-var DevExpress = require('./core');
+const DevExpress = require('./core');
 require('./data');
 
 /// BUNDLER_PARTS
@@ -9,7 +9,7 @@ require('../../../bundles/modules/common.charts');
 
 /* Viz core (dx.module-viz-core.js) */
 
-var viz = DevExpress.viz = require('../../../bundles/modules/viz');
+const viz = DevExpress.viz = require('../../../bundles/modules/viz');
 viz.currentTheme = require('../../../viz/themes').currentTheme;
 viz.registerTheme = require('../../../viz/themes').registerTheme;
 viz.exportFromMarkup = require('../../../viz/export').exportFromMarkup;

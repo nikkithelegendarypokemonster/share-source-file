@@ -8,7 +8,7 @@ import { getDiagram } from './diagram.importer';
 class DiagramScrollView extends Widget {
   _init() {
     super._init();
-    var {
+    const {
       EventDispatcher
     } = getDiagram();
     this.onScroll = new EventDispatcher();
@@ -16,19 +16,19 @@ class DiagramScrollView extends Widget {
   }
   _initMarkup() {
     super._initMarkup();
-    var $scrollViewWrapper = $('<div>').appendTo(this.$element());
-    var options = {
+    const $scrollViewWrapper = $('<div>').appendTo(this.$element());
+    const options = {
       direction: 'both',
       bounceEnabled: false,
       scrollByContent: false,
       onScroll: _ref => {
-        var {
+        let {
           scrollOffset
         } = _ref;
         this._raiseOnScroll(scrollOffset.left, scrollOffset.top);
       }
     };
-    var useNativeScrolling = this.option('useNativeScrolling');
+    const useNativeScrolling = this.option('useNativeScrolling');
     if (useNativeScrolling !== undefined) {
       options.useNative = useNativeScrolling;
     }
@@ -53,10 +53,10 @@ class DiagramScrollView extends Widget {
     this._raiseOnScrollWithoutPoint();
   }
   getSize() {
-    var {
+    const {
       Size
     } = getDiagram();
-    var $element = this._scrollView.$element();
+    const $element = this._scrollView.$element();
     return new Size(Math.floor(getWidth($element)), Math.floor(getHeight($element)));
   }
   getScrollContainer() {
@@ -67,7 +67,7 @@ class DiagramScrollView extends Widget {
   }
   detachEvents() {}
   _raiseOnScroll(left, top) {
-    var {
+    const {
       Point
     } = getDiagram();
     this.onScroll.raise('notifyScrollChanged', () => {
@@ -75,7 +75,7 @@ class DiagramScrollView extends Widget {
     });
   }
   _raiseOnScrollWithoutPoint() {
-    var {
+    const {
       Point
     } = getDiagram();
     this.onScroll.raise('notifyScrollChanged', () => {

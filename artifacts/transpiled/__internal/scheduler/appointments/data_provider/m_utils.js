@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.sortAppointmentsByStartDate = exports.replaceWrongEndDate = exports.getRecurrenceException = exports.getAppointmentTakesSeveralDays = exports.compareDateWithStartDayHour = exports.compareDateWithEndDayHour = exports._isEndDateWrong = exports._convertRecurrenceException = exports._appointmentPartInInterval = void 0;
 var _date = _interopRequireDefault(require("../../../../core/utils/date"));
 var _date_serialization = _interopRequireDefault(require("../../../../core/utils/date_serialization"));
-var _utils = _interopRequireDefault(require("../../../../ui/scheduler/utils.timeZone"));
 var _m_expression_utils = require("../../m_expression_utils");
+var _m_utils_time_zone = _interopRequireDefault(require("../../m_utils_time_zone"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const toMs = _date.default.dateToMilliseconds;
 const FULL_DATE_FORMAT = 'yyyyMMddTHHmmss';
@@ -84,7 +84,7 @@ const _convertRecurrenceException = (exceptionString, startDate, timeZoneCalcula
   const exceptionDate = _date_serialization.default.deserializeDate(exceptionString);
   const convertedStartDate = getConvertedToTimeZone(startDate);
   let convertedExceptionDate = getConvertedToTimeZone(exceptionDate);
-  convertedExceptionDate = _utils.default.correctRecurrenceExceptionByTimezone(convertedExceptionDate, convertedStartDate, timeZone);
+  convertedExceptionDate = _m_utils_time_zone.default.correctRecurrenceExceptionByTimezone(convertedExceptionDate, convertedStartDate, timeZone);
   exceptionString = _date_serialization.default.serializeDate(convertedExceptionDate, FULL_DATE_FORMAT);
   return exceptionString;
 };

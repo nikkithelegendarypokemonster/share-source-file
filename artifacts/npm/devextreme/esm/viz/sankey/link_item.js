@@ -1,22 +1,22 @@
 /**
 * DevExtreme (esm/viz/sankey/link_item.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { COLOR_MODE_GRADIENT, COLOR_MODE_SOURCE, COLOR_MODE_TARGET } from './constants';
-var states = ['normal', 'adjacentNodeHover', 'hover'];
+const states = ['normal', 'adjacentNodeHover', 'hover'];
 import { isDefined } from '../../core/utils/type';
 function compileAttrs(color, itemOptions, itemBaseOptions, gradient) {
-  var border = itemOptions.border;
-  var baseBorder = itemBaseOptions.border;
-  var borderVisible = isDefined(border.visible) ? border.visible : baseBorder.visible;
-  var borderWidth = isDefined(border.width) ? border.width : baseBorder.width;
-  var borderOpacity = isDefined(border.opacity) ? border.opacity : isDefined(baseBorder.opacity) ? baseBorder.opacity : 1;
-  var opacity = isDefined(itemOptions.opacity) ? itemOptions.opacity : isDefined(itemBaseOptions.opacity) ? itemBaseOptions.opacity : 1;
-  var fill = itemOptions.color || color;
+  const border = itemOptions.border;
+  const baseBorder = itemBaseOptions.border;
+  const borderVisible = isDefined(border.visible) ? border.visible : baseBorder.visible;
+  const borderWidth = isDefined(border.width) ? border.width : baseBorder.width;
+  const borderOpacity = isDefined(border.opacity) ? border.opacity : isDefined(baseBorder.opacity) ? baseBorder.opacity : 1;
+  const opacity = isDefined(itemOptions.opacity) ? itemOptions.opacity : isDefined(itemBaseOptions.opacity) ? itemBaseOptions.opacity : 1;
+  let fill = itemOptions.color || color;
   if (itemBaseOptions.colorMode === COLOR_MODE_TARGET || itemBaseOptions.colorMode === COLOR_MODE_SOURCE) {
     fill = color;
   } else if (itemBaseOptions.colorMode === COLOR_MODE_GRADIENT && gradient && isDefined(gradient.id)) {
@@ -32,8 +32,8 @@ function compileAttrs(color, itemOptions, itemBaseOptions, gradient) {
   };
 }
 function Link(widget, params) {
-  var that = this;
-  var widgetOffset = widget._renderer.getRootOffset();
+  const that = this;
+  const widgetOffset = widget._renderer.getRootOffset();
   that.code = 0;
   that.widget = widget;
   that.color = params.color;
@@ -65,16 +65,16 @@ function Link(widget, params) {
   };
 }
 Link.prototype = {
-  getState: function getState() {
+  getState: function () {
     return states[this.code];
   },
-  isHovered: function isHovered() {
+  isHovered: function () {
     return this.code === 2;
   },
-  isAdjacentNodeHovered: function isAdjacentNodeHovered() {
+  isAdjacentNodeHovered: function () {
     return this.code === 1;
   },
-  setState: function setState(code, state) {
+  setState: function (code, state) {
     if (state) {
       this.code = code;
     } else {
@@ -83,10 +83,10 @@ Link.prototype = {
     }
     this.widget._applyLinksAppearance();
   },
-  setHover: function setHover() {
+  setHover: function () {
     this.hover(true);
   },
-  hover: function hover(state) {
+  hover: function (state) {
     if (!this.widget._getOption('hoverEnabled', true) || state === this.isHovered()) {
       return;
     }
@@ -98,7 +98,7 @@ Link.prototype = {
     });
     this.widget._resume();
   },
-  adjacentNodeHover: function adjacentNodeHover(state) {
+  adjacentNodeHover: function (state) {
     if (!this.widget._getOption('hoverEnabled', true) || state === this.isAdjacentNodeHovered()) {
       return;
     }
@@ -106,10 +106,10 @@ Link.prototype = {
     this.setState(1, state);
     this.widget._resume();
   },
-  setAdjacentNodeHover: function setAdjacentNodeHover() {
+  setAdjacentNodeHover: function () {
     this.adjacentNodeHover(true);
   },
-  showTooltip: function showTooltip(coords) {
+  showTooltip: function (coords) {
     this.widget._getOption('hoverEnabled', true) && this.widget._tooltip && this.widget._tooltip.show({
       type: 'link',
       info: {
@@ -122,7 +122,7 @@ Link.prototype = {
       y: coords[1]
     } : this.coords);
   },
-  hideTooltip: function hideTooltip() {
+  hideTooltip: function () {
     this.widget._tooltip && this.widget._tooltip.hide();
   }
 };

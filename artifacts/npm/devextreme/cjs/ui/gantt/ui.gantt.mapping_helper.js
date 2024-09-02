@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/ui/gantt/ui.gantt.mapping_helper.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -13,19 +13,18 @@ var _type = require("../../core/utils/type");
 var _data = require("../../core/utils/data");
 const GANTT_TASKS = 'tasks';
 const GANTT_MAPPED_FIELD_REGEX = /(\w*)Expr/;
-let GanttMappingHelper = exports.GanttMappingHelper = /*#__PURE__*/function () {
-  function GanttMappingHelper(gantt) {
+class GanttMappingHelper {
+  constructor(gantt) {
     this._gantt = gantt;
   }
-  var _proto = GanttMappingHelper.prototype;
-  _proto._getMappedFieldName = function _getMappedFieldName(optionName, coreField) {
+  _getMappedFieldName(optionName, coreField) {
     let coreFieldName = coreField;
     if (coreField === 'id') {
       coreFieldName = 'key';
     }
-    return this._gantt.option("".concat(optionName, ".").concat(coreFieldName, "Expr"));
-  };
-  _proto.getTaskMappedFieldNames = function getTaskMappedFieldNames() {
+    return this._gantt.option(`${optionName}.${coreFieldName}Expr`);
+  }
+  getTaskMappedFieldNames() {
     const mappedFields = [];
     const mappedFieldsData = this._gantt.option(GANTT_TASKS);
     for (const field in mappedFieldsData) {
@@ -36,8 +35,8 @@ let GanttMappingHelper = exports.GanttMappingHelper = /*#__PURE__*/function () {
       }
     }
     return mappedFields;
-  };
-  _proto.convertCoreToMappedData = function convertCoreToMappedData(optionName, coreData) {
+  }
+  convertCoreToMappedData(optionName, coreData) {
     return Object.keys(coreData).reduce((previous, f) => {
       const mappedField = this._getMappedFieldName(optionName, f);
       if (mappedField && !(0, _type.isFunction)(mappedField)) {
@@ -46,8 +45,8 @@ let GanttMappingHelper = exports.GanttMappingHelper = /*#__PURE__*/function () {
       }
       return previous;
     }, {});
-  };
-  _proto.convertMappedToCoreData = function convertMappedToCoreData(optionName, mappedData) {
+  }
+  convertMappedToCoreData(optionName, mappedData) {
     const coreData = {};
     if (mappedData) {
       const mappedFields = this._gantt.option(optionName);
@@ -62,8 +61,8 @@ let GanttMappingHelper = exports.GanttMappingHelper = /*#__PURE__*/function () {
       }
     }
     return coreData;
-  };
-  _proto.convertCoreToMappedFields = function convertCoreToMappedFields(optionName, fields) {
+  }
+  convertCoreToMappedFields(optionName, fields) {
     return fields.reduce((previous, f) => {
       const mappedField = this._getMappedFieldName(optionName, f);
       if (mappedField) {
@@ -71,8 +70,8 @@ let GanttMappingHelper = exports.GanttMappingHelper = /*#__PURE__*/function () {
       }
       return previous;
     }, []);
-  };
-  _proto.convertMappedToCoreFields = function convertMappedToCoreFields(optionName, fields) {
+  }
+  convertMappedToCoreFields(optionName, fields) {
     const coreFields = [];
     const mappedFields = this._gantt.option(optionName);
     for (const field in mappedFields) {
@@ -84,6 +83,6 @@ let GanttMappingHelper = exports.GanttMappingHelper = /*#__PURE__*/function () {
       }
     }
     return coreFields;
-  };
-  return GanttMappingHelper;
-}();
+  }
+}
+exports.GanttMappingHelper = GanttMappingHelper;

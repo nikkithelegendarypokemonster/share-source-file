@@ -1,6 +1,6 @@
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
 import _extends from "@babel/runtime/helpers/esm/extends";
-var _excluded = ["accessKey", "activeStateEnabled", "aria", "className", "defaultValue", "disabled", "enableThreeStateBehavior", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "iconSize", "inputAttr", "isDirty", "isValid", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "saveValueChangeEvent", "tabIndex", "text", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "visible", "width"];
+const _excluded = ["accessKey", "activeStateEnabled", "aria", "className", "defaultValue", "disabled", "enableThreeStateBehavior", "focusStateEnabled", "height", "hint", "hoverStateEnabled", "iconSize", "inputAttr", "isDirty", "isValid", "name", "onClick", "onFocusIn", "onKeyDown", "readOnly", "rtlEnabled", "saveValueChangeEvent", "tabIndex", "text", "validationError", "validationErrors", "validationMessageMode", "validationMessagePosition", "validationStatus", "value", "valueChange", "visible", "width"];
 import { createVNode, createFragment, createComponentVNode, normalizeProps } from "inferno";
 import { Fragment } from 'inferno';
 import { InfernoWrapperComponent } from '@devextreme/runtime/inferno';
@@ -9,14 +9,14 @@ import { Editor, EditorProps } from '../common/editor';
 import { combineClasses } from '../../../utils/combine_classes';
 import { CheckBoxIcon } from './check_box_icon';
 import { WidgetProps } from '../../common/widget';
-var getCssClasses = model => {
-  var {
+const getCssClasses = model => {
+  const {
     text,
     value
   } = model;
-  var checked = value;
-  var indeterminate = checked === null;
-  var classesMap = {
+  const checked = value;
+  const indeterminate = checked === null;
+  const classesMap = {
     'dx-checkbox': true,
     'dx-checkbox-checked': checked === true,
     'dx-checkbox-has-text': !!text,
@@ -24,8 +24,8 @@ var getCssClasses = model => {
   };
   return combineClasses(classesMap);
 };
-export var viewFunction = viewModel => {
-  var {
+export const viewFunction = viewModel => {
+  const {
     aria,
     cssClasses: classes,
     editorRef,
@@ -87,7 +87,7 @@ export var viewFunction = viewModel => {
   }, restAttributes, {
     children: createFragment([normalizeProps(createVNode(64, "input", null, null, 1, _extends({
       "type": "hidden",
-      "value": "".concat(value)
+      "value": `${value}`
     }, name && {
       name
     }))), createVNode(1, "div", "dx-checkbox-container", [createComponentVNode(2, CheckBoxIcon, {
@@ -96,7 +96,7 @@ export var viewFunction = viewModel => {
     }), text && createVNode(1, "span", "dx-checkbox-text", text, 0)], 0)], 4)
   }), null, editorRef));
 };
-export var CheckBoxProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(EditorProps), Object.getOwnPropertyDescriptors({
+export const CheckBoxProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(EditorProps), Object.getOwnPropertyDescriptors({
   text: '',
   enableThreeStateBehavior: false,
   activeStateEnabled: true,
@@ -107,7 +107,7 @@ export var CheckBoxProps = Object.create(Object.prototype, _extends(Object.getOw
   defaultValue: false,
   valueChange: () => {}
 })));
-export var CheckBoxPropsType = {
+export const CheckBoxPropsType = {
   get text() {
     return CheckBoxProps.text;
   },
@@ -194,16 +194,16 @@ export class CheckBox extends InfernoWrapperComponent {
     return [createReRenderEffect()];
   }
   onWidgetClick(event) {
-    var {
+    const {
       enableThreeStateBehavior,
       readOnly,
       saveValueChangeEvent
     } = this.props;
     if (!readOnly) {
-      saveValueChangeEvent === null || saveValueChangeEvent === void 0 ? void 0 : saveValueChangeEvent(event);
+      saveValueChangeEvent === null || saveValueChangeEvent === void 0 || saveValueChangeEvent(event);
       if (enableThreeStateBehavior) {
         {
-          var __newValue;
+          let __newValue;
           this.setState(__state_argument => {
             __newValue = (this.props.value !== undefined ? this.props.value : __state_argument.value) === null || (!(this.props.value !== undefined ? this.props.value : __state_argument.value) ? null : false);
             return {
@@ -214,29 +214,28 @@ export class CheckBox extends InfernoWrapperComponent {
         }
       } else {
         {
-          var _newValue;
+          let __newValue;
           this.setState(__state_argument => {
-            var _ref;
-            _newValue = !((_ref = this.props.value !== undefined ? this.props.value : __state_argument.value) !== null && _ref !== void 0 ? _ref : false);
+            __newValue = !((this.props.value !== undefined ? this.props.value : __state_argument.value) ?? false);
             return {
-              value: _newValue
+              value: __newValue
             };
           });
-          this.props.valueChange(_newValue);
+          this.props.valueChange(__newValue);
         }
       }
     }
   }
   keyDown(e) {
-    var {
+    const {
       onKeyDown
     } = this.props;
-    var {
+    const {
       keyName,
       originalEvent,
       which
     } = e;
-    var result = onKeyDown === null || onKeyDown === void 0 ? void 0 : onKeyDown(e);
+    const result = onKeyDown === null || onKeyDown === void 0 ? void 0 : onKeyDown(e);
     if (result !== null && result !== void 0 && result.cancel) {
       return result;
     }
@@ -252,16 +251,16 @@ export class CheckBox extends InfernoWrapperComponent {
     }));
   }
   get aria() {
-    var checked = (this.props.value !== undefined ? this.props.value : this.state.value) === true;
-    var indeterminate = (this.props.value !== undefined ? this.props.value : this.state.value) === null;
-    var result = {
+    const checked = (this.props.value !== undefined ? this.props.value : this.state.value) === true;
+    const indeterminate = (this.props.value !== undefined ? this.props.value : this.state.value) === null;
+    const result = {
       role: 'checkbox',
-      checked: indeterminate ? 'mixed' : "".concat(checked)
+      checked: indeterminate ? 'mixed' : `${checked}`
     };
     return _extends({}, result, this.props.aria);
   }
   get restAttributes() {
-    var _this$props$value = _extends({}, this.props, {
+    const _this$props$value = _extends({}, this.props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value
       }),
       restProps = _objectWithoutPropertiesLoose(_this$props$value, _excluded);
@@ -274,7 +273,7 @@ export class CheckBox extends InfernoWrapperComponent {
     this.editorRef.current.blur();
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props, {
         value: this.props.value !== undefined ? this.props.value : this.state.value
@@ -289,17 +288,17 @@ export class CheckBox extends InfernoWrapperComponent {
   }
 }
 function __processTwoWayProps(defaultProps) {
-  var twoWayProps = ['value'];
+  const twoWayProps = ['value'];
   return Object.keys(defaultProps).reduce((props, propName) => {
-    var propValue = defaultProps[propName];
-    var defaultPropName = twoWayProps.some(p => p === propName) ? 'default' + propName.charAt(0).toUpperCase() + propName.slice(1) : propName;
+    const propValue = defaultProps[propName];
+    const defaultPropName = twoWayProps.some(p => p === propName) ? 'default' + propName.charAt(0).toUpperCase() + propName.slice(1) : propName;
     props[defaultPropName] = propValue;
     return props;
   }, {});
 }
 CheckBox.defaultProps = CheckBoxPropsType;
-var __defaultOptionRules = [];
+const __defaultOptionRules = [];
 export function defaultOptions(rule) {
   __defaultOptionRules.push(rule);
-  CheckBox.defaultProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(CheckBox.defaultProps), Object.getOwnPropertyDescriptors(__processTwoWayProps(convertRulesToOptions(__defaultOptionRules)))));
+  CheckBox.defaultProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(CheckBox.defaultProps), Object.getOwnPropertyDescriptors(__processTwoWayProps(convertRulesToOptions(__defaultOptionRules)))));
 }

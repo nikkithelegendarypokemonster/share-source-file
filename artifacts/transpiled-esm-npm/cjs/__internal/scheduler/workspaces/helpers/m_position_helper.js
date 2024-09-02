@@ -4,13 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.getMaxAllowedPosition = exports.getGroupWidth = exports.getCellWidth = exports.getCellHeight = exports.getAllDayHeight = exports.PositionHelper = void 0;
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /* eslint-disable max-classes-per-file */
 const getCellSize = DOMMetaData => {
   const {
@@ -61,7 +55,7 @@ const getAllDayHeight = (showAllDayPanel, isVerticalGrouping, DOMMetaData) => {
   const {
     allDayPanelCellsMeta
   } = DOMMetaData;
-  return (allDayPanelCellsMeta === null || allDayPanelCellsMeta === void 0 ? void 0 : allDayPanelCellsMeta.length) ? allDayPanelCellsMeta[0].height : 0;
+  return allDayPanelCellsMeta !== null && allDayPanelCellsMeta !== void 0 && allDayPanelCellsMeta.length ? allDayPanelCellsMeta[0].height : 0;
 };
 exports.getAllDayHeight = getAllDayHeight;
 const getMaxAllowedPosition = (groupIndex, viewDataProvider, rtlEnabled, DOMMetaData) => {
@@ -97,70 +91,72 @@ const getGroupWidth = (groupIndex, viewDataProvider, options) => {
   return result;
 };
 exports.getGroupWidth = getGroupWidth;
-let PositionHelper = exports.PositionHelper = /*#__PURE__*/function () {
-  function PositionHelper(options) {
+class PositionHelper {
+  get viewDataProvider() {
+    return this.options.viewDataProvider;
+  }
+  get rtlEnabled() {
+    return this.options.rtlEnabled;
+  }
+  get isGroupedByDate() {
+    return this.options.isGroupedByDate;
+  }
+  get groupCount() {
+    return this.options.groupCount;
+  }
+  get DOMMetaData() {
+    return this.options.getDOMMetaDataCallback();
+  }
+  constructor(options) {
     this.options = options;
     this.groupStrategy = this.options.isVerticalGrouping ? new GroupStrategyBase(this.options) : new GroupStrategyHorizontal(this.options);
   }
-  var _proto = PositionHelper.prototype;
-  _proto.getHorizontalMax = function getHorizontalMax(groupIndex) {
+  getHorizontalMax(groupIndex) {
     const getMaxPosition = groupIndex => getMaxAllowedPosition(groupIndex, this.viewDataProvider, this.rtlEnabled, this.DOMMetaData);
     if (this.isGroupedByDate) {
       const viewPortGroupCount = this.viewDataProvider.getViewPortGroupCount();
       return Math.max(getMaxPosition(groupIndex), getMaxPosition(viewPortGroupCount - 1));
     }
     return getMaxPosition(groupIndex);
-  };
-  _proto.getResizableStep = function getResizableStep() {
+  }
+  getResizableStep() {
     const cellWidth = getCellWidth(this.DOMMetaData);
     if (this.isGroupedByDate) {
       return this.groupCount * cellWidth;
     }
     return cellWidth;
-  };
-  _proto.getVerticalMax = function getVerticalMax(options) {
+  }
+  getVerticalMax(options) {
     return this.groupStrategy.getVerticalMax(options);
-  };
-  _proto.getOffsetByAllDayPanel = function getOffsetByAllDayPanel(options) {
+  }
+  getOffsetByAllDayPanel(options) {
     return this.groupStrategy.getOffsetByAllDayPanel(options);
-  };
-  _proto.getGroupTop = function getGroupTop(options) {
+  }
+  getGroupTop(options) {
     return this.groupStrategy.getGroupTop(options);
-  };
-  _createClass(PositionHelper, [{
-    key: "viewDataProvider",
-    get: function () {
-      return this.options.viewDataProvider;
-    }
-  }, {
-    key: "rtlEnabled",
-    get: function () {
-      return this.options.rtlEnabled;
-    }
-  }, {
-    key: "isGroupedByDate",
-    get: function () {
-      return this.options.isGroupedByDate;
-    }
-  }, {
-    key: "groupCount",
-    get: function () {
-      return this.options.groupCount;
-    }
-  }, {
-    key: "DOMMetaData",
-    get: function () {
-      return this.options.getDOMMetaDataCallback();
-    }
-  }]);
-  return PositionHelper;
-}();
-let GroupStrategyBase = /*#__PURE__*/function () {
-  function GroupStrategyBase(options) {
+  }
+}
+exports.PositionHelper = PositionHelper;
+class GroupStrategyBase {
+  constructor(options) {
     this.options = options;
   }
-  var _proto2 = GroupStrategyBase.prototype;
-  _proto2.getOffsetByAllDayPanel = function getOffsetByAllDayPanel(_ref) {
+  get viewDataProvider() {
+    return this.options.viewDataProvider;
+  }
+  get isGroupedByDate() {
+    return this.options.isGroupedByDate;
+  }
+  get rtlEnabled() {
+    return this.options.rtlEnabled;
+  }
+  get groupCount() {
+    return this.options.groupCount;
+  }
+  get DOMMetaData() {
+    return this.options.getDOMMetaDataCallback();
+  }
+  getOffsetByAllDayPanel(_ref) {
     let {
       groupIndex,
       supportAllDayRow,
@@ -172,17 +168,17 @@ let GroupStrategyBase = /*#__PURE__*/function () {
       result = allDayPanelHeight * (groupIndex + 1);
     }
     return result;
-  };
-  _proto2.getVerticalMax = function getVerticalMax(options) {
-    let maxAllowedPosition = this._getMaxAllowedVerticalPosition(_extends(_extends({}, options), {
+  }
+  getVerticalMax(options) {
+    let maxAllowedPosition = this._getMaxAllowedVerticalPosition(_extends({}, options, {
       viewDataProvider: this.viewDataProvider,
       rtlEnabled: this.rtlEnabled,
       DOMMetaData: this.DOMMetaData
     }));
     maxAllowedPosition += this.getOffsetByAllDayPanel(options);
     return maxAllowedPosition;
-  };
-  _proto2.getGroupTop = function getGroupTop(_ref2) {
+  }
+  getGroupTop(_ref2) {
     let {
       groupIndex,
       showAllDayPanel,
@@ -198,11 +194,11 @@ let GroupStrategyBase = /*#__PURE__*/function () {
       DOMMetaData: this.DOMMetaData
     });
     return maxVerticalPosition - getCellHeight(this.DOMMetaData) * rowCount;
-  };
-  _proto2._getAllDayHeight = function _getAllDayHeight(showAllDayPanel) {
+  }
+  _getAllDayHeight(showAllDayPanel) {
     return getAllDayHeight(showAllDayPanel, true, this.DOMMetaData);
-  };
-  _proto2._getMaxAllowedVerticalPosition = function _getMaxAllowedVerticalPosition(_ref3) {
+  }
+  _getMaxAllowedVerticalPosition(_ref3) {
     let {
       groupIndex,
       showAllDayPanel,
@@ -223,59 +219,26 @@ let GroupStrategyBase = /*#__PURE__*/function () {
       result -= (groupIndex + 1) * this._getAllDayHeight(showAllDayPanel);
     }
     return result;
-  };
-  _createClass(GroupStrategyBase, [{
-    key: "viewDataProvider",
-    get: function () {
-      return this.options.viewDataProvider;
-    }
-  }, {
-    key: "isGroupedByDate",
-    get: function () {
-      return this.options.isGroupedByDate;
-    }
-  }, {
-    key: "rtlEnabled",
-    get: function () {
-      return this.options.rtlEnabled;
-    }
-  }, {
-    key: "groupCount",
-    get: function () {
-      return this.options.groupCount;
-    }
-  }, {
-    key: "DOMMetaData",
-    get: function () {
-      return this.options.getDOMMetaDataCallback();
-    }
-  }]);
-  return GroupStrategyBase;
-}();
-let GroupStrategyHorizontal = /*#__PURE__*/function (_GroupStrategyBase) {
-  _inheritsLoose(GroupStrategyHorizontal, _GroupStrategyBase);
-  function GroupStrategyHorizontal() {
-    return _GroupStrategyBase.apply(this, arguments) || this;
   }
-  var _proto3 = GroupStrategyHorizontal.prototype;
-  _proto3.getOffsetByAllDayPanel = function getOffsetByAllDayPanel() {
+}
+class GroupStrategyHorizontal extends GroupStrategyBase {
+  getOffsetByAllDayPanel() {
     return 0;
-  };
-  _proto3.getVerticalMax = function getVerticalMax(options) {
+  }
+  getVerticalMax(options) {
     const {
       isVirtualScrolling,
       groupIndex
     } = options;
     const correctedGroupIndex = isVirtualScrolling ? groupIndex : 0;
-    return this._getMaxAllowedVerticalPosition(_extends(_extends({}, options), {
+    return this._getMaxAllowedVerticalPosition(_extends({}, options, {
       groupIndex: correctedGroupIndex
     }));
-  };
-  _proto3.getGroupTop = function getGroupTop() {
+  }
+  getGroupTop() {
     return 0;
-  };
-  _proto3._getAllDayHeight = function _getAllDayHeight(showAllDayPanel) {
+  }
+  _getAllDayHeight(showAllDayPanel) {
     return getAllDayHeight(showAllDayPanel, false, this.DOMMetaData);
-  };
-  return GroupStrategyHorizontal;
-}(GroupStrategyBase);
+  }
+}

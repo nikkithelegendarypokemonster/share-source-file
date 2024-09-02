@@ -10,8 +10,6 @@ var _window = require("../core/utils/window");
 var _index = require("../events/utils/index");
 var _guid = _interopRequireDefault(require("../core/guid"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 const window = (0, _window.getWindow)();
 const SPLITTER_CLASS = 'dx-splitter-bar';
 const SPLITTER_WRAPPER_CLASS = 'dx-splitter-wrapper';
@@ -20,21 +18,16 @@ const SPLITTER_BORDER_CLASS = 'dx-splitter-border';
 const SPLITTER_INITIAL_STATE_CLASS = 'dx-splitter-initial';
 const STATE_DISABLED_CLASS = 'dx-state-disabled';
 const SPLITTER_MODULE_NAMESPACE = 'dxSplitterResizing';
-let SplitterControl = exports.default = /*#__PURE__*/function (_Widget) {
-  _inheritsLoose(SplitterControl, _Widget);
-  function SplitterControl() {
-    return _Widget.apply(this, arguments) || this;
-  }
-  var _proto = SplitterControl.prototype;
-  _proto._init = function _init() {
-    _Widget.prototype._init.call(this);
+class SplitterControl extends _ui.default {
+  _init() {
+    super._init();
     const eventGuid = new _guid.default().toString();
     this.SPLITTER_POINTER_DOWN_EVENT_NAME = (0, _index.addNamespace)(_pointer.default.down, SPLITTER_MODULE_NAMESPACE + eventGuid);
     this.SPLITTER_POINTER_MOVE_EVENT_NAME = (0, _index.addNamespace)(_pointer.default.move, SPLITTER_MODULE_NAMESPACE + eventGuid);
     this.SPLITTER_POINTER_UP_EVENT_NAME = (0, _index.addNamespace)(_pointer.default.up, SPLITTER_MODULE_NAMESPACE + eventGuid);
-  };
-  _proto._initMarkup = function _initMarkup() {
-    _Widget.prototype._initMarkup.call(this);
+  }
+  _initMarkup() {
+    super._initMarkup();
     this._initActions();
     this._$container = this.option('container');
     this._$leftElement = this.option('leftElement');
@@ -42,35 +35,35 @@ let SplitterControl = exports.default = /*#__PURE__*/function (_Widget) {
     this.$element().addClass(SPLITTER_WRAPPER_CLASS).addClass(SPLITTER_INITIAL_STATE_CLASS);
     this._$splitterBorder = (0, _renderer.default)('<div>').addClass(SPLITTER_BORDER_CLASS).appendTo(this.$element());
     this._$splitter = (0, _renderer.default)('<div>').addClass(SPLITTER_CLASS).addClass(SPLITTER_INACTIVE_CLASS).appendTo(this._$splitterBorder);
-  };
-  _proto._initActions = function _initActions() {
+  }
+  _initActions() {
     this._actions = {
       onApplyPanelSize: this._createActionByOption('onApplyPanelSize'),
       onActiveStateChanged: this._createActionByOption('onActiveStateChanged')
     };
-  };
-  _proto._render = function _render() {
-    _Widget.prototype._render.call(this);
+  }
+  _render() {
+    super._render();
     this._detachEventHandlers();
     this._attachEventHandlers();
-  };
-  _proto._clean = function _clean() {
+  }
+  _clean() {
     this._detachEventHandlers();
-    _Widget.prototype._clean.call(this);
-  };
-  _proto._attachEventHandlers = function _attachEventHandlers() {
+    super._clean();
+  }
+  _attachEventHandlers() {
     const document = _dom_adapter.default.getDocument();
     _events_engine.default.on(this._$splitterBorder, this.SPLITTER_POINTER_DOWN_EVENT_NAME, this._onMouseDownHandler.bind(this));
     _events_engine.default.on(document, this.SPLITTER_POINTER_MOVE_EVENT_NAME, this._onMouseMoveHandler.bind(this));
     _events_engine.default.on(document, this.SPLITTER_POINTER_UP_EVENT_NAME, this._onMouseUpHandler.bind(this));
-  };
-  _proto._detachEventHandlers = function _detachEventHandlers() {
+  }
+  _detachEventHandlers() {
     const document = _dom_adapter.default.getDocument();
     _events_engine.default.off(this._$splitterBorder, this.SPLITTER_POINTER_DOWN_EVENT_NAME);
     _events_engine.default.off(document, this.SPLITTER_POINTER_MOVE_EVENT_NAME);
     _events_engine.default.off(document, this.SPLITTER_POINTER_UP_EVENT_NAME);
-  };
-  _proto._dimensionChanged = function _dimensionChanged(dimension) {
+  }
+  _dimensionChanged(dimension) {
     if (!dimension || dimension !== 'height') {
       this._containerWidth = this._$container.get(0).clientWidth;
       this._setSplitterPositionLeft({
@@ -78,8 +71,8 @@ let SplitterControl = exports.default = /*#__PURE__*/function (_Widget) {
         usePercentagePanelsWidth: true
       });
     }
-  };
-  _proto._onMouseDownHandler = function _onMouseDownHandler(e) {
+  }
+  _onMouseDownHandler(e) {
     e.preventDefault();
     this._offsetX = e.pageX - this._$splitterBorder.offset().left <= this._getSplitterBorderWidth() ? e.pageX - this._$splitterBorder.offset().left : 0;
     this._containerWidth = this._$container.get(0).clientWidth;
@@ -88,8 +81,8 @@ let SplitterControl = exports.default = /*#__PURE__*/function (_Widget) {
     this._setSplitterPositionLeft({
       needUpdatePanels: true
     });
-  };
-  _proto._onMouseMoveHandler = function _onMouseMoveHandler(e) {
+  }
+  _onMouseMoveHandler(e) {
     if (!this._isSplitterActive) {
       return;
     }
@@ -97,8 +90,8 @@ let SplitterControl = exports.default = /*#__PURE__*/function (_Widget) {
       splitterPositionLeft: this._getNewSplitterPositionLeft(e),
       needUpdatePanels: true
     });
-  };
-  _proto._onMouseUpHandler = function _onMouseUpHandler() {
+  }
+  _onMouseUpHandler() {
     if (!this._isSplitterActive) {
       return;
     }
@@ -108,14 +101,14 @@ let SplitterControl = exports.default = /*#__PURE__*/function (_Widget) {
       needUpdatePanels: true,
       usePercentagePanelsWidth: true
     });
-  };
-  _proto._getNewSplitterPositionLeft = function _getNewSplitterPositionLeft(e) {
+  }
+  _getNewSplitterPositionLeft(e) {
     let newSplitterPositionLeft = e.pageX - this._getContainerLeftOffset() - this._offsetX;
     newSplitterPositionLeft = Math.max(0 - this._getSplitterOffset(), newSplitterPositionLeft);
     newSplitterPositionLeft = Math.min(this._containerWidth - this._getSplitterOffset() - this._getSplitterWidth(), newSplitterPositionLeft);
     return newSplitterPositionLeft;
-  };
-  _proto._getContainerLeftOffset = function _getContainerLeftOffset() {
+  }
+  _getContainerLeftOffset() {
     let offsetLeft = this._$container.offset().left;
     if (window) {
       const style = window.getComputedStyle(this._$container.get(0));
@@ -124,41 +117,41 @@ let SplitterControl = exports.default = /*#__PURE__*/function (_Widget) {
       offsetLeft += paddingLeft + borderLeft;
     }
     return offsetLeft;
-  };
-  _proto._getSplitterOffset = function _getSplitterOffset() {
+  }
+  _getSplitterOffset() {
     return (this._getSplitterBorderWidth() - this._getSplitterWidth()) / 2;
-  };
-  _proto._getSplitterWidth = function _getSplitterWidth() {
+  }
+  _getSplitterWidth() {
     return this._$splitter.get(0).clientWidth;
-  };
-  _proto._getSplitterBorderWidth = function _getSplitterBorderWidth() {
+  }
+  _getSplitterBorderWidth() {
     return this._$splitterBorder.get(0).clientWidth;
-  };
-  _proto._getLeftPanelWidth = function _getLeftPanelWidth() {
+  }
+  _getLeftPanelWidth() {
     return this._$leftElement.get(0).clientWidth;
-  };
-  _proto.getSplitterBorderElement = function getSplitterBorderElement() {
+  }
+  getSplitterBorderElement() {
     return this._$splitterBorder;
-  };
-  _proto._toggleActive = function _toggleActive(isActive) {
+  }
+  _toggleActive(isActive) {
     this.$element().toggleClass(SPLITTER_INACTIVE_CLASS, !isActive);
     this._$splitter.toggleClass(SPLITTER_INACTIVE_CLASS, !isActive);
     this._isSplitterActive = isActive;
     this._actions.onActiveStateChanged({
       isActive
     });
-  };
-  _proto.toggleDisabled = function toggleDisabled(isDisabled) {
+  }
+  toggleDisabled(isDisabled) {
     this.$element().toggleClass(STATE_DISABLED_CLASS, isDisabled);
     this._$splitter.toggleClass(STATE_DISABLED_CLASS, isDisabled);
-  };
-  _proto.isSplitterMoved = function isSplitterMoved() {
+  }
+  isSplitterMoved() {
     return !this.$element().hasClass(SPLITTER_INITIAL_STATE_CLASS);
-  };
-  _proto.disableSplitterCalculation = function disableSplitterCalculation(value) {
+  }
+  disableSplitterCalculation(value) {
     this._isSplitterCalculationDisabled = value;
-  };
-  _proto._setSplitterPositionLeft = function _setSplitterPositionLeft() {
+  }
+  _setSplitterPositionLeft() {
     let {
       splitterPositionLeft = null,
       needUpdatePanels = false,
@@ -176,11 +169,11 @@ let SplitterControl = exports.default = /*#__PURE__*/function (_Widget) {
       return;
     }
     this._actions.onApplyPanelSize({
-      leftPanelWidth: usePercentagePanelsWidth ? "".concat(this._leftPanelPercentageWidth, "%") : leftPanelWidth,
-      rightPanelWidth: usePercentagePanelsWidth ? "".concat(rightPanelPercentageWidth, "%") : rightPanelWidth
+      leftPanelWidth: usePercentagePanelsWidth ? `${this._leftPanelPercentageWidth}%` : leftPanelWidth,
+      rightPanelWidth: usePercentagePanelsWidth ? `${rightPanelPercentageWidth}%` : rightPanelWidth
     });
-  };
-  _proto._optionChanged = function _optionChanged(args) {
+  }
+  _optionChanged(args) {
     switch (args.name) {
       case 'initialLeftPanelWidth':
         this._leftPanelPercentageWidth = this._convertToPercentage(args.value);
@@ -194,16 +187,16 @@ let SplitterControl = exports.default = /*#__PURE__*/function (_Widget) {
         this._actions[args.name] = this._createActionByOption(args.name);
         break;
       default:
-        _Widget.prototype._optionChanged.call(this, args);
+        super._optionChanged(args);
     }
-  };
-  _proto._convertToPercentage = function _convertToPercentage(pixelWidth) {
+  }
+  _convertToPercentage(pixelWidth) {
     return pixelWidth / this._$container.get(0).clientWidth * 100;
-  };
-  _proto._convertToPixels = function _convertToPixels(percentageWidth) {
+  }
+  _convertToPixels(percentageWidth) {
     return percentageWidth / 100 * this._$container.get(0).clientWidth;
-  };
-  return SplitterControl;
-}(_ui.default);
+  }
+}
+exports.default = SplitterControl;
 module.exports = exports.default;
 module.exports.default = exports.default;

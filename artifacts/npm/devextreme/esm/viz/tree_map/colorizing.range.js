@@ -1,17 +1,17 @@
 /**
 * DevExtreme (esm/viz/tree_map/colorizing.range.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
 import { addColorizer, createColorCodeGetter as _createColorCodeGetter } from './colorizing';
 function getPaletteIndex(value, items) {
-  var start = 0;
-  var end = items.length - 1;
-  var index = -1;
-  var middle;
+  let start = 0;
+  let end = items.length - 1;
+  let index = -1;
+  let middle;
   if (items[start] <= value && value <= items[end]) {
     if (value === items[end]) {
       index = end - 1;
@@ -30,9 +30,9 @@ function getPaletteIndex(value, items) {
   return index;
 }
 function rangeColorizer(options, themeManager) {
-  var range = options.range || [];
-  var palette = themeManager.createDiscretePalette(options.palette, range.length - 1);
-  var getValue = _createColorCodeGetter(options);
+  const range = options.range || [];
+  const palette = themeManager.createDiscretePalette(options.palette, range.length - 1);
+  const getValue = _createColorCodeGetter(options);
   return function (node) {
     return palette.getColor(getPaletteIndex(getValue(node), range));
   };

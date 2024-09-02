@@ -1,26 +1,26 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-var _excluded = ["direction", "disabled", "onResize", "onResizeEnd", "onResizeStart"];
+const _excluded = ["direction", "disabled", "onResize", "onResizeEnd", "onResizeStart"];
 import { createVNode } from "inferno";
 import { InfernoEffect, InfernoComponent } from '@devextreme/runtime/inferno';
 import { start as dragEventStart, move as dragEventMove, end as dragEventEnd } from '../../../events/drag';
 import { addNamespace } from '../../../events/utils/index';
 import eventsEngine from '../../../events/core/events_engine';
-var namespace = 'dxResizable';
-var dragStartEvent = addNamespace(dragEventStart, namespace);
-var dragEvent = addNamespace(dragEventMove, namespace);
-var dragEndEvent = addNamespace(dragEventEnd, namespace);
-export var viewFunction = viewModel => {
-  var {
+const namespace = 'dxResizable';
+const dragStartEvent = addNamespace(dragEventStart, namespace);
+const dragEvent = addNamespace(dragEventMove, namespace);
+const dragEndEvent = addNamespace(dragEventEnd, namespace);
+export const viewFunction = viewModel => {
+  const {
     mainRef,
     props
   } = viewModel;
-  var {
+  const {
     direction
   } = props;
-  return createVNode(1, "div", "dx-resizable-handle dx-resizable-handle-".concat(direction), null, 1, null, null, mainRef);
+  return createVNode(1, "div", `dx-resizable-handle dx-resizable-handle-${direction}`, null, 1, null, null, mainRef);
 };
-export var ResizableHandleProps = {
+export const ResizableHandleProps = {
   direction: 'top',
   disabled: false
 };
@@ -38,18 +38,18 @@ export class ResizableHandle extends InfernoComponent {
   }
   updateEffects() {
     var _this$_effects$;
-    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 ? void 0 : _this$_effects$.update([this.props.disabled, this.props.onResize, this.props.onResizeEnd, this.props.onResizeStart]);
+    (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 || _this$_effects$.update([this.props.disabled, this.props.onResize, this.props.onResizeEnd, this.props.onResizeStart]);
   }
   dragEventsEffect() {
-    var {
+    const {
       disabled,
       onResize,
       onResizeEnd,
       onResizeStart
     } = this.props;
     if (!disabled) {
-      var handleEl = this.mainRef.current;
-      var opts = {
+      const handleEl = this.mainRef.current;
+      const opts = {
         direction: 'both',
         immediate: true
       };
@@ -59,7 +59,7 @@ export class ResizableHandle extends InfernoComponent {
             [dragEvent]: onResize,
             [dragEndEvent]: onResizeEnd
           }, opts);
-          onResizeStart === null || onResizeStart === void 0 ? void 0 : onResizeStart(event);
+          onResizeStart === null || onResizeStart === void 0 || onResizeStart(event);
         }
       }, opts);
       return () => eventsEngine.off(handleEl, undefined, undefined);
@@ -67,12 +67,12 @@ export class ResizableHandle extends InfernoComponent {
     return undefined;
   }
   get restAttributes() {
-    var _this$props = this.props,
+    const _this$props = this.props,
       restProps = _objectWithoutPropertiesLoose(_this$props, _excluded);
     return restProps;
   }
   render() {
-    var props = this.props;
+    const props = this.props;
     return viewFunction({
       props: _extends({}, props),
       mainRef: this.mainRef,
@@ -80,9 +80,9 @@ export class ResizableHandle extends InfernoComponent {
     });
   }
 }
-ResizableHandle.defaultProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(ResizableHandleProps), Object.getOwnPropertyDescriptors(_extends({}, convertRulesToOptions([])))));
-var __defaultOptionRules = [];
+ResizableHandle.defaultProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(ResizableHandleProps), Object.getOwnPropertyDescriptors(_extends({}, convertRulesToOptions([])))));
+const __defaultOptionRules = [];
 export function defaultOptions(rule) {
   __defaultOptionRules.push(rule);
-  ResizableHandle.defaultProps = Object.create(Object.prototype, _extends(Object.getOwnPropertyDescriptors(ResizableHandle.defaultProps), Object.getOwnPropertyDescriptors(convertRulesToOptions([])), Object.getOwnPropertyDescriptors(convertRulesToOptions(__defaultOptionRules))));
+  ResizableHandle.defaultProps = Object.create(Object.prototype, Object.assign(Object.getOwnPropertyDescriptors(ResizableHandle.defaultProps), Object.getOwnPropertyDescriptors(convertRulesToOptions([])), Object.getOwnPropertyDescriptors(convertRulesToOptions(__defaultOptionRules))));
 }

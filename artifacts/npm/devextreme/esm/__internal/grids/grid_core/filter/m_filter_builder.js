@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/__internal/grids/grid_core/filter/m_filter_builder.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -52,7 +52,7 @@ export class FilterBuilderView extends modules.View {
     }
   }
   _initPopup() {
-    var that = this;
+    const that = this;
     that._disposePopup();
     that._filterBuilderPopup = that._createComponent(that.element(), Popup, extend({
       title: messageLocalization.format('dxDataGrid-filterBuilderPopupTitle'),
@@ -73,8 +73,8 @@ export class FilterBuilderView extends modules.View {
     }));
   }
   _getPopupContentTemplate(contentElement) {
-    var $contentElement = $(contentElement);
-    var $filterBuilderContainer = $('<div>').appendTo($(contentElement));
+    const $contentElement = $(contentElement);
+    const $filterBuilderContainer = $('<div>').appendTo($(contentElement));
     this._filterBuilder = this._createComponent($filterBuilderContainer, FilterBuilder, extend({
       value: this.option('filterValue'),
       fields: this._columnsController.getFilteringColumns()
@@ -86,7 +86,7 @@ export class FilterBuilderView extends modules.View {
     });
   }
   _getPopupToolbarItems() {
-    var that = this;
+    const that = this;
     return [{
       toolbar: 'bottom',
       location: 'after',
@@ -94,7 +94,7 @@ export class FilterBuilderView extends modules.View {
       options: {
         text: messageLocalization.format('OK'),
         onClick() {
-          var filter = that._filterBuilder.option('value');
+          const filter = that._filterBuilder.option('value');
           that.option('filterValue', filter);
           that._filterBuilderPopup.hide();
         }
@@ -112,7 +112,7 @@ export class FilterBuilderView extends modules.View {
     }];
   }
 }
-export var filterBuilderModule = {
+export const filterBuilderModule = {
   defaultOptions() {
     return {
       filterBuilder: {

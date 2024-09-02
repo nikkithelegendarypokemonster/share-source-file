@@ -3,15 +3,15 @@ import { extend } from './extend';
 import { logger } from './console';
 import { format } from './string';
 import { version } from '../version';
-var ERROR_URL = 'https://js.devexpress.com/error/' + version.split('.').slice(0, 2).join('_') + '/';
+const ERROR_URL = 'https://js.devexpress.com/error/' + version.split('.').slice(0, 2).join('_') + '/';
 export default function (baseErrors, errors) {
-  var exports = {
+  const exports = {
     ERROR_MESSAGES: extend(errors, baseErrors),
-    Error: function Error() {
+    Error: function () {
       return makeError([].slice.call(arguments));
     },
-    log: function log(id) {
-      var method = 'log';
+    log: function (id) {
+      let method = 'log';
       if (/^E\d+$/.test(id)) {
         method = 'error';
       } else if (/^W\d+$/.test(id)) {
@@ -21,7 +21,7 @@ export default function (baseErrors, errors) {
     }
   };
   function combineMessage(args) {
-    var id = args[0];
+    const id = args[0];
     args = args.slice(1);
     return formatMessage(id, formatDetails(id, args));
   }
@@ -30,15 +30,15 @@ export default function (baseErrors, errors) {
     return format.apply(this, args).replace(/\.*\s*?$/, '');
   }
   function formatMessage(id, details) {
-    var kind = id !== null && id !== void 0 && id.startsWith('W') ? 'warning' : 'error';
+    const kind = id !== null && id !== void 0 && id.startsWith('W') ? 'warning' : 'error';
     return format.apply(this, ['{0} - {1}.\n\nFor additional information on this {2} message, see: {3}', id, details, kind, getErrorUrl(id)]);
   }
   function makeError(args) {
-    var id = args[0];
+    const id = args[0];
     args = args.slice(1);
-    var details = formatDetails(id, args);
-    var url = getErrorUrl(id);
-    var message = formatMessage(id, details);
+    const details = formatDetails(id, args);
+    const url = getErrorUrl(id);
+    const message = formatMessage(id, details);
     return extend(new Error(message), {
       __id: id,
       __details: details,

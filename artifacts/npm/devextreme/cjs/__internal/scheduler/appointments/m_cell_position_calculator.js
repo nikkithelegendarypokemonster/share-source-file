@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/scheduler/appointments/m_cell_position_calculator.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -14,20 +14,58 @@ Object.defineProperty(exports, "__esModule", {
 exports.CellPositionCalculator = void 0;
 var _type = require("../../../core/utils/type");
 var _date = require("../../core/utils/date");
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); } /* eslint-disable max-classes-per-file */
-let BaseStrategy = /*#__PURE__*/function () {
-  function BaseStrategy(options) {
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); } /* eslint-disable max-classes-per-file */
+class BaseStrategy {
+  constructor(options) {
     this.isVirtualScrolling = false;
     this.options = options;
   }
-  var _proto = BaseStrategy.prototype;
-  _proto.calculateCellPositions = function calculateCellPositions(groupIndices, isAllDayRowAppointment, isRecurrentAppointment) {
+  get DOMMetaData() {
+    return this.options.DOMMetaData;
+  }
+  get appointments() {
+    return this.options.dateSettings;
+  } // TODO rename appoitments -> dateSettings
+  get viewDataProvider() {
+    return this.options.viewDataProvider;
+  }
+  get positionHelper() {
+    return this.options.positionHelper;
+  }
+  get startViewDate() {
+    return this.options.startViewDate;
+  }
+  get viewStartDayHour() {
+    return this.options.viewStartDayHour;
+  }
+  get viewEndDayHour() {
+    return this.options.viewEndDayHour;
+  }
+  get cellDuration() {
+    return this.options.cellDuration;
+  }
+  get getPositionShift() {
+    return this.options.getPositionShiftCallback;
+  }
+  get groupCount() {
+    return this.options.groupCount;
+  }
+  get rtlEnabled() {
+    return this.options.rtlEnabled;
+  }
+  get isVerticalGrouping() {
+    return this.options.isVerticalGroupOrientation;
+  }
+  get showAllDayPanel() {
+    return this.options.showAllDayPanel;
+  }
+  get supportAllDayRow() {
+    return this.options.supportAllDayRow;
+  }
+  get isGroupedAllDayPanel() {
+    return this.options.isGroupedAllDayPanel;
+  }
+  calculateCellPositions(groupIndices, isAllDayRowAppointment, isRecurrentAppointment) {
     const result = [];
     this.appointments.forEach((dateSetting, index) => {
       const coordinates = this.getCoordinateInfos({
@@ -41,8 +79,8 @@ let BaseStrategy = /*#__PURE__*/function () {
       });
     });
     return result;
-  };
-  _proto.getCoordinateInfos = function getCoordinateInfos(options) {
+  }
+  getCoordinateInfos(options) {
     const {
       appointment,
       isAllDayRowAppointment,
@@ -54,15 +92,15 @@ let BaseStrategy = /*#__PURE__*/function () {
     } = appointment;
     const groupIndex = !recurrent ? appointment.source.groupIndex : undefined;
     return this.getCoordinatesByDateInGroup(startDate, groupIndices, isAllDayRowAppointment, groupIndex);
-  };
-  _proto._prepareObject = function _prepareObject(position, dateSettingIndex) {
+  }
+  _prepareObject(position, dateSettingIndex) {
     position.dateSettingIndex = dateSettingIndex;
     return {
       coordinates: position,
       dateSettingIndex
     };
-  };
-  _proto.getCoordinatesByDate = function getCoordinatesByDate(date, groupIndex, inAllDayRow) {
+  }
+  getCoordinatesByDate(date, groupIndex, inAllDayRow) {
     const validGroupIndex = groupIndex || 0;
     const cellInfo = {
       groupIndex: validGroupIndex,
@@ -74,6 +112,13 @@ let BaseStrategy = /*#__PURE__*/function () {
       return undefined;
     }
     const position = this.getCellPosition(positionByMap, inAllDayRow && !this.isVerticalGrouping);
+    const groupEdgeIndices = this.viewDataProvider.getGroupEdgeIndices(validGroupIndex);
+    const {
+      top: vMin
+    } = this.getCellPosition({
+      columnIndex: positionByMap.columnIndex,
+      rowIndex: groupEdgeIndices.firstRowIndex
+    }, inAllDayRow && !this.isVerticalGrouping);
     const timeShift = inAllDayRow ? 0 : this.getTimeShiftRatio(positionByMap, date);
     const shift = this.getPositionShift(timeShift, inAllDayRow);
     const horizontalHMax = this.positionHelper.getHorizontalMax(validGroupIndex, date);
@@ -94,10 +139,11 @@ let BaseStrategy = /*#__PURE__*/function () {
       columnIndex: position.columnIndex,
       hMax: horizontalHMax,
       vMax: verticalMax,
+      vMin,
       groupIndex: validGroupIndex
     };
-  };
-  _proto.getCoordinatesByDateInGroup = function getCoordinatesByDateInGroup(startDate, groupIndices, inAllDayRow, groupIndex) {
+  }
+  getCoordinatesByDateInGroup(startDate, groupIndices, inAllDayRow, groupIndex) {
     const result = [];
     if (this.viewDataProvider.isSkippedDate(startDate)) {
       return result;
@@ -113,8 +159,8 @@ let BaseStrategy = /*#__PURE__*/function () {
       }
     });
     return result;
-  };
-  _proto.getCellPosition = function getCellPosition(cellCoordinates, isAllDayPanel) {
+  }
+  getCellPosition(cellCoordinates, isAllDayPanel) {
     const {
       dateTableCellsMeta,
       allDayPanelCellsMeta
@@ -133,8 +179,8 @@ let BaseStrategy = /*#__PURE__*/function () {
       validPosition.columnIndex = cellCoordinates.columnIndex;
     }
     return validPosition;
-  };
-  _proto.getTimeShiftRatio = function getTimeShiftRatio(positionByMap, appointmentDate) {
+  }
+  getTimeShiftRatio(positionByMap, appointmentDate) {
     const {
       cellDuration,
       viewOffset
@@ -150,95 +196,14 @@ let BaseStrategy = /*#__PURE__*/function () {
     // Time shift greater than cell duration - incorrect.
     // In this case appointment date should match with the next cell instead.
     return result % 1;
-  };
-  _createClass(BaseStrategy, [{
-    key: "DOMMetaData",
-    get: function () {
-      return this.options.DOMMetaData;
-    }
-  }, {
-    key: "appointments",
-    get: function () {
-      return this.options.dateSettings;
-    } // TODO rename appoitments -> dateSettings
-  }, {
-    key: "viewDataProvider",
-    get: function () {
-      return this.options.viewDataProvider;
-    }
-  }, {
-    key: "positionHelper",
-    get: function () {
-      return this.options.positionHelper;
-    }
-  }, {
-    key: "startViewDate",
-    get: function () {
-      return this.options.startViewDate;
-    }
-  }, {
-    key: "viewStartDayHour",
-    get: function () {
-      return this.options.viewStartDayHour;
-    }
-  }, {
-    key: "viewEndDayHour",
-    get: function () {
-      return this.options.viewEndDayHour;
-    }
-  }, {
-    key: "cellDuration",
-    get: function () {
-      return this.options.cellDuration;
-    }
-  }, {
-    key: "getPositionShift",
-    get: function () {
-      return this.options.getPositionShiftCallback;
-    }
-  }, {
-    key: "groupCount",
-    get: function () {
-      return this.options.groupCount;
-    }
-  }, {
-    key: "rtlEnabled",
-    get: function () {
-      return this.options.rtlEnabled;
-    }
-  }, {
-    key: "isVerticalGrouping",
-    get: function () {
-      return this.options.isVerticalGroupOrientation;
-    }
-  }, {
-    key: "showAllDayPanel",
-    get: function () {
-      return this.options.showAllDayPanel;
-    }
-  }, {
-    key: "supportAllDayRow",
-    get: function () {
-      return this.options.supportAllDayRow;
-    }
-  }, {
-    key: "isGroupedAllDayPanel",
-    get: function () {
-      return this.options.isGroupedAllDayPanel;
-    }
-  }]);
-  return BaseStrategy;
-}();
-let VirtualStrategy = /*#__PURE__*/function (_BaseStrategy) {
-  _inheritsLoose(VirtualStrategy, _BaseStrategy);
-  function VirtualStrategy() {
-    var _this;
-    _this = _BaseStrategy.apply(this, arguments) || this;
-    _this.isVirtualScrolling = true;
-    return _this;
   }
-  var _proto2 = VirtualStrategy.prototype;
-  _proto2.calculateCellPositions = function calculateCellPositions(groupIndices, isAllDayRowAppointment, isRecurrentAppointment) {
+}
+class VirtualStrategy extends BaseStrategy {
+  constructor() {
+    super(...arguments);
+    this.isVirtualScrolling = true;
+  }
+  calculateCellPositions(groupIndices, isAllDayRowAppointment, isRecurrentAppointment) {
     const appointments = isAllDayRowAppointment ? this.appointments : this.appointments.filter(_ref => {
       let {
         source,
@@ -250,9 +215,9 @@ let VirtualStrategy = /*#__PURE__*/function (_BaseStrategy) {
     if (isRecurrentAppointment) {
       return this.createRecurrentAppointmentInfos(appointments, isAllDayRowAppointment);
     }
-    return _BaseStrategy.prototype.calculateCellPositions.call(this, groupIndices, isAllDayRowAppointment, isRecurrentAppointment);
-  };
-  _proto2.createRecurrentAppointmentInfos = function createRecurrentAppointmentInfos(dateSettings, isAllDayRowAppointment) {
+    return super.calculateCellPositions(groupIndices, isAllDayRowAppointment, isRecurrentAppointment);
+  }
+  createRecurrentAppointmentInfos(dateSettings, isAllDayRowAppointment) {
     const result = [];
     dateSettings.forEach((_ref2, index) => {
       let {
@@ -265,17 +230,15 @@ let VirtualStrategy = /*#__PURE__*/function (_BaseStrategy) {
       }
     });
     return result;
-  };
-  return VirtualStrategy;
-}(BaseStrategy);
-let CellPositionCalculator = exports.CellPositionCalculator = /*#__PURE__*/function () {
-  function CellPositionCalculator(options) {
+  }
+}
+class CellPositionCalculator {
+  constructor(options) {
     this.options = options;
   }
-  var _proto3 = CellPositionCalculator.prototype;
-  _proto3.calculateCellPositions = function calculateCellPositions(groupIndices, isAllDayRowAppointment, isRecurrentAppointment) {
+  calculateCellPositions(groupIndices, isAllDayRowAppointment, isRecurrentAppointment) {
     const strategy = this.options.isVirtualScrolling ? new VirtualStrategy(this.options) : new BaseStrategy(this.options);
     return strategy.calculateCellPositions(groupIndices, isAllDayRowAppointment, isRecurrentAppointment);
-  };
-  return CellPositionCalculator;
-}();
+  }
+}
+exports.CellPositionCalculator = CellPositionCalculator;

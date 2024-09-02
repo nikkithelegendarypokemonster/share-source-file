@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/file_manager/ui.file_manager.notification.progress_panel.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -15,42 +15,42 @@ import Widget from '../widget/ui.widget';
 import ProgressBar from '../progress_bar';
 import Button from '../button';
 import ScrollView from '../scroll_view';
-var FILE_MANAGER_PROGRESS_PANEL_CLASS = 'dx-filemanager-progress-panel';
-var FILE_MANAGER_PROGRESS_PANEL_CONTAINER_CLASS = "".concat(FILE_MANAGER_PROGRESS_PANEL_CLASS, "-container");
-var FILE_MANAGER_PROGRESS_PANEL_TITLE_CLASS = "".concat(FILE_MANAGER_PROGRESS_PANEL_CLASS, "-title");
-var FILE_MANAGER_PROGRESS_PANEL_TITLE_TEXT_CLASS = "".concat(FILE_MANAGER_PROGRESS_PANEL_CLASS, "-title-text");
-var FILE_MANAGER_PROGRESS_PANEL_CLOSE_BUTTON_CLASS = "".concat(FILE_MANAGER_PROGRESS_PANEL_CLASS, "-close-button");
-var FILE_MANAGER_PROGRESS_PANEL_INFOS_CONTAINER_CLASS = "".concat(FILE_MANAGER_PROGRESS_PANEL_CLASS, "-infos-container");
-var FILE_MANAGER_PROGRESS_PANEL_SEPARATOR_CLASS = "".concat(FILE_MANAGER_PROGRESS_PANEL_CLASS, "-separator");
-var FILE_MANAGER_PROGRESS_PANEL_INFO_CLASS = "".concat(FILE_MANAGER_PROGRESS_PANEL_CLASS, "-info");
-var FILE_MANAGER_PROGRESS_PANEL_COMMON_CLASS = "".concat(FILE_MANAGER_PROGRESS_PANEL_CLASS, "-common");
-var FILE_MANAGER_PROGRESS_PANEL_INFO_WITH_DETAILS_CLASS = "".concat(FILE_MANAGER_PROGRESS_PANEL_CLASS, "-info-with-details");
-var FILE_MANAGER_PROGRESS_PANEL_DETAILS_CLASS = "".concat(FILE_MANAGER_PROGRESS_PANEL_CLASS, "-details");
-var FILE_MANAGER_PROGRESS_BOX_CLASS = 'dx-filemanager-progress-box';
-var FILE_MANAGER_PROGRESS_BOX_ERROR_CLASS = "".concat(FILE_MANAGER_PROGRESS_BOX_CLASS, "-error");
-var FILE_MANAGER_PROGRESS_BOX_WITHOUT_CLOSE_BUTTON_CLASS = "".concat(FILE_MANAGER_PROGRESS_BOX_CLASS, "-without-close-button");
-var FILE_MANAGER_PROGRESS_BOX_IMAGE_CLASS = "".concat(FILE_MANAGER_PROGRESS_BOX_CLASS, "-image");
-var FILE_MANAGER_PROGRESS_BOX_WRAPPER_CLASS = "".concat(FILE_MANAGER_PROGRESS_BOX_CLASS, "-wrapper");
-var FILE_MANAGER_PROGRESS_BOX_COMMON_CLASS = "".concat(FILE_MANAGER_PROGRESS_BOX_CLASS, "-common");
-var FILE_MANAGER_PROGRESS_BOX_PROGRESS_BAR_CLASS = "".concat(FILE_MANAGER_PROGRESS_BOX_CLASS, "-progress-bar");
-var FILE_MANAGER_PROGRESS_BOX_CLOSE_BUTTON_CLASS = "".concat(FILE_MANAGER_PROGRESS_BOX_CLASS, "-close-button");
-var DX_CARD_CLASS = 'dx-card';
+const FILE_MANAGER_PROGRESS_PANEL_CLASS = 'dx-filemanager-progress-panel';
+const FILE_MANAGER_PROGRESS_PANEL_CONTAINER_CLASS = `${FILE_MANAGER_PROGRESS_PANEL_CLASS}-container`;
+const FILE_MANAGER_PROGRESS_PANEL_TITLE_CLASS = `${FILE_MANAGER_PROGRESS_PANEL_CLASS}-title`;
+const FILE_MANAGER_PROGRESS_PANEL_TITLE_TEXT_CLASS = `${FILE_MANAGER_PROGRESS_PANEL_CLASS}-title-text`;
+const FILE_MANAGER_PROGRESS_PANEL_CLOSE_BUTTON_CLASS = `${FILE_MANAGER_PROGRESS_PANEL_CLASS}-close-button`;
+const FILE_MANAGER_PROGRESS_PANEL_INFOS_CONTAINER_CLASS = `${FILE_MANAGER_PROGRESS_PANEL_CLASS}-infos-container`;
+const FILE_MANAGER_PROGRESS_PANEL_SEPARATOR_CLASS = `${FILE_MANAGER_PROGRESS_PANEL_CLASS}-separator`;
+const FILE_MANAGER_PROGRESS_PANEL_INFO_CLASS = `${FILE_MANAGER_PROGRESS_PANEL_CLASS}-info`;
+const FILE_MANAGER_PROGRESS_PANEL_COMMON_CLASS = `${FILE_MANAGER_PROGRESS_PANEL_CLASS}-common`;
+const FILE_MANAGER_PROGRESS_PANEL_INFO_WITH_DETAILS_CLASS = `${FILE_MANAGER_PROGRESS_PANEL_CLASS}-info-with-details`;
+const FILE_MANAGER_PROGRESS_PANEL_DETAILS_CLASS = `${FILE_MANAGER_PROGRESS_PANEL_CLASS}-details`;
+const FILE_MANAGER_PROGRESS_BOX_CLASS = 'dx-filemanager-progress-box';
+const FILE_MANAGER_PROGRESS_BOX_ERROR_CLASS = `${FILE_MANAGER_PROGRESS_BOX_CLASS}-error`;
+const FILE_MANAGER_PROGRESS_BOX_WITHOUT_CLOSE_BUTTON_CLASS = `${FILE_MANAGER_PROGRESS_BOX_CLASS}-without-close-button`;
+const FILE_MANAGER_PROGRESS_BOX_IMAGE_CLASS = `${FILE_MANAGER_PROGRESS_BOX_CLASS}-image`;
+const FILE_MANAGER_PROGRESS_BOX_WRAPPER_CLASS = `${FILE_MANAGER_PROGRESS_BOX_CLASS}-wrapper`;
+const FILE_MANAGER_PROGRESS_BOX_COMMON_CLASS = `${FILE_MANAGER_PROGRESS_BOX_CLASS}-common`;
+const FILE_MANAGER_PROGRESS_BOX_PROGRESS_BAR_CLASS = `${FILE_MANAGER_PROGRESS_BOX_CLASS}-progress-bar`;
+const FILE_MANAGER_PROGRESS_BOX_CLOSE_BUTTON_CLASS = `${FILE_MANAGER_PROGRESS_BOX_CLASS}-close-button`;
+const DX_CARD_CLASS = 'dx-card';
 class FileManagerProgressPanel extends Widget {
   _initMarkup() {
     super._initMarkup();
     this._initActions();
     this._operationCount = 0;
     this.$element().addClass(FILE_MANAGER_PROGRESS_PANEL_CLASS);
-    var $scrollView = $('<div>').appendTo(this.$element());
-    var $container = $('<div>').addClass(FILE_MANAGER_PROGRESS_PANEL_CONTAINER_CLASS).appendTo($scrollView);
+    const $scrollView = $('<div>').appendTo(this.$element());
+    const $container = $('<div>').addClass(FILE_MANAGER_PROGRESS_PANEL_CONTAINER_CLASS).appendTo($scrollView);
     this._scrollView = this._createComponent($scrollView, ScrollView, {
       scrollByContent: true,
       scrollByThumb: true,
       showScrollbar: 'onScroll'
     });
-    var $title = $('<div>').addClass(FILE_MANAGER_PROGRESS_PANEL_TITLE_CLASS).appendTo($container);
+    const $title = $('<div>').addClass(FILE_MANAGER_PROGRESS_PANEL_TITLE_CLASS).appendTo($container);
     $('<div>').text(messageLocalization.format('dxFileManager-notificationProgressPanelTitle')).addClass(FILE_MANAGER_PROGRESS_PANEL_TITLE_TEXT_CLASS).appendTo($title);
-    var $closeButton = $('<div>').addClass(FILE_MANAGER_PROGRESS_PANEL_CLOSE_BUTTON_CLASS).appendTo($title);
+    const $closeButton = $('<div>').addClass(FILE_MANAGER_PROGRESS_PANEL_CLOSE_BUTTON_CLASS).appendTo($title);
     this._createComponent($closeButton, Button, {
       icon: 'close',
       stylingMode: 'text',
@@ -76,7 +76,7 @@ class FileManagerProgressPanel extends Widget {
     };
   }
   _optionChanged(args) {
-    var name = args.name;
+    const name = args.name;
     switch (name) {
       case 'test':
         break;
@@ -96,13 +96,13 @@ class FileManagerProgressPanel extends Widget {
       this._$infosContainer.empty();
     }
     this._operationCount++;
-    var info = {
+    const info = {
       customCloseHandling: showCloseButtonAlways,
       allowProgressAutoUpdate: ensureDefined(allowProgressAutoUpdate, true)
     };
-    var $info = $('<div>').addClass(FILE_MANAGER_PROGRESS_PANEL_INFO_CLASS).prependTo(this._$infosContainer);
+    const $info = $('<div>').addClass(FILE_MANAGER_PROGRESS_PANEL_INFO_CLASS).prependTo(this._$infosContainer);
     info.$info = $info;
-    var $common = $('<div>').addClass(FILE_MANAGER_PROGRESS_PANEL_COMMON_CLASS).appendTo($info);
+    const $common = $('<div>').addClass(FILE_MANAGER_PROGRESS_PANEL_COMMON_CLASS).appendTo($info);
     info.common = this._createProgressBox($common, {
       commonText,
       showCloseButton: true,
@@ -113,14 +113,14 @@ class FileManagerProgressPanel extends Widget {
   }
   addOperationDetails(info, details, showCloseButton) {
     info.$info.addClass(FILE_MANAGER_PROGRESS_PANEL_INFO_WITH_DETAILS_CLASS);
-    var $details = $('<div>').addClass(FILE_MANAGER_PROGRESS_PANEL_DETAILS_CLASS).appendTo(info.$info);
+    const $details = $('<div>').addClass(FILE_MANAGER_PROGRESS_PANEL_DETAILS_CLASS).appendTo(info.$info);
     info.details = details.map((itemInfo, index) => {
       itemInfo.info = info;
       return this._createDetailsItem($details, itemInfo, index, false, showCloseButton);
     });
   }
   _createDetailsItem($container, item, itemIndex, skipProgressBox, showCloseButton) {
-    var $detailsItem = $('<div>').appendTo($container);
+    const $detailsItem = $('<div>').appendTo($container);
     if (itemIndex !== -1) {
       $detailsItem.addClass(DX_CARD_CLASS);
     }
@@ -142,13 +142,13 @@ class FileManagerProgressPanel extends Widget {
   updateOperationItemProgress(operationInfo, itemIndex, itemProgress, commonProgress) {
     this.updateOperationCommonProgress(operationInfo, commonProgress);
     if (operationInfo.details) {
-      var detailsItem = operationInfo.details[itemIndex];
+      const detailsItem = operationInfo.details[itemIndex];
       detailsItem.progressBar.option('value', itemProgress);
     }
   }
   updateOperationCommonProgress(operationInfo, commonProgress) {
     var _operationInfo$common;
-    (_operationInfo$common = operationInfo.common.progressBar) === null || _operationInfo$common === void 0 ? void 0 : _operationInfo$common.option('value', commonProgress);
+    (_operationInfo$common = operationInfo.common.progressBar) === null || _operationInfo$common === void 0 || _operationInfo$common.option('value', commonProgress);
   }
   completeOperation(info, commonText, isError, statusText) {
     info.completed = true;
@@ -165,7 +165,7 @@ class FileManagerProgressPanel extends Widget {
   }
   completeSingleOperationWithError(info, errorText) {
     var _info$details;
-    var detailsItem = (_info$details = info.details) === null || _info$details === void 0 ? void 0 : _info$details[0];
+    const detailsItem = (_info$details = info.details) === null || _info$details === void 0 ? void 0 : _info$details[0];
     info.completed = true;
     this._renderOperationError(detailsItem || info.common, errorText);
     this._setCloseButtonVisible(info.common, true);
@@ -174,7 +174,7 @@ class FileManagerProgressPanel extends Widget {
     }
   }
   addOperationDetailsError(info, index, errorText) {
-    var detailsItem = info.details[index];
+    const detailsItem = info.details[index];
     this._renderOperationError(detailsItem, errorText);
     this._setCloseButtonVisible(detailsItem, false);
   }
@@ -203,11 +203,11 @@ class FileManagerProgressPanel extends Widget {
     if (options.imageUrl) {
       getImageContainer(options.imageUrl).addClass(FILE_MANAGER_PROGRESS_BOX_IMAGE_CLASS).appendTo($container);
     }
-    var $wrapper = $('<div>').addClass(FILE_MANAGER_PROGRESS_BOX_WRAPPER_CLASS).appendTo($container);
-    var $commonText = $('<div>').addClass(FILE_MANAGER_PROGRESS_BOX_COMMON_CLASS).text(options.commonText).appendTo($wrapper);
-    var progressBar = null;
+    const $wrapper = $('<div>').addClass(FILE_MANAGER_PROGRESS_BOX_WRAPPER_CLASS).appendTo($container);
+    const $commonText = $('<div>').addClass(FILE_MANAGER_PROGRESS_BOX_COMMON_CLASS).text(options.commonText).appendTo($wrapper);
+    let progressBar = null;
     if (!options.skipProgressBox) {
-      var $progressBar = $('<div>').addClass(FILE_MANAGER_PROGRESS_BOX_PROGRESS_BAR_CLASS).appendTo($wrapper);
+      const $progressBar = $('<div>').addClass(FILE_MANAGER_PROGRESS_BOX_PROGRESS_BAR_CLASS).appendTo($wrapper);
       progressBar = this._createComponent($progressBar, ProgressBar, {
         min: 0,
         max: 100,
@@ -216,9 +216,9 @@ class FileManagerProgressPanel extends Widget {
         statusFormat: (ratio, value) => this._getStatusString(ratio, value)
       });
     }
-    var closeButton = null;
+    let closeButton = null;
     if (options.showCloseButton) {
-      var $button = $('<div>').addClass(FILE_MANAGER_PROGRESS_BOX_CLOSE_BUTTON_CLASS).appendTo($container);
+      const $button = $('<div>').addClass(FILE_MANAGER_PROGRESS_BOX_CLOSE_BUTTON_CLASS).appendTo($container);
       closeButton = this._createComponent($button, Button, {
         icon: 'dx-filemanager-i dx-filemanager-i-cancel',
         stylingMode: 'text',
@@ -250,7 +250,7 @@ class FileManagerProgressPanel extends Widget {
       info.details.forEach(item => this._displayClosedOperationItem(item));
     } else {
       this._raiseOperationClosed(info);
-      info.$info.next(".".concat(FILE_MANAGER_PROGRESS_PANEL_SEPARATOR_CLASS)).remove();
+      info.$info.next(`.${FILE_MANAGER_PROGRESS_PANEL_SEPARATOR_CLASS}`).remove();
       info.$info.remove();
       this._operationCount--;
       if (!this._operationCount) {
@@ -260,7 +260,7 @@ class FileManagerProgressPanel extends Widget {
   }
   _cancelOperationItem(item, itemIndex) {
     this._raiseOperationItemCanceled(item, itemIndex);
-    var itemInfo = item.info.details[itemIndex];
+    const itemInfo = item.info.details[itemIndex];
     this._displayClosedOperationItem(itemInfo);
   }
   _displayClosedOperationItem(itemInfo) {

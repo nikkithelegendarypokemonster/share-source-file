@@ -1,7 +1,7 @@
 /**
 * DevExtreme (ui/validation_engine.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,43 +11,91 @@ import {
 } from './validation_group';
 
 /**
-                                                                    * An object that serves as a namespace for the methods required to perform validation.
-                                                                    */
-                                                                   export default class validationEngine {
+ * @docid
+ * @section Core
+ * @namespace DevExpress
+ * @public
+ */
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+export default class validationEngine {
     /**
-     * Gets the default validation group.
+     * @docid
+     * @section Core
+     * @publicName getGroupConfig()
+     * @return object
+     * @static
+     * @public
      */
     static getGroupConfig(): any;
     /**
-     * Gets a validation group with a specific key.
+     * @docid
+     * @section Core
+     * @publicName getGroupConfig(group)
+     * @param1 group:string|object
+     * @return object
+     * @static
+     * @public
      */
     static getGroupConfig(group: string | any): any;
     /**
-     * Registers all the Validator objects extending fields of the specified ViewModel.
+     * @docid
+     * @publicName registerModelForValidation(model)
+     * @param1 model:object
+     * @static
+     * @public
      */
     static registerModelForValidation(model: any): void;
     /**
-     * Resets the values and validation result of the editors that belong to the default validation group.
+     * @docid
+     * @section Core
+     * @publicName resetGroup()
+     * @static
+     * @public
      */
     static resetGroup(): void;
     /**
-     * Resets the values and validation result of the editors that belong to the specified validation group.
+     * @docid
+     * @section Core
+     * @publicName resetGroup(group)
+     * @param1 group:string|object
+     * @static
+     * @public
      */
     static resetGroup(group: string | any): void;
     /**
-     * Unregisters all the Validator objects extending fields of the specified ViewModel.
+     * @docid
+     * @publicName unregisterModelForValidation(model)
+     * @param1 model:object
+     * @static
+     * @public
      */
     static unregisterModelForValidation(model: any): void;
     /**
-     * Validates editors from the default validation group.
+     * @docid
+     * @section Core
+     * @publicName validateGroup()
+     * @static
+     * @public
+     * @return dxValidationGroupResult
      */
     static validateGroup(): ValidationResult;
     /**
-     * Validates editors from a specific validation group.
+     * @docid
+     * @section Core
+     * @publicName validateGroup(group)
+     * @param1 group:string|object
+     * @static
+     * @public
+     * @return dxValidationGroupResult
      */
     static validateGroup(group: string | any): ValidationResult;
     /**
-     * Validates a view model.
+     * @docid
+     * @publicName validateModel(model)
+     * @param1 model:object
+     * @return object
+     * @static
+     * @public
      */
     static validateModel(model: any): any;
 }

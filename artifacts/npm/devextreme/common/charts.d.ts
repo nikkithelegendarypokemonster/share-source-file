@@ -1,7 +1,7 @@
 /**
 * DevExtreme (common/charts.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,455 +11,756 @@ import { Format } from '../localization';
 import { BaseLegendItem } from '../viz/common';
 import { baseSeriesObject } from '../viz/chart';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type AnimationEaseMode = 'easeOutCubic' | 'linear';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type AnnotationType = 'text' | 'image' | 'custom';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type ArgumentAxisHoverMode = 'allArgumentPoints' | 'none';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type AxisScaleType = 'continuous' | 'discrete' | 'logarithmic';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type ChartsAxisLabelOverlap = 'rotate' | 'stagger' | 'none' | 'hide';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type ChartsLabelOverlap = 'hide' | 'none' | 'stack';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type ChartsDataType = 'datetime' | 'numeric' | 'string';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type DashStyle = 'dash' | 'dot' | 'longDash' | 'solid';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type DiscreteAxisDivisionMode = 'betweenLabels' | 'crossLabels';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type HatchDirection = 'left' | 'none' | 'right';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type LabelOverlap = 'hide' | 'none';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type ShiftLabelOverlap = 'hide' | 'none' | 'shift';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type LabelPosition = 'columns' | 'inside' | 'outside';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type LegendHoverMode = 'excludePoints' | 'includePoints' | 'none';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type LegendMarkerState = 'normal' | 'hovered' | 'selected';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type Palette = 'Bright' | 'Harmony Light' | 'Ocean' | 'Pastel' | 'Soft' | 'Soft Pastel' | 'Vintage' | 'Violet' | 'Carmine' | 'Dark Moon' | 'Dark Violet' | 'Green Mist' | 'Soft Blue' | 'Material' | 'Office';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type PaletteColorSet = 'simpleSet' | 'indicatingSet' | 'gradientSet';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type PaletteExtensionMode = 'alternate' | 'blend' | 'extrapolate';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type PointInteractionMode = 'allArgumentPoints' | 'allSeriesPoints' | 'none' | 'onlyPoint';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type PointSymbol = 'circle' | 'cross' | 'polygon' | 'square' | 'triangle' | 'triangleDown' | 'triangleUp';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type RelativePosition = 'inside' | 'outside';
 
 /**
- * A class describing a scale break range. Inherited by scale breaks in the Chart and RangeSelector.
+ * @docid
+ * @public
+ * @type object
+ * @namespace DevExpress.common.charts
+ * @hidden
  */
 export type ScaleBreak = {
     /**
-     * Along with the startValue property, limits the scale break.
-     */
+    * @docid
+    * @default undefined
+    * @public
+    */
     endValue?: number | Date | string;
     /**
-     * Along with the endValue property, limits the scale break.
-     */
+    * @docid
+    * @default undefined
+    * @public
+    */
     startValue?: number | Date | string;
 };
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type ScaleBreakLineStyle = 'straight' | 'waved';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type SeriesType = 'area' | 'bar' | 'bubble' | 'candlestick' | 'fullstackedarea' | 'fullstackedbar' | 'fullstackedline' | 'fullstackedspline' | 'fullstackedsplinearea' | 'line' | 'rangearea' | 'rangebar' | 'scatter' | 'spline' | 'splinearea' | 'stackedarea' | 'stackedbar' | 'stackedline' | 'stackedspline' | 'stackedsplinearea' | 'steparea' | 'stepline' | 'stock';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type SeriesHoverMode = 'allArgumentPoints' | 'allSeriesPoints' | 'excludePoints' | 'includePoints' | 'nearestPoint' | 'none' | 'onlyPoint';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type SeriesSelectionMode = 'allArgumentPoints' | 'allSeriesPoints' | 'excludePoints' | 'includePoints' | 'none' | 'onlyPoint';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type TextOverflow = 'ellipsis' | 'hide' | 'none';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type Theme = 'generic.dark' | 'generic.light' | 'generic.contrast' | 'generic.carmine' | 'generic.darkmoon' | 'generic.darkviolet' | 'generic.greenmist' | 'generic.softblue' | 'material.blue.light' | 'material.lime.light' | 'material.orange.light' | 'material.purple.light' | 'material.teal.light';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type TimeInterval = 'day' | 'hour' | 'millisecond' | 'minute' | 'month' | 'quarter' | 'second' | 'week' | 'year';
 
 /**
- * A class describing various time intervals. Inherited by tick intervals in Chart and RangeSelector.
+ * @docid VizTimeInterval
+ * @public
+ * @namespace DevExpress.common.charts
+ * @hidden
+ * @default undefined
  */
 export type TimeIntervalConfig = number | {
-    /**
-     * Specifies the time interval measured in days. Accepts integer values. Available only for an axis/scale that displays date-time values.
-     */
+    /** @docid VizTimeInterval.days */
     days?: number;
-    /**
-     * Specifies the time interval measured in hours. Accepts integer values. Available only for an axis/scale that displays date-time values.
-     */
+    /** @docid VizTimeInterval.hours */
     hours?: number;
-    /**
-     * Specifies the time interval measured in milliseconds. Accepts integer values. Available only for an axis/scale that displays date-time values.
-     */
+    /** @docid VizTimeInterval.milliseconds */
     milliseconds?: number;
-    /**
-     * Specifies the time interval measured in minutes. Accepts integer values. Available only for an axis/scale that displays date-time values.
-     */
+    /** @docid VizTimeInterval.minutes */
     minutes?: number;
-    /**
-     * Specifies the time interval measured in months. Accepts integer values. Available only for an axis/scale that displays date-time values.
-     */
+    /** @docid VizTimeInterval.months */
     months?: number;
-    /**
-     * Specifies the time interval measured in quarters. Accepts integer values. Available only for an axis/scale that displays date-time values.
-     */
+    /** @docid VizTimeInterval.quarters */
     quarters?: number;
-    /**
-     * Specifies the time interval measured in seconds. Accepts integer values. Available only for an axis/scale that displays date-time values.
-     */
+    /** @docid VizTimeInterval.seconds */
     seconds?: number;
-    /**
-     * Specifies the time interval measured in weeks. Accepts integer values. Available only for an axis/scale that displays date-time values.
-     */
+    /** @docid VizTimeInterval.weeks */
     weeks?: number;
-    /**
-     * Specifies the time interval measured in years. Accepts integer values. Available only for an axis/scale that displays date-time values.
-     */
+    /** @docid VizTimeInterval.years */
     years?: number;
 } | TimeInterval;
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type ValueErrorBarDisplayMode = 'auto' | 'high' | 'low' | 'none';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type ValueErrorBarType = 'fixed' | 'percent' | 'stdDeviation' | 'stdError' | 'variance';
 
 /**
- * 
+ * @docid
+ * @public
+ * @type object
+ * @namespace DevExpress.common.charts
+ * @hidden
  */
 export type VisualRange = {
     /**
-     * The range&apos;s end value.
-     */
+    * @docid
+    * @default undefined
+    * @fires BaseWidgetOptions.onOptionChanged
+    * @public
+    */
     endValue?: number | Date | string;
     /**
-     * The range&apos;s length.
-     */
+    * @docid
+    * @inherits VizTimeInterval
+    * @type number|object|Enums.TimeInterval
+    * @default undefined
+    * @public
+    */
     length?: TimeIntervalConfig;
     /**
-     * The range&apos;s start value.
-     */
+    * @docid
+    * @default undefined
+    * @fires BaseWidgetOptions.onOptionChanged
+    * @public
+    */
     startValue?: number | Date | string;
 };
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type VisualRangeUpdateMode = 'auto' | 'keep' | 'reset' | 'shift';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type WordWrap = 'normal' | 'breakWord' | 'none';
 
+/**
+ * @public
+ * @namespace DevExpress.common.charts
+ */
 export type ZoomPanAction = 'zoom' | 'pan';
 
 /**
- * Specifies the chart&apos;s color.
+ * @docid
+ * @type object
+ * @public
+ * @namespace DevExpress.common.charts
  */
 export type ChartsColor = {
     /**
-     * Specifies the base color for series, points and labels.
+     * @docid
+     * @default undefined
+     * @public
      */
     base?: string;
     /**
-     * Specifies the id of the gradient or pattern.
+     * @docid
+     * @default undefined
+     * @public
      */
     fillId?: string;
 };
 
 /**
- * Registers a new gradient.
+ * @docid viz.registerGradient
+ * @publicName registerGradient(type, options)
+ * @namespace DevExpress.common.charts
+ * @static
+ * @public
  */
 export function registerGradient(type: string, options: { rotationAngle?: number; colors: Array<GradientColor> }): string;
 /**
- * Registers a new pattern.
+ * @docid viz.registerPattern
+ * @publicName registerPattern(options)
+ * @namespace DevExpress.common.charts
+ * @static
+ * @public
  */
 export function registerPattern(options: { width: number | string; height: number | string; template: (container: SVGGElement) => void }): string;
 /**
- * Specifies colors on which gradient is based.
+ * @namespace DevExpress.common.charts
+ * @public
+ * @docid
  */
 export type GradientColor = {
    /**
-     * Specifies the starting point of a color.
-     */
+   * @docid
+   * @default undefined
+   * @public
+   */
     offset: number | string;
    /**
-     * Specifies one of the gradient colors.
-     */
+   * @docid
+   * @default undefined
+   * @public
+   */
     color: string;
 };
 
 /**
- * Font properties.
+ * @docid
+ * @namespace DevExpress.common.charts
+ * @public
  */
 export type Font = {
   /**
-   * Specifies font color.
+   * @docid
+   * @public
    */
   color?: string;
   /**
-   * Specifies font family.
+   * @docid
+   * @default "'Segoe UI', 'Helvetica Neue', 'Trebuchet MS', Verdana, sans-serif"
+   * @public
    */
   family?: string;
   /**
-   * Specifies font opacity.
+   * @docid
+   * @default 1
+   * @public
    */
   opacity?: number;
   /**
-   * Specifies font size.
+   * @docid
+   * @default 12
+   * @public
    */
   size?: string | number;
   /**
-   * Specifies font weight. Accepts values from 100 to 900 in increments of 100. Higher values increase boldness.
+   * @docid
+   * @default 400
+   * @public
    */
   weight?: number;
 };
 
+/**
+ * @namespace DevExpress.common.charts
+ * @public
+ */
 export interface SeriesPoint {
     /**
-     * Configures the appearance of the series point border in scatter, line- and area-like series.
+     * @docid dxChartSeriesTypes.CommonSeries.point.border
+     * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
+     * @public
      */
     border?: {
       /**
-       * Colors the border.
+       * @docid dxChartSeriesTypes.CommonSeries.point.border.color
+       * @default undefined
+       * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
        */
       color?: string;
       /**
-       * Makes the border visible.
+       * @docid dxChartSeriesTypes.CommonSeries.point.border.visible
+       * @default false
+       * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
        */
       visible?: boolean;
       /**
-       * Sets the width of the border in pixels.
+       * @docid dxChartSeriesTypes.CommonSeries.point.border.width
+       * @default 1
+       * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
        */
       width?: number;
     };
     /**
-     * Colors the series points.
+     * @docid dxChartSeriesTypes.CommonSeries.point.color
+     * @default undefined
+     * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
+     * @public
      */
     color?: string | ChartsColor;
     /**
-     * Specifies series elements to be highlighted when a user pauses on a series point.
+     * @docid dxChartSeriesTypes.CommonSeries.point.hoverMode
+     * @default 'onlyPoint'
+     * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
+     * @public
      */
     hoverMode?: PointInteractionMode;
     /**
-     * Configures the appearance adopted by a series point when a user pauses on it.
+     * @docid dxChartSeriesTypes.CommonSeries.point.hoverStyle
+     * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
+     * @public
      */
     hoverStyle?: {
       /**
-       * Configures the appearance of the point border when a user pauses on the point.
+       * @docid dxChartSeriesTypes.CommonSeries.point.hoverStyle.border
+       * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
        */
       border?: {
         /**
-         * Specifies the color of the point border when the point is in the hovered state.
+         * @docid dxChartSeriesTypes.CommonSeries.point.hoverStyle.border.color
+         * @default undefined
+         * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
          */
         color?: string;
         /**
-         * Makes the border visible when a user pauses on the series point.
+         * @docid dxChartSeriesTypes.CommonSeries.point.hoverStyle.border.visible
+         * @default true
+         * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
          */
         visible?: boolean;
         /**
-         * Specifies the width of the point border when the point is in the hovered state.
+         * @docid dxChartSeriesTypes.CommonSeries.point.hoverStyle.border.width
+         * @default 4
+         * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
          */
         width?: number;
       };
       /**
-       * Specifies the color of series points in the hovered state.
+       * @docid dxChartSeriesTypes.CommonSeries.point.hoverStyle.color
+       * @default undefined
+       * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
        */
       color?: string | ChartsColor;
       /**
-       * Specfies the diameter of series points in the hovered state.
+       * @docid dxChartSeriesTypes.CommonSeries.point.hoverStyle.size
+       * @default undefined
+       * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
        */
       size?: number;
     };
     /**
-     * Substitutes the standard point symbols with an image.
+     * @docid dxChartSeriesTypes.CommonSeries.point.image
+     * @default undefined
+     * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
+     * @public
      */
     image?: string | {
       /**
-       * Specifies the height of the image used instead of a point marker.
+       * @docid dxChartSeriesTypes.CommonSeries.point.image.height
+       * @default 30
+       * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
        */
       height?: number | {
         /**
-         * Specifies the height of the image that represents the maximum point in a range area series.
+         * @docid dxChartSeriesTypes.CommonSeries.point.image.height.rangeMaxPoint
+         * @default undefined
+         * @propertyOf dxChartSeriesTypes.RangeAreaSeries
          */
         rangeMaxPoint?: number;
         /**
-         * Specifies the height of the image that represents the minimum point in a range area series.
+         * @docid dxChartSeriesTypes.CommonSeries.point.image.height.rangeMinPoint
+         * @default undefined
+         * @propertyOf dxChartSeriesTypes.RangeAreaSeries
          */
         rangeMinPoint?: number;
       };
       /**
-       * Specifies the URL of the image to be used as a point marker.
+       * @docid dxChartSeriesTypes.CommonSeries.point.image.url
+       * @default undefined
+       * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
        */
       url?: string | {
         /**
-         * Specifies the URL of the image to be used as a maximum point marker.
+         * @docid dxChartSeriesTypes.CommonSeries.point.image.url.rangeMaxPoint
+         * @default undefined
+         * @propertyOf dxChartSeriesTypes.RangeAreaSeries
          */
         rangeMaxPoint?: string;
         /**
-         * Specifies the URL of the image to be used as a maximum point marker.
+         * @docid dxChartSeriesTypes.CommonSeries.point.image.url.rangeMinPoint
+         * @default undefined
+         * @propertyOf dxChartSeriesTypes.RangeAreaSeries
          */
         rangeMinPoint?: string;
       };
       /**
-       * Specifies the width of an image that is used as a point marker.
+       * @docid dxChartSeriesTypes.CommonSeries.point.image.width
+       * @default 30
+       * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
        */
       width?: number | {
         /**
-         * Specifies the width of the image that represents the maximum point in a range area series.
+         * @docid dxChartSeriesTypes.CommonSeries.point.image.width.rangeMaxPoint
+         * @default undefined
+         * @propertyOf dxChartSeriesTypes.RangeAreaSeries
          */
         rangeMaxPoint?: number;
         /**
-         * Specifies the width of the image that represents the minimum point in a range area series.
+         * @docid dxChartSeriesTypes.CommonSeries.point.image.width.rangeMinPoint
+         * @default undefined
+         * @propertyOf dxChartSeriesTypes.RangeAreaSeries
          */
         rangeMinPoint?: number;
       };
     };
     /**
-     * Specifies series elements to be highlighted when a user selects a series point.
+     * @docid dxChartSeriesTypes.CommonSeries.point.selectionMode
+     * @default 'onlyPoint'
+     * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
+     * @public
      */
     selectionMode?: PointInteractionMode;
     /**
-     * Configures the appearance of a selected series point.
+     * @docid dxChartSeriesTypes.CommonSeries.point.selectionStyle
+     * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
+     * @public
      */
     selectionStyle?: {
       /**
-       * Configures the border of a selected point.
+       * @docid dxChartSeriesTypes.CommonSeries.point.selectionStyle.border
+       * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
        */
       border?: {
         /**
-         * Specifies the color of the point border when the point is selected.
+         * @docid dxChartSeriesTypes.CommonSeries.point.selectionStyle.border.color
+         * @default undefined
+         * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
          */
         color?: string;
         /**
-         * Makes the border of a selected point visible.
+         * @docid dxChartSeriesTypes.CommonSeries.point.selectionStyle.border.visible
+         * @default true
+         * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
          */
         visible?: boolean;
         /**
-         * Specifies the width of the point border when the point is selected.
+         * @docid dxChartSeriesTypes.CommonSeries.point.selectionStyle.border.width
+         * @default 4
+         * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
          */
         width?: number;
       };
       /**
-       * Specifies the color of series points in the selected state.
+       * @docid dxChartSeriesTypes.CommonSeries.point.selectionStyle.color
+       * @default undefined
+       * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
        */
       color?: string | ChartsColor;
       /**
-       * Specfies the diameter of series points in the selected state.
+       * @docid dxChartSeriesTypes.CommonSeries.point.selectionStyle.size
+       * @default undefined
+       * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
        */
       size?: number;
     };
     /**
-     * Specifies the diameter of series points in pixels.
+     * @docid dxChartSeriesTypes.CommonSeries.point.size
+     * @default 12
+     * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
+     * @public
      */
     size?: number;
     /**
-     * Specifies which symbol should represent series points in scatter, line- and area-like series.
+     * @docid dxChartSeriesTypes.CommonSeries.point.symbol
+     * @default 'circle'
+     * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
+     * @public
      */
     symbol?: PointSymbol;
     /**
-     * Makes the series points visible.
+     * @docid dxChartSeriesTypes.CommonSeries.point.visible
+     * @default true
+     * @propertyOf dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StepLineSeries,dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.ScatterSeries
+     * @public
      */
     visible?: boolean;
 }
 
+/**
+ * @namespace DevExpress.common.charts
+ * @public
+*/
 export interface SeriesLabel {
     /**
-     * Aligns point labels in relation to their points.
+     * @docid dxChartSeriesTypes.CommonSeries.label.alignment
+     * @default 'center'
+     * @public
      */
     alignment?: HorizontalAlignment;
     /**
-     * Formats the point argument before it is displayed in the point label. To format the point value, use the format property.
+     * @docid dxChartSeriesTypes.CommonSeries.label.argumentFormat
+     * @default undefined
+     * @public
      */
     argumentFormat?: Format;
     /**
-     * Colors the point labels&apos; background. The default color is inherited from the points.
+     * @docid dxChartSeriesTypes.CommonSeries.label.backgroundColor
+     * @default undefined
+     * @public
      */
     backgroundColor?: string;
     /**
-     * Configures the borders of point labels.
+     * @docid dxChartSeriesTypes.CommonSeries.label.border
+     * @public
      */
     border?: {
       /**
-       * Colors the border.
+       * @docid dxChartSeriesTypes.CommonSeries.label.border.color
+       * @default  '#d3d3d3'
        */
       color?: string;
       /**
-       * Specifies the dash style of the border.
+       * @docid dxChartSeriesTypes.CommonSeries.label.border.dashStyle
+       * @default 'solid'
        */
       dashStyle?: DashStyle;
       /**
-       * Makes the border visible.
+       * @docid dxChartSeriesTypes.CommonSeries.label.border.visible
+       * @default false
        */
       visible?: boolean;
       /**
-       * Specifies the width of the border in pixels.
+       * @docid dxChartSeriesTypes.CommonSeries.label.border.width
+       * @default 1
        */
       width?: number;
     };
     /**
-     * Configures the label connectors.
+     * @docid dxChartSeriesTypes.CommonSeries.label.connector
+     * @propertyOf dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.BarSeries,dxChartSeriesTypes.BubbleSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.FullStackedBarSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.RangeBarSeries,dxChartSeriesTypes.ScatterSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.StackedBarSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.StepLineSeries
+     * @public
      */
     connector?: {
       /**
-       * Colors the connectors.
+       * @docid dxChartSeriesTypes.CommonSeries.label.connector.color
+       * @default undefined
+       * @propertyOf dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.BarSeries,dxChartSeriesTypes.BubbleSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.FullStackedBarSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.RangeBarSeries,dxChartSeriesTypes.ScatterSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.StackedBarSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.StepLineSeries
        */
       color?: string;
       /**
-       * Makes the connectors visible. Applies only if label.visible is set to true.
+       * @docid dxChartSeriesTypes.CommonSeries.label.connector.visible
+       * @default false
+       * @propertyOf dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.BarSeries,dxChartSeriesTypes.BubbleSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.FullStackedBarSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.RangeBarSeries,dxChartSeriesTypes.ScatterSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.StackedBarSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.StepLineSeries
        */
       visible?: boolean;
       /**
-       * Specifies the width of the connectors in pixels.
+       * @docid dxChartSeriesTypes.CommonSeries.label.connector.width
+       * @default 1
+       * @propertyOf dxChartSeriesTypes.AreaSeries,dxChartSeriesTypes.BarSeries,dxChartSeriesTypes.BubbleSeries,dxChartSeriesTypes.FullStackedAreaSeries,dxChartSeriesTypes.FullStackedBarSeries,dxChartSeriesTypes.FullStackedLineSeries,dxChartSeriesTypes.LineSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.RangeBarSeries,dxChartSeriesTypes.ScatterSeries,dxChartSeriesTypes.SplineAreaSeries,dxChartSeriesTypes.SplineSeries,dxChartSeriesTypes.StackedAreaSeries,dxChartSeriesTypes.StackedBarSeries,dxChartSeriesTypes.StackedLineSeries,dxChartSeriesTypes.StepAreaSeries,dxChartSeriesTypes.StackedSplineAreaSeries,dxChartSeriesTypes.FullStackedSplineAreaSeries,dxChartSeriesTypes.StackedSplineSeries,dxChartSeriesTypes.FullStackedSplineSeries,dxChartSeriesTypes.StepLineSeries
        */
       width?: number;
     };
     /**
-     * Customizes text displayed by point labels.
+     * @docid dxChartSeriesTypes.CommonSeries.label.customizeText
+     * @type_function_param1 pointInfo:object
+     * @notUsedInTheme
+     * @public
      */
     customizeText?: ((pointInfo: any) => string);
     /**
-     * Specifies font properties for point labels.
+     * @docid dxChartSeriesTypes.CommonSeries.label.font
+     * @default '#FFFFFF' &prop(color)
+     * @default 14 &prop(size)
+     * @public
      */
     font?: Font;
     /**
-     * Formats the point value before it is displayed in the point label.
+     * @docid dxChartSeriesTypes.CommonSeries.label.format
+     * @default undefined
+     * @public
      */
     format?: Format;
     /**
-     * Along with verticalOffset, shifts point labels from their initial positions.
+     * @docid dxChartSeriesTypes.CommonSeries.label.horizontalOffset
+     * @default 0
+     * @public
      */
     horizontalOffset?: number;
     /**
-     * Specifies whether to display point labels inside or outside of series points. Applies only to bubble, range-like and bar-like series.
+     * @docid dxChartSeriesTypes.CommonSeries.label.position
+     * @default 'outside'
+     * @propertyOf dxChartSeriesTypes.BarSeries,dxChartSeriesTypes.StackedBarSeries,dxChartSeriesTypes.FullStackedBarSeries,dxChartSeriesTypes.RangeBarSeries,dxChartSeriesTypes.RangeAreaSeries,dxChartSeriesTypes.BubbleSeries
+     * @public
      */
     position?: RelativePosition;
     /**
-     * Rotates point labels.
+     * @docid dxChartSeriesTypes.CommonSeries.label.rotationAngle
+     * @default 0
+     * @public
      */
     rotationAngle?: number;
     /**
-     * Specifies whether or not to show labels for points with zero value. Applies only to bar-like series.
+     * @docid dxChartSeriesTypes.CommonSeries.label.showForZeroValues
+     * @default true
+     * @propertyOf dxChartSeriesTypes.BarSeries,dxChartSeriesTypes.StackedBarSeries,dxChartSeriesTypes.FullStackedBarSeries,dxChartSeriesTypes.RangeBarSeries
+     * @public
      */
     showForZeroValues?: boolean;
     /**
-     * Along with horizontalOffset, shifts point labels from their initial positions.
+     * @docid dxChartSeriesTypes.CommonSeries.label.verticalOffset
+     * @default 0
+     * @public
      */
     verticalOffset?: number;
     /**
-     * Makes the point labels visible.
+     * @docid dxChartSeriesTypes.CommonSeries.label.visible
+     * @default false
+     * @public
      */
     visible?: boolean;
     /**
-      * Specifies the label&apos;s text.
-      */
+     * @docid dxChartSeriesTypes.CommonSeries.label.displayFormat
+     * @default undefined
+     * @public
+     */
      displayFormat?: string;
 }
 
 /**
- * An object that provides information about a legend item.
+ * @public
+ * @docid
+ * @type object
+ * @inherits BaseLegendItem
+ * @namespace DevExpress.common.charts
  */
 export interface LegendItem extends BaseLegendItem {
   /**
-   * The series that the item represents on the legend.
+   * @docid
+   * @public
    */
   series?: baseSeriesObject;
 }

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (data/query.d.ts)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,106 +11,184 @@ import {
 } from '../core/utils/deferred';
 
 /**
- * The Query is an object that provides a chainable interface for making data queries.
+ * @docid
+ * @type object
+ * @public
  */
 export interface Query {
     /**
-     * Calculates a custom summary for all data items.
+     * @docid
+     * @publicName aggregate(seed, step, finalize)
+     * @param1 seed:object
+     * @return Promise<any>
+     * @public
      */
     aggregate(seed: any, step: Function, finalize: Function): DxPromise<any>;
     /**
-     * Calculates a custom summary for all data items.
+     * @docid
+     * @publicName aggregate(step)
+     * @return Promise<any>
+     * @public
      */
     aggregate(step: Function): DxPromise<any>;
     /**
-     * Calculates the average of all values. Applies only to numeric arrays.
+     * @docid
+     * @publicName avg()
+     * @return Promise<number>
+     * @public
      */
     avg(): DxPromise<number>;
     /**
-     * Calculates the average of all values found using a getter.
+     * @docid
+     * @publicName avg(getter)
+     * @param1 getter:object
+     * @return Promise<number>
+     * @public
      */
     avg(getter: any): DxPromise<number>;
     /**
-     * Calculates the number of data items.
+     * @docid
+     * @publicName count()
+     * @return Promise<number>
+     * @public
      */
     count(): DxPromise<number>;
     /**
-     * Executes the Query. This is an asynchronous alternative to the toArray() method.
+     * @docid
+     * @publicName enumerate()
+     * @return Promise<any>
+     * @public
      */
     enumerate(): DxPromise<any>;
     /**
-     * Filters data items using a filter expression.
+     * @docid
+     * @publicName filter(criteria)
+     * @public
      */
     filter(criteria: Array<any>): Query;
     /**
-     * Filters data items using a custom function.
+     * @docid
+     * @publicName filter(predicate)
+     * @public
      */
     filter(predicate: Function): Query;
     /**
-     * Groups data items by the specified getter.
+     * @docid
+     * @publicName groupBy(getter)
+     * @param1 getter:object
+     * @public
      */
     groupBy(getter: any): Query;
     /**
-     * Calculates the maximum value. Applies only to numeric arrays.
+     * @docid
+     * @publicName max()
+     * @return Promise<number,Date>
+     * @public
      */
     max(): DxPromise<number | Date>;
     /**
-     * Calculates the maximum of all values found using a getter.
+     * @docid
+     * @publicName max(getter)
+     * @param1 getter:object
+     * @return Promise<number,Date>
+     * @public
      */
     max(getter: any): DxPromise<number | Date>;
     /**
-     * Calculates the minimum value. Applies only to numeric arrays.
+     * @docid
+     * @publicName min()
+     * @return Promise<number,Date>
+     * @public
      */
     min(): DxPromise<number | Date>;
     /**
-     * Calculates the minumum of all values found using a getter.
+     * @docid
+     * @publicName min(getter)
+     * @param1 getter:object
+     * @return Promise<number,Date>
+     * @public
      */
     min(getter: any): DxPromise<number | Date>;
     /**
-     * Selects individual fields from data objects.
+     * @docid
+     * @publicName select(getter)
+     * @param1 getter:object|Array<getter>
+     * @public
      */
     select(...getters: any[]): Query;
     /**
-     * Gets a specified number of data items starting from a given index.
+     * @docid
+     * @publicName slice(skip, take)
+     * @param2 take:number|undefined
+     * @public
      */
     slice(skip: number, take?: number): Query;
     /**
-     * Sorts data items by the specified getter in ascending order.
+     * @docid
+     * @publicName sortBy(getter)
+     * @param1 getter:object
+     * @public
      */
     sortBy(getter: any): Query;
     /**
-     * Sorts data items by the specified getter in the specified sorting order.
+     * @docid
+     * @publicName sortBy(getter, desc)
+     * @param1 getter:object
+     * @public
      */
     sortBy(getter: any, desc: boolean): Query;
     /**
-     * Calculates the sum of all values.
+     * @docid
+     * @publicName sum()
+     * @return Promise<number>
+     * @public
      */
     sum(): DxPromise<number>;
     /**
-     * Calculates the sum of all values found using a getter.
+     * @docid
+     * @publicName sum(getter)
+     * @param1 getter:object
+     * @return Promise<number>
+     * @public
      */
     sum(getter: any): DxPromise<number>;
     /**
-     * Sorts data items by one more getter in ascending order.
+     * @docid
+     * @publicName thenBy(getter)
+     * @param1 getter:object
+     * @public
      */
     thenBy(getter: any): Query;
     /**
-     * Sorts data items by one more getter in the specified sorting order.
+     * @docid
+     * @publicName thenBy(getter, desc)
+     * @param1 getter:object
+     * @public
      */
     thenBy(getter: any, desc: boolean): Query;
     /**
-     * Gets data items associated with the Query. This is a synchronous alternative to the enumerate() method.
+     * @docid
+     * @publicName toArray()
+     * @public
      */
     toArray(): Array<any>;
 }
 
 /**
- * Creates a Query instance.
+ * @docid Utils.query
+ * @publicName query(array, queryOptions)
+ * @param2 queryOptions:object
+ * @namespace DevExpress.data
+ * @public
  */
-declare function query(array: Array<any>): Query;
+declare function query(array: Array<any>, queryOptions?: any): Query;
 
 /**
- * Creates a Query instance that accesses a remote data service using its URL.
+ * @docid Utils.query
+ * @publicName query(url, queryOptions)
+ * @param2 queryOptions:object
+ * @namespace DevExpress.data
+ * @public
  */
 declare function query(url: string, queryOptions: any): Query;
 

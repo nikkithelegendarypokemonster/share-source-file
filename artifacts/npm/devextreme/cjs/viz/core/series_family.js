@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/viz/core/series_family.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -331,8 +331,8 @@ function updateRangeSeriesValues() {
           return;
         }
         if (point.value.valueOf() - point.minValue.valueOf() < minShownBusinessValue) {
-          point.value = point.value.valueOf() + minShownBusinessValue / 2;
-          point.minValue = point.minValue.valueOf() - minShownBusinessValue / 2;
+          point.value = valueAxisTranslator.toValue(point.value.valueOf() + minShownBusinessValue / 2);
+          point.minValue = valueAxisTranslator.toValue(point.minValue.valueOf() - minShownBusinessValue / 2);
         }
       });
     }

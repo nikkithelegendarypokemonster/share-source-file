@@ -1,27 +1,27 @@
 /**
 * DevExtreme (esm/__internal/viz/core/themes/material/index.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
 */
-var FONT_FAMILY = '\'Roboto\', \'RobotoFallback\', \'Helvetica\', \'Arial\', sans-serif';
-var LIGHT_TITLE_COLOR = 'rgba(0,0,0,0.87)';
-var LIGHT_LABEL_COLOR = 'rgba(0,0,0,0.54)';
-var DARK_TITLE_COLOR = 'rgba(255,255,255,0.87)';
-var DARK_LABEL_COLOR = 'rgba(255,255,255,0.54)';
-var DARK_BACKGROUND_COLOR = '#363640';
-var WHITE = '#ffffff';
-var BLACK = '#000000';
-var RANGE_COLOR = '#b5b5b5';
-var AREA_LAYER_COLOR = '#686868';
-var LINE_COLOR = '#c7c7c7';
-var TARGET_COLOR = '#8e8e8e';
-var POSITIVE_COLOR = '#b8b8b8';
-var LABEL_BORDER_COLOR = '#494949';
-var BREAK_STYLE_COLOR = '#818181';
-var themes = [{
+const FONT_FAMILY = '\'Roboto\', \'RobotoFallback\', \'Helvetica\', \'Arial\', sans-serif';
+const LIGHT_TITLE_COLOR = 'rgba(0,0,0,0.87)';
+const LIGHT_LABEL_COLOR = 'rgba(0,0,0,0.54)';
+const DARK_TITLE_COLOR = 'rgba(255,255,255,0.87)';
+const DARK_LABEL_COLOR = 'rgba(255,255,255,0.54)';
+const DARK_BACKGROUND_COLOR = '#363640';
+const WHITE = '#ffffff';
+const BLACK = '#000000';
+const RANGE_COLOR = '#b5b5b5';
+const AREA_LAYER_COLOR = '#686868';
+const LINE_COLOR = '#c7c7c7';
+const TARGET_COLOR = '#8e8e8e';
+const POSITIVE_COLOR = '#b8b8b8';
+const LABEL_BORDER_COLOR = '#494949';
+const BREAK_STYLE_COLOR = '#818181';
+const themes = [{
   baseThemeName: 'generic.light',
   theme: {
     name: 'material',
@@ -409,7 +409,7 @@ var themes = [{
 function getMaterialColorScheme(accentName, themeName, accentColor) {
   return {
     theme: {
-      name: "material.".concat(accentName, ".").concat(themeName),
+      name: `material.${accentName}.${themeName}`,
       rangeSelector: {
         selectedRangeColor: accentColor,
         sliderMarker: {
@@ -445,10 +445,10 @@ function getMaterialColorScheme(accentName, themeName, accentColor) {
         }
       }
     },
-    baseThemeName: "material.".concat(themeName)
+    baseThemeName: `material.${themeName}`
   };
 }
-var materialAccents = {
+const materialAccents = {
   blue: '#03a9f4',
   lime: '#cddc39',
   orange: '#ff5722',
@@ -456,17 +456,17 @@ var materialAccents = {
   teal: '#009688'
 };
 Object.keys(materialAccents).forEach(accent => {
-  var color = materialAccents[accent];
+  const color = materialAccents[accent];
   themes.push(getMaterialColorScheme(accent, 'light', color), getMaterialColorScheme(accent, 'dark', color), {
     theme: {
-      name: "material.".concat(accent, ".light.compact")
+      name: `material.${accent}.light.compact`
     },
-    baseThemeName: "material.".concat(accent, ".light")
+    baseThemeName: `material.${accent}.light`
   }, {
     theme: {
-      name: "material.".concat(accent, ".dark.compact")
+      name: `material.${accent}.dark.compact`
     },
-    baseThemeName: "material.".concat(accent, ".dark")
+    baseThemeName: `material.${accent}.dark`
   });
 });
 export default themes;

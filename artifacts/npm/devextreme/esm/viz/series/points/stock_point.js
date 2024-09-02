@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/viz/series/points/stock_point.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -9,21 +9,21 @@
 import { extend } from '../../../core/utils/extend';
 import { isNumeric } from '../../../core/utils/type';
 import candlestickPoint from './candlestick_point';
-var _extend = extend;
-var _isNumeric = isNumeric;
+const _extend = extend;
+const _isNumeric = isNumeric;
 export default _extend({}, candlestickPoint, {
-  _getPoints: function _getPoints() {
-    var that = this;
-    var createPoint = that._options.rotated ? function (x, y) {
+  _getPoints: function () {
+    const that = this;
+    const createPoint = that._options.rotated ? function (x, y) {
       return [y, x];
     } : function (x, y) {
       return [x, y];
     };
-    var openYExist = _isNumeric(that.openY);
-    var closeYExist = _isNumeric(that.closeY);
-    var x = that.x;
-    var width = that.width;
-    var points = [].concat(createPoint(x, that.highY));
+    const openYExist = _isNumeric(that.openY);
+    const closeYExist = _isNumeric(that.closeY);
+    const x = that.x;
+    const width = that.width;
+    let points = [].concat(createPoint(x, that.highY));
     openYExist && (points = points.concat(createPoint(x, that.openY)));
     openYExist && (points = points.concat(createPoint(x - width / 2, that.openY)));
     openYExist && (points = points.concat(createPoint(x, that.openY)));
@@ -33,15 +33,15 @@ export default _extend({}, candlestickPoint, {
     points = points.concat(createPoint(x, that.lowY));
     return points;
   },
-  _drawMarkerInGroup: function _drawMarkerInGroup(group, attributes, renderer) {
+  _drawMarkerInGroup: function (group, attributes, renderer) {
     this.graphic = renderer.path(this._getPoints(), 'line').attr({
       'stroke-linecap': 'square'
     }).attr(attributes).data({
       'chart-data-point': this
     }).sharp().append(group);
   },
-  _getMinTrackerWidth: function _getMinTrackerWidth() {
-    var width = 2 + this._styles.normal['stroke-width'];
+  _getMinTrackerWidth: function () {
+    const width = 2 + this._styles.normal['stroke-width'];
     return width + width % 2;
   }
 });

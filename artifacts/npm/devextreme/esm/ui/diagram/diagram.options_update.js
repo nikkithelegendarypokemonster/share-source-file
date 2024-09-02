@@ -1,7 +1,7 @@
 /**
 * DevExtreme (esm/ui/diagram/diagram.options_update.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -11,7 +11,7 @@ import { getDiagram } from './diagram.importer';
 class DiagramOptionsUpdateBar extends DiagramBar {
   constructor(owner) {
     super(owner);
-    var {
+    const {
       DiagramCommand
     } = getDiagram();
     this.commandOptions = {};
@@ -24,7 +24,7 @@ class DiagramOptionsUpdateBar extends DiagramBar {
       }
     };
     this.commandOptions[DiagramCommand.SwitchAutoZoom] = function (value) {
-      var {
+      const {
         AutoZoomMode
       } = getDiagram();
       switch (value) {
@@ -51,7 +51,7 @@ class DiagramOptionsUpdateBar extends DiagramBar {
     };
     this.commandOptions[DiagramCommand.ViewUnits] = 'viewUnits';
     this.commandOptions[DiagramCommand.PageSize] = function (value) {
-      var pageSize = this._getOption('pageSize');
+      const pageSize = this._getOption('pageSize');
       if (pageSize === undefined || pageSize.width !== value.width || pageSize.height !== value.height) {
         this._setOption('pageSize', value);
       }
@@ -60,7 +60,7 @@ class DiagramOptionsUpdateBar extends DiagramBar {
       this._setOption('pageOrientation', value ? 'landscape' : 'portrait');
     };
     this.commandOptions[DiagramCommand.ViewUnits] = function (value) {
-      var {
+      const {
         DiagramUnit
       } = getDiagram();
       switch (value) {

@@ -1,7 +1,7 @@
 /**
 * DevExtreme (cjs/__internal/grids/data_grid/grouping/m_grouping_core.js)
-* Version: 24.1.0
-* Build date: Fri Mar 22 2024
+* Version: 24.2.0
+* Build date: Fri Aug 30 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -105,37 +105,36 @@ const calculateItemsCount = function (that, items, groupsCount) {
   }
   return result;
 };
-let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function () {
-  function GroupingHelper(dataSourceAdapter) {
+class GroupingHelper {
+  constructor(dataSourceAdapter) {
     this._dataSource = dataSourceAdapter;
     this.reset();
   }
-  var _proto = GroupingHelper.prototype;
-  _proto.reset = function reset() {
+  reset() {
     this._groupsInfo = [];
     this._totalCountCorrection = 0;
-  };
-  _proto.totalCountCorrection = function totalCountCorrection() {
+  }
+  totalCountCorrection() {
     return this._totalCountCorrection;
-  };
-  _proto.updateTotalItemsCount = function updateTotalItemsCount(totalCountCorrection) {
+  }
+  updateTotalItemsCount(totalCountCorrection) {
     this._totalCountCorrection = totalCountCorrection || 0;
-  };
-  _proto.isGroupItemCountable = function isGroupItemCountable(item) {
+  }
+  isGroupItemCountable(item) {
     return !this._isVirtualPaging() || !item.isContinuation;
-  };
-  _proto._isVirtualPaging = function _isVirtualPaging() {
+  }
+  _isVirtualPaging() {
     const scrollingMode = this._dataSource.option('scrolling.mode');
     return scrollingMode === 'virtual' || scrollingMode === 'infinite';
-  };
-  _proto.itemsCount = function itemsCount() {
+  }
+  itemsCount() {
     const dataSourceAdapter = this._dataSource;
     const dataSource = dataSourceAdapter._dataSource;
     const groupCount = _m_core.default.normalizeSortingInfo(dataSource.group() || []).length;
     const itemsCount = calculateItemsCount(this, dataSource.items(), groupCount);
     return itemsCount;
-  };
-  _proto.foreachGroups = function foreachGroups(callback, childrenAtFirst, foreachCollapsedGroups, updateOffsets, updateParentOffsets) {
+  }
+  foreachGroups(callback, childrenAtFirst, foreachCollapsedGroups, updateOffsets, updateParentOffsets) {
     const that = this;
     function foreachGroupsCore(groupsInfo, callback, childrenAtFirst, parents) {
       const callbackResults = [];
@@ -173,8 +172,8 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function () {
       });
     }
     return foreachGroupsCore(that._groupsInfo, callback, childrenAtFirst, []);
-  };
-  _proto._updateGroupInfoOffsets = function _updateGroupInfoOffsets(groupsInfo, parents) {
+  }
+  _updateGroupInfoOffsets(groupsInfo, parents) {
     parents = parents || [];
     for (let index = 0; index < groupsInfo.length; index++) {
       const groupInfo = groupsInfo[index];
@@ -186,8 +185,8 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function () {
       }
     }
     groupsInfo.sort((a, b) => a.offset - b.offset);
-  };
-  _proto.findGroupInfo = function findGroupInfo(path) {
+  }
+  findGroupInfo(path) {
     const that = this;
     let groupInfo;
     let groupsInfo = that._groupsInfo;
@@ -196,8 +195,8 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function () {
       groupsInfo = groupInfo && groupInfo.children;
     }
     return groupInfo && groupInfo.data;
-  };
-  _proto.addGroupInfo = function addGroupInfo(groupInfoData) {
+  }
+  addGroupInfo(groupInfoData) {
     const that = this;
     let groupInfo;
     const {
@@ -230,11 +229,11 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function () {
       }
       groupsInfo = groupInfo.children;
     }
-  };
-  _proto.allowCollapseAll = function allowCollapseAll() {
+  }
+  allowCollapseAll() {
     return true;
-  };
-  _proto.refresh = function refresh(options) {
+  }
+  refresh(options) {
     const that = this;
     const {
       storeLoadOptions
@@ -254,13 +253,13 @@ let GroupingHelper = exports.GroupingHelper = /*#__PURE__*/function () {
     } else {
       cleanGroupsInfo(that._groupsInfo, 0, groupsCount);
     }
-  };
-  _proto.handleDataLoading = function handleDataLoading() {};
-  _proto.handleDataLoaded = function handleDataLoaded(options, callBase) {
+  }
+  handleDataLoading() {}
+  handleDataLoaded(options, callBase) {
     callBase(options);
-  };
-  _proto.handleDataLoadedCore = function handleDataLoadedCore(options, callBase) {
+  }
+  handleDataLoadedCore(options, callBase) {
     callBase(options);
-  };
-  return GroupingHelper;
-}();
+  }
+}
+exports.GroupingHelper = GroupingHelper;
