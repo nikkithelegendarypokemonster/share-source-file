@@ -23,6 +23,11 @@ var _default = exports.default = _m_gallery.default; // STYLE gallery
  * @hidden
  */
 /**
+ * @name dxGalleryOptions.onSelectionChanging
+ * @action
+ * @hidden
+ */
+/**
  * @name dxGalleryItem.visible
  * @hidden
  */

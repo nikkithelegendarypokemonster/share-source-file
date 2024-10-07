@@ -19,20 +19,13 @@ var _short = require("../../../events/short");
 var _selectors = require("../../../ui/widget/selectors");
 var _dom_component = _interopRequireDefault(require("./dom_component"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable consistent-return */
-/* eslint-disable @typescript-eslint/no-invalid-this */
-/* eslint-disable no-void */
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/prefer-optional-chain */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable no-param-reassign */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-
+const DISABLED_STATE_CLASS = 'dx-state-disabled';
+const FOCUSED_STATE_CLASS = 'dx-state-focused';
+const INVISIBLE_STATE_CLASS = 'dx-state-invisible';
 function setAttribute(name, value, target) {
+  // eslint-disable-next-line no-param-reassign
   name = name === 'role' || name === 'id' ? name : `aria-${name}`;
+  // eslint-disable-next-line no-param-reassign
   value = (0, _type.isDefined)(value) ? value.toString() : null;
   target.attr(name, value);
 }
@@ -42,6 +35,8 @@ class Widget extends _dom_component.default {
     this._feedbackHideTimeout = 400;
     this._feedbackShowTimeout = 30;
   }
+  // eslint-disable-next-line max-len
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/explicit-function-return-type
   static getOptionsFromContainer(_ref) {
     let {
       name,
@@ -57,11 +52,11 @@ class Widget extends _dom_component.default {
     }
     return options;
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _supportedKeys(event) {
+  _supportedKeys() {
     return {};
   }
   _getDefaultOptions() {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return (0, _extend.extend)(super._getDefaultOptions(), {
       hoveredElement: null,
       isActive: false,
@@ -93,6 +88,7 @@ class Widget extends _dom_component.default {
         } = device;
         return platform === 'ios' && (0, _version.compare)(version, '13.3') <= 0;
       },
+      // @ts-expect-error
       options: {
         useResizeObserver: false
       }
@@ -102,12 +98,17 @@ class Widget extends _dom_component.default {
     super._init();
     this._initContentReadyAction();
   }
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   _innerWidgetOptionChanged(innerWidget, args) {
     const options = Widget.getOptionsFromContainer(args);
+    // eslint-disable-next-line max-len
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/prefer-optional-chain
     innerWidget && innerWidget.option(options);
     this._options.cache(args.name, options);
   }
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   _bindInnerWidgetOptions(innerWidget, optionsContainer) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     const syncOptions = () => this._options.silent(optionsContainer, (0, _extend.extend)({}, innerWidget.option()));
     syncOptions();
     innerWidget.on('optionChanged', syncOptions);
@@ -129,6 +130,7 @@ class Widget extends _dom_component.default {
     this._toggleDisabledState(disabled);
     this._toggleVisibility(visible);
     this._renderHint();
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     this._isFocusable() && this._renderFocusTarget();
     super._initMarkup();
   }
@@ -144,16 +146,23 @@ class Widget extends _dom_component.default {
     const {
       hint
     } = this.option();
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     this.$element().attr('title', hint || null);
   }
   _renderContent() {
+    // eslint-disable-next-line no-void
     (0, _common.deferRender)(() => !this._disposed ? this._renderContentImpl() : void 0)
     // @ts-expect-error
+    // eslint-disable-next-line no-void, @typescript-eslint/no-unsafe-return
     .done(() => !this._disposed ? this._fireContentReadyAction() : void 0);
   }
   _renderContentImpl() {}
   _fireContentReadyAction() {
-    return (0, _common.deferRender)(() => this._contentReadyAction());
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return (0, _common.deferRender)(() => {
+      var _this$_contentReadyAc;
+      return (_this$_contentReadyAc = this._contentReadyAction) === null || _this$_contentReadyAc === void 0 ? void 0 : _this$_contentReadyAc.call(this);
+    });
   }
   _dispose() {
     this._contentReadyAction = null;
@@ -170,7 +179,7 @@ class Widget extends _dom_component.default {
     this.$element().empty();
   }
   _toggleVisibility(visible) {
-    this.$element().toggleClass('dx-state-invisible', !visible);
+    this.$element().toggleClass(INVISIBLE_STATE_CLASS, !visible);
   }
   _renderFocusState() {
     this._attachKeyboardEvents();
@@ -185,6 +194,7 @@ class Widget extends _dom_component.default {
     const {
       accessKey
     } = this.option();
+    // @ts-expect-error
     $el.attr('accesskey', accessKey);
   }
   _isFocusable() {
@@ -205,7 +215,8 @@ class Widget extends _dom_component.default {
     return focusTargets.includes(element);
   }
   _findActiveTarget($element) {
-    return $element.find(this._activeStateUnit).not('.dx-state-disabled');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return $element.find(this._activeStateUnit).not(`.${DISABLED_STATE_CLASS}`);
   }
   _getActiveElement() {
     const activeElement = this._eventBindingTarget();
@@ -218,6 +229,7 @@ class Widget extends _dom_component.default {
     const {
       tabIndex
     } = this.option();
+    // @ts-expect-error
     this._focusTarget().attr('tabIndex', tabIndex);
   }
   _keyboardEventBindingTarget() {
@@ -230,6 +242,7 @@ class Widget extends _dom_component.default {
   _focusEventTarget() {
     return this._focusTarget();
   }
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   _focusInHandler(event) {
     if (!event.isDefaultPrevented()) {
       this._createActionByOption('onFocusIn', {
@@ -240,6 +253,7 @@ class Widget extends _dom_component.default {
       });
     }
   }
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   _focusOutHandler(event) {
     if (!event.isDefaultPrevented()) {
       this._createActionByOption('onFocusOut', {
@@ -250,6 +264,7 @@ class Widget extends _dom_component.default {
       });
     }
   }
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   _updateFocusState(_ref2, isFocused) {
     let {
       target
@@ -259,16 +274,19 @@ class Widget extends _dom_component.default {
     }
   }
   _toggleFocusClass(isFocused, $element) {
+    // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
     const $focusTarget = $element && $element.length ? $element : this._focusTarget();
-    $focusTarget.toggleClass('dx-state-focused', isFocused);
+    $focusTarget.toggleClass(FOCUSED_STATE_CLASS, isFocused);
   }
   _hasFocusClass(element) {
-    const $focusTarget = (0, _renderer.default)(element || this._focusTarget());
-    return $focusTarget.hasClass('dx-state-focused');
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+    const $focusTarget = (0, _renderer.default)(element ?? this._focusTarget());
+    return $focusTarget.hasClass(FOCUSED_STATE_CLASS);
   }
   _isFocused() {
     return this._hasFocusClass();
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   _getKeyboardListeners() {
     return [];
   }
@@ -280,11 +298,13 @@ class Widget extends _dom_component.default {
     } = this.option();
     const hasChildListeners = this._getKeyboardListeners().length;
     const hasKeyboardEventHandler = !!onKeyboardHandled;
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     const shouldAttach = focusStateEnabled || hasChildListeners || hasKeyboardEventHandler;
     if (shouldAttach) {
       this._keyboardListenerId = _short.keyboard.on(this._keyboardEventBindingTarget(), this._focusTarget(), opts => this._keyboardHandler(opts));
     }
   }
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   _keyboardHandler(options, onlyChildProcessing) {
     if (!onlyChildProcessing) {
       const {
@@ -292,6 +312,7 @@ class Widget extends _dom_component.default {
         keyName,
         which
       } = options;
+      // @ts-expect-error
       const keys = this._supportedKeys(originalEvent);
       const func = keys[keyName] || keys[which];
       if (func !== undefined) {
@@ -306,7 +327,11 @@ class Widget extends _dom_component.default {
     const {
       onKeyboardHandled
     } = this.option();
+    // eslint-disable-next-line max-len
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/prefer-optional-chain
     keyboardListeners.forEach(listener => listener && listener._keyboardHandler(options));
+    // eslint-disable-next-line max-len
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/prefer-optional-chain
     onKeyboardHandled && onKeyboardHandled(options);
     return true;
   }
@@ -407,8 +432,9 @@ class Widget extends _dom_component.default {
   _hoverStartHandler(event) {}
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _hoverEndHandler(event) {}
+  _toggleActiveState($element, value,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _toggleActiveState($element, value, event) {
+  event) {
     this.option('isActive', value);
     $element.toggleClass('dx-state-active', value);
   }
@@ -417,6 +443,8 @@ class Widget extends _dom_component.default {
     this._hover(hoveredElement, hoveredElement);
   }
   _findHoverTarget($el) {
+    // eslint-disable-next-line max-len
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/prefer-optional-chain
     return $el && $el.closest(this._activeStateUnit || this._eventBindingTarget());
   }
   _hover($el, $previous) {
@@ -425,25 +453,35 @@ class Widget extends _dom_component.default {
       disabled,
       isActive
     } = this.option();
+    // eslint-disable-next-line no-param-reassign
     $previous = this._findHoverTarget($previous);
+    // eslint-disable-next-line max-len
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/prefer-optional-chain
     $previous && $previous.toggleClass('dx-state-hover', false);
     if ($el && hoverStateEnabled && !disabled && !isActive) {
       const newHoveredElement = this._findHoverTarget($el);
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/prefer-optional-chain
       newHoveredElement && newHoveredElement.toggleClass('dx-state-hover', true);
     }
   }
   _toggleDisabledState(value) {
-    this.$element().toggleClass('dx-state-disabled', Boolean(value));
+    this.$element().toggleClass(DISABLED_STATE_CLASS, Boolean(value));
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     this.setAria('disabled', value || undefined);
   }
   _toggleIndependentState() {
-    this.$element().toggleClass('dx-state-independent', this.option('ignoreParentReadOnly'));
+    const {
+      ignoreParentReadOnly
+    } = this.option();
+    this.$element().toggleClass('dx-state-independent', ignoreParentReadOnly);
   }
   _setWidgetOption(widgetName, args) {
     if (!this[widgetName]) {
       return;
     }
     if ((0, _type.isPlainObject)(args[0])) {
+      // @ts-expect-error
       (0, _iterator.each)(args[0], (option, value) => this._setWidgetOption(widgetName, [option, value]));
       return;
     }
@@ -518,6 +556,7 @@ class Widget extends _dom_component.default {
     const {
       visible
     } = this.option();
+    // @ts-expect-error
     return super._isVisible() && visible;
   }
   beginUpdate() {
@@ -532,10 +571,12 @@ class Widget extends _dom_component.default {
   }
   _ready(value) {
     if (arguments.length === 0) {
-      return this._isReady;
+      return !!this._isReady;
     }
-    this._isReady = value;
+    this._isReady = !!value;
+    return this._isReady;
   }
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   setAria() {
     if (!(0, _type.isPlainObject)(arguments.length <= 0 ? undefined : arguments[0])) {
       setAttribute(arguments.length <= 0 ? undefined : arguments[0], arguments.length <= 1 ? undefined : arguments[1], (arguments.length <= 2 ? undefined : arguments[2]) || this._getAriaTarget());
@@ -545,6 +586,7 @@ class Widget extends _dom_component.default {
     }
   }
   isReady() {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return this._ready();
   }
   repaint() {
@@ -555,6 +597,7 @@ class Widget extends _dom_component.default {
   }
   registerKeyHandler(key, handler) {
     const currentKeys = this._supportedKeys();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, max-len
     this._supportedKeys = () => (0, _extend.extend)(currentKeys, {
       [key]: handler
     });

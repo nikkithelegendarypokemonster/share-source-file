@@ -342,6 +342,7 @@ const TabPanel = _multi_view.default.inherit({
       this._toggleDisabledFocusedClass(isFocused && isDisabled);
     }
     if (isMultiViewTarget) {
+      this._toggleFocusClass(isFocused, this._tabs.$element());
       this._toggleFocusClass(isFocused, this._tabs.option('focusedElement'));
     }
   },

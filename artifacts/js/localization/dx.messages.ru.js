@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.ru.js)
 * Version: 24.2.0
-* Build date: Fri Aug 30 2024
+* Build date: Mon Oct 07 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -24,6 +24,7 @@
             "Yes": "Да",
             "No": "Нет",
             "Cancel": "Отмена",
+            "CheckState": "Check state",
             "Close": "Закрыть",
             "Clear": "Очистить",
             "Done": "Готово",
@@ -64,6 +65,9 @@
             "dxList-listAriaLabel-deletable": "Deletable items",
             "dxListEditDecorator-delete": "Удалить",
             "dxListEditDecorator-more": "Еще",
+            "dxList-selectAll-indeterminate": "Half-checked",
+            "dxList-selectAll-checked": "Checked",
+            "dxList-selectAll-notChecked": "Not checked",
             "dxScrollView-pullingDownText": "Потяните, чтобы обновить...",
             "dxScrollView-pulledDownText": "Отпустите, чтобы обновить...",
             "dxScrollView-refreshingText": "Обновление...",
@@ -163,6 +167,7 @@
             "dxDataGrid-columnFixingUnfix": "Открепить",
             "dxDataGrid-columnFixingLeftPosition": "Налево",
             "dxDataGrid-columnFixingRightPosition": "Направо",
+            "dxDataGrid-columnFixingStickyPosition": "Stick in place",
             "dxDataGrid-exportTo": "Экспортировать",
             "dxDataGrid-exportToExcel": "Экспортировать в Excel файл",
             "dxDataGrid-exporting": "Экспорт...",
@@ -301,8 +306,19 @@
             "dxCalendar-captionDecadeLabel": "Decade selection",
             "dxCalendar-captionCenturyLabel": "Century selection",
             "dxCalendar-selectedDate": "The selected date is {0}",
+            "dxCalendar-selectedDates": "The selected dates",
             "dxCalendar-selectedDateRange": "The selected date range is from {0} to {1}",
+            "dxCalendar-selectedMultipleDateRange": "from {0} to {1}",
+            "dxCalendar-selectedDateRangeCount": "There are {0} selected date ranges",
             "dxCalendar-readOnlyLabel": "Read-only calendar",
+            "dxAvatar-defaultImageAlt": "Avatar",
+            "dxChat-elementAriaLabel": "Chat",
+            "dxChat-textareaPlaceholder": "Type a message",
+            "dxChat-sendButtonAriaLabel": "Send",
+            "dxChat-defaultUserName": "Unknown User",
+            "dxChat-messageListAriaLabel": "Message list",
+            "dxChat-emptyListMessage": "There are no messages in this chat",
+            "dxChat-emptyListPrompt": "Write your first message",
             "dxColorView-ariaRed": "Красный",
             "dxColorView-ariaGreen": "Зеленый",
             "dxColorView-ariaBlue": "Синий",
@@ -405,6 +421,7 @@
             "dxHtmlEditor-width": "Ширина",
             "dxHtmlEditor-height": "Высота",
             "dxHtmlEditor-borderColor": "Цвет",
+            "dxHtmlEditor-borderWidth": "Border Width",
             "dxHtmlEditor-tableBackground": "Цвет фона",
             "dxHtmlEditor-dimensions": "Размеры",
             "dxHtmlEditor-alignment": "Выравнивание",

@@ -89,7 +89,7 @@ function cloneInstanceWithChangedPaths(instance, changes, clonedInstances) {
     clonedInstances.set(instance, result);
   }
   const instanceWithoutPrototype = _extends({}, instance);
-  (0, _object.deepExtendArraySafe)(result, instanceWithoutPrototype, true, true);
+  (0, _object.deepExtendArraySafe)(result, instanceWithoutPrototype, true, true, true);
   // eslint-disable-next-line no-restricted-syntax, guard-for-in
   for (const name in instanceWithoutPrototype) {
     const value = instanceWithoutPrototype[name];
@@ -110,7 +110,7 @@ function cloneInstanceWithChangedPaths(instance, changes, clonedInstances) {
 function createObjectWithChanges(target, changes) {
   // @ts-expect-error
   const result = cloneInstanceWithChangedPaths(target, changes);
-  return (0, _object.deepExtendArraySafe)(result, changes, true, true);
+  return (0, _object.deepExtendArraySafe)(result, changes, true, true, true);
 }
 function applyBatch(_ref) {
   let {
@@ -193,7 +193,7 @@ function update(keyInfo, array, key, data, isBatch, immutable, logError) {
   } else {
     target = key;
   }
-  (0, _object.deepExtendArraySafe)(target, data, extendComplexObject);
+  (0, _object.deepExtendArraySafe)(target, data, extendComplexObject, false, true, true);
   if (!isBatch) {
     if ((0, _config.default)().useLegacyStoreResult) {
       return (0, _utils.trivialPromise)(key, data);

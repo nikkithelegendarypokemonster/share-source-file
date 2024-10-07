@@ -243,9 +243,7 @@ class ColumnHeadersView extends _m_columns_view.ColumnsView {
     const deferred = that._updateContent(that._renderTable({
       change
     }), change);
-    if (that.getRowCount() > 1) {
-      $container.addClass(MULTI_ROW_HEADER_CLASS);
-    }
+    $container.toggleClass(MULTI_ROW_HEADER_CLASS, that.getRowCount() > 1);
     // @ts-expect-error
     super._renderCore.apply(that, arguments);
     return deferred;
@@ -362,8 +360,8 @@ class ColumnHeadersView extends _m_columns_view.ColumnsView {
     return $headerRows && $headerRows.toArray().reduce((sum, headerRow) => sum + (0, _size.getHeight)(headerRow), 0) || 0;
   }
   getHeaderElement(index) {
-    const columnElements = this.getColumnElements();
-    return columnElements && columnElements.eq(index);
+    const $columnElements = this.getColumnElements();
+    return ($columnElements === null || $columnElements === void 0 ? void 0 : $columnElements.eq(index)) ?? (0, _renderer.default)('');
   }
   getColumnElements(index, bandColumnIndex) {
     const that = this;
@@ -404,8 +402,8 @@ class ColumnHeadersView extends _m_columns_view.ColumnsView {
   /**
    * @extended: column_fixing
    */
-  getColumnWidths() {
-    const $columnElements = this.getColumnElements();
+  getColumnWidths($tableElement, rowIndex) {
+    const $columnElements = this.getColumnElements(rowIndex);
     if ($columnElements && $columnElements.length) {
       return this._getWidths($columnElements);
     }

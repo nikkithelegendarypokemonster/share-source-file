@@ -460,8 +460,8 @@ const CollectionWidget = _m_collection_widget.default.inherit({
       case 'selectionRequired':
         this._normalizeSelectedItems();
         break;
-      case 'onSelectionChanged':
       case 'onSelectionChanging':
+      case 'onSelectionChanged':
         this._initActions();
         break;
       case 'selectByClick':

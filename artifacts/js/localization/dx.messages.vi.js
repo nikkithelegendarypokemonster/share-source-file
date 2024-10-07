@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.vi.js)
 * Version: 24.2.0
-* Build date: Fri Aug 30 2024
+* Build date: Mon Oct 07 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -24,6 +24,7 @@
             "Yes": "Có",
             "No": "Không",
             "Cancel": "Hủy",
+            "CheckState": "Check state",
             "Close": "Đóng",
             "Clear": "Làm sạch",
             "Done": "Hoàn tất",
@@ -64,6 +65,9 @@
             "dxList-listAriaLabel-deletable": "Deletable items",
             "dxListEditDecorator-delete": "Xóa",
             "dxListEditDecorator-more": "Thêm",
+            "dxList-selectAll-indeterminate": "Half-checked",
+            "dxList-selectAll-checked": "Checked",
+            "dxList-selectAll-notChecked": "Not checked",
             "dxScrollView-pullingDownText": "Kéo xuống để làm tươi...",
             "dxScrollView-pulledDownText": "Nhả ra để làm tươi...",
             "dxScrollView-refreshingText": "Làm tươi...",
@@ -163,6 +167,7 @@
             "dxDataGrid-columnFixingUnfix": "Không cố định",
             "dxDataGrid-columnFixingLeftPosition": "Đến bên trái",
             "dxDataGrid-columnFixingRightPosition": "Đến bên phải",
+            "dxDataGrid-columnFixingStickyPosition": "Stick in place",
             "dxDataGrid-exportTo": "Xuất ra",
             "dxDataGrid-exportToExcel": "Xuất ra Tập tin Excel",
             "dxDataGrid-exporting": "Xuất khẩu...",
@@ -202,8 +207,8 @@
             "dxDataGrid-filterPanelFilterEnabledHint": "Kích hoạt Bộ lọc",
             "dxDataGrid-masterDetail": "Cell with details",
             "dxTreeList-ariaTreeList": "Tree list with {0} rows and {1} columns",
-            "dxTreeList-ariaSearchInGrid": "Search in the tree list",
             "dxTreeList-ariaExpandableInstruction": "Press Ctrl + right arrow to expand the focused node and Ctrl + left arrow to collapse it",
+            "dxTreeList-ariaSearchInGrid": "Search in the tree list",
             "dxTreeList-ariaToolbar": "Tree list toolbar",
             "dxTreeList-editingAddRowToNode": "Thêm",
             "dxPager-infoText": "Trang {0} của {1} ({2} mục)",
@@ -301,8 +306,19 @@
             "dxCalendar-captionDecadeLabel": "Decade selection",
             "dxCalendar-captionCenturyLabel": "Century selection",
             "dxCalendar-selectedDate": "The selected date is {0}",
+            "dxCalendar-selectedDates": "The selected dates",
             "dxCalendar-selectedDateRange": "The selected date range is from {0} to {1}",
+            "dxCalendar-selectedMultipleDateRange": "from {0} to {1}",
+            "dxCalendar-selectedDateRangeCount": "There are {0} selected date ranges",
             "dxCalendar-readOnlyLabel": "Read-only calendar",
+            "dxAvatar-defaultImageAlt": "Avatar",
+            "dxChat-elementAriaLabel": "Chat",
+            "dxChat-textareaPlaceholder": "Type a message",
+            "dxChat-sendButtonAriaLabel": "Send",
+            "dxChat-defaultUserName": "Unknown User",
+            "dxChat-messageListAriaLabel": "Message list",
+            "dxChat-emptyListMessage": "There are no messages in this chat",
+            "dxChat-emptyListPrompt": "Write your first message",
             "dxColorView-ariaRed": "Đỏ",
             "dxColorView-ariaGreen": "Xanh lá",
             "dxColorView-ariaBlue": "Xanh nước biển",
@@ -405,6 +421,7 @@
             "dxHtmlEditor-width": "Width",
             "dxHtmlEditor-height": "Height",
             "dxHtmlEditor-borderColor": "Color",
+            "dxHtmlEditor-borderWidth": "Border Width",
             "dxHtmlEditor-tableBackground": "Background",
             "dxHtmlEditor-dimensions": "Dimensions",
             "dxHtmlEditor-alignment": "Alignment",

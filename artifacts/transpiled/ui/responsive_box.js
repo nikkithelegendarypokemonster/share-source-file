@@ -25,6 +25,11 @@ var _default = exports.default = _m_responsive_box.default; // STYLE responsiveB
  * @hidden
  */
 /**
+ * @name dxResponsiveBoxOptions.onSelectionChanging
+ * @action
+ * @hidden
+ */
+/**
  * @name dxResponsiveBoxOptions.onSelectionChanged
  * @action
  * @hidden

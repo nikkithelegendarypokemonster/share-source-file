@@ -1036,7 +1036,7 @@ const TreeViewBase = _ui.default.inherit({
       onValueChanged: this._changeCheckboxValue.bind(this),
       focusStateEnabled: false,
       elementAttr: {
-        'aria-label': 'Check State'
+        'aria-label': _message.default.format('CheckState')
       },
       disabled: this._disabledGetter(node)
     });

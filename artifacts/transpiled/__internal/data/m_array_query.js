@@ -256,9 +256,7 @@ const compileCriteria = function () {
   };
   const toString = function (value) {
     var _langParams;
-    return (0, _type.isDefined)(value)
-    // @ts-expect-error
-    ? (_langParams = langParams) !== null && _langParams !== void 0 && _langParams.locale ? value.toLocaleString(langParams.locale) : value.toString() : '';
+    return (0, _type.isDefined)(value) ? (_langParams = langParams) !== null && _langParams !== void 0 && _langParams.locale ? value.toLocaleString(langParams.locale) : value.toString() : '';
   };
   const compileBinary = function (crit) {
     crit = (0, _utils.normalizeBinaryCriterion)(crit);
@@ -288,30 +286,16 @@ const compileCriteria = function () {
         return obj => compare(obj, (a, b) => a <= b);
       case 'startswith':
         // @ts-expect-error
-        return function (obj) {
-          return _toComparable(toString(getter(obj))).indexOf(value) === 0;
-        };
+        return obj => _toComparable(toString(getter(obj))).startsWith(value);
       case 'endswith':
-        return function (obj) {
-          // @ts-expect-error
-          const getterValue = _toComparable(toString(getter(obj)));
-          const searchValue = toString(value);
-          if (getterValue.length < searchValue.length) {
-            return false;
-          }
-          const index = getterValue.lastIndexOf(value);
-          return index !== -1 && index === getterValue.length - value.length;
-        };
+        // @ts-expect-error
+        return obj => _toComparable(toString(getter(obj))).endsWith(value);
       case 'contains':
         // @ts-expect-error
-        return function (obj) {
-          return _toComparable(toString(getter(obj))).indexOf(value) > -1;
-        };
+        return obj => _toComparable(toString(getter(obj))).includes(value);
       case 'notcontains':
         // @ts-expect-error
-        return function (obj) {
-          return _toComparable(toString(getter(obj))).indexOf(value) === -1;
-        };
+        return obj => !_toComparable(toString(getter(obj))).includes(value);
     }
     throw _errors.errors.Error('E4003', op);
   };

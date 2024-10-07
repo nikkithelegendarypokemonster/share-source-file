@@ -21,8 +21,10 @@ var _render_utils = require("../../core/r1/utils/render_utils");
 var _resolve_rtl = require("../../core/r1/utils/resolve_rtl");
 var _subscribe_to_event = require("../../core/r1/utils/subscribe_to_event");
 var _base_props = require("../base_props");
+const _excluded = ["height", "width", "activeStateEnabled", "hoverStateEnabled", "focusStateEnabled", "_feedbackHideTimeout", "_feedbackShowTimeout", "addWidgetClass", "rootElementRef", "rtlEnabled", "aria", "hint", "cssText", "classes", "name"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); } /* eslint-disable @typescript-eslint/explicit-module-boundary-types */ /* eslint-disable @typescript-eslint/no-explicit-any */
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); } /* eslint-disable @typescript-eslint/naming-convention */ /* eslint-disable spellcheck/spell-checker */ /* eslint-disable @typescript-eslint/explicit-module-boundary-types */ /* eslint-disable @typescript-eslint/no-explicit-any */
 const DEFAULT_FEEDBACK_HIDE_TIMEOUT = 400;
 const DEFAULT_FEEDBACK_SHOW_TIMEOUT = 30;
 const getAria = args => Object.keys(args).reduce((r, key) => {
@@ -130,7 +132,9 @@ class Widget extends _inferno2.InfernoWrapperComponent {
       if (!disabled) {
         var _this$widgetElementRe2;
         return (0, _subscribe_to_event.subscribeToDxActiveEvent)((_this$widgetElementRe2 = this.widgetElementRef) === null || _this$widgetElementRe2 === void 0 ? void 0 : _this$widgetElementRe2.current, event => {
-          this.state.active = true;
+          this.setState({
+            active: true
+          });
           onActive === null || onActive === void 0 || onActive(event);
         }, {
           timeout: _feedbackShowTimeout,
@@ -154,7 +158,9 @@ class Widget extends _inferno2.InfernoWrapperComponent {
       var _this$widgetElementRe3;
       return (0, _subscribe_to_event.subscribeToDxInactiveEvent)((_this$widgetElementRe3 = this.widgetElementRef) === null || _this$widgetElementRe3 === void 0 ? void 0 : _this$widgetElementRe3.current, event => {
         if (this.state.active) {
-          this.state.active = false;
+          this.setState({
+            active: false
+          });
           onInactive === null || onInactive === void 0 || onInactive(event);
         }
       }, {
@@ -198,7 +204,9 @@ class Widget extends _inferno2.InfernoWrapperComponent {
         var _this$widgetElementRe6;
         return (0, _subscribe_to_event.subscribeToDxFocusInEvent)((_this$widgetElementRe6 = this.widgetElementRef) === null || _this$widgetElementRe6 === void 0 ? void 0 : _this$widgetElementRe6.current, event => {
           if (!event.isDefaultPrevented()) {
-            this.state.focused = true;
+            this.setState({
+              focused: true
+            });
             onFocusIn === null || onFocusIn === void 0 || onFocusIn(event);
           }
         }, null, namespace);
@@ -217,7 +225,9 @@ class Widget extends _inferno2.InfernoWrapperComponent {
       var _this$widgetElementRe7;
       return (0, _subscribe_to_event.subscribeToDxFocusOutEvent)((_this$widgetElementRe7 = this.widgetElementRef) === null || _this$widgetElementRe7 === void 0 ? void 0 : _this$widgetElementRe7.current, event => {
         if (!event.isDefaultPrevented() && this.state.focused) {
-          this.state.focused = false;
+          this.setState({
+            focused: false
+          });
           onFocusOut === null || onFocusOut === void 0 || onFocusOut(event);
         }
       }, null, namespace);
@@ -238,7 +248,9 @@ class Widget extends _inferno2.InfernoWrapperComponent {
         var _this$widgetElementRe8;
         return (0, _subscribe_to_event.subscribeToDxHoverStartEvent)((_this$widgetElementRe8 = this.widgetElementRef) === null || _this$widgetElementRe8 === void 0 ? void 0 : _this$widgetElementRe8.current, event => {
           if (!this.state.active) {
-            this.state.hovered = true;
+            this.setState({
+              hovered: true
+            });
           }
           onHoverStart === null || onHoverStart === void 0 || onHoverStart(event);
         }, {
@@ -260,7 +272,9 @@ class Widget extends _inferno2.InfernoWrapperComponent {
       var _this$widgetElementRe9;
       return (0, _subscribe_to_event.subscribeToDxHoverEndEvent)((_this$widgetElementRe9 = this.widgetElementRef) === null || _this$widgetElementRe9 === void 0 ? void 0 : _this$widgetElementRe9.current, event => {
         if (this.state.hovered) {
-          this.state.hovered = false;
+          this.setState({
+            hovered: false
+          });
           onHoverEnd === null || onHoverEnd === void 0 || onHoverEnd(event);
         }
       }, {
@@ -373,12 +387,17 @@ class Widget extends _inferno2.InfernoWrapperComponent {
       visible
     } = this.props;
     const accessKey = focusStateEnabled && !disabled && this.props.accessKey;
-    return _extends({}, (0, _extend.extend)({}, accessKey && {
+    const props = _extends({}, (0, _extend.extend)({}, accessKey && {
       accessKey
     }), getAria(_extends({}, aria, {
       disabled,
       hidden: !visible
     })), (0, _extend.extend)({}, this.props));
+    return this.getAttributesCore(props);
+  }
+  getAttributesCore(props) {
+    const result = _objectWithoutPropertiesLoose(props, _excluded);
+    return result;
   }
   getStyles() {
     const {

@@ -18,6 +18,10 @@ var _default = exports.default = _m_context_menu.default; // STYLE contextMenu
  * @hidden
  */
 /**
+ * @name dxContextMenuOptions.onSelectionChanging
+ * @hidden
+ */
+/**
  * @name dxContextMenuOptions.selectedItems
  * @hidden
  */

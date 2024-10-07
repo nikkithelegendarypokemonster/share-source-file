@@ -12,7 +12,7 @@ var _double_click = require("../../../events/double_click");
 var _drag = require("../../../events/drag");
 var _index = require("../../../events/utils/index");
 var _message = _interopRequireDefault(require("../../../localization/message"));
-var _widget = _interopRequireDefault(require("../widget"));
+var _widget = _interopRequireDefault(require("../../core/widget/widget"));
 var _event = require("./utils/event");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -34,6 +34,7 @@ const RESIZE_DIRECTION = {
   vertical: 'vertical'
 };
 class ResizeHandle extends _widget.default {
+  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   _supportedKeys() {
     return _extends({}, super._supportedKeys(), {
       rightArrow(e) {
@@ -181,7 +182,6 @@ class ResizeHandle extends _widget.default {
     const isHorizontal = this._isHorizontalDirection();
     const dimension = isHorizontal ? 'width' : 'height';
     const inverseDimension = isHorizontal ? 'height' : 'width';
-    // @ts-expect-error ts-error
     this.option(inverseDimension, null);
     this.option(dimension, this.getSize());
   }
@@ -361,7 +361,10 @@ class ResizeHandle extends _widget.default {
     }
   }
   _isHorizontalDirection() {
-    return this.option('direction') === RESIZE_DIRECTION.horizontal;
+    const {
+      direction
+    } = this.option();
+    return direction === RESIZE_DIRECTION.horizontal;
   }
   _clean() {
     this._detachResizeEventHandlers();

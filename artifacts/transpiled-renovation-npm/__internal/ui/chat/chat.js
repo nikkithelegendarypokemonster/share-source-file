@@ -7,10 +7,13 @@ exports.default = void 0;
 var _component_registrator = _interopRequireDefault(require("../../../core/component_registrator"));
 var _guid = _interopRequireDefault(require("../../../core/guid"));
 var _renderer = _interopRequireDefault(require("../../../core/renderer"));
-var _widget = _interopRequireDefault(require("../widget"));
-var _chat_header = _interopRequireDefault(require("./chat_header"));
-var _chat_message_box = _interopRequireDefault(require("./chat_message_box"));
-var _chat_message_list = _interopRequireDefault(require("./chat_message_list"));
+var _type = require("../../../core/utils/type");
+var _data_helper = _interopRequireDefault(require("../../../data_helper"));
+var _message = _interopRequireDefault(require("../../../localization/message"));
+var _widget = _interopRequireDefault(require("../../core/widget/widget"));
+var _header = _interopRequireDefault(require("./header"));
+var _messagebox = _interopRequireDefault(require("./messagebox"));
+var _messagelist = _interopRequireDefault(require("./messagelist"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 const CHAT_CLASS = 'dx-chat';
@@ -23,6 +26,7 @@ class Chat extends _widget.default {
       hoverStateEnabled: true,
       title: '',
       items: [],
+      dataSource: null,
       user: {
         id: new _guid.default().toString()
       },
@@ -31,21 +35,41 @@ class Chat extends _widget.default {
   }
   _init() {
     super._init();
+    // @ts-expect-error
+    this._initDataController();
+    // @ts-expect-error
+    this._refreshDataSource();
     this._createMessageSendAction();
+  }
+  _dataSourceLoadErrorHandler() {
+    this.option('items', []);
+  }
+  _dataSourceChangedHandler(newItems) {
+    this.option('items', newItems.slice());
+  }
+  _dataSourceOptions() {
+    return {
+      paginate: false
+    };
   }
   _initMarkup() {
     (0, _renderer.default)(this.element()).addClass(CHAT_CLASS);
     super._initMarkup();
-    this._renderHeader();
+    const {
+      title
+    } = this.option();
+    if (title) {
+      this._renderHeader(title);
+    }
     this._renderMessageList();
     this._renderMessageBox();
+    this._updateRootAria();
+    this._updateMessageBoxAria();
   }
-  _renderHeader() {
-    const {
-      title = ''
-    } = this.option();
-    const $header = (0, _renderer.default)('<div>').appendTo(this.element());
-    this._chatHeader = this._createComponent($header, _chat_header.default, {
+  _renderHeader(title) {
+    const $header = (0, _renderer.default)('<div>');
+    this.$element().append($header);
+    this._chatHeader = this._createComponent($header, _header.default, {
       title
     });
   }
@@ -55,8 +79,9 @@ class Chat extends _widget.default {
       user
     } = this.option();
     const currentUserId = user === null || user === void 0 ? void 0 : user.id;
-    const $messageList = (0, _renderer.default)('<div>').appendTo(this.element());
-    this._messageList = this._createComponent($messageList, _chat_message_list.default, {
+    const $messageList = (0, _renderer.default)('<div>');
+    this.$element().append($messageList);
+    this._messageList = this._createComponent($messageList, _messagelist.default, {
       items,
       currentUserId
     });
@@ -67,7 +92,8 @@ class Chat extends _widget.default {
       focusStateEnabled,
       hoverStateEnabled
     } = this.option();
-    const $messageBox = (0, _renderer.default)('<div>').appendTo(this.element());
+    const $messageBox = (0, _renderer.default)('<div>');
+    this.$element().append($messageBox);
     const configuration = {
       activeStateEnabled,
       focusStateEnabled,
@@ -76,7 +102,18 @@ class Chat extends _widget.default {
         this._messageSendHandler(e);
       }
     };
-    this._messageBox = this._createComponent($messageBox, _chat_message_box.default, configuration);
+    this._messageBox = this._createComponent($messageBox, _messagebox.default, configuration);
+  }
+  _updateRootAria() {
+    const aria = {
+      role: 'group',
+      label: _message.default.format('dxChat-elementAriaLabel')
+    };
+    this.setAria(aria, this.$element());
+  }
+  _updateMessageBoxAria() {
+    const emptyViewId = this._messageList.getEmptyViewId();
+    this._messageBox.updateInputAria(emptyViewId);
   }
   _createMessageSendAction() {
     this._messageSendAction = this._createActionByOption('onMessageSend', {
@@ -93,7 +130,7 @@ class Chat extends _widget.default {
       user
     } = this.option();
     const message = {
-      timestamp: String(Date.now()),
+      timestamp: new Date(),
       author: user,
       text
     };
@@ -116,18 +153,35 @@ class Chat extends _widget.default {
       case 'activeStateEnabled':
       case 'focusStateEnabled':
       case 'hoverStateEnabled':
-        this._messageBox.option({
-          [name]: value
-        });
+        this._messageBox.option(name, value);
         break;
       case 'title':
-        this._chatHeader.option('title', value ?? '');
-        break;
+        {
+          if (value) {
+            if (this._chatHeader) {
+              this._chatHeader.option('title', value);
+            } else {
+              this._renderHeader(value);
+            }
+          } else if (this._chatHeader) {
+            this._chatHeader.dispose();
+            this._chatHeader.$element().remove();
+          }
+          break;
+        }
       case 'user':
-        this._messageList.option('currentUserId', value === null || value === void 0 ? void 0 : value.id);
-        break;
+        {
+          const author = value;
+          this._messageList.option('currentUserId', author === null || author === void 0 ? void 0 : author.id);
+          break;
+        }
       case 'items':
-        this._messageList.option('items', value ?? []);
+        this._messageList.option(name, value);
+        this._updateMessageBoxAria();
+        break;
+      case 'dataSource':
+        // @ts-expect-error
+        this._refreshDataSource();
         break;
       case 'onMessageSend':
         this._createMessageSendAction();
@@ -136,15 +190,27 @@ class Chat extends _widget.default {
         super._optionChanged(args);
     }
   }
-  renderMessage() {
-    let message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  _insertNewItem(item) {
     const {
       items
     } = this.option();
-    const newItems = [...(items ?? []), message];
+    const newItems = [...(items ?? []), item];
     this.option('items', newItems);
   }
+  renderMessage() {
+    let message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    // @ts-expect-error
+    const dataSource = this.getDataSource();
+    if (!(0, _type.isDefined)(dataSource)) {
+      this._insertNewItem(message);
+      return;
+    }
+    dataSource.store().insert(message).done(() => {
+      this._insertNewItem(message);
+    });
+  }
 }
-// @ts-expect-error ts-error
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+Chat.include(_data_helper.default);
 (0, _component_registrator.default)('dxChat', Chat);
 var _default = exports.default = Chat;

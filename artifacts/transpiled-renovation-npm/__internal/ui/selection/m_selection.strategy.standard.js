@@ -14,7 +14,8 @@ var _query = _interopRequireDefault(require("../../../data/query"));
 var _ui = _interopRequireDefault(require("../../../ui/widget/ui.errors"));
 var _m_selection = _interopRequireDefault(require("./m_selection.strategy"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); } // @ts-expect-error
+// @ts-expect-error
+
 class StandardStrategy extends _m_selection.default {
   constructor(options) {
     super(options);
@@ -402,7 +403,7 @@ class StandardStrategy extends _m_selection.default {
       keyHashIndices
     } = this.options;
     this._storedSelectionState = {
-      keyHashIndices: _extends({}, keyHashIndices),
+      keyHashIndices: JSON.stringify(keyHashIndices),
       selectedItems: [...selectedItems],
       selectedItemKeys: [...selectedItemKeys]
     };
@@ -416,7 +417,7 @@ class StandardStrategy extends _m_selection.default {
     } = this._storedSelectionState;
     this._setOption('selectedItemKeys', selectedItemKeys);
     this._setOption('selectedItems', selectedItems);
-    this._setOption('keyHashIndices', keyHashIndices);
+    this._setOption('keyHashIndices', JSON.parse(keyHashIndices));
   }
   _onePageSelectAll(isDeselect) {
     if (this._lastSelectAllPageDeferred.state() === 'pending') {

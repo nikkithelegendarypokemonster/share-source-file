@@ -10,7 +10,7 @@ function _extends() { _extends = Object.assign ? Object.assign.bind() : function
 /* eslint-disable max-classes-per-file */
 /* eslint no-restricted-imports: ["error", { "patterns": ["*"] }] */
 const BASE_Z_INDEX = exports.BASE_Z_INDEX = 1500;
-const isClient = () => typeof HTMLElement !== 'undefined';
+const isClient = () => typeof HTMLElement !== 'undefined' && typeof customElements !== 'undefined';
 exports.isClient = isClient;
 const SafeHTMLElement = isClient() ? HTMLElement
 // eslint-disable-next-line max-len
@@ -131,7 +131,7 @@ class DxLicense extends SafeHTMLElement {
   _createContentContainer() {
     const contentContainer = document.createElement('div');
     contentContainer.style.cssText = this._contentStyles;
-    contentContainer.append(this._createSpan('For evaluation purposes only. Redistribution not authorized. Please '), this._createLink('purchase a license', this.getAttribute(attributeNames.buyNow)), this._createSpan(` to continue use of DevExpress product libraries (v${this.getAttribute(attributeNames.version)}).`));
+    contentContainer.append(this._createSpan('For evaluation purposes only. Redistribution prohibited. Please '), this._createLink('purchase a license', this.getAttribute(attributeNames.buyNow)), this._createSpan(` to continue use of DevExpress product libraries (v${this.getAttribute(attributeNames.version)}).`));
     return contentContainer;
   }
   _reassignComponent() {

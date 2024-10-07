@@ -6,6 +6,8 @@ var _math = require("./math");
 var _iterator = require("./iterator");
 var _inflector = require("./inflector");
 var _index = require("../../renovation/ui/common/utils/date/index");
+var _date_serialization = _interopRequireDefault(require("./date_serialization"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 /* globals Intl */
 // TODO refactoring: Review all date utils functions and move useful to __internal/core/utils/date.ts
 
@@ -604,6 +606,25 @@ const getMachineTimezoneName = () => {
   const hasIntl = typeof Intl !== 'undefined';
   return hasIntl ? Intl.DateTimeFormat().resolvedOptions().timeZone : null;
 };
+const getRangesByDates = dates => {
+  const datesInMilliseconds = dates.map(value => correctDateWithUnitBeginning(value, 'day').getTime());
+  const sortedDates = datesInMilliseconds.sort((a, b) => a - b);
+  const msInDay = (0, _index.toMilliseconds)('day');
+  const ranges = [];
+  let startDate = sortedDates[0];
+  for (let i = 1; i <= sortedDates.length; ++i) {
+    const nextDate = sortedDates[i];
+    const currentDate = sortedDates[i - 1];
+    const isNewRange = nextDate - currentDate > msInDay;
+    if (isNewRange || i === sortedDates.length) {
+      const range = startDate === sortedDates[i - 1] ? [startDate] : [startDate, sortedDates[i - 1]];
+      const serializedRange = range.map(value => _date_serialization.default.deserializeDate(value));
+      ranges.push(serializedRange);
+      startDate = nextDate;
+    }
+  }
+  return ranges;
+};
 const dateUtils = {
   dateUnitIntervals: dateUnitIntervals,
   convertMillisecondsToDateUnits: convertMillisecondsToDateUnits,
@@ -659,7 +680,8 @@ const dateUtils = {
   getDatesInterval: getDatesInterval,
   getDatesOfInterval: getDatesOfInterval,
   createDateWithFullYear: createDateWithFullYear,
-  getMachineTimezoneName: getMachineTimezoneName
+  getMachineTimezoneName: getMachineTimezoneName,
+  getRangesByDates: getRangesByDates
 };
 dateUtils.sameView = function (view, date1, date2) {
   return dateUtils[(0, _inflector.camelize)('same ' + view)](date1, date2);

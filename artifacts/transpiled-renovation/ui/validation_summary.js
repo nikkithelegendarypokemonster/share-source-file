@@ -84,6 +84,11 @@ var _default = exports.default = _m_validation_summary.default;
  * @action
  */
 /**
+ * @name dxValidationSummaryOptions.onSelectionChanging
+ * @hidden
+ * @action
+ */
+/**
  * @name dxValidationSummaryOptions.onSelectionChanged
  * @hidden
  * @action

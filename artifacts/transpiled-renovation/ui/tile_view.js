@@ -25,6 +25,11 @@ var _default = exports.default = _m_tile_view.default; // STYLE tileView
  * @hidden
  */
 /**
+ * @name dxTileViewOptions.onSelectionChanging
+ * @action
+ * @hidden
+ */
+/**
  * @name dxTileViewOptions.onSelectionChanged
  * @action
  * @hidden

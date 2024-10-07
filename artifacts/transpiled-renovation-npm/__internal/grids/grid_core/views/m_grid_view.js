@@ -407,7 +407,7 @@ class ResizingController extends _m_modules.default.ViewController {
           resultWidths[lastColumnIndex] = 'auto';
           isColumnWidthsCorrected = true;
           if (hasWidth === false && !hasPercentWidth) {
-            const borderWidth = that.option('showBorders') ? Math.ceil((0, _size.getOuterWidth)($rowsViewElement) - (0, _size.getInnerWidth)($rowsViewElement)) : 0;
+            const borderWidth = _m_utils.default.getComponentBorderWidth(this, $rowsViewElement);
             that._maxWidth = totalWidth + scrollbarWidth + borderWidth;
             // @ts-expect-error
             $element.css('maxWidth', that._maxWidth);

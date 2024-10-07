@@ -140,11 +140,11 @@ class PagerContent extends _inferno2.InfernoComponent {
     const {
       rtlEnabled,
       visible,
-      showPageSizes,
-      pageSizesRef,
+      showPageSizeSelector,
+      allowedPageSizesRef,
       pageSize,
       pageSizeChangedInternal,
-      pageSizes,
+      allowedPageSizes,
       infoTextRef,
       infoText,
       pageCount,
@@ -156,21 +156,41 @@ class PagerContent extends _inferno2.InfernoComponent {
       pageIndexChangedInternal,
       pagesCountText,
       showNavigationButtons,
-      style
+      style,
+      width,
+      height,
+      elementAttr,
+      hint,
+      disabled,
+      tabIndex,
+      accessKey,
+      activeStateEnabled,
+      focusStateEnabled,
+      hoverStateEnabled
     } = this.props;
     return (0, _inferno.normalizeProps)((0, _inferno.createComponentVNode)(2, _widget.Widget, _extends({
       "rootElementRef": this.widgetRootElementRef,
       "rtlEnabled": rtlEnabled,
       "classes": this.getClasses(),
       "visible": visible,
-      "aria": this.getAria()
-    }, style, {
-      children: [showPageSizes && (0, _inferno.createComponentVNode)(2, _selector.PageSizeSelector, {
-        "rootElementRef": pageSizesRef,
+      "aria": this.getAria(),
+      "style": style,
+      "width": width,
+      "height": height,
+      "hint": hint,
+      "disabled": disabled,
+      "tabIndex": tabIndex,
+      "accessKey": accessKey,
+      "activeStateEnabled": activeStateEnabled,
+      "focusStateEnabled": focusStateEnabled,
+      "hoverStateEnabled": hoverStateEnabled
+    }, elementAttr, {
+      children: [showPageSizeSelector && (0, _inferno.createComponentVNode)(2, _selector.PageSizeSelector, {
+        "rootElementRef": allowedPageSizesRef,
         "isLargeDisplayMode": this.getIsLargeDisplayMode(),
         "pageSize": pageSize,
         "pageSizeChangedInternal": pageSizeChangedInternal,
-        "pageSizes": pageSizes
+        "allowedPageSizes": allowedPageSizes
       }), this.getPagesContainerVisible() && (0, _inferno.createVNode)(1, "div", _consts.PAGER_PAGES_CLASS, [this.getInfoVisible() && (0, _inferno.createComponentVNode)(2, _info.InfoText, {
         "rootElementRef": infoTextRef,
         "infoText": infoText,

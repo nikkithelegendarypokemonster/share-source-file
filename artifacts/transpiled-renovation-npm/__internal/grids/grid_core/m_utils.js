@@ -145,6 +145,24 @@ const equalFilterParameters = function (filter1, filter2) {
   }
   return (0, _data.toComparable)(filter1) == (0, _data.toComparable)(filter2); // eslint-disable-line eqeqeq
 };
+const createPoint = function (options) {
+  return {
+    index: options.index,
+    columnIndex: options.columnIndex,
+    x: options.x,
+    y: options.y
+  };
+};
+const addPointIfNeed = function (points, pointProps, pointCreated) {
+  let notCreatePoint = false;
+  if (pointCreated) {
+    notCreatePoint = pointCreated(pointProps);
+  }
+  if (!notCreatePoint) {
+    const point = createPoint(pointProps);
+    points.push(point);
+  }
+};
 function normalizeGroupingLoadOptions(group) {
   if (!Array.isArray(group)) {
     group = [group];
@@ -371,39 +389,52 @@ var _default = exports.default = {
     }
     return (!sortParameters1 || !sortParameters1.length) === (!sortParameters2 || !sortParameters2.length);
   },
-  getPointsByColumns(items, pointCreated, isVertical, startColumnIndex) {
+  getPointsByColumns(items, pointCreated, isVertical) {
+    let startColumnIndex = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+    let needToCheckPrevPoint = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+    const result = [];
     const cellsLength = items.length;
-    let notCreatePoint = false;
     let item;
     let offset;
-    let columnIndex = startColumnIndex || 0;
-    const result = [];
+    let columnIndex = startColumnIndex;
     let rtlEnabled;
     for (let i = 0; i <= cellsLength; i++) {
+      var _offset, _offset2, _offset3, _offset4;
       if (i < cellsLength) {
-        item = items.eq(i);
-        offset = item.offset();
-        rtlEnabled = item.css('direction') === 'rtl';
-      }
-      const point = {
-        index: columnIndex,
+        item = items[i];
+        offset = (0, _position.getBoundingRect)(item);
         // @ts-expect-error
-        x: offset ? offset.left + (!isVertical && rtlEnabled ^ i === cellsLength ? (0, _position.getBoundingRect)(item[0]).width : 0) : 0,
-        y: offset ? offset.top + (isVertical && i === cellsLength ? (0, _position.getBoundingRect)(item[0]).height : 0) : 0,
-        columnIndex
+        rtlEnabled = (0, _renderer.default)(item).css('direction') === 'rtl';
+      }
+      const pointProps = {
+        index: columnIndex,
+        columnIndex,
+        item,
+        x: !isVertical && rtlEnabled !== (i === cellsLength) ? ((_offset = offset) === null || _offset === void 0 ? void 0 : _offset.right) ?? 0 : ((_offset2 = offset) === null || _offset2 === void 0 ? void 0 : _offset2.left) ?? 0,
+        y: isVertical && i === cellsLength ? ((_offset3 = offset) === null || _offset3 === void 0 ? void 0 : _offset3.bottom) ?? 0 : ((_offset4 = offset) === null || _offset4 === void 0 ? void 0 : _offset4.top) ?? 0
       };
       if (!isVertical && i > 0) {
-        const prevItemOffset = items.eq(i - 1).offset();
-        if (prevItemOffset.top < point.y) {
-          point.y = prevItemOffset.top;
+        const prevItemOffset = (0, _position.getBoundingRect)(items[i - 1]);
+        const prevItemOffsetX = rtlEnabled ? prevItemOffset.left : prevItemOffset.right;
+        if (prevItemOffset.top < pointProps.y) {
+          pointProps.y = prevItemOffset.top;
+        }
+        if (needToCheckPrevPoint && Math.round(prevItemOffsetX) !== Math.round(pointProps.x)) {
+          const prevPointProps = _extends({}, pointProps, {
+            item: items[i - 1],
+            x: prevItemOffsetX
+          });
+          if (rtlEnabled) {
+            pointProps.isRightBoundary = true;
+            prevPointProps.isLeftBoundary = true;
+          } else {
+            pointProps.isLeftBoundary = true;
+            prevPointProps.isRightBoundary = true;
+          }
+          addPointIfNeed(result, prevPointProps, pointCreated);
         }
       }
-      if (pointCreated) {
-        notCreatePoint = pointCreated(point);
-      }
-      if (!notCreatePoint) {
-        result.push(point);
-      }
+      addPointIfNeed(result, pointProps, pointCreated);
       columnIndex++;
     }
     return result;
@@ -625,5 +656,9 @@ var _default = exports.default = {
       });
     };
     logSpecificDeprecatedWarningIfNeed(columns);
+  },
+  getComponentBorderWidth(that, $rowsViewElement) {
+    const borderWidth = that.option('showBorders') ? Math.ceil((0, _size.getOuterWidth)($rowsViewElement) - (0, _size.getInnerWidth)($rowsViewElement)) : 0;
+    return borderWidth;
   }
 };

@@ -24,7 +24,7 @@ const PageSizeSelectorDefaultProps = {
   isLargeDisplayMode: true,
   pageSize: _pager_props.PagerDefaultProps.pageSize,
   pageSizeChangedInternal: _pager_props.PagerDefaultProps.pageSizeChangedInternal,
-  pageSizes: _pager_props.PagerDefaultProps.pageSizes
+  allowedPageSizes: _pager_props.PagerDefaultProps.allowedPageSizes
 };
 class PageSizeSelector extends _inferno2.InfernoComponent {
   constructor(props) {
@@ -60,13 +60,14 @@ class PageSizeSelector extends _inferno2.InfernoComponent {
       text: String(p),
       value: p
     };
-    const result = this.props.pageSizes.map(mapFunction);
+    // eslint-disable-next-line max-len
+    const result = this.props.allowedPageSizes.map(mapFunction);
     this.__getterCache.normalizedPageSizes = result;
     return result;
   }
   componentWillUpdate(nextProps) {
     super.componentWillUpdate();
-    if (this.props.pageSizes !== nextProps.pageSizes) {
+    if (this.props.allowedPageSizes !== nextProps.allowedPageSizes) {
       this.__getterCache.normalizedPageSizes = undefined;
     }
   }
@@ -78,12 +79,12 @@ class PageSizeSelector extends _inferno2.InfernoComponent {
       isLargeDisplayMode
     } = this.props;
     return (0, _inferno.createVNode)(1, "div", _consts.PAGER_PAGE_SIZES_CLASS, [isLargeDisplayMode && (0, _inferno.createComponentVNode)(2, _large.PageSizeLarge, {
-      "pageSizes": this.getNormalizedPageSizes(),
+      "allowedPageSizes": this.getNormalizedPageSizes(),
       "pageSize": pageSize,
       "pageSizeChangedInternal": pageSizeChangedInternal
     }), !isLargeDisplayMode && (0, _inferno.createComponentVNode)(2, _small.PageSizeSmall, {
       "parentRef": this.htmlRef,
-      "pageSizes": normalizedPageSizes,
+      "allowedPageSizes": normalizedPageSizes,
       "pageSize": pageSize,
       "pageSizeChangedInternal": pageSizeChangedInternal
     })], 0, null, null, this.htmlRef);

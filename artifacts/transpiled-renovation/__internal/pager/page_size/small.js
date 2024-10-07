@@ -17,7 +17,7 @@ const PagerSmallDefaultProps = {
   inputAttr: {
     'aria-label': _message.default.format('dxPager-ariaPageSize')
   },
-  pageSizes: []
+  allowedPageSizes: []
 };
 const PageSizeSmallDefaultProps = _extends({}, PagerSmallDefaultProps, {
   pageSize: _pager_props.PagerDefaultProps.pageSize,
@@ -36,12 +36,12 @@ class PageSizeSmall extends _inferno2.InfernoComponent {
     super.componentWillUpdate(nextProps, nextState, context);
   }
   createEffects() {
-    const dependency = [this.props, this.state.minWidth, this.props.pageSize, this.props.pageSizeChangedInternal, this.props.pageSizes, this.props.inputAttr];
+    const dependency = [this.props, this.state.minWidth, this.props.pageSize, this.props.pageSizeChangedInternal, this.props.allowedPageSizes, this.props.inputAttr];
     return [new _inferno2.InfernoEffect(this.updateWidth, dependency)];
   }
   updateEffects() {
     var _this$_effects$;
-    const dependency = [this.props, this.state.minWidth, this.props.pageSize, this.props.pageSizeChangedInternal, this.props.pageSizes, this.props.inputAttr];
+    const dependency = [this.props, this.state.minWidth, this.props.pageSize, this.props.pageSizeChangedInternal, this.props.allowedPageSizes, this.props.inputAttr];
     (_this$_effects$ = this._effects[0]) === null || _this$_effects$ === void 0 || _this$_effects$.update(dependency);
   }
   updateWidth() {
@@ -53,20 +53,20 @@ class PageSizeSmall extends _inferno2.InfernoComponent {
     });
   }
   getWidth() {
-    var _this$props$pageSizes;
-    return (0, _calculate_values_fitted_width.calculateValuesFittedWidth)(this.state.minWidth, (_this$props$pageSizes = this.props.pageSizes) === null || _this$props$pageSizes === void 0 ? void 0 : _this$props$pageSizes.map(p => p.value));
+    var _this$props$allowedPa;
+    return (0, _calculate_values_fitted_width.calculateValuesFittedWidth)(this.state.minWidth, (_this$props$allowedPa = this.props.allowedPageSizes) === null || _this$props$allowedPa === void 0 ? void 0 : _this$props$allowedPa.map(p => p.value));
   }
   render() {
     const {
       inputAttr,
-      pageSizes,
+      allowedPageSizes,
       pageSize,
       pageSizeChangedInternal
     } = this.props;
     return (0, _inferno.createComponentVNode)(2, _select_box.SelectBox, {
       "displayExpr": "text",
       "valueExpr": "value",
-      "dataSource": pageSizes,
+      "dataSource": allowedPageSizes,
       "value": pageSize,
       "valueChange": pageSizeChangedInternal,
       "width": this.getWidth(),

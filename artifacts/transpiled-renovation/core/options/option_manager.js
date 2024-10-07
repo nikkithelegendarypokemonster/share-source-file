@@ -16,6 +16,7 @@ class OptionManager {
     this._changingCallback;
     this._changedCallback;
     this._namePreparedCallbacks;
+    this._validateOptionsCallback;
   }
   _setByReference(options, rulesOptions) {
     (0, _extend.extend)(true, options, rulesOptions);
@@ -62,6 +63,9 @@ class OptionManager {
     for (const name in options) {
       this._prepareRelevantNames(options, name, options[name], silent);
     }
+    if (this._validateOptionsCallback) {
+      options = this._validateOptionsCallback(options);
+    }
     for (const name in options) {
       this._setPreparedValue(name, options[name], merge, silent);
     }
@@ -74,6 +78,9 @@ class OptionManager {
   }
   onChanged(callBack) {
     this._changedCallback = callBack;
+  }
+  onValidateOptions(callback) {
+    this._validateOptionsCallback = callback;
   }
   dispose() {
     this._changingCallback = _common.noop;

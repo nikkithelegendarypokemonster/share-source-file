@@ -25,5 +25,10 @@ var _default = exports.default = _m_tree_view.default; // STYLE treeView
  * @name dxTreeViewOptions.selectedIndex
  * @hidden
  */
+/**
+ * @name dxTreeViewOptions.onSelectionChanging
+ * @hidden
+ * @action
+ */
 module.exports = exports.default;
 module.exports.default = exports.default;

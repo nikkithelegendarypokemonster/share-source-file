@@ -62,7 +62,7 @@ class StateStoringController extends _m_modules.default.ViewController {
         this._saveState(this.state());
       }
     };
-    _events_engine.default.on((0, _window.getWindow)(), 'unload', this._windowUnloadHandler);
+    _events_engine.default.on((0, _window.getWindow)(), 'visibilitychange', this._windowUnloadHandler);
     return this; // needed by pivotGrid mocks
   }
   optionChanged(args) {
@@ -80,7 +80,7 @@ class StateStoringController extends _m_modules.default.ViewController {
   }
   dispose() {
     clearTimeout(this._savingTimeoutID);
-    _events_engine.default.off((0, _window.getWindow)(), 'unload', this._windowUnloadHandler);
+    _events_engine.default.off((0, _window.getWindow)(), 'visibilitychange', this._windowUnloadHandler);
   }
   _loadState() {
     const options = this.option('stateStoring');

@@ -43,6 +43,9 @@ const ProgressBar = _track_bar.default.inherit({
       }
     }]);
   },
+  _toggleReadOnlyState() {
+    this.setAria('readonly', undefined);
+  },
   _initMarkup() {
     this._renderStatus();
     this._createCompleteAction();

@@ -119,6 +119,9 @@ function combineGetters(getters) {
 function toLowerCase(value, options) {
   return options !== null && options !== void 0 && options.locale ? value.toLocaleLowerCase(options.locale) : value.toLowerCase();
 }
+function toUpperCase(value, options) {
+  return options !== null && options !== void 0 && options.locale ? value.toLocaleUpperCase(options.locale) : value.toUpperCase();
+}
 const ensurePropValueDefined = function (obj, propName, value, options) {
   if ((0, _type.isDefined)(value)) {
     return value;
@@ -162,18 +165,22 @@ const toComparable = function (value, caseSensitive) {
   if (value instanceof Date) {
     return value.getTime();
   }
+  const collatorSensitivity = options === null || options === void 0 || (_options$collatorOpti = options.collatorOptions) === null || _options$collatorOpti === void 0 ? void 0 : _options$collatorOpti.sensitivity;
   if (value && value instanceof _class.default && value.valueOf) {
-    return value.valueOf();
-  }
-  const isCaseSensitive = (options === null || options === void 0 || (_options$collatorOpti = options.collatorOptions) === null || _options$collatorOpti === void 0 ? void 0 : _options$collatorOpti.sensitivity) === 'case' || caseSensitive;
-  if (!isCaseSensitive && typeof value === 'string') {
-    var _options$collatorOpti2;
-    if ((options === null || options === void 0 || (_options$collatorOpti2 = options.collatorOptions) === null || _options$collatorOpti2 === void 0 ? void 0 : _options$collatorOpti2.sensitivity) === 'base') {
-      const REMOVE_DIACRITICAL_MARKS_REGEXP = /[\u0300-\u036f]/g;
-      value = toLowerCase(value, options).normalize('NFD').replace(REMOVE_DIACRITICAL_MARKS_REGEXP, '');
-      return value;
+    value = value.valueOf();
+  } else if (typeof value === 'string' && (collatorSensitivity === 'base' || collatorSensitivity === 'case')) {
+    const REMOVE_DIACRITICAL_MARKS_REGEXP = /[\u0300-\u036f]/g;
+    if (collatorSensitivity === 'base') {
+      value = toLowerCase(value, options);
     }
-    return toLowerCase(value, options);
+    value = value.normalize('NFD').replace(REMOVE_DIACRITICAL_MARKS_REGEXP, '');
+  }
+  const isCaseSensitive = caseSensitive || collatorSensitivity === 'case' || collatorSensitivity === 'variant';
+  if (typeof value === 'string' && !isCaseSensitive) {
+    var _options$locale;
+    const locale = options === null || options === void 0 || (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : _options$locale.toLowerCase();
+    const useUpperCase = locale && !!['hy', 'el'].find(code => locale === code || locale.startsWith(`${code}-`));
+    return (useUpperCase ? toUpperCase : toLowerCase)(value, options);
   }
   return value;
 };

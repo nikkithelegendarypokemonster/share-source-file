@@ -541,7 +541,12 @@ class ColumnsResizerViewController extends _m_modules.default.ViewController {
   }
   _isRtlParentStyle() {
     var _this$_$parentContain;
-    return this.option('rtlEnabled') && ((_this$_$parentContain = this._$parentContainer) === null || _this$_$parentContain === void 0 ? void 0 : _this$_$parentContain.parent().css('direction')) === 'rtl';
+    const rtlEnabled = this.option('rtlEnabled');
+    return rtlEnabled && ((_this$_$parentContain = this._$parentContainer) === null || _this$_$parentContain === void 0 ? void 0 : _this$_$parentContain.parent().css('direction')) === 'rtl';
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _correctColumnIndexForPoint(point, correctionValue, columns) {
+    point.columnIndex -= correctionValue;
   }
   /**
    * @extended: adaptivity
@@ -552,7 +557,7 @@ class ColumnsResizerViewController extends _m_modules.default.ViewController {
     const isRtlParentStyle = this._isRtlParentStyle();
     const firstPointColumnIndex = !isNextColumnMode && rtlEnabled && !isRtlParentStyle ? 0 : 1;
     if (point.index >= firstPointColumnIndex && point.index < cellsLength + (!isNextColumnMode && (!rtlEnabled || isRtlParentStyle) ? 1 : 0)) {
-      point.columnIndex -= firstPointColumnIndex;
+      this._correctColumnIndexForPoint(point, firstPointColumnIndex, columns);
       const currentColumn = columns[point.columnIndex] || {};
       const nextColumn = columns[point.columnIndex + 1] || {};
       return !(isNextColumnMode ? currentColumn.allowResizing && nextColumn.allowResizing : currentColumn.allowResizing);
@@ -652,17 +657,17 @@ class ColumnsResizerViewController extends _m_modules.default.ViewController {
     return currentColumnIndex + 1;
   }
   _setupResizingInfo(posX) {
-    const that = this;
-    const currentColumnIndex = that._targetPoint.columnIndex;
-    const nextColumnIndex = that._getNextColumnIndex(currentColumnIndex);
-    const currentHeader = that._columnHeadersView.getHeaderElement(currentColumnIndex);
-    const nextHeader = that._columnHeadersView.getHeaderElement(nextColumnIndex);
-    that._resizingInfo = {
+    const currentColumnIndex = this._targetPoint.columnIndex;
+    const nextColumnIndex = this._getNextColumnIndex(currentColumnIndex);
+    const $currentHeader = this._columnHeadersView.getHeaderElement(currentColumnIndex);
+    const $nextHeader = this._columnHeadersView.getHeaderElement(nextColumnIndex);
+    this._resizingInfo = {
       startPosX: posX,
       currentColumnIndex,
-      currentColumnWidth: currentHeader && currentHeader.length > 0 ? (0, _position.getBoundingRect)(currentHeader[0]).width : 0,
+      currentColumnWidth: $currentHeader !== null && $currentHeader !== void 0 && $currentHeader.length ? (0, _position.getBoundingRect)($currentHeader[0]).width : 0,
       nextColumnIndex,
-      nextColumnWidth: nextHeader && nextHeader.length > 0 ? (0, _position.getBoundingRect)(nextHeader[0]).width : 0
+      nextColumnWidth: $nextHeader !== null && $nextHeader !== void 0 && $nextHeader.length ? (0, _position.getBoundingRect)($nextHeader[0]).width : 0,
+      needToInvertResizing: this._needToInvertResizing($currentHeader)
     };
   }
   /**
@@ -710,14 +715,22 @@ class ColumnsResizerViewController extends _m_modules.default.ViewController {
    * @protected
    */
   _generatePointsByColumns() {
+    let needToCheckPrevPoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
     const that = this;
     const columns = that._columnsController ? that._columnsController.getVisibleColumns() : [];
     const cells = that._columnHeadersView.getColumnElements();
     let pointsByColumns = [];
     if (cells && cells.length > 0) {
-      pointsByColumns = _m_utils.default.getPointsByColumns(cells, point => that._pointCreated(point, cells.length, columns));
+      pointsByColumns = _m_utils.default.getPointsByColumns(cells, point => that._pointCreated(point, cells.length, columns), false, 0, needToCheckPrevPoint);
     }
     that._pointsByColumns = pointsByColumns;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _needToInvertResizing($cell) {
+    const rtlEnabled = this.option('rtlEnabled');
+    const isRtlParentStyle = this._isRtlParentStyle();
+    const isNextColumnMode = isNextColumnResizingMode(this);
+    return (isNextColumnMode || isRtlParentStyle) && rtlEnabled;
   }
   _unsubscribeFromEvents() {
     this._moveSeparatorHandler && _events_engine.default.off(_dom_adapter.default.getDocument(), (0, _index.addNamespace)(_pointer.default.move, MODULE_NAMESPACE), this._moveSeparatorHandler);
@@ -746,10 +759,12 @@ class ColumnsResizerViewController extends _m_modules.default.ViewController {
     const columnsSeparatorWidth = this._columnsSeparatorView.width();
     const isNextColumnMode = isNextColumnResizingMode(this);
     const adaptColumnWidthByRatio = isNextColumnMode && this.option('adaptColumnWidthByRatio') && !this.option('columnAutoWidth');
-    const rtlEnabled = this.option('rtlEnabled');
     const isRtlParentStyle = this._isRtlParentStyle();
     const column = visibleColumns[resizingInfo.currentColumnIndex];
     const nextColumn = visibleColumns[resizingInfo.nextColumnIndex];
+    const {
+      needToInvertResizing
+    } = resizingInfo;
     function isPercentWidth(width) {
       return (0, _type.isString)(width) && width.endsWith('%');
     }
@@ -813,7 +828,7 @@ class ColumnsResizerViewController extends _m_modules.default.ViewController {
       return result;
     }
     deltaX = posX - resizingInfo.startPosX;
-    if ((isNextColumnMode || isRtlParentStyle) && rtlEnabled) {
+    if (needToInvertResizing) {
       deltaX = -deltaX;
     }
     let {
@@ -1016,9 +1031,9 @@ class DraggingHeaderViewController extends _m_modules.default.ViewController {
    * @extended: column_fixing
    */
   _generatePointsByColumns(options) {
-    const that = this;
+    let needToCheckPrevPoint = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     this.isCustomGroupColumnPosition = this.checkIsCustomGroupColumnPosition(options);
-    const points = _m_utils.default.getPointsByColumns(options.columnElements, point => that._pointCreated(point, options.columns, options.targetDraggingPanel.getName(), options.sourceColumn), options.isVerticalOrientation, options.startColumnIndex);
+    const points = _m_utils.default.getPointsByColumns(options.columnElements, point => this._pointCreated(point, options.columns, options.targetDraggingPanel.getName(), options.sourceColumn), options.isVerticalOrientation, options.startColumnIndex, needToCheckPrevPoint);
     return points;
   }
   checkIsCustomGroupColumnPosition(options) {

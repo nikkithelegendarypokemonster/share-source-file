@@ -21,6 +21,7 @@ require("./module_not_extended/filter_builder");
 require("./module_not_extended/filter_panel");
 require("./module_not_extended/pager");
 require("./module_not_extended/columns_resizing_reordering");
+require("./module_not_extended/sticky_columns");
 require("./module_not_extended/column_fixing");
 require("./module_not_extended/adaptivity");
 require("./selection/m_selection");

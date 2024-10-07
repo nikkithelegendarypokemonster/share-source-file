@@ -13,8 +13,6 @@ var _type = require("../../../../core/utils/type");
 var _message = _interopRequireDefault(require("../../../../localization/message"));
 var _m_utils = _interopRequireDefault(require("../m_utils"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-/* eslint-disable max-classes-per-file */
-
 // @ts-expect-error
 
 const MASTER_DETAIL_CELL_CLASS = 'dx-master-detail-cell';
@@ -310,29 +308,32 @@ const rowsView = Base => class RowsViewMasterDetailExtender extends Base {
     const {
       row
     } = options;
-    let $detailCell;
-    const visibleColumns = this._columnsController.getVisibleColumns();
     if (row.rowType && this._isDetailRow(row)) {
       if (this._needRenderCell(0, options.columnIndices)) {
-        $detailCell = this._renderCell($row, {
-          value: null,
-          row,
-          rowIndex: row.rowIndex,
-          column: {
-            command: 'detail'
-          },
-          columnIndex: 0,
-          change: options.change
-        });
-        $detailCell.addClass(CELL_FOCUS_DISABLED_CLASS).addClass(MASTER_DETAIL_CELL_CLASS).attr('colSpan', visibleColumns.length);
-        const isEditForm = row.isEditing;
-        if (!isEditForm) {
-          $detailCell.attr('aria-roledescription', _message.default.format('dxDataGrid-masterDetail'));
-        }
+        this._renderMasterDetailCell($row, row, options);
       }
     } else {
       super._renderCells.apply(this, arguments);
     }
+  }
+  _renderMasterDetailCell($row, row, options) {
+    const visibleColumns = this._columnsController.getVisibleColumns();
+    const $detailCell = this._renderCell($row, {
+      value: null,
+      row,
+      rowIndex: row.rowIndex,
+      column: {
+        command: 'detail'
+      },
+      columnIndex: 0,
+      change: options.change
+    });
+    $detailCell.addClass(CELL_FOCUS_DISABLED_CLASS).addClass(MASTER_DETAIL_CELL_CLASS).attr('colSpan', visibleColumns.length);
+    const isEditForm = row.isEditing;
+    if (!isEditForm) {
+      $detailCell.attr('aria-roledescription', _message.default.format('dxDataGrid-masterDetail'));
+    }
+    return $detailCell;
   }
 };
 const masterDetailModule = exports.masterDetailModule = {

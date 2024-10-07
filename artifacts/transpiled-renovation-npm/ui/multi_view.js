@@ -17,7 +17,8 @@ var _default = exports.default = _m_multi_view.default; // STYLE multiView
  * @hidden
  */
 /**
- * @name dxMultiViewItem.visible
+ * @name dxMultiViewOptions.onSelectionChanging
+ * @action
  * @hidden
  */
 /**

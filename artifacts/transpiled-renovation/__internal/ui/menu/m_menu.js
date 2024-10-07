@@ -212,6 +212,12 @@ class Menu extends _m_menu_base.default {
     this._addCustomCssClass(this.$element());
     this.setAria('role', 'menubar');
   }
+  _setAriaRole(state) {
+    const role = this._isAdaptivityEnabled() && state ? undefined : 'menubar';
+    this.setAria({
+      role
+    });
+  }
   _render() {
     super._render();
     this._initAdaptivity();
@@ -268,6 +274,7 @@ class Menu extends _m_menu_base.default {
       this._treeView && this._treeView.collapseAll();
       this._overlay && this._toggleTreeView(state);
     }
+    this._setAriaRole(state);
     $menuItemsContainer.toggle(!state);
     $adaptiveElements.toggle(state);
   }

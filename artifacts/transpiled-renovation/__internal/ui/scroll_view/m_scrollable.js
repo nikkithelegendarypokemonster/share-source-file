@@ -366,6 +366,9 @@ const Scrollable = _dom_component.default.inherit({
     this._strategy.scrollBy(distance);
   },
   scrollTo(targetLocation) {
+    if (!(0, _window.hasWindow)()) {
+      return;
+    }
     targetLocation = this._normalizeLocation(targetLocation);
     this._updateIfNeed();
     let location = this._location();

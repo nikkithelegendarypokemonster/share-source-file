@@ -3,7 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.rowsModule = exports.RowsView = void 0;
+exports.RowsView = void 0;
+exports.isGroupRow = isGroupRow;
+exports.rowsModule = void 0;
 var _renderer = _interopRequireDefault(require("../../../../core/renderer"));
 var _browser = _interopRequireDefault(require("../../../../core/utils/browser"));
 var _common = require("../../../../core/utils/common");
@@ -21,6 +23,7 @@ var _remove = require("../../../../events/remove");
 var _message = _interopRequireDefault(require("../../../../localization/message"));
 var _ui = _interopRequireDefault(require("../../../../ui/scroll_view/ui.scrollable"));
 var _m_utils = _interopRequireDefault(require("../m_utils"));
+var _const = require("../sticky_columns/const");
 var _m_columns_view = require("./m_columns_view");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -161,7 +164,9 @@ class RowsView extends _m_columns_view.ColumnsView {
    */
   _updateCell($cell, options) {
     if (isGroupRow(options)) {
-      $cell.addClass(GROUP_CELL_CLASS);
+      const isGroupContainer = $cell.is(`.${this.addWidgetPrefix(_const.CLASSES.groupRowContainer)}`);
+      const $groupCell = isGroupContainer ? $cell.parent() : $cell;
+      $groupCell.addClass(GROUP_CELL_CLASS);
     }
     super._updateCell.apply(this, arguments);
   }

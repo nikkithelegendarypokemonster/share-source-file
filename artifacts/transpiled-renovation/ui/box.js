@@ -21,6 +21,11 @@ var _default = exports.default = _m_box.default; // STYLE box
  * @hidden
  */
 /**
+ * @name dxBoxOptions.onSelectionChanging
+ * @action
+ * @hidden
+ */
+/**
  * @name dxBoxOptions.onSelectionChanged
  * @action
  * @hidden

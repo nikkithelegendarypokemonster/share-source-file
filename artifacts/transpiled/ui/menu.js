@@ -14,7 +14,7 @@ var _default = exports.default = _m_menu.default; // STYLE menu
  * @hidden
  */
 /**
- * @name dxMenuOptions.onSelectionChange
+ * @name dxMenuOptions.onSelectionChanging
  * @hidden
  * @action
  */

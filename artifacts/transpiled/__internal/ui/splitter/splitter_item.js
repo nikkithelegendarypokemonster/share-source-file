@@ -20,6 +20,7 @@ class SplitterItem extends _m_item.default {
       const id = `dx_${new _guid.default()}`;
       this._setIdAttr(id);
       const config = this._owner._getResizeHandleConfig(id);
+      // @ts-expect-error
       this._resizeHandle = this._owner._createComponent((0, _renderer.default)('<div>'), _resize_handle.default, config);
       if (this._resizeHandle && this._$element) {
         (0, _renderer.default)(this._resizeHandle.element()).insertAfter(this._$element);

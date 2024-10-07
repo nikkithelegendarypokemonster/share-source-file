@@ -37,7 +37,7 @@ var _m_appointment = require("./m_appointment");
 var _m_appointment_layout = require("./m_appointment_layout");
 var _m_core = require("./resizing/m_core");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); } // @ts-expect-error
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); } /* eslint-disable spellcheck/spell-checker */ // @ts-expect-error
 const COMPONENT_CLASS = 'dx-scheduler-scrollable-appointments';
 const DBLCLICK_EVENT_NAME = (0, _index.addNamespace)(_double_click.name, 'dxSchedulerAppointment');
 const toMs = _date.default.dateToMilliseconds;
@@ -83,14 +83,14 @@ class SchedulerAppointments extends _uiCollection_widget.default {
   _supportedKeys() {
     const parent = super._supportedKeys();
     const tabHandler = function (e) {
-      const appointments = this._getAccessAppointments();
-      const focusedAppointment = appointments.filter('.dx-state-focused');
-      let index = focusedAppointment.data(_m_constants.APPOINTMENT_SETTINGS_KEY).sortedIndex;
-      const lastIndex = appointments.length - 1;
+      const navigatableItems = this._getNavigatableItems();
+      const focusedItem = navigatableItems.filter('.dx-state-focused');
+      let index = focusedItem.data(_m_constants.APPOINTMENT_SETTINGS_KEY).sortedIndex;
+      const lastIndex = navigatableItems.length - 1;
       if (index > 0 && e.shiftKey || index < lastIndex && !e.shiftKey) {
         e.preventDefault();
         e.shiftKey ? index-- : index++;
-        const $nextAppointment = this._getAppointmentByIndex(index);
+        const $nextAppointment = this._getNavigatableItemByIndex(index);
         this._resetTabIndex($nextAppointment);
         // @ts-expect-error
         _events_engine.default.trigger($nextAppointment, 'focus');
@@ -121,12 +121,18 @@ class SchedulerAppointments extends _uiCollection_widget.default {
       tab: tabHandler
     });
   }
-  _getAppointmentByIndex(sortedIndex) {
-    const appointments = this._getAccessAppointments();
-    return appointments.filter((_, $item) => (0, _element_data.data)($item, _m_constants.APPOINTMENT_SETTINGS_KEY).sortedIndex === sortedIndex).eq(0);
+  _getNavigatableItemByIndex(sortedIndex) {
+    const appointments = this._getNavigatableItems();
+    return appointments.filter(
+    // @ts-expect-error
+    (_, $item) => (0, _element_data.data)($item, _m_constants.APPOINTMENT_SETTINGS_KEY).sortedIndex === sortedIndex).eq(0);
   }
-  _getAccessAppointments() {
-    return this._itemElements().filter(':visible').not('.dx-state-disabled');
+  _getNavigatableItems() {
+    // @ts-expect-error
+    const appts = this._itemElements().filter(':visible').not('.dx-state-disabled');
+    // @ts-expect-error
+    const apptCollectors = this.$element().find('.dx-scheduler-appointment-collector');
+    return appts.add(apptCollectors);
   }
   _resetTabIndex($appointment) {
     this._focusTarget().attr('tabIndex', -1);
@@ -134,10 +140,10 @@ class SchedulerAppointments extends _uiCollection_widget.default {
   }
   _moveFocus() {}
   _focusTarget() {
-    return this._itemElements();
+    return this._getNavigatableItems();
   }
   _renderFocusTarget() {
-    const $appointment = this._getAppointmentByIndex(0);
+    const $appointment = this._getNavigatableItemByIndex(0);
     this._resetTabIndex($appointment);
   }
   _focusInHandler(e) {
@@ -146,7 +152,7 @@ class SchedulerAppointments extends _uiCollection_widget.default {
     this.option('focusedElement', (0, _element.getPublicElement)((0, _renderer.default)(e.target)));
   }
   _focusOutHandler(e) {
-    const $appointment = this._getAppointmentByIndex(0);
+    const $appointment = this._getNavigatableItemByIndex(0);
     this.option('focusedElement', (0, _element.getPublicElement)($appointment));
     super._focusOutHandler(e);
   }
@@ -734,7 +740,8 @@ class SchedulerAppointments extends _uiCollection_widget.default {
           settings: []
         },
         isAllDay: !!virtualAppointment.isAllDay,
-        buttonColor: color
+        buttonColor: color,
+        sortedIndex: appointmentSetting.sortedIndex
       };
     }
     appointmentSetting.targetedAppointmentData = this.invoke('getTargetedAppointmentData', appointmentData, $appointment);
@@ -768,6 +775,7 @@ class SchedulerAppointments extends _uiCollection_widget.default {
           },
           items: virtualItems,
           buttonColor: virtualGroup.buttonColor,
+          sortedIndex: virtualGroup.sortedIndex,
           width: buttonWidth - this.option('_collectorOffset'),
           height: buttonHeight,
           onAppointmentClick: this.option('onItemClick'),

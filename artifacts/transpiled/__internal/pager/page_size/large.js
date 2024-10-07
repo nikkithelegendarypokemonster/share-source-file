@@ -18,7 +18,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 
 const PageSizeLargeDefaultProps = exports.PageSizeLargeDefaultProps = {
-  pageSizes: [],
+  allowedPageSizes: [],
   pageSize: _pager_props.PagerDefaultProps.pageSize,
   pageSizeChangedInternal: _pager_props.PagerDefaultProps.pageSizeChangedInternal
 };
@@ -40,9 +40,9 @@ class PageSizeLarge extends _inferno2.BaseInfernoComponent {
     const result = (() => {
       const {
         pageSize,
-        pageSizes
+        allowedPageSizes
       } = this.props;
-      return pageSizes.map((_ref3, index) => {
+      return allowedPageSizes.map((_ref3, index) => {
         const {
           text,
           value: processedPageSize
@@ -70,7 +70,7 @@ class PageSizeLarge extends _inferno2.BaseInfernoComponent {
     };
   }
   componentWillUpdate(nextProps) {
-    const componentChanged = this.props.pageSize !== nextProps.pageSize || this.props.pageSizes !== nextProps.pageSizes || this.props.pageSizeChangedInternal !== nextProps.pageSizeChangedInternal;
+    const componentChanged = this.props.pageSize !== nextProps.pageSize || this.props.allowedPageSizes !== nextProps.allowedPageSizes || this.props.pageSizeChangedInternal !== nextProps.pageSizeChangedInternal;
     if (componentChanged) {
       this.__getterCache.pageSizesText = undefined;
     }

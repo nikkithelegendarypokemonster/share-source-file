@@ -24,32 +24,22 @@ var _component = require("./component");
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-plusplus */
-/* eslint-disable consistent-return */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable new-cap */
-/* eslint-disable no-void */
-/* eslint-disable no-return-assign */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable @typescript-eslint/prefer-optional-chain */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable no-multi-assign */
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
 // @ts-expect-error
 
 class DOMComponent extends _component.Component {
+  // eslint-disable-next-line max-len
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
   static getInstance(element) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return (0, _public_component.getInstanceByElement)((0, _renderer.default)(element), this);
   }
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   static defaultOptions(rule) {
     this._classCustomRules = Object.hasOwnProperty.bind(this)('_classCustomRules') && this._classCustomRules ? this._classCustomRules : [];
     this._classCustomRules.push(rule);
   }
   _getDefaultOptions() {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return (0, _extend.extend)(super._getDefaultOptions(), {
       width: undefined,
       height: undefined,
@@ -60,7 +50,6 @@ class DOMComponent extends _component.Component {
       // @ts-expect-error
     }, this._useTemplates() ? _template_manager.TemplateManager.createDefaultOptions() : {});
   }
-  // @ts-expect-error
   ctor(element, options) {
     this._customClass = null;
     this._createElement(element);
@@ -79,8 +68,10 @@ class DOMComponent extends _component.Component {
     this._$element = (0, _renderer.default)(element);
   }
   _getSynchronizableOptionsForCreateComponent() {
+    // @ts-expect-error
     return ['rtlEnabled', 'disabled', 'templatesRenderAsynchronously'];
   }
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   _checkFunctionValueDeprecation(optionNames) {
     if (!this.option('_ignoreFunctionValueDeprecation')) {
       optionNames.forEach(optionName => {
@@ -99,19 +90,23 @@ class DOMComponent extends _component.Component {
     this._attachWindowResizeCallback();
     this._initTemplateManager();
   }
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   _setOptionsByDevice(instanceCustomRules) {
     // @ts-expect-error
+    // eslint-disable-next-line max-len
     super._setOptionsByDevice([].concat(this.constructor._classCustomRules || [], instanceCustomRules || []));
   }
   _isInitialOptionValue(name) {
     // @ts-expect-error
     const isCustomOption = this.constructor._classCustomRules
     // @ts-expect-error
+    // eslint-disable-next-line max-len
     && Object.prototype.hasOwnProperty.call(this._convertRulesToOptions(this.constructor._classCustomRules), name);
     return !isCustomOption && super._isInitialOptionValue(name);
   }
   _attachWindowResizeCallback() {
     if (this._isDimensionChangeSupported()) {
+      // eslint-disable-next-line no-multi-assign
       const windowResizeCallBack = this._windowResizeCallBack = this._dimensionChanged.bind(this);
       _resize_callbacks.default.add(windowResizeCallBack);
     }
@@ -122,6 +117,7 @@ class DOMComponent extends _component.Component {
   _renderComponent() {
     (0, _shadow_dom.addShadowDomStyles)(this.$element());
     this._initMarkup();
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     (0, _window.hasWindow)() && this._render();
   }
   _initMarkup() {
@@ -143,7 +139,10 @@ class DOMComponent extends _component.Component {
     const attributes = (0, _extend.extend)({}, elementAttr);
     const classNames = attributes.class;
     delete attributes.class;
-    this.$element().attr(attributes).removeClass(this._customClass).addClass(classNames);
+    // @ts-expect-error
+    this.$element().attr(attributes)
+    // @ts-expect-error
+    .removeClass(this._customClass).addClass(classNames);
     this._customClass = classNames;
   }
   _renderVisibilityChange() {
@@ -161,12 +160,14 @@ class DOMComponent extends _component.Component {
     const width = this._getOptionValue('width', element);
     const height = this._getOptionValue('height', element);
     if (this._isCssUpdateRequired(element, height, width)) {
+      // @ts-expect-error
       $element.css({
         width: width === null ? '' : width,
         height: height === null ? '' : height
       });
     }
   }
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   _isCssUpdateRequired(element, height, width) {
     return !!((0, _type.isDefined)(width) || (0, _type.isDefined)(height) || element.style.width || element.style.height);
   }
@@ -232,6 +233,8 @@ class DOMComponent extends _component.Component {
     this._renderComponent();
   }
   _dispose() {
+    // eslint-disable-next-line max-len
+    // eslint-disable-next-line @typescript-eslint/prefer-optional-chain, @typescript-eslint/no-unused-expressions
     this._templateManager && this._templateManager.dispose();
     super._dispose();
     this._clean();
@@ -246,32 +249,40 @@ class DOMComponent extends _component.Component {
     const $element = this.$element();
     $element.toggleClass('dx-rtl', rtl);
   }
-  _createComponent(element, component) {
-    let config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    const synchronizableOptions = (0, _common.grep)(this._getSynchronizableOptionsForCreateComponent(), value => !(value in config));
+  _createComponent(element, component,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  componentConfiguration) {
+    const configuration = componentConfiguration ?? {};
+    const synchronizableOptions = (0, _common.grep)(this._getSynchronizableOptionsForCreateComponent(), value => !(value in configuration));
     const {
       integrationOptions
     } = this.option();
     let {
       nestedComponentOptions
     } = this.option();
-    nestedComponentOptions = nestedComponentOptions || _common.noop;
+    nestedComponentOptions = nestedComponentOptions ?? _common.noop;
     const nestedComponentConfig = (0, _extend.extend)({
       integrationOptions
     }, nestedComponentOptions(this));
-    synchronizableOptions.forEach(optionName => nestedComponentConfig[optionName] = this.option(optionName));
-    this._extendConfig(config, nestedComponentConfig);
+    synchronizableOptions.forEach(
+    // eslint-disable-next-line no-return-assign
+    optionName => nestedComponentConfig[optionName] = this.option(optionName));
+    this._extendConfig(configuration, nestedComponentConfig);
+    // eslint-disable-next-line no-void
     let instance = void 0;
     if ((0, _type.isString)(component)) {
-      const $element = (0, _renderer.default)(element)[component](config);
+      const $element = (0, _renderer.default)(element)[component](configuration);
       instance = $element[component]('instance');
     } else if (element) {
+      // @ts-expect-error
       instance = component.getInstance(element);
       if (instance) {
         // @ts-expect-error
-        instance.option(config);
+        instance.option(configuration);
       } else {
-        instance = new component(element, config);
+        // @ts-expect-error
+        // eslint-disable-next-line new-cap
+        instance = new component(element, configuration);
       }
     }
     if (instance) {
@@ -289,16 +300,20 @@ class DOMComponent extends _component.Component {
       // @ts-expect-error
       instance.on('disposing', () => this.off('optionChanged', optionChangedHandler));
     }
+    // @ts-expect-error
     return instance;
   }
-  _extendConfig(config, extendConfig) {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  _extendConfig(configuration, extendConfig) {
     (0, _iterator.each)(extendConfig, (key, value) => {
-      !Object.prototype.hasOwnProperty.call(config, key) && (config[key] = value);
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      !Object.prototype.hasOwnProperty.call(configuration, key) && (configuration[key] = value);
     });
   }
   _defaultActionConfig() {
     const $element = this.$element();
     const context = this._modelByElement($element);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return (0, _extend.extend)(super._defaultActionConfig(), {
       context
     });
@@ -307,13 +322,17 @@ class DOMComponent extends _component.Component {
     const $element = this.$element();
     const model = this._modelByElement($element);
     const element = this.element();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return (0, _extend.extend)(super._defaultActionArgs(), {
       element,
       model
     });
   }
   _optionChanged(args) {
-    switch (args.name) {
+    const {
+      name
+    } = args;
+    switch (name) {
       case 'width':
       case 'height':
         this._renderDimensions();
@@ -334,12 +353,14 @@ class DOMComponent extends _component.Component {
   }
   _removeAttributes(element) {
     const attrs = element.attributes;
+    // eslint-disable-next-line no-plusplus
     for (let i = attrs.length - 1; i >= 0; i--) {
       const attr = attrs[i];
       if (attr) {
         const {
           name
         } = attr;
+        // eslint-disable-next-line @typescript-eslint/prefer-includes
         if (!name.indexOf('aria-') || name.indexOf('dx-') !== -1 || name === 'role' || name === 'style' || name === 'tabindex') {
           element.removeAttribute(name);
         }
@@ -360,6 +381,7 @@ class DOMComponent extends _component.Component {
   endUpdate() {
     const renderRequired = this._isInitializingRequired();
     super.endUpdate();
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     this._isUpdateAllowed() && this._updateDOMComponent(renderRequired);
   }
   $element() {
@@ -380,13 +402,16 @@ class DOMComponent extends _component.Component {
     super.resetOption(optionName);
     if (optionName === 'width' || optionName === 'height') {
       const initialOption = this.initialOption(optionName);
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       !(0, _type.isDefined)(initialOption) && this.$element().css(optionName, '');
     }
   }
   _getAnonymousTemplateName() {
+    // eslint-disable-next-line no-void
     return void 0;
   }
   _initTemplateManager() {
+    // eslint-disable-next-line no-void
     if (this._templateManager || !this._useTemplates()) return void 0;
     const {
       integrationOptions = {}
@@ -418,18 +443,25 @@ class DOMComponent extends _component.Component {
       this._options.silent('_hasAnonymousTemplateContent', true);
     }
   }
+  // eslint-disable-next-line max-len
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
   _getTemplateByOption(optionName) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return this._getTemplate(this.option(optionName));
   }
+  // eslint-disable-next-line max-len
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
   _getTemplate(templateSource) {
     const templates = this.option('integrationOptions.templates');
     const isAsyncTemplate = this.option('templatesRenderAsynchronously');
     const skipTemplates = this.option('integrationOptions.skipTemplates');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return this._templateManager.getTemplate(templateSource, templates, {
       isAsyncTemplate,
       skipTemplates
     }, this);
   }
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   _saveTemplate(name, template) {
     this._setOptionWithoutOptionChange(`integrationOptions.templates.${name}`, this._templateManager._createTemplate(template));
   }

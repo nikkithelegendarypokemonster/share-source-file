@@ -121,9 +121,13 @@ class CompactAppointmentsHelper {
     let {
       isCompact,
       $container,
-      coordinates
+      coordinates,
+      sortedIndex
     } = _ref;
     const result = (0, _renderer.default)('<div>').addClass(APPOINTMENT_COLLECTOR_CLASS).toggleClass(COMPACT_APPOINTMENT_COLLECTOR_CLASS, isCompact).appendTo($container);
+    result.data('dxAppointmentSettings', {
+      sortedIndex
+    });
     this._setPosition(result, coordinates);
     return result;
   }

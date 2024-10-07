@@ -21,6 +21,11 @@ var _default = exports.default = _m_action_sheet.default; // STYLE actionSheet
  * @hidden
  */
 /**
+ * @name dxActionSheetOptions.onSelectionChanging
+ * @action
+ * @hidden
+ */
+/**
  * @name dxActionSheetOptions.onSelectionChanged
  * @action
  * @hidden

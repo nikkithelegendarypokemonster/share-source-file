@@ -208,6 +208,7 @@ const HtmlEditor = _editor.default.inherit({
   _render() {
     this._prepareConverters();
     this.callBase();
+    this._toggleReadOnlyState();
   },
   _prepareQuillRegistrator() {
     if (!this._quillRegistrator) {

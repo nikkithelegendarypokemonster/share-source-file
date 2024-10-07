@@ -333,6 +333,9 @@ class ComponentWrapper extends _dom_component.default {
     super._optionChanged(option);
     this._invalidate();
   }
+  _validateOptions(options) {
+    return super._validateOptions(options);
+  }
   _extractDefaultSlot() {
     if (this.option('_hasAnonymousTemplateContent')) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -392,6 +395,21 @@ class ComponentWrapper extends _dom_component.default {
     }
   }
   // Public API
+  focus() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const $root = this.$element();
+    const hasFocus = $root.is(':focus') || $root.find(':focus').length > 0;
+    if (hasFocus) {
+      return;
+    }
+    if (this.option('focusStateEnabled')) {
+      $root.focus();
+    } else {
+      var _focusableElements$;
+      const focusableElements = $root.find('[tabindex]');
+      (_focusableElements$ = focusableElements[0]) === null || _focusableElements$ === void 0 || _focusableElements$.focus();
+    }
+  }
   repaint() {
     this._isNodeReplaced = false;
     this._shouldRaiseContentReady = true;

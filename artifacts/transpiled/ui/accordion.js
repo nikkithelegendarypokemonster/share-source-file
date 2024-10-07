@@ -5,6 +5,11 @@ var _m_accordion = _interopRequireDefault(require("../__internal/ui/m_accordion"
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var _default = exports.default = _m_accordion.default; // STYLE accordion
 /**
+ * @name dxAccordionOptions.onSelectionChanging
+ * @hidden
+ * @action
+ */
+/**
  * @name dxAccordionItem
  * @inherits CollectionWidgetItem
  * @type object

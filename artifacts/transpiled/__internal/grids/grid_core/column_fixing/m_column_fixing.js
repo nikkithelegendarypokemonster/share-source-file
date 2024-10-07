@@ -36,6 +36,11 @@ const POINTER_EVENTS_NONE_CLASS = 'dx-pointer-events-none';
 const COMMAND_TRANSPARENT = 'transparent';
 const GROUP_ROW_CLASS = 'dx-group-row';
 const DETAIL_ROW_CLASS = 'dx-master-detail-row';
+const FIXED_COLUMN_ICON_CLASS = 'fix-column';
+const FIXED_COLUMN_LEFT_ICON_CLASS = 'fix-column-left';
+const FIXED_COLUMN_RIGHT_ICON_CLASS = 'fix-column-right';
+const STICKY_COLUMN_ICON_CLASS = 'stick-column';
+const UNFIXED_COLUMN_ICON_CLASS = 'unfix-column';
 const getTransparentColumnIndex = function (fixedColumns) {
   let transparentColumnIndex = -1;
   (0, _iterator.each)(fixedColumns, (index, column) => {
@@ -258,10 +263,6 @@ const baseFixedColumns = Base => class BaseFixedColumnsExtender extends Base {
     }
     return $cell;
   }
-  _getContent(isFixedTableRendering) {
-    var _this$_fixedTableElem;
-    return isFixedTableRendering ? (_this$_fixedTableElem = this._fixedTableElement) === null || _this$_fixedTableElem === void 0 ? void 0 : _this$_fixedTableElem.parent() : super._getContent.apply(this, arguments);
-  }
   _wrapTableInScrollContainer($table, isFixedTableRendering) {
     const $scrollContainer = super._wrapTableInScrollContainer.apply(this, arguments);
     if (this._isFixedTableRendering || isFixedTableRendering) {
@@ -311,6 +312,10 @@ const baseFixedColumns = Base => class BaseFixedColumnsExtender extends Base {
       super._renderCellContent.apply(this, arguments);
     }
   }
+  getContent(isFixedTableRendering) {
+    var _this$_fixedTableElem;
+    return isFixedTableRendering ? (_this$_fixedTableElem = this._fixedTableElement) === null || _this$_fixedTableElem === void 0 ? void 0 : _this$_fixedTableElem.parent() : super.getContent.apply(this, arguments);
+  }
   _getCellElementsCore(rowIndex) {
     const cellElements = super._getCellElementsCore.apply(this, arguments);
     const isGroupRow = cellElements === null || cellElements === void 0 ? void 0 : cellElements.parent().hasClass(GROUP_ROW_CLASS);
@@ -341,8 +346,8 @@ const baseFixedColumns = Base => class BaseFixedColumnsExtender extends Base {
     return cellElements;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getColumnWidths(fixedTableElement) {
-    const result = super.getColumnWidths();
+  getColumnWidths(fixedTableElement, rowIndex) {
+    const result = super.getColumnWidths(fixedTableElement, rowIndex);
     const fixedColumns = this.getFixedColumns();
     const fixedWidths = this._fixedTableElement && result.length ? super.getColumnWidths(this._fixedTableElement) : undefined;
     return normalizeColumnWidths(fixedColumns, result, fixedWidths);
@@ -514,62 +519,11 @@ const columnHeadersView = Base => class ColumnHeadersViewFixedColumnsExtender ex
     // @ts-expect-error A method with this name doesn't exist in js folder at all
     return super._getRowVisibleColumns(rowIndex);
   }
-  getContextMenuItems(options) {
-    const {
-      column
-    } = options;
-    const columnFixingOptions = this.option('columnFixing');
-    let items = super.getContextMenuItems(options);
-    if (options.row && options.row.rowType === 'header') {
-      if (columnFixingOptions.enabled === true && column && column.allowFixing) {
-        const onItemClick = params => {
-          // eslint-disable-next-line default-case
-          switch (params.itemData.value) {
-            case 'none':
-              this._columnsController.columnOption(column.index, 'fixed', false);
-              break;
-            case 'left':
-              this._columnsController.columnOption(column.index, {
-                fixed: true,
-                fixedPosition: 'left'
-              });
-              break;
-            case 'right':
-              this._columnsController.columnOption(column.index, {
-                fixed: true,
-                fixedPosition: 'right'
-              });
-              break;
-          }
-        };
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        items = items || [];
-        items.push({
-          text: columnFixingOptions.texts.fix,
-          beginGroup: true,
-          items: [{
-            text: columnFixingOptions.texts.leftPosition,
-            value: 'left',
-            disabled: column.fixed && (!column.fixedPosition || column.fixedPosition === 'left'),
-            onItemClick
-          }, {
-            text: columnFixingOptions.texts.rightPosition,
-            value: 'right',
-            disabled: column.fixed && column.fixedPosition === 'right',
-            onItemClick
-          }]
-        }, {
-          text: columnFixingOptions.texts.unfix,
-          value: 'none',
-          disabled: !column.fixed,
-          onItemClick
-        });
-      }
-    }
-    return items;
-  }
   getFixedColumnElements(rowIndex) {
     const that = this;
+    if (!this._isFixedColumns) {
+      return;
+    }
     if ((0, _type.isDefined)(rowIndex)) {
       return this._fixedTableElement && this._getRowElements(this._fixedTableElement).eq(rowIndex).children();
     }
@@ -581,10 +535,10 @@ const columnHeadersView = Base => class ColumnHeadersViewFixedColumnsExtender ex
     }
     return columnElements;
   }
-  getColumnWidths() {
+  getColumnWidths(fixedTableElement, rowIndex) {
     const that = this;
     let fixedWidths;
-    const result = super.getColumnWidths();
+    const result = super.getColumnWidths(fixedTableElement, rowIndex);
     const $fixedColumnElements = that.getFixedColumnElements();
     const fixedColumns = that.getFixedColumns();
     if (that._fixedTableElement) {
@@ -802,8 +756,10 @@ const rowsView = Base => class RowsViewFixedColumnsExtender extends baseFixedCol
   }
   setRowsOpacity(columnIndex, value) {
     super.setRowsOpacity(columnIndex, value);
-    const $rows = this._getRowElements(this._fixedTableElement);
-    this._setRowsOpacityCore($rows, this.getFixedColumns(), columnIndex, value);
+    if (this._isFixedColumns) {
+      const $rows = this._getRowElements(this._fixedTableElement);
+      this._setRowsOpacityCore($rows, this.getFixedColumns(), columnIndex, value);
+    }
   }
   getCellIndex($cell) {
     const $fixedTable = this._fixedTableElement;
@@ -908,7 +864,7 @@ const normalizeColumnIndicesByPoints = function (columns, fixedColumns, pointsBy
   return pointsByColumns;
 };
 const draggingHeader = Base => class DraggingHeaderColumnFixingExtender extends Base {
-  _generatePointsByColumns(options) {
+  _generatePointsByColumns(options, needToCheckPrevPoint) {
     const visibleColumns = options.columns;
     const {
       targetDraggingPanel
@@ -919,12 +875,12 @@ const draggingHeader = Base => class DraggingHeaderColumnFixingExtender extends 
           options.columnElements = targetDraggingPanel.getFixedColumnElements(0);
         }
         options.columns = targetDraggingPanel.getFixedColumns(options.rowIndex);
-        const pointsByColumns = super._generatePointsByColumns(options);
+        const pointsByColumns = super._generatePointsByColumns(options, needToCheckPrevPoint);
         normalizeColumnIndicesByPoints(visibleColumns, options.columns, pointsByColumns);
         return pointsByColumns;
       }
     }
-    return super._generatePointsByColumns(options);
+    return super._generatePointsByColumns(options, needToCheckPrevPoint);
   }
   _pointCreated(point, columns, location, sourceColumn) {
     const result = super._pointCreated.apply(this, arguments);
@@ -945,7 +901,7 @@ const draggingHeader = Base => class DraggingHeaderColumnFixingExtender extends 
   }
 };
 const columnsResizer = Base => class ColumnResizerColumnFixingExtender extends Base {
-  _generatePointsByColumns() {
+  _generatePointsByColumns(needToCheckPrevPoint) {
     const that = this;
     const columnsController = that._columnsController;
     const columns = columnsController && that._columnsController.getVisibleColumns();
@@ -954,7 +910,7 @@ const columnsResizer = Base => class ColumnResizerColumnFixingExtender extends B
     const correctIndex = columns.length - fixedColumns.length;
     // @ts-expect-error
     const cells = that._columnHeadersView.getFixedColumnElements();
-    super._generatePointsByColumns();
+    super._generatePointsByColumns(needToCheckPrevPoint);
     if (cells && cells.length > 0) {
       that._pointsByFixedColumns = _m_utils.default.getPointsByColumns(cells, point => {
         if (point.index > transparentColumnIndex) {
@@ -1005,12 +961,20 @@ const columnFixingModule = exports.columnFixingModule = {
     return {
       columnFixing: {
         enabled: false,
-        legacyMode: true,
+        legacyMode: false,
         texts: {
           fix: _message.default.format('dxDataGrid-columnFixingFix'),
           unfix: _message.default.format('dxDataGrid-columnFixingUnfix'),
           leftPosition: _message.default.format('dxDataGrid-columnFixingLeftPosition'),
-          rightPosition: _message.default.format('dxDataGrid-columnFixingRightPosition')
+          rightPosition: _message.default.format('dxDataGrid-columnFixingRightPosition'),
+          stickyPosition: _message.default.format('dxDataGrid-columnFixingStickyPosition')
+        },
+        icons: {
+          fix: FIXED_COLUMN_ICON_CLASS,
+          unfix: UNFIXED_COLUMN_ICON_CLASS,
+          leftPosition: FIXED_COLUMN_LEFT_ICON_CLASS,
+          rightPosition: FIXED_COLUMN_RIGHT_ICON_CLASS,
+          stickyPosition: STICKY_COLUMN_ICON_CLASS
         }
       }
     };

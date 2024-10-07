@@ -43,7 +43,7 @@ const CLICK_EVENT_NAME = (0, _index.addNamespace)(_click.name, 'dxListEditDecora
     new this._controlWidget($control, (0, _extend.extend)(this._commonOptions(), {
       value: this._isSelected($itemElement),
       elementAttr: {
-        'aria-label': 'Check State'
+        'aria-label': _message.default.format('CheckState')
       },
       focusStateEnabled: false,
       hoverStateEnabled: false,
@@ -155,8 +155,8 @@ const CLICK_EVENT_NAME = (0, _index.addNamespace)(_click.name, 'dxListEditDecora
       value
     } = this._selectAllCheckBox.option();
     const indeterminate = value === undefined;
-    const checkedText = indeterminate ? 'half checked' : value ? 'checked' : 'not checked';
-    const label = `${_message.default.format('dxList-selectAll')}, ${checkedText}`;
+    const stateVariableName = indeterminate ? 'indeterminate' : value ? 'checked' : 'notChecked';
+    const label = `${_message.default.format('dxList-selectAll')}, ${_message.default.format(`dxList-selectAll-${stateVariableName}`)}`;
     this._$selectAll.attr({
       'aria-label': label
     });

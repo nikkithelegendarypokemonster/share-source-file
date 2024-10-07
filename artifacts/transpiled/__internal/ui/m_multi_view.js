@@ -94,6 +94,10 @@ const MultiView = _uiCollection_widget.default.inherit({
     if (index >= count) {
       index -= count;
     }
+    const step = this._swipeDirection > 0 ? -1 : 1;
+    while (!this._isItemVisible(index)) {
+      index = (index + step) % count;
+    }
     return index;
   },
   _getRTLSignCorrection() {
@@ -214,6 +218,10 @@ const MultiView = _uiCollection_widget.default.inherit({
       _m_multi_view._translator.move($itemElements.eq(newIndex), `${positionSign * 100}%`);
     }
   },
+  _isItemVisible(index) {
+    var _this$option$index;
+    return ((_this$option$index = this.option('items')[index]) === null || _this$option$index === void 0 ? void 0 : _this$option$index.visible) ?? true;
+  },
   _updateItemsVisibility(selectedIndex, newIndex) {
     const $itemElements = this._itemElements();
     $itemElements.each((itemIndex, item) => {
@@ -282,7 +290,8 @@ const MultiView = _uiCollection_widget.default.inherit({
     let lastIndex;
     items.forEach((item, index) => {
       const isDisabled = Boolean(item === null || item === void 0 ? void 0 : item.disabled);
-      if (!isDisabled) {
+      const isVisible = this._isItemVisible(index);
+      if (!isDisabled && isVisible) {
         firstIndex ?? (firstIndex = index);
         lastIndex = index;
       }
@@ -312,13 +321,16 @@ const MultiView = _uiCollection_widget.default.inherit({
       offset
     } = e;
     const swipeDirection = (0, _math.sign)(offset) * this._getRTLSignCorrection();
-    _m_multi_view._translator.move(this._$itemContainer, offset * this._itemWidth());
     if (swipeDirection !== this._swipeDirection) {
       this._swipeDirection = swipeDirection;
-      const selectedIndex = this.option('selectedIndex');
-      const newIndex = this._normalizeIndex(selectedIndex - swipeDirection);
-      this._updateItems(selectedIndex, newIndex);
     }
+    const selectedIndex = this.option('selectedIndex');
+    const newIndex = this._normalizeIndex(selectedIndex - swipeDirection);
+    if (selectedIndex === newIndex) {
+      return;
+    }
+    _m_multi_view._translator.move(this._$itemContainer, offset * this._itemWidth());
+    this._updateItems(selectedIndex, newIndex);
   },
   _findNextAvailableIndex(index, offset) {
     const {
@@ -343,7 +355,8 @@ const MultiView = _uiCollection_widget.default.inherit({
     }
     for (let i = index + offset; i >= firstAvailableIndex && i <= lastAvailableIndex; i += offset) {
       const isDisabled = Boolean(items[i].disabled);
-      if (!isDisabled) {
+      const isVisible = this._isItemVisible(i);
+      if (!isDisabled && isVisible) {
         return i;
       }
     }

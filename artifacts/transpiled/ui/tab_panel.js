@@ -5,10 +5,6 @@ var _m_tab_panel = _interopRequireDefault(require("../__internal/ui/tab_panel/m_
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var _default = exports.default = _m_tab_panel.default; // STYLE tabPanel
 /**
- * @name dxTabPanelItem.visible
- * @hidden
- */
-/**
  * @name dxTabPanelItem
  * @inherits dxMultiViewItem
  * @type object

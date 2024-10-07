@@ -116,7 +116,7 @@ class AppointmentAdapter {
   }
   clone() {
     let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-    const result = new AppointmentAdapter((0, _object.deepExtendArraySafe)({}, this.rawAppointment), this.dataAccessors, this.timeZoneCalculator, options);
+    const result = new AppointmentAdapter((0, _object.deepExtendArraySafe)({}, this.rawAppointment, false, false, false, true), this.dataAccessors, this.timeZoneCalculator, options);
     if (options !== null && options !== void 0 && options.pathTimeZone) {
       result.startDate = result.calculateStartDate(options.pathTimeZone);
       result.endDate = result.calculateEndDate(options.pathTimeZone);

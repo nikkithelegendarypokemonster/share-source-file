@@ -17,7 +17,7 @@ function _extends() { _extends = Object.assign ? Object.assign.bind() : function
 function calculateLargeDisplayMode(_ref) {
   let {
     parent: parentWidth,
-    pageSizes: pageSizesWidth,
+    allowedPageSizes: pageSizesWidth,
     pages: pagesWidth
   } = _ref;
   return parentWidth - (pageSizesWidth + pagesWidth) > 0;
@@ -25,7 +25,7 @@ function calculateLargeDisplayMode(_ref) {
 function calculateInfoTextVisible(_ref2) {
   let {
     parent: parentWidth,
-    pageSizes: pageSizesWidth,
+    allowedPageSizes: pageSizesWidth,
     pages: pagesWidth,
     info: infoWidth
   } = _ref2;
@@ -35,17 +35,17 @@ function calculateInfoTextVisible(_ref2) {
 function getElementsWidth(_ref3) {
   let {
     parent,
-    pageSizes,
+    allowedPageSizes,
     pages,
     info
   } = _ref3;
   const parentWidth = (0, _get_element_width.getElementContentWidth)(parent);
-  const pageSizesWidth = (0, _get_element_width.getElementWidth)(pageSizes);
+  const pageSizesWidth = (0, _get_element_width.getElementWidth)(allowedPageSizes);
   const infoWidth = (0, _get_element_width.getElementWidth)(info);
   const pagesHtmlWidth = (0, _get_element_width.getElementWidth)(pages);
   return {
     parent: parentWidth,
-    pageSizes: pageSizesWidth,
+    allowedPageSizes: pageSizesWidth,
     info: infoWidth + (0, _get_element_width.getElementStyle)('marginLeft', info) + (0, _get_element_width.getElementStyle)('marginRight', info),
     pages: pagesHtmlWidth
   };
@@ -64,7 +64,8 @@ class ResizableContainer extends _inferno2.InfernoComponent {
     this.parentRef = (0, _inferno.createRef)();
     this.infoTextRef = (0, _inferno.createRef)();
     this.pagesRef = (0, _inferno.createRef)();
-    this.pageSizesRef = (0, _inferno.createRef)();
+    // eslint-disable-next-line max-len
+    this.allowedPageSizesRef = (0, _inferno.createRef)();
     this.elementsWidth = {};
     this.actualIsLargeDisplayMode = true;
     this.actualInfoTextVisible = true;
@@ -115,16 +116,26 @@ class ResizableContainer extends _inferno2.InfernoComponent {
       pageIndexChangedInternal,
       pageSize,
       pageSizeChangedInternal,
-      pageSizes,
+      allowedPageSizes,
       pagesCountText,
       pagesNavigatorVisible,
       rtlEnabled,
       showInfo,
       showNavigationButtons,
-      showPageSizes,
+      showPageSizeSelector,
       totalCount,
       visible,
-      style
+      style,
+      width,
+      height,
+      elementAttr,
+      hint,
+      disabled,
+      tabIndex,
+      accessKey,
+      activeStateEnabled,
+      focusStateEnabled,
+      hoverStateEnabled
     } = this.props.pagerProps;
     return {
       pageSize,
@@ -143,14 +154,24 @@ class ResizableContainer extends _inferno2.InfernoComponent {
       visible,
       hasKnownLastPage,
       pagesNavigatorVisible,
-      showPageSizes,
-      pageSizes,
+      showPageSizeSelector,
+      allowedPageSizes,
       rtlEnabled,
       showNavigationButtons,
       totalCount,
       onKeyDown,
       label,
-      style
+      style,
+      width,
+      height,
+      elementAttr,
+      hint,
+      disabled,
+      tabIndex,
+      accessKey,
+      activeStateEnabled,
+      focusStateEnabled,
+      hoverStateEnabled
     };
   }
   getParentWidth() {
@@ -158,10 +179,10 @@ class ResizableContainer extends _inferno2.InfernoComponent {
     return (_this$parentRef = this.parentRef) !== null && _this$parentRef !== void 0 && _this$parentRef.current ? (0, _get_element_width.getElementWidth)(this.parentRef.current) : 0;
   }
   updateAdaptivityProps() {
-    var _this$parentRef2, _this$pageSizesRef, _this$infoTextRef, _this$pagesRef;
+    var _this$parentRef2, _this$allowedPageSize, _this$infoTextRef, _this$pagesRef;
     const currentElementsWidth = getElementsWidth({
       parent: (_this$parentRef2 = this.parentRef) === null || _this$parentRef2 === void 0 ? void 0 : _this$parentRef2.current,
-      pageSizes: (_this$pageSizesRef = this.pageSizesRef) === null || _this$pageSizesRef === void 0 ? void 0 : _this$pageSizesRef.current,
+      allowedPageSizes: (_this$allowedPageSize = this.allowedPageSizesRef) === null || _this$allowedPageSize === void 0 ? void 0 : _this$allowedPageSize.current,
       info: (_this$infoTextRef = this.infoTextRef) === null || _this$infoTextRef === void 0 ? void 0 : _this$infoTextRef.current,
       pages: (_this$pagesRef = this.pagesRef) === null || _this$pagesRef === void 0 ? void 0 : _this$pagesRef.current
     });
@@ -173,7 +194,7 @@ class ResizableContainer extends _inferno2.InfernoComponent {
       this.elementsWidth = {};
     }
     if (isEmpty || this.state.isLargeDisplayMode) {
-      this.elementsWidth.pageSizes = currentElementsWidth.pageSizes;
+      this.elementsWidth.allowedPageSizes = currentElementsWidth.allowedPageSizes;
       this.elementsWidth.pages = currentElementsWidth.pages;
     }
     if (isEmpty || this.state.infoTextVisible) {
@@ -181,7 +202,7 @@ class ResizableContainer extends _inferno2.InfernoComponent {
     }
     this.actualIsLargeDisplayMode = calculateLargeDisplayMode({
       parent: currentElementsWidth.parent,
-      pageSizes: this.elementsWidth.pageSizes,
+      allowedPageSizes: this.elementsWidth.allowedPageSizes,
       pages: this.elementsWidth.pages
     });
     this.actualInfoTextVisible = calculateInfoTextVisible(_extends({}, currentElementsWidth, {
@@ -206,7 +227,7 @@ class ResizableContainer extends _inferno2.InfernoComponent {
     } = this;
     return (0, _inferno.normalizeProps)((0, _inferno.createComponentVNode)(2, Content, _extends({
       "rootElementRef": this.parentRef,
-      "pageSizesRef": this.pageSizesRef,
+      "allowedPageSizesRef": this.allowedPageSizesRef,
       "infoTextRef": this.infoTextRef,
       "pagesRef": this.pagesRef,
       "infoTextVisible": infoTextVisible,

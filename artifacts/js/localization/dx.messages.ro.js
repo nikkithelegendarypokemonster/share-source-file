@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.ro.js)
 * Version: 24.2.0
-* Build date: Fri Aug 30 2024
+* Build date: Mon Oct 07 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -24,6 +24,7 @@
             "Yes": "Da",
             "No": "Nu",
             "Cancel": "Anulare",
+            "CheckState": "Check state",
             "Close": "Închide",
             "Clear": "Curăță",
             "Done": "Gata",
@@ -64,6 +65,9 @@
             "dxList-listAriaLabel-deletable": "Deletable items",
             "dxListEditDecorator-delete": "Șterge",
             "dxListEditDecorator-more": "Mai mult",
+            "dxList-selectAll-indeterminate": "Half-checked",
+            "dxList-selectAll-checked": "Checked",
+            "dxList-selectAll-notChecked": "Not checked",
             "dxScrollView-pullingDownText": "Trageți în jos pentru a actualiza...",
             "dxScrollView-pulledDownText": "Eliberați pentru a actualiza...",
             "dxScrollView-refreshingText": "Actualizare...",
@@ -163,6 +167,7 @@
             "dxDataGrid-columnFixingUnfix": "Defixare",
             "dxDataGrid-columnFixingLeftPosition": "La stânga",
             "dxDataGrid-columnFixingRightPosition": "La dreapta",
+            "dxDataGrid-columnFixingStickyPosition": "Stick in place",
             "dxDataGrid-exportTo": "Export",
             "dxDataGrid-exportToExcel": "Exportare fișier Excel ",
             "dxDataGrid-exporting": "Exportare...",
@@ -301,8 +306,19 @@
             "dxCalendar-captionDecadeLabel": "Decade selection",
             "dxCalendar-captionCenturyLabel": "Century selection",
             "dxCalendar-selectedDate": "The selected date is {0}",
+            "dxCalendar-selectedDates": "The selected dates",
             "dxCalendar-selectedDateRange": "The selected date range is from {0} to {1}",
+            "dxCalendar-selectedMultipleDateRange": "from {0} to {1}",
+            "dxCalendar-selectedDateRangeCount": "There are {0} selected date ranges",
             "dxCalendar-readOnlyLabel": "Read-only calendar",
+            "dxAvatar-defaultImageAlt": "Avatar",
+            "dxChat-elementAriaLabel": "Chat",
+            "dxChat-textareaPlaceholder": "Type a message",
+            "dxChat-sendButtonAriaLabel": "Send",
+            "dxChat-defaultUserName": "Unknown User",
+            "dxChat-messageListAriaLabel": "Message list",
+            "dxChat-emptyListMessage": "There are no messages in this chat",
+            "dxChat-emptyListPrompt": "Write your first message",
             "dxColorView-ariaRed": "Roșu",
             "dxColorView-ariaGreen": "Verde",
             "dxColorView-ariaBlue": "Albastru",
@@ -405,6 +421,7 @@
             "dxHtmlEditor-width": "Width",
             "dxHtmlEditor-height": "Height",
             "dxHtmlEditor-borderColor": "Color",
+            "dxHtmlEditor-borderWidth": "Border Width",
             "dxHtmlEditor-tableBackground": "Background",
             "dxHtmlEditor-dimensions": "Dimensions",
             "dxHtmlEditor-alignment": "Alignment",

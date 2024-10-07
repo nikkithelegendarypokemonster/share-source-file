@@ -20,8 +20,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* global google */
 
 const window = (0, _window.getWindow)();
+const MAP_MARKER_CLASS = 'dx-map-marker';
 const GOOGLE_MAP_READY = '_googleScriptReady';
-let GOOGLE_URL = `https://maps.googleapis.com/maps/api/js?callback=${GOOGLE_MAP_READY}`;
+let GOOGLE_URL = `https://maps.googleapis.com/maps/api/js?callback=${GOOGLE_MAP_READY}&libraries=marker&loading=async`;
 const INFO_WINDOW_CLASS = 'gm-style-iw';
 let CustomMarker;
 const initCustomMarkerClass = function () {
@@ -167,11 +168,14 @@ const GoogleProvider = _m_provider.default.inherit({
   _init() {
     return new Promise(resolve => {
       this._resolveLocation(this._option('center')).then(center => {
-        const showDefaultUI = this._option('controls');
+        const disableDefaultUI = !this._option('controls');
+        const providerConfig = this._option('providerConfig');
+        const mapId = (providerConfig === null || providerConfig === void 0 ? void 0 : providerConfig.mapId) ?? '';
         this._map = new google.maps.Map(this._$container[0], {
-          zoom: this._option('zoom'),
           center,
-          disableDefaultUI: !showDefaultUI
+          disableDefaultUI,
+          mapId,
+          zoom: this._option('zoom')
         });
         const listener = google.maps.event.addListener(this._map, 'idle', () => {
           resolve(listener);
@@ -256,11 +260,23 @@ const GoogleProvider = _m_provider.default.inherit({
           }, options.htmlOffset)
         });
       } else {
-        marker = new google.maps.Marker({
-          position: location,
-          map: this._map,
-          icon: options.iconSrc || this._option('markerIconSrc')
-        });
+        const providerConfig = this._option('providerConfig');
+        const useAdvancedMarkers = (providerConfig === null || providerConfig === void 0 ? void 0 : providerConfig.useAdvancedMarkers) ?? true;
+        const icon = options.iconSrc || this._option('markerIconSrc');
+        if (useAdvancedMarkers) {
+          const content = icon ? this._createIconTemplate(icon) : undefined;
+          marker = new google.maps.marker.AdvancedMarkerElement({
+            position: location,
+            map: this._map,
+            content
+          });
+        } else {
+          marker = new google.maps.Marker({
+            position: location,
+            map: this._map,
+            icon
+          });
+        }
       }
       const infoWindow = this._renderTooltip(marker, options.tooltip);
       let listener;
@@ -282,6 +298,13 @@ const GoogleProvider = _m_provider.default.inherit({
         listener
       };
     });
+  },
+  _createIconTemplate(iconSrc) {
+    const $img = (0, _renderer.default)('<img>');
+    $img.attr('src', iconSrc);
+    $img.attr('alt', 'Marker icon');
+    $img.addClass(MAP_MARKER_CLASS);
+    return $img[0];
   },
   _renderTooltip(marker, options) {
     if (!options) {

@@ -21,6 +21,11 @@ var _default = exports.default = _splitter.default; // STYLE splitter
  * @hidden
  */
 /**
+ * @name dxSplitterOptions.onSelectionChanging
+ * @action
+ * @hidden
+ */
+/**
  * @name dxSplitterOptions.onSelectionChanged
  * @action
  * @hidden

@@ -26,6 +26,7 @@ require("./module_not_extended/pager");
 require("./module_not_extended/columns_resizing_reordering");
 require("./module_not_extended/keyboard_navigation");
 require("./summary/m_summary");
+require("./module_not_extended/sticky_columns");
 require("./module_not_extended/column_fixing");
 require("./module_not_extended/adaptivity");
 require("./module_not_extended/virtual_columns");

@@ -123,8 +123,34 @@ const BaseView = _ui.default.inherit({
     return ariaLabel;
   },
   _getMultipleModeAriaLabel() {
-    const ariaLabel = this._getLocalizedWidgetName();
+    const localizedWidgetName = this._getLocalizedWidgetName();
+    const selectedRangesText = this._getMultipleRangesText();
+    const ariaLabel = `${localizedWidgetName}. ${selectedRangesText}`;
     return ariaLabel;
+  },
+  _getMultipleRangesText() {
+    const {
+      value
+    } = this.option();
+    const ranges = _date.default.getRangesByDates(value.map(date => new Date(date)));
+    if (ranges.length > 2) {
+      // @ts-expect-error
+      const dateRangeCountText = _message.default.format('dxCalendar-selectedDateRangeCount', ranges.length);
+      return dateRangeCountText;
+    }
+    const selectedDatesText = _message.default.format('dxCalendar-selectedDates');
+    const rangesText = ranges.map(range => this._getRangeText(range)).join(', ');
+    const result = `${selectedDatesText}: ${rangesText}`;
+    return result;
+  },
+  _getRangeText(range) {
+    const [startDate, endDate] = range;
+    const formattedStartDate = _date2.default.format(startDate, ARIA_LABEL_DATE_FORMAT);
+    const formattedEndDate = _date2.default.format(endDate, ARIA_LABEL_DATE_FORMAT);
+    const selectedDatesText = startDate && endDate
+    // @ts-expect-error
+    ? _message.default.format('dxCalendar-selectedMultipleDateRange', formattedStartDate, formattedEndDate) : formattedStartDate;
+    return selectedDatesText;
   },
   _getTableAriaLabel() {
     const {

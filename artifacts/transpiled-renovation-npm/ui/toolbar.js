@@ -52,6 +52,11 @@ var _default = exports.default = _ui.default; // STYLE toolbar
  * @hidden
  */
 /**
+ * @name dxToolbarOptions.onSelectionChanging
+ * @action
+ * @hidden
+ */
+/**
  * @name dxToolbarOptions.onSelectionChanged
  * @action
  * @hidden

@@ -65,6 +65,10 @@ const Map = _ui2.default.inherit({
         google: '',
         googleStatic: ''
       },
+      providerConfig: {
+        mapId: '',
+        useAdvancedMarkers: true
+      },
       controls: false,
       onReady: null,
       // for internal use only
@@ -81,6 +85,29 @@ const Map = _ui2.default.inherit({
         focusStateEnabled: true
       }
     }]);
+  },
+  ctor(element, options) {
+    this.callBase(element, options);
+    if (options) {
+      if ('provider' in options && options.provider === 'bing') {
+        this._logDeprecatedBingProvider();
+      }
+    }
+  },
+  _logDeprecatedBingProvider() {
+    this._logDeprecatedOptionWarning('provider: bing', {
+      since: '24.2',
+      message: 'Use other map providers, such as Azure, Google, or GoogleStatic.'
+    });
+  },
+  _setDeprecatedOptions() {
+    this.callBase();
+    (0, _extend.extend)(this._deprecatedOptions, {
+      'providerConfig.useAdvancedMarkers': {
+        since: '24.2',
+        message: 'Google deprecated the original map markers. Transition to advanced markers for future compatibility.'
+      }
+    });
   },
   _renderFocusTarget: _common.noop,
   _init() {
@@ -157,7 +184,8 @@ const Map = _ui2.default.inherit({
   },
   _optionChanged(args) {
     const {
-      name
+      name,
+      value
     } = args;
     const changeBag = this._optionChangeBag;
     this._optionChangeBag = null;
@@ -174,6 +202,9 @@ const Map = _ui2.default.inherit({
       case 'provider':
         this._suppressAsyncAction = true;
         this._invalidate();
+        if (value === 'bing') {
+          this._logDeprecatedBingProvider();
+        }
         break;
       case 'apiKey':
         _ui.default.log('W1001');
@@ -211,6 +242,10 @@ const Map = _ui2.default.inherit({
         }
       case 'markerIconSrc':
         this._queueAsyncAction('updateMarkers', this._rendered.markers, this._rendered.markers);
+        break;
+      case 'providerConfig':
+        this._suppressAsyncAction = true;
+        this._invalidate();
         break;
       case 'onReady':
       case 'onUpdated':

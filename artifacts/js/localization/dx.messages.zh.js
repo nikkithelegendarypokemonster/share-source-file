@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.zh.js)
 * Version: 24.2.0
-* Build date: Fri Aug 30 2024
+* Build date: Mon Oct 07 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -24,6 +24,7 @@
             "Yes": "是",
             "No": "否",
             "Cancel": "取消",
+            "CheckState": "Check state",
             "Close": "關閉",
             "Clear": "清除",
             "Done": "完成",
@@ -64,6 +65,9 @@
             "dxList-listAriaLabel-deletable": "Deletable items",
             "dxListEditDecorator-delete": "删除",
             "dxListEditDecorator-more": "更多",
+            "dxList-selectAll-indeterminate": "Half-checked",
+            "dxList-selectAll-checked": "Checked",
+            "dxList-selectAll-notChecked": "Not checked",
             "dxScrollView-pullingDownText": "下拉以刷新...",
             "dxScrollView-pulledDownText": "放开以刷新...",
             "dxScrollView-refreshingText": "刷新中...",
@@ -163,6 +167,7 @@
             "dxDataGrid-columnFixingUnfix": "不固定",
             "dxDataGrid-columnFixingLeftPosition": "向左",
             "dxDataGrid-columnFixingRightPosition": "向右",
+            "dxDataGrid-columnFixingStickyPosition": "Stick in place",
             "dxDataGrid-exportTo": "导出",
             "dxDataGrid-exportToExcel": "导出Excel文件",
             "dxDataGrid-exporting": "导出...",
@@ -301,8 +306,19 @@
             "dxCalendar-captionDecadeLabel": "Decade selection",
             "dxCalendar-captionCenturyLabel": "Century selection",
             "dxCalendar-selectedDate": "The selected date is {0}",
+            "dxCalendar-selectedDates": "The selected dates",
             "dxCalendar-selectedDateRange": "The selected date range is from {0} to {1}",
+            "dxCalendar-selectedMultipleDateRange": "from {0} to {1}",
+            "dxCalendar-selectedDateRangeCount": "There are {0} selected date ranges",
             "dxCalendar-readOnlyLabel": "Read-only calendar",
+            "dxAvatar-defaultImageAlt": "Avatar",
+            "dxChat-elementAriaLabel": "Chat",
+            "dxChat-textareaPlaceholder": "Type a message",
+            "dxChat-sendButtonAriaLabel": "Send",
+            "dxChat-defaultUserName": "Unknown User",
+            "dxChat-messageListAriaLabel": "Message list",
+            "dxChat-emptyListMessage": "There are no messages in this chat",
+            "dxChat-emptyListPrompt": "Write your first message",
             "dxColorView-ariaRed": "红色",
             "dxColorView-ariaGreen": "绿色",
             "dxColorView-ariaBlue": "蓝色",
@@ -405,6 +421,7 @@
             "dxHtmlEditor-width": "宽度",
             "dxHtmlEditor-height": "高度",
             "dxHtmlEditor-borderColor": "颜色",
+            "dxHtmlEditor-borderWidth": "Border Width",
             "dxHtmlEditor-tableBackground": "背景",
             "dxHtmlEditor-dimensions": "尺寸",
             "dxHtmlEditor-alignment": "对齐方式",
