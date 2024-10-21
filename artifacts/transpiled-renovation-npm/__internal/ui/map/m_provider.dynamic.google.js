@@ -20,7 +20,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* global google */
 
 const window = (0, _window.getWindow)();
-const MAP_MARKER_CLASS = 'dx-map-marker';
 const GOOGLE_MAP_READY = '_googleScriptReady';
 let GOOGLE_URL = `https://maps.googleapis.com/maps/api/js?callback=${GOOGLE_MAP_READY}&libraries=marker&loading=async`;
 const INFO_WINDOW_CLASS = 'gm-style-iw';
@@ -298,13 +297,6 @@ const GoogleProvider = _m_provider.default.inherit({
         listener
       };
     });
-  },
-  _createIconTemplate(iconSrc) {
-    const $img = (0, _renderer.default)('<img>');
-    $img.attr('src', iconSrc);
-    $img.attr('alt', 'Marker icon');
-    $img.addClass(MAP_MARKER_CLASS);
-    return $img[0];
   },
   _renderTooltip(marker, options) {
     if (!options) {

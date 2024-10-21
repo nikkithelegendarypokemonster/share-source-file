@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.sl.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Išči",
             "Back": "Nazaj",
             "OK": "V redu",
+            "Today": "Danes",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Ni podatkov za prikaz",
             "dxDropDownEditor-selectLabel": "Izberi",
             "validation-required": "Obvezen podatek",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Povleci vrstice tukaj",
             "dxPivotGrid-filterFieldArea": "Povleci filtre tukaj",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Predmet",
             "dxScheduler-editorLabelStartDate": "Datum začetka",
             "dxScheduler-editorLabelEndDate": "Datum konca",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Je med",
             "dxFilterBuilder-filterOperationAnyOf": "Je karkoli izmed",
             "dxFilterBuilder-filterOperationNoneOf": "Ni nič izmed",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Zamenjaj barvo pisave",
             "dxHtmlEditor-dialogBackgroundCaption": "Zamenjaj barvo ozadja",
             "dxHtmlEditor-dialogLinkCaption": "Dodaj povezavo",

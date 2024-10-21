@@ -149,7 +149,7 @@ class PagerContent extends _inferno2.InfernoComponent {
       infoText,
       pageCount,
       pageIndex,
-      totalCount,
+      itemCount,
       pagesRef,
       hasKnownLastPage,
       maxPagesCount,
@@ -196,7 +196,7 @@ class PagerContent extends _inferno2.InfernoComponent {
         "infoText": infoText,
         "pageCount": pageCount,
         "pageIndex": pageIndex,
-        "totalCount": totalCount
+        "itemCount": itemCount
       }), this.getPageIndexSelectorVisible() && (0, _inferno.createVNode)(1, "div", _consts.PAGER_PAGE_INDEXES_CLASS, (0, _inferno.createComponentVNode)(2, _page_index_selector.PageIndexSelector, {
         "hasKnownLastPage": hasKnownLastPage,
         "isLargeDisplayMode": this.getIsLargeDisplayMode(),
@@ -206,7 +206,7 @@ class PagerContent extends _inferno2.InfernoComponent {
         "pageIndexChangedInternal": pageIndexChangedInternal,
         "pagesCountText": pagesCountText,
         "showNavigationButtons": showNavigationButtons,
-        "totalCount": totalCount
+        "itemCount": itemCount
       }), 2, null, null, pagesRef)], 0, {
         "style": {
           visibility: this.getPagesContainerVisibility()

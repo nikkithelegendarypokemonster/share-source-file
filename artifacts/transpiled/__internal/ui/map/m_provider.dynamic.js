@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var _renderer = _interopRequireDefault(require("../../../core/renderer"));
 var _extend = require("../../../core/utils/extend");
 var _iterator = require("../../../core/utils/iterator");
 var _m_provider = _interopRequireDefault(require("./m_provider"));
@@ -11,6 +12,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const {
   abstract
 } = _m_provider.default;
+const MAP_MARKER_CLASS = 'dx-map-marker';
 const DynamicProvider = _m_provider.default.inherit({
   _geocodeLocation(location) {
     return new Promise(resolve => {
@@ -69,6 +71,13 @@ const DynamicProvider = _m_provider.default.inherit({
     });
   },
   _renderMarker: abstract,
+  _createIconTemplate(iconSrc) {
+    const $img = (0, _renderer.default)('<img>');
+    $img.attr('src', iconSrc);
+    $img.attr('alt', 'Marker icon');
+    $img.addClass(MAP_MARKER_CLASS);
+    return $img[0];
+  },
   removeMarkers(markersOptionsToRemove) {
     const that = this;
     (0, _iterator.each)(markersOptionsToRemove, (_, markerOptionToRemove) => {

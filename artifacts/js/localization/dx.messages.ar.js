@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.ar.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "بحث",
             "Back": "رجوع",
             "OK": "حسنا",
+            "Today": "اليوم",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "لا توجد بيانات للعرض",
             "dxDropDownEditor-selectLabel": "تحديد",
             "validation-required": "مطلوب",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "إفلات حقول الصف هنا",
             "dxPivotGrid-filterFieldArea": "إفلات حقول التصفية هنا",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "الموضوع",
             "dxScheduler-editorLabelStartDate": "تاريخ البدء",
             "dxScheduler-editorLabelEndDate": "تاريخ الانتهاء",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "بين",
             "dxFilterBuilder-filterOperationAnyOf": "أي من",
             "dxFilterBuilder-filterOperationNoneOf": "ليس من",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "تغيير لون الخط",
             "dxHtmlEditor-dialogBackgroundCaption": "تغيير لون الخلفية",
             "dxHtmlEditor-dialogLinkCaption": "إضافة ارتباط",

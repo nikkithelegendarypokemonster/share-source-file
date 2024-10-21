@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.de.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Suchen...",
             "Back": "Zurück",
             "OK": "OK",
+            "Today": "Heute",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Keine Daten verfügbar",
             "dxDropDownEditor-selectLabel": "Auswählen",
             "validation-required": "Pflichtfeld",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Zeilenfelder hierher ziehen",
             "dxPivotGrid-filterFieldArea": "Filterfelder hierher ziehen",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Betreff",
             "dxScheduler-editorLabelStartDate": "Anfangszeit",
             "dxScheduler-editorLabelEndDate": "Endzeit",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Zwischen",
             "dxFilterBuilder-filterOperationAnyOf": "Ist enthalten in",
             "dxFilterBuilder-filterOperationNoneOf": "Ist nicht enthalten in",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Schriftfarbe ändern",
             "dxHtmlEditor-dialogBackgroundCaption": "Hintergrundfarbe ändern",
             "dxHtmlEditor-dialogLinkCaption": "Link hinzufügen",

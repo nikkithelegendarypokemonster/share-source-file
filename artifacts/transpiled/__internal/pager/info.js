@@ -14,7 +14,7 @@ const PAGER_INFO_CLASS = exports.PAGER_INFO_CLASS = 'dx-info';
 const InfoTextDefaultProps = {
   pageCount: _pager_props.PagerDefaultProps.pageCount,
   pageIndex: _pager_props.PagerDefaultProps.pageIndex,
-  totalCount: _pager_props.PagerDefaultProps.totalCount
+  itemCount: _pager_props.PagerDefaultProps.itemCount
 };
 class InfoText extends _inferno2.BaseInfernoComponent {
   constructor() {
@@ -31,9 +31,9 @@ class InfoText extends _inferno2.BaseInfernoComponent {
     const {
       pageCount,
       pageIndex,
-      totalCount
+      itemCount
     } = this.props;
-    return (0, _string.format)(this.getInfoText(), (pageIndex + 1).toString(), pageCount === null || pageCount === void 0 ? void 0 : pageCount.toString(), totalCount === null || totalCount === void 0 ? void 0 : totalCount.toString());
+    return (0, _string.format)(this.getInfoText(), (pageIndex + 1).toString(), pageCount === null || pageCount === void 0 ? void 0 : pageCount.toString(), itemCount === null || itemCount === void 0 ? void 0 : itemCount.toString());
   }
   render() {
     return (0, _inferno.createVNode)(1, "div", PAGER_INFO_CLASS, this.getText(), 0, null, null, this.props.rootElementRef);

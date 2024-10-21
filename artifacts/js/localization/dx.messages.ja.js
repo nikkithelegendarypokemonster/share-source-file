@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.ja.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "検索",
             "Back": "戻る",
             "OK": "OK",
+            "Today": "今日",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "表示するデータがありません。",
             "dxDropDownEditor-selectLabel": "選択",
             "validation-required": "必須",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "行フィールドをこちらへドラッグ＆ドロップ",
             "dxPivotGrid-filterFieldArea": "フィルター フィールドをこちらへドラッグ＆ドロップ",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "件名",
             "dxScheduler-editorLabelStartDate": "開始時刻",
             "dxScheduler-editorLabelEndDate": "終了時刻",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "～から～の間",
             "dxFilterBuilder-filterOperationAnyOf": "どちらかを含む",
             "dxFilterBuilder-filterOperationNoneOf": "すべて含まない",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "フォントの色を変更",
             "dxHtmlEditor-dialogBackgroundCaption": "背景色を変更",
             "dxHtmlEditor-dialogLinkCaption": "リンクの追加",

@@ -164,8 +164,8 @@ class HeaderPanel extends _m_columns_view.ColumnsView {
     if (args.name === 'toolbar') {
       const parts = (0, _data.getPathParts)(args.fullName);
       const optionName = args.fullName.replace(/^toolbar\./, '');
-      if (parts.length === 1) {
-        // `toolbar` case
+      if (parts.length === 1 || parts[1] === 'visible') {
+        // `toolbar`, `toolbar.visible` case
         this._invalidate();
       } else if (parts[1] === 'items') {
         if (parts.length === 2) {
@@ -184,8 +184,9 @@ class HeaderPanel extends _m_columns_view.ColumnsView {
           (_this$_toolbar4 = this._toolbar) === null || _this$_toolbar4 === void 0 || _this$_toolbar4.option(optionName, args.value);
         }
       } else {
-        // `toolbar.visible`, `toolbar.disabled` case
-        this._invalidate();
+        var _this$_toolbar5;
+        // `toolbar.disabled` case
+        (_this$_toolbar5 = this._toolbar) === null || _this$_toolbar5 === void 0 || _this$_toolbar5.option(optionName, args.value);
       }
       args.handled = true;
     }

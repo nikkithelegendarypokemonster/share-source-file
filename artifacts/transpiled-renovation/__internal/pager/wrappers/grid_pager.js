@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.GridPagerWrapper = void 0;
 var _component_wrapper = require("../../core/r1/component_wrapper");
 var _validation_utils = require("../utils/validation_utils");
-const _excluded = ["pageSize", "pageIndex", "totalCount"];
+const _excluded = ["pageSize", "pageIndex", "itemCount"];
 /* eslint-disable @typescript-eslint/ban-types */
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } } return target; }
@@ -34,6 +34,9 @@ class GridPagerWrapper extends _component_wrapper.ComponentWrapper {
     }
     super._optionChanged(args);
   }
+  getPageCount() {
+    return this.option('pageCount');
+  }
   _validateOptions(options) {
     if (options._skipValidation || this.option('_skipValidation')) {
       return options;
@@ -42,7 +45,7 @@ class GridPagerWrapper extends _component_wrapper.ComponentWrapper {
     let {
         pageSize,
         pageIndex,
-        totalCount
+        itemCount
         // eslint-disable-next-line prefer-const
       } = initialOptions,
       rest = _objectWithoutPropertiesLoose(initialOptions, _excluded);
@@ -52,10 +55,10 @@ class GridPagerWrapper extends _component_wrapper.ComponentWrapper {
     if (pageIndex === undefined) {
       pageIndex = this.option('pageIndex');
     }
-    if (totalCount === undefined) {
-      totalCount = this.option('totalCount');
+    if (itemCount === undefined) {
+      itemCount = this.option('itemCount');
     }
-    const validatedOptions = (0, _validation_utils.validateOptions)(pageSize, pageIndex, totalCount);
+    const validatedOptions = (0, _validation_utils.validateOptions)(pageSize, pageIndex, itemCount);
     return _extends({}, rest, validatedOptions);
   }
 }

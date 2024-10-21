@@ -19,8 +19,9 @@ var _pointer = _interopRequireDefault(require("../../../events/pointer"));
 var _index = require("../../../events/utils/index");
 var _ui = _interopRequireDefault(require("../../../ui/widget/ui.errors"));
 var _ui2 = _interopRequireDefault(require("../../../ui/widget/ui.widget"));
-var _m_providerDynamic = _interopRequireDefault(require("./m_provider.dynamic.bing"));
-var _m_providerDynamic2 = _interopRequireDefault(require("./m_provider.dynamic.google"));
+var _m_providerDynamic = _interopRequireDefault(require("./m_provider.dynamic.azure"));
+var _m_providerDynamic2 = _interopRequireDefault(require("./m_provider.dynamic.bing"));
+var _m_providerDynamic3 = _interopRequireDefault(require("./m_provider.dynamic.google"));
 var _m_provider = _interopRequireDefault(require("./m_provider.google_static"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 // @ts-expect-error
@@ -28,9 +29,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // NOTE external urls must have protocol explicitly specified (because inside Cordova package the protocol is "file:")
 
 const PROVIDERS = {
+  azure: _m_providerDynamic.default,
   googleStatic: _m_provider.default,
-  google: _m_providerDynamic2.default,
-  bing: _m_providerDynamic.default
+  google: _m_providerDynamic3.default,
+  bing: _m_providerDynamic2.default
 };
 const MAP_CLASS = 'dx-map';
 const MAP_CONTAINER_CLASS = 'dx-map-container';
@@ -193,6 +195,7 @@ const Map = _ui2.default.inherit({
       case 'disabled':
         this._renderShield();
         this.callBase(args);
+        this._queueAsyncAction('updateDisabled');
         break;
       case 'width':
       case 'height':

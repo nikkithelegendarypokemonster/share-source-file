@@ -43,7 +43,7 @@ const PageIndexSelectorDefaultProps = {
   pageIndex: _pager_props.PagerDefaultProps.pageIndex,
   pageIndexChangedInternal: _pager_props.PagerDefaultProps.pageIndexChangedInternal,
   showNavigationButtons: _pager_props.PagerDefaultProps.showNavigationButtons,
-  totalCount: _pager_props.PagerDefaultProps.totalCount
+  itemCount: _pager_props.PagerDefaultProps.itemCount
 };
 class PageIndexSelector extends _inferno2.BaseInfernoComponent {
   constructor(props) {

@@ -22,7 +22,6 @@ var _index = require("../../../events/index");
 var _pointer = _interopRequireDefault(require("../../../events/pointer"));
 var _index2 = require("../../../events/utils/index");
 var _editor = _interopRequireDefault(require("../../../ui/editor/editor"));
-var _ui = _interopRequireDefault(require("../../../ui/widget/ui.errors"));
 var _m_utils = require("../../ui/text_box/m_utils.scroll");
 var _m_converterController = _interopRequireDefault(require("./m_converterController"));
 var _m_quill_importer = require("./m_quill_importer");
@@ -36,7 +35,6 @@ const QUILL_CONTAINER_CLASS = 'dx-quill-container';
 const QUILL_CLIPBOARD_CLASS = 'ql-clipboard';
 const HTML_EDITOR_SUBMIT_ELEMENT_CLASS = 'dx-htmleditor-submit-element';
 const HTML_EDITOR_CONTENT_CLASS = 'dx-htmleditor-content';
-const MARKDOWN_VALUE_TYPE = 'markdown';
 const ANONYMOUS_TEMPLATE_NAME = 'htmlContent';
 const isIos = _devices.default.current().platform === 'ios';
 let editorsCount = 0;
@@ -45,7 +43,6 @@ const HtmlEditor = _editor.default.inherit({
   _getDefaultOptions() {
     return (0, _extend.extend)(this.callBase(), {
       focusStateEnabled: true,
-      valueType: 'html',
       placeholder: '',
       toolbar: null,
       variables: null,
@@ -187,22 +184,12 @@ const HtmlEditor = _editor.default.inherit({
     return sanitizedHtml;
   },
   _updateContainerMarkup() {
-    let markup = this.option('value');
-    if (this._isMarkdownValue()) {
-      this._prepareMarkdownConverter();
-      markup = this._markdownConverter.toHtml(markup);
-    }
-    if (markup) {
-      const sanitizedMarkup = this._removeXSSVulnerableHtml(markup);
+    const {
+      value
+    } = this.option();
+    if (value) {
+      const sanitizedMarkup = this._removeXSSVulnerableHtml(value);
       this._$htmlContainer.html(sanitizedMarkup);
-    }
-  },
-  _prepareMarkdownConverter() {
-    const MarkdownConverter = _m_converterController.default.getConverter('markdown');
-    if (MarkdownConverter) {
-      this._markdownConverter = new MarkdownConverter();
-    } else {
-      throw _ui.default.Error('E1051', 'markdown');
     }
   },
   _render() {
@@ -225,9 +212,6 @@ const HtmlEditor = _editor.default.inherit({
       if (DeltaConverter) {
         this._deltaConverter = new DeltaConverter();
       }
-    }
-    if (this.option('valueType') === MARKDOWN_VALUE_TYPE && !this._markdownConverter) {
-      this._prepareMarkdownConverter();
     }
   },
   _renderContentImpl() {
@@ -359,11 +343,11 @@ const HtmlEditor = _editor.default.inherit({
     });
     return modules;
   },
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _textChangeHandler(newDelta, oldDelta, source) {
-    const htmlMarkup = this._deltaConverter.toHtml();
-    const convertedValue = this._isMarkdownValue() ? this._updateValueByType(MARKDOWN_VALUE_TYPE, htmlMarkup) : htmlMarkup;
-    const currentValue = this.option('value');
+  _textChangeHandler() {
+    const {
+      value: currentValue
+    } = this.option();
+    const convertedValue = this._deltaConverter.toHtml();
     if (currentValue !== convertedValue && !this._isNullValueConverted(currentValue, convertedValue)) {
       this._isEditorUpdating = true;
       this.option('value', convertedValue);
@@ -380,17 +364,6 @@ const HtmlEditor = _editor.default.inherit({
       this._contentRenderedDeferred.resolve();
       this._contentRenderedDeferred = undefined;
     }
-  },
-  _updateValueByType(valueType, value) {
-    const converter = this._markdownConverter;
-    if (!(0, _type.isDefined)(converter)) {
-      return;
-    }
-    const currentValue = (0, _common.ensureDefined)(value, this.option('value'));
-    return valueType === MARKDOWN_VALUE_TYPE ? converter.toMarkdown(currentValue) : converter.toHtml(currentValue);
-  },
-  _isMarkdownValue() {
-    return this.option('valueType') === MARKDOWN_VALUE_TYPE;
   },
   _resetEnabledState() {
     if (this._quillInstance) {
@@ -443,9 +416,8 @@ const HtmlEditor = _editor.default.inherit({
             if (this._isEditorUpdating) {
               this._isEditorUpdating = false;
             } else {
-              const updatedValue = this._isMarkdownValue() ? this._updateValueByType('HTML', args.value) : args.value;
               this._suppressValueChangeAction();
-              this._updateHtmlContent(updatedValue);
+              this._updateHtmlContent(args.value);
               this._resumeValueChangeAction();
             }
           } else {
@@ -472,17 +444,6 @@ const HtmlEditor = _editor.default.inherit({
       case 'tableResizing':
         this._moduleOptionChanged('tableResizing', args);
         break;
-      case 'valueType':
-        {
-          this._prepareConverters();
-          const newValue = this._updateValueByType(args.value);
-          if (args.value === 'html' && this._quillInstance) {
-            this._updateHtmlContent(newValue);
-          } else {
-            this.option('value', newValue);
-          }
-          break;
-        }
       case 'stylingMode':
         this._renderStylingMode();
         break;

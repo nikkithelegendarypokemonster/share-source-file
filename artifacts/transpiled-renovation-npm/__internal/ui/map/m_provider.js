@@ -32,6 +32,7 @@ const Provider = _class.default.inherit({
   _renderImpl: abstract,
   updateDimensions: abstract,
   updateMapType: abstract,
+  updateDisabled: abstract,
   updateBounds: abstract,
   updateCenter: abstract,
   updateZoom: abstract,

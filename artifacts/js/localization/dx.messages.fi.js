@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.fi.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Haku",
             "Back": "Takaisin",
             "OK": "OK",
+            "Today": "Tänään",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Ei näytettäviä tietoja",
             "dxDropDownEditor-selectLabel": "Valitse",
             "validation-required": "Pakollinen",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Pudota rivikentät tähän",
             "dxPivotGrid-filterFieldArea": "Pudota suodatinkentät tähän",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Aihe",
             "dxScheduler-editorLabelStartDate": "Alkamispäivä",
             "dxScheduler-editorLabelEndDate": "Päättymispäivä",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Välillä",
             "dxFilterBuilder-filterOperationAnyOf": "Joku näistä",
             "dxFilterBuilder-filterOperationNoneOf": "Ei mikään näistä",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Change Font Color",
             "dxHtmlEditor-dialogBackgroundCaption": "Change Background Color",
             "dxHtmlEditor-dialogLinkCaption": "Add Link",

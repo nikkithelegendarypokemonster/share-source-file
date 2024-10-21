@@ -556,7 +556,7 @@ class ColumnsController extends _m_modules.default.Controller {
           column.fixed = ((_parentBandColumns$ = parentBandColumns[0]) === null || _parentBandColumns$ === void 0 ? void 0 : _parentBandColumns$.fixed) ?? column.fixed;
           column.fixedPosition = ((_parentBandColumns$2 = parentBandColumns[0]) === null || _parentBandColumns$2 === void 0 ? void 0 : _parentBandColumns$2.fixedPosition) ?? column.fixedPosition;
           if (column.fixed && column.fixedPosition !== _const.StickyPosition.Sticky) {
-            const isDefaultCommandColumn = !!column.command && !(0, _m_columns_controller_utils.isCustomCommandColumn)(this, column);
+            const isDefaultCommandColumn = !!column.command && !_m_utils.default.isCustomCommandColumn(this._columns, column);
             let isFixedToEnd = column.fixedPosition === 'right';
             if (rtlEnabled && !isDefaultCommandColumn) {
               isFixedToEnd = !isFixedToEnd;
@@ -1477,7 +1477,7 @@ class ColumnsController extends _m_modules.default.Controller {
   }
   getColumnId(column) {
     if (column.command && column.type === _const2.GROUP_COMMAND_COLUMN_NAME) {
-      if ((0, _m_columns_controller_utils.isCustomCommandColumn)(this, column)) {
+      if (_m_utils.default.isCustomCommandColumn(this._columns, column)) {
         return `type:${column.type}`;
       }
       return `command:${column.command}`;

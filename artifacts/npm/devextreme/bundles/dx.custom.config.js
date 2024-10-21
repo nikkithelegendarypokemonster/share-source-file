@@ -80,6 +80,7 @@ ui.dxMap = require('devextreme/ui/map');
 ui.dxMultiView = require('devextreme/ui/multi_view');
 ui.dxNumberBox = require('devextreme/ui/number_box');
 ui.dxOverlay = require('devextreme/ui/overlay/ui.overlay');
+ui.dxPagination = require('devextreme/ui/pagination');
 ui.dxPopover = require('devextreme/ui/popover');
 ui.dxPopup = require('devextreme/ui/popup');
 ui.dxProgressBar = require('devextreme/ui/progress_bar');
@@ -112,9 +113,6 @@ DevExpress.validationEngine = require('devextreme/ui/validation_engine');
 ui.dxValidationSummary = require('devextreme/ui/validation_summary');
 ui.dxValidationGroup = require('devextreme/ui/validation_group');
 ui.dxValidator = require('devextreme/ui/validator');
-
-/* Widget parts */
-require('devextreme/ui/html_editor/converters/markdown');
 
 
 /* Web widgets (dx.module-widgets-web.js) */

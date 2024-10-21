@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.fa.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "جستجو",
             "Back": "بازگشت",
             "OK": "تایید",
+            "Today": "امروز",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "(داده ای برای نمایش موجود نمی باشد)",
             "dxDropDownEditor-selectLabel": "انتخاب",
             "validation-required": "اجباری",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "فیلدهای مربوط به سطر را به اینجا انتقال دهید (درگ نمایید)",
             "dxPivotGrid-filterFieldArea": "فیلدهای مربوط به فیلتر را به اینجا انتقال دهید (درگ نمایید)",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "موضوع",
             "dxScheduler-editorLabelStartDate": "تاریخ شروع",
             "dxScheduler-editorLabelEndDate": "تاریخ پایان",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "بین",
             "dxFilterBuilder-filterOperationAnyOf": "شامل یکی از",
             "dxFilterBuilder-filterOperationNoneOf": "شامل هیچکدام از",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "تغییر رنگ قلم",
             "dxHtmlEditor-dialogBackgroundCaption": "تغییر رنگ پس زمینه",
             "dxHtmlEditor-dialogLinkCaption": "افزودن پیوند",

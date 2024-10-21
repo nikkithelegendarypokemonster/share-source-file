@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.zh-tw.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "搜尋",
             "Back": "返回",
             "OK": "確定",
+            "Today": "今天",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "沒有要顯示的資料",
             "dxDropDownEditor-selectLabel": "選擇",
             "validation-required": "必需",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "將列欄位拖到到此次",
             "dxPivotGrid-filterFieldArea": "拖動篩選欄位到此處",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "標題",
             "dxScheduler-editorLabelStartDate": "開始日期",
             "dxScheduler-editorLabelEndDate": "結束日期",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "之間",
             "dxFilterBuilder-filterOperationAnyOf": "任何一個",
             "dxFilterBuilder-filterOperationNoneOf": "任何一個都不",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "更改字體顏色",
             "dxHtmlEditor-dialogBackgroundCaption": "更改背景顏色",
             "dxHtmlEditor-dialogLinkCaption": "添加鏈接",

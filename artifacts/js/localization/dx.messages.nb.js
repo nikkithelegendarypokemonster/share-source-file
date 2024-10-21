@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.nb.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Søk",
             "Back": "Tilbake",
             "OK": "OK",
+            "Today": "I dag",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Ingen data å vise",
             "dxDropDownEditor-selectLabel": "Velg",
             "validation-required": "Påkrevd",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Slipp radfelter her",
             "dxPivotGrid-filterFieldArea": "Slipp filterfelter her",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Emne",
             "dxScheduler-editorLabelStartDate": "Startdato",
             "dxScheduler-editorLabelEndDate": "Sluttdato",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Er mellom",
             "dxFilterBuilder-filterOperationAnyOf": "Er noen av",
             "dxFilterBuilder-filterOperationNoneOf": "Er ingen av",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Skift fontfarge",
             "dxHtmlEditor-dialogBackgroundCaption": "Skift bakgrunnsfarge",
             "dxHtmlEditor-dialogLinkCaption": "Legg til link",

@@ -665,5 +665,9 @@ var _default = exports.default = {
   getComponentBorderWidth(that, $rowsViewElement) {
     const borderWidth = that.option('showBorders') ? Math.ceil((0, _size.getOuterWidth)($rowsViewElement) - (0, _size.getInnerWidth)($rowsViewElement)) : 0;
     return borderWidth;
+  },
+  isCustomCommandColumn(columns, commandColumn) {
+    const customCommandColumns = columns.filter(column => column.type === commandColumn.type);
+    return !!customCommandColumns.length;
   }
 };

@@ -10,6 +10,7 @@ var _message = _interopRequireDefault(require("../../../localization/message"));
 var _m_classes = require("../m_classes");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const allDayText = ` ${_message.default.format('dxScheduler-allDay')}: `;
+const recurringText = _message.default.format('dxScheduler-appointmentAriaLabel-recurring');
 const createAppointmentLayout = (formatText, config) => {
   const result = (0, _renderer.default)(_dom_adapter.default.createDocumentFragment());
   (0, _renderer.default)('<div>').text(formatText.text).addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_TITLE).appendTo(result);
@@ -18,7 +19,7 @@ const createAppointmentLayout = (formatText, config) => {
   }
   const $contentDetails = (0, _renderer.default)('<div>').addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_CONTENT_DETAILS).appendTo(result);
   (0, _renderer.default)('<div>').addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_DATE).text(formatText.formatDate).appendTo($contentDetails);
-  config.isRecurrence && (0, _renderer.default)('<span>').addClass(`${_m_classes.APPOINTMENT_CONTENT_CLASSES.RECURRING_ICON} dx-icon-repeat`).appendTo(result);
+  config.isRecurrence && (0, _renderer.default)('<span>').addClass(`${_m_classes.APPOINTMENT_CONTENT_CLASSES.RECURRING_ICON} dx-icon-repeat`).attr('aria-label', recurringText).appendTo(result);
   config.isAllDay && (0, _renderer.default)('<div>').text(allDayText).addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.ALL_DAY_CONTENT).prependTo($contentDetails);
   return result;
 };
@@ -29,7 +30,7 @@ const createAgendaAppointmentLayout = (formatText, config) => {
   const rightLayoutContainer = (0, _renderer.default)('<div>').addClass('dx-scheduler-agenda-appointment-right-layout').appendTo(result);
   // eslint-disable-next-line no-unused-vars
   const marker = (0, _renderer.default)('<div>').addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.AGENDA_MARKER).appendTo(leftLayoutContainer);
-  config.isRecurrence && (0, _renderer.default)('<span>').addClass(`${_m_classes.APPOINTMENT_CONTENT_CLASSES.RECURRING_ICON} dx-icon-repeat`).appendTo(marker);
+  config.isRecurrence && (0, _renderer.default)('<span>').addClass(`${_m_classes.APPOINTMENT_CONTENT_CLASSES.RECURRING_ICON} dx-icon-repeat`).attr('aria-label', recurringText).appendTo(marker);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const text = (0, _renderer.default)('<div>').addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_TITLE).text(formatText.text).appendTo(rightLayoutContainer);
   const additionalContainer = (0, _renderer.default)('<div>').addClass(_m_classes.APPOINTMENT_CONTENT_CLASSES.APPOINTMENT_CONTENT_DETAILS).appendTo(rightLayoutContainer);

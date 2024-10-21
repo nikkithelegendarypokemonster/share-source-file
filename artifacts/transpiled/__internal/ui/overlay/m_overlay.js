@@ -131,7 +131,8 @@ const Overlay = _ui2.default.inherit({
       ignoreChildEvents: true,
       _checkParentVisibility: true,
       _hideOnParentScrollTarget: undefined,
-      _fixWrapperPosition: false
+      _fixWrapperPosition: false,
+      _loopFocus: false
     });
   },
   _defaultOptionsRules() {
@@ -574,8 +575,12 @@ const Overlay = _ui2.default.inherit({
     };
   },
   _toggleTabTerminator(enabled) {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const {
+      _loopFocus
+    } = this.option();
     const eventName = (0, _index.addNamespace)('keydown', this.NAME);
-    if (enabled) {
+    if (_loopFocus || enabled) {
       _events_engine.default.on(_dom_adapter.default.getDocument(), eventName, this._proxiedTabTerminatorHandler);
     } else {
       _events_engine.default.off(_dom_adapter.default.getDocument(), eventName, this._proxiedTabTerminatorHandler);
@@ -968,6 +973,7 @@ const Overlay = _ui2.default.inherit({
     switch (name) {
       case 'animation':
         break;
+      case '_loopFocus':
       case 'shading':
         this._toggleShading(this.option('visible'));
         this._toggleSafariScrolling();

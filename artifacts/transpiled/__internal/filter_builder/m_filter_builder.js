@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _component_registrator = _interopRequireDefault(require("../../core/component_registrator"));
 var _dom_adapter = _interopRequireDefault(require("../../core/dom_adapter"));
+var _guid = _interopRequireDefault(require("../../core/guid"));
 var _renderer = _interopRequireDefault(require("../../core/renderer"));
 var _deferred = require("../../core/utils/deferred");
 var _extend = require("../../core/utils/extend");
@@ -215,10 +216,35 @@ class FilterBuilder extends _ui3.default {
     this.$element().addClass(FILTER_BUILDER_CLASS);
     // @ts-expect-error
     super._initMarkup();
+    this._addAriaAttributes(this.$element(), _message.default.format('dxFilterBuilder-filterAriaRootElement'), 'tree');
     this._createGroupElementByCriteria(this._model).appendTo(this.$element());
   }
-  _createConditionElement(condition, parent) {
-    return (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_GROUP_CLASS).append(this._createConditionItem(condition, parent));
+  _addAriaAttributes($element, ariaLabel, role, hasPopup, hasExpanded, ariaLevel) {
+    if (!$element || !$element.length) return;
+    const attributes = {
+      role
+    };
+    if (ariaLabel) {
+      if ($element.text().length > 0) {
+        // @ts-expect-error title attr
+        attributes.title = ariaLabel;
+      } else {
+        attributes['aria-label'] = ariaLabel;
+      }
+    }
+    if ((0, _type.isDefined)(hasPopup)) {
+      attributes['aria-haspopup'] = `${hasPopup}`;
+    }
+    if ((0, _type.isDefined)(hasExpanded)) {
+      attributes['aria-expanded'] = `${hasExpanded}`;
+    }
+    if ((0, _type.isDefined)(ariaLevel)) {
+      attributes['aria-level'] = `${ariaLevel}`;
+    }
+    $element.attr(attributes);
+  }
+  _createConditionElement(condition, parent, groupLevel) {
+    return (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_GROUP_CLASS).append(this._createConditionItem(condition, parent, groupLevel));
   }
   _createGroupElementByCriteria(criteria, parent) {
     let groupLevel = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
@@ -230,22 +256,26 @@ class FilterBuilder extends _ui3.default {
       if ((0, _m_utils2.isGroup)(innerCriteria)) {
         this._createGroupElementByCriteria(innerCriteria, criteria, groupLevel + 1).appendTo($groupContent);
       } else if ((0, _m_utils2.isCondition)(innerCriteria)) {
-        this._createConditionElement(innerCriteria, criteria).appendTo($groupContent);
+        this._createConditionElement(innerCriteria, criteria, `${groupLevel + 1}`).appendTo($groupContent);
       }
     }
     return $group;
   }
   _createGroupElement(criteria, parent, groupLevel) {
+    const $guid = new _guid.default();
     const $groupItem = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_GROUP_ITEM_CLASS);
-    const $groupContent = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_GROUP_CONTENT_CLASS);
+    const $groupContent = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_GROUP_CONTENT_CLASS).attr('id', `${$guid}`);
     const $group = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_GROUP_CLASS).append($groupItem).append($groupContent);
     if (parent != null) {
       this._createRemoveButton(() => {
         (0, _m_utils2.removeItem)(parent, criteria);
         $group.remove();
         this._updateFilter();
-      }).appendTo($groupItem);
+      }, 'group').appendTo($groupItem);
     }
+    this._addAriaAttributes($groupItem, _message.default.format('dxFilterBuilder-filterAriaGroupItem'), 'treeitem', null, null, `${groupLevel + 1}`);
+    this._addAriaAttributes($groupContent, '', 'group');
+    $groupItem.attr('aria-owns', `${$guid}`);
     this._createGroupOperationButton(criteria).appendTo($groupItem);
     this._createAddButton(() => {
       const newGroup = (0, _m_utils2.createEmptyGroup)(this._getDefaultGroupOperation());
@@ -256,7 +286,7 @@ class FilterBuilder extends _ui3.default {
       const field = this.option('fields')[0];
       const newCondition = (0, _m_utils2.createCondition)(field, this._customOperations);
       (0, _m_utils2.addItem)(newCondition, criteria);
-      this._createConditionElement(newCondition, criteria).appendTo($groupContent);
+      this._createConditionElement(newCondition, criteria, groupLevel + 1).appendTo($groupContent);
       this._updateFilter();
     }, groupLevel).appendTo($groupItem);
     return $group;
@@ -288,13 +318,14 @@ class FilterBuilder extends _ui3.default {
         cssClass: FILTER_BUILDER_GROUP_OPERATIONS_CLASS
       }
     });
+    this._addAriaAttributes($operationButton, _message.default.format('dxFilterBuilder-filterAriaOperationButton'), 'combobox', true, false);
     return $operationButton.addClass(FILTER_BUILDER_ITEM_TEXT_CLASS).addClass(FILTER_BUILDER_GROUP_OPERATION_CLASS).attr('tabindex', 0);
   }
   _createButtonWithMenu(options) {
     const that = this;
     const removeMenu = function () {
       // @ts-expect-error
-      that.$element().find(`.${ACTIVE_CLASS}`).removeClass(ACTIVE_CLASS);
+      that.$element().find(`.${ACTIVE_CLASS}`).removeClass(ACTIVE_CLASS).attr('aria-expanded', 'false');
       // @ts-expect-error
       that.$element().find('.dx-overlay .dx-treeview').remove();
       // @ts-expect-error
@@ -316,7 +347,7 @@ class FilterBuilder extends _ui3.default {
       selectionMode: 'single',
       onItemClick: menuOnItemClickWrapper(options.menu.onItemClick),
       onHiding() {
-        $button.removeClass(ACTIVE_CLASS);
+        $button.removeClass(ACTIVE_CLASS).attr('aria-expanded', 'false');
       },
       position: {
         my: `${position} top`,
@@ -352,7 +383,7 @@ class FilterBuilder extends _ui3.default {
     this._subscribeOnClickAndEnterKey($button, () => {
       removeMenu();
       that._createPopupWithTreeView(options, that.$element());
-      $button.addClass(ACTIVE_CLASS);
+      $button.addClass(ACTIVE_CLASS).attr('aria-expanded', 'true');
     });
     return $button;
   }
@@ -395,6 +426,7 @@ class FilterBuilder extends _ui3.default {
         cssClass: FILTER_BUILDER_FILTER_OPERATIONS_CLASS
       }
     }).addClass(FILTER_BUILDER_ITEM_TEXT_CLASS).addClass(FILTER_BUILDER_ITEM_OPERATION_CLASS).attr('tabindex', 0);
+    this._addAriaAttributes($operationButton, _message.default.format('dxFilterBuilder-filterAriaItemOperation'), 'combobox', true, false);
     return $operationButton;
   }
   _createOperationAndValueButtons(condition, field, $item) {
@@ -438,12 +470,14 @@ class FilterBuilder extends _ui3.default {
         cssClass: FILTER_BUILDER_FIELDS_CLASS
       }
     }).addClass(FILTER_BUILDER_ITEM_TEXT_CLASS).addClass(FILTER_BUILDER_ITEM_FIELD_CLASS).attr('tabindex', 0);
+    this._addAriaAttributes($fieldButton, _message.default.format('dxFilterBuilder-filterAriaItemField'), 'combobox', true, false);
     return $fieldButton;
   }
-  _createConditionItem(condition, parent) {
+  _createConditionItem(condition, parent, groupLevel) {
     const $item = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_GROUP_ITEM_CLASS);
     const fields = this._getNormalizedFields();
     const field = (0, _m_utils2.getField)(condition[0], fields);
+    this._addAriaAttributes($item, '', 'treeitem', null, null, groupLevel);
     this._createRemoveButton(() => {
       (0, _m_utils2.removeItem)(parent, condition);
       const isSingleChild = $item.parent().children().length === 1;
@@ -453,7 +487,7 @@ class FilterBuilder extends _ui3.default {
         $item.remove();
       }
       this._updateFilter();
-    }).appendTo($item);
+    }, 'condition').appendTo($item);
     this._createFieldButtonWithMenu(fields, condition, field).appendTo($item);
     this._createOperationAndValueButtons(condition, field, $item);
     return $item;
@@ -469,8 +503,12 @@ class FilterBuilder extends _ui3.default {
       value: OPERATORS[operation]
     }));
   }
-  _createRemoveButton(handler) {
+  _createRemoveButton(handler, type) {
     const $removeButton = (0, _renderer.default)('<div>').addClass(FILTER_BUILDER_IMAGE_CLASS).addClass(FILTER_BUILDER_IMAGE_REMOVE_CLASS).addClass(FILTER_BUILDER_ACTION_CLASS).attr('tabindex', 0);
+    if (type) {
+      const removeMessage = _message.default.format('dxFilterBuilder-filterAriaRemoveButton', type);
+      this._addAriaAttributes($removeButton, removeMessage, 'button');
+    }
     this._subscribeOnClickAndEnterKey($removeButton, handler);
     return $removeButton;
   }
@@ -498,11 +536,13 @@ class FilterBuilder extends _ui3.default {
         }
       });
     }
+    this._addAriaAttributes($button, _message.default.format('dxFilterBuilder-filterAriaAddButton'), 'combobox', true, false);
     return $button.addClass(FILTER_BUILDER_IMAGE_CLASS).addClass(FILTER_BUILDER_IMAGE_ADD_CLASS).addClass(FILTER_BUILDER_ACTION_CLASS).attr('tabindex', 0);
   }
   _createValueText(item, field, $container) {
     const that = this;
     const $text = (0, _renderer.default)('<div>').html('&nbsp;').addClass(FILTER_BUILDER_ITEM_VALUE_TEXT_CLASS).attr('tabindex', 0).appendTo($container);
+    this._addAriaAttributes($text, _message.default.format('dxFilterBuilder-filterAriaItemValue'), 'button', true);
     const value = item[2];
     const customOperation = (0, _m_utils2.getCustomOperation)(that._customOperations, item[1]);
     if (!customOperation && field.lookup) {

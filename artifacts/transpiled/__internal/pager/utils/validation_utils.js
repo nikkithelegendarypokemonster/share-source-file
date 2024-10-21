@@ -37,7 +37,7 @@ function validateOptions(oldPageSize, oldPageIndex, oldItemCount) {
   return {
     pageSize,
     pageIndex,
-    totalCount: itemCount,
+    itemCount,
     pageCount
   };
 }

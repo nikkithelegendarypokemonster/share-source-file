@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.lt.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Paieška",
             "Back": "Atgal",
             "OK": "Gerai",
+            "Today": "Šiandien",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Nėra duomenų",
             "dxDropDownEditor-selectLabel": "Pasirinkti",
             "validation-required": "Privalomas",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Numeskite eilučių laukus čia",
             "dxPivotGrid-filterFieldArea": "Numeskite filtrų laukus čia",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Tema",
             "dxScheduler-editorLabelStartDate": "Pradžios data",
             "dxScheduler-editorLabelEndDate": "Pabaigos data",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Intervale",
             "dxFilterBuilder-filterOperationAnyOf": "Kuris nors iš",
             "dxFilterBuilder-filterOperationNoneOf": "Nė vienas iš",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Pakeisti šrifto spalvą",
             "dxHtmlEditor-dialogBackgroundCaption": "Pakeisti fono spalvą",
             "dxHtmlEditor-dialogLinkCaption": "Pridėti nuorodą",

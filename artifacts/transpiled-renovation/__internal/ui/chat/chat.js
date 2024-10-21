@@ -30,7 +30,8 @@ class Chat extends _widget.default {
       user: {
         id: new _guid.default().toString()
       },
-      onMessageSend: undefined
+      onMessageSend: undefined,
+      showDayHeaders: true
     });
   }
   _init() {
@@ -46,6 +47,10 @@ class Chat extends _widget.default {
   }
   _dataSourceChangedHandler(newItems) {
     this.option('items', newItems.slice());
+  }
+  _dataSourceLoadingChangedHandler(isLoading) {
+    var _this$_messageList;
+    (_this$_messageList = this._messageList) === null || _this$_messageList === void 0 || _this$_messageList.option('isLoading', isLoading);
   }
   _dataSourceOptions() {
     return {
@@ -76,14 +81,18 @@ class Chat extends _widget.default {
   _renderMessageList() {
     const {
       items = [],
-      user
+      user,
+      showDayHeaders
     } = this.option();
     const currentUserId = user === null || user === void 0 ? void 0 : user.id;
     const $messageList = (0, _renderer.default)('<div>');
     this.$element().append($messageList);
     this._messageList = this._createComponent($messageList, _messagelist.default, {
       items,
-      currentUserId
+      currentUserId,
+      showDayHeaders,
+      // @ts-expect-error
+      isLoading: this._dataController.isLoading()
     });
   }
   _renderMessageBox() {
@@ -134,7 +143,6 @@ class Chat extends _widget.default {
       author: user,
       text
     };
-    this.renderMessage(message);
     (_this$_messageSendAct = this._messageSendAction) === null || _this$_messageSendAct === void 0 || _this$_messageSendAct.call(this, {
       message,
       event
@@ -185,6 +193,9 @@ class Chat extends _widget.default {
         break;
       case 'onMessageSend':
         this._createMessageSendAction();
+        break;
+      case 'showDayHeaders':
+        this._messageList.option(name, value);
         break;
       default:
         super._optionChanged(args);

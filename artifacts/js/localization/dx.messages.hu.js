@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.hu.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Keresés",
             "Back": "Vissza",
             "OK": "OK",
+            "Today": "Ma",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Nincs megjeleníthető adat",
             "dxDropDownEditor-selectLabel": "Választás",
             "validation-required": "Kötelező",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Húzza a sormezőket ide",
             "dxPivotGrid-filterFieldArea": "Húzza a szűrőmezőket ide",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Tárgy",
             "dxScheduler-editorLabelStartDate": "Kezdés dátuma",
             "dxScheduler-editorLabelEndDate": "Befejezés dátuma",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Között",
             "dxFilterBuilder-filterOperationAnyOf": "Valamelyik",
             "dxFilterBuilder-filterOperationNoneOf": "Egyik sem",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Betűszín választás",
             "dxHtmlEditor-dialogBackgroundCaption": "Háttérszín választás",
             "dxHtmlEditor-dialogLinkCaption": "Link hozzáadása",

@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.el.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Αναζήτηση",
             "Back": "Πίσω",
             "OK": "ΟΚ",
+            "Today": "Σήμερα",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Δεν υπάρχουν δεδομένα προς εμφάνιση",
             "dxDropDownEditor-selectLabel": "Επιλέξτε",
             "validation-required": "Απαιτείται συμπλήρωση",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Τοποθετήστε τα πεδία γραμμών εδώ",
             "dxPivotGrid-filterFieldArea": "Τοποθετήστε τα πεδία φίλτρων εδώ",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Θέμα",
             "dxScheduler-editorLabelStartDate": "Ημερομηνία έναρξης",
             "dxScheduler-editorLabelEndDate": "Ημερομηνία λήξης",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Είναι ανάμεσα",
             "dxFilterBuilder-filterOperationAnyOf": "Είναι κάποιο από αυτά",
             "dxFilterBuilder-filterOperationNoneOf": "Δεν είναι τίποτα από αυτά",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Αλλαγή χρώματος γραμματοσειράς",
             "dxHtmlEditor-dialogBackgroundCaption": "Αλλαγή χρώματος φόντου",
             "dxHtmlEditor-dialogLinkCaption": "Προσθήκη συνδέσμου",

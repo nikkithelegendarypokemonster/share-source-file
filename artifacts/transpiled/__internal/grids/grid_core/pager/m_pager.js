@@ -7,7 +7,7 @@ exports.pagerModule = exports.PagerView = void 0;
 var _type = require("../../../../core/utils/type");
 var _window = require("../../../../core/utils/window");
 var _message = _interopRequireDefault(require("../../../../localization/message"));
-var _pager = _interopRequireDefault(require("../../../../ui/pager"));
+var _pager = _interopRequireDefault(require("../../../pager/wrappers/pager"));
 var _m_modules = _interopRequireDefault(require("../m_modules"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const PAGER_CLASS = 'pager';
@@ -28,7 +28,7 @@ class PagerView extends _m_modules.default.View {
             pageIndex: getPageIndex(dataController),
             pageSize: dataController.pageSize(),
             pageCount: dataController.pageCount(),
-            totalCount: dataController.totalCount(),
+            itemCount: dataController.totalCount(),
             hasKnownLastPage: dataController.hasKnownLastPage()
           });
         } else {
@@ -88,7 +88,7 @@ class PagerView extends _m_modules.default.View {
       showNavigationButtons: pagerOptions.showNavigationButtons,
       label: pagerOptions.label,
       allowedPageSizes: that.getPageSizes(),
-      totalCount: dataController.totalCount(),
+      itemCount: dataController.totalCount(),
       hasKnownLastPage: dataController.hasKnownLastPage(),
       rtlEnabled: that.option('rtlEnabled'),
       _skipValidation: true,

@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.lv.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Meklēt",
             "Back": "Atpakaļ",
             "OK": "OK",
+            "Today": "Šodien",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Nav datu ko attēlot",
             "dxDropDownEditor-selectLabel": "Izvēlēties",
             "validation-required": "Obligāts",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Nomest Rindu Laukus Šeit",
             "dxPivotGrid-filterFieldArea": "Nomest Filtra Laukus Šeit",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Nosaukums",
             "dxScheduler-editorLabelStartDate": "Sākuma Datums",
             "dxScheduler-editorLabelEndDate": "Beigu Datums",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Ir starp",
             "dxFilterBuilder-filterOperationAnyOf": "Ir viens no",
             "dxFilterBuilder-filterOperationNoneOf": "Nav neviens no",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Nomainīt Fonta Krāsu",
             "dxHtmlEditor-dialogBackgroundCaption": "Nomainīt Fona Krāsu",
             "dxHtmlEditor-dialogLinkCaption": "Pievienot saiti",

@@ -16,8 +16,7 @@ const addStickyColumnBorderLeftClass = ($cell, addWidgetPrefix) => {
 const addStickyColumnBorderRightClass = ($cell, addWidgetPrefix) => {
   $cell.addClass(addWidgetPrefix(_const.CLASSES.stickyColumnBorderRight));
 };
-const addStickyColumnClass = ($cell, stickyColumn, addWidgetPrefix) => {
-  const fixedPosition = (0, _utils.getColumnFixedPosition)(stickyColumn);
+const addStickyColumnClass = ($cell, fixedPosition, addWidgetPrefix) => {
   switch (fixedPosition) {
     case _const.StickyPosition.Right:
       $cell.addClass(addWidgetPrefix(_const.CLASSES.stickyColumnRight));
@@ -29,11 +28,11 @@ const addStickyColumnClass = ($cell, stickyColumn, addWidgetPrefix) => {
       $cell.addClass(addWidgetPrefix(_const.CLASSES.stickyColumnLeft));
   }
 };
-const addFirstHeaderClass = ($cell, addWidgetPrefix) => {
-  $cell.addClass(addWidgetPrefix(_const.CLASSES.firstHeader));
+const toggleFirstHeaderClass = ($cell, value, addWidgetPrefix) => {
+  $cell.toggleClass(addWidgetPrefix(_const.CLASSES.firstHeader), value);
 };
-const addColumnNoBorderClass = ($cell, addWidgetPrefix) => {
-  $cell.addClass(addWidgetPrefix(_const.CLASSES.columnNoBorder));
+const toggleColumnNoBorderClass = ($cell, value, addWidgetPrefix) => {
+  $cell.toggleClass(addWidgetPrefix(_const.CLASSES.columnNoBorder), value);
 };
 const toggleStickyColumnsClass = ($element, isStickyColumns, addWidgetPrefix) => {
   $element.toggleClass(addWidgetPrefix(_const.CLASSES.stickyColumns), isStickyColumns);
@@ -164,8 +163,8 @@ const doesGroupCellEndInFirstColumn = $groupCell => {
   return groupColSpanWithoutCommand === 1;
 };
 const GridCoreStickyColumnsDom = exports.GridCoreStickyColumnsDom = {
-  addFirstHeaderClass,
-  addColumnNoBorderClass,
+  toggleFirstHeaderClass,
+  toggleColumnNoBorderClass,
   addStickyColumnClass,
   addStickyColumnBorderLeftClass,
   addStickyColumnBorderRightClass,

@@ -20,6 +20,6 @@ const BasePagerDefaultProps = exports.BasePagerDefaultProps = _extends({}, _base
   showPageSizeSelector: true,
   allowedPageSizes: [5, 10],
   showNavigationButtons: false,
-  totalCount: 1,
+  itemCount: 1,
   label: _message.default.format('dxPager-ariaLabel')
 });

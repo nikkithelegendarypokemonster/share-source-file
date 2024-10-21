@@ -134,9 +134,9 @@ class Appointment extends _dom_component.default {
     this._renderAllDayClass();
     this._renderDragSourceClass();
     this._renderDirection();
-    this.$element().data('dxAppointmentStartDate', this.option('startDate'));
     const text = _m_expression_utils.ExpressionUtils.getField(this.option('dataAccessors'), 'text', this.rawAppointment);
     this.$element().attr('title', text);
+    this.$element().data('dxAppointmentStartDate', this.option('startDate'));
     this.$element().attr('role', 'button');
     this._renderRecurrenceClass();
     this._renderResizable();
@@ -181,7 +181,7 @@ class Appointment extends _dom_component.default {
     // @ts-expect-error
     const $element = this.$element();
     const ariaLabel = [this._getDateText(), this._getGroupText()].filter(label => !!label).join(', ');
-    $element.attr('aria-label', `${ariaLabel}, `);
+    $element.attr('aria-roledescription', `${ariaLabel}, `);
   }
   _renderAppointmentGeometry() {
     const geometry = this.option('geometry');

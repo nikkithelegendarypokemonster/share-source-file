@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.ro.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Caută",
             "Back": "Înapoi",
             "OK": "OK",
+            "Today": "Astăzi",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Nu există date",
             "dxDropDownEditor-selectLabel": "Selectează",
             "validation-required": "Obligatoriu",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Plasați câmpurile rândului aici",
             "dxPivotGrid-filterFieldArea": "Plasați câmpurile de filtrare aici",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Subiect",
             "dxScheduler-editorLabelStartDate": "Data de început",
             "dxScheduler-editorLabelEndDate": "Data de încheiere",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Este între",
             "dxFilterBuilder-filterOperationAnyOf": "Este oricare dintre",
             "dxFilterBuilder-filterOperationNoneOf": "Nu este nici una dintre",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Schimbă culoarea fontului",
             "dxHtmlEditor-dialogBackgroundCaption": "Schimbă culoarea de fundal",
             "dxHtmlEditor-dialogLinkCaption": "Adaugă Link",

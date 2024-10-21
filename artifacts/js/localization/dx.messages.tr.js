@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.tr.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Ara",
             "Back": "Geri",
             "OK": "Tamam",
+            "Today": "Bugün",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Gösterilecek bilgi yok",
             "dxDropDownEditor-selectLabel": "Select",
             "validation-required": "Zorunlu",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Satır Alanlarını Buraya Bırak",
             "dxPivotGrid-filterFieldArea": "Filtre Alanlarını Buraya Bırak",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Konu",
             "dxScheduler-editorLabelStartDate": "Başlangıç Tarihi",
             "dxScheduler-editorLabelEndDate": "Bitiş Tarihi",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Arasında",
             "dxFilterBuilder-filterOperationAnyOf": "Herhangi biri",
             "dxFilterBuilder-filterOperationNoneOf": "Hiçbiri",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Yazı Tipi Rengini Değiştir",
             "dxHtmlEditor-dialogBackgroundCaption": "Arka Plan Rengini Değiştir",
             "dxHtmlEditor-dialogLinkCaption": "Link Ekle",

@@ -106,7 +106,7 @@ const Lookup = _ui.default.inherit({
           return getSize('height');
         },
         shading: true,
-        hideOnOutsideClick: false,
+        hideOnOutsideClick: true,
         position: undefined,
         animation: {},
         title: '',
@@ -189,7 +189,6 @@ const Lookup = _ui.default.inherit({
         dropDownCentered: true,
         _scrollToSelectedItemEnabled: true,
         dropDownOptions: {
-          hideOnOutsideClick: true,
           _ignoreFunctionValueDeprecation: true,
           width: () => (0, _m_utils.getElementWidth)(this.$element()),
           height: function () {
@@ -457,7 +456,12 @@ const Lookup = _ui.default.inherit({
     }
     return 'auto';
   },
-  _popupTabHandler: _common.noop,
+  _popupTabHandler(e) {
+    const shouldLoopFocusInsidePopup = this._shouldLoopFocusInsidePopup();
+    if (!shouldLoopFocusInsidePopup) {
+      this.callBase(e);
+    }
+  },
   _renderPopup() {
     if (this.option('usePopover') && !this.option('dropDownOptions.fullScreen')) {
       if (this.option('_scrollToSelectedItemEnabled')) {
@@ -473,7 +477,8 @@ const Lookup = _ui.default.inherit({
     this._popup.$wrapper().addClass(LOOKUP_POPUP_WRAPPER_CLASS);
   },
   _renderPopover() {
-    this._popup = this._createComponent(this._$popup, _ui2.default, (0, _extend.extend)(this._popupConfig(), this._options.cache('dropDownOptions'), {
+    const popupConfig = this._popupConfig();
+    const options = (0, _extend.extend)(popupConfig, this._options.cache('dropDownOptions'), {
       showEvent: null,
       hideEvent: null,
       target: this.$element(),
@@ -481,10 +486,9 @@ const Lookup = _ui.default.inherit({
       shading: false,
       hideOnParentScroll: true,
       _fixWrapperPosition: false,
-      width: this._isInitialOptionValue('dropDownOptions.width') ? function () {
-        return (0, _size.getOuterWidth)(this.$element());
-      }.bind(this) : this._popupConfig().width
-    }));
+      width: this._isInitialOptionValue('dropDownOptions.width') ? () => (0, _size.getOuterWidth)(this.$element()) : popupConfig.width
+    });
+    this._popup = this._createComponent(this._$popup, _ui2.default, options);
     this._popup.$overlayContent().attr('role', 'dialog');
     this._popup.on({
       showing: this._popupShowingHandler.bind(this),
@@ -493,7 +497,9 @@ const Lookup = _ui.default.inherit({
       hidden: this._popupHiddenHandler.bind(this),
       contentReady: this._contentReadyHandler.bind(this)
     });
-    if (this.option('_scrollToSelectedItemEnabled')) this._popup._$arrow.remove();
+    if (this.option('_scrollToSelectedItemEnabled')) {
+      this._popup._$arrow.remove();
+    }
     this._setPopupContentId(this._popup.$content());
     this._contentReadyHandler();
   },
@@ -508,19 +514,34 @@ const Lookup = _ui.default.inherit({
     }
   },
   _preventFocusOnPopup: _common.noop,
+  _shouldLoopFocusInsidePopup() {
+    const {
+      usePopover,
+      dropDownCentered,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      _scrollToSelectedItemEnabled
+    } = this.option();
+    const result = _scrollToSelectedItemEnabled ? dropDownCentered : !usePopover;
+    return result;
+  },
   _popupConfig() {
+    const {
+      dropDownOptions
+    } = this.option();
+    const shouldLoopFocusInsidePopup = this._shouldLoopFocusInsidePopup();
     const result = (0, _extend.extend)(this.callBase(), {
       toolbarItems: this._getPopupToolbarItems(),
       hideOnParentScroll: false,
       onPositioned: null,
       maxHeight: '100vh',
-      showTitle: this.option('dropDownOptions.showTitle'),
-      title: this.option('dropDownOptions.title'),
+      showTitle: dropDownOptions.showTitle,
+      title: dropDownOptions.title,
       titleTemplate: this._getTemplateByOption('dropDownOptions.titleTemplate'),
-      onTitleRendered: this.option('dropDownOptions.onTitleRendered'),
-      fullScreen: this.option('dropDownOptions.fullScreen'),
-      shading: this.option('dropDownOptions.shading'),
-      hideOnOutsideClick: this.option('dropDownOptions.hideOnOutsideClick') || this.option('dropDownOptions.closeOnOutsideClick')
+      onTitleRendered: dropDownOptions.onTitleRendered,
+      fullScreen: dropDownOptions.fullScreen,
+      shading: dropDownOptions.shading,
+      hideOnOutsideClick: dropDownOptions.hideOnOutsideClick || dropDownOptions.closeOnOutsideClick,
+      _loopFocus: shouldLoopFocusInsidePopup
     });
     delete result.animation;
     delete result.position;
@@ -537,7 +558,7 @@ const Lookup = _ui.default.inherit({
       result.hideOnParentScroll = true;
     }
     (0, _iterator.each)(['position', 'animation', 'width', 'height'], (_, optionName) => {
-      const popupOptionValue = this.option(`dropDownOptions.${optionName}`);
+      const popupOptionValue = dropDownOptions[optionName];
       if (popupOptionValue !== undefined) {
         result[optionName] = popupOptionValue;
       }

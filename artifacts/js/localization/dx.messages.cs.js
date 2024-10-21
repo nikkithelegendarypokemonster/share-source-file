@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.cs.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Hledat",
             "Back": "Zpět",
             "OK": "OK",
+            "Today": "Dnes",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Žádná data k zobrazení",
             "dxDropDownEditor-selectLabel": "Výběr",
             "validation-required": "povinné",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Zde vložte pole řádků",
             "dxPivotGrid-filterFieldArea": "Zde vložte filtr pole",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Předmět",
             "dxScheduler-editorLabelStartDate": "Počáteční datum",
             "dxScheduler-editorLabelEndDate": "Koncové datum",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Mezi",
             "dxFilterBuilder-filterOperationAnyOf": "Libovolný z",
             "dxFilterBuilder-filterOperationNoneOf": "Žádný z",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Změna barvy písma",
             "dxHtmlEditor-dialogBackgroundCaption": "Změna barvy pozadí",
             "dxHtmlEditor-dialogLinkCaption": "Vložit odkaz",

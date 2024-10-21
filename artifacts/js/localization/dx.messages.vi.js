@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.vi.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Tìm kiếm",
             "Back": "Quay lại",
             "OK": "OK",
+            "Today": "Hôm nay",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Không có dữ liệu để hiển thị",
             "dxDropDownEditor-selectLabel": "Lựa chọn",
             "validation-required": "Bắt buộc",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Thả các trường của hàng vào đây",
             "dxPivotGrid-filterFieldArea": "Thả bộ lọc các trường vào đây",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Chủ đề",
             "dxScheduler-editorLabelStartDate": "Ngày bắt đầu",
             "dxScheduler-editorLabelEndDate": "Ngày kết thúc",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Là giữa",
             "dxFilterBuilder-filterOperationAnyOf": "Là bất kỳ của",
             "dxFilterBuilder-filterOperationNoneOf": "Không không có của",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Đổi màu phông chữ",
             "dxHtmlEditor-dialogBackgroundCaption": "Đổi màu nền",
             "dxHtmlEditor-dialogLinkCaption": "Thêm Liên kết",

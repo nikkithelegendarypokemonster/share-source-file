@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.es.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Buscar",
             "Back": "Volver",
             "OK": "Aceptar",
+            "Today": "Hoy",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Sin datos para mostrar",
             "dxDropDownEditor-selectLabel": "Seleccionar",
             "validation-required": "Obligatorio",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Arrastra campos de fila aquí",
             "dxPivotGrid-filterFieldArea": "Arrastra campos de filtro aquí",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Asunto",
             "dxScheduler-editorLabelStartDate": "Fecha inicial",
             "dxScheduler-editorLabelEndDate": "Fecha final",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Entre",
             "dxFilterBuilder-filterOperationAnyOf": "Alguno de",
             "dxFilterBuilder-filterOperationNoneOf": "Ningún de",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Cambiar el color de la fuente",
             "dxHtmlEditor-dialogBackgroundCaption": "Cambiar el color de fondo",
             "dxHtmlEditor-dialogLinkCaption": "Añadir enlace",

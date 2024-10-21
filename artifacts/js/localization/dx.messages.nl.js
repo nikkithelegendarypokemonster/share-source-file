@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.nl.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Zoeken",
             "Back": "Terug",
             "OK": "OK",
+            "Today": "Vandaag",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Geen gegevens om te tonen",
             "dxDropDownEditor-selectLabel": "Kiezen",
             "validation-required": "Verplicht",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Sleep Rijvelden Hier",
             "dxPivotGrid-filterFieldArea": "Sleep Filtervelden Hier",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Onderwerp",
             "dxScheduler-editorLabelStartDate": "Startdatum",
             "dxScheduler-editorLabelEndDate": "Einddatum",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "Is tussen",
             "dxFilterBuilder-filterOperationAnyOf": "Is een van",
             "dxFilterBuilder-filterOperationNoneOf": "Is geen van",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Tekstkleur",
             "dxHtmlEditor-dialogBackgroundCaption": "Achtergrondkleur",
             "dxHtmlEditor-dialogLinkCaption": "Link",

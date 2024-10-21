@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.messages.ru.js)
 * Version: 24.2.0
-* Build date: Mon Oct 07 2024
+* Build date: Mon Oct 21 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -33,6 +33,8 @@
             "Search": "Поиск",
             "Back": "Назад",
             "OK": "OK",
+            "Today": "Сегодня",
+            "Yesterday": "Yesterday",
             "dxCollectionWidget-noDataText": "Нет данных для отображения",
             "dxDropDownEditor-selectLabel": "Выбрать",
             "validation-required": "Поле необходимо заполнить",
@@ -241,6 +243,7 @@
             "dxPivotGrid-rowFieldArea": "Перетащите поля строк cюда",
             "dxPivotGrid-filterFieldArea": "Перетащите поля фильтров cюда",
             "dxScheduler-appointmentAriaLabel-group": "Group: {0}",
+            "dxScheduler-appointmentAriaLabel-recurring": "Recurring appointment",
             "dxScheduler-editorLabelTitle": "Название",
             "dxScheduler-editorLabelStartDate": "Дата начала",
             "dxScheduler-editorLabelEndDate": "Дата завершения",
@@ -353,6 +356,15 @@
             "dxFilterBuilder-filterOperationBetween": "В диапазоне",
             "dxFilterBuilder-filterOperationAnyOf": "Любой из",
             "dxFilterBuilder-filterOperationNoneOf": "Ни один из",
+            "dxFilterBuilder-filterAriaRootElement": "Filter builder",
+            "dxFilterBuilder-filterAriaGroupLevel": "Level {0}",
+            "dxFilterBuilder-filterAriaGroupItem": "Group item",
+            "dxFilterBuilder-filterAriaOperationButton": "Operation",
+            "dxFilterBuilder-filterAriaAddButton": "Add",
+            "dxFilterBuilder-filterAriaRemoveButton": "Remove {0}",
+            "dxFilterBuilder-filterAriaItemField": "Item field",
+            "dxFilterBuilder-filterAriaItemOperation": "Item operation",
+            "dxFilterBuilder-filterAriaItemValue": "Item value",
             "dxHtmlEditor-dialogColorCaption": "Изменить цвет текста",
             "dxHtmlEditor-dialogBackgroundCaption": "Изменить цвет фона",
             "dxHtmlEditor-dialogLinkCaption": "Добавить ссылку",
